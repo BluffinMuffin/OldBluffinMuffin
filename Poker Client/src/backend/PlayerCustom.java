@@ -1,0 +1,20 @@
+package backend;
+
+import utility.TypePlayerMajorPosition;
+import utility.TypePlayerMinorPosition;
+
+public class PlayerCustom extends Player
+{
+    public TypePlayerMinorPosition m_minorPosition = null;
+    public TypePlayerMajorPosition m_majorPosition = null;
+    
+    public PlayerCustom(int pNoSeat)
+    {
+        super(pNoSeat);
+    }
+    
+    public PlayerCustom(int pNoSeat, String pName, int pMoney)
+    {
+        super(pNoSeat, pName, pMoney);
+    }
+}
