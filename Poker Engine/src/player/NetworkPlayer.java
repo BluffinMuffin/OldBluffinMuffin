@@ -18,7 +18,7 @@ import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
 
 @Deprecated
-public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
+public class NetworkPlayer extends ServerPokerPlayer implements IHoldEmObserver
 {
     
     private boolean m_isConnected;
@@ -35,7 +35,7 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
         m_isConnected = true;
     }
     
-    public void bigBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_bigBlind)
+    public void bigBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_bigBlind)
     {
         m_output.println(makeNormalMessage());
     }
@@ -44,7 +44,7 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
     // IHoldEmObserver
     // ---------------------------------------------
     
-    public void dealerChanged(HoldEmTable p_table, IPlayer p_old, IPlayer p_new)
+    public void dealerChanged(HoldEmTable p_table, ServerPokerPlayer p_old, ServerPokerPlayer p_new)
     {
         m_output.println(makeNormalMessage());
     }
@@ -131,7 +131,7 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
         return action;
     }
     
-    public void holeCardDeal(HoldEmTable p_table, IPlayer p_player)
+    public void holeCardDeal(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         m_output.println(makeNormalMessage());
     }
@@ -145,37 +145,37 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
         // + m_table.marshal(this, new ArrayList<Integer>());
     }
     
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action)
+    public void playerEndTurn(HoldEmTable p_table, ServerPokerPlayer p_player, PokerPlayerAction p_action)
     {
         m_output.println(makeNormalMessage());
     }
     
-    public void playerJoinedTable(HoldEmTable p_table, IPlayer p_player)
+    public void playerJoinedTable(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         m_output.println(makeNormalMessage());
     }
     
-    public void playerLeftTable(HoldEmTable p_table, IPlayer p_player)
+    public void playerLeftTable(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         m_output.println(makeNormalMessage());
     }
     
-    public void playerMoneyChanged(HoldEmTable p_table, IPlayer p_player)
+    public void playerMoneyChanged(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         m_output.println(makeNormalMessage());
     }
     
-    public void playerShowCard(HoldEmTable p_table, IPlayer p_player)
+    public void playerShowCard(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         m_output.println(makeNormalMessage());
     }
     
-    public void playerTurnStarted(HoldEmTable p_table, IPlayer p_player)
+    public void playerTurnStarted(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         m_output.println(makeNormalMessage());
     }
     
-    public void potWon(HoldEmTable p_table, IPlayer p_player, Pot p_pot, int p_share)
+    public void potWon(HoldEmTable p_table, ServerPokerPlayer p_player, Pot p_pot, int p_share)
     {
         final ArrayList<Integer> winners = new ArrayList<Integer>();
         winners.add(p_player.getTablePosition());
@@ -190,7 +190,7 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
         m_output.println(makeNormalMessage());
     }
     
-    public void smallBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_smallBlind)
+    public void smallBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_smallBlind)
     {
         m_output.println(makeNormalMessage());
     }

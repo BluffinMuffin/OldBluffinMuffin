@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import player.IPlayer;
+import player.ServerPokerPlayer;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
@@ -33,7 +33,7 @@ public class Logger implements IHoldEmObserver
     }
     
     @Override
-    public void bigBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_bigBlind)
+    public void bigBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_bigBlind)
     {
         println(p_player.getName() + " post big blind " + p_bigBlind);
     }
@@ -61,7 +61,7 @@ public class Logger implements IHoldEmObserver
     {
         println("Game Start");
         
-        final List<IPlayer> players = p_table.getPlayers();
+        final List<ServerPokerPlayer> players = p_table.getPlayers();
         
         for (int i = 0; i < players.size(); i++)
         {
@@ -74,7 +74,7 @@ public class Logger implements IHoldEmObserver
     }
     
     @Override
-    public void holeCardDeal(HoldEmTable p_table, IPlayer p_player)
+    public void holeCardDeal(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         /*
          * println(p_player.getName() + " receive "
@@ -83,43 +83,43 @@ public class Logger implements IHoldEmObserver
     }
     
     @Override
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action)
+    public void playerEndTurn(HoldEmTable p_table, ServerPokerPlayer p_player, PokerPlayerAction p_action)
     {
         println(p_player.getName() + " " + p_action.toString() + ". Bet = " + p_player.getBet());
     }
     
     @Override
-    public void playerJoinedTable(HoldEmTable p_table, IPlayer p_player)
+    public void playerJoinedTable(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         println(p_player.getName() + " Joined the table");
     }
     
     @Override
-    public void playerLeftTable(HoldEmTable p_table, IPlayer p_player)
+    public void playerLeftTable(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         println(p_player.getName() + " Left the table");
     }
     
     @Override
-    public void playerMoneyChanged(HoldEmTable p_table, IPlayer p_player)
+    public void playerMoneyChanged(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         println(p_player.getName() + " now have " + p_player.getMoney() + " on table");
     }
     
     @Override
-    public void playerShowCard(HoldEmTable p_table, IPlayer p_player)
+    public void playerShowCard(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
-        println(p_player.getName() + " show his card " + Card.CardArrayListToCode(p_player.getHand()));
+        println(p_player.getName() + " show his card " + Card.CardArrayToCode(p_player.getHand()));
     }
     
     @Override
-    public void playerTurnStarted(HoldEmTable p_table, IPlayer p_player)
+    public void playerTurnStarted(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         println(p_player.getName() + " Start his turn");
     }
     
     @Override
-    public void potWon(HoldEmTable p_table, IPlayer p_player, Pot p_pot, int p_share)
+    public void potWon(HoldEmTable p_table, ServerPokerPlayer p_player, Pot p_pot, int p_share)
     {
         println(p_player.getName() + " won " + p_share);
     }
@@ -171,7 +171,7 @@ public class Logger implements IHoldEmObserver
     }
     
     @Override
-    public void smallBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_smallBlind)
+    public void smallBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_smallBlind)
     {
         println(p_player.getName() + " post small blind " + p_smallBlind);
     }

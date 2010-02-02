@@ -28,7 +28,7 @@ import basePoker.TypePlayerAction;
  *         When a connection is lost, this player will automatically sit out at the next hand
  *         and will play Check or Fold actions.
  */
-public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObserver
+public class MessageNetworkPlayer extends ServerPokerPlayer implements IHoldEmObserver
 {
     
     public static final int PING_INTERVAL = 10000;
@@ -69,7 +69,7 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
     }
     
     @Override
-    public void bigBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_bigBlind)
+    public void bigBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_bigBlind)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + TypePlayerAction.BIG_BLIND.name() + Constants.DELIMITER + p_bigBlind);
     }
@@ -94,7 +94,7 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
             message.append(Constants.DELIMITER + pot.getAmount());
         }
         
-        for (int i = pots.size(); i < 9; i++)
+        for (int i = pots.size(); i < p_table.getNbSeats(); i++)
         {
             message.append(Constants.DELIMITER + 0);
         }
@@ -233,7 +233,7 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
     }
     
     @Override
-    public void holeCardDeal(HoldEmTable p_table, IPlayer p_player)
+    public void holeCardDeal(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         if (p_player.getTablePosition() != getTablePosition())
         {
@@ -241,49 +241,49 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
         }
         else
         {
-            send(TypeMessageTableToClient.PLAYER_CARD_CHANGED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand().get(0).getId() + Constants.DELIMITER + p_player.getHand().get(1).getId());
+            send(TypeMessageTableToClient.PLAYER_CARD_CHANGED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand()[0].getId() + Constants.DELIMITER + p_player.getHand()[1].getId());
         }
         
     }
     
     @Override
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action)
+    public void playerEndTurn(HoldEmTable p_table, ServerPokerPlayer p_player, PokerPlayerAction p_action)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + p_action.getType().name() + Constants.DELIMITER + p_action.getAmount());
     }
     
     @Override
-    public void playerJoinedTable(HoldEmTable p_table, IPlayer p_player)
+    public void playerJoinedTable(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         send(TypeMessageTableToClient.PLAYER_JOINED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getName() + Constants.DELIMITER + p_player.getMoney());
     }
     
     @Override
-    public void playerLeftTable(HoldEmTable p_table, IPlayer p_player)
+    public void playerLeftTable(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         send(TypeMessageTableToClient.PLAYER_LEFT.toString() + Constants.DELIMITER + p_player.getTablePosition());
     }
     
     @Override
-    public void playerMoneyChanged(HoldEmTable p_table, IPlayer p_player)
+    public void playerMoneyChanged(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         send(TypeMessageTableToClient.PLAYER_MONEY_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getMoney());
     }
     
     @Override
-    public void playerShowCard(HoldEmTable p_table, IPlayer p_player)
+    public void playerShowCard(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
-        send(TypeMessageTableToClient.PLAYER_CARD_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand().get(0).getId() + Constants.DELIMITER + p_player.getHand().get(1).getId());
+        send(TypeMessageTableToClient.PLAYER_CARD_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand()[0].getId() + Constants.DELIMITER + p_player.getHand()[1].getId());
     }
     
     @Override
-    public void playerTurnStarted(HoldEmTable p_table, IPlayer p_player)
+    public void playerTurnStarted(HoldEmTable p_table, ServerPokerPlayer p_player)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_BEGAN.toString() + Constants.DELIMITER + p_player.getTablePosition());
     }
     
     @Override
-    public void potWon(HoldEmTable p_table, IPlayer p_player, Pot p_pot, int p_share)
+    public void potWon(HoldEmTable p_table, ServerPokerPlayer p_player, Pot p_pot, int p_share)
     {
         send(TypeMessageTableToClient.POT_WON + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_pot.getId() + Constants.DELIMITER + p_share + Constants.DELIMITER + p_player.getMoney());
     }
@@ -355,7 +355,7 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
     }
     
     @Override
-    public void smallBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_smallBlind)
+    public void smallBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_smallBlind)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + TypePlayerAction.SMALL_BLIND.name() + Constants.DELIMITER + p_smallBlind);
     }

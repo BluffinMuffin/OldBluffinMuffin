@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import miscUtil.Constants;
 
-import backend.Player;
+import backend.ClientPokerPlayer;
 
 /**
  * PreflopStats.java
@@ -63,7 +63,7 @@ public class PreflopStats extends GameState implements Cloneable
      * @param p_stats
      *            Handle on the playerStats
      */
-    public PreflopStats(StatsAgent p_statsAgent, Player p_myself, PlayerStats p_stats)
+    public PreflopStats(StatsAgent p_statsAgent, ClientPokerPlayer p_myself, PlayerStats p_stats)
     {
         super(p_statsAgent, p_myself, p_stats);
         

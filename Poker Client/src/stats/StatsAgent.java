@@ -13,7 +13,7 @@ import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentListener;
-import backend.Player;
+import backend.ClientPokerPlayer;
 import backend.Table;
 
 /**
@@ -138,14 +138,14 @@ public class StatsAgent implements IPokerAgentListener
             {
                 if (!m_overallStats.containsKey(player.m_name))
                 {
-                    m_gameStats.put(player.m_name, new PlayerStats((Player)player, this));
+                    m_gameStats.put(player.m_name, new PlayerStats((ClientPokerPlayer)player, this));
                 }
                 else
                 {
                     try
                     {
                         m_gameStats.put(player.m_name, (PlayerStats) m_overallStats.get(player.m_name).clone());
-                        m_gameStats.get(player.m_name).setPlayer((Player)player);
+                        m_gameStats.get(player.m_name).setPlayer((ClientPokerPlayer)player);
                     }
                     catch (final CloneNotSupportedException e)
                     {

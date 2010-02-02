@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import basePoker.Card;
 import basePoker.PokerPlayerAction;
 
-import player.IPlayer;
+import player.ServerPokerPlayer;
 import tools.PokerUtil;
 
 /**
@@ -14,21 +14,21 @@ import tools.PokerUtil;
  */
 public interface IHoldEmObserver
 {
-    public static final Method BIG_BLIND_POSTED = PokerUtil.getIHoldEmObserverMethod("bigBlindPosted", HoldEmTable.class, IPlayer.class, int.class);
+    public static final Method BIG_BLIND_POSTED = PokerUtil.getIHoldEmObserverMethod("bigBlindPosted", HoldEmTable.class, ServerPokerPlayer.class, int.class);
     public static final Method END_BETTING_TURN = PokerUtil.getIHoldEmObserverMethod("endBettingTurn", HoldEmTable.class);
     public static final Method FLOP_DEALT = PokerUtil.getIHoldEmObserverMethod("flopDealt", HoldEmTable.class, Card[].class);
     public static final Method GAME_ENDED = PokerUtil.getIHoldEmObserverMethod("gameEnded", HoldEmTable.class);
     public static final Method GAME_STARTED = PokerUtil.getIHoldEmObserverMethod("gameStarted", HoldEmTable.class);
-    public static final Method HOLE_CARD_DEAL = PokerUtil.getIHoldEmObserverMethod("holeCardDeal", HoldEmTable.class, IPlayer.class);
-    public static final Method PLAYER_END_TURN = PokerUtil.getIHoldEmObserverMethod("playerEndTurn", HoldEmTable.class, IPlayer.class, PokerPlayerAction.class);
-    public static final Method PLAYER_JOINED_TABLE = PokerUtil.getIHoldEmObserverMethod("playerJoinedTable", HoldEmTable.class, IPlayer.class);
-    public static final Method PLAYER_LEFT_TABLE = PokerUtil.getIHoldEmObserverMethod("playerLeftTable", HoldEmTable.class, IPlayer.class);
-    public static final Method PLAYER_MONEY_CHANGED = PokerUtil.getIHoldEmObserverMethod("playerMoneyChanged", HoldEmTable.class, IPlayer.class);
-    public static final Method PLAYER_SHOW_CARD = PokerUtil.getIHoldEmObserverMethod("playerShowCard", HoldEmTable.class, IPlayer.class);
-    public static final Method PLAYER_TURN_STARTED = PokerUtil.getIHoldEmObserverMethod("playerTurnStarted", HoldEmTable.class, IPlayer.class);
-    public static final Method POT_WON = PokerUtil.getIHoldEmObserverMethod("potWon", HoldEmTable.class, IPlayer.class, Pot.class, int.class);
+    public static final Method HOLE_CARD_DEAL = PokerUtil.getIHoldEmObserverMethod("holeCardDeal", HoldEmTable.class, ServerPokerPlayer.class);
+    public static final Method PLAYER_END_TURN = PokerUtil.getIHoldEmObserverMethod("playerEndTurn", HoldEmTable.class, ServerPokerPlayer.class, PokerPlayerAction.class);
+    public static final Method PLAYER_JOINED_TABLE = PokerUtil.getIHoldEmObserverMethod("playerJoinedTable", HoldEmTable.class, ServerPokerPlayer.class);
+    public static final Method PLAYER_LEFT_TABLE = PokerUtil.getIHoldEmObserverMethod("playerLeftTable", HoldEmTable.class, ServerPokerPlayer.class);
+    public static final Method PLAYER_MONEY_CHANGED = PokerUtil.getIHoldEmObserverMethod("playerMoneyChanged", HoldEmTable.class, ServerPokerPlayer.class);
+    public static final Method PLAYER_SHOW_CARD = PokerUtil.getIHoldEmObserverMethod("playerShowCard", HoldEmTable.class, ServerPokerPlayer.class);
+    public static final Method PLAYER_TURN_STARTED = PokerUtil.getIHoldEmObserverMethod("playerTurnStarted", HoldEmTable.class, ServerPokerPlayer.class);
+    public static final Method POT_WON = PokerUtil.getIHoldEmObserverMethod("potWon", HoldEmTable.class, ServerPokerPlayer.class, Pot.class, int.class);
     public static final Method RIVER_DEAL = PokerUtil.getIHoldEmObserverMethod("riverDeal", HoldEmTable.class, Card[].class);
-    public static final Method SMALL_BLIND_POSTED = PokerUtil.getIHoldEmObserverMethod("smallBlindPosted", HoldEmTable.class, IPlayer.class, int.class);
+    public static final Method SMALL_BLIND_POSTED = PokerUtil.getIHoldEmObserverMethod("smallBlindPosted", HoldEmTable.class, ServerPokerPlayer.class, int.class);
     public static final Method TABLE_ENDED = PokerUtil.getIHoldEmObserverMethod("tableEnded", HoldEmTable.class);
     public static final Method TABLE_INFOS = PokerUtil.getIHoldEmObserverMethod("tableInfos", HoldEmTable.class);
     public static final Method TABLE_STARTED = PokerUtil.getIHoldEmObserverMethod("tableStarted", HoldEmTable.class);
@@ -45,7 +45,7 @@ public interface IHoldEmObserver
      * @param p_bigBlind
      *            Amount put in the pot
      */
-    public void bigBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_bigBlind);
+    public void bigBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_bigBlind);
     
     /**
      * A betting turn ended
@@ -89,7 +89,7 @@ public interface IHoldEmObserver
      * @param p_player
      *            The player that received cards
      */
-    public void holeCardDeal(HoldEmTable p_table, IPlayer p_player);
+    public void holeCardDeal(HoldEmTable p_table, ServerPokerPlayer p_player);
     
     /**
      * A player took an action
@@ -101,7 +101,7 @@ public interface IHoldEmObserver
      * @param p_action
      *            The action taken
      */
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action);
+    public void playerEndTurn(HoldEmTable p_table, ServerPokerPlayer p_player, PokerPlayerAction p_action);
     
     /**
      * A player joined the table
@@ -111,7 +111,7 @@ public interface IHoldEmObserver
      * @param p_player
      *            The new player
      */
-    public void playerJoinedTable(HoldEmTable p_table, IPlayer p_player);
+    public void playerJoinedTable(HoldEmTable p_table, ServerPokerPlayer p_player);
     
     /**
      * A player left the table
@@ -121,7 +121,7 @@ public interface IHoldEmObserver
      * @param p_player
      *            The player that left
      */
-    public void playerLeftTable(HoldEmTable p_table, IPlayer p_player);
+    public void playerLeftTable(HoldEmTable p_table, ServerPokerPlayer p_player);
     
     /**
      * The number of chips of a player changed
@@ -131,7 +131,7 @@ public interface IHoldEmObserver
      * @param p_player
      *            The player that changed his chips
      */
-    public void playerMoneyChanged(HoldEmTable p_table, IPlayer p_player);
+    public void playerMoneyChanged(HoldEmTable p_table, ServerPokerPlayer p_player);
     
     /**
      * A player showed his card
@@ -141,7 +141,7 @@ public interface IHoldEmObserver
      * @param p_player
      *            The player that showed his card
      */
-    public void playerShowCard(HoldEmTable p_table, IPlayer p_player);
+    public void playerShowCard(HoldEmTable p_table, ServerPokerPlayer p_player);
     
     /**
      * A is taking an action
@@ -151,7 +151,7 @@ public interface IHoldEmObserver
      * @param p_player
      *            The player that is taking an action
      */
-    public void playerTurnStarted(HoldEmTable p_table, IPlayer p_player);
+    public void playerTurnStarted(HoldEmTable p_table, ServerPokerPlayer p_player);
     
     /**
      * A player won a share of a pot
@@ -165,7 +165,7 @@ public interface IHoldEmObserver
      * @param p_share
      *            The number of chips won
      */
-    public void potWon(HoldEmTable p_table, IPlayer p_player, Pot p_pot, int p_share);
+    public void potWon(HoldEmTable p_table, ServerPokerPlayer p_player, Pot p_pot, int p_share);
     
     /**
      * The river cards were dealt
@@ -187,7 +187,7 @@ public interface IHoldEmObserver
      * @param p_smallBlind
      *            The number of chips put in the pot
      */
-    public void smallBlindPosted(HoldEmTable p_table, IPlayer p_player, int p_smallBlind);
+    public void smallBlindPosted(HoldEmTable p_table, ServerPokerPlayer p_player, int p_smallBlind);
     
     /**
      * The table is closing

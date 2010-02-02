@@ -1,6 +1,9 @@
 package backend;
 
+import java.util.ArrayList;
+
 import basePoker.BasePokerPlayer;
+import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import backend.agent.TypeSimplifiedAction;
@@ -10,7 +13,7 @@ import basePoker.Card;
  * @author Hocus
  *         This class represents a poker player on the client side.
  */
-public class Player extends BasePokerPlayer
+public class ClientPokerPlayer extends BasePokerPlayer
 {
     
     
@@ -19,7 +22,7 @@ public class Player extends BasePokerPlayer
     public TypeSimplifiedAction m_lastActionsTurn = null;
     public TypeSimplifiedAction m_lastActionsRiver = null;
     
-    public Player(int p_noSeat)
+    public ClientPokerPlayer(int p_noSeat)
     {
         m_noSeat = p_noSeat;
         m_money = 0;
@@ -33,11 +36,10 @@ public class Player extends BasePokerPlayer
         m_isEarlyPos = false;
         m_isMidPos = false;
         m_timeRemaining = 0;
-        m_card1 = Card.getInstance().get(-1);
-        m_card2 = Card.getInstance().get(-1);
+        setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
     }
     
-    public Player(int p_noSeat, String p_name, int p_money)
+    public ClientPokerPlayer(int p_noSeat, String p_name, int p_money)
     {
         this(p_noSeat);
         m_money = p_money;

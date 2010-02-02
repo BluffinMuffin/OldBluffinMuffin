@@ -30,7 +30,7 @@ public class SimulationServer
     StatsAgent m_statsAgent = new StatsAgent();
     LinkedBlockingQueue<String> m_fromClient = new LinkedBlockingQueue<String>(1);
     LinkedBlockingQueue<String> m_toClient = new LinkedBlockingQueue<String>(1);
-    Player m_clientHero = new Player(0);
+    ClientPokerPlayer m_clientHero = new ClientPokerPlayer(0);
     TuplePlayer m_hero = null;
     Table m_table = new Table();
     TupleHandHistories m_currentInfos = null;

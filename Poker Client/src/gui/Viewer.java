@@ -736,7 +736,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
     
     public void playerCardChanged(BasePokerPlayer p_player)
     {
-        getPlayer(p_player.m_noSeat).m_hud.setCards(p_player.m_card1, p_player.m_card2);
+        getPlayer(p_player.m_noSeat).m_hud.setCards(p_player.getHand()[0], p_player.getHand()[1]);
     }
     
     public void playerJoined(BasePokerPlayer p_player)
@@ -746,7 +746,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         playerGUI.m_bet.setVisible(true);
         playerGUI.m_hud.setPlayerName(p_player.m_name);
         playerGUI.m_hud.setMoney(format(p_player.m_money));
-        playerGUI.m_hud.setCards(p_player.m_card1, p_player.m_card2);
+        playerGUI.m_hud.setCards(p_player.getHand()[0], p_player.getHand()[1]);
         playerGUI.m_hud.setIsDealer(p_player.m_isDealer);
         playerGUI.m_hud.setIsSmallBlind(p_player.m_isSmallBlind);
         playerGUI.m_hud.setIsBigBlind(p_player.m_isBigBlind);
@@ -879,7 +879,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
             playerGUI.m_bet.setVisible(true);
             playerGUI.m_hud.setPlayerName(player.m_name);
             playerGUI.m_hud.setMoney(format(player.m_money));
-            playerGUI.m_hud.setCards(player.m_card1, player.m_card2);
+            playerGUI.m_hud.setCards(player.getHand()[0], player.getHand()[1]);
             playerGUI.m_hud.setIsDealer(player.m_isDealer);
             playerGUI.m_hud.setIsSmallBlind(player.m_isSmallBlind);
             playerGUI.m_hud.setIsBigBlind(player.m_isBigBlind);

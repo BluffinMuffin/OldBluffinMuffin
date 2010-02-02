@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import miscUtil.MyConnection;
+
 public class BDHandHistories
 {
     private final PreparedStatement m_stmtGetAll;

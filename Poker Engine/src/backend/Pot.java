@@ -2,7 +2,7 @@ package backend;
 
 import java.util.Vector;
 
-import player.IPlayer;
+import player.ServerPokerPlayer;
 
 /**
  * @author Hocus
@@ -14,14 +14,14 @@ public class Pot
     
     private int m_id;
     private int m_amount;
-    private Vector<IPlayer> m_participant;
+    private Vector<ServerPokerPlayer> m_participant;
     
     /**
      * Create a new pot with zero chips, no participant and the id 0.
      */
     public Pot()
     {
-        this(0, 0, new Vector<IPlayer>());
+        this(0, 0, new Vector<ServerPokerPlayer>());
     }
     
     /**
@@ -32,7 +32,7 @@ public class Pot
      */
     public Pot(int p_id)
     {
-        this(p_id, 0, new Vector<IPlayer>());
+        this(p_id, 0, new Vector<ServerPokerPlayer>());
     }
     
     /**
@@ -45,7 +45,7 @@ public class Pot
      * @param p_participants
      *            Participant to the pot
      */
-    public Pot(int p_id, int p_amount, Vector<IPlayer> p_participants)
+    public Pot(int p_id, int p_amount, Vector<ServerPokerPlayer> p_participants)
     {
         m_id = p_id;
         m_amount = p_amount;
@@ -71,7 +71,7 @@ public class Pot
      * @return
      *         True if the participant was added
      */
-    public boolean addParticipant(IPlayer p_participant)
+    public boolean addParticipant(ServerPokerPlayer p_participant)
     {
         return m_participant.add(p_participant);
     }
@@ -103,7 +103,7 @@ public class Pot
      * @return
      *         The list of participant
      */
-    public Vector<IPlayer> getParticipant()
+    public Vector<ServerPokerPlayer> getParticipant()
     {
         return m_participant;
     }
@@ -113,7 +113,7 @@ public class Pot
      */
     public void removeAllParticipant()
     {
-        m_participant = new Vector<IPlayer>();
+        m_participant = new Vector<ServerPokerPlayer>();
     }
     
     /**
@@ -157,7 +157,7 @@ public class Pot
      * @param p_participant
      *            The new list of participant
      */
-    public void setParticipant(Vector<IPlayer> p_participant)
+    public void setParticipant(Vector<ServerPokerPlayer> p_participant)
     {
         m_participant = p_participant;
     }

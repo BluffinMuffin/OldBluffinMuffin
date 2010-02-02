@@ -19,7 +19,7 @@ import stats.StatsAgent;
 import basePoker.BasePokerPlayer;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import backend.Player;
+import backend.ClientPokerPlayer;
 import basePoker.PokerPlayerAction;
 import basePoker.Card;
 import basePokerAI.SVM;
@@ -269,7 +269,7 @@ public class PokerSVM extends PokerAI
      */
     private StatsInfos calculateHandValues()
     {
-        final Card[] holeCards = new Card[] { m_table.m_localPlayer.m_card1, m_table.m_localPlayer.m_card2 };
+        final Card[] holeCards = m_table.m_localPlayer.getHand();
         final Card[] boardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
         
         return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbPlayingPlayers, PokerSVM.NB_MC_ITERATIONS);
@@ -498,10 +498,10 @@ public class PokerSVM extends PokerAI
         sb.append(format((double) (m_callAmount - m_table.m_localPlayer.m_betAmount) / (double) m_table.m_totalPotAmount));// 5
         sb.append(formatPosition(m_table.m_localPlayer.m_relativePosition)); // 5-13
         
-        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 14-20
-        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsFlop, TypeSimplifiedAction.class)); // 21-27
-        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
-        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
+        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 14-20
+        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsFlop, TypeSimplifiedAction.class)); // 21-27
+        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
+        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
         
         sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.m_money)); // 42
         sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
@@ -521,10 +521,10 @@ public class PokerSVM extends PokerAI
             sb.append(formatPosition(player.m_relativePosition)); // 48-56
             sb.append(format(player.m_money / highMoney)); // 57
             sb.append(format((double) player.m_betAmount / (double) player.m_initialMoney)); // 58
-            sb.append(formatEnum(((Player)player).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
-            sb.append(formatEnum(((Player)player).m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72
-            sb.append(formatEnum(((Player)player).m_lastActionsTurn, TypeSimplifiedAction.class)); // 73-79
-            sb.append(formatEnum(((Player)player).m_lastActionsRiver, TypeSimplifiedAction.class)); // 80-86
+            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
+            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72
+            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsTurn, TypeSimplifiedAction.class)); // 73-79
+            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsRiver, TypeSimplifiedAction.class)); // 80-86
             
             if (m_statsAgent.m_overallStats.get(player.m_name) == null)
             {

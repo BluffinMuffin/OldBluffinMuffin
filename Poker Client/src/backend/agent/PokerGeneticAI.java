@@ -110,7 +110,7 @@ public class PokerGeneticAI extends PokerAI
     
     private double calculateHandValues()
     {
-        final Card[] myCards = new Card[] { m_table.m_localPlayer.m_card1, m_table.m_localPlayer.m_card2 };
+        final Card[] myCards = m_table.m_localPlayer.getHand();
         final Card[] myBoardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
         
         final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, PokerGeneticAI.NB_SIMULATIONS).m_winRatio;

@@ -32,7 +32,7 @@ public class PokerGeneticBasic extends PokerAI
     @Override
     protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
-        final Card[] myCards = new Card[] { m_table.m_localPlayer.m_card1, m_table.m_localPlayer.m_card2 };
+        final Card[] myCards = m_table.m_localPlayer.getHand();
         final Card[] myBoardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
         
         System.out.println("Calculating MonteCarlo score...");

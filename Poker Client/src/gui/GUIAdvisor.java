@@ -25,7 +25,7 @@ import pokerStats.StatsInfos;
 
 import stats.PlayerStats;
 import stats.StatsAgent;
-import backend.Player;
+import backend.ClientPokerPlayer;
 import basePoker.PokerPlayerAction;
 import backend.Table;
 import backend.agent.PokerSVM;
@@ -144,7 +144,7 @@ public class GUIAdvisor extends GUI
     
     private StatsInfos calculateHandValues()
     {
-        final Card[] holeCards = new Card[] { m_table.m_localPlayer.m_card1, m_table.m_localPlayer.m_card2 };
+        final Card[] holeCards = m_table.m_localPlayer.getHand();
         final Card[] boardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
         
         return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbRemainingPlayers, GUIAdvisor.NB_MC_ITERATIONS);

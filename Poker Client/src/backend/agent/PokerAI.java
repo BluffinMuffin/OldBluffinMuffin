@@ -13,7 +13,7 @@ import basePoker.TypePokerRound;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentActionner;
 import basePokerAI.IPokerAgentListener;
-import backend.Player;
+import backend.ClientPokerPlayer;
 import basePoker.PokerPlayerAction;
 import backend.Table;
 

@@ -16,10 +16,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import miscUtil.HeadsUpException;
+import miscUtil.MyConnection;
 
 import backend.SimulationServer;
 import db.BDHandHistories;
-import db.MyConnection;
 import db.TupleHandHistories;
 
 public class Main

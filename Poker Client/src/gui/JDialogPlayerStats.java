@@ -17,7 +17,7 @@ import miscUtil.Bundle;
 
 import stats.PlayerStats;
 import stats.StatsAgent;
-import backend.Player;
+import backend.ClientPokerPlayer;
 import backend.Table;
 import basePoker.BasePokerPlayer;
 import basePoker.BasePokerTable;

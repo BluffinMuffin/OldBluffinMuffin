@@ -68,7 +68,7 @@ import miscUtil.TypeMessageTableManager;
 
 import stats.StatsAgent;
 import utilGUI.AutoListModel;
-import backend.Player;
+import backend.ClientPokerPlayer;
 import backend.PokerClient;
 import backend.Table;
 import backend.agent.FactoryAgent;
@@ -2381,7 +2381,7 @@ public class Lobby implements IClosingListener<PokerClient>
             
             // Add a tab associated to the newly created table in advanced
             // settings.
-            final Player localPlayer = new Player(noSeat, m_playerName, 0);
+            final ClientPokerPlayer localPlayer = new ClientPokerPlayer(noSeat, m_playerName, 0);
             final Table table = new Table();
             table.m_name = p_tableName;
             table.m_bigBlindAmount = p_bigBlindAmount;

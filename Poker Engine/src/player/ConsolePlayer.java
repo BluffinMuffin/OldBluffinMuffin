@@ -12,7 +12,7 @@ import basePoker.TypePlayerAction;
  *         This player is a local player that work on the console.
  *         When an action is needed, a choice is displayed in the console.
  */
-public class ConsolePlayer extends AbstractPlayer
+public class ConsolePlayer extends ServerPokerPlayer
 {
     
     /**
@@ -53,7 +53,7 @@ public class ConsolePlayer extends AbstractPlayer
         PokerPlayerAction action = null;
         while (action == null)
         {
-            System.out.println(m_name + " What do you want to do? (Money=" + m_money + ", bet=" + m_currentBet + ")");
+            System.out.println(m_name + " What do you want to do? (Money=" + m_money + ", bet=" + m_betAmount + ")");
             if (p_canCheck)
             {
                 System.out.println("1. Check");

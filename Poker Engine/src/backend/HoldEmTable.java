@@ -19,7 +19,7 @@ import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;
 
-import player.IPlayer;
+import player.ServerPokerPlayer;
 import basePoker.TypePokerRound;
 
 /**
@@ -50,7 +50,7 @@ public class HoldEmTable implements Runnable
     private final int m_smallBlind;
     
     // Players variables
-    private final List<IPlayer> m_players;
+    private final List<ServerPokerPlayer> m_players;
     private int m_nbPlayer;
     private int m_nbPlaying;
     private int m_nbFolded;
@@ -103,7 +103,7 @@ public class HoldEmTable implements Runnable
         m_name = p_name;
         m_gameType = p_gameType;
         m_nbSeat = p_playerCapacity;
-        m_players = Collections.synchronizedList(new ArrayList<IPlayer>(m_nbSeat));
+        m_players = Collections.synchronizedList(new ArrayList<ServerPokerPlayer>(m_nbSeat));
         for (int i = 0; i < m_nbSeat; i++)
         {
             m_players.add(null);
@@ -201,8 +201,7 @@ public class HoldEmTable implements Runnable
         
         do
         {
-            m_players.get(m_playerTurn).receiveCard(m_deck.pop());
-            m_players.get(m_playerTurn).receiveCard(m_deck.pop());
+        	m_players.get(m_playerTurn).setHand(m_deck.pop(), m_deck.pop());
             
             notifyObserver(IHoldEmObserver.HOLE_CARD_DEAL, this, m_players.get(m_playerTurn));
             m_playerTurn = nextPlayingPlayer(m_playerTurn);
@@ -354,7 +353,7 @@ public class HoldEmTable implements Runnable
      * @return
      *         The maximum raise amount
      */
-    private int getMaximumRaise(IPlayer p_player)
+    private int getMaximumRaise(ServerPokerPlayer p_player)
     {
         int maximumRaise = Integer.MAX_VALUE;
         if (m_gameType == TypePokerGame.FIXED_LIMIT)
@@ -389,7 +388,7 @@ public class HoldEmTable implements Runnable
      * @return
      *         The minimum raise amount
      */
-    private int getMinimumRaise(IPlayer p_player)
+    private int getMinimumRaise(ServerPokerPlayer p_player)
     {
         int minimumRaise = m_currentBet + m_bigBlind;
         if (m_gameType == TypePokerGame.FIXED_LIMIT)
@@ -533,7 +532,7 @@ public class HoldEmTable implements Runnable
      * @return
      *         The list of player
      */
-    public List<IPlayer> getPlayers()
+    public List<ServerPokerPlayer> getPlayers()
     {
         return m_players;
     }
@@ -614,7 +613,7 @@ public class HoldEmTable implements Runnable
                     {
                         if (m_players.get(i).sitOutNextHand())
                         {
-                            final IPlayer deletedPlayer = m_players.get(i);
+                            final ServerPokerPlayer deletedPlayer = m_players.get(i);
                             m_players.set(i, null);
                             m_nbPlayer--;
                             
@@ -732,7 +731,7 @@ public class HoldEmTable implements Runnable
      * @param p_noSeat
      *            The seat number of the player
      */
-    public void join(IPlayer p_player, int p_noSeat)
+    public void join(ServerPokerPlayer p_player, int p_noSeat)
     {
         m_waitForFirstPlayer = false;
         m_players.set(p_noSeat, p_player);
@@ -750,7 +749,7 @@ public class HoldEmTable implements Runnable
      * @return
      *         A string representing the table
      */
-    public String marshal(IPlayer p_player)
+    public String marshal(ServerPokerPlayer p_player)
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(m_totalPot);
@@ -786,7 +785,7 @@ public class HoldEmTable implements Runnable
         for (int i = 0; i != m_players.size(); ++i)
         {
             sb.append(i + Constants.DELIMITER); // noSeat
-            final IPlayer player = m_players.get(i);
+            final ServerPokerPlayer player = m_players.get(i);
             sb.append((player == null) + Constants.DELIMITER); // isEmpty
             
             if (player == null)
@@ -801,11 +800,11 @@ public class HoldEmTable implements Runnable
             
             // Player cards
             int j = 0;
-            for (; j != player.getHand().size(); ++j)
+            for (; j != player.getHand().length; ++j)
             {
                 if (showCard && !player.isFolded())
                 {
-                    sb.append(player.getHand().get(j).getId() + Constants.DELIMITER);
+                    sb.append(player.getHand()[j].getId() + Constants.DELIMITER);
                 }
                 else if (!player.isFolded())
                 {
@@ -911,9 +910,9 @@ public class HoldEmTable implements Runnable
      */
     private void onePlayerStanding()
     {
-        IPlayer winner;
+        ServerPokerPlayer winner;
         
-        final Iterator<IPlayer> it = m_pots.peek().getParticipant().iterator();
+        final Iterator<ServerPokerPlayer> it = m_pots.peek().getParticipant().iterator();
         winner = it.next();
         
         while (!m_pots.empty())
@@ -940,7 +939,7 @@ public class HoldEmTable implements Runnable
     private void placeBlinds()
     {
         // Place the small blind
-        IPlayer player = m_players.get(m_smallBlindPlayer);
+        ServerPokerPlayer player = m_players.get(m_smallBlindPlayer);
         player.placeSmallBlind(m_smallBlind);
         m_currentBet = player.getBet();
         m_totalPot += m_currentBet;
@@ -1043,7 +1042,7 @@ public class HoldEmTable implements Runnable
     {
         for (int i = 0; i < m_nbSeat; i++)
         {
-            final IPlayer player = m_players.get(i);
+            final ServerPokerPlayer player = m_players.get(i);
             if (!(player == null) && player.isPlaying() && !player.isFolded() && !player.isShowingCard())
             {
                 player.showCards();
@@ -1061,7 +1060,7 @@ public class HoldEmTable implements Runnable
         
         showAllHands();
         
-        final Vector<IPlayer> bestPlayers = new Vector<IPlayer>();
+        final Vector<ServerPokerPlayer> bestPlayers = new Vector<ServerPokerPlayer>();
         long bestHand = 0;
         
         while (!m_pots.empty())
@@ -1069,10 +1068,10 @@ public class HoldEmTable implements Runnable
             final Pot pot = m_pots.pop();
             if (pot.getParticipant().size() > 0)
             {
-                final Iterator<IPlayer> it = pot.getParticipant().iterator();
+                final Iterator<ServerPokerPlayer> it = pot.getParticipant().iterator();
                 while (it.hasNext())
                 {
-                    final IPlayer player = it.next();
+                    final ServerPokerPlayer player = it.next();
                     final long handValue = player.handValue(m_board);
                     
                     if (handValue > bestHand)
@@ -1140,7 +1139,7 @@ public class HoldEmTable implements Runnable
         // Check if the blinds are all-in
         if (m_gameState == TypePokerRound.PREFLOP)
         {
-            IPlayer blind = m_players.get(m_smallBlindPlayer);
+            ServerPokerPlayer blind = m_players.get(m_smallBlindPlayer);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
             {
                 bets.add(blind.getBet());
@@ -1153,7 +1152,7 @@ public class HoldEmTable implements Runnable
         }
         
         // Ask each player to take a decision until they can't bet.
-        IPlayer player;
+        ServerPokerPlayer player;
         PokerPlayerAction action;
         while (continueBetting())
         {
@@ -1333,7 +1332,7 @@ public class HoldEmTable implements Runnable
         if (!m_pots.isEmpty() && (m_pots.peek().getParticipant().size() == 1))
         {
             final Pot uselessPot = m_pots.pop();
-            final IPlayer playerInPot = uselessPot.getParticipant().firstElement();
+            final ServerPokerPlayer playerInPot = uselessPot.getParticipant().firstElement();
             
             playerInPot.addMoney(uselessPot.getAmount());
             m_pots.peek().addParticipant(playerInPot);
