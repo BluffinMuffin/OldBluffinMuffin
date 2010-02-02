@@ -17,8 +17,8 @@ import javax.swing.border.TitledBorder;
 
 import backend.PokerClient;
 import backend.agent.FactoryObserver;
-import backend.agent.IPokerAgentListener;
 import backend.agent.TypeObserver;
+import basePokerAI.IPokerAgentListener;
 
 /**
  * @author Hocus

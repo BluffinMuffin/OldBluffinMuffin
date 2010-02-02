@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import pokerStats.MonteCarlo;
 
-import utility.TypePlayerAction;
-import backend.PlayerAction;
+import basePoker.PokerPlayerAction;
 import basePoker.Card;
+import basePoker.TypePlayerAction;
 
 /**
  * @author Hocus
@@ -30,7 +30,7 @@ public class PokerGeneticBasic extends PokerAI
     }
     
     @Override
-    protected PlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         final Card[] myCards = new Card[] { m_table.m_localPlayer.m_card1, m_table.m_localPlayer.m_card2 };
         final Card[] myBoardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
@@ -52,21 +52,21 @@ public class PokerGeneticBasic extends PokerAI
         
         if ((score >= threshold1) && p_actionsAllowed.contains(TypePlayerAction.RAISE))
         {
-            return new PlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + m_table.m_smallBlindAmount, p_maxRaiseAmount));
+            return new PokerPlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + m_table.m_smallBlindAmount, p_maxRaiseAmount));
         }
         else if ((score >= threshold2) && p_actionsAllowed.contains(TypePlayerAction.CALL))
         {
-            return new PlayerAction(TypePlayerAction.CALL);
+            return new PokerPlayerAction(TypePlayerAction.CALL);
         }
         else
         {
             if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
             {
-                return new PlayerAction(TypePlayerAction.CHECK);
+                return new PokerPlayerAction(TypePlayerAction.CHECK);
             }
             else
             {
-                return new PlayerAction(TypePlayerAction.FOLD);
+                return new PokerPlayerAction(TypePlayerAction.FOLD);
             }
         }
     }

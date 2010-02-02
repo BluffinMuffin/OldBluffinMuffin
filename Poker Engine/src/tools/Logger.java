@@ -5,11 +5,11 @@ import java.io.OutputStream;
 import java.util.List;
 
 import player.IPlayer;
-import backend.Action;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
 import basePoker.Card;
+import basePoker.PokerPlayerAction;
 
 /**
  * @author HOCUS
@@ -83,7 +83,7 @@ public class Logger implements IHoldEmObserver
     }
     
     @Override
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, Action p_action)
+    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action)
     {
         println(p_player.getName() + " " + p_action.toString() + ". Bet = " + p_player.getBet());
     }

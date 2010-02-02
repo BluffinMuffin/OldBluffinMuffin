@@ -5,43 +5,16 @@ import java.util.TreeMap;
 
 import basePoker.Card;
 
+import basePoker.BasePokerPlayer;
 import basePoker.TypePokerRound;
+import basePoker.BasePokerTable;
 
 /**
  * @author Hocus
  *         This class represents a poker table on the client side.
  */
-public class Table
+public class Table extends BasePokerTable
 {
-    public int m_nbSeats = 9;
-    
-    public int m_nbPlayers;
-    public int m_nbPlayingPlayers;
-    public int m_nbRemainingPlayers;
-    public String m_name;
-    
-    public TreeMap<Integer, Player> m_players = new TreeMap<Integer, Player>();
-    public ArrayList<Card> m_boardCards = new ArrayList<Card>();
-    public ArrayList<Integer> m_pots = new ArrayList<Integer>();
-    
-    public int m_totalPotAmount = 0;
-    
-    public int m_noSeatDealer = -1;
-    public int m_noSeatSmallBlind = -1;
-    public int m_noSeatBigBlind = -1;
-    
-    public Player m_localPlayer = null;
-    public Player m_currentPlayer = null;
-    public Player m_dealer = null;
-    public Player m_smallBlind = null;
-    public Player m_bigBlind = null;
-    
-    public int m_smallBlindAmount;
-    public int m_bigBlindAmount;
-    
-    public TypePokerRound m_gameState = TypePokerRound.BEGINNING;
-    
-    public int m_currentBet;
     
     /**
      * Determine player positions and initialize other attributs.
@@ -49,7 +22,7 @@ public class Table
     public void setPlayerPositions()
     {
         // Initialize all player's attributes to default value.
-        for (final Player player : m_players.values())
+        for (final BasePokerPlayer player : m_players.values())
         {
             player.m_isPlaying = player.m_money > 0;
             player.m_isEarlyPos = false;
@@ -90,7 +63,7 @@ public class Table
         i = (i + 1) % m_nbSeats;
         while (i != m_noSeatDealer)
         {
-            final Player player = m_players.get(i);
+            final BasePokerPlayer player = m_players.get(i);
             if ((player != null) && player.m_isPlaying)
             {
                 player.m_relativePosition = position;
@@ -102,7 +75,7 @@ public class Table
         
         // Set boolean attributes depending the player relative position.
         m_nbPlayingPlayers = 0;
-        for (final Player player : m_players.values())
+        for (final BasePokerPlayer player : m_players.values())
         {
             if (!player.m_isPlaying)
             {

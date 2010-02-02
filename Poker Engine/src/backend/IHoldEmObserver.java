@@ -3,6 +3,7 @@ package backend;
 import java.lang.reflect.Method;
 
 import basePoker.Card;
+import basePoker.PokerPlayerAction;
 
 import player.IPlayer;
 import tools.PokerUtil;
@@ -19,7 +20,7 @@ public interface IHoldEmObserver
     public static final Method GAME_ENDED = PokerUtil.getIHoldEmObserverMethod("gameEnded", HoldEmTable.class);
     public static final Method GAME_STARTED = PokerUtil.getIHoldEmObserverMethod("gameStarted", HoldEmTable.class);
     public static final Method HOLE_CARD_DEAL = PokerUtil.getIHoldEmObserverMethod("holeCardDeal", HoldEmTable.class, IPlayer.class);
-    public static final Method PLAYER_END_TURN = PokerUtil.getIHoldEmObserverMethod("playerEndTurn", HoldEmTable.class, IPlayer.class, Action.class);
+    public static final Method PLAYER_END_TURN = PokerUtil.getIHoldEmObserverMethod("playerEndTurn", HoldEmTable.class, IPlayer.class, PokerPlayerAction.class);
     public static final Method PLAYER_JOINED_TABLE = PokerUtil.getIHoldEmObserverMethod("playerJoinedTable", HoldEmTable.class, IPlayer.class);
     public static final Method PLAYER_LEFT_TABLE = PokerUtil.getIHoldEmObserverMethod("playerLeftTable", HoldEmTable.class, IPlayer.class);
     public static final Method PLAYER_MONEY_CHANGED = PokerUtil.getIHoldEmObserverMethod("playerMoneyChanged", HoldEmTable.class, IPlayer.class);
@@ -100,7 +101,7 @@ public interface IHoldEmObserver
      * @param p_action
      *            The action taken
      */
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, Action p_action);
+    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action);
     
     /**
      * A player joined the table

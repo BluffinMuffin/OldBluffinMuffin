@@ -63,7 +63,7 @@ import javax.swing.table.DefaultTableModel;
 
 import stats.StatsAgent;
 import utility.Bundle;
-import utility.ClosingListener;
+import utility.IClosingListener;
 import utility.Constants;
 import utility.TypeMessageLobby;
 import utility.TypeMessageTableManager;
@@ -72,13 +72,13 @@ import backend.PokerClient;
 import backend.Table;
 import backend.agent.FactoryAgent;
 import backend.agent.FactoryObserver;
-import backend.agent.IPokerAgentActionner;
-import backend.agent.IPokerAgentListener;
 import backend.agent.PokerAI;
 import backend.agent.PokerSVM;
 import backend.agent.TypeAgent;
 import backend.agent.TypeObserver;
 import basePoker.TypePokerGame;
+import basePokerAI.IPokerAgentActionner;
+import basePokerAI.IPokerAgentListener;
 
 /**
  * @author Hocus
@@ -90,7 +90,7 @@ import basePoker.TypePokerGame;
  *         connection window.
  */
 @SuppressWarnings("serial")
-public class Lobby implements ClosingListener<PokerClient>
+public class Lobby implements IClosingListener<PokerClient>
 {
     /*
      * ################################

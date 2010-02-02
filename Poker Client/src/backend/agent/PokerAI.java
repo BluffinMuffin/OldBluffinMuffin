@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import utility.ClosingListener;
+import utility.IClosingListener;
+import basePoker.BasePokerPlayer;
+import basePoker.BasePokerTable;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import utility.TypePlayerAction;
+import basePokerAI.IPokerAgent;
+import basePokerAI.IPokerAgentActionner;
+import basePokerAI.IPokerAgentListener;
 import backend.Player;
-import backend.PlayerAction;
+import basePoker.PokerPlayerAction;
 import backend.Table;
 
 /**
@@ -25,15 +30,15 @@ import backend.Table;
  */
 public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
 {
-    private final List<ClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<ClosingListener<IPokerAgent>>());
+    private final List<IClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IPokerAgent>>());
     
     /** Indicates the agent is still running. **/
     private boolean m_isRunning = true;
     
     /** Represents the poker table the agent is playing on. **/
-    protected Table m_table = null;
+    protected BasePokerTable m_table = null;
     /** Is the next action the agent has decided to take. **/
-    private final PlayerAction m_playerAction = new PlayerAction(TypePlayerAction.NOTHING);
+    private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     /** Indicates if new infos are available to the agent. **/
     Boolean m_newInfos = false;
     
@@ -58,19 +63,19 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
      * @param p_actionTaken
      *            - Action the agent decided to take.
      */
-    private void actionTaken(PlayerAction p_actionTaken)
+    private void actionTaken(PokerPlayerAction p_actionTaken)
     {
-        System.out.println("Taking action: " + p_actionTaken.m_typeAction.toString());
+        System.out.println("Taking action: " + p_actionTaken.getType().toString());
         synchronized (m_playerAction)
         {
-            m_playerAction.m_typeAction = p_actionTaken.m_typeAction;
-            m_playerAction.m_actionAmount = p_actionTaken.m_actionAmount;
+            m_playerAction.setType(p_actionTaken.getType());
+            m_playerAction.setAmount(p_actionTaken.getAmount());
             m_playerAction.notify();
         }
     }
     
     @Override
-    public void addClosingListener(ClosingListener<IPokerAgent> p_listener)
+    public void addClosingListener(IClosingListener<IPokerAgent> p_listener)
     {
         m_closingListeners.add(p_listener);
     }
@@ -88,14 +93,14 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
      * @return
      *         Action the agent choose.
      */
-    protected PlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
         {
-            return new PlayerAction(TypePlayerAction.CHECK);
+            return new PokerPlayerAction(TypePlayerAction.CHECK);
         }
         
-        return new PlayerAction(TypePlayerAction.FOLD);
+        return new PokerPlayerAction(TypePlayerAction.FOLD);
     }
     
     @Override
@@ -118,7 +123,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
      */
     public void disconnect()
     {
-        actionTaken(new PlayerAction(TypePlayerAction.DISCONNECT));
+        actionTaken(new PokerPlayerAction(TypePlayerAction.DISCONNECT));
     }
     
     @Override
@@ -127,29 +132,29 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void gameStarted(Player p_oldDealer, Player p_oldSmallBlind, Player p_oldBigBlind)
+    public void gameStarted(BasePokerPlayer p_oldDealer, BasePokerPlayer p_oldSmallBlind, BasePokerPlayer p_oldBigBlind)
     {
     }
     
     @Override
-    public PlayerAction getAction()
+    public PokerPlayerAction getAction()
     {
-        final PlayerAction actionTaken = new PlayerAction(TypePlayerAction.NOTHING);
+        final PokerPlayerAction actionTaken = new PokerPlayerAction(TypePlayerAction.NOTHING);
         
         synchronized (m_playerAction)
         {
             try
             {
                 // Be sure, the agent has not take its action at this point.
-                if (m_playerAction.m_typeAction == TypePlayerAction.NOTHING)
+                if (m_playerAction.getType() == TypePlayerAction.NOTHING)
                 {
                     m_playerAction.wait();
                 }
                 
                 // Look the decision taken and prepare to return it.
-                actionTaken.m_typeAction = m_playerAction.m_typeAction;
-                actionTaken.m_actionAmount = m_playerAction.m_actionAmount;
-                m_playerAction.m_typeAction = TypePlayerAction.NOTHING;
+                actionTaken.setType(m_playerAction.getType());
+                actionTaken.setAmount(m_playerAction.getAmount());
+                m_playerAction.setType(TypePlayerAction.NOTHING);
             }
             catch (final InterruptedException e)
             {
@@ -160,7 +165,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void playerCardChanged(Player p_player)
+    public void playerCardChanged(BasePokerPlayer p_player)
     {
         if (p_player == m_table.m_localPlayer)
         {
@@ -173,37 +178,37 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void playerJoined(Player p_player)
+    public void playerJoined(BasePokerPlayer p_player)
     {
     }
     
     @Override
-    public void playerLeft(Player p_player)
+    public void playerLeft(BasePokerPlayer p_player)
     {
     }
     
     @Override
-    public void playerMoneyChanged(Player p_player, int p_oldMoneyAmount)
+    public void playerMoneyChanged(BasePokerPlayer p_player, int p_oldMoneyAmount)
     {
     }
     
     @Override
-    public void playerTurnBegan(Player p_oldCurrentPlayer)
+    public void playerTurnBegan(BasePokerPlayer p_oldCurrentPlayer)
     {
     }
     
     @Override
-    public void playerTurnEnded(Player p_player, TypePlayerAction p_action, int p_actionAmount)
+    public void playerTurnEnded(BasePokerPlayer p_player, TypePlayerAction p_action, int p_actionAmount)
     {
     }
     
     @Override
-    public void potWon(Player p_player, int p_potAmountWon, int p_potIndex)
+    public void potWon(BasePokerPlayer p_player, int p_potAmountWon, int p_potIndex)
     {
     }
     
     @Override
-    public void removeClosingListener(ClosingListener<IPokerAgent> p_listener)
+    public void removeClosingListener(IClosingListener<IPokerAgent> p_listener)
     {
         m_closingListeners.remove(p_listener);
     }
@@ -212,7 +217,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     {
         while (m_isRunning)
         {
-            PlayerAction action = null;
+            PokerPlayerAction action = null;
             
             try
             {
@@ -251,7 +256,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void setTable(Table p_table)
+    public void setTable(BasePokerTable p_table)
     {
         m_table = p_table;
     }

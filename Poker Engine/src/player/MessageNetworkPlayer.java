@@ -10,12 +10,12 @@ import java.util.StringTokenizer;
 
 import utility.Constants;
 import utility.TypeMessageTableToClient;
-import utility.TypePlayerAction;
-import backend.Action;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
 import basePoker.Card;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
 
 /**
  * @author HOCUS
@@ -125,9 +125,9 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
     // Player
     // ---------------------------------------------
     @Override
-    protected Action getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
+    protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
     {
-        Action action = null;
+        PokerPlayerAction action = null;
         int nbTry = 0;
         if (m_isConnected)
         {
@@ -152,19 +152,19 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
                                 case CHECK:
                                     if (p_canCheck)
                                     {
-                                        action = new Action(actionType, 0);
+                                        action = new PokerPlayerAction(actionType, 0);
                                     }
                                     break;
                                 case CALL:
                                     if (p_canCall)
                                     {
-                                        action = new Action(actionType, p_callOf);
+                                        action = new PokerPlayerAction(actionType, p_callOf);
                                     }
                                     break;
                                 case FOLD:
                                     if (p_canFold)
                                     {
-                                        action = new Action(actionType, 0);
+                                        action = new PokerPlayerAction(actionType, 0);
                                     }
                                     break;
                                 case RAISE:
@@ -175,7 +175,7 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
                                             final int amount = Integer.parseInt(message.nextToken());
                                             if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
                                             {
-                                                action = new Action(actionType, amount);
+                                                action = new PokerPlayerAction(actionType, amount);
                                             }
                                         }
                                     }
@@ -205,11 +205,11 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
         {
             if (p_canCheck)
             {
-                action = new Action(TypePlayerAction.CHECK, 0);
+                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
             }
             else
             {
-                action = new Action(TypePlayerAction.FOLD, 0);
+                action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
             }
             
             if (nbTry >= 10)
@@ -246,7 +246,7 @@ public class MessageNetworkPlayer extends AbstractPlayer implements IHoldEmObser
     }
     
     @Override
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, Action p_action)
+    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + p_action.getType().name() + Constants.DELIMITER + p_action.getAmount());
     }

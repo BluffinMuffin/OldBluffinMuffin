@@ -1,22 +1,21 @@
-package backend;
+package basePoker;
 
-import utility.TypePlayerAction;
 
 /**
  * @author Hocus
  *         This class represent the action of a player.
  *         It consist of a type (Call, Check ...) and the amount associated to the action.
  */
-public class Action
+public class PokerPlayerAction
 {
     
-    private TypePlayerAction m_type;
-    private int m_amount;
+    private TypePlayerAction m_typeAction;
+    private int m_amountAmount;
     
     /**
      * Create an action of the type UNKNOWN with an amount of 0
      */
-    public Action()
+    public PokerPlayerAction()
     {
         this(TypePlayerAction.UNKNOWN, 0);
     }
@@ -29,13 +28,18 @@ public class Action
      * @param p_amount
      *            Amount of the action
      */
-    public Action(TypePlayerAction p_type, int p_amount)
+    public PokerPlayerAction(TypePlayerAction p_type, int p_amount)
     {
-        m_type = p_type;
-        m_amount = p_amount;
+        m_typeAction = p_type;
+        m_amountAmount = p_amount;
     }
     
-    /**
+    public PokerPlayerAction(TypePlayerAction p_type) {
+        m_typeAction = p_type;
+        m_amountAmount = 0;
+	}
+
+	/**
      * Return the amount of the action
      * 
      * @return
@@ -43,7 +47,7 @@ public class Action
      */
     public int getAmount()
     {
-        return m_amount;
+        return m_amountAmount;
     }
     
     /**
@@ -54,7 +58,7 @@ public class Action
      */
     public TypePlayerAction getType()
     {
-        return m_type;
+        return m_typeAction;
     }
     
     /**
@@ -65,7 +69,7 @@ public class Action
      */
     public void setAmount(int p_amount)
     {
-        m_amount = p_amount;
+        m_amountAmount = p_amount;
     }
     
     /**
@@ -76,7 +80,7 @@ public class Action
      */
     public void setType(TypePlayerAction p_type)
     {
-        m_type = p_type;
+        m_typeAction = p_type;
     }
     
     /**
@@ -87,10 +91,10 @@ public class Action
     {
         String result = "";
         
-        switch (m_type)
+        switch (m_typeAction)
         {
             case CALL:
-                result = "Call " + m_amount;
+                result = "Call " + m_amountAmount;
                 break;
             case CHECK:
                 result = "Check";
@@ -99,7 +103,7 @@ public class Action
                 result = "Fold";
                 break;
             case RAISE:
-                result = "Raise to " + m_amount;
+                result = "Raise to " + m_amountAmount;
                 break;
             case NOTHING:
                 result = "Do nothing";

@@ -1,7 +1,8 @@
 package backend;
 
+import basePoker.BasePokerPlayer;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import utility.TypePlayerAction;
 import backend.agent.TypeSimplifiedAction;
 import basePoker.Card;
 
@@ -9,24 +10,9 @@ import basePoker.Card;
  * @author Hocus
  *         This class represents a poker player on the client side.
  */
-public class Player
+public class Player extends BasePokerPlayer
 {
-    public int m_noSeat;
-    public int m_money;
-    public int m_initialMoney;
-    public int m_betAmount;
-    public String m_name;
-    public boolean m_isCutOff;
-    public boolean m_isDealer;
-    public boolean m_isSmallBlind;
-    public boolean m_isBigBlind;
-    public boolean m_isEarlyPos;
-    public boolean m_isMidPos;
-    public int m_timeRemaining;
-    public Card m_card1;
-    public Card m_card2;
-    public int m_relativePosition;
-    public boolean m_isPlaying;
+    
     
     public TypeSimplifiedAction m_lastActionsPreflop = null;
     public TypeSimplifiedAction m_lastActionsFlop = null;

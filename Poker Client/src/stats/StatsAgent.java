@@ -5,13 +5,15 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import utility.Constants;
+import basePoker.BasePokerPlayer;
+import basePoker.BasePokerTable;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import utility.TypePlayerAction;
+import basePokerAI.IPokerAgent;
+import basePokerAI.IPokerAgentListener;
 import backend.Player;
 import backend.Table;
-import backend.agent.ClosingListener;
-import backend.agent.IPokerAgent;
-import backend.agent.IPokerAgentListener;
+import utility.IClosingListener;
 
 /**
  * StatsAgent.java
@@ -24,7 +26,7 @@ public class StatsAgent implements IPokerAgentListener
 {
     
     // Playing table
-    protected Table m_table;
+    protected BasePokerTable m_table;
     
     // Stats overall on every player we played against
     public TreeMap<String, PlayerStats> m_overallStats = new TreeMap<String, PlayerStats>();
@@ -52,13 +54,8 @@ public class StatsAgent implements IPokerAgentListener
     // Is there a CBet going on?
     boolean m_ongoingCBet;
     
-    public void addClosingListener(ClosingListener<IPokerAgent> pListener)
-    {
-        
-    }
-    
     @Override
-    public void addClosingListener(utility.ClosingListener<IPokerAgent> pListener)
+    public void addClosingListener(utility.IClosingListener<IPokerAgent> pListener)
     {
         
     }
@@ -102,7 +99,7 @@ public class StatsAgent implements IPokerAgentListener
     {
         synchronized (m_table)
         {
-            for (final Player player : m_table.m_players.values())
+            for (final BasePokerPlayer player : m_table.m_players.values())
             {
                 // Notify everyone that a turn ended.
                 if (player.m_isPlaying)
@@ -132,22 +129,22 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_oldBigBlind
      *            is the previous player with the big blind.
      */
-    public void gameStarted(Player p_oldDealer, Player p_oldSmallBlind, Player p_oldBigBlind)
+    public void gameStarted(BasePokerPlayer p_oldDealer, BasePokerPlayer p_oldSmallBlind, BasePokerPlayer p_oldBigBlind)
     {
         synchronized (m_table)
         {
-            for (final Player player : m_table.m_players.values())
+            for (final BasePokerPlayer player : m_table.m_players.values())
             {
                 if (!m_overallStats.containsKey(player.m_name))
                 {
-                    m_gameStats.put(player.m_name, new PlayerStats(player, this));
+                    m_gameStats.put(player.m_name, new PlayerStats((Player)player, this));
                 }
                 else
                 {
                     try
                     {
                         m_gameStats.put(player.m_name, (PlayerStats) m_overallStats.get(player.m_name).clone());
-                        m_gameStats.get(player.m_name).setPlayer(player);
+                        m_gameStats.get(player.m_name).setPlayer((Player)player);
                     }
                     catch (final CloneNotSupportedException e)
                     {
@@ -196,7 +193,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_player
      *            is the player for whom his cards have been changed.
      */
-    public void playerCardChanged(Player p_player)
+    public void playerCardChanged(BasePokerPlayer p_player)
     {
         
     }
@@ -207,7 +204,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_player
      *            is the player that has joined the table.
      */
-    public void playerJoined(Player p_player)
+    public void playerJoined(BasePokerPlayer p_player)
     {
     }
     
@@ -217,7 +214,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_player
      *            is the player that has left the table.
      */
-    public void playerLeft(Player p_player)
+    public void playerLeft(BasePokerPlayer p_player)
     {
         
     }
@@ -230,7 +227,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_oldMoneyAmount
      *            is the previous money amount he had.
      */
-    public void playerMoneyChanged(Player p_player, int p_oldMoneyAmount)
+    public void playerMoneyChanged(BasePokerPlayer p_player, int p_oldMoneyAmount)
     {
         
     }
@@ -241,7 +238,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_oldCurrentPlayer
      *            is the previous player that had played.
      */
-    public void playerTurnBegan(Player p_oldCurrentPlayer)
+    public void playerTurnBegan(BasePokerPlayer p_oldCurrentPlayer)
     {
         
     }
@@ -256,7 +253,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_actionAmount
      *            is the amount related to the action taken.
      */
-    public void playerTurnEnded(Player p_player, TypePlayerAction p_action, int p_actionAmount)
+    public void playerTurnEnded(BasePokerPlayer p_player, TypePlayerAction p_action, int p_actionAmount)
     {
         final PlayerStats player = m_gameStats.get(p_player.m_name);
         if (m_gatheringStats)
@@ -308,18 +305,13 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_potIndex
      *            is the index of the pot that player won.
      */
-    public void potWon(Player p_player, int p_potAmountWon, int p_potIndex)
-    {
-        
-    }
-    
-    public void removeClosingListener(ClosingListener<IPokerAgent> pListener)
+    public void potWon(BasePokerPlayer p_player, int p_potAmountWon, int p_potIndex)
     {
         
     }
     
     @Override
-    public void removeClosingListener(utility.ClosingListener<IPokerAgent> pListener)
+    public void removeClosingListener(utility.IClosingListener<IPokerAgent> pListener)
     {
         
     }
@@ -332,7 +324,7 @@ public class StatsAgent implements IPokerAgentListener
     }
     
     @Override
-    public void setTable(Table pTable)
+    public void setTable(BasePokerTable pTable)
     {
         m_table = pTable;
         

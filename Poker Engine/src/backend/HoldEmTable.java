@@ -12,13 +12,14 @@ import java.util.Vector;
 
 import basePoker.Card;
 import basePoker.Deck;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;
 
 import player.IPlayer;
-import utility.ClosingListener;
+import utility.IClosingListener;
 import utility.Constants;
 import basePoker.TypePokerRound;
-import utility.TypePlayerAction;
 
 /**
  * @author Hocus
@@ -37,7 +38,7 @@ public class HoldEmTable implements Runnable
     public static final int NB_HOLE_CARDS = 2;
     
     // Listeners
-    private final List<ClosingListener<HoldEmTable>> m_closingListeners = Collections.synchronizedList(new ArrayList<ClosingListener<HoldEmTable>>());
+    private final List<IClosingListener<HoldEmTable>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<HoldEmTable>>());
     private final List<IHoldEmObserver> m_observers;
     
     // Table Definition variables
@@ -130,7 +131,7 @@ public class HoldEmTable implements Runnable
      * @param p_listener
      *            The new listener
      */
-    public void addClosingListener(ClosingListener<HoldEmTable> p_listener)
+    public void addClosingListener(IClosingListener<HoldEmTable> p_listener)
     {
         m_closingListeners.add(p_listener);
     }
@@ -987,7 +988,7 @@ public class HoldEmTable implements Runnable
      * @param p_listener
      *            The listener to remove
      */
-    public void removeClosingListener(ClosingListener<HoldEmTable> p_listener)
+    public void removeClosingListener(IClosingListener<HoldEmTable> p_listener)
     {
         m_closingListeners.remove(p_listener);
     }
@@ -1027,7 +1028,7 @@ public class HoldEmTable implements Runnable
         
         synchronized (m_closingListeners)
         {
-            for (final ClosingListener<HoldEmTable> listener : m_closingListeners)
+            for (final IClosingListener<HoldEmTable> listener : m_closingListeners)
             {
                 listener.closing(this);
             }
@@ -1152,7 +1153,7 @@ public class HoldEmTable implements Runnable
         
         // Ask each player to take a decision until they can't bet.
         IPlayer player;
-        Action action;
+        PokerPlayerAction action;
         while (continueBetting())
         {
             player = m_players.get(m_playerTurn);

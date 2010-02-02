@@ -18,11 +18,11 @@ import javax.swing.SwingUtilities;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
 
-import utility.ClosingListener;
-import utility.TypePlayerAction;
-import backend.PlayerAction;
-import backend.agent.IPokerAgent;
-import backend.agent.IPokerAgentActionner;
+import utility.IClosingListener;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
+import basePokerAI.IPokerAgent;
+import basePokerAI.IPokerAgentActionner;
 
 /**
  * @author Hocus
@@ -41,7 +41,7 @@ public class GUI extends Viewer implements IPokerAgentActionner
     private JButton jButtonFold;
     private JSpinner jSpinnerRaise;
     
-    private final List<ClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<ClosingListener<IPokerAgent>>());
+    private final List<IClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IPokerAgent>>());
     
     private final static int RAISE_STEP = 1;
     
@@ -73,7 +73,7 @@ public class GUI extends Viewer implements IPokerAgentActionner
         });
     }
     
-    PlayerAction m_playerAction = new PlayerAction(TypePlayerAction.NOTHING);
+    PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     
     public GUI()
     {
@@ -81,12 +81,12 @@ public class GUI extends Viewer implements IPokerAgentActionner
         initComponents();
     }
     
-    private void actionTaken(PlayerAction p_actionTaken)
+    private void actionTaken(PokerPlayerAction p_actionTaken)
     {
         synchronized (m_playerAction)
         {
-            m_playerAction.m_typeAction = p_actionTaken.m_typeAction;
-            m_playerAction.m_actionAmount = p_actionTaken.m_actionAmount;
+            m_playerAction.setType( p_actionTaken.getType());
+            m_playerAction.setAmount(p_actionTaken.getAmount());
             m_playerAction.notify();
         }
     }
@@ -103,33 +103,33 @@ public class GUI extends Viewer implements IPokerAgentActionner
     
     public void disconnect()
     {
-        actionTaken(new PlayerAction(TypePlayerAction.DISCONNECT));
+        actionTaken(new PokerPlayerAction(TypePlayerAction.DISCONNECT));
         
         synchronized (m_closingListeners)
         {
-            for (final ClosingListener<IPokerAgent> listener : m_closingListeners)
+            for (final IClosingListener<IPokerAgent> listener : m_closingListeners)
             {
                 listener.closing(GUI.this);
             }
         }
     }
     
-    public PlayerAction getAction()
+    public PokerPlayerAction getAction()
     {
-        final PlayerAction actionTaken = new PlayerAction(TypePlayerAction.NOTHING);
+        final PokerPlayerAction actionTaken = new PokerPlayerAction(TypePlayerAction.NOTHING);
         
         synchronized (m_playerAction)
         {
             try
             {
-                if (m_playerAction.m_typeAction == TypePlayerAction.NOTHING)
+                if (m_playerAction.getType() == TypePlayerAction.NOTHING)
                 {
                     m_playerAction.wait();
                 }
                 
-                actionTaken.m_typeAction = m_playerAction.m_typeAction;
-                actionTaken.m_actionAmount = m_playerAction.m_actionAmount;
-                m_playerAction.m_typeAction = TypePlayerAction.NOTHING;
+                actionTaken.setType(m_playerAction.getType());
+                actionTaken.setAmount(m_playerAction.getAmount());
+                m_playerAction.setType(TypePlayerAction.NOTHING);
             }
             catch (final InterruptedException e)
             {
@@ -243,25 +243,25 @@ public class GUI extends Viewer implements IPokerAgentActionner
     private void jButtonCallActionActionPerformed(ActionEvent event)
     {
         disableButtons();
-        actionTaken(new PlayerAction(TypePlayerAction.CALL));
+        actionTaken(new PokerPlayerAction(TypePlayerAction.CALL));
     }
     
     private void jButtonCheckActionActionPerformed(ActionEvent event)
     {
         disableButtons();
-        actionTaken(new PlayerAction(TypePlayerAction.CHECK));
+        actionTaken(new PokerPlayerAction(TypePlayerAction.CHECK));
     }
     
     private void jButtonFoldActionActionPerformed(ActionEvent event)
     {
         disableButtons();
-        actionTaken(new PlayerAction(TypePlayerAction.FOLD));
+        actionTaken(new PokerPlayerAction(TypePlayerAction.FOLD));
     }
     
     private void jButtonRaiseActionActionPerformed(ActionEvent event)
     {
         disableButtons();
-        actionTaken(new PlayerAction(TypePlayerAction.RAISE, (Integer) jSpinnerRaise.getValue()));
+        actionTaken(new PokerPlayerAction(TypePlayerAction.RAISE, (Integer) jSpinnerRaise.getValue()));
     }
     
     @Override

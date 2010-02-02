@@ -4,7 +4,7 @@ package utility;
  * @author Hocus
  *         Get notified when the object T close.
  */
-public interface ClosingListener<T>
+public interface IClosingListener<T>
 {
     /**
      * What the user want to do when the object e is closing

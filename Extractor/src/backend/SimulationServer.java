@@ -9,13 +9,14 @@ import pokerStats.StatsInfos;
 
 import stats.StatsAgent;
 import utility.Tool;
+import basePoker.BasePokerPlayer;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import utility.TypeMessageTableToClient;
-import utility.TypePlayerAction;
-import backend.agent.IPokerAgentListener;
 import backend.agent.TypeSimplifiedAction;
 import backend.collections.AutoListModel;
 import basePoker.Card;
+import basePokerAI.IPokerAgentListener;
 import db.TupleHandHistories;
 import db.TupleHandHistories.PhaseEvents;
 import db.TupleHandHistories.TuplePlayer;
@@ -245,7 +246,7 @@ public class SimulationServer
     
     private int getPosition(String p_name)
     {
-        for (final Player player : m_client.m_table.m_players.values())
+        for (final BasePokerPlayer player : m_client.m_table.m_players.values())
         {
             if (player.m_name.equals(p_name))
             {

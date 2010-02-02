@@ -18,6 +18,8 @@ import stats.StatsAgent;
 import utility.Bundle;
 import backend.Player;
 import backend.Table;
+import basePoker.BasePokerPlayer;
+import basePoker.BasePokerTable;
 
 /**
  * @author Hocus
@@ -34,7 +36,7 @@ public class JDialogPlayerStats extends JFrame// JDialog
     private JScrollPane jScrollPane = null;
     private JTable jTablePlayerStats = null;
     private StatsAgent m_statsAgent = null;
-    private Table m_table = null;
+    private BasePokerTable m_table = null;
     private final Bundle m_bundle = Bundle.getIntance();
     
     /**
@@ -235,7 +237,7 @@ public class JDialogPlayerStats extends JFrame// JDialog
         }
         
         // Update each player
-        for (final Player player : m_table.m_players.values())
+        for (final BasePokerPlayer player : m_table.m_players.values())
         {
             final PlayerStats stats = m_statsAgent.m_overallStats.get(player.m_name);
             
@@ -249,7 +251,7 @@ public class JDialogPlayerStats extends JFrame// JDialog
         }
     }
     
-    public void setTable(Table p_table)
+    public void setTable(BasePokerTable p_table)
     {
         m_table = p_table;
         this.setTitle(m_bundle.get("stats.title") + " - " + p_table.m_name);

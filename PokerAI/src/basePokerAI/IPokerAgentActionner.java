@@ -1,9 +1,9 @@
-package backend.agent;
+package basePokerAI;
 
 import java.util.ArrayList;
 
-import utility.TypePlayerAction;
-import backend.PlayerAction;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
 
 /**
  * @author Hocus
@@ -17,7 +17,7 @@ public interface IPokerAgentActionner extends IPokerAgent
      * 
      * @return the action taken by the agent.
      */
-    public PlayerAction getAction();
+    public PokerPlayerAction getAction();
     
     /**
      * Happens when it is to the client to make a move.

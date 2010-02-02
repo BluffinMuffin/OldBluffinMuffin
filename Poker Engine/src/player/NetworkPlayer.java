@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import utility.Constants;
-import utility.TypePlayerAction;
-import backend.Action;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
 import basePoker.Card;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
 
 @Deprecated
 public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
@@ -72,9 +72,9 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
     // Player
     // ---------------------------------------------
     @Override
-    protected Action getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
+    protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
     {
-        Action action = null;
+        PokerPlayerAction action = null;
         if (m_isConnected)
         {
             try
@@ -92,7 +92,7 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
                     if (message.hasMoreTokens())
                     {
                         token = message.nextToken();
-                        action = new Action(TypePlayerAction.valueOf(token), 0);
+                        action = new PokerPlayerAction(TypePlayerAction.valueOf(token), 0);
                         if (action.getType() == TypePlayerAction.CALL)
                         {
                             action.setAmount(p_callOf);
@@ -119,11 +119,11 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
         {
             if (p_canCheck)
             {
-                action = new Action(TypePlayerAction.CHECK, 0);
+                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
             }
             else
             {
-                action = new Action(TypePlayerAction.FOLD, 0);
+                action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
             }
         }
         
@@ -144,7 +144,7 @@ public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver
         // + m_table.marshal(this, new ArrayList<Integer>());
     }
     
-    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, Action p_action)
+    public void playerEndTurn(HoldEmTable p_table, IPlayer p_player, PokerPlayerAction p_action)
     {
         m_output.println(makeNormalMessage());
     }

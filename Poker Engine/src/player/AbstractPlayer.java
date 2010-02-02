@@ -3,10 +3,10 @@ package player;
 import java.util.ArrayList;
 
 import tools.PokerUtil;
-import utility.TypePlayerAction;
-import backend.Action;
 import backend.HoldEmTable;
 import basePoker.Card;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
 import handEvaluation.HandEvalHoldem;
 
 /**
@@ -138,7 +138,7 @@ public abstract class AbstractPlayer implements IPlayer
      * @return
      *         The action taken
      */
-    abstract protected Action getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise);
+    abstract protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise);
     
     @Override
     public int getBet()
@@ -350,11 +350,11 @@ public abstract class AbstractPlayer implements IPlayer
     }
     
     @Override
-    public Action takeAction(int p_betOnTable, int p_minimumRaise, int p_maximumRaise)
+    public PokerPlayerAction takeAction(int p_betOnTable, int p_minimumRaise, int p_maximumRaise)
     {
         if (this.isAllIn())
         {
-            return new Action(TypePlayerAction.NOTHING, 0);
+            return new PokerPlayerAction(TypePlayerAction.NOTHING, 0);
         }
         
         final boolean canCheck = p_betOnTable <= m_currentBet;
@@ -367,7 +367,7 @@ public abstract class AbstractPlayer implements IPlayer
         final int minimumRaise = (canRaise) ? p_minimumRaise : 0;
         final int maximumRaise = (canRaise) ? p_maximumRaise : 0;
         
-        final Action action = getActionFromUser(canCheck, !canCheck, !canCheck, callOf, canRaise, minimumRaise, maximumRaise);
+        final PokerPlayerAction action = getActionFromUser(canCheck, !canCheck, !canCheck, callOf, canRaise, minimumRaise, maximumRaise);
         
         if (action.getType() == TypePlayerAction.FOLD)
         {

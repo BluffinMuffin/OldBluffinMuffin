@@ -2,9 +2,9 @@ package player;
 
 import java.util.ArrayList;
 
-import backend.Action;
 import backend.HoldEmTable;
 import basePoker.Card;
+import basePoker.PokerPlayerAction;
 
 /**
  * @author HOCUS
@@ -256,7 +256,7 @@ public interface IPlayer
      * @return
      *         The action taken by the player
      */
-    public Action takeAction(int p_betOnTable, int p_minimumBet, int p_maximumBet);
+    public PokerPlayerAction takeAction(int p_betOnTable, int p_minimumBet, int p_maximumBet);
     
     /**
      * The player won a pot

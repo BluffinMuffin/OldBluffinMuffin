@@ -16,11 +16,12 @@ import stats.StatsAgent;
 import svm.SVM;
 import utility.Constants;
 import utility.Tool;
+import basePoker.BasePokerPlayer;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import basePoker.TypePokerRound;
-import utility.TypePlayerAction;
 import backend.Player;
-import backend.PlayerAction;
+import basePoker.PokerPlayerAction;
 import basePoker.Card;
 
 /**
@@ -147,7 +148,7 @@ public class PokerSVM extends PokerAI
     }
     
     @Override
-    protected PlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         while (!isReady())
         {
@@ -177,12 +178,12 @@ public class PokerSVM extends PokerAI
                     if (p_actionsAllowed.contains(TypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
                     {
                         m_cptRaise++;
-                        return new PlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
+                        return new PokerPlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
                     }
                     else if (p_actionsAllowed.contains(TypePlayerAction.CALL))
                     {
                         m_cptRaise = 0;
-                        return new PlayerAction(TypePlayerAction.CALL);
+                        return new PokerPlayerAction(TypePlayerAction.CALL);
                     }
                     else
                     {
@@ -196,11 +197,11 @@ public class PokerSVM extends PokerAI
                     m_cptRaise = 0;
                     if (p_actionsAllowed.contains(TypePlayerAction.CALL))
                     {
-                        return new PlayerAction(TypePlayerAction.CALL);
+                        return new PokerPlayerAction(TypePlayerAction.CALL);
                     }
                     else if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
                     {
-                        return new PlayerAction(TypePlayerAction.CHECK);
+                        return new PokerPlayerAction(TypePlayerAction.CHECK);
                     }
                     else
                     {
@@ -226,12 +227,12 @@ public class PokerSVM extends PokerAI
                     if (p_actionsAllowed.contains(TypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
                     {
                         m_cptRaise++;
-                        return new PlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
+                        return new PokerPlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
                     }
                     else if (p_actionsAllowed.contains(TypePlayerAction.CALL))
                     {
                         m_cptRaise = 0;
-                        return new PlayerAction(TypePlayerAction.CALL);
+                        return new PokerPlayerAction(TypePlayerAction.CALL);
                     }
                     else
                     {
@@ -245,11 +246,11 @@ public class PokerSVM extends PokerAI
                     m_cptRaise = 0;
                     if (p_actionsAllowed.contains(TypePlayerAction.CALL))
                     {
-                        return new PlayerAction(TypePlayerAction.CALL);
+                        return new PokerPlayerAction(TypePlayerAction.CALL);
                     }
                     else if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
                     {
-                        return new PlayerAction(TypePlayerAction.CHECK);
+                        return new PokerPlayerAction(TypePlayerAction.CHECK);
                     }
                     else
                     {
@@ -481,7 +482,7 @@ public class PokerSVM extends PokerAI
     private String getVector(TypePokerRound p_state)
     {
         double highMoney = 0.0;
-        for (final Player player : m_table.m_players.values())
+        for (final BasePokerPlayer player : m_table.m_players.values())
         {
             highMoney = Math.max(highMoney, player.m_money);
         }
@@ -498,16 +499,16 @@ public class PokerSVM extends PokerAI
         sb.append(format((double) (m_callAmount - m_table.m_localPlayer.m_betAmount) / (double) m_table.m_totalPotAmount));// 5
         sb.append(formatPosition(m_table.m_localPlayer.m_relativePosition)); // 5-13
         
-        sb.append(formatEnum(m_table.m_localPlayer.m_lastActionsPreflop, TypeSimplifiedAction.class)); // 14-20
-        sb.append(formatEnum(m_table.m_localPlayer.m_lastActionsFlop, TypeSimplifiedAction.class)); // 21-27
-        sb.append(formatEnum(m_table.m_localPlayer.m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
-        sb.append(formatEnum(m_table.m_localPlayer.m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
+        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 14-20
+        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsFlop, TypeSimplifiedAction.class)); // 21-27
+        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
+        sb.append(formatEnum(((Player)m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
         
         sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.m_money)); // 42
         sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
-        for (final Player player : m_table.m_players.values())
+        for (final BasePokerPlayer player : m_table.m_players.values())
         {
             if (player == m_table.m_localPlayer)
             {
@@ -521,10 +522,10 @@ public class PokerSVM extends PokerAI
             sb.append(formatPosition(player.m_relativePosition)); // 48-56
             sb.append(format(player.m_money / highMoney)); // 57
             sb.append(format((double) player.m_betAmount / (double) player.m_initialMoney)); // 58
-            sb.append(formatEnum(player.m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
-            sb.append(formatEnum(player.m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72
-            sb.append(formatEnum(player.m_lastActionsTurn, TypeSimplifiedAction.class)); // 73-79
-            sb.append(formatEnum(player.m_lastActionsRiver, TypeSimplifiedAction.class)); // 80-86
+            sb.append(formatEnum(((Player)player).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
+            sb.append(formatEnum(((Player)player).m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72
+            sb.append(formatEnum(((Player)player).m_lastActionsTurn, TypeSimplifiedAction.class)); // 73-79
+            sb.append(formatEnum(((Player)player).m_lastActionsRiver, TypeSimplifiedAction.class)); // 80-86
             
             if (m_statsAgent.m_overallStats.get(player.m_name) == null)
             {

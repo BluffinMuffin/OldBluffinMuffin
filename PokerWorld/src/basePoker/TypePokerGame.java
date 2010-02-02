@@ -18,6 +18,6 @@ public enum TypePokerGame
     @Override
     public String toString()
     {
-        return Bundle.getIntance().get("typePokerGame." + this.name());
+        return Bundle.getIntance().get("typeHoldemGame." + this.name());
     }
 }

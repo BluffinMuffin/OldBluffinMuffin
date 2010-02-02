@@ -1,7 +1,7 @@
-package backend.agent;
+package basePokerAI;
 
-import utility.ClosingListener;
-import backend.Table;
+import utility.IClosingListener;
+import basePoker.BasePokerTable;
 
 /**
  * @author Hocus
@@ -15,7 +15,7 @@ public interface IPokerAgent extends Runnable
      * @param p_listener
      *            - Will be notified when agent is stopping.
      */
-    public void addClosingListener(ClosingListener<IPokerAgent> p_listener);
+    public void addClosingListener(IClosingListener<IPokerAgent> p_listener);
     
     /**
      * Remove a closing listener from the agent.
@@ -23,7 +23,7 @@ public interface IPokerAgent extends Runnable
      * @param p_listener
      *            - Listener to be removed.
      */
-    public void removeClosingListener(ClosingListener<IPokerAgent> p_listener);
+    public void removeClosingListener(IClosingListener<IPokerAgent> p_listener);
     
     /**
      * Set the table that the agent is listening to.
@@ -31,7 +31,7 @@ public interface IPokerAgent extends Runnable
      * @param p_table
      *            - Reference to the Poker table.
      */
-    public void setTable(Table p_table);
+    public void setTable(BasePokerTable p_table);
     
     /**
      * Start the agent.

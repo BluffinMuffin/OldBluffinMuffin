@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import utility.TypePlayerAction;
-import backend.Action;
+import basePoker.PokerPlayerAction;
+import basePoker.TypePlayerAction;
 
 /**
  * @author HOCUS
@@ -48,9 +48,9 @@ public class ConsolePlayer extends AbstractPlayer
     }
     
     @Override
-    protected Action getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
+    protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
     {
-        Action action = null;
+        PokerPlayerAction action = null;
         while (action == null)
         {
             System.out.println(m_name + " What do you want to do? (Money=" + m_money + ", bet=" + m_currentBet + ")");
@@ -86,21 +86,21 @@ public class ConsolePlayer extends AbstractPlayer
             {
                 if (p_canCheck)
                 {
-                    action = new Action(TypePlayerAction.CHECK, 0);
+                    action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
                 }
             }
             else if (input.equals("2"))
             {
                 if (p_canFold)
                 {
-                    action = new Action(TypePlayerAction.FOLD, 0);
+                    action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
                 }
             }
             else if (input.equals("3"))
             {
                 if (p_canCall)
                 {
-                    action = new Action(TypePlayerAction.CALL, p_callOf);
+                    action = new PokerPlayerAction(TypePlayerAction.CALL, p_callOf);
                 }
             }
             else if (input.equals("4"))
@@ -127,7 +127,7 @@ public class ConsolePlayer extends AbstractPlayer
                     
                     if ((raise >= p_minimumRaise) && (raise <= p_maximumRaise))
                     {
-                        action = new Action(TypePlayerAction.RAISE, raise);
+                        action = new PokerPlayerAction(TypePlayerAction.RAISE, raise);
                     }
                     else
                     {

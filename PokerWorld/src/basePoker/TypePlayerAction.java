@@ -1,4 +1,6 @@
-package utility;
+package basePoker;
+
+import utility.Bundle;
 
 /**
  * @author Hocus

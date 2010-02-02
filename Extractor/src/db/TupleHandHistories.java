@@ -10,9 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import tools.HeadsUpException;
-import utility.TypePlayerAction;
 import backend.agent.TypeSimplifiedAction;
 import basePoker.Card;
+import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;
 
 public class TupleHandHistories

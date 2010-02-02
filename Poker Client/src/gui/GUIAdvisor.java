@@ -25,12 +25,14 @@ import pokerStats.StatsInfos;
 
 import stats.PlayerStats;
 import stats.StatsAgent;
-import utility.TypePlayerAction;
 import backend.Player;
-import backend.PlayerAction;
+import basePoker.PokerPlayerAction;
 import backend.Table;
 import backend.agent.PokerSVM;
+import basePoker.BasePokerPlayer;
+import basePoker.BasePokerTable;
 import basePoker.Card;
+import basePoker.TypePlayerAction;
 
 /**
  * @author Hocus
@@ -162,7 +164,7 @@ public class GUIAdvisor extends GUI
         {
             for (int i = 0; i < m_table.m_nbSeats; ++i)
             {
-                final Player player = m_table.m_players.get(i);
+                final BasePokerPlayer player = m_table.m_players.get(i);
                 final HudPanel hud = getPlayer(i).m_hud;
                 
                 if (player == null)
@@ -185,7 +187,7 @@ public class GUIAdvisor extends GUI
     }
     
     @Override
-    public PlayerAction getAction()
+    public PokerPlayerAction getAction()
     {
         updateAdvice();
         return super.getAction();
@@ -318,7 +320,7 @@ public class GUIAdvisor extends GUI
     }
     
     @Override
-    public void playerCardChanged(Player p_player)
+    public void playerCardChanged(BasePokerPlayer p_player)
     {
         super.playerCardChanged(p_player);
         
@@ -329,7 +331,7 @@ public class GUIAdvisor extends GUI
     }
     
     @Override
-    public void setTable(Table p_table)
+    public void setTable(BasePokerTable p_table)
     {
         super.setTable(p_table);
         getjDialogPlayerStats().setTable(p_table);
@@ -359,7 +361,7 @@ public class GUIAdvisor extends GUI
     {
         if ((m_pokerSVM != null) && m_pokerSVM.isReady())
         {
-            m_tipAction = m_pokerSVM.getAction().m_typeAction;
+            m_tipAction = m_pokerSVM.getAction().getType();
             getJLabelAdvise().setText((m_tipAction != TypePlayerAction.NOTHING) ? m_bundle.get("advisor.label.advise") + ": " + m_tipAction : m_bundle.get("advisor.label.noAdvise"));
         }
     }

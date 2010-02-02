@@ -1,8 +1,7 @@
-package tools;
+package basePokerAI;
 
 import java.lang.reflect.Method;
 
-import backend.agent.IPokerAgentListener;
 
 /**
  * @author Hocus

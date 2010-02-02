@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 import player.MessageNetworkPlayer;
-import utility.ClosingListener;
+import utility.IClosingListener;
 import utility.Constants;
 import utility.TypeMessageTableManager;
 
@@ -18,7 +18,7 @@ import utility.TypeMessageTableManager;
  *         This class listens to new connection on a certain port number.
  *         It transferts the new connection to the HoldEmTable it manages.
  */
-public class TableManager extends Thread implements ClosingListener<HoldEmTable>
+public class TableManager extends Thread implements IClosingListener<HoldEmTable>
 {
     /**
      * @author Hocus

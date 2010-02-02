@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import pokerStats.MonteCarlo;
 
 import basePoker.TypePokerRound;
-import utility.TypePlayerAction;
-import backend.PlayerAction;
+import basePoker.PokerPlayerAction;
 import basePoker.Card;
+import basePoker.TypePlayerAction;
 
 @Deprecated
 public class PokerGeneticAI extends PokerAI
@@ -38,10 +38,10 @@ public class PokerGeneticAI extends PokerAI
     }
     
     @Override
-    protected PlayerAction analyze(ArrayList<TypePlayerAction> pActionsAllowed, int pMinRaiseAmount, int pMaxRaiseAmount)
+    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> pActionsAllowed, int pMinRaiseAmount, int pMaxRaiseAmount)
     {
         
-        PlayerAction action = null;
+        PokerPlayerAction action = null;
         final double mc = calculateHandValues();
         
         int gameState = 1;
@@ -60,11 +60,11 @@ public class PokerGeneticAI extends PokerAI
             // Check - Fold
             if (pActionsAllowed.contains(TypePlayerAction.CALL))
             {
-                action = new PlayerAction(TypePlayerAction.FOLD, 0);
+                action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
             }
             else
             {
-                action = new PlayerAction(TypePlayerAction.CHECK, 0);
+                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
             }
         }
         else if ((m_callAmount > (1 - sigma[gameState]) * bet) && (m_callAmount < (1 + sigma[gameState]) * bet))
@@ -72,11 +72,11 @@ public class PokerGeneticAI extends PokerAI
             // Check - Call
             if (pActionsAllowed.contains(TypePlayerAction.CALL))
             {
-                action = new PlayerAction(TypePlayerAction.CALL, m_callAmount);
+                action = new PokerPlayerAction(TypePlayerAction.CALL, m_callAmount);
             }
             else
             {
-                action = new PlayerAction(TypePlayerAction.CHECK, 0);
+                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
             }
         }
         else
@@ -86,24 +86,24 @@ public class PokerGeneticAI extends PokerAI
             {
                 if (bet < pMinRaiseAmount)
                 {
-                    action = new PlayerAction(TypePlayerAction.RAISE, pMinRaiseAmount);
+                    action = new PokerPlayerAction(TypePlayerAction.RAISE, pMinRaiseAmount);
                 }
                 else if (bet > pMaxRaiseAmount)
                 {
-                    action = new PlayerAction(TypePlayerAction.RAISE, pMaxRaiseAmount);
+                    action = new PokerPlayerAction(TypePlayerAction.RAISE, pMaxRaiseAmount);
                 }
                 else
                 {
-                    action = new PlayerAction(TypePlayerAction.RAISE, bet);
+                    action = new PokerPlayerAction(TypePlayerAction.RAISE, bet);
                 }
             }
             else if (pActionsAllowed.contains(TypePlayerAction.CALL))
             {
-                action = new PlayerAction(TypePlayerAction.CALL, m_callAmount);
+                action = new PokerPlayerAction(TypePlayerAction.CALL, m_callAmount);
             }
         }
         
-        System.out.println(action.m_typeAction + " of " + action.m_actionAmount + " ... " + bet + "(" + alpha[0] + ", " + alpha[1] + ", " + beta[0] + ", " + beta[1] + ", " + sigma[0] + ", " + sigma[1] + ", " + phi[0] + ", " + phi[1] + ")");
+        System.out.println(action.getType() + " of " + action.getAmount() + " ... " + bet + "(" + alpha[0] + ", " + alpha[1] + ", " + beta[0] + ", " + beta[1] + ", " + sigma[0] + ", " + sigma[1] + ", " + phi[0] + ", " + phi[1] + ")");
         
         return action;
     }
