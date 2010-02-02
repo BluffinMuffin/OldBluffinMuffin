@@ -16,14 +16,13 @@ import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 
 import stats.StatsAgent;
-import svm.SVM;
 import basePoker.BasePokerPlayer;
 import basePoker.TypePlayerAction;
-import basePoker.TypePokerRound;
 import basePoker.TypePokerRound;
 import backend.Player;
 import basePoker.PokerPlayerAction;
 import basePoker.Card;
+import basePokerAI.SVM;
 
 /**
  * @author Hocus
@@ -62,7 +61,6 @@ public class PokerSVM extends PokerAI
      * Building the vector to make a prediction with a SVM.
      * ****************************************************
      */
-    private final static int NB_OTHER_OPPONENTS_INFOS = 9 + 2 + 28;
     
     private final static int NB_STATS_PREFLOP = 28;
     

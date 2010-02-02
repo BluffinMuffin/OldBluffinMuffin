@@ -1,4 +1,4 @@
-package svm;
+package basePokerAI;
 
 import java.io.IOException;
 import java.net.URL;
