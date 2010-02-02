@@ -10,7 +10,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import tools.ImageUtil;
+import utilGUI.ImageUtil;
 
 /**
  * @author Hocus

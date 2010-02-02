@@ -1,4 +1,4 @@
-package tools;
+package utilGUI;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

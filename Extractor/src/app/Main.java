@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import tools.HeadsUpException;
+import miscUtil.HeadsUpException;
+
 import backend.SimulationServer;
 import db.BDHandHistories;
 import db.MyConnection;

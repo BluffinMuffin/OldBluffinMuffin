@@ -1,4 +1,4 @@
-package tools;
+package miscUtil;
 
 public class HeadsUpException extends Exception
 {
