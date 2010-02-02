@@ -8,7 +8,7 @@
    * Subversive SVN Team Provider ...
    * Subversive SVN Connectors
    * SVNKit 1.3.0....
- * Windows !! (avec linux je plante lorsque création de table a l'execution)
+ * Windows !! (avec linux je plante lorsque création de table a l'execution) `[C'est un probleme d'instentiation de socket`]
 
 = Installation =
 
