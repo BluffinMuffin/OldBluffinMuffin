@@ -2,12 +2,13 @@
 
 = Requirements =
 
-Eclipse withs Plugin: 
- * Subversive SVN 
-  * Subversive SVN Integration....
-  * Subversive SVN Team Provider ...
-  * Subversive SVN Connectors
-  * SVNKit 1.3.0....
+ * Eclipse withs Plugin: 
+  * Subversive SVN 
+   * Subversive SVN Integration....
+   * Subversive SVN Team Provider ...
+   * Subversive SVN Connectors
+   * SVNKit 1.3.0....
+ * Windows !!
 
 = Installation =
 
