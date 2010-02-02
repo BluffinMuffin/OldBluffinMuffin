@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import utility.IClosingListener;
+import miscUtil.IClosingListener;
+
 import basePoker.BasePokerPlayer;
 import basePoker.BasePokerTable;
 import basePoker.TypePlayerAction;

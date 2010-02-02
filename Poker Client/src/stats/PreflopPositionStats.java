@@ -2,7 +2,8 @@ package stats;
 
 import java.util.StringTokenizer;
 
-import utility.Constants;
+import miscUtil.Constants;
+
 
 /**
  * PreflopPositionStats.java

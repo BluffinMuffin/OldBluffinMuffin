@@ -13,9 +13,10 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import miscUtil.Constants;
+import miscUtil.TypeMessageLobby;
+
 import tools.Logger;
-import utility.Constants;
-import utility.TypeMessageLobby;
 import backend.HoldEmTable;
 import backend.Table;
 import backend.TableManager;

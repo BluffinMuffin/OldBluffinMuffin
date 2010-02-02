@@ -15,10 +15,11 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
+import miscUtil.IClosingListener;
+
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
 
-import utility.IClosingListener;
 import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
 import basePokerAI.IPokerAgent;

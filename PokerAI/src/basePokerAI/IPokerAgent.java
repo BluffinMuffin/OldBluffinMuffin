@@ -1,6 +1,6 @@
 package basePokerAI;
 
-import utility.IClosingListener;
+import miscUtil.IClosingListener;
 import basePoker.BasePokerTable;
 
 /**

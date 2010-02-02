@@ -1,8 +1,5 @@
 package backend;
 
-import gui.components.AutoListModel;
-import gui.components.ListEvent;
-import gui.components.ListListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,13 +12,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import utility.IClosingListener;
-import utility.Constants;
+import utilGUI.AutoListModel;
+import utilGUI.ListEvent;
+import utilGUI.ListListener;
+
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+import miscUtil.TypeMessageTableToClient;
+
 import basePoker.BasePokerPlayer;
 import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import utility.TypeMessageTableToClient;
 import basePoker.Card;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentActionner;

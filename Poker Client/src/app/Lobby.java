@@ -2,7 +2,6 @@ package app;
 
 import gui.GUI;
 import gui.GUIAdvisor;
-import gui.components.AutoListModel;
 import gui.components.CurrencyIntegerEditor;
 import gui.components.JBackgroundPanel;
 import gui.components.JPanelObserver;
@@ -61,12 +60,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import miscUtil.Bundle;
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+import miscUtil.TypeMessageLobby;
+import miscUtil.TypeMessageTableManager;
+
 import stats.StatsAgent;
-import utility.Bundle;
-import utility.IClosingListener;
-import utility.Constants;
-import utility.TypeMessageLobby;
-import utility.TypeMessageTableManager;
+import utilGUI.AutoListModel;
 import backend.Player;
 import backend.PokerClient;
 import backend.Table;

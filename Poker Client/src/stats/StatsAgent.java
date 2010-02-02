@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import utility.Constants;
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+
 import basePoker.BasePokerPlayer;
 import basePoker.BasePokerTable;
 import basePoker.TypePlayerAction;
@@ -13,7 +15,6 @@ import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentListener;
 import backend.Player;
 import backend.Table;
-import utility.IClosingListener;
 
 /**
  * StatsAgent.java
@@ -55,7 +56,7 @@ public class StatsAgent implements IPokerAgentListener
     boolean m_ongoingCBet;
     
     @Override
-    public void addClosingListener(utility.IClosingListener<IPokerAgent> pListener)
+    public void addClosingListener(miscUtil.IClosingListener<IPokerAgent> pListener)
     {
         
     }
@@ -311,7 +312,7 @@ public class StatsAgent implements IPokerAgentListener
     }
     
     @Override
-    public void removeClosingListener(utility.IClosingListener<IPokerAgent> pListener)
+    public void removeClosingListener(miscUtil.IClosingListener<IPokerAgent> pListener)
     {
         
     }

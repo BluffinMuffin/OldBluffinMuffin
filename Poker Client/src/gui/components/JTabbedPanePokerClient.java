@@ -4,6 +4,9 @@ import java.awt.Component;
 
 import javax.swing.JTabbedPane;
 
+import utilGUI.ListEvent;
+import utilGUI.ListListener;
+
 import backend.PokerClient;
 
 /**

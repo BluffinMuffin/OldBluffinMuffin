@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import miscUtil.Tool;
+import miscUtil.TypeMessageTableToClient;
+
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 
 import stats.StatsAgent;
-import utility.Tool;
 import basePoker.BasePokerPlayer;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import utility.TypeMessageTableToClient;
 import backend.agent.TypeSimplifiedAction;
-import backend.collections.AutoListModel;
+import utilGUI.AutoListModel;
 import basePoker.Card;
 import basePokerAI.IPokerAgentListener;
 import db.TupleHandHistories;

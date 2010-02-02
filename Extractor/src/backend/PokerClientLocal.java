@@ -8,16 +8,17 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import utility.IClosingListener;
-import utility.Constants;
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+import miscUtil.TypeMessageTableToClient;
+
 import basePoker.BasePokerPlayer;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import utility.TypeMessageTableToClient;
 import basePoker.PokerPlayerAction;
-import backend.collections.AutoListModel;
-import backend.collections.ListEvent;
-import backend.collections.ListListener;
+import utilGUI.AutoListModel;
+import utilGUI.ListEvent;
+import utilGUI.ListListener;
 import basePoker.Card;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentActionner;

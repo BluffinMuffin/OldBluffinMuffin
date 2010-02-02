@@ -15,6 +15,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import utilGUI.AutoListModel;
+import utilGUI.ListEvent;
+import utilGUI.ListListener;
+
 import backend.PokerClient;
 import backend.agent.FactoryObserver;
 import backend.agent.TypeObserver;

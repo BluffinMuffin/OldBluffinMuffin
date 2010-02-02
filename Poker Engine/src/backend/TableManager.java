@@ -8,10 +8,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+import miscUtil.TypeMessageTableManager;
+
 import player.MessageNetworkPlayer;
-import utility.IClosingListener;
-import utility.Constants;
-import utility.TypeMessageTableManager;
 
 /**
  * @author Hocus

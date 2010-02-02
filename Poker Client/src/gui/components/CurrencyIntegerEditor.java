@@ -9,7 +9,8 @@ import javax.swing.SwingConstants;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
-import utility.Constants;
+import miscUtil.Constants;
+
 
 /**
  * @author Hocus

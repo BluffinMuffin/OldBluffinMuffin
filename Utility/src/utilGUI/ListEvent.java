@@ -1,4 +1,4 @@
-package gui.components;
+package utilGUI;
 
 import java.util.EventObject;
 import java.util.List;

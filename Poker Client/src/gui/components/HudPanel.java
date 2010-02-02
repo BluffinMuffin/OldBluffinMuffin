@@ -10,13 +10,14 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import miscUtil.Bundle;
+
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
 import basePoker.Card;
 
-import utility.Bundle;
 
 /**
  * @author Hocus

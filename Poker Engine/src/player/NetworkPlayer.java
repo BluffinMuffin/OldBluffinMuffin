@@ -8,7 +8,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import utility.Constants;
+import miscUtil.Constants;
+
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;

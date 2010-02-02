@@ -20,13 +20,14 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import miscUtil.Bundle;
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
-import utility.Bundle;
-import utility.IClosingListener;
-import utility.Constants;
 import basePoker.BasePokerPlayer;
 import basePoker.BasePokerTable;
 import basePoker.TypePlayerAction;

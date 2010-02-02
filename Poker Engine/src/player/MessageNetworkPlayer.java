@@ -8,8 +8,9 @@ import java.net.Socket;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import utility.Constants;
-import utility.TypeMessageTableToClient;
+import miscUtil.Constants;
+import miscUtil.TypeMessageTableToClient;
+
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;

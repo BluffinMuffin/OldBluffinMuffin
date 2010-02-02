@@ -1,6 +1,6 @@
 package basePoker;
 
-import utility.Bundle;
+import miscUtil.Bundle;
 
 /**
  * @author Hocus

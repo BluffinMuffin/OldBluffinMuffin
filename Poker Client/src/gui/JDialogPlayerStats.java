@@ -13,9 +13,10 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import miscUtil.Bundle;
+
 import stats.PlayerStats;
 import stats.StatsAgent;
-import utility.Bundle;
 import backend.Player;
 import backend.Table;
 import basePoker.BasePokerPlayer;

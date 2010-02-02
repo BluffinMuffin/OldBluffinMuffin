@@ -10,6 +10,9 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import miscUtil.Constants;
+import miscUtil.IClosingListener;
+
 import basePoker.Card;
 import basePoker.Deck;
 import basePoker.PokerPlayerAction;
@@ -17,8 +20,6 @@ import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;
 
 import player.IPlayer;
-import utility.IClosingListener;
-import utility.Constants;
 import basePoker.TypePokerRound;
 
 /**

@@ -9,13 +9,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import miscUtil.Constants;
+import miscUtil.Tool;
+
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 
 import stats.StatsAgent;
 import svm.SVM;
-import utility.Constants;
-import utility.Tool;
 import basePoker.BasePokerPlayer;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
