@@ -1,4 +1,4 @@
-package utility;
+package miscUtil;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package utility;
+package miscUtil;
 
 /**
  * @author Hocus

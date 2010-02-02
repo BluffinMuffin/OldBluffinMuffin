@@ -1,4 +1,4 @@
-package utility;
+package miscUtil;
 
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
