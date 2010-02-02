@@ -1,9 +1,9 @@
 package backend;
 
-import utility.Card;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.agent.TypeSimplifiedAction;
+import basePoker.Card;
 
 /**
  * @author Hocus
@@ -66,7 +66,7 @@ public class Player
      * @param p_state
      *            - Moment in a poker game.
      */
-    public void did(TypePlayerAction p_action, TypeGameState p_state)
+    public void did(TypePlayerAction p_action, TypePokerRound p_state)
     {
         switch (p_state)
         {
@@ -96,7 +96,7 @@ public class Player
      * @return
      *         If the player is folded.
      */
-    public boolean isFolded(TypeGameState p_state)
+    public boolean isFolded(TypePokerRound p_state)
     {
         switch (p_state)
         {

@@ -8,7 +8,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 
-import utility.TypeHoldEmGame;
+import basePoker.TypePokerGame;
+
 
 @Deprecated
 public class NetworkConsolePlayer
@@ -182,7 +183,7 @@ public class NetworkConsolePlayer
                 }
                 else if (input.equals("3"))
                 {
-                    final TypeHoldEmGame typeGame = TypeHoldEmGame.FIXED_LIMIT;
+                    final TypePokerGame typeGame = TypePokerGame.FIXED_LIMIT;
                     Send("createtable;Table1;" + typeGame.toString() + ";2;8;" + m_Name + ";");
                     try
                     {

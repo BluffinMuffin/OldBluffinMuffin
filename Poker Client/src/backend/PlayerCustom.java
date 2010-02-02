@@ -1,7 +1,7 @@
 package backend;
 
-import utility.TypePlayerMajorPosition;
-import utility.TypePlayerMinorPosition;
+import basePoker.TypePlayerMajorPosition;
+import basePoker.TypePlayerMinorPosition;
 
 public class PlayerCustom extends Player
 {

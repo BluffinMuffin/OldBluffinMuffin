@@ -10,13 +10,14 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import basePoker.Card;
+import basePoker.Deck;
+import basePoker.TypePokerGame;
+
 import player.IPlayer;
-import utility.Card;
 import utility.ClosingListener;
 import utility.Constants;
-import utility.Deck;
-import utility.TypeGameState;
-import utility.TypeHoldEmGame;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 
 /**
@@ -41,7 +42,7 @@ public class HoldEmTable implements Runnable
     
     // Table Definition variables
     private final String m_name;
-    private final TypeHoldEmGame m_gameType;
+    private final TypePokerGame m_gameType;
     private final int m_nbSeat;
     private final int m_bigBlind;
     private final int m_smallBlind;
@@ -61,7 +62,7 @@ public class HoldEmTable implements Runnable
     private final Object m_mutex = new Object();
     
     // Game variables
-    private TypeGameState m_gameState;
+    private TypePokerRound m_gameState;
     private Deck m_deck;
     private Card[] m_board;
     private int m_dealer;
@@ -94,7 +95,7 @@ public class HoldEmTable implements Runnable
      * @param p_playerCapacity
      *            Number of seat available
      */
-    public HoldEmTable(String p_name, TypeHoldEmGame p_gameType, int p_bigBlind, int p_playerCapacity)
+    public HoldEmTable(String p_name, TypePokerGame p_gameType, int p_bigBlind, int p_playerCapacity)
     {
         m_stopTable = false;
         m_name = p_name;
@@ -171,7 +172,7 @@ public class HoldEmTable implements Runnable
      */
     private void dealFlop()
     {
-        m_gameState = TypeGameState.FLOP;
+        m_gameState = TypePokerRound.FLOP;
         m_board[0] = m_deck.pop();
         m_board[1] = m_deck.pop();
         m_board[2] = m_deck.pop();
@@ -221,7 +222,7 @@ public class HoldEmTable implements Runnable
      */
     private void dealRiver()
     {
-        m_gameState = TypeGameState.RIVER;
+        m_gameState = TypePokerRound.RIVER;
         m_board[4] = m_deck.pop();
         
         notifyObserver(IHoldEmObserver.RIVER_DEAL, this, m_board);
@@ -241,7 +242,7 @@ public class HoldEmTable implements Runnable
      */
     private void dealTurn()
     {
-        m_gameState = TypeGameState.TURN;
+        m_gameState = TypePokerRound.TURN;
         m_board[3] = m_deck.pop();
         
         notifyObserver(IHoldEmObserver.TURN_DEAL, this, m_board);
@@ -275,7 +276,7 @@ public class HoldEmTable implements Runnable
      */
     private void endGame()
     {
-        m_gameState = TypeGameState.GAME_ENDED;
+        m_gameState = TypePokerRound.END;
         
         final int start = m_dealer;
         int i = start;
@@ -327,7 +328,7 @@ public class HoldEmTable implements Runnable
      * @return
      *         The state of the game.
      */
-    public TypeGameState getGameState()
+    public TypePokerRound getGameState()
     {
         return m_gameState;
     }
@@ -338,7 +339,7 @@ public class HoldEmTable implements Runnable
      * @return
      *         The type of the game
      */
-    public TypeHoldEmGame getGameType()
+    public TypePokerGame getGameType()
     {
         return m_gameType;
     }
@@ -354,9 +355,9 @@ public class HoldEmTable implements Runnable
     private int getMaximumRaise(IPlayer p_player)
     {
         int maximumRaise = Integer.MAX_VALUE;
-        if (m_gameType == TypeHoldEmGame.FIXED_LIMIT)
+        if (m_gameType == TypePokerGame.FIXED_LIMIT)
         {
-            if ((m_gameState == TypeGameState.PREFLOP) || (m_gameState == TypeGameState.FLOP))
+            if ((m_gameState == TypePokerRound.PREFLOP) || (m_gameState == TypePokerRound.FLOP))
             {
                 maximumRaise = m_bigBlind + m_currentBet;
             }
@@ -365,7 +366,7 @@ public class HoldEmTable implements Runnable
                 maximumRaise = m_bigBlind * 2 + m_currentBet;
             }
         }
-        else if (m_gameType == TypeHoldEmGame.POT_LIMIT)
+        else if (m_gameType == TypePokerGame.POT_LIMIT)
         {
             maximumRaise = m_totalPot + 2 * (m_currentBet - p_player.getBet()) + p_player.getBet();
         }
@@ -389,9 +390,9 @@ public class HoldEmTable implements Runnable
     private int getMinimumRaise(IPlayer p_player)
     {
         int minimumRaise = m_currentBet + m_bigBlind;
-        if (m_gameType == TypeHoldEmGame.FIXED_LIMIT)
+        if (m_gameType == TypePokerGame.FIXED_LIMIT)
         {
-            if (!((m_gameState == TypeGameState.PREFLOP) || (m_gameState == TypeGameState.FLOP)))
+            if (!((m_gameState == TypePokerRound.PREFLOP) || (m_gameState == TypePokerRound.FLOP)))
             {
                 minimumRaise += m_bigBlind;
             }
@@ -592,7 +593,7 @@ public class HoldEmTable implements Runnable
         m_pots = new Stack<Pot>();
         m_pots.push(new Pot(0));
         m_totalPot = 0;
-        m_gameState = TypeGameState.PREFLOP;
+        m_gameState = TypePokerRound.PREFLOP;
         m_nbFolded = 0;
         m_nbAllIn = 0;
         m_nbPlaying = 0;
@@ -1054,7 +1055,7 @@ public class HoldEmTable implements Runnable
      */
     private void showdown()
     {
-        m_gameState = TypeGameState.SHOWDOWN;
+        m_gameState = TypePokerRound.SHOWDOWN;
         
         showAllHands();
         
@@ -1122,11 +1123,11 @@ public class HoldEmTable implements Runnable
     {
         m_firstTurn = true;
         int lastPlayer = m_dealer;
-        if ((m_nbPlaying == 2) && (m_gameState == TypeGameState.PREFLOP))
+        if ((m_nbPlaying == 2) && (m_gameState == TypePokerRound.PREFLOP))
         {
             lastPlayer = nextPlayingPlayer(m_dealer);
         }
-        else if ((m_nbPlaying > 2) && (m_gameState == TypeGameState.PREFLOP))
+        else if ((m_nbPlaying > 2) && (m_gameState == TypePokerRound.PREFLOP))
         {
             lastPlayer = getNoSeatBigBlind();
         }
@@ -1135,7 +1136,7 @@ public class HoldEmTable implements Runnable
         final TreeSet<Integer> bets = new TreeSet<Integer>();
         
         // Check if the blinds are all-in
-        if (m_gameState == TypeGameState.PREFLOP)
+        if (m_gameState == TypePokerRound.PREFLOP)
         {
             IPlayer blind = m_players.get(m_smallBlindPlayer);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))

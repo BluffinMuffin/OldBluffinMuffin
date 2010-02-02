@@ -9,18 +9,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import stats.MonteCarlo;
+import pokerStats.MonteCarlo;
+import pokerStats.StatsInfos;
+
 import stats.StatsAgent;
-import stats.StatsInfos;
 import svm.SVM;
-import utility.Card;
 import utility.Constants;
 import utility.Tool;
-import utility.TypeGamePhase;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.Player;
 import backend.PlayerAction;
+import basePoker.Card;
 
 /**
  * @author Hocus
@@ -160,16 +161,16 @@ public class PokerSVM extends PokerAI
             }
         }
         
-        if (m_table.m_gameState == TypeGameState.PREFLOP)
+        if (m_table.m_gameState == TypePokerRound.PREFLOP)
         {
-            if (getSVM_PreflopFold().predict(getVector(TypeGamePhase.PREFLOP)) <= 0)
+            if (getSVM_PreflopFold().predict(getVector(TypePokerRound.PREFLOP)) <= 0)
             {
                 m_cptRaise = 0;
                 return super.analyze(p_actionsAllowed, p_minRaiseAmount, p_maxRaiseAmount);
             }
             else
             {
-                if (getSVM_PreflopaRaise().predict(getVector(TypeGamePhase.PREFLOP)) > 0)
+                if (getSVM_PreflopaRaise().predict(getVector(TypePokerRound.PREFLOP)) > 0)
                 {
                     // If we should raise, we need to check if m_cptRaise is
                     // under a certain constant.
@@ -211,14 +212,14 @@ public class PokerSVM extends PokerAI
         }
         else
         {
-            if (getSVM_PostflopFold().predict(getVector(TypeGamePhase.FLOP)) <= 0)
+            if (getSVM_PostflopFold().predict(getVector(TypePokerRound.FLOP)) <= 0)
             {
                 m_cptRaise = 0;
                 return super.analyze(p_actionsAllowed, p_minRaiseAmount, p_maxRaiseAmount);
             }
             else
             {
-                if (getSVM_PostflopRaise().predict(getVector(TypeGamePhase.FLOP)) > 0)
+                if (getSVM_PostflopRaise().predict(getVector(TypePokerRound.FLOP)) > 0)
                 {
                     // If we should raise, we need to check if m_cptRaise is
                     // under a certain constant.
@@ -477,7 +478,7 @@ public class PokerSVM extends PokerAI
      * @return
      *         Vector of attributes
      */
-    private String getVector(TypeGamePhase p_state)
+    private String getVector(TypePokerRound p_state)
     {
         double highMoney = 0.0;
         for (final Player player : m_table.m_players.values())
@@ -503,7 +504,7 @@ public class PokerSVM extends PokerAI
         sb.append(formatEnum(m_table.m_localPlayer.m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
         
         sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.m_money)); // 42
-        sb.append(formatEnum(p_state, TypeGamePhase.class)); // 43-46
+        sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
         for (final Player player : m_table.m_players.values())
@@ -534,7 +535,7 @@ public class PokerSVM extends PokerAI
             }
             else
             {
-                if (p_state == TypeGamePhase.PREFLOP)
+                if (p_state == TypePokerRound.PREFLOP)
                 {
                     // Stats preflop
                     sb.append(format(m_statsAgent.m_overallStats.get(player.m_name).getProbVPIPTotal_PRF())); // 87

@@ -1,9 +1,10 @@
-package stats;
+package pokerStats;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import utility.Card;
+import basePoker.Card;
+
 
 /**
  * @author Hocus

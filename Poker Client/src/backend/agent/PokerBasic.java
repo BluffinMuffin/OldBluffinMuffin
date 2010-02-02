@@ -2,10 +2,11 @@ package backend.agent;
 
 import java.util.ArrayList;
 
-import stats.MonteCarlo;
-import utility.Card;
+import pokerStats.MonteCarlo;
+
 import utility.TypePlayerAction;
 import backend.PlayerAction;
+import basePoker.Card;
 
 /**
  * @author Hocus

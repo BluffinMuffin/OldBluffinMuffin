@@ -3,7 +3,8 @@ package gui.components;
 import java.net.URL;
 import java.util.TreeMap;
 
-import utility.Card;
+import basePoker.Card;
+
 
 /**
  * @author Hocus

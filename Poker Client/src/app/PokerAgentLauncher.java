@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import utility.TypeHoldEmGame;
 import backend.Table;
 import backend.agent.TypeAgent;
+import basePoker.TypePokerGame;
 
 /**
  * @author Hocus
@@ -20,7 +20,7 @@ public class PokerAgentLauncher
     private static final int DEFAULT_PORT = 4242;
     private static final String TABLE_NAME = "Poker Agent Party";
     private static final int BIG_BLIND_AMOUNT = 10;
-    private static final TypeHoldEmGame GAME_TYPE = TypeHoldEmGame.NO_LIMIT;
+    private static final TypePokerGame GAME_TYPE = TypePokerGame.NO_LIMIT;
     private static final String[] AGENTS_NAMES = new String[] { "gen1", "gen2", "gen3", "SVM1", "SVM2", "SVM3", "basic1", "basic2", "basic3" };
     
     // {"Pokai", "HAL9000", "Sonny", "Johnny 5", "V.I.K.I.", "Skynet", "Marvin",
@@ -70,7 +70,7 @@ public class PokerAgentLauncher
         final int DEFAULT_PORT = 4242;
         final String TABLE_NAME = "Poker Agent Party2";
         final int BIG_BLIND_AMOUNT = 10;
-        final TypeHoldEmGame GAME_TYPE = TypeHoldEmGame.NO_LIMIT;
+        final TypePokerGame GAME_TYPE = TypePokerGame.NO_LIMIT;
         final String[] AGENTS_NAMES = new String[] { "Pokai", "HAL9000", "Sonny", "Johnny 5", "V.I.K.I.", "Skynet", "Marvin" };
         
         final Table table = new Table();

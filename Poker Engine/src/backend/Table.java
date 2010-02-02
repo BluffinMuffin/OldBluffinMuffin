@@ -1,6 +1,6 @@
 package backend;
 
-import utility.TypeHoldEmGame;
+import basePoker.TypePokerGame;
 
 /**
  * @author Hocus
@@ -10,7 +10,7 @@ public class Table implements Comparable<Table>
 {
     public int m_noPort;
     public String m_tableName;
-    public TypeHoldEmGame m_gameType;
+    public TypePokerGame m_gameType;
     public int m_bigBlind;
     public int m_nbPlayers;
     public int m_nbSeats;
@@ -31,7 +31,7 @@ public class Table implements Comparable<Table>
      * @param p_nbSeats
      *            Number of seat
      */
-    public Table(int p_noPort, String p_tableName, TypeHoldEmGame p_gameType, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
+    public Table(int p_noPort, String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;

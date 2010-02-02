@@ -2,9 +2,10 @@ package backend;
 
 import java.lang.reflect.Method;
 
+import basePoker.Card;
+
 import player.IPlayer;
 import tools.PokerUtil;
-import utility.Card;
 
 /**
  * @author Hocus

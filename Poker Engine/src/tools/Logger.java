@@ -5,11 +5,11 @@ import java.io.OutputStream;
 import java.util.List;
 
 import player.IPlayer;
-import utility.Card;
 import backend.Action;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
+import basePoker.Card;
 
 /**
  * @author HOCUS

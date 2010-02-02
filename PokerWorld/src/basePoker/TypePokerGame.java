@@ -1,12 +1,16 @@
-package utility;
+package basePoker;
+
+import utility.Bundle;
 
 /**
  * @author Hocus
  *         This enum list the possible type of holdEm game
  */
-public enum TypeHoldEmGame
+public enum TypePokerGame
 {
-    NO_LIMIT, FIXED_LIMIT, POT_LIMIT;
+    NO_LIMIT, 
+    FIXED_LIMIT, 
+    POT_LIMIT;
     
     /**
      * Returns the string associated with the type of the game
@@ -14,6 +18,6 @@ public enum TypeHoldEmGame
     @Override
     public String toString()
     {
-        return Bundle.getIntance().get("typeHoldemGame." + this.name());
+        return Bundle.getIntance().get("typePokerGame." + this.name());
     }
 }

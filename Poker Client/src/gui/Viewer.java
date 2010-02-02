@@ -25,15 +25,15 @@ import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
 import utility.Bundle;
-import utility.Card;
 import utility.ClosingListener;
 import utility.Constants;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.Player;
 import backend.Table;
 import backend.agent.IPokerAgent;
 import backend.agent.IPokerAgentListener;
+import basePoker.Card;
 
 /**
  * @author Hocus
@@ -172,7 +172,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         m_closingListeners.add(p_listener);
     }
     
-    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypeGameState p_gameState)
+    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypePokerRound p_gameState)
     {
         for (final Integer index : p_potIndices)
         {

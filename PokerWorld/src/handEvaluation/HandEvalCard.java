@@ -1,13 +1,11 @@
-package com.stevebrecher.poker;
+package handEvaluation;
 
 /**
- * An immutable poker card.
- * 
- * @version 2006Dec11.0
- * @author Steve Brecher
+ * Original class from Steve Brecher, version 2006Dec11.0
+ * Adapted by Bluffin Muffin
  * 
  */
-public class Card implements Comparable<Card>
+public class HandEvalCard implements Comparable<HandEvalCard>
 {
     
     /**
@@ -92,30 +90,30 @@ public class Card implements Comparable<Card>
     }
     
     /**
-     * Returns a pre-existing instance of {@link Card} of the specified rank and suit.
+     * Returns a pre-existing instance of {@link HandEvalCard} of the specified rank and suit.
      * 
      * @param rank
      *            a {@link Rank}
      * @param suit
      *            a {@link Suit}
-     * @return an instance of {@link Card} of the specified rank and suit.
+     * @return an instance of {@link HandEvalCard} of the specified rank and suit.
      */
-    public static Card getInstance(Rank rank, Suit suit)
+    public static HandEvalCard getInstance(Rank rank, Suit suit)
     {
-        return Card.theCards[suit.ordinal() * 13 + rank.ordinal()];
+        return HandEvalCard.theCards[suit.ordinal() * 13 + rank.ordinal()];
     }
     
     /**
-     * Returns a pre-existing instance of {@link Card} of the specified rank and suit.
+     * Returns a pre-existing instance of {@link HandEvalCard} of the specified rank and suit.
      * 
      * @param rs
-     *            a {@link String} of length 2, where the first character is in {@link Card.Rank#RANK_CHARS} and
-     *            the second is in {@link Card.Suit#SUIT_CHARS} (case insensitive).
-     * @return an instance of {@link Card} of the specified rank and suit.
+     *            a {@link String} of length 2, where the first character is in {@link HandEvalCard.Rank#RANK_CHARS} and
+     *            the second is in {@link HandEvalCard.Suit#SUIT_CHARS} (case insensitive).
+     * @return an instance of {@link HandEvalCard} of the specified rank and suit.
      * @throws IllegalArgumentException
      *             on the first character in rs which is not found in the respective string.
      */
-    public static Card getInstance(String rs)
+    public static HandEvalCard getInstance(String rs)
     {
         if (rs.length() != 2)
         {
@@ -125,7 +123,7 @@ public class Card implements Comparable<Card>
         {
             final Rank rank = Rank.fromChar(rs.charAt(0));
             final Suit suit = Suit.fromChar(rs.charAt(1));
-            return Card.theCards[suit.ordinal() * 13 + rank.ordinal()];
+            return HandEvalCard.theCards[suit.ordinal() * 13 + rank.ordinal()];
         }
         catch (final IllegalArgumentException e)
         {
@@ -137,7 +135,7 @@ public class Card implements Comparable<Card>
     
     private final Suit suit;
     
-    private final static Card[] theCards = new Card[52];
+    private final static HandEvalCard[] theCards = new HandEvalCard[52];
     static
     {
         int i = 0;
@@ -145,7 +143,7 @@ public class Card implements Comparable<Card>
         {
             for (final Rank r : Rank.values())
             {
-                Card.theCards[i++] = new Card(r, s);
+                HandEvalCard.theCards[i++] = new HandEvalCard(r, s);
             }
         }
     }
@@ -157,9 +155,9 @@ public class Card implements Comparable<Card>
      *            a {@link Rank}
      * @param suit
      *            a {@link Suit}
-     * @see #getInstance(com.stevebrecher.poker.Card.Rank, com.stevebrecher.poker.Card.Suit)
+     * @see #getInstance(handEvaluation.HandEvalCard.poker.Card.Rank, handEvaluation.HandEvalCard.poker.Card.Suit)
      */
-    public Card(Rank rank, Suit suit)
+    public HandEvalCard(Rank rank, Suit suit)
     {
         this.rank = rank;
         this.suit = suit;
@@ -169,13 +167,13 @@ public class Card implements Comparable<Card>
      * Constructs a card of the specified rank and suit.
      * 
      * @param rs
-     *            a {@link String} of length 2, where the first character is in {@link Card.Rank#RANK_CHARS} and
-     *            the second is in {@link Card.Suit#SUIT_CHARS} (case insensitive).
+     *            a {@link String} of length 2, where the first character is in {@link HandEvalCard.Rank#RANK_CHARS} and
+     *            the second is in {@link HandEvalCard.Suit#SUIT_CHARS} (case insensitive).
      * @throws IllegalArgumentException
      *             on the first character in rs which is not found in the respective string.
      * @see #getInstance(String)
      */
-    public Card(String rs)
+    public HandEvalCard(String rs)
     {
         
         if (rs.length() != 2)
@@ -203,7 +201,7 @@ public class Card implements Comparable<Card>
      * @return a negative integer, zero, or a positive integer as this Card is less than,
      *         equal to, or greater than the specified Card.
      */
-    public int compareTo(Card that)
+    public int compareTo(HandEvalCard that)
     {
         final int result = this.rank.compareTo(that.rank);
         if (result != 0)
@@ -216,17 +214,17 @@ public class Card implements Comparable<Card>
     /**
      * Compares the parameter to this card.
      * 
-     * @return <code>true</code> if the parameter is a {@link Card} of the same rank and suit
+     * @return <code>true</code> if the parameter is a {@link HandEvalCard} of the same rank and suit
      *         as this card; <code>false</code> otherwise.
      */
     @Override
     public boolean equals(Object that)
     {
-        if (!(that instanceof Card))
+        if (!(that instanceof HandEvalCard))
         {
             return false;
         }
-        final Card c = (Card) that;
+        final HandEvalCard c = (HandEvalCard) that;
         return (this.rank == c.rank) && (this.suit == c.suit);
     }
     
@@ -260,8 +258,8 @@ public class Card implements Comparable<Card>
     /**
      * Returns a {@link String} of length 2 denoting the rank and suit of this card.
      * 
-     * @return a {@link String} of length 2 containing a character in {@link Card.Rank#RANK_CHARS} denoting this
-     *         card&#39;s rank followed by a character in {@link Card.Suit#SUIT_CHARS} denoting this
+     * @return a {@link String} of length 2 containing a character in {@link HandEvalCard.Rank#RANK_CHARS} denoting this
+     *         card&#39;s rank followed by a character in {@link HandEvalCard.Suit#SUIT_CHARS} denoting this
      *         card&#39;s suit.
      */
     @Override

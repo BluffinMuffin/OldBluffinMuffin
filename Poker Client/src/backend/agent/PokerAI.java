@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import utility.ClosingListener;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.Player;
 import backend.PlayerAction;
@@ -99,7 +99,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypeGameState p_gameState)
+    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypePokerRound p_gameState)
     {
     }
     

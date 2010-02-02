@@ -2,11 +2,12 @@ package backend.agent;
 
 import java.util.ArrayList;
 
-import stats.MonteCarlo;
-import utility.Card;
-import utility.TypeGameState;
+import pokerStats.MonteCarlo;
+
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.PlayerAction;
+import basePoker.Card;
 
 @Deprecated
 public class PokerGeneticAI extends PokerAI
@@ -44,7 +45,7 @@ public class PokerGeneticAI extends PokerAI
         final double mc = calculateHandValues();
         
         int gameState = 1;
-        if (m_table.m_gameState == TypeGameState.PREFLOP)
+        if (m_table.m_gameState == TypePokerRound.PREFLOP)
         {
             gameState = 0;
         }

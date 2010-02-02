@@ -65,7 +65,6 @@ import stats.StatsAgent;
 import utility.Bundle;
 import utility.ClosingListener;
 import utility.Constants;
-import utility.TypeHoldEmGame;
 import utility.TypeMessageLobby;
 import utility.TypeMessageTableManager;
 import backend.Player;
@@ -79,6 +78,7 @@ import backend.agent.PokerAI;
 import backend.agent.PokerSVM;
 import backend.agent.TypeAgent;
 import backend.agent.TypeObserver;
+import basePoker.TypePokerGame;
 
 /**
  * @author Hocus
@@ -269,7 +269,7 @@ public class Lobby implements ClosingListener<PokerClient>
      *         <b>false</b> if no seat is free, someone with the same name
      *         has already joined this table, or the table does not exist.
      */
-    public int createTable(String p_tableName, TypeHoldEmGame p_gameType, int p_bigBlind, int p_maxPlayers)
+    public int createTable(String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers)
     {
         // Build query.
         final StringBuilder sb = new StringBuilder();
@@ -523,7 +523,7 @@ public class Lobby implements ClosingListener<PokerClient>
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final int noPort = createTable(getJTextFieldTableName().getText(), (TypeHoldEmGame) getJComboBoxGameType().getSelectedItem(), (Integer) getJSpinnerBigBlind().getValue(), getJSliderNbPlayers().getValue());
+                    final int noPort = createTable(getJTextFieldTableName().getText(), (TypePokerGame) getJComboBoxGameType().getSelectedItem(), (Integer) getJSpinnerBigBlind().getValue(), getJSliderNbPlayers().getValue());
                     
                     if (noPort != -1)
                     {
@@ -829,8 +829,8 @@ public class Lobby implements ClosingListener<PokerClient>
         if (jComboBoxGameType == null)
         {
             jComboBoxGameType = new JComboBox();
-            jComboBoxGameType.setModel(new DefaultComboBoxModel(TypeHoldEmGame.values()));
-            jComboBoxGameType.setSelectedItem(TypeHoldEmGame.NO_LIMIT);
+            jComboBoxGameType.setModel(new DefaultComboBoxModel(TypePokerGame.values()));
+            jComboBoxGameType.setSelectedItem(TypePokerGame.NO_LIMIT);
         }
         return jComboBoxGameType;
     }
@@ -2294,7 +2294,7 @@ public class Lobby implements ClosingListener<PokerClient>
             final Table table = new Table();
             final Integer noPort = Integer.parseInt(token.nextToken());
             final String tableName = token.nextToken();
-            final TypeHoldEmGame gameType = TypeHoldEmGame.valueOf(token.nextToken());
+            final TypePokerGame gameType = TypePokerGame.valueOf(token.nextToken());
             final int bigBlind = Integer.parseInt(token.nextToken());
             final int nbPlayers = Integer.parseInt(token.nextToken());
             final int nbSeats = Integer.parseInt(token.nextToken());
@@ -2487,7 +2487,7 @@ public class Lobby implements ClosingListener<PokerClient>
         {
             final Integer noPort = Integer.parseInt(token.nextToken());
             final String tableName = token.nextToken();
-            final TypeHoldEmGame gameType = TypeHoldEmGame.valueOf(token.nextToken());
+            final TypePokerGame gameType = TypePokerGame.valueOf(token.nextToken());
             final int bigBlind = Integer.parseInt(token.nextToken());
             final int nbPlayers = Integer.parseInt(token.nextToken());
             final int nbSeats = Integer.parseInt(token.nextToken());

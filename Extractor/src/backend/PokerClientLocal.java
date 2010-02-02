@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import utility.Card;
 import utility.ClosingListener;
 import utility.Constants;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypeMessageTableToClient;
 import utility.TypePlayerAction;
 import backend.agent.IPokerAgent;
@@ -21,6 +20,7 @@ import backend.agent.PlayerAction;
 import backend.collections.AutoListModel;
 import backend.collections.ListEvent;
 import backend.collections.ListListener;
+import basePoker.Card;
 
 /**
  * This class is the representation of a generic poker client.
@@ -79,7 +79,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
      * 
      * @param p_token
      *            Message received from the server.
-     * @see [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;typeGameState]
+     * @see [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
      */
     private void betTurnEnded(StringTokenizer p_token)
     {
@@ -99,7 +99,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
             player.m_betAmount = 0;
         }
         
-        final TypeGameState gameState = TypeGameState.valueOf(p_token.nextToken());
+        final TypePokerRound gameState = TypePokerRound.valueOf(p_token.nextToken());
         m_table.m_gameState = gameState;
         
         m_table.m_currentBet = 0;
@@ -171,7 +171,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
      */
     private void gameEnded(StringTokenizer p_token)
     {
-        m_table.m_gameState = TypeGameState.GAME_ENDED;
+        m_table.m_gameState = TypePokerRound.END;
         notifyObserver(IPokerAgentListener.GAME_ENDED);
     }
     
@@ -223,7 +223,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         resetBoardCards();
         
         m_table.setPlayerPositions();
-        m_table.m_gameState = TypeGameState.PREFLOP;
+        m_table.m_gameState = TypePokerRound.PREFLOP;
         m_table.m_currentBet = 0;
         
         notifyObserver(IPokerAgentListener.GAME_STARTED, null, null, null);// , oldSmallBlind, oldBigBlind);

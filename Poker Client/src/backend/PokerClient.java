@@ -15,15 +15,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import utility.Card;
 import utility.ClosingListener;
 import utility.Constants;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypeMessageTableToClient;
 import utility.TypePlayerAction;
 import backend.agent.IPokerAgent;
 import backend.agent.IPokerAgentActionner;
 import backend.agent.IPokerAgentListener;
+import basePoker.Card;
 
 /**
  * @author Hokus
@@ -101,7 +101,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
      * 
      * @param p_token
      *            Message received from the server.
-     * @see [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;typeGameState]
+     * @see [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
      */
     private void betTurnEnded(StringTokenizer p_token)
     {
@@ -121,7 +121,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             player.m_betAmount = 0;
         }
         
-        final TypeGameState gameState = TypeGameState.valueOf(p_token.nextToken());
+        final TypePokerRound gameState = TypePokerRound.valueOf(p_token.nextToken());
         m_table.m_gameState = gameState;
         
         m_table.m_currentBet = 0;
@@ -204,7 +204,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
      */
     private void gameEnded(StringTokenizer p_token)
     {
-        m_table.m_gameState = TypeGameState.GAME_ENDED;
+        m_table.m_gameState = TypePokerRound.END;
         notifyObserver(IPokerAgentListener.GAME_ENDED);
     }
     
@@ -258,7 +258,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         resetBoardCards();
         
         m_table.setPlayerPositions();
-        m_table.m_gameState = TypeGameState.PREFLOP;
+        m_table.m_gameState = TypePokerRound.PREFLOP;
         m_table.m_currentBet = 0;
         
         for (final Player player : m_table.m_players.values())

@@ -1,7 +1,9 @@
-package utility;
+package basePoker;
 
 import java.util.Collections;
 import java.util.Stack;
+
+
 
 /**
  * 
@@ -32,14 +34,14 @@ public class Deck
     /**
      * The type of the deck
      */
-    private TypeDeck m_type;
+    private boolean m_withJokers;
     
     /**
      * Default Deck constructor. Make a shuffled card deck without Joker
      */
     public Deck()
     {
-        this(TypeDeck.NO_JOKER);
+        this(false);
     }
     
     /**
@@ -49,9 +51,9 @@ public class Deck
      * @param p_cards
      * @param p_type
      */
-    public Deck(Stack<Card> p_cards, TypeDeck p_type)
+    public Deck(Stack<Card> p_cards, boolean p_withJoker)
     {
-        setType(p_type);
+        setWithJoker(p_withJoker);
         setCards(p_cards);
     }
     
@@ -61,16 +63,12 @@ public class Deck
      * @param p_type
      *            Type of the Deck
      */
-    public Deck(TypeDeck p_type)
+    public Deck(boolean p_withJoker)
     {
         m_cards = new Stack<Card>();
-        m_type = p_type;
+        m_withJokers = p_withJoker;
         
-        int nbCards = 54;
-        if (p_type == TypeDeck.NO_JOKER)
-        {
-            nbCards = 52;
-        }
+        int nbCards = m_withJokers ? 54 : 52;
         
         for (int i = 0; i < nbCards; i++)
         {
@@ -108,9 +106,9 @@ public class Deck
      * @return
      *         Type of the Deck
      */
-    public TypeDeck getType()
+    public boolean isWithJoker()
     {
-        return m_type;
+        return m_withJokers;
     }
     
     /**
@@ -163,9 +161,9 @@ public class Deck
      * @param p_type
      *            Type of the Deck
      */
-    public void setType(TypeDeck p_type)
+    public void setWithJoker(boolean p_withJokers)
     {
-        m_type = p_type;
+        m_withJokers = p_withJokers;
     }
     
 }

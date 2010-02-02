@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import tools.Util;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.Player;
 
@@ -16,7 +16,7 @@ import backend.Player;
 public interface IPokerAgentListener extends IPokerAgent
 {
     // Methods corresponding to messages type sent by the server.
-    public static final Method BET_TURN_ENDED = Util.getIPokerAgentListenerMethod("betTurnEnded", ArrayList.class, TypeGameState.class);
+    public static final Method BET_TURN_ENDED = Util.getIPokerAgentListenerMethod("betTurnEnded", ArrayList.class, TypePokerRound.class);
     public static final Method BOARD_CHANGED = Util.getIPokerAgentListenerMethod("boardChanged", ArrayList.class);
     public static final Method GAME_ENDED = Util.getIPokerAgentListenerMethod("gameEnded");
     public static final Method GAME_STARTED = Util.getIPokerAgentListenerMethod("gameStarted", Player.class, Player.class, Player.class);
@@ -37,7 +37,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_potIndices
      *            contains all indices of pots that have been modified.
      */
-    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypeGameState p_gameStat);
+    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypePokerRound p_gameStat);
     
     /**
      * Happens when cards on the board changes.

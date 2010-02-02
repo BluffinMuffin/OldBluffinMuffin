@@ -10,10 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import tools.HeadsUpException;
-import utility.Card;
-import utility.TypeHoldEmGame;
 import utility.TypePlayerAction;
 import backend.agent.TypeSimplifiedAction;
+import basePoker.Card;
+import basePoker.TypePokerGame;
 
 public class TupleHandHistories
 {
@@ -126,7 +126,7 @@ public class TupleHandHistories
     
     public String m_text;
     
-    public TypeHoldEmGame m_type;
+    public TypePokerGame m_type;
     
     public Calendar m_startedTime;
     
@@ -342,7 +342,7 @@ public class TupleHandHistories
         final String line = p_token.nextToken("\n");
         if (line.contains("No Limit") && line.contains("Hold'em"))
         {
-            m_type = TypeHoldEmGame.NO_LIMIT;
+            m_type = TypePokerGame.NO_LIMIT;
         }
         else
         {

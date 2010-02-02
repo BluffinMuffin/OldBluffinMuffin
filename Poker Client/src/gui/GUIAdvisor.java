@@ -20,16 +20,17 @@ import javax.swing.border.LineBorder;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
 
-import stats.MonteCarlo;
+import pokerStats.MonteCarlo;
+import pokerStats.StatsInfos;
+
 import stats.PlayerStats;
 import stats.StatsAgent;
-import stats.StatsInfos;
-import utility.Card;
 import utility.TypePlayerAction;
 import backend.Player;
 import backend.PlayerAction;
 import backend.Table;
 import backend.agent.PokerSVM;
+import basePoker.Card;
 
 /**
  * @author Hocus

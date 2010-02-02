@@ -8,13 +8,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import utility.Card;
 import utility.Constants;
 import utility.TypePlayerAction;
 import backend.Action;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
+import basePoker.Card;
 
 @Deprecated
 public class NetworkPlayer extends AbstractPlayer implements IHoldEmObserver

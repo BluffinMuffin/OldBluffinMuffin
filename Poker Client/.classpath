@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="plugins/org.dyno.visual.swing.parser_0.9.12.I20090522-2330.jar"/>
 	<classpathentry kind="lib" path="plugins/org.dyno.visual.swing.types_0.9.12.I20090527-2200.jar"/>
 	<classpathentry kind="lib" path="plugins/org.dyno.visual.swing.widgets_0.9.12.I20090527-2200.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PokerWorld"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

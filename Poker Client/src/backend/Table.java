@@ -3,8 +3,9 @@ package backend;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import utility.Card;
-import utility.TypeGameState;
+import basePoker.Card;
+
+import basePoker.TypePokerRound;
 
 /**
  * @author Hocus
@@ -38,7 +39,7 @@ public class Table
     public int m_smallBlindAmount;
     public int m_bigBlindAmount;
     
-    public TypeGameState m_gameState = TypeGameState.UNKNOWN;
+    public TypePokerRound m_gameState = TypePokerRound.BEGINNING;
     
     public int m_currentBet;
     

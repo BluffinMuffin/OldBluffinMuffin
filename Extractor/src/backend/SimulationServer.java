@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import stats.MonteCarlo;
+import pokerStats.MonteCarlo;
+import pokerStats.StatsInfos;
+
 import stats.StatsAgent;
-import stats.StatsInfos;
-import utility.Card;
 import utility.Tool;
-import utility.TypeGamePhase;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypeMessageTableToClient;
 import utility.TypePlayerAction;
 import backend.agent.IPokerAgentListener;
 import backend.agent.TypeSimplifiedAction;
 import backend.collections.AutoListModel;
+import basePoker.Card;
 import db.TupleHandHistories;
 import db.TupleHandHistories.PhaseEvents;
 import db.TupleHandHistories.TuplePlayer;
@@ -23,7 +23,7 @@ import db.TupleHandHistories.Winner;
 
 public class SimulationServer
 {
-    TypeGamePhase m_state = TypeGamePhase.PREFLOP;
+    TypePokerRound m_state = TypePokerRound.PREFLOP;
     PokerClientLocal m_client;
     StatsAgent m_statsAgent = new StatsAgent();
     LinkedBlockingQueue<String> m_fromClient = new LinkedBlockingQueue<String>(1);
@@ -89,7 +89,7 @@ public class SimulationServer
         final Card[] holeCards = new Card[] { m_hero.m_card1, m_hero.m_card2 };
         final Card[] boardCcards = new Card[5];
         
-        if (m_state == TypeGamePhase.PREFLOP)
+        if (m_state == TypePokerRound.PREFLOP)
         {
             boardCcards[0] = Card.getInstance().get(Card.NO_CARD);
             boardCcards[1] = Card.getInstance().get(Card.NO_CARD);
@@ -97,7 +97,7 @@ public class SimulationServer
             boardCcards[3] = Card.getInstance().get(Card.NO_CARD);
             boardCcards[4] = Card.getInstance().get(Card.NO_CARD);
         }
-        else if (m_state == TypeGamePhase.FLOP)
+        else if (m_state == TypePokerRound.FLOP)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -105,7 +105,7 @@ public class SimulationServer
             boardCcards[3] = Card.getInstance().get(Card.NO_CARD);
             boardCcards[4] = Card.getInstance().get(Card.NO_CARD);
         }
-        else if (m_state == TypeGamePhase.TURN)
+        else if (m_state == TypePokerRound.TURN)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -113,7 +113,7 @@ public class SimulationServer
             boardCcards[3] = m_currentInfos.m_turn;
             boardCcards[4] = Card.getInstance().get(Card.NO_CARD);
         }
-        else if (m_state == TypeGamePhase.RIVER)
+        else if (m_state == TypePokerRound.RIVER)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -266,7 +266,7 @@ public class SimulationServer
         return m_vectors;
     }
     
-    private boolean isFolded(TuplePlayer p_player, TypeGamePhase p_state)
+    private boolean isFolded(TuplePlayer p_player, TypePokerRound p_state)
     {
         switch (p_state)
         {
@@ -656,12 +656,12 @@ public class SimulationServer
             send(sb.toString());
         }
         
-        m_state = TypeGamePhase.PREFLOP;
+        m_state = TypePokerRound.PREFLOP;
         // *** PREFLOP ***//
         totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_preflopEvents, p_infos.m_bigBlind);
         
         // Send BetTurnEnded
-        // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;typeGameState]
+        // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
         sb = new StringBuilder();
         sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
         sb.append(";");
@@ -669,10 +669,10 @@ public class SimulationServer
         {
             sb.append("0;");
         }
-        sb.append(TypeGameState.PREFLOP);
+        sb.append(TypePokerRound.PREFLOP);
         send(sb.toString());
         
-        m_state = TypeGamePhase.FLOP;
+        m_state = TypePokerRound.FLOP;
         if (p_infos.m_flopEvents.size() > 0)
         {
             // *** FLOP ***//
@@ -695,7 +695,7 @@ public class SimulationServer
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_flopEvents);
             
             // Send BetTurnEnded
-            // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;typeGameState]
+            // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
             sb = new StringBuilder();
             sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
             sb.append(";");
@@ -703,11 +703,11 @@ public class SimulationServer
             {
                 sb.append("0;");
             }
-            sb.append(TypeGameState.FLOP);
+            sb.append(TypePokerRound.FLOP);
             send(sb.toString());
         }
         
-        m_state = TypeGamePhase.TURN;
+        m_state = TypePokerRound.TURN;
         if (p_infos.m_turnEvents.size() > 0)
         {
             // *** TURN ***//
@@ -730,7 +730,7 @@ public class SimulationServer
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_turnEvents);
             
             // Send BetTurnEnded
-            // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;typeGameState]
+            // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
             sb = new StringBuilder();
             sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
             sb.append(";");
@@ -738,11 +738,11 @@ public class SimulationServer
             {
                 sb.append("0;");
             }
-            sb.append(TypeGameState.TURN);
+            sb.append(TypePokerRound.TURN);
             send(sb.toString());
         }
         
-        m_state = TypeGamePhase.RIVER;
+        m_state = TypePokerRound.RIVER;
         if (p_infos.m_riverEvents.size() > 0)
         {
             // *** RIVER ***//
@@ -765,7 +765,7 @@ public class SimulationServer
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_riverEvents);
             
             // Send BETTING_TURN_ENDED
-            // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;typeGameState]
+            // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
             sb = new StringBuilder();
             sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
             sb.append(";");
@@ -773,7 +773,7 @@ public class SimulationServer
             {
                 sb.append("0;");
             }
-            sb.append(TypeGameState.RIVER);
+            sb.append(TypePokerRound.RIVER);
             send(sb.toString());
         }
         
@@ -815,7 +815,7 @@ public class SimulationServer
         for (final TuplePlayer player : m_currentInfos.m_players)
         {
             
-            if ((m_state != TypeGamePhase.PREFLOP) || ((player.m_noSeat != m_currentInfos.m_noSeatBigBlind) && (player.m_noSeat != m_currentInfos.m_noSeatSmallBlind)))
+            if ((m_state != TypePokerRound.PREFLOP) || ((player.m_noSeat != m_currentInfos.m_noSeatBigBlind) && (player.m_noSeat != m_currentInfos.m_noSeatSmallBlind)))
             {
                 player.m_betAmount = 0;
             }
@@ -874,19 +874,19 @@ public class SimulationServer
             sb.append(";");
             send(sb.toString());
             
-            if (m_state == TypeGamePhase.PREFLOP)
+            if (m_state == TypePokerRound.PREFLOP)
             {
                 manageLastActionsPreflop(event);
             }
-            else if (m_state == TypeGamePhase.FLOP)
+            else if (m_state == TypePokerRound.FLOP)
             {
                 manageLastActionsFlop(event);
             }
-            else if (m_state == TypeGamePhase.TURN)
+            else if (m_state == TypePokerRound.TURN)
             {
                 manageLastActionsTurn(event);
             }
-            else if (m_state == TypeGamePhase.RIVER)
+            else if (m_state == TypePokerRound.RIVER)
             {
                 manageLastActionsRiver(event);
             }
@@ -927,7 +927,7 @@ public class SimulationServer
         sb.append(formatEnum(m_hero.m_lastActionsRiver, TypeSimplifiedAction.class)); // 36-42
         
         sb.append(format((double) p_totalPotAmount / (double) m_hero.m_money)); // 43
-        sb.append(formatEnum(m_state, TypeGamePhase.class)); // 44-47
+        sb.append(formatEnum(m_state, TypePokerRound.class)); // 44-47
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
         for (final TuplePlayer player : m_currentInfos.m_players)
@@ -960,7 +960,7 @@ public class SimulationServer
             }
             else
             {
-                if (m_state == TypeGamePhase.PREFLOP)
+                if (m_state == TypePokerRound.PREFLOP)
                 {
                     // Stats preflop
                     sb.append(format(m_statsAgent.m_overallStats.get(player.m_name).getProbVPIPTotal_PRF())); // 87

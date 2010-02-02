@@ -1,4 +1,4 @@
-package utility;
+package basePoker;
 
 /**
  * @author Hocus
@@ -6,5 +6,9 @@ package utility;
  */
 public enum TypePlayerMajorPosition
 {
-    D, BB, SB, UTG, CO
+    Dealer, 
+    BigBlind, 
+    SmallBlind, 
+    UnderTheGun, 
+    CutOff
 }

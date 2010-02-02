@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import utility.Constants;
-import utility.TypeGameState;
+import basePoker.TypePokerRound;
 import utility.TypePlayerAction;
 import backend.Player;
 import backend.Table;
@@ -69,7 +69,7 @@ public class StatsAgent implements IPokerAgentListener
      * @param p_potIndices
      *            contains all indices of pots that have been modified.
      */
-    public void betTurnEnded(ArrayList<Integer> pPotIndices, TypeGameState pGameStat)
+    public void betTurnEnded(ArrayList<Integer> pPotIndices, TypePokerRound pGameStat)
     {
         // Notify the lastStreeRaiser that he actually was the last one.
         if (m_lastStreetRaiser != null)

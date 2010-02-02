@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import utility.Card;
 import utility.Constants;
 import utility.TypeMessageTableToClient;
 import utility.TypePlayerAction;
@@ -16,6 +15,7 @@ import backend.Action;
 import backend.HoldEmTable;
 import backend.IHoldEmObserver;
 import backend.Pot;
+import basePoker.Card;
 
 /**
  * @author HOCUS

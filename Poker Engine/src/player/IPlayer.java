@@ -2,9 +2,9 @@ package player;
 
 import java.util.ArrayList;
 
-import utility.Card;
 import backend.Action;
 import backend.HoldEmTable;
+import basePoker.Card;
 
 /**
  * @author HOCUS

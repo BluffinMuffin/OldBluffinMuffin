@@ -14,8 +14,9 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
+import basePoker.Card;
+
 import utility.Bundle;
-import utility.Card;
 
 /**
  * @author Hocus

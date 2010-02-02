@@ -15,11 +15,11 @@ import java.util.TreeMap;
 
 import tools.Logger;
 import utility.Constants;
-import utility.TypeHoldEmGame;
 import utility.TypeMessageLobby;
 import backend.HoldEmTable;
 import backend.Table;
 import backend.TableManager;
+import basePoker.TypePokerGame;
 
 /**
  * @author Hocus
@@ -75,7 +75,7 @@ public class ServerLobby extends Thread
         private void createTable(StringTokenizer p_token)
         {
             final String tableName = p_token.nextToken();
-            final TypeHoldEmGame gameType = TypeHoldEmGame.valueOf(p_token.nextToken());
+            final TypePokerGame gameType = TypePokerGame.valueOf(p_token.nextToken());
             final int bigBlind = Integer.parseInt(p_token.nextToken());
             final int playerCapacity = Integer.parseInt(p_token.nextToken());
             
@@ -224,7 +224,7 @@ public class ServerLobby extends Thread
      * @return
      *         The port number where the TableManager is listening to.
      */
-    public synchronized int createTable(String p_tableName, TypeHoldEmGame p_gameType, int p_bigBlind, int p_nbSeats)
+    public synchronized int createTable(String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_nbSeats)
     {
         listTables();
         

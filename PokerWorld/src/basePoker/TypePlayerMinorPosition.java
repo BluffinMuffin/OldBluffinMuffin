@@ -1,4 +1,4 @@
-package utility;
+package basePoker;
 
 /**
  * @author Hocus
@@ -6,5 +6,7 @@ package utility;
  */
 public enum TypePlayerMinorPosition
 {
-    EP, MP, LT
+    EarlyPos, 
+    MiddlePos, 
+    LatePos
 }

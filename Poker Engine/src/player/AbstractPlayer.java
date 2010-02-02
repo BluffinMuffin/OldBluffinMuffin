@@ -3,10 +3,11 @@ package player;
 import java.util.ArrayList;
 
 import tools.PokerUtil;
-import utility.Card;
 import utility.TypePlayerAction;
 import backend.Action;
 import backend.HoldEmTable;
+import basePoker.Card;
+import handEvaluation.HandEvalHoldem;
 
 /**
  * @author HOCUS
@@ -183,7 +184,7 @@ public abstract class AbstractPlayer implements IPlayer
         {
             hand.add(element);
         }
-        return PokerUtil.getSteveBercherHandValue(hand);
+        return HandEvalHoldem.get7CardsHandValue(hand);
     }
     
     @Override

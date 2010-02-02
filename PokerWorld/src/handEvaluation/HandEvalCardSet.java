@@ -1,4 +1,5 @@
-package com.stevebrecher.poker;
+package handEvaluation;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,31 +8,31 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * A set of distinct {@link Card}s.
+ * Original class from Steve Brecher, version 2006Dec11.0
+ * Adapted by Bluffin Muffin
+ *
+ * A set of distinct {@link HandEvalCard}s.
  * <p>
- * This implementation is a wrapper on {@link ArrayList}<{@link Card}> that allows no duplicates. A CardSet's iterator will provide elements in FIFO order -- the order in which the elements were added -- if the instance's shuffle method has not been invoked.
+ * This implementation is a wrapper on {@link ArrayList}<{@link HandEvalCard}> that allows no duplicates. A CardSet's iterator will provide elements in FIFO order -- the order in which the elements were added -- if the instance's shuffle method has not been invoked.
  * <p>
  * It also provides a 52-card deck.
  * <p>
- * Methods not otherwise documented forward to {@link ArrayList}<{@link Card}> or perform as specified by the {@link Set} interface.
- * 
- * @version 2006Dec10.0
- * @author Steve Brecher
+ * Methods not otherwise documented forward to {@link ArrayList}<{@link HandEvalCard}> or perform as specified by the {@link Set} interface.
  * 
  */
-public class CardSet implements Set<Card>
+public class HandEvalCardSet implements Set<HandEvalCard>
 {
     
-    private final ArrayList<Card> cards;
+    private final ArrayList<HandEvalCard> cards;
     
-    private static final CardSet madeDeck = new CardSet(52);
+    private static final HandEvalCardSet madeDeck = new HandEvalCardSet(52);
     static
     {
-        for (final Card.Suit suit : Card.Suit.values())
+        for (final HandEvalCard.Suit suit : HandEvalCard.Suit.values())
         {
-            for (final Card.Rank rank : Card.Rank.values())
+            for (final HandEvalCard.Rank rank : HandEvalCard.Rank.values())
             {
-                CardSet.madeDeck.add(new Card(rank, suit));
+                HandEvalCardSet.madeDeck.add(new HandEvalCard(rank, suit));
             }
         }
     }
@@ -41,9 +42,9 @@ public class CardSet implements Set<Card>
      * 
      * @return a 52-card deck in order from clubs to spades and within each suit from deuce to Ace.
      */
-    public static CardSet freshDeck()
+    public static HandEvalCardSet freshDeck()
     {
-        return new CardSet(CardSet.madeDeck);
+        return new HandEvalCardSet(HandEvalCardSet.madeDeck);
     }
     
     /**
@@ -51,29 +52,29 @@ public class CardSet implements Set<Card>
      * 
      * @return a shuffled 52-card deck.
      */
-    public static CardSet shuffledDeck()
+    public static HandEvalCardSet shuffledDeck()
     {
-        final CardSet result = new CardSet(CardSet.madeDeck);
+        final HandEvalCardSet result = new HandEvalCardSet(HandEvalCardSet.madeDeck);
         Collections.shuffle(result.cards);
         return result;
     }
     
-    public CardSet()
+    public HandEvalCardSet()
     {
-        cards = new ArrayList<Card>();
+        cards = new ArrayList<HandEvalCard>();
     }
     
     /**
      * Copy constructor
      */
-    public CardSet(CardSet source)
+    public HandEvalCardSet(HandEvalCardSet source)
     {
-        cards = new ArrayList<Card>(source.cards);
+        cards = new ArrayList<HandEvalCard>(source.cards);
     }
     
-    public CardSet(int initialCapacity)
+    public HandEvalCardSet(int initialCapacity)
     {
-        cards = new ArrayList<Card>(initialCapacity);
+        cards = new ArrayList<HandEvalCard>(initialCapacity);
     }
     
     /**
@@ -81,7 +82,7 @@ public class CardSet implements Set<Card>
      * 
      * @return <code>true</code> if this CardSet did not already contain the specified Card.
      */
-    public boolean add(Card c)
+    public boolean add(HandEvalCard c)
     {
         if (cards.contains(c))
         {
@@ -95,10 +96,10 @@ public class CardSet implements Set<Card>
      * 
      * @return <code>true</code> if this CardSet changed as a result of the call; <code>false</code> if all of the Cards in the specified Collection were already present in this CardSet.
      */
-    public boolean addAll(Collection<? extends Card> coll)
+    public boolean addAll(Collection<? extends HandEvalCard> coll)
     {
         boolean result = false;
-        for (final Card c : coll)
+        for (final HandEvalCard c : coll)
         {
             result |= add(c);
         }
@@ -120,14 +121,15 @@ public class CardSet implements Set<Card>
         return cards.containsAll(coll);
     }
     
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public boolean equals(Object that)
     {
         if (!(that instanceof Set) || (((Set) that).size() != cards.size()))
         {
             return false;
         }
-        for (final Card c : cards)
+        for (final HandEvalCard c : cards)
         {
             if (!((Set) that).contains(c))
             {
@@ -141,7 +143,7 @@ public class CardSet implements Set<Card>
     public int hashCode()
     {
         int result = 0;
-        for (final Card c : cards)
+        for (final HandEvalCard c : cards)
         {
             result += c.hashCode();
         }
@@ -153,7 +155,7 @@ public class CardSet implements Set<Card>
         return cards.isEmpty();
     }
     
-    public Iterator<Card> iterator()
+    public Iterator<HandEvalCard> iterator()
     {
         return cards.iterator();
     }
@@ -161,6 +163,11 @@ public class CardSet implements Set<Card>
     public boolean remove(Object o)
     {
         return cards.remove(o);
+    }
+    
+    public HandEvalCard pop()
+    {
+        return cards.remove(0);
     }
     
     public boolean removeAll(Collection<?> coll)
@@ -185,7 +192,7 @@ public class CardSet implements Set<Card>
     
     public Object[] toArray()
     {
-        return cards.toArray(new Card[cards.size()]);
+        return cards.toArray(new HandEvalCard[cards.size()]);
     }
     
     public <T> T[] toArray(T[] a)
@@ -197,7 +204,7 @@ public class CardSet implements Set<Card>
      * Returns a {@link String} containing a comma-space-separated list of cards.
      * 
      * @return a {@link String} containing a comma-space-separated list of cards,
-     *         each the result of {@link Card#toString()}.
+     *         each the result of {@link HandEvalCard#toString()}.
      */
     @Override
     public String toString()
