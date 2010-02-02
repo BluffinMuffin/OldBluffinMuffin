@@ -2,7 +2,7 @@
 
 = Requirements =
 
- * Eclipse withs Plugin: 
+ * Eclipse with Plugin: 
   * Subversive SVN 
    * Subversive SVN Integration....
    * Subversive SVN Team Provider ...
