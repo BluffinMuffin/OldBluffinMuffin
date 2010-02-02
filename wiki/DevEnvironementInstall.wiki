@@ -1,0 +1,23 @@
+#summary Installation de l'environnement
+
+= Requirements =
+
+Eclipse withs Plugin: 
+ * Subversive SVN 
+  * Subversive SVN Integration....
+  * Subversive SVN Team Provider ...
+  * Subversive SVN Connectors
+  * SVNKit 1.3.0....
+
+= Installation =
+
+ # Create a nice workspace with flowers and butterflies
+ # Choose "Import" then "SVN" then "Project from SVN"
+  * URL: https://bluffin-muffin.googlecode.com/svn
+  * User: you're google account username
+  * Pass: this special pass: http://code.google.com/hosting/settings
+ # When the nightmare is over by clicking Next, another nightmare begin: the Finish button is disable !! Just play with something, to wake him up, but make shur to change nothing ! Then click finish. :)
+ # When another window appear, choose choice #2 (Find projects ...) then click Finish
+ # Enable "Respect projects hierarchy" then click Finish. This will be a little long because of the SVMs folder, be patient !
+ # After that, go in the "Poker Client" project outside eclipse (like in Windows Explorer). Copy "images" and "SVMs", then paste them in the "bin" folder.
+ # Enjoy !! :)
