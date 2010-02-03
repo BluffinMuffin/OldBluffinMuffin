@@ -1,19 +1,13 @@
 package backend;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
-
-import basePoker.Card;
-
-import basePoker.BasePokerPlayer;
-import basePoker.TypePokerRound;
-import basePoker.BasePokerTable;
+import basePoker.PokerPlayerInfo;
+import basePoker.PokerTableInfo;
 
 /**
  * @author Hocus
  *         This class represents a poker table on the client side.
  */
-public class Table extends BasePokerTable
+public class ClientPokerTableInfo extends PokerTableInfo
 {
     
     /**
@@ -22,7 +16,7 @@ public class Table extends BasePokerTable
     public void setPlayerPositions()
     {
         // Initialize all player's attributes to default value.
-        for (final BasePokerPlayer player : m_players.values())
+        for (final PokerPlayerInfo player : m_players.values())
         {
             player.m_isPlaying = player.m_money > 0;
             player.m_isEarlyPos = false;
@@ -63,7 +57,7 @@ public class Table extends BasePokerTable
         i = (i + 1) % m_nbSeats;
         while (i != m_noSeatDealer)
         {
-            final BasePokerPlayer player = m_players.get(i);
+            final PokerPlayerInfo player = m_players.get(i);
             if ((player != null) && player.m_isPlaying)
             {
                 player.m_relativePosition = position;
@@ -75,7 +69,7 @@ public class Table extends BasePokerTable
         
         // Set boolean attributes depending the player relative position.
         m_nbPlayingPlayers = 0;
-        for (final BasePokerPlayer player : m_players.values())
+        for (final PokerPlayerInfo player : m_players.values())
         {
             if (!player.m_isPlaying)
             {

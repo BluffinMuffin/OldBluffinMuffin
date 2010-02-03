@@ -6,16 +6,16 @@ import java.util.List;
 
 import miscUtil.IClosingListener;
 
-import basePoker.BasePokerPlayer;
-import basePoker.BasePokerTable;
+import basePoker.PokerPlayerInfo;
+import basePoker.PokerTableInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentActionner;
 import basePokerAI.IPokerAgentListener;
-import backend.ClientPokerPlayer;
+import backend.ClientPokerPlayerInfo;
 import basePoker.PokerPlayerAction;
-import backend.Table;
+import backend.ClientPokerTableInfo;
 
 /**
  * @author Hocus
@@ -37,7 +37,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     private boolean m_isRunning = true;
     
     /** Represents the poker table the agent is playing on. **/
-    protected BasePokerTable m_table = null;
+    protected PokerTableInfo m_table = null;
     /** Is the next action the agent has decided to take. **/
     private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     /** Indicates if new infos are available to the agent. **/
@@ -133,7 +133,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void gameStarted(BasePokerPlayer p_oldDealer, BasePokerPlayer p_oldSmallBlind, BasePokerPlayer p_oldBigBlind)
+    public void gameStarted(PokerPlayerInfo p_oldDealer, PokerPlayerInfo p_oldSmallBlind, PokerPlayerInfo p_oldBigBlind)
     {
     }
     
@@ -166,7 +166,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void playerCardChanged(BasePokerPlayer p_player)
+    public void playerCardChanged(PokerPlayerInfo p_player)
     {
         if (p_player == m_table.m_localPlayer)
         {
@@ -179,32 +179,32 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void playerJoined(BasePokerPlayer p_player)
+    public void playerJoined(PokerPlayerInfo p_player)
     {
     }
     
     @Override
-    public void playerLeft(BasePokerPlayer p_player)
+    public void playerLeft(PokerPlayerInfo p_player)
     {
     }
     
     @Override
-    public void playerMoneyChanged(BasePokerPlayer p_player, int p_oldMoneyAmount)
+    public void playerMoneyChanged(PokerPlayerInfo p_player, int p_oldMoneyAmount)
     {
     }
     
     @Override
-    public void playerTurnBegan(BasePokerPlayer p_oldCurrentPlayer)
+    public void playerTurnBegan(PokerPlayerInfo p_oldCurrentPlayer)
     {
     }
     
     @Override
-    public void playerTurnEnded(BasePokerPlayer p_player, TypePlayerAction p_action, int p_actionAmount)
+    public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount)
     {
     }
     
     @Override
-    public void potWon(BasePokerPlayer p_player, int p_potAmountWon, int p_potIndex)
+    public void potWon(PokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex)
     {
     }
     
@@ -257,7 +257,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void setTable(BasePokerTable p_table)
+    public void setTable(PokerTableInfo p_table)
     {
         m_table = p_table;
     }

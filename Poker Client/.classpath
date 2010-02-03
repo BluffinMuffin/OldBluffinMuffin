@@ -15,5 +15,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerWorld"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerAI"/>
 	<classpathentry kind="lib" path="/PokerAI/libs/libsvm.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/BluffinProtocol"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

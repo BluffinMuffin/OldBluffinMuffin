@@ -25,12 +25,12 @@ import pokerStats.StatsInfos;
 
 import stats.PlayerStats;
 import stats.StatsAgent;
-import backend.ClientPokerPlayer;
+import backend.ClientPokerPlayerInfo;
 import basePoker.PokerPlayerAction;
-import backend.Table;
+import backend.ClientPokerTableInfo;
 import backend.agent.PokerSVM;
-import basePoker.BasePokerPlayer;
-import basePoker.BasePokerTable;
+import basePoker.PokerPlayerInfo;
+import basePoker.PokerTableInfo;
 import basePoker.Card;
 import basePoker.TypePlayerAction;
 
@@ -164,7 +164,7 @@ public class GUIAdvisor extends GUI
         {
             for (int i = 0; i < m_table.m_nbSeats; ++i)
             {
-                final BasePokerPlayer player = m_table.m_players.get(i);
+                final PokerPlayerInfo player = m_table.m_players.get(i);
                 final HudPanel hud = getPlayer(i).m_hud;
                 
                 if (player == null)
@@ -320,7 +320,7 @@ public class GUIAdvisor extends GUI
     }
     
     @Override
-    public void playerCardChanged(BasePokerPlayer p_player)
+    public void playerCardChanged(PokerPlayerInfo p_player)
     {
         super.playerCardChanged(p_player);
         
@@ -331,7 +331,7 @@ public class GUIAdvisor extends GUI
     }
     
     @Override
-    public void setTable(BasePokerTable p_table)
+    public void setTable(PokerTableInfo p_table)
     {
         super.setTable(p_table);
         getjDialogPlayerStats().setTable(p_table);

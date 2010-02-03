@@ -63,14 +63,12 @@ import javax.swing.table.DefaultTableModel;
 import miscUtil.Bundle;
 import miscUtil.Constants;
 import miscUtil.IClosingListener;
-import miscUtil.TypeMessageLobby;
-import miscUtil.TypeMessageTableManager;
 
 import stats.StatsAgent;
 import utilGUI.AutoListModel;
-import backend.ClientPokerPlayer;
+import backend.ClientPokerPlayerInfo;
 import backend.PokerClient;
-import backend.Table;
+import backend.ClientPokerTableInfo;
 import backend.agent.FactoryAgent;
 import backend.agent.FactoryObserver;
 import backend.agent.PokerAI;
@@ -80,6 +78,8 @@ import backend.agent.TypeObserver;
 import basePoker.TypePokerGame;
 import basePokerAI.IPokerAgentActionner;
 import basePokerAI.IPokerAgentListener;
+import baseProtocol.TypeMessageLobby;
+import baseProtocol.TypeMessageTableManager;
 
 /**
  * @author Hocus
@@ -2292,7 +2292,7 @@ public class Lobby implements IClosingListener<PokerClient>
         // Parse results until the right table name matches.
         while (token.hasMoreTokens())
         {
-            final Table table = new Table();
+            final ClientPokerTableInfo table = new ClientPokerTableInfo();
             final Integer noPort = Integer.parseInt(token.nextToken());
             final String tableName = token.nextToken();
             final TypePokerGame gameType = TypePokerGame.valueOf(token.nextToken());
@@ -2381,8 +2381,8 @@ public class Lobby implements IClosingListener<PokerClient>
             
             // Add a tab associated to the newly created table in advanced
             // settings.
-            final ClientPokerPlayer localPlayer = new ClientPokerPlayer(noSeat, m_playerName, 0);
-            final Table table = new Table();
+            final ClientPokerPlayerInfo localPlayer = new ClientPokerPlayerInfo(noSeat, m_playerName, 0);
+            final ClientPokerTableInfo table = new ClientPokerTableInfo();
             table.m_name = p_tableName;
             table.m_bigBlindAmount = p_bigBlindAmount;
             table.m_smallBlindAmount = p_bigBlindAmount / 2;

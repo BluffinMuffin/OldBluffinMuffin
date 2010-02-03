@@ -28,11 +28,11 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
-import basePoker.BasePokerPlayer;
-import basePoker.BasePokerTable;
+import basePoker.PokerPlayerInfo;
+import basePoker.PokerTableInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import backend.Table;
+import backend.ClientPokerTableInfo;
 import basePoker.Card;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentListener;
@@ -107,7 +107,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
     private final ArrayList<CardPanel> m_boardCards = new ArrayList<CardPanel>();
     private final List<IClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IPokerAgent>>());
     
-    protected BasePokerTable m_table = null;
+    protected PokerTableInfo m_table = null;
     
     private final static Integer NB_PLAYERS = 9;
     
@@ -243,7 +243,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
     {
     }
     
-    public void gameStarted(BasePokerPlayer p_oldDealer, BasePokerPlayer p_oldSmallBlind, BasePokerPlayer p_oldBigBlind)
+    public void gameStarted(PokerPlayerInfo p_oldDealer, PokerPlayerInfo p_oldSmallBlind, PokerPlayerInfo p_oldBigBlind)
     {
         for (final CardPanel cardPanel : m_boardCards)
         {
@@ -734,12 +734,12 @@ public class Viewer extends JFrame implements IPokerAgentListener
         setSize(874, 556);
     }
     
-    public void playerCardChanged(BasePokerPlayer p_player)
+    public void playerCardChanged(PokerPlayerInfo p_player)
     {
         getPlayer(p_player.m_noSeat).m_hud.setCards(p_player.getHand()[0], p_player.getHand()[1]);
     }
     
-    public void playerJoined(BasePokerPlayer p_player)
+    public void playerJoined(PokerPlayerInfo p_player)
     {
         final GUIPlayer playerGUI = getPlayer(p_player.m_noSeat);
         playerGUI.m_bet.setText(format(p_player.m_betAmount));
@@ -754,25 +754,25 @@ public class Viewer extends JFrame implements IPokerAgentListener
         playerGUI.m_hud.setVisible(true);
     }
     
-    public void playerLeft(BasePokerPlayer p_player)
+    public void playerLeft(PokerPlayerInfo p_player)
     {
         final GUIPlayer playerGUI = getPlayer(p_player.m_noSeat);
         playerGUI.m_hud.setVisible(false);
         playerGUI.m_bet.setVisible(false);
     }
     
-    public void playerMoneyChanged(BasePokerPlayer p_player, int p_oldMoneyAmount)
+    public void playerMoneyChanged(PokerPlayerInfo p_player, int p_oldMoneyAmount)
     {
         final GUIPlayer playerGUI = getPlayer(p_player.m_noSeat);
         playerGUI.m_hud.setMoney(format(p_player.m_money));
     }
     
-    public void playerTurnBegan(BasePokerPlayer p_oldCurrentPlayer)
+    public void playerTurnBegan(PokerPlayerInfo p_oldCurrentPlayer)
     {
         getPlayer(m_table.m_currentPlayer.m_noSeat).m_hud.setIsPlaying(true);
     }
     
-    public void playerTurnEnded(BasePokerPlayer p_player, TypePlayerAction p_action, int p_actionAmount)
+    public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount)
     {
         final GUIPlayer player = getPlayer(p_player.m_noSeat);
         player.m_bet.setText(format(p_player.m_betAmount));
@@ -782,7 +782,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         getJLabelTotalPot().setText(format(m_table.m_totalPotAmount));
     }
     
-    public void potWon(BasePokerPlayer p_player, int p_potAmountWon, int p_potIndex)
+    public void potWon(PokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex)
     {
         m_pots.get(p_potIndex).setVisible(false);
         final GUIPlayer playerGUI = getPlayer(p_player.m_noSeat);
@@ -820,7 +820,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         this.setVisible(true);
     }
     
-    public void setTable(BasePokerTable p_table)
+    public void setTable(PokerTableInfo p_table)
     {
         m_table = p_table;
     }
@@ -872,7 +872,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         
         for (final Integer i : m_table.m_players.keySet())
         {
-            final BasePokerPlayer player = m_table.m_players.get(i);
+            final PokerPlayerInfo player = m_table.m_players.get(i);
             final GUIPlayer playerGUI = getPlayer(i);
             
             playerGUI.m_bet.setText(format(player.m_betAmount));

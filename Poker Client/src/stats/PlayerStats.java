@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import miscUtil.Constants;
 
-import backend.ClientPokerPlayer;
+import backend.ClientPokerPlayerInfo;
 
 /**
  * PlayerStats.java
@@ -23,7 +23,7 @@ public class PlayerStats implements Cloneable
     private final int SHOWDOWN = 4;
     
     StatsAgent m_statsAgent = null;
-    ClientPokerPlayer m_myself = null;
+    ClientPokerPlayerInfo m_myself = null;
     String m_playerName;
     
     // Game State
@@ -46,7 +46,7 @@ public class PlayerStats implements Cloneable
      * @param p_statsAgent
      *            Handle on the statsAgent
      */
-    public PlayerStats(ClientPokerPlayer p_myself, StatsAgent p_statsAgent)
+    public PlayerStats(ClientPokerPlayerInfo p_myself, StatsAgent p_statsAgent)
     {
         m_statsAgent = p_statsAgent;
         m_preflop = new PreflopStats(p_statsAgent, p_myself, this);
@@ -834,7 +834,7 @@ public class PlayerStats implements Cloneable
      * @param p_myself
      *            player
      */
-    public void setPlayer(ClientPokerPlayer p_myself)
+    public void setPlayer(ClientPokerPlayerInfo p_myself)
     {
         m_myself = p_myself;
         m_preflop.setPlayer(p_myself);

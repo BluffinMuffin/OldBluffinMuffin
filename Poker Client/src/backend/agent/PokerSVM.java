@@ -16,10 +16,10 @@ import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 
 import stats.StatsAgent;
-import basePoker.BasePokerPlayer;
+import basePoker.PokerPlayerInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import backend.ClientPokerPlayer;
+import backend.ClientPokerPlayerInfo;
 import basePoker.PokerPlayerAction;
 import basePoker.Card;
 import basePokerAI.SVM;
@@ -481,7 +481,7 @@ public class PokerSVM extends PokerAI
     private String getVector(TypePokerRound p_state)
     {
         double highMoney = 0.0;
-        for (final BasePokerPlayer player : m_table.m_players.values())
+        for (final PokerPlayerInfo player : m_table.m_players.values())
         {
             highMoney = Math.max(highMoney, player.m_money);
         }
@@ -498,16 +498,16 @@ public class PokerSVM extends PokerAI
         sb.append(format((double) (m_callAmount - m_table.m_localPlayer.m_betAmount) / (double) m_table.m_totalPotAmount));// 5
         sb.append(formatPosition(m_table.m_localPlayer.m_relativePosition)); // 5-13
         
-        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 14-20
-        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsFlop, TypeSimplifiedAction.class)); // 21-27
-        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
-        sb.append(formatEnum(((ClientPokerPlayer)m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
+        sb.append(formatEnum(((ClientPokerPlayerInfo)m_table.m_localPlayer).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 14-20
+        sb.append(formatEnum(((ClientPokerPlayerInfo)m_table.m_localPlayer).m_lastActionsFlop, TypeSimplifiedAction.class)); // 21-27
+        sb.append(formatEnum(((ClientPokerPlayerInfo)m_table.m_localPlayer).m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
+        sb.append(formatEnum(((ClientPokerPlayerInfo)m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
         
         sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.m_money)); // 42
         sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
-        for (final BasePokerPlayer player : m_table.m_players.values())
+        for (final PokerPlayerInfo player : m_table.m_players.values())
         {
             if (player == m_table.m_localPlayer)
             {
@@ -521,10 +521,10 @@ public class PokerSVM extends PokerAI
             sb.append(formatPosition(player.m_relativePosition)); // 48-56
             sb.append(format(player.m_money / highMoney)); // 57
             sb.append(format((double) player.m_betAmount / (double) player.m_initialMoney)); // 58
-            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
-            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72
-            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsTurn, TypeSimplifiedAction.class)); // 73-79
-            sb.append(formatEnum(((ClientPokerPlayer)player).m_lastActionsRiver, TypeSimplifiedAction.class)); // 80-86
+            sb.append(formatEnum(((ClientPokerPlayerInfo)player).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
+            sb.append(formatEnum(((ClientPokerPlayerInfo)player).m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72
+            sb.append(formatEnum(((ClientPokerPlayerInfo)player).m_lastActionsTurn, TypeSimplifiedAction.class)); // 73-79
+            sb.append(formatEnum(((ClientPokerPlayerInfo)player).m_lastActionsRiver, TypeSimplifiedAction.class)); // 80-86
             
             if (m_statsAgent.m_overallStats.get(player.m_name) == null)
             {

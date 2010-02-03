@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import miscUtil.Constants;
 
-import backend.ClientPokerPlayer;
+import backend.ClientPokerPlayerInfo;
 
 /**
  * GameState.java
@@ -28,7 +28,7 @@ public class GameState implements Cloneable
     private int m_nbPossibleVsCBet;
     private int m_nbPossibleCBet;
     protected StatsAgent m_agent;
-    protected ClientPokerPlayer m_myself;
+    protected ClientPokerPlayerInfo m_myself;
     protected PlayerStats m_myStats;
     
     /**
@@ -41,7 +41,7 @@ public class GameState implements Cloneable
      * @param p_stats
      *            Handle on playerStats
      */
-    public GameState(StatsAgent p_statsAgent, ClientPokerPlayer p_myself, PlayerStats p_stats)
+    public GameState(StatsAgent p_statsAgent, ClientPokerPlayerInfo p_myself, PlayerStats p_stats)
     {
         this(p_statsAgent, p_stats);
         m_myself = p_myself;
@@ -315,7 +315,7 @@ public class GameState implements Cloneable
      * @param p_myself
      *            Player
      */
-    public void setPlayer(ClientPokerPlayer p_myself)
+    public void setPlayer(ClientPokerPlayerInfo p_myself)
     {
         m_myself = p_myself;
     }

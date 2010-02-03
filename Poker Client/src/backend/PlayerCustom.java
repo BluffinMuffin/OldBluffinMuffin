@@ -3,7 +3,7 @@ package backend;
 import basePoker.TypePlayerMajorPosition;
 import basePoker.TypePlayerMinorPosition;
 
-public class PlayerCustom extends ClientPokerPlayer
+public class PlayerCustom extends ClientPokerPlayerInfo
 {
     public TypePlayerMinorPosition m_minorPosition = null;
     public TypePlayerMajorPosition m_majorPosition = null;
