@@ -1,6 +1,6 @@
 package backend;
 
-import backend.agent.TypeSimplifiedAction;
+import temp.TypeSimplifiedAction;
 import basePoker.PokerPlayerInfo;
 import basePoker.Card;
 import basePoker.TypePlayerAction;

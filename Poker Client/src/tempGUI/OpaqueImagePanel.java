@@ -1,4 +1,4 @@
-package gui.components;
+package tempGUI;
 
 import java.awt.Graphics;
 import java.net.URL;

@@ -1,6 +1,5 @@
 package gui;
 
-import gui.components.CurrencyIntegerEditor;
 
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -19,6 +18,8 @@ import miscUtil.IClosingListener;
 
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
+
+import tempGUI.CurrencyIntegerEditor;
 
 import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;

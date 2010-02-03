@@ -1,4 +1,4 @@
-package gui.components;
+package tempGUI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,13 +15,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import temp.FactoryObserver;
+import temp.TypeObserver;
 import utilGUI.AutoListModel;
 import utilGUI.ListEvent;
 import utilGUI.ListListener;
 
 import backend.PokerClient;
-import backend.agent.FactoryObserver;
-import backend.agent.TypeObserver;
 import basePokerAI.IPokerAgentListener;
 
 /**

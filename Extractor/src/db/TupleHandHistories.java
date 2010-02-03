@@ -9,9 +9,10 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import temp.TypeSimplifiedAction;
+
 import miscUtil.HeadsUpException;
 
-import backend.agent.TypeSimplifiedAction;
 import basePoker.Card;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;

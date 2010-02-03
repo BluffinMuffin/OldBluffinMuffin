@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import backend.agent.TypeAgent;
+import temp.TypeAgent;
+
 import basePoker.TypePokerGame;
 
 /**
