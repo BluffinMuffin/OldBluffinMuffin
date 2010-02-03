@@ -17,7 +17,7 @@
   * URL: https://bluffin-muffin.googlecode.com/svn
   * User: you're google account username
   * Pass: this special pass: http://code.google.com/hosting/settings
- # When the nightmare is over by clicking Next, another nightmare begin: the Finish button is disable !! Just play with something, to wake him up, but make shur to change nothing ! Then click finish. :)
+ # When the nightmare is over by clicking Next, another nightmare begin: the Finish button is disabled !! Just play with something, to wake him up, but make sure to change nothing ! Then click finish. :)
  # When another window appear, choose choice #2 (Find projects ...) then click Finish
  # Enable "Respect projects hierarchy" then click Finish. This will be a little long because of the SVMs folder, be patient !
  # After that, go in the "Poker Client" project outside eclipse (like in Windows Explorer). Copy "images" and "SVMs", then paste them in the "bin" folder.
