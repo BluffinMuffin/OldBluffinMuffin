@@ -1,7 +1,7 @@
 package basePokerAI;
 
 import miscUtil.IClosingListener;
-import basePoker.BasePokerTable;
+import basePoker.PokerTableInfo;
 
 /**
  * @author Hocus
@@ -31,7 +31,7 @@ public interface IPokerAgent extends Runnable
      * @param p_table
      *            - Reference to the Poker table.
      */
-    public void setTable(BasePokerTable p_table);
+    public void setTable(PokerTableInfo p_table);
     
     /**
      * Start the agent.

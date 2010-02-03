@@ -3,7 +3,7 @@ package basePokerAI;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import basePoker.BasePokerPlayer;
+import basePoker.PokerPlayerInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 
@@ -18,14 +18,14 @@ public interface IPokerAgentListener extends IPokerAgent
     public static final Method BET_TURN_ENDED = Util.getIPokerAgentListenerMethod("betTurnEnded", ArrayList.class, TypePokerRound.class);
     public static final Method BOARD_CHANGED = Util.getIPokerAgentListenerMethod("boardChanged", ArrayList.class);
     public static final Method GAME_ENDED = Util.getIPokerAgentListenerMethod("gameEnded");
-    public static final Method GAME_STARTED = Util.getIPokerAgentListenerMethod("gameStarted", BasePokerPlayer.class, BasePokerPlayer.class, BasePokerPlayer.class);
-    public static final Method PLAYER_CARD_CHANGED = Util.getIPokerAgentListenerMethod("playerCardChanged", BasePokerPlayer.class);
-    public static final Method PLAYER_JOINED = Util.getIPokerAgentListenerMethod("playerJoined", BasePokerPlayer.class);
-    public static final Method PLAYER_LEFT = Util.getIPokerAgentListenerMethod("playerLeft", BasePokerPlayer.class);
-    public static final Method PLAYER_MONEY_CHANGED = Util.getIPokerAgentListenerMethod("playerMoneyChanged", BasePokerPlayer.class, int.class);
-    public static final Method PLAYER_TURN_BEGAN = Util.getIPokerAgentListenerMethod("playerTurnBegan", BasePokerPlayer.class);
-    public static final Method PLAYER_TURN_ENDED = Util.getIPokerAgentListenerMethod("playerTurnEnded", BasePokerPlayer.class, TypePlayerAction.class, int.class);
-    public static final Method POT_WON = Util.getIPokerAgentListenerMethod("potWon", BasePokerPlayer.class, int.class, int.class);
+    public static final Method GAME_STARTED = Util.getIPokerAgentListenerMethod("gameStarted", PokerPlayerInfo.class, PokerPlayerInfo.class, PokerPlayerInfo.class);
+    public static final Method PLAYER_CARD_CHANGED = Util.getIPokerAgentListenerMethod("playerCardChanged", PokerPlayerInfo.class);
+    public static final Method PLAYER_JOINED = Util.getIPokerAgentListenerMethod("playerJoined", PokerPlayerInfo.class);
+    public static final Method PLAYER_LEFT = Util.getIPokerAgentListenerMethod("playerLeft", PokerPlayerInfo.class);
+    public static final Method PLAYER_MONEY_CHANGED = Util.getIPokerAgentListenerMethod("playerMoneyChanged", PokerPlayerInfo.class, int.class);
+    public static final Method PLAYER_TURN_BEGAN = Util.getIPokerAgentListenerMethod("playerTurnBegan", PokerPlayerInfo.class);
+    public static final Method PLAYER_TURN_ENDED = Util.getIPokerAgentListenerMethod("playerTurnEnded", PokerPlayerInfo.class, TypePlayerAction.class, int.class);
+    public static final Method POT_WON = Util.getIPokerAgentListenerMethod("potWon", PokerPlayerInfo.class, int.class, int.class);
     public static final Method TABLE_CLOSED = Util.getIPokerAgentListenerMethod("tableClosed");
     public static final Method TABLE_INFOS = Util.getIPokerAgentListenerMethod("tableInfos");
     public static final Method WAITING_FOR_PLAYERS = Util.getIPokerAgentListenerMethod("waitingForPlayers");
@@ -62,7 +62,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_oldBigBlind
      *            is the previous player with the big blind.
      */
-    public void gameStarted(BasePokerPlayer p_oldDealer, BasePokerPlayer p_oldSmallBlind, BasePokerPlayer p_oldBigBlind);
+    public void gameStarted(PokerPlayerInfo p_oldDealer, PokerPlayerInfo p_oldSmallBlind, PokerPlayerInfo p_oldBigBlind);
     
     /**
      * Happens when the cards of a player changes.
@@ -70,7 +70,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_player
      *            is the player for whom his cards have been changed.
      */
-    public void playerCardChanged(BasePokerPlayer p_player);
+    public void playerCardChanged(PokerPlayerInfo p_player);
     
     /**
      * Happens when a player joined the table.
@@ -78,7 +78,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_player
      *            is the player that has joined the table.
      */
-    public void playerJoined(BasePokerPlayer p_player);
+    public void playerJoined(PokerPlayerInfo p_player);
     
     /**
      * Happens when a player left the table.
@@ -86,7 +86,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_player
      *            is the player that has left the table.
      */
-    public void playerLeft(BasePokerPlayer p_player);
+    public void playerLeft(PokerPlayerInfo p_player);
     
     /**
      * Happens when the money amount of a player changes.
@@ -96,7 +96,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_oldMoneyAmount
      *            is the previous money amount he had.
      */
-    public void playerMoneyChanged(BasePokerPlayer p_player, int p_oldMoneyAmount);
+    public void playerMoneyChanged(PokerPlayerInfo p_player, int p_oldMoneyAmount);
     
     /**
      * Happens when the turn of a player begins.
@@ -104,7 +104,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_oldCurrentPlayer
      *            is the previous player that had played.
      */
-    public void playerTurnBegan(BasePokerPlayer p_oldCurrentPlayer);
+    public void playerTurnBegan(PokerPlayerInfo p_oldCurrentPlayer);
     
     /**
      * Happens when the turn of a player ends.
@@ -116,7 +116,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_actionAmount
      *            is the amount related to the action taken.
      */
-    public void playerTurnEnded(BasePokerPlayer p_player, TypePlayerAction p_action, int p_actionAmount);
+    public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount);
     
     /**
      * Happens when a player wins and receives his share.
@@ -128,7 +128,7 @@ public interface IPokerAgentListener extends IPokerAgent
      * @param p_potIndex
      *            is the index of the pot that player won.
      */
-    public void potWon(BasePokerPlayer p_player, int p_potAmountWon, int p_potIndex);
+    public void potWon(PokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex);
     
     /**
      * Happens when the table closes.
