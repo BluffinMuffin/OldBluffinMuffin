@@ -10,8 +10,8 @@ import java.util.StringTokenizer;
 
 import miscUtil.Constants;
 
-import backend.HoldemTableServer;
-import backend.IHoldEmObserver;
+import backend.ServerTableCommunicator;
+import backend.IServerPokerObserver;
 import basePoker.Card;
 import basePoker.PokerPlayerAction;
 import basePoker.Pot;
@@ -28,7 +28,7 @@ import baseProtocol.TypeMessageTableToClient;
  *         When a connection is lost, this player will automatically sit out at the next hand
  *         and will play Check or Fold actions.
  */
-public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implements IHoldEmObserver
+public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implements IServerPokerObserver
 {
     
     public static final int PING_INTERVAL = 10000;
@@ -69,7 +69,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     }
     
     @Override
-    public void bigBlindPosted(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
+    public void bigBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + TypePlayerAction.BIG_BLIND.name() + Constants.DELIMITER + p_bigBlind);
     }
@@ -81,7 +81,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     }
     
     @Override
-    public void endBettingTurn(HoldemTableServer p_table)
+    public void endBettingTurn(ServerTableCommunicator p_table)
     {
         final StringBuilder message = new StringBuilder();
         
@@ -105,19 +105,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     }
     
     @Override
-    public void flopDealt(HoldemTableServer p_table, Card[] p_board)
+    public void flopDealt(ServerTableCommunicator p_table, Card[] p_board)
     {
         send(TypeMessageTableToClient.BOARD_CHANGED + Constants.DELIMITER + p_board[0].getId() + Constants.DELIMITER + p_board[1].getId() + Constants.DELIMITER + p_board[2].getId() + Constants.DELIMITER + Card.NO_CARD + Constants.DELIMITER + Card.NO_CARD);
     }
     
     @Override
-    public void gameEnded(HoldemTableServer p_table)
+    public void gameEnded(ServerTableCommunicator p_table)
     {
         send(TypeMessageTableToClient.GAME_ENDED.toString());
     }
     
     @Override
-    public void gameStarted(HoldemTableServer p_table)
+    public void gameStarted(ServerTableCommunicator p_table)
     {
         send(TypeMessageTableToClient.GAME_STARTED.toString() + Constants.DELIMITER + p_table.getNoSeatDealer() + Constants.DELIMITER + p_table.getNoSeatSmallBlind() + Constants.DELIMITER + p_table.getNoSeatBigBlind());
     }
@@ -233,7 +233,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     }
     
     @Override
-    public void holeCardDeal(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void holeCardDeal(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         if (p_player.getTablePosition() != getTablePosition())
         {
@@ -247,49 +247,49 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     }
     
     @Override
-    public void playerEndTurn(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
+    public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + p_action.getType().name() + Constants.DELIMITER + p_action.getAmount());
     }
     
     @Override
-    public void playerJoinedTable(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerJoinedTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         send(TypeMessageTableToClient.PLAYER_JOINED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getName() + Constants.DELIMITER + p_player.getMoney());
     }
     
     @Override
-    public void playerLeftTable(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerLeftTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         send(TypeMessageTableToClient.PLAYER_LEFT.toString() + Constants.DELIMITER + p_player.getTablePosition());
     }
     
     @Override
-    public void playerMoneyChanged(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerMoneyChanged(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         send(TypeMessageTableToClient.PLAYER_MONEY_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getMoney());
     }
     
     @Override
-    public void playerShowCard(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerShowCard(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         send(TypeMessageTableToClient.PLAYER_CARD_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand()[0].getId() + Constants.DELIMITER + p_player.getHand()[1].getId());
     }
     
     @Override
-    public void playerTurnStarted(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerTurnStarted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_BEGAN.toString() + Constants.DELIMITER + p_player.getTablePosition());
     }
     
     @Override
-    public void potWon(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
+    public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
     {
         send(TypeMessageTableToClient.POT_WON + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_pot.getId() + Constants.DELIMITER + p_share + Constants.DELIMITER + p_player.getMoney());
     }
     
     @Override
-    public void riverDeal(HoldemTableServer p_table, Card[] p_board)
+    public void riverDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
         send(TypeMessageTableToClient.BOARD_CHANGED + Constants.DELIMITER + p_board[0].getId() + Constants.DELIMITER + p_board[1].getId() + Constants.DELIMITER + p_board[2].getId() + Constants.DELIMITER + p_board[3].getId() + Constants.DELIMITER + p_board[4].getId());
     }
@@ -355,19 +355,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     }
     
     @Override
-    public void smallBlindPosted(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
+    public void smallBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
     {
         send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + TypePlayerAction.SMALL_BLIND.name() + Constants.DELIMITER + p_smallBlind);
     }
     
     @Override
-    public void tableEnded(HoldemTableServer p_table)
+    public void tableEnded(ServerTableCommunicator p_table)
     {
         send(TypeMessageTableToClient.TABLE_CLOSED.toString());
     }
     
     @Override
-    public void tableInfos(HoldemTableServer p_table)
+    public void tableInfos(ServerTableCommunicator p_table)
     {
         send(TypeMessageTableToClient.TABLE_INFOS + Constants.DELIMITER + m_table.marshal(this));
     }
@@ -376,19 +376,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     // IHoldEmObserver
     // ---------------------------------------------
     @Override
-    public void tableStarted(HoldemTableServer p_table)
+    public void tableStarted(ServerTableCommunicator p_table)
     {
         // do nothing
     }
     
     @Override
-    public void turnDeal(HoldemTableServer p_table, Card[] p_board)
+    public void turnDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
         send(TypeMessageTableToClient.BOARD_CHANGED + Constants.DELIMITER + p_board[0].getId() + Constants.DELIMITER + p_board[1].getId() + Constants.DELIMITER + p_board[2].getId() + Constants.DELIMITER + p_board[3].getId() + Constants.DELIMITER + Card.NO_CARD);
     }
     
     @Override
-    public void waitingForPlayers(HoldemTableServer p_table)
+    public void waitingForPlayers(ServerTableCommunicator p_table)
     {
         send(TypeMessageTableToClient.WAITING_FOR_PLAYERS.toString());
     }

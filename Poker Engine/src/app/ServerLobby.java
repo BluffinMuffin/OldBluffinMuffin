@@ -14,10 +14,10 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import miscUtil.Constants;
-import backend.HoldemLogger;
-import backend.HoldemTableServer;
+import backend.ServerPokerLogger;
+import backend.ServerTableCommunicator;
 import backend.SummaryTableInfo;
-import backend.TableManager;
+import backend.ServerTableListCommunicator;
 import basePoker.TypePokerGame;
 import baseProtocol.TypeMessageLobby;
 
@@ -203,7 +203,7 @@ public class ServerLobby extends Thread
     final int NO_PORT;
     ServerSocket m_socketServer;
     
-    Map<Integer, HoldemTableServer> m_tables = Collections.synchronizedMap(new TreeMap<Integer, HoldemTableServer>());
+    Map<Integer, ServerTableCommunicator> m_tables = Collections.synchronizedMap(new TreeMap<Integer, ServerTableCommunicator>());
     
     public ServerLobby(int p_noPort) throws IOException
     {
@@ -246,12 +246,12 @@ public class ServerLobby extends Thread
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            final HoldemTableServer table = new HoldemTableServer(p_tableName, p_gameType, p_bigBlind, p_nbSeats);
-            final TableManager manager = new TableManager(table, noPort);
+            final ServerTableCommunicator table = new ServerTableCommunicator(p_tableName, p_gameType, p_bigBlind, p_nbSeats);
+            final ServerTableListCommunicator manager = new ServerTableListCommunicator(table, noPort);
             
             // Start the TableManager.
             table.addClosingListener(manager);
-            table.attach(new HoldemLogger(System.out));
+            table.attach(new ServerPokerLogger(System.out));
             table.start();
             manager.start();
             
@@ -281,7 +281,7 @@ public class ServerLobby extends Thread
         
         for (final Integer noPort : m_tables.keySet())
         {
-            final HoldemTableServer table = m_tables.get(noPort);
+            final ServerTableCommunicator table = m_tables.get(noPort);
             
             // Check if the table is still running.
             if (table.isRunning())

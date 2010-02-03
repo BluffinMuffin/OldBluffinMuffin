@@ -1,6 +1,6 @@
 package player;
 
-import backend.HoldemTableServer;
+import backend.ServerTableCommunicator;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
@@ -16,7 +16,7 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
     protected boolean m_isFolded;
     protected boolean m_cardShowed;
     protected boolean m_sitOutNextHand;
-    protected HoldemTableServer m_table;
+    protected ServerTableCommunicator m_table;
     
     /**
      * Create a new player named "Anonymous Player" with no money
@@ -52,7 +52,7 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
         m_isFolded = false;
     }
     
-    public HoldemTableServer getTable()
+    public ServerTableCommunicator getTable()
     {
         return m_table;
     }
@@ -88,7 +88,7 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
         m_sitOutNextHand = p_flag;
     }
     
-    public void setTable(HoldemTableServer p_table)
+    public void setTable(ServerTableCommunicator p_table)
     {
         m_table = p_table;
     }

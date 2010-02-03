@@ -1,17 +1,13 @@
-package tools;
+package backend;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.List;
 
-import backend.IHoldEmObserver;
-import basePoker.Card;
 
 /**
  * @author HOCUS
  *         Utilities for the Hold'Em Poker simulateur
  */
-public class PokerUtil
+public class ServerPokerObserverUtil
 {
     
     /**
@@ -28,7 +24,7 @@ public class PokerUtil
     {
         try
         {
-            return IHoldEmObserver.class.getMethod(p_name, p_classes);
+            return IServerPokerObserver.class.getMethod(p_name, p_classes);
         }
         catch (final SecurityException e)
         {

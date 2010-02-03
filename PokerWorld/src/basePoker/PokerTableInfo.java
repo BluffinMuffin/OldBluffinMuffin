@@ -34,8 +34,18 @@ public class PokerTableInfo
     
     public PokerTableInfo(int nbSeats)
     {
+        this("Anonymous", 5, nbSeats);
+    }
+    
+    public PokerTableInfo(String pName, int pBigBlind, int nbSeats)
+    {
         m_nbSeats = nbSeats;
         initializePlayers(nbSeats);
+        
+        m_name = pName;
+        m_bigBlindAmount = pBigBlind;
+        m_smallBlindAmount = pBigBlind / 2;
+        m_boardCards = new ArrayList<Card>(5);
     }
     
     public List<PokerPlayerInfo> getPlayers()
@@ -153,5 +163,89 @@ public class PokerTableInfo
         final Card[] cards = new Card[m_boardCards.size()];
         
         return m_boardCards.toArray(cards);
+    }
+    
+    /**
+     * Return the seat number of the player to the left of the specified seat.
+     * 
+     * @param p_player
+     *            A seat number
+     * @return
+     *         The seat of the player to the left of the seat.
+     */
+    public int nextPlayer(int p_player)
+    {
+        int player = p_player;
+        do
+        {
+            player = (player + 1) % getNbSeats();
+        }
+        while (getPlayer(player) == null);
+        return player;
+    }
+    
+    public void initializeGame()
+    {
+        m_boardCards = new ArrayList<Card>(5);
+        m_currentBet = 0;
+        m_totalPotAmount = 0;
+        m_gameState = TypePokerRound.PREFLOP;
+        m_nbPlayingPlayers = 0;
+    }
+    
+    public void startGame()
+    {
+        // notify each player that can play that a new game is starting
+        final int start = nextPlayer(m_noSeatDealer);
+        int i = start;
+        do
+        {
+            if (getPlayer(i).canStartGame())
+            {
+                getPlayer(i).startGame();
+                ++m_nbPlayingPlayers;
+            }
+            i = nextPlayer(i);
+        }
+        while (i != start);
+        
+        // Reset the player position variables
+        m_noSeatDealer = nextPlayingPlayer(m_noSeatDealer);
+        getPlayer(m_noSeatDealer).setIsDealer(true);
+        if (m_nbPlayingPlayers == 2)
+        {
+            m_noSeatBigBlind = nextPlayingPlayer(m_noSeatDealer);
+            getPlayer(m_noSeatBigBlind).setIsBigBlind(true);
+            m_noSeatSmallBlind = nextPlayingPlayer(m_noSeatBigBlind);
+            getPlayer(m_noSeatSmallBlind).setIsSmallBlind(true);
+        }
+        else
+        {
+            m_noSeatSmallBlind = nextPlayingPlayer(m_noSeatDealer);
+            getPlayer(m_noSeatSmallBlind).setIsSmallBlind(true);
+            m_noSeatBigBlind = nextPlayingPlayer(m_noSeatSmallBlind);
+            getPlayer(m_noSeatBigBlind).setIsBigBlind(true);
+        }
+        
+    }
+    
+    /**
+     * Return the seat number of the next playing player.
+     * 
+     * @param p_player
+     *            A seat number
+     * @return
+     *         The nest playing player
+     */
+    public int nextPlayingPlayer(int p_player)
+    {
+        int player = p_player;
+        do
+        {
+            player = nextPlayer(player);
+        }
+        while (!getPlayer(player).isPlaying());
+        return player;
+        
     }
 }

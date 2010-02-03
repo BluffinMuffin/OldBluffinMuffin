@@ -20,7 +20,7 @@ import player.ServerNetworkPokerPlayerInfo;
  *         This class listens to new connection on a certain port number.
  *         It transferts the new connection to the HoldEmTable it manages.
  */
-public class TableManager extends Thread implements IClosingListener<HoldemTableServer>
+public class ServerTableListCommunicator extends Thread implements IClosingListener<ServerTableCommunicator>
 {
     /**
      * @author Hocus
@@ -177,15 +177,15 @@ public class TableManager extends Thread implements IClosingListener<HoldemTable
     /** Socket TableManager listen to. **/
     ServerSocket m_socketServer;
     /** Poker Table **/
-    HoldemTableServer m_table;
+    ServerTableCommunicator m_table;
     
-    public TableManager(HoldemTableServer p_table, int p_noPort) throws IOException
+    public ServerTableListCommunicator(ServerTableCommunicator p_table, int p_noPort) throws IOException
     {
         m_table = p_table;
         m_socketServer = new ServerSocket(p_noPort);
     }
     
-    public void closing(HoldemTableServer e)
+    public void closing(ServerTableCommunicator e)
     {
         try
         {

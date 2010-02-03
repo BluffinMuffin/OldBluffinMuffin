@@ -16,7 +16,7 @@ import basePoker.Pot;
  *         a file or in the console.
  *         To log in the console, use : new Logger(System.out)
  */
-public class HoldemLogger implements IHoldEmObserver
+public class ServerPokerLogger implements IServerPokerObserver
 {
     
     private final OutputStream m_output;
@@ -26,37 +26,37 @@ public class HoldemLogger implements IHoldEmObserver
      * 
      * @param p_output
      */
-    public HoldemLogger(OutputStream p_output)
+    public ServerPokerLogger(OutputStream p_output)
     {
         m_output = p_output;
     }
     
     @Override
-    public void bigBlindPosted(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
+    public void bigBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
     {
         println(p_player.getName() + " post big blind " + p_bigBlind);
     }
     
     @Override
-    public void endBettingTurn(HoldemTableServer p_table)
+    public void endBettingTurn(ServerTableCommunicator p_table)
     {
         println("Betting turn ended");
     }
     
     @Override
-    public void flopDealt(HoldemTableServer p_table, Card[] p_board)
+    public void flopDealt(ServerTableCommunicator p_table, Card[] p_board)
     {
         println("Flop: " + Card.CardArrayToCode(p_board));
     }
     
     @Override
-    public void gameEnded(HoldemTableServer p_table)
+    public void gameEnded(ServerTableCommunicator p_table)
     {
         println("Game endend");
     }
     
     @Override
-    public void gameStarted(HoldemTableServer p_table)
+    public void gameStarted(ServerTableCommunicator p_table)
     {
         println("Game Start");
         
@@ -73,7 +73,7 @@ public class HoldemLogger implements IHoldEmObserver
     }
     
     @Override
-    public void holeCardDeal(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void holeCardDeal(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         /*
          * println(p_player.getName() + " receive "
@@ -82,43 +82,43 @@ public class HoldemLogger implements IHoldEmObserver
     }
     
     @Override
-    public void playerEndTurn(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
+    public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
     {
         println(p_player.getName() + " " + p_action.toString() + ". Bet = " + p_player.getBet());
     }
     
     @Override
-    public void playerJoinedTable(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerJoinedTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         println(p_player.getName() + " Joined the table");
     }
     
     @Override
-    public void playerLeftTable(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerLeftTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         println(p_player.getName() + " Left the table");
     }
     
     @Override
-    public void playerMoneyChanged(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerMoneyChanged(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         println(p_player.getName() + " now have " + p_player.getMoney() + " on table");
     }
     
     @Override
-    public void playerShowCard(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerShowCard(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         println(p_player.getName() + " show his card " + Card.CardArrayToCode(p_player.getHand()));
     }
     
     @Override
-    public void playerTurnStarted(HoldemTableServer p_table, ServerPokerPlayerInfo p_player)
+    public void playerTurnStarted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
         println(p_player.getName() + " Start his turn");
     }
     
     @Override
-    public void potWon(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
+    public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
     {
         println(p_player.getName() + " won " + p_share);
     }
@@ -164,43 +164,43 @@ public class HoldemLogger implements IHoldEmObserver
     }
     
     @Override
-    public void riverDeal(HoldemTableServer p_table, Card[] p_board)
+    public void riverDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
         println("River: " + Card.CardArrayToCode(p_board));
     }
     
     @Override
-    public void smallBlindPosted(HoldemTableServer p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
+    public void smallBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
     {
         println(p_player.getName() + " post small blind " + p_smallBlind);
     }
     
     @Override
-    public void tableEnded(HoldemTableServer p_table)
+    public void tableEnded(ServerTableCommunicator p_table)
     {
         println("Table close");
     }
     
     @Override
-    public void tableInfos(HoldemTableServer pTable)
+    public void tableInfos(ServerTableCommunicator pTable)
     {
         println("Table Infos sent");
     }
     
     @Override
-    public void tableStarted(HoldemTableServer p_table)
+    public void tableStarted(ServerTableCommunicator p_table)
     {
         this.println("Table Started");
     }
     
     @Override
-    public void turnDeal(HoldemTableServer p_table, Card[] p_board)
+    public void turnDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
         println("Turn: " + Card.CardArrayToCode(p_board));
     }
     
     @Override
-    public void waitingForPlayers(HoldemTableServer p_table)
+    public void waitingForPlayers(ServerTableCommunicator p_table)
     {
         println("Waiting for Players");
     }
