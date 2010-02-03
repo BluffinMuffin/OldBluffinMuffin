@@ -8,12 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import baseProtocol.TypeMessageTableManager;
-
 import miscUtil.Constants;
 import miscUtil.IClosingListener;
-
 import player.ServerNetworkPokerPlayerInfo;
+import baseProtocol.TypeMessageTableManager;
 
 /**
  * @author Hocus
@@ -65,7 +63,6 @@ public class ServerTableListCommunicator extends Thread implements IClosingListe
         /**
          * Handle join message.
          * [JOIN_TABLE;]
-         * TODO: Make it thread-safe (m_table.getPlayers().contains)
          */
         private void joinTable(StringTokenizer p_token)
         {

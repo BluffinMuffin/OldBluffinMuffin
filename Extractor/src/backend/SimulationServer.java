@@ -39,8 +39,6 @@ public class SimulationServer
     
     private final static String SEPARATOR = " ";
     
-    private final static int NOT_AVAILABLE = -1;
-    
     private final static int NB_OTHER_OPPONENTS_INFOS = 9 + 2 + 28;
     
     private final static int NB_STATS_PREFLOP = 28;
@@ -140,7 +138,7 @@ public class SimulationServer
         }
         else if (p_object.getClass().isEnum())
         {
-            text = m_cptID.toString() + ":" + ((Enum) p_object).ordinal() + ' ';
+            text = m_cptID.toString() + ":" + ((Enum<?>) p_object).ordinal() + ' ';
         }
         else if (p_object instanceof Double)
         {
@@ -175,7 +173,7 @@ public class SimulationServer
         return text;
     }
     
-    private String formatEnum(Enum p_enum, Class p_class)
+    private String formatEnum(Enum<?> p_enum, Class<?> p_class)
     {
         final StringBuilder sb = new StringBuilder();
         
@@ -264,71 +262,6 @@ public class SimulationServer
     public ArrayList<String> getVectors()
     {
         return m_vectors;
-    }
-    
-    private boolean isFolded(TuplePlayer p_player, TypePokerRound p_state)
-    {
-        switch (p_state)
-        {
-            case PREFLOP:
-                return ((p_player.m_lastActionsPreflop == null) || (p_player.m_lastActionsPreflop != TypeSimplifiedAction.FOLD));
-            case FLOP:
-                return ((p_player.m_lastActionsFlop == null) || (p_player.m_lastActionsFlop != TypeSimplifiedAction.FOLD));
-            case TURN:
-                return ((p_player.m_lastActionsTurn == null) || (p_player.m_lastActionsTurn != TypeSimplifiedAction.FOLD));
-            case RIVER:
-                return ((p_player.m_lastActionsRiver == null) || (p_player.m_lastActionsRiver != TypeSimplifiedAction.FOLD));
-            default:
-                break;
-        }
-        
-        return true;
-    }
-    
-    private TypeSimplifiedAction manageLastActions(TypePlayerAction p_currentAction, TypeSimplifiedAction p_lastActions)
-    {
-        if (p_currentAction == TypePlayerAction.FOLD)
-        {
-            return TypeSimplifiedAction.FOLD;
-        }
-        else if (p_currentAction == TypePlayerAction.CHECK)
-        {
-            return TypeSimplifiedAction.CHECK;
-        }
-        else
-        {
-            if (p_lastActions == null)
-            {
-                if (p_currentAction == TypePlayerAction.CALL)
-                {
-                    return TypeSimplifiedAction.CALL;
-                }
-                else if (p_currentAction == TypePlayerAction.RAISE)
-                {
-                    return TypeSimplifiedAction.RAISE;
-                }
-            }
-            else if (p_lastActions == TypeSimplifiedAction.CALL)
-            {
-                if (p_currentAction == TypePlayerAction.RAISE)
-                {
-                    return TypeSimplifiedAction.CALL_RAISE;
-                }
-            }
-            else if (p_lastActions == TypeSimplifiedAction.RAISE)
-            {
-                if (p_currentAction == TypePlayerAction.CALL)
-                {
-                    return TypeSimplifiedAction.RAISE_CALL;
-                }
-                else if (p_currentAction == TypePlayerAction.RAISE)
-                {
-                    return TypeSimplifiedAction.RAISE_RAISE;
-                }
-            }
-        }
-        
-        return p_lastActions;
     }
     
     private void manageLastActionsFlop(PhaseEvents p_event)

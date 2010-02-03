@@ -16,7 +16,7 @@ public class Tool
      *            enum to convert
      * @return Arraylist containing 1 or 0
      */
-    public static ArrayList<String> formatEnum(Enum p_enum)
+    public static ArrayList<String> formatEnum(Enum<?> p_enum)
     {
         final ArrayList<String> outputs = new ArrayList<String>();
         final int nbConstants = p_enum.getClass().getFields().length;
@@ -38,7 +38,7 @@ public class Tool
      *            Delimiter between each part of the enum
      * @return String containing the enum with delimiters.
      */
-    public static String formatEnum(Enum p_enum, String p_delimiter)
+    public static String formatEnum(Enum<?> p_enum, String p_delimiter)
     {
         final StringBuilder sb = new StringBuilder();
         for (final String bit : Tool.formatEnum(p_enum))
@@ -58,7 +58,7 @@ public class Tool
      *            Enum to gather the field from
      * @return The enum associated with the text
      */
-    public static Enum parseEnum(String p_text, Class p_enum)
+    public static Enum<?> parseEnum(String p_text, Class<?> p_enum)
     {
         return Tool.parseEnum(p_text, " ", p_enum);
     }
@@ -74,7 +74,7 @@ public class Tool
      *            Enum to gather the field from
      * @return The enum associated with the text
      */
-    public static Enum parseEnum(String p_text, String p_delimiter, Class p_enum)
+    public static Enum<?> parseEnum(String p_text, String p_delimiter, Class<?> p_enum)
     {
         return Tool.parseEnum(new StringTokenizer(p_text, p_delimiter), p_enum);
     }
@@ -88,7 +88,7 @@ public class Tool
      *            Enum to gather the field from
      * @return The num associated with the text
      */
-    public static Enum parseEnum(StringTokenizer p_token, Class p_enum)
+    public static Enum<?> parseEnum(StringTokenizer p_token, Class<?> p_enum)
     {
         int noField = 0;
         while (p_token.hasMoreTokens() && p_token.nextToken().equals("0"))
@@ -98,7 +98,7 @@ public class Tool
         
         try
         {
-            return (Enum) p_enum.getFields()[noField].get(null);
+            return (Enum<?>) p_enum.getFields()[noField].get(null);
         }
         catch (final Exception e)
         {

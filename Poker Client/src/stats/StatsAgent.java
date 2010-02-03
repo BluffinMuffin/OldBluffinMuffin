@@ -146,7 +146,6 @@ public class StatsAgent implements IPokerAgentListener
                     }
                     catch (final CloneNotSupportedException e)
                     {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -317,7 +316,6 @@ public class StatsAgent implements IPokerAgentListener
     @Override
     public void run()
     {
-        // TODO Auto-generated method stub
         
     }
     
@@ -331,7 +329,6 @@ public class StatsAgent implements IPokerAgentListener
     @Override
     public void start()
     {
-        // TODO Auto-generated method stub
         
     }
     

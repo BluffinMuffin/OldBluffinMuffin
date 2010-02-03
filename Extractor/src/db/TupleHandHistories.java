@@ -9,10 +9,8 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import temp.TypeSimplifiedAction;
-
 import miscUtil.HeadsUpException;
-
+import temp.TypeSimplifiedAction;
 import basePoker.Card;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;
@@ -78,8 +76,6 @@ public class TupleHandHistories
     private final static Pattern GENERIC_PLAYER_INFOS = Pattern.compile("Seat ([0-9]+): (.+) \\(\\$([0-9]+(\\.[0-9]+)?).*\\)");
     
     // private final static Pattern POKERSTARS_DEALER_SEAT = Pattern.compile();
-    
-    private final static Pattern GENERIC_HEADS_UP_PLAYER_INFOS = Pattern.compile("Seat ([0-9]+): (.+) (\\(big blind\\)|\\(small blind\\))");
     
     private final static Pattern GENERIC_WINNER = Pattern.compile("(won|collected) \\(\\$([0-9]+(\\.[0-9]+)?).*\\)");
     

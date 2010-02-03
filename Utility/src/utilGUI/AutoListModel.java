@@ -373,9 +373,12 @@ public class AutoListModel<T> implements List<T>, ListModel
         return m_syncList.toArray();
     }
     
+    @SuppressWarnings("hiding")
     @Override
     public <T> T[] toArray(T[] a)
     {
         return m_syncList.toArray(a);
+        
+        // TODO: THIEU CHECK WARNING (A LA FIN DU PROJET SEULEMENT)
     }
 }

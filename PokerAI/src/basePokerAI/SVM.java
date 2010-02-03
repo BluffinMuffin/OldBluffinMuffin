@@ -59,7 +59,6 @@ public class SVM
      * @param p_filename
      *            - File containing the SVM.
      */
-    @SuppressWarnings("deprecation")
     public synchronized void load(String p_filename)
     {
         try
