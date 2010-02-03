@@ -5,17 +5,15 @@ import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import miscUtil.Tool;
-
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
-
 import stats.StatsAgent;
+import utilGUI.AutoListModel;
+import backend.agent.TypeSimplifiedAction;
+import basePoker.Card;
 import basePoker.PokerPlayerInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import backend.agent.TypeSimplifiedAction;
-import utilGUI.AutoListModel;
-import basePoker.Card;
 import basePokerAI.IPokerAgentListener;
 import baseProtocol.TypeMessageTableToClient;
 import db.TupleHandHistories;
@@ -247,7 +245,7 @@ public class SimulationServer
     
     private int getPosition(String p_name)
     {
-        for (final PokerPlayerInfo player : m_client.m_table.m_players.values())
+        for (final PokerPlayerInfo player : m_client.m_table.getPlayers())
         {
             if (player.m_name.equals(p_name))
             {

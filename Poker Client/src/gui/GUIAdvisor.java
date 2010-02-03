@@ -22,16 +22,13 @@ import org.dyno.visual.swing.layouts.Leading;
 
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
-
 import stats.PlayerStats;
 import stats.StatsAgent;
-import backend.ClientPokerPlayerInfo;
-import basePoker.PokerPlayerAction;
-import backend.ClientPokerTableInfo;
 import backend.agent.PokerSVM;
+import basePoker.Card;
+import basePoker.PokerPlayerAction;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
-import basePoker.Card;
 import basePoker.TypePlayerAction;
 
 /**
@@ -164,7 +161,7 @@ public class GUIAdvisor extends GUI
         {
             for (int i = 0; i < m_table.m_nbSeats; ++i)
             {
-                final PokerPlayerInfo player = m_table.m_players.get(i);
+                final PokerPlayerInfo player = m_table.getPlayer(i);
                 final HudPanel hud = getPlayer(i).m_hud;
                 
                 if (player == null)

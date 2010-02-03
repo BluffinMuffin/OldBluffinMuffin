@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import miscUtil.MyConnection;
+import miscUtil.BDConnection;
 
 public class BDHandHistories
 {
@@ -16,12 +16,12 @@ public class BDHandHistories
     private final PreparedStatement m_stmtGetLater;
     private final PreparedStatement m_stmtGetLaterNoLimit;
     private final PreparedStatement m_stmtInterval;
-    private final MyConnection m_connection;
+    private final BDConnection m_connection;
     
     /**
      * Creation d'une instance. Précompilation d'énoncés SQL.
      */
-    public BDHandHistories(MyConnection p_connection) throws SQLException
+    public BDHandHistories(BDConnection p_connection) throws SQLException
     {
         m_connection = p_connection;
         m_stmtGetAll = m_connection.getConnection().prepareStatement("SELECT handhistory " + "FROM handhistories " + "INNER JOIN pokerhands ON handhistories.pokerhand_id = pokerhands.pokerhand_id " + "INNER JOIN playerhandscashkeycolumns ON playerhandscashkeycolumns.pokerhand_id = pokerhands.pokerhand_id " + "WHERE pokerhands.gametype_id IN (1,3,4,12,22,10) " + // NoLimit
@@ -49,7 +49,7 @@ public class BDHandHistories
     /**
      * Retourner la connexion associée.
      */
-    public MyConnection getConnexion()
+    public BDConnection getConnexion()
     {
         return m_connection;
     }

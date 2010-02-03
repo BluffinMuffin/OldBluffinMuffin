@@ -26,7 +26,7 @@ import java.sql.SQLException;
  *   (s'il est supporté par le serveur).
  * </pre>
  */
-public class MyConnection
+public class BDConnection
 {
     
     /**
@@ -50,7 +50,7 @@ public class MyConnection
      * @user userid sur le serveur SQL
      * @pass mot de passe sur le serveur SQL
      */
-    public MyConnection(String serveur, String bd, String user, String pass) throws SQLException
+    public BDConnection(String serveur, String bd, String user, String pass) throws SQLException
     {
         Driver d;
         try

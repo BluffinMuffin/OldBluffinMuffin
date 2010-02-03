@@ -42,7 +42,6 @@ public class HoldemTableServer implements Runnable
     private final List<IHoldEmObserver> m_observers;
     
     // Players variables
-    private final List<ServerPokerPlayerInfo> m_players;
     private int m_nbPlayer;
     private int m_nbPlaying;
     private int m_nbFolded;
@@ -92,15 +91,9 @@ public class HoldemTableServer implements Runnable
     public HoldemTableServer(String p_name, TypePokerGame p_gameType, int p_bigBlind, int p_playerCapacity)
     {
         m_stopTable = false;
-        m_info = new ServerPokerTableInfo();
+        m_info = new ServerPokerTableInfo(p_playerCapacity);
         m_info.m_name = p_name;
         m_info.m_gameType = p_gameType;
-        m_info.m_nbSeats = p_playerCapacity;
-        m_players = Collections.synchronizedList(new ArrayList<ServerPokerPlayerInfo>(m_info.m_nbSeats));
-        for (int i = 0; i < m_info.m_nbSeats; i++)
-        {
-            m_players.add(null);
-        }
         
         m_isRunning = true;
         m_observers = new ArrayList<IHoldEmObserver>();
@@ -154,7 +147,7 @@ public class HoldemTableServer implements Runnable
     private boolean continueBetting()
     {
         boolean canContinue = false;
-        if ((m_firstTurn && (m_nbBetting > 1)) || (m_players.get(m_playerTurn).getBet() < m_currentBet))
+        if ((m_firstTurn && (m_nbBetting > 1)) || (m_info.getPlayer(m_playerTurn).getBet() < m_currentBet))
         {
             canContinue = true;
         }
@@ -194,9 +187,9 @@ public class HoldemTableServer implements Runnable
         
         do
         {
-            m_players.get(m_playerTurn).setHand(m_deck.pop(), m_deck.pop());
+            m_info.getPlayer(m_playerTurn).setHand(m_deck.pop(), m_deck.pop());
             
-            notifyObserver(IHoldEmObserver.HOLE_CARD_DEAL, this, m_players.get(m_playerTurn));
+            notifyObserver(IHoldEmObserver.HOLE_CARD_DEAL, this, m_info.getPlayer(m_playerTurn));
             m_playerTurn = nextPlayingPlayer(m_playerTurn);
         }
         while (m_playerTurn != firstPlayer);
@@ -276,7 +269,7 @@ public class HoldemTableServer implements Runnable
         int i = start;
         do
         {
-            m_players.get(i).endGame();
+            m_info.getPlayer(i).endGame();
             i = nextPlayer(i);
         }
         while (i != start);
@@ -478,7 +471,7 @@ public class HoldemTableServer implements Runnable
         
         ++m_nbPlayer;
         int i = 0;
-        while (m_players.get(i) != null)
+        while (m_info.getPlayer(i) != null)
         {
             ++i;
         }
@@ -525,9 +518,9 @@ public class HoldemTableServer implements Runnable
      * @return
      *         The list of player
      */
-    public List<ServerPokerPlayerInfo> getPlayers()
+    public List<PokerPlayerInfo> getPlayers()
     {
-        return m_players;
+        return m_info.getPlayers();
     }
     
     /**
@@ -602,19 +595,19 @@ public class HoldemTableServer implements Runnable
             {
                 for (int i = 0; i < m_info.m_nbSeats; i++)
                 {
-                    if (m_players.get(i) != null)
+                    if (m_info.getPlayer(i) != null)
                     {
-                        if (m_players.get(i).sitOutNextHand())
+                        if (((ServerPokerPlayerInfo) m_info.getPlayer(i)).sitOutNextHand())
                         {
-                            final ServerPokerPlayerInfo deletedPlayer = m_players.get(i);
-                            m_players.set(i, null);
+                            final PokerPlayerInfo deletedPlayer = m_info.getPlayer(i);
+                            m_info.removePlayer(i);
                             m_nbPlayer--;
                             
                             notifyObserver(IHoldEmObserver.PLAYER_LEFT_TABLE, this, deletedPlayer);
                         }
-                        else if (m_players.get(i).getMoney() > 0)
+                        else if (m_info.getPlayer(i).getMoney() > 0)
                         {
-                            if (m_players.get(i).canStartGame())
+                            if (m_info.getPlayer(i).canStartGame())
                             {
                                 nbPlayingPlayer++;
                             }
@@ -652,9 +645,9 @@ public class HoldemTableServer implements Runnable
         int i = start;
         do
         {
-            if (m_players.get(i).canStartGame())
+            if (m_info.getPlayer(i).canStartGame())
             {
-                m_players.get(i).startGame();
+                m_info.getPlayer(i).startGame();
                 ++m_nbPlaying;
             }
             i = nextPlayer(i);
@@ -664,20 +657,20 @@ public class HoldemTableServer implements Runnable
         // Reset the player position variables
         m_nbBetting = m_nbPlaying;
         m_dealer = nextPlayingPlayer(m_dealer);
-        m_players.get(m_dealer).setIsDealer(true);
+        m_info.getPlayer(m_dealer).setIsDealer(true);
         if (m_nbPlaying == 2)
         {
             m_bigBlindPlayer = nextPlayingPlayer(m_dealer);
-            m_players.get(m_bigBlindPlayer).setIsBigBlind(true);
+            m_info.getPlayer(m_bigBlindPlayer).setIsBigBlind(true);
             m_smallBlindPlayer = nextPlayingPlayer(m_bigBlindPlayer);
-            m_players.get(m_smallBlindPlayer).setIsSmallBlind(true);
+            m_info.getPlayer(m_smallBlindPlayer).setIsSmallBlind(true);
         }
         else
         {
             m_smallBlindPlayer = nextPlayingPlayer(m_dealer);
-            m_players.get(m_smallBlindPlayer).setIsSmallBlind(true);
+            m_info.getPlayer(m_smallBlindPlayer).setIsSmallBlind(true);
             m_bigBlindPlayer = nextPlayingPlayer(m_smallBlindPlayer);
-            m_players.get(m_bigBlindPlayer).setIsBigBlind(true);
+            m_info.getPlayer(m_bigBlindPlayer).setIsBigBlind(true);
         }
         
         // notify the observer that a new game is starting
@@ -727,7 +720,7 @@ public class HoldemTableServer implements Runnable
     public void join(ServerPokerPlayerInfo p_player, int p_noSeat)
     {
         m_waitForFirstPlayer = false;
-        m_players.set(p_noSeat, p_player);
+        m_info.addPlayer(p_noSeat, p_player);
         p_player.setTable(this);
         p_player.setTablePosition(p_noSeat);
         notifyObserver(IHoldEmObserver.PLAYER_JOINED_TABLE, this, p_player);
@@ -775,10 +768,10 @@ public class HoldemTableServer implements Runnable
         
         sb.append(m_info.m_nbSeats + Constants.DELIMITER);
         
-        for (int i = 0; i != m_players.size(); ++i)
+        for (int i = 0; i != m_info.m_nbPlayers; ++i)
         {
             sb.append(i + Constants.DELIMITER); // noSeat
-            final ServerPokerPlayerInfo player = m_players.get(i);
+            final ServerPokerPlayerInfo player = (ServerPokerPlayerInfo) m_info.getPlayer(i);
             sb.append((player == null) + Constants.DELIMITER); // isEmpty
             
             if (player == null)
@@ -840,7 +833,7 @@ public class HoldemTableServer implements Runnable
         {
             player = (player + 1) % m_info.m_nbSeats;
         }
-        while (m_players.get(player) == null);
+        while (m_info.getPlayer(player) == null);
         return player;
     }
     
@@ -859,7 +852,7 @@ public class HoldemTableServer implements Runnable
         {
             player = nextPlayer(player);
         }
-        while (!m_players.get(player).isPlaying());
+        while (!m_info.getPlayer(player).isPlaying());
         return player;
         
     }
@@ -932,7 +925,7 @@ public class HoldemTableServer implements Runnable
     private void placeBlinds()
     {
         // Place the small blind
-        ServerPokerPlayerInfo player = m_players.get(m_smallBlindPlayer);
+        PokerPlayerInfo player = m_info.getPlayer(m_smallBlindPlayer);
         player.placeSmallBlind(m_info.m_smallBlindAmount);
         m_currentBet = player.getBet();
         m_totalPot += m_currentBet;
@@ -942,7 +935,7 @@ public class HoldemTableServer implements Runnable
             m_nbAllIn++;
         }
         
-        notifyObserver(IHoldEmObserver.SMALL_BLIND_POSTED, this, m_players.get(m_smallBlindPlayer), m_currentBet);
+        notifyObserver(IHoldEmObserver.SMALL_BLIND_POSTED, this, m_info.getPlayer(m_smallBlindPlayer), m_currentBet);
         try
         {
             Thread.sleep(Constants.SERVER_WAIT_TIME);
@@ -953,7 +946,7 @@ public class HoldemTableServer implements Runnable
         }
         
         // place the Big Blind
-        player = m_players.get(m_bigBlindPlayer);
+        player = m_info.getPlayer(m_bigBlindPlayer);
         player.placeBigBlind(m_info.m_bigBlindAmount);
         final int bet = player.getBet();
         m_currentBet = Math.max(m_currentBet, bet);
@@ -964,7 +957,7 @@ public class HoldemTableServer implements Runnable
             m_nbAllIn++;
         }
         
-        notifyObserver(IHoldEmObserver.BIG_BLIND_POSTED, this, m_players.get(m_bigBlindPlayer), bet);
+        notifyObserver(IHoldEmObserver.BIG_BLIND_POSTED, this, m_info.getPlayer(m_bigBlindPlayer), bet);
         try
         {
             Thread.sleep(Constants.SERVER_WAIT_TIME);
@@ -1035,7 +1028,7 @@ public class HoldemTableServer implements Runnable
     {
         for (int i = 0; i < m_info.m_nbSeats; i++)
         {
-            final ServerPokerPlayerInfo player = m_players.get(i);
+            final ServerPokerPlayerInfo player = (ServerPokerPlayerInfo) m_info.getPlayer(i);
             if (!(player == null) && player.isPlaying() && !player.isFolded() && !player.isShowingCard())
             {
                 player.showCards();
@@ -1132,12 +1125,12 @@ public class HoldemTableServer implements Runnable
         // Check if the blinds are all-in
         if (m_gameState == TypePokerRound.PREFLOP)
         {
-            ServerPokerPlayerInfo blind = m_players.get(m_smallBlindPlayer);
+            PokerPlayerInfo blind = m_info.getPlayer(m_smallBlindPlayer);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
             {
                 bets.add(blind.getBet());
             }
-            blind = m_players.get(m_bigBlindPlayer);
+            blind = m_info.getPlayer(m_bigBlindPlayer);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
             {
                 bets.add(blind.getBet());
@@ -1149,7 +1142,7 @@ public class HoldemTableServer implements Runnable
         PokerPlayerAction action;
         while (continueBetting())
         {
-            player = m_players.get(m_playerTurn);
+            player = (ServerPokerPlayerInfo) m_info.getPlayer(m_playerTurn);
             // make sure the player can take an action
             if (!(player.isFolded() || player.isAllIn()))
             {
@@ -1237,7 +1230,7 @@ public class HoldemTableServer implements Runnable
             int bet = 0;
             do
             {
-                bet = m_players.get(m_playerTurn).getBet();
+                bet = m_info.getPlayer(m_playerTurn).getBet();
                 
                 if (bet > 0)
                 {
@@ -1257,13 +1250,13 @@ public class HoldemTableServer implements Runnable
                             {
                                 
                                 betPlaced = true;
-                                if (addAPot && !m_players.get(m_playerTurn).isAllIn())
+                                if (addAPot && !m_info.getPlayer(m_playerTurn).isAllIn())
                                 {
-                                    lastPot.addParticipant(m_players.get(m_playerTurn));
+                                    lastPot.addParticipant(m_info.getPlayer(m_playerTurn));
                                 }
                                 else
                                 {
-                                    nextPot.addParticipant(m_players.get(m_playerTurn));
+                                    nextPot.addParticipant(m_info.getPlayer(m_playerTurn));
                                 }
                             }
                         }
@@ -1299,7 +1292,7 @@ public class HoldemTableServer implements Runnable
         int i = start;
         do
         {
-            m_players.get(i).endTurn();
+            m_info.getPlayer(i).endTurn();
             i = nextPlayer(i);
         }
         while (i != start);

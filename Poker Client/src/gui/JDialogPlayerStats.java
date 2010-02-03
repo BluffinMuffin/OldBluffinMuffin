@@ -14,11 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import miscUtil.Bundle;
-
 import stats.PlayerStats;
 import stats.StatsAgent;
-import backend.ClientPokerPlayerInfo;
-import backend.ClientPokerTableInfo;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
 
@@ -238,7 +235,7 @@ public class JDialogPlayerStats extends JFrame// JDialog
         }
         
         // Update each player
-        for (final PokerPlayerInfo player : m_table.m_players.values())
+        for (final PokerPlayerInfo player : m_table.getPlayers())
         {
             final PlayerStats stats = m_statsAgent.m_overallStats.get(player.m_name);
             

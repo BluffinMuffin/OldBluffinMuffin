@@ -63,12 +63,11 @@ import javax.swing.table.DefaultTableModel;
 import miscUtil.Bundle;
 import miscUtil.Constants;
 import miscUtil.IClosingListener;
-
 import stats.StatsAgent;
 import utilGUI.AutoListModel;
 import backend.ClientPokerPlayerInfo;
-import backend.PokerClient;
 import backend.ClientPokerTableInfo;
+import backend.PokerClient;
 import backend.agent.FactoryAgent;
 import backend.agent.FactoryObserver;
 import backend.agent.PokerAI;
@@ -1127,6 +1126,7 @@ public class Lobby implements IClosingListener<PokerClient>
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             jFrame.addWindowListener(new java.awt.event.WindowAdapter()
             {
+                @Override
                 public void windowClosing(java.awt.event.WindowEvent e)
                 {
                     disconnect();

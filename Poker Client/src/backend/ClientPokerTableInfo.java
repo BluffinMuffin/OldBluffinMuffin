@@ -16,7 +16,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
     public void setPlayerPositions()
     {
         // Initialize all player's attributes to default value.
-        for (final PokerPlayerInfo player : m_players.values())
+        for (final PokerPlayerInfo player : getPlayers())
         {
             player.m_isPlaying = player.m_money > 0;
             player.m_isEarlyPos = false;
@@ -57,7 +57,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
         i = (i + 1) % m_nbSeats;
         while (i != m_noSeatDealer)
         {
-            final PokerPlayerInfo player = m_players.get(i);
+            final PokerPlayerInfo player = m_players[i];
             if ((player != null) && player.m_isPlaying)
             {
                 player.m_relativePosition = position;
@@ -69,7 +69,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
         
         // Set boolean attributes depending the player relative position.
         m_nbPlayingPlayers = 0;
-        for (final PokerPlayerInfo player : m_players.values())
+        for (final PokerPlayerInfo player : getPlayers())
         {
             if (!player.m_isPlaying)
             {

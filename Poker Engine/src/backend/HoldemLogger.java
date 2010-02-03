@@ -7,6 +7,7 @@ import java.util.List;
 import player.ServerPokerPlayerInfo;
 import basePoker.Card;
 import basePoker.PokerPlayerAction;
+import basePoker.PokerPlayerInfo;
 import basePoker.Pot;
 
 /**
@@ -59,7 +60,7 @@ public class HoldemLogger implements IHoldEmObserver
     {
         println("Game Start");
         
-        final List<ServerPokerPlayerInfo> players = p_table.getPlayers();
+        final List<PokerPlayerInfo> players = p_table.getPlayers();
         
         for (int i = 0; i < players.size(); i++)
         {

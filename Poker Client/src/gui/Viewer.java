@@ -28,12 +28,11 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
+import basePoker.Card;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
-import backend.ClientPokerTableInfo;
-import basePoker.Card;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentListener;
 
@@ -870,9 +869,9 @@ public class Viewer extends JFrame implements IPokerAgentListener
             playerGUI.m_hud.setVisible(false);
         }
         
-        for (final Integer i : m_table.m_players.keySet())
+        for (final Integer i : m_table.getPlayerIds())
         {
-            final PokerPlayerInfo player = m_table.m_players.get(i);
+            final PokerPlayerInfo player = m_table.getPlayer(i);
             final GUIPlayer playerGUI = getPlayer(i);
             
             playerGUI.m_bet.setText(format(player.m_betAmount));

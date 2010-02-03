@@ -5,16 +5,13 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import miscUtil.Constants;
-import miscUtil.IClosingListener;
-
+import backend.ClientPokerPlayerInfo;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentListener;
-import backend.ClientPokerPlayerInfo;
-import backend.ClientPokerTableInfo;
 
 /**
  * StatsAgent.java
@@ -100,7 +97,7 @@ public class StatsAgent implements IPokerAgentListener
     {
         synchronized (m_table)
         {
-            for (final PokerPlayerInfo player : m_table.m_players.values())
+            for (final PokerPlayerInfo player : m_table.getPlayers())
             {
                 // Notify everyone that a turn ended.
                 if (player.m_isPlaying)
@@ -134,18 +131,18 @@ public class StatsAgent implements IPokerAgentListener
     {
         synchronized (m_table)
         {
-            for (final PokerPlayerInfo player : m_table.m_players.values())
+            for (final PokerPlayerInfo player : m_table.getPlayers())
             {
                 if (!m_overallStats.containsKey(player.m_name))
                 {
-                    m_gameStats.put(player.m_name, new PlayerStats((ClientPokerPlayerInfo)player, this));
+                    m_gameStats.put(player.m_name, new PlayerStats((ClientPokerPlayerInfo) player, this));
                 }
                 else
                 {
                     try
                     {
                         m_gameStats.put(player.m_name, (PlayerStats) m_overallStats.get(player.m_name).clone());
-                        m_gameStats.get(player.m_name).setPlayer((ClientPokerPlayerInfo)player);
+                        m_gameStats.get(player.m_name).setPlayer((ClientPokerPlayerInfo) player);
                     }
                     catch (final CloneNotSupportedException e)
                     {

@@ -6,19 +6,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import miscUtil.MyConnection;
+import miscUtil.BDConnection;
 
 public class BDPlayer
 {
     
     private final PreparedStatement m_stmtGetAll;
     private final PreparedStatement m_stmtGetOverXCashHands;
-    private final MyConnection m_connection;
+    private final BDConnection m_connection;
     
     /**
      * Creation d'une instance. Précompilation d'énoncés SQL.
      */
-    public BDPlayer(MyConnection p_connection) throws SQLException
+    public BDPlayer(BDConnection p_connection) throws SQLException
     {
         m_connection = p_connection;
         m_stmtGetAll = m_connection.getConnection().prepareStatement("SELECT player_id, site_id, playername, lastplayeddate, " + " cashhands, tourneyhands, playertype_id " + "FROM players");
@@ -29,7 +29,7 @@ public class BDPlayer
     /**
      * Retourner la connexion associée.
      */
-    public MyConnection getConnexion()
+    public BDConnection getConnexion()
     {
         return m_connection;
     }

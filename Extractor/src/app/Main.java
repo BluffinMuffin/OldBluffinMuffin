@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import miscUtil.HeadsUpException;
-import miscUtil.MyConnection;
+import miscUtil.BDConnection;
 
 import backend.SimulationServer;
 import db.BDHandHistories;
@@ -24,7 +24,7 @@ import db.TupleHandHistories;
 
 public class Main
 {
-    MyConnection m_connection = null;
+    BDConnection m_connection = null;
     
     private final static boolean LOG_IN_FILE = true;
     
@@ -71,7 +71,7 @@ public class Main
                 {
                     System.out.println("Beginning exportation...");
                     
-                    final MyConnection c = new MyConnection("postgres", Main.DB_NAME, Main.DB_USERNAME, Main.DB_PASSWORD);
+                    final BDConnection c = new BDConnection("postgres", Main.DB_NAME, Main.DB_USERNAME, Main.DB_PASSWORD);
                     
                     final Main main = new Main(c);
                     main.export();
@@ -80,7 +80,7 @@ public class Main
                 {
                     System.out.println("Resuming exportation...");
                     
-                    final MyConnection c = new MyConnection("postgres", Main.DB_NAME, Main.DB_USERNAME, Main.DB_PASSWORD);
+                    final BDConnection c = new BDConnection("postgres", Main.DB_NAME, Main.DB_USERNAME, Main.DB_PASSWORD);
                     
                     final Main main = new Main(c);
                     main.resume();
@@ -119,7 +119,7 @@ public class Main
     
     private BufferedWriter m_log = null;
     
-    public Main(MyConnection p_connection)
+    public Main(BDConnection p_connection)
     {
         m_connection = p_connection;
     }
