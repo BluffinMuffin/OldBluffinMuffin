@@ -1,7 +1,6 @@
 package tempGUI;
 
 import java.awt.Graphics;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -17,7 +16,7 @@ public class OpaqueImagePanel extends JPanel
     private int m_height = 10;
     private ImageIcon m_img = null;
     
-    public OpaqueImagePanel(URL p_url, Double p_scale)
+    public OpaqueImagePanel(String p_url, Double p_scale)
     {
         setImage(Image.getInstance(p_url, p_scale));
     }

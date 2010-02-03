@@ -1,10 +1,8 @@
 package tempGUI;
 
-import java.net.URL;
 import java.util.TreeMap;
 
 import basePoker.Card;
-
 
 /**
  * @author Hocus
@@ -21,7 +19,7 @@ public class CardPanel extends OpaqueImagePanel
     /**
      * Array of card panels of a regular deck.
      */
-    private static final TreeMap<Card, URL> m_cardPanels = new TreeMap<Card, URL>();
+    private static final TreeMap<Card, String> m_cardPanels = new TreeMap<Card, String>();
     
     /**
      * Retrieves the instance of a card panel using its card ID.
@@ -34,18 +32,19 @@ public class CardPanel extends OpaqueImagePanel
     /**
      * Retrieves the instance of a card panel using its card ID.
      */
-    private static URL getURL(Card p_card)
+    private static String getURL(Card p_card)
     {
         if (!CardPanel.m_cardPanels.containsKey(p_card))
         {
-            final URL url = ClassLoader.getSystemResource(CardPanel.PATH_IMAGE_CARD + ((p_card.isNoCard() || p_card.isHidden()) ? "default" : p_card.getCode()) + ".png");
+            final String url = CardPanel.PATH_IMAGE_CARD + ((p_card.isNoCard() || p_card.isHidden()) ? "default" : p_card.getCode() + ".png");
             CardPanel.m_cardPanels.put(p_card, url);
+            
         }
         
         return CardPanel.m_cardPanels.get(p_card);
     }
     
-    private CardPanel(URL p_url)
+    private CardPanel(String p_url)
     {
         super(p_url, CardPanel.SCALE);
     }

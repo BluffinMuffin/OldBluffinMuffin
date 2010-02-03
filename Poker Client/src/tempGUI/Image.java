@@ -1,6 +1,5 @@
 package tempGUI;
 
-import java.net.URL;
 import java.util.TreeMap;
 
 import javax.swing.ImageIcon;
@@ -19,9 +18,9 @@ public class Image
     /**
      * Retrieves the instance of a card panel using its card ID.
      */
-    public static Image getInstance(URL p_url, Double p_scale)
+    public static Image getInstance(String p_url, Double p_scale)
     {
-        final String key = p_url.toString() + p_scale.toString();
+        final String key = p_url + p_scale.toString();
         if (!Image.m_images.containsKey(key))
         {
             Image.m_images.put(key, new Image(p_scale, new ImageIcon(p_url)));

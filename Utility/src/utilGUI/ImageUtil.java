@@ -4,7 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.net.URL;
+import java.io.File;
 
 import javax.imageio.ImageIO;
 
@@ -22,12 +22,12 @@ public class ImageUtil
      * @return
      *         The newly created BufferedImage.
      */
-    public static BufferedImage loadImage(URL ref)
+    public static BufferedImage loadImage(String ref)
     {
         BufferedImage bimg = null;
         try
         {
-            bimg = ImageIO.read(ref);
+            bimg = ImageIO.read(new File(ref));
         }
         catch (final Exception e)
         {
@@ -67,7 +67,7 @@ public class ImageUtil
      * @return
      *         The newly created BufferedImage.
      */
-    public static BufferedImage makeColorTransparent(URL ref, Color color)
+    public static BufferedImage makeColorTransparent(String ref, Color color)
     {
         final BufferedImage image = ImageUtil.loadImage(ref);
         final BufferedImage dimg = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);

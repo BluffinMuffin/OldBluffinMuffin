@@ -1,8 +1,6 @@
 package basePokerAI;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -71,8 +69,7 @@ public class SVM
             if (!SVM.m_models.containsKey(p_filename))
             {
                 System.out.println("Loading model: " + p_filename + "...");
-                final URL url = ClassLoader.getSystemResource("SVMs/" + p_filename);
-                SVM.m_models.put(p_filename, svm.svm_load_model(URLDecoder.decode(url.getPath())));
+                SVM.m_models.put(p_filename, svm.svm_load_model("SVMs/" + p_filename));
             }
             
             m_model = SVM.m_models.get(p_filename);

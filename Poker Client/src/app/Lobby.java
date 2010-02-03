@@ -439,7 +439,7 @@ public class Lobby implements IClosingListener<PokerClient>
         if (jBackgroundPanelHandsStrength == null)
         {
             jBackgroundPanelHandsStrength = new JBackgroundPanel();
-            jBackgroundPanelHandsStrength.setBackground(new ImageIcon(ClassLoader.getSystemResource(m_bundle.get("handsStrength.imagePath"))));
+            jBackgroundPanelHandsStrength.setBackground(new ImageIcon(m_bundle.get("handsStrength.imagePath")));
         }
         return jBackgroundPanelHandsStrength;
     }

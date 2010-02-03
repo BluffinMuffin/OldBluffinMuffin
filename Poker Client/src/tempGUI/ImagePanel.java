@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -38,12 +37,12 @@ public class ImagePanel extends JPanel
     {
     }
     
-    public ImagePanel(URL p_url)
+    public ImagePanel(String p_url)
     {
         this(p_url, ImagePanel.DEFAULT_SCALE);
     }
     
-    public ImagePanel(URL p_url, double p_scale)
+    public ImagePanel(String p_url, double p_scale)
     {
         m_scale = p_scale;
         setImage(p_url);
@@ -77,7 +76,7 @@ public class ImagePanel extends JPanel
      * Set image of the JPanel to be displayed.
      * Adjust the new height and width of the image.
      */
-    public void setImage(URL p_url)
+    public void setImage(String p_url)
     {
         final Color color = new Color(255, 0, 255);
         final BufferedImage image = ImageUtil.loadImage(p_url);

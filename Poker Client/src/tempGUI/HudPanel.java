@@ -18,7 +18,6 @@ import org.dyno.visual.swing.layouts.Leading;
 
 import basePoker.Card;
 
-
 /**
  * @author Hocus
  *         This class represents the HUD (Heads Up Display) associated to each
@@ -94,7 +93,7 @@ public class HudPanel extends JPanel
     {
         if (imagePanelButtonBigBlind == null)
         {
-            imagePanelButtonBigBlind = new ImagePanel(ClassLoader.getSystemResource(Bundle.getIntance().get("viewer.image.buttonBigBlind")));
+            imagePanelButtonBigBlind = new ImagePanel(Bundle.getIntance().get("viewer.image.buttonBigBlind"));
             imagePanelButtonBigBlind.setScale(HudPanel.SCALE_BUTTON_BIG_BLIND);
         }
         return imagePanelButtonBigBlind;
@@ -104,7 +103,7 @@ public class HudPanel extends JPanel
     {
         if (imagePanelButtonDealer == null)
         {
-            imagePanelButtonDealer = new ImagePanel(ClassLoader.getSystemResource(Bundle.getIntance().get("viewer.image.buttonDealer")));
+            imagePanelButtonDealer = new ImagePanel(Bundle.getIntance().get("viewer.image.buttonDealer"));
             imagePanelButtonDealer.setScale(HudPanel.SCALE_BUTTON_DEALER);
         }
         return imagePanelButtonDealer;
@@ -114,7 +113,7 @@ public class HudPanel extends JPanel
     {
         if (imagePanelButtonSmallBlind == null)
         {
-            imagePanelButtonSmallBlind = new ImagePanel(ClassLoader.getSystemResource(Bundle.getIntance().get("viewer.image.buttonSmallBlind")));
+            imagePanelButtonSmallBlind = new ImagePanel(Bundle.getIntance().get("viewer.image.buttonSmallBlind"));
             imagePanelButtonSmallBlind.setScale(HudPanel.SCALE_BUTTON_SMALL_BLIND);
         }
         return imagePanelButtonSmallBlind;

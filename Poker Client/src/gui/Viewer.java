@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -28,7 +27,6 @@ import org.dyno.visual.swing.layouts.Leading;
 import tempGUI.CardPanel;
 import tempGUI.HudPanel;
 import tempGUI.JBackgroundPanel;
-
 import backend.ClientPokerTableInfo;
 import basePoker.Card;
 import basePoker.PokerPlayerInfo;
@@ -406,7 +404,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         if (jBackgroundPanel0 == null)
         {
             jBackgroundPanel0 = new JBackgroundPanel();
-            jBackgroundPanel0.setBackground(new ImageIcon(ClassLoader.getSystemResource("images/table.png")));
+            jBackgroundPanel0.setBackground(new ImageIcon("images/table.png"));
             jBackgroundPanel0.add(getJPanel1());
         }
         return jBackgroundPanel0;
