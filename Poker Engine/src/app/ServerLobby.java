@@ -14,13 +14,13 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import miscUtil.Constants;
-import miscUtil.TypeMessageLobby;
 
-import tools.Logger;
-import backend.HoldEmTable;
-import backend.Table;
+import backend.HoldemTableServer;
+import backend.HoldemLogger;
+import backend.SummaryTableInfo;
 import backend.TableManager;
 import basePoker.TypePokerGame;
+import baseProtocol.TypeMessageLobby;
 
 /**
  * @author Hocus
@@ -111,12 +111,12 @@ public class ServerLobby extends Thread
          */
         private void listTables(StringTokenizer p_token)
         {
-            final ArrayList<Table> tables = ServerLobby.this.listTables();
+            final ArrayList<SummaryTableInfo> tables = ServerLobby.this.listTables();
             final StringBuilder sb = new StringBuilder();
             
             Collections.sort(tables);
             
-            for (final Table table : tables)
+            for (final SummaryTableInfo table : tables)
             {
                 sb.append(table.toString(Constants.DELIMITER));
             }
@@ -203,7 +203,7 @@ public class ServerLobby extends Thread
     final int NO_PORT;
     ServerSocket m_socketServer;
     
-    Map<Integer, HoldEmTable> m_tables = Collections.synchronizedMap(new TreeMap<Integer, HoldEmTable>());
+    Map<Integer, HoldemTableServer> m_tables = Collections.synchronizedMap(new TreeMap<Integer, HoldemTableServer>());
     
     public ServerLobby(int p_noPort) throws IOException
     {
@@ -246,12 +246,12 @@ public class ServerLobby extends Thread
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            final HoldEmTable table = new HoldEmTable(p_tableName, p_gameType, p_bigBlind, p_nbSeats);
+            final HoldemTableServer table = new HoldemTableServer(p_tableName, p_gameType, p_bigBlind, p_nbSeats);
             final TableManager manager = new TableManager(table, noPort);
             
             // Start the TableManager.
             table.addClosingListener(manager);
-            table.attach(new Logger(System.out));
+            table.attach(new HoldemLogger(System.out));
             table.start();
             manager.start();
             
@@ -274,19 +274,19 @@ public class ServerLobby extends Thread
      * @return
      *         Array containing the available tables.
      */
-    public synchronized ArrayList<Table> listTables()
+    public synchronized ArrayList<SummaryTableInfo> listTables()
     {
-        final ArrayList<Table> tables = new ArrayList<Table>();
+        final ArrayList<SummaryTableInfo> tables = new ArrayList<SummaryTableInfo>();
         final ArrayList<Integer> tablesToRemove = new ArrayList<Integer>();
         
         for (final Integer noPort : m_tables.keySet())
         {
-            final HoldEmTable table = m_tables.get(noPort);
+            final HoldemTableServer table = m_tables.get(noPort);
             
             // Check if the table is still running.
             if (table.isRunning())
             {
-                tables.add(new Table(noPort, table.getName(), table.getGameType(), table.getBigBlind(), table.getNbPlayers(), table.getNbSeats()));
+                tables.add(new SummaryTableInfo(noPort, table.getName(), table.getGameType(), table.getBigBlind(), table.getNbPlayers(), table.getNbSeats()));
             }
             else
             {

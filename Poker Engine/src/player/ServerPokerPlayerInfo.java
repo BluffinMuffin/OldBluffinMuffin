@@ -1,31 +1,27 @@
 package player;
 
-import java.util.ArrayList;
-
-import backend.HoldEmTable;
-import basePoker.BasePokerPlayer;
-import basePoker.Card;
+import backend.HoldemTableServer;
+import basePoker.PokerPlayerInfo;
 import basePoker.PokerPlayerAction;
 import basePoker.TypePlayerAction;
-import handEvaluation.HandEvalHoldem;
 
 /**
  * @author HOCUS
  *         Abstract class implementing the basic behaviour of a player.
  *         To make a working player, we only need to override the getActionFromUser method.
  */
-public abstract class ServerPokerPlayer extends BasePokerPlayer
+public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
 {
     protected int m_position;
     protected boolean m_isFolded;
     protected boolean m_cardShowed;
     protected boolean m_sitOutNextHand;
-    protected HoldEmTable m_table;
+    protected HoldemTableServer m_table;
     
     /**
      * Create a new player named "Anonymous Player" with no money
      */
-    public ServerPokerPlayer()
+    public ServerPokerPlayerInfo()
     {
         this("Anonymous Player");
     }
@@ -36,7 +32,7 @@ public abstract class ServerPokerPlayer extends BasePokerPlayer
      * @param p_name
      *            The name of the player
      */
-    public ServerPokerPlayer(String p_name)
+    public ServerPokerPlayerInfo(String p_name)
     {
         this(p_name, 0);
     }
@@ -49,14 +45,14 @@ public abstract class ServerPokerPlayer extends BasePokerPlayer
      * @param p_money
      *            The starting chips of the player
      */
-    public ServerPokerPlayer(String p_name, int p_money)
+    public ServerPokerPlayerInfo(String p_name, int p_money)
     {
-        super(p_name,p_money);
+        super(p_name, p_money);
         m_isPlaying = false;
         m_isFolded = false;
     }
     
-    public HoldEmTable getTable()
+    public HoldemTableServer getTable()
     {
         return m_table;
     }
@@ -81,7 +77,6 @@ public abstract class ServerPokerPlayer extends BasePokerPlayer
         m_isFolded = p_flag;
     }
     
-    
     /**
      * Make this player sit out at next hand if the flag is true.
      * 
@@ -93,7 +88,7 @@ public abstract class ServerPokerPlayer extends BasePokerPlayer
         m_sitOutNextHand = p_flag;
     }
     
-    public void setTable(HoldEmTable p_table)
+    public void setTable(HoldemTableServer p_table)
     {
         m_table = p_table;
     }
@@ -116,7 +111,7 @@ public abstract class ServerPokerPlayer extends BasePokerPlayer
     @Override
     public void startGame()
     {
-    	super.startGame();
+        super.startGame();
         m_isFolded = false;
         m_cardShowed = false;
     }
@@ -142,8 +137,8 @@ public abstract class ServerPokerPlayer extends BasePokerPlayer
      *         The action taken
      */
     abstract protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise);
-
-   public PokerPlayerAction takeAction(int p_betOnTable, int p_minimumRaise, int p_maximumRaise)
+    
+    public PokerPlayerAction takeAction(int p_betOnTable, int p_minimumRaise, int p_maximumRaise)
     {
         if (this.isAllIn())
         {

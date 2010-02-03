@@ -6,7 +6,7 @@ import basePoker.TypePokerGame;
  * @author Hocus
  *         This class represents a network table.
  */
-public class Table implements Comparable<Table>
+public class SummaryTableInfo implements Comparable<SummaryTableInfo>
 {
     public int m_noPort;
     public String m_tableName;
@@ -31,7 +31,7 @@ public class Table implements Comparable<Table>
      * @param p_nbSeats
      *            Number of seat
      */
-    public Table(int p_noPort, String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
+    public SummaryTableInfo(int p_noPort, String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
@@ -41,7 +41,7 @@ public class Table implements Comparable<Table>
         m_nbSeats = p_nbSeats;
     }
     
-    public int compareTo(Table p_table)
+    public int compareTo(SummaryTableInfo p_table)
     {
         return ((Integer) m_noPort).compareTo(p_table.m_noPort);
     }

@@ -8,18 +8,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import baseProtocol.TypeMessageTableManager;
+
 import miscUtil.Constants;
 import miscUtil.IClosingListener;
-import miscUtil.TypeMessageTableManager;
 
-import player.MessageNetworkPlayer;
+import player.ServerNetworkPokerPlayerInfo;
 
 /**
  * @author Hocus
  *         This class listens to new connection on a certain port number.
  *         It transferts the new connection to the HoldEmTable it manages.
  */
-public class TableManager extends Thread implements IClosingListener<HoldEmTable>
+public class TableManager extends Thread implements IClosingListener<HoldemTableServer>
 {
     /**
      * @author Hocus
@@ -77,7 +78,7 @@ public class TableManager extends Thread implements IClosingListener<HoldEmTable
                 }
                 
                 // Create new NetworkPlayer.
-                final MessageNetworkPlayer player = new MessageNetworkPlayer(m_name, Constants.STARTING_MONEY, m_socket);
+                final ServerNetworkPokerPlayerInfo player = new ServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
                 
                 // Verify the player does not already playing on that table.
                 if (!m_table.getPlayers().contains(player))
@@ -176,15 +177,15 @@ public class TableManager extends Thread implements IClosingListener<HoldEmTable
     /** Socket TableManager listen to. **/
     ServerSocket m_socketServer;
     /** Poker Table **/
-    HoldEmTable m_table;
+    HoldemTableServer m_table;
     
-    public TableManager(HoldEmTable p_table, int p_noPort) throws IOException
+    public TableManager(HoldemTableServer p_table, int p_noPort) throws IOException
     {
         m_table = p_table;
         m_socketServer = new ServerSocket(p_noPort);
     }
     
-    public void closing(HoldEmTable e)
+    public void closing(HoldemTableServer e)
     {
         try
         {
