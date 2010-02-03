@@ -23,7 +23,6 @@ public class Constants
     public static final int STARTING_MONEY = Constants.getInstance().getInt("STARTING_MONEY");
     public static final int NB_MAX_TABLES = Constants.getInstance().getInt("NB_MAX_TABLES");
     public static final int NB_HOLE_CARDS = 2;
-    public static final int NB_BOARDS_CARDS = 5;
     public static final boolean DEBUG_STATS = Constants.getInstance().getBoolean("DEBUG_STATS");
     public static final String SVM_SEPARATOR = " ";
     public static final int DEFAULT_NO_PORT = Constants.getInstance().getInt("DEFAULT_NO_PORT");
