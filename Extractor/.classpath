@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Utility"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Poker Client"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/BluffinClient"/>
 	<classpathentry kind="lib" path="postgresql-8.4-701.jdbc4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerWorld"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerAI"/>
