@@ -10,9 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import miscUtil.Constants;
 import miscUtil.IClosingListener;
-import miscUtil.TypeMessageTableToClient;
 
-import basePoker.BasePokerPlayer;
+import basePoker.PokerPlayerInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import basePoker.PokerPlayerAction;
@@ -23,6 +22,7 @@ import basePoker.Card;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentActionner;
 import basePokerAI.IPokerAgentListener;
+import baseProtocol.TypeMessageTableToClient;
 
 /**
  * This class is the representation of a generic poker client.
@@ -37,13 +37,13 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     IPokerAgentActionner m_agent = null;
     AutoListModel<IPokerAgentListener> m_observers = null;
     
-    Table m_table;
+    ClientPokerTableInfo m_table;
     
     LinkedBlockingQueue<String> m_fromServer = null;
     LinkedBlockingQueue<String> m_toServer = null;
     List<IClosingListener<PokerClientLocal>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<PokerClientLocal>>());
     
-    public PokerClientLocal(IPokerAgentActionner p_agent, AutoListModel<IPokerAgentListener> p_observers, ClientPokerPlayer p_localPlayer, Table p_table, LinkedBlockingQueue<String> p_fromServer, LinkedBlockingQueue<String> p_toServer)
+    public PokerClientLocal(IPokerAgentActionner p_agent, AutoListModel<IPokerAgentListener> p_observers, ClientPokerPlayerInfo p_localPlayer, ClientPokerTableInfo p_table, LinkedBlockingQueue<String> p_fromServer, LinkedBlockingQueue<String> p_toServer)
     {
         m_table = p_table;
         m_agent = p_agent;
@@ -96,7 +96,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
             }
         }
         
-        for (final BasePokerPlayer player : m_table.m_players.values())
+        for (final PokerPlayerInfo player : m_table.m_players.values())
         {
             player.m_betAmount = 0;
         }
@@ -195,9 +195,9 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         // Player oldBigBlind = m_table.m_bigBlind;
         
         // Set dealer, small blind and big blind.
-        final BasePokerPlayer dealer = m_table.m_players.get(m_table.m_noSeatDealer);
-        final BasePokerPlayer smallBlind = m_table.m_players.get(m_table.m_noSeatSmallBlind);
-        final BasePokerPlayer bigBlind = m_table.m_players.get(m_table.m_noSeatBigBlind);
+        final PokerPlayerInfo dealer = m_table.m_players.get(m_table.m_noSeatDealer);
+        final PokerPlayerInfo smallBlind = m_table.m_players.get(m_table.m_noSeatSmallBlind);
+        final PokerPlayerInfo bigBlind = m_table.m_players.get(m_table.m_noSeatBigBlind);
         
         m_table.m_dealer = dealer;
         if (m_table.m_dealer != null)
@@ -241,7 +241,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         return m_observers;
     }
     
-    public Table getTable()
+    public ClientPokerTableInfo getTable()
     {
         return m_table;
     }
@@ -391,7 +391,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         final Card card1 = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
         final Card card2 = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
         
-        final BasePokerPlayer player = m_table.m_players.get(noSeat);
+        final PokerPlayerInfo player = m_table.m_players.get(noSeat);
         player.setHand(card1, card2);
         
         notifyObserver(IPokerAgentListener.PLAYER_CARD_CHANGED, player);
@@ -410,7 +410,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         final String playerName = p_token.nextToken();
         final int moneyAmount = Integer.parseInt(p_token.nextToken());
         
-        final ClientPokerPlayer player = new ClientPokerPlayer(noSeat, playerName, moneyAmount);
+        final ClientPokerPlayerInfo player = new ClientPokerPlayerInfo(noSeat, playerName, moneyAmount);
         m_table.m_players.put(noSeat, player);
         
         notifyObserver(IPokerAgentListener.PLAYER_JOINED, player);
@@ -427,7 +427,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     {
         final int noSeat = Integer.parseInt(p_token.nextToken());
         
-        final BasePokerPlayer player = m_table.m_players.get(noSeat);
+        final PokerPlayerInfo player = m_table.m_players.get(noSeat);
         m_table.m_players.remove(noSeat);
         
         notifyObserver(IPokerAgentListener.PLAYER_LEFT, player);
@@ -445,7 +445,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         final int noSeat = Integer.parseInt(p_token.nextToken());
         final int moneyAmount = Integer.parseInt(p_token.nextToken());
         
-        final BasePokerPlayer player = m_table.m_players.get(noSeat);
+        final PokerPlayerInfo player = m_table.m_players.get(noSeat);
         final int oldMoneyAmount = player.m_money;
         player.m_money = moneyAmount;
         
@@ -463,7 +463,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     {
         final int noSeat = Integer.parseInt(p_token.nextToken());
         
-        final BasePokerPlayer oldCurrentPlayer = m_table.m_currentPlayer;
+        final PokerPlayerInfo oldCurrentPlayer = m_table.m_currentPlayer;
         m_table.m_currentPlayer = m_table.m_players.get(noSeat);
         
         notifyObserver(IPokerAgentListener.PLAYER_TURN_BEGAN, oldCurrentPlayer);
@@ -485,7 +485,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         final TypePlayerAction action = TypePlayerAction.valueOf(p_token.nextToken());
         final int actionAmount = Integer.parseInt(p_token.nextToken());
         
-        final ClientPokerPlayer player = (ClientPokerPlayer) m_table.m_players.get(noSeat);
+        final ClientPokerPlayerInfo player = (ClientPokerPlayerInfo) m_table.m_players.get(noSeat);
         player.m_betAmount = betAmount;
         player.m_money = moneyAmount;
         m_table.m_totalPotAmount = totalPotAmount;
@@ -515,7 +515,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         final int potAmountWon = Integer.parseInt(p_token.nextToken());
         final int moneyAmount = Integer.parseInt(p_token.nextToken());
         
-        final BasePokerPlayer player = m_table.m_players.get(noSeat);
+        final PokerPlayerInfo player = m_table.m_players.get(noSeat);
         player.m_money = moneyAmount;
         
         notifyObserver(IPokerAgentListener.POT_WON, player, potAmountWon, idPot);
@@ -726,10 +726,10 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
             
             if (!m_table.m_players.containsKey(noSeat))
             {
-                m_table.m_players.put(noSeat, new ClientPokerPlayer(noSeat));
+                m_table.m_players.put(noSeat, new ClientPokerPlayerInfo(noSeat));
             }
             
-            final BasePokerPlayer player = m_table.m_players.get(noSeat);
+            final PokerPlayerInfo player = m_table.m_players.get(noSeat);
             
             player.m_name = p_token.nextToken();
             player.m_money = Integer.parseInt(p_token.nextToken());

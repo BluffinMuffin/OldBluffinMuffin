@@ -5,19 +5,19 @@ import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import miscUtil.Tool;
-import miscUtil.TypeMessageTableToClient;
 
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 
 import stats.StatsAgent;
-import basePoker.BasePokerPlayer;
+import basePoker.PokerPlayerInfo;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerRound;
 import backend.agent.TypeSimplifiedAction;
 import utilGUI.AutoListModel;
 import basePoker.Card;
 import basePokerAI.IPokerAgentListener;
+import baseProtocol.TypeMessageTableToClient;
 import db.TupleHandHistories;
 import db.TupleHandHistories.PhaseEvents;
 import db.TupleHandHistories.TuplePlayer;
@@ -30,9 +30,9 @@ public class SimulationServer
     StatsAgent m_statsAgent = new StatsAgent();
     LinkedBlockingQueue<String> m_fromClient = new LinkedBlockingQueue<String>(1);
     LinkedBlockingQueue<String> m_toClient = new LinkedBlockingQueue<String>(1);
-    ClientPokerPlayer m_clientHero = new ClientPokerPlayer(0);
+    ClientPokerPlayerInfo m_clientHero = new ClientPokerPlayerInfo(0);
     TuplePlayer m_hero = null;
-    Table m_table = new Table();
+    ClientPokerTableInfo m_table = new ClientPokerTableInfo();
     TupleHandHistories m_currentInfos = null;
     // BufferedWriter m_output= null;
     ArrayList<String> m_vectors = new ArrayList<String>();
@@ -247,7 +247,7 @@ public class SimulationServer
     
     private int getPosition(String p_name)
     {
-        for (final BasePokerPlayer player : m_client.m_table.m_players.values())
+        for (final PokerPlayerInfo player : m_client.m_table.m_players.values())
         {
             if (player.m_name.equals(p_name))
             {
