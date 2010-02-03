@@ -1,0 +1,7 @@
+#summary Links related to the project
+
+= Poker =
+  * http://archive.ics.uci.edu/ml/datasets/Poker+Hand
+  * http://www.codingthewheel.com/archives/how-i-built-a-working-online-poker-bot-8
+  * http://www.pokerstove.com/
+  * http://www.safdar.net/shabbir/2009/04/combinatorics-in-texas-holdem-limit-poker.html
