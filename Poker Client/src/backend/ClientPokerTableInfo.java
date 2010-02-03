@@ -1,5 +1,7 @@
 package backend;
 
+import java.util.ArrayList;
+
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
 
@@ -9,6 +11,14 @@ import basePoker.PokerTableInfo;
  */
 public class ClientPokerTableInfo extends PokerTableInfo
 {
+    
+    public ArrayList<Integer> m_pots = new ArrayList<Integer>();
+    public PokerPlayerInfo m_localPlayer = null;
+    public PokerPlayerInfo m_bigBlind = null;
+    public PokerPlayerInfo m_smallBlind = null;
+    public PokerPlayerInfo m_dealer = null;
+    public PokerPlayerInfo m_currentPlayer = null;
+    public int m_nbRemainingPlayers;
     
     /**
      * Determine player positions and initialize other attributs.
@@ -54,17 +64,17 @@ public class ClientPokerTableInfo extends PokerTableInfo
         int i = m_noSeatBigBlind;
         
         // Determine position of the players.
-        i = (i + 1) % m_nbSeats;
+        i = (i + 1) % getNbSeats();
         while (i != m_noSeatDealer)
         {
-            final PokerPlayerInfo player = m_players[i];
+            final PokerPlayerInfo player = getPlayer(i);
             if ((player != null) && player.m_isPlaying)
             {
                 player.m_relativePosition = position;
                 ++position;
             }
             
-            i = (i + 1) % m_nbSeats;
+            i = (i + 1) % getNbSeats();
         }
         
         // Set boolean attributes depending the player relative position.
@@ -79,7 +89,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
             ++m_nbPlayingPlayers;
             
             // D, SB and BB are already set by PokerClient.
-            switch (m_nbPlayers + tmpPlayers)
+            switch (getNbPlayers() + tmpPlayers)
             {
                 case 9:
                     switch (player.m_relativePosition)

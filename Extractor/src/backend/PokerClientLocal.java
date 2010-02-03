@@ -708,12 +708,12 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
             m_table.m_boardCards.set(i, Card.getInstance().get(Integer.parseInt(p_token.nextToken())));
         }
         
-        m_table.m_nbPlayers = Integer.parseInt(p_token.nextToken());
+        final int nb = Integer.parseInt(p_token.nextToken());
         
         m_table.clearPlayers();
         // m_table.m_players.put(m_table.m_localPlayer.m_noSeat, m_table.m_localPlayer);
         
-        for (int i = 0; i != m_table.m_nbPlayers; ++i)
+        for (int i = 0; i <= nb; ++i)
         {
             final int noSeat = Integer.parseInt(p_token.nextToken());
             

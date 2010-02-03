@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import miscUtil.IClosingListener;
-
+import backend.ClientPokerTableInfo;
+import basePoker.PokerPlayerAction;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
 import basePoker.TypePlayerAction;
@@ -13,9 +14,6 @@ import basePoker.TypePokerRound;
 import basePokerAI.IPokerAgent;
 import basePokerAI.IPokerAgentActionner;
 import basePokerAI.IPokerAgentListener;
-import backend.ClientPokerPlayerInfo;
-import basePoker.PokerPlayerAction;
-import backend.ClientPokerTableInfo;
 
 /**
  * @author Hocus
@@ -37,7 +35,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     private boolean m_isRunning = true;
     
     /** Represents the poker table the agent is playing on. **/
-    protected PokerTableInfo m_table = null;
+    protected ClientPokerTableInfo m_table = null;
     /** Is the next action the agent has decided to take. **/
     private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     /** Indicates if new infos are available to the agent. **/
@@ -259,7 +257,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     @Override
     public void setTable(PokerTableInfo p_table)
     {
-        m_table = p_table;
+        m_table = (ClientPokerTableInfo) p_table;
     }
     
     @Override

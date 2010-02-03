@@ -28,6 +28,7 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
+import backend.ClientPokerTableInfo;
 import basePoker.Card;
 import basePoker.PokerPlayerInfo;
 import basePoker.PokerTableInfo;
@@ -106,7 +107,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
     private final ArrayList<CardPanel> m_boardCards = new ArrayList<CardPanel>();
     private final List<IClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IPokerAgent>>());
     
-    protected PokerTableInfo m_table = null;
+    protected ClientPokerTableInfo m_table = null;
     
     private final static Integer NB_PLAYERS = 9;
     
@@ -821,7 +822,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
     
     public void setTable(PokerTableInfo p_table)
     {
-        m_table = p_table;
+        m_table = (ClientPokerTableInfo) p_table;
     }
     
     @Override

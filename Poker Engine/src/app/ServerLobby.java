@@ -14,9 +14,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import miscUtil.Constants;
-
-import backend.HoldemTableServer;
 import backend.HoldemLogger;
+import backend.HoldemTableServer;
 import backend.SummaryTableInfo;
 import backend.TableManager;
 import basePoker.TypePokerGame;
@@ -193,6 +192,7 @@ public class ServerLobby extends Thread
         {
             final ServerLobby server = new ServerLobby(Constants.DEFAULT_NO_PORT);
             server.start();
+            System.out.println("Server started");
         }
         catch (final IOException e)
         {

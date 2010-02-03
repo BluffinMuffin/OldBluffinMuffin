@@ -41,13 +41,6 @@ public class HoldemTableServer implements Runnable
     private final List<IClosingListener<HoldemTableServer>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<HoldemTableServer>>());
     private final List<IHoldEmObserver> m_observers;
     
-    // Players variables
-    private int m_nbPlayer;
-    private int m_nbPlaying;
-    private int m_nbFolded;
-    private int m_nbAllIn;
-    private int m_nbBetting;
-    
     // Thread variables
     private boolean m_waitForFirstPlayer;
     private boolean m_isRunning = false;
@@ -55,19 +48,6 @@ public class HoldemTableServer implements Runnable
     private final Object m_mutex = new Object();
     
     // Game variables
-    private TypePokerRound m_gameState;
-    private Deck m_deck;
-    private Card[] m_board;
-    private int m_dealer;
-    private int m_smallBlindPlayer;
-    private int m_bigBlindPlayer;
-    private int m_lastRaiser;
-    private int m_currentBet;
-    private int m_playerTurn;
-    private int m_bettingPlayer;
-    private boolean m_firstTurn;
-    private Stack<Pot> m_pots;
-    private int m_totalPot;
     
     /*
      * ######################################################
@@ -101,9 +81,9 @@ public class HoldemTableServer implements Runnable
         
         m_info.m_bigBlindAmount = p_bigBlind;
         m_info.m_smallBlindAmount = p_bigBlind / 2;
-        m_bettingPlayer = -1;
-        m_pots = new Stack<Pot>();
-        m_board = new Card[5];
+        m_info.m_bettingPlayer = -1;
+        m_info.m_pots = new Stack<Pot>();
+        m_info.m_boardCards = new ArrayList<Card>(5);
     }
     
     /*
@@ -139,100 +119,21 @@ public class HoldemTableServer implements Runnable
     }
     
     /**
-     * Check if we can continue betting
-     * 
-     * @return
-     *         True if we can continue betting
-     */
-    private boolean continueBetting()
-    {
-        boolean canContinue = false;
-        if ((m_firstTurn && (m_nbBetting > 1)) || (m_info.getPlayer(m_playerTurn).getBet() < m_currentBet))
-        {
-            canContinue = true;
-        }
-        
-        return canContinue;
-    }
-    
-    /**
-     * Deal the flop cards
-     */
-    private void dealFlop()
-    {
-        m_gameState = TypePokerRound.FLOP;
-        m_board[0] = m_deck.pop();
-        m_board[1] = m_deck.pop();
-        m_board[2] = m_deck.pop();
-        
-        notifyObserver(IHoldEmObserver.FLOP_DEALT, this, m_board);
-        
-        try
-        {
-            Thread.sleep(Constants.SERVER_WAIT_TIME);
-        }
-        catch (final InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
      * Deal the holes card.
      */
     private void dealHole()
     {
-        final int firstPlayer = nextPlayingPlayer(m_dealer);
-        m_playerTurn = firstPlayer;
+        final int firstPlayer = nextPlayingPlayer(m_info.m_noSeatDealer);
+        m_info.m_playerTurn = firstPlayer;
         
         do
         {
-            m_info.getPlayer(m_playerTurn).setHand(m_deck.pop(), m_deck.pop());
+            m_info.getPlayer(m_info.m_playerTurn).setHand(m_info.m_deck.pop(), m_info.m_deck.pop());
             
-            notifyObserver(IHoldEmObserver.HOLE_CARD_DEAL, this, m_info.getPlayer(m_playerTurn));
-            m_playerTurn = nextPlayingPlayer(m_playerTurn);
+            notifyObserver(IHoldEmObserver.HOLE_CARD_DEAL, this, m_info.getPlayer(m_info.m_playerTurn));
+            m_info.m_playerTurn = nextPlayingPlayer(m_info.m_playerTurn);
         }
-        while (m_playerTurn != firstPlayer);
-        
-        try
-        {
-            Thread.sleep(Constants.SERVER_WAIT_TIME);
-        }
-        catch (final InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Deal the River cards
-     */
-    private void dealRiver()
-    {
-        m_gameState = TypePokerRound.RIVER;
-        m_board[4] = m_deck.pop();
-        
-        notifyObserver(IHoldEmObserver.RIVER_DEAL, this, m_board);
-        
-        try
-        {
-            Thread.sleep(Constants.SERVER_WAIT_TIME);
-        }
-        catch (final InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Deal the turn cards
-     */
-    private void dealTurn()
-    {
-        m_gameState = TypePokerRound.TURN;
-        m_board[3] = m_deck.pop();
-        
-        notifyObserver(IHoldEmObserver.TURN_DEAL, this, m_board);
+        while (m_info.m_playerTurn != firstPlayer);
         
         try
         {
@@ -263,9 +164,9 @@ public class HoldemTableServer implements Runnable
      */
     private void endGame()
     {
-        m_gameState = TypePokerRound.END;
+        m_info.m_gameState = TypePokerRound.END;
         
-        final int start = m_dealer;
+        final int start = m_info.m_noSeatDealer;
         int i = start;
         do
         {
@@ -306,7 +207,7 @@ public class HoldemTableServer implements Runnable
      */
     public Card[] getBoard()
     {
-        return m_board;
+        return m_info.getBoard();
     }
     
     /**
@@ -317,7 +218,7 @@ public class HoldemTableServer implements Runnable
      */
     public TypePokerRound getGameState()
     {
-        return m_gameState;
+        return m_info.m_gameState;
     }
     
     /**
@@ -344,18 +245,18 @@ public class HoldemTableServer implements Runnable
         int maximumRaise = Integer.MAX_VALUE;
         if (m_info.m_gameType == TypePokerGame.FIXED_LIMIT)
         {
-            if ((m_gameState == TypePokerRound.PREFLOP) || (m_gameState == TypePokerRound.FLOP))
+            if ((m_info.m_gameState == TypePokerRound.PREFLOP) || (m_info.m_gameState == TypePokerRound.FLOP))
             {
-                maximumRaise = m_info.m_bigBlindAmount + m_currentBet;
+                maximumRaise = m_info.m_bigBlindAmount + m_info.m_currentBet;
             }
             else
             {
-                maximumRaise = m_info.m_bigBlindAmount * 2 + m_currentBet;
+                maximumRaise = m_info.m_bigBlindAmount * 2 + m_info.m_currentBet;
             }
         }
         else if (m_info.m_gameType == TypePokerGame.POT_LIMIT)
         {
-            maximumRaise = m_totalPot + 2 * (m_currentBet - p_player.getBet()) + p_player.getBet();
+            maximumRaise = m_info.m_totalPotAmount + 2 * (m_info.m_currentBet - p_player.getBet()) + p_player.getBet();
         }
         
         if (maximumRaise > p_player.getMoney() + p_player.getBet())
@@ -376,16 +277,16 @@ public class HoldemTableServer implements Runnable
      */
     private int getMinimumRaise(ServerPokerPlayerInfo p_player)
     {
-        int minimumRaise = m_currentBet + m_info.m_bigBlindAmount;
+        int minimumRaise = m_info.m_currentBet + m_info.m_bigBlindAmount;
         if (m_info.m_gameType == TypePokerGame.FIXED_LIMIT)
         {
-            if (!((m_gameState == TypePokerRound.PREFLOP) || (m_gameState == TypePokerRound.FLOP)))
+            if (!((m_info.m_gameState == TypePokerRound.PREFLOP) || (m_info.m_gameState == TypePokerRound.FLOP)))
             {
                 minimumRaise += m_info.m_bigBlindAmount;
             }
         }
         
-        if ((minimumRaise > p_player.getMoney() + p_player.getBet()) && (p_player.getMoney() + p_player.getBet() > m_currentBet))
+        if ((minimumRaise > p_player.getMoney() + p_player.getBet()) && (p_player.getMoney() + p_player.getBet() > m_info.m_currentBet))
         {
             minimumRaise = p_player.getMoney() + p_player.getBet();
         }
@@ -418,7 +319,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNbPlayers()
     {
-        return m_nbPlayer;
+        return m_info.getNbPlayers();
     }
     
     /**
@@ -430,7 +331,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNbPlaying()
     {
-        return m_nbPlaying;
+        return m_info.m_nbPlayingPlayers;
     }
     
     /**
@@ -442,7 +343,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNbRemainingPlayer()
     {
-        return m_nbPlaying - m_nbFolded;
+        return m_info.m_nbPlayingPlayers - m_info.m_nbFolded;
     }
     
     /**
@@ -453,7 +354,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNbSeats()
     {
-        return m_info.m_nbSeats;
+        return m_info.getNbSeats();
     }
     
     /**
@@ -464,12 +365,10 @@ public class HoldemTableServer implements Runnable
      */
     public synchronized int getNextSeat()
     {
-        if (m_nbPlayer > m_info.m_nbSeats)
+        if (m_info.getNbPlayers() > m_info.getNbSeats())
         {
             return -1;
         }
-        
-        ++m_nbPlayer;
         int i = 0;
         while (m_info.getPlayer(i) != null)
         {
@@ -487,7 +386,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNoSeatBigBlind()
     {
-        return m_bigBlindPlayer;
+        return m_info.m_noSeatBigBlind;
     }
     
     /**
@@ -498,7 +397,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNoSeatDealer()
     {
-        return m_dealer;
+        return m_info.m_noSeatDealer;
     }
     
     /**
@@ -509,7 +408,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getNoSeatSmallBlind()
     {
-        return m_smallBlindPlayer;
+        return m_info.m_noSeatSmallBlind;
     }
     
     /**
@@ -531,7 +430,7 @@ public class HoldemTableServer implements Runnable
      */
     public Stack<Pot> getPots()
     {
-        return m_pots;
+        return m_info.m_pots;
     }
     
     /**
@@ -561,7 +460,7 @@ public class HoldemTableServer implements Runnable
      */
     public int getTotalPot()
     {
-        return m_totalPot;
+        return m_info.m_totalPotAmount;
     }
     
     /**
@@ -573,17 +472,17 @@ public class HoldemTableServer implements Runnable
     private boolean initializeGame()
     {
         // Reset the games variables
-        m_deck = new Deck();
-        m_lastRaiser = -1;
-        m_board = new Card[5];
-        m_currentBet = 0;
-        m_pots = new Stack<Pot>();
-        m_pots.push(new Pot(0));
-        m_totalPot = 0;
-        m_gameState = TypePokerRound.PREFLOP;
-        m_nbFolded = 0;
-        m_nbAllIn = 0;
-        m_nbPlaying = 0;
+        m_info.m_deck = new Deck();
+        m_info.m_noSeatLastRaiser = -1;
+        m_info.m_boardCards = new ArrayList<Card>(5);
+        m_info.m_currentBet = 0;
+        m_info.m_pots = new Stack<Pot>();
+        m_info.m_pots.push(new Pot(0));
+        m_info.m_totalPotAmount = 0;
+        m_info.m_gameState = TypePokerRound.PREFLOP;
+        m_info.m_nbFolded = 0;
+        m_info.m_nbAllIn = 0;
+        m_info.m_nbPlayingPlayers = 0;
         
         // check if we can start a new game.
         boolean canStartGame = false;
@@ -591,9 +490,9 @@ public class HoldemTableServer implements Runnable
         {
             int nbPlayingPlayer = 0;
             
-            if (m_nbPlayer > 0)
+            if (m_info.getNbPlayers() > 0)
             {
-                for (int i = 0; i < m_info.m_nbSeats; i++)
+                for (int i = 0; i < m_info.getNbSeats(); i++)
                 {
                     if (m_info.getPlayer(i) != null)
                     {
@@ -601,7 +500,6 @@ public class HoldemTableServer implements Runnable
                         {
                             final PokerPlayerInfo deletedPlayer = m_info.getPlayer(i);
                             m_info.removePlayer(i);
-                            m_nbPlayer--;
                             
                             notifyObserver(IHoldEmObserver.PLAYER_LEFT_TABLE, this, deletedPlayer);
                         }
@@ -616,7 +514,7 @@ public class HoldemTableServer implements Runnable
                 }
             }
             
-            if (m_stopTable || ((m_nbPlayer <= 0) && !m_waitForFirstPlayer))
+            if (m_stopTable || ((m_info.getNbPlayers() <= 0) && !m_waitForFirstPlayer))
             {
                 return false;
             }
@@ -641,36 +539,36 @@ public class HoldemTableServer implements Runnable
         }
         
         // notify each player that can play that a new game is starting
-        final int start = nextPlayer(m_dealer);
+        final int start = nextPlayer(m_info.m_noSeatDealer);
         int i = start;
         do
         {
             if (m_info.getPlayer(i).canStartGame())
             {
                 m_info.getPlayer(i).startGame();
-                ++m_nbPlaying;
+                ++m_info.m_nbPlayingPlayers;
             }
             i = nextPlayer(i);
         }
         while (i != start);
         
         // Reset the player position variables
-        m_nbBetting = m_nbPlaying;
-        m_dealer = nextPlayingPlayer(m_dealer);
-        m_info.getPlayer(m_dealer).setIsDealer(true);
-        if (m_nbPlaying == 2)
+        m_info.m_nbBetting = m_info.m_nbPlayingPlayers;
+        m_info.m_noSeatDealer = nextPlayingPlayer(m_info.m_noSeatDealer);
+        m_info.getPlayer(m_info.m_noSeatDealer).setIsDealer(true);
+        if (m_info.m_nbPlayingPlayers == 2)
         {
-            m_bigBlindPlayer = nextPlayingPlayer(m_dealer);
-            m_info.getPlayer(m_bigBlindPlayer).setIsBigBlind(true);
-            m_smallBlindPlayer = nextPlayingPlayer(m_bigBlindPlayer);
-            m_info.getPlayer(m_smallBlindPlayer).setIsSmallBlind(true);
+            m_info.m_noSeatBigBlind = nextPlayingPlayer(m_info.m_noSeatDealer);
+            m_info.getPlayer(m_info.m_noSeatBigBlind).setIsBigBlind(true);
+            m_info.m_noSeatSmallBlind = nextPlayingPlayer(m_info.m_noSeatBigBlind);
+            m_info.getPlayer(m_info.m_noSeatSmallBlind).setIsSmallBlind(true);
         }
         else
         {
-            m_smallBlindPlayer = nextPlayingPlayer(m_dealer);
-            m_info.getPlayer(m_smallBlindPlayer).setIsSmallBlind(true);
-            m_bigBlindPlayer = nextPlayingPlayer(m_smallBlindPlayer);
-            m_info.getPlayer(m_bigBlindPlayer).setIsBigBlind(true);
+            m_info.m_noSeatSmallBlind = nextPlayingPlayer(m_info.m_noSeatDealer);
+            m_info.getPlayer(m_info.m_noSeatSmallBlind).setIsSmallBlind(true);
+            m_info.m_noSeatBigBlind = nextPlayingPlayer(m_info.m_noSeatSmallBlind);
+            m_info.getPlayer(m_info.m_noSeatBigBlind).setIsBigBlind(true);
         }
         
         // notify the observer that a new game is starting
@@ -694,7 +592,7 @@ public class HoldemTableServer implements Runnable
      */
     private void initializeTable()
     {
-        m_dealer = m_info.m_nbSeats - 1;
+        m_info.m_noSeatDealer = m_info.getNbSeats() - 1;
         notifyObserver(IHoldEmObserver.TABLE_STARTED, this);
     }
     
@@ -738,37 +636,37 @@ public class HoldemTableServer implements Runnable
     public String marshal(ServerPokerPlayerInfo p_player)
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(m_totalPot);
+        sb.append(m_info.m_totalPotAmount);
         sb.append(Constants.DELIMITER);
         
-        sb.append(m_info.m_nbSeats);
+        sb.append(m_info.getNbSeats());
         sb.append(Constants.DELIMITER);
         
-        for (final Pot pot : m_pots)
+        for (final Pot pot : m_info.m_pots)
         {
             sb.append(pot.getAmount() + Constants.DELIMITER);
         }
         
-        for (int i = m_pots.size(); i < m_info.m_nbSeats; i++)
+        for (int i = m_info.m_pots.size(); i < m_info.getNbSeats(); i++)
         {
             sb.append(0 + Constants.DELIMITER);
         }
         
-        for (int i = 0; i != m_board.length; ++i)
+        for (int i = 0; i < 5; ++i)
         {
-            if (m_board[i] == null)
+            if (i >= m_info.m_boardCards.size())
             {
                 sb.append(Card.NO_CARD + Constants.DELIMITER);
             }
             else
             {
-                sb.append(m_board[i].getId() + Constants.DELIMITER);
+                sb.append(m_info.m_boardCards.get(i).getId() + Constants.DELIMITER);
             }
         }
         
-        sb.append(m_info.m_nbSeats + Constants.DELIMITER);
+        sb.append(m_info.getNbPlayers() + Constants.DELIMITER);
         
-        for (int i = 0; i != m_info.m_nbPlayers; ++i)
+        for (int i = 0; i != m_info.getNbPlayers(); ++i)
         {
             sb.append(i + Constants.DELIMITER); // noSeat
             final ServerPokerPlayerInfo player = (ServerPokerPlayerInfo) m_info.getPlayer(i);
@@ -810,7 +708,7 @@ public class HoldemTableServer implements Runnable
             sb.append(player.isDealer() + Constants.DELIMITER); // isDealer
             sb.append(player.isSmallBlind() + Constants.DELIMITER); // isSmallBlind
             sb.append(player.isBigBlind() + Constants.DELIMITER); // isBigBlind
-            sb.append((i == m_bettingPlayer) + Constants.DELIMITER); // isCurrentPlayer
+            sb.append((i == m_info.m_bettingPlayer) + Constants.DELIMITER); // isCurrentPlayer
             sb.append(0 + Constants.DELIMITER); // timeRemaining
             sb.append(player.getBet() + Constants.DELIMITER); // betAmount
         }
@@ -831,7 +729,7 @@ public class HoldemTableServer implements Runnable
         int player = p_player;
         do
         {
-            player = (player + 1) % m_info.m_nbSeats;
+            player = (player + 1) % m_info.getNbSeats();
         }
         while (m_info.getPlayer(player) == null);
         return player;
@@ -898,12 +796,12 @@ public class HoldemTableServer implements Runnable
     {
         PokerPlayerInfo winner;
         
-        final Iterator<PokerPlayerInfo> it = m_pots.peek().getParticipant().iterator();
+        final Iterator<PokerPlayerInfo> it = m_info.m_pots.peek().getParticipant().iterator();
         winner = it.next();
         
-        while (!m_pots.empty())
+        while (!m_info.m_pots.empty())
         {
-            final Pot pot = m_pots.pop();
+            final Pot pot = m_info.m_pots.pop();
             
             winner.winPot(pot.getAmount());
             notifyObserver(IHoldEmObserver.POT_WON, this, winner, pot, pot.getAmount());
@@ -925,17 +823,17 @@ public class HoldemTableServer implements Runnable
     private void placeBlinds()
     {
         // Place the small blind
-        PokerPlayerInfo player = m_info.getPlayer(m_smallBlindPlayer);
+        PokerPlayerInfo player = m_info.getPlayer(m_info.m_noSeatSmallBlind);
         player.placeSmallBlind(m_info.m_smallBlindAmount);
-        m_currentBet = player.getBet();
-        m_totalPot += m_currentBet;
+        m_info.m_currentBet = player.getBet();
+        m_info.m_totalPotAmount += m_info.m_currentBet;
         if (player.isAllIn())
         {
-            m_nbBetting--;
-            m_nbAllIn++;
+            m_info.m_nbBetting--;
+            m_info.m_nbAllIn++;
         }
         
-        notifyObserver(IHoldEmObserver.SMALL_BLIND_POSTED, this, m_info.getPlayer(m_smallBlindPlayer), m_currentBet);
+        notifyObserver(IHoldEmObserver.SMALL_BLIND_POSTED, this, m_info.getPlayer(m_info.m_noSeatSmallBlind), m_info.m_currentBet);
         try
         {
             Thread.sleep(Constants.SERVER_WAIT_TIME);
@@ -946,18 +844,18 @@ public class HoldemTableServer implements Runnable
         }
         
         // place the Big Blind
-        player = m_info.getPlayer(m_bigBlindPlayer);
+        player = m_info.getPlayer(m_info.m_noSeatBigBlind);
         player.placeBigBlind(m_info.m_bigBlindAmount);
         final int bet = player.getBet();
-        m_currentBet = Math.max(m_currentBet, bet);
-        m_totalPot += bet;
+        m_info.m_currentBet = Math.max(m_info.m_currentBet, bet);
+        m_info.m_totalPotAmount += bet;
         if (player.isAllIn())
         {
-            m_nbBetting--;
-            m_nbAllIn++;
+            m_info.m_nbBetting--;
+            m_info.m_nbAllIn++;
         }
         
-        notifyObserver(IHoldEmObserver.BIG_BLIND_POSTED, this, m_info.getPlayer(m_bigBlindPlayer), bet);
+        notifyObserver(IHoldEmObserver.BIG_BLIND_POSTED, this, m_info.getPlayer(m_info.m_noSeatBigBlind), bet);
         try
         {
             Thread.sleep(Constants.SERVER_WAIT_TIME);
@@ -991,13 +889,16 @@ public class HoldemTableServer implements Runnable
             dealHole();
             if (startBettingRound())
             {
-                dealFlop();
+                m_info.dealFlop();
+                notifyObserver(IHoldEmObserver.FLOP_DEALT, this, getBoard());
                 if (startBettingRound())
                 {
-                    dealTurn();
+                    m_info.dealTurn();
+                    notifyObserver(IHoldEmObserver.TURN_DEAL, this, getBoard());
                     if (startBettingRound())
                     {
-                        dealRiver();
+                        m_info.dealRiver();
+                        notifyObserver(IHoldEmObserver.RIVER_DEAL, this, getBoard());
                         if (startBettingRound())
                         {
                             showdown();
@@ -1026,7 +927,7 @@ public class HoldemTableServer implements Runnable
      */
     private void showAllHands()
     {
-        for (int i = 0; i < m_info.m_nbSeats; i++)
+        for (int i = 0; i < m_info.getNbSeats(); i++)
         {
             final ServerPokerPlayerInfo player = (ServerPokerPlayerInfo) m_info.getPlayer(i);
             if (!(player == null) && player.isPlaying() && !player.isFolded() && !player.isShowingCard())
@@ -1042,23 +943,23 @@ public class HoldemTableServer implements Runnable
      */
     private void showdown()
     {
-        m_gameState = TypePokerRound.SHOWDOWN;
+        m_info.m_gameState = TypePokerRound.SHOWDOWN;
         
         showAllHands();
         
         final Vector<PokerPlayerInfo> bestPlayers = new Vector<PokerPlayerInfo>();
         long bestHand = 0;
         
-        while (!m_pots.empty())
+        while (!m_info.m_pots.empty())
         {
-            final Pot pot = m_pots.pop();
+            final Pot pot = m_info.m_pots.pop();
             if (pot.getParticipant().size() > 0)
             {
                 final Iterator<PokerPlayerInfo> it = pot.getParticipant().iterator();
                 while (it.hasNext())
                 {
                     final PokerPlayerInfo player = it.next();
-                    final long handValue = player.handValue(m_board);
+                    final long handValue = player.handValue(getBoard());
                     
                     if (handValue > bestHand)
                     {
@@ -1108,29 +1009,29 @@ public class HoldemTableServer implements Runnable
      */
     private boolean startBettingRound()
     {
-        m_firstTurn = true;
-        int lastPlayer = m_dealer;
-        if ((m_nbPlaying == 2) && (m_gameState == TypePokerRound.PREFLOP))
+        m_info.m_firstTurn = true;
+        int lastPlayer = m_info.m_noSeatDealer;
+        if ((m_info.m_nbPlayingPlayers == 2) && (m_info.m_gameState == TypePokerRound.PREFLOP))
         {
-            lastPlayer = nextPlayingPlayer(m_dealer);
+            lastPlayer = nextPlayingPlayer(m_info.m_noSeatDealer);
         }
-        else if ((m_nbPlaying > 2) && (m_gameState == TypePokerRound.PREFLOP))
+        else if ((m_info.m_nbPlayingPlayers > 2) && (m_info.m_gameState == TypePokerRound.PREFLOP))
         {
             lastPlayer = getNoSeatBigBlind();
         }
-        m_playerTurn = nextPlayingPlayer(lastPlayer);
-        m_bettingPlayer = m_playerTurn;
+        m_info.m_playerTurn = nextPlayingPlayer(lastPlayer);
+        m_info.m_bettingPlayer = m_info.m_playerTurn;
         final TreeSet<Integer> bets = new TreeSet<Integer>();
         
         // Check if the blinds are all-in
-        if (m_gameState == TypePokerRound.PREFLOP)
+        if (m_info.m_gameState == TypePokerRound.PREFLOP)
         {
-            PokerPlayerInfo blind = m_info.getPlayer(m_smallBlindPlayer);
+            PokerPlayerInfo blind = m_info.getPlayer(m_info.m_noSeatSmallBlind);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
             {
                 bets.add(blind.getBet());
             }
-            blind = m_info.getPlayer(m_bigBlindPlayer);
+            blind = m_info.getPlayer(m_info.m_noSeatBigBlind);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
             {
                 bets.add(blind.getBet());
@@ -1140,9 +1041,9 @@ public class HoldemTableServer implements Runnable
         // Ask each player to take a decision until they can't bet.
         ServerPokerPlayerInfo player;
         PokerPlayerAction action;
-        while (continueBetting())
+        while (m_info.continueBetting())
         {
-            player = (ServerPokerPlayerInfo) m_info.getPlayer(m_playerTurn);
+            player = (ServerPokerPlayerInfo) m_info.getPlayer(m_info.m_playerTurn);
             // make sure the player can take an action
             if (!(player.isFolded() || player.isAllIn()))
             {
@@ -1150,25 +1051,25 @@ public class HoldemTableServer implements Runnable
                 notifyObserver(IHoldEmObserver.PLAYER_TURN_STARTED, this, player);
                 
                 // Ask an action to the player
-                action = player.takeAction(m_currentBet, getMinimumRaise(player), getMaximumRaise(player));
+                action = player.takeAction(m_info.m_currentBet, getMinimumRaise(player), getMaximumRaise(player));
                 
-                m_totalPot += (player.getBet() - oldBet);
+                m_info.m_totalPotAmount += (player.getBet() - oldBet);
                 
                 if (player.isAllIn())
                 {
-                    m_nbAllIn++;
-                    m_nbBetting--;
+                    m_info.m_nbAllIn++;
+                    m_info.m_nbBetting--;
                 }
                 else if (player.isFolded())
                 {
-                    m_nbFolded++;
-                    m_nbBetting--;
+                    m_info.m_nbFolded++;
+                    m_info.m_nbBetting--;
                 }
                 
                 if (action.getType() == TypePlayerAction.RAISE)
                 {
-                    m_currentBet = player.getBet();
-                    m_lastRaiser = m_playerTurn;
+                    m_info.m_currentBet = player.getBet();
+                    m_info.m_noSeatLastRaiser = m_info.m_playerTurn;
                 }
                 
                 if (player.isAllIn() && !bets.contains(player.getBet()))
@@ -1176,9 +1077,9 @@ public class HoldemTableServer implements Runnable
                     bets.add(player.getBet());
                 }
                 
-                if ((m_lastRaiser < 0) && !player.isFolded())
+                if ((m_info.m_noSeatLastRaiser < 0) && !player.isFolded())
                 {
-                    m_lastRaiser = m_playerTurn;
+                    m_info.m_noSeatLastRaiser = m_info.m_playerTurn;
                 }
                 
                 notifyObserver(IHoldEmObserver.PLAYER_END_TURN, this, player, action);
@@ -1194,43 +1095,43 @@ public class HoldemTableServer implements Runnable
                 
             }
             
-            if (m_firstTurn && (m_playerTurn == lastPlayer))
+            if (m_info.m_firstTurn && (m_info.m_playerTurn == lastPlayer))
             {
-                m_firstTurn = false;
+                m_info.m_firstTurn = false;
             }
             
-            m_playerTurn = nextPlayingPlayer(m_playerTurn);
-            m_bettingPlayer = m_playerTurn;
+            m_info.m_playerTurn = nextPlayingPlayer(m_info.m_playerTurn);
+            m_info.m_bettingPlayer = m_info.m_playerTurn;
         }
         
-        m_bettingPlayer = -1;
+        m_info.m_bettingPlayer = -1;
         
         // Modify the pots
         boolean addAPot = false;
         Pot lastPot = null;
-        if (m_currentBet != 0)
+        if (m_info.m_currentBet != 0)
         {
-            if (bets.contains(m_currentBet))
+            if (bets.contains(m_info.m_currentBet))
             {
                 addAPot = true;
-                lastPot = new Pot(m_pots.peek().getId() + bets.size() + 1);
+                lastPot = new Pot(m_info.m_pots.peek().getId() + bets.size() + 1);
             }
-            bets.add(m_currentBet);
+            bets.add(m_info.m_currentBet);
             final int nbPots = bets.size();
             final Pot[] newPots = new Pot[nbPots];
             for (int i = 1; i < nbPots; i++)
             {
-                newPots[i] = new Pot(m_pots.peek().getId() + i);
+                newPots[i] = new Pot(m_info.m_pots.peek().getId() + i);
             }
-            newPots[0] = m_pots.peek();
+            newPots[0] = m_info.m_pots.peek();
             newPots[0].removeAllParticipant();
             
-            final int firstPlayer = nextPlayer(m_dealer);
-            m_playerTurn = firstPlayer;
+            final int firstPlayer = nextPlayer(m_info.m_noSeatDealer);
+            m_info.m_playerTurn = firstPlayer;
             int bet = 0;
             do
             {
-                bet = m_info.getPlayer(m_playerTurn).getBet();
+                bet = m_info.getPlayer(m_info.m_playerTurn).getBet();
                 
                 if (bet > 0)
                 {
@@ -1250,13 +1151,13 @@ public class HoldemTableServer implements Runnable
                             {
                                 
                                 betPlaced = true;
-                                if (addAPot && !m_info.getPlayer(m_playerTurn).isAllIn())
+                                if (addAPot && !m_info.getPlayer(m_info.m_playerTurn).isAllIn())
                                 {
-                                    lastPot.addParticipant(m_info.getPlayer(m_playerTurn));
+                                    lastPot.addParticipant(m_info.getPlayer(m_info.m_playerTurn));
                                 }
                                 else
                                 {
-                                    nextPot.addParticipant(m_info.getPlayer(m_playerTurn));
+                                    nextPot.addParticipant(m_info.getPlayer(m_info.m_playerTurn));
                                 }
                             }
                         }
@@ -1271,24 +1172,24 @@ public class HoldemTableServer implements Runnable
                     }
                 }
                 
-                m_playerTurn = nextPlayer(m_playerTurn);
+                m_info.m_playerTurn = nextPlayer(m_info.m_playerTurn);
             }
-            while (m_playerTurn != firstPlayer);
+            while (m_info.m_playerTurn != firstPlayer);
             
             for (int i = 1; i < nbPots; i++)
             {
-                m_pots.push(newPots[i]);
+                m_info.m_pots.push(newPots[i]);
             }
             if (addAPot && (lastPot.getParticipant().size() > 0))
             {
-                m_pots.push(lastPot);
+                m_info.m_pots.push(lastPot);
             }
         }
         
-        m_currentBet = 0;
+        m_info.m_currentBet = 0;
         
         // notify the players that the turn ended
-        final int start = m_dealer;
+        final int start = m_info.m_noSeatDealer;
         int i = start;
         do
         {
@@ -1299,10 +1200,10 @@ public class HoldemTableServer implements Runnable
         
         notifyObserver(IHoldEmObserver.END_BETTING_TURN, this);
         
-        if (m_nbBetting < 2)
+        if (m_info.m_nbBetting < 2)
         {
             // if there is only one player left
-            if ((m_nbAllIn <= 0) || ((m_nbBetting <= 0) && (m_nbAllIn == 1)))
+            if ((m_info.m_nbAllIn <= 0) || ((m_info.m_nbBetting <= 0) && (m_info.m_nbAllIn == 1)))
             {
                 onePlayerStanding();
                 return false;
@@ -1315,13 +1216,13 @@ public class HoldemTableServer implements Runnable
         }
         
         // Make sure that no pot can be won only by one player
-        if (!m_pots.isEmpty() && (m_pots.peek().getParticipant().size() == 1))
+        if (!m_info.m_pots.isEmpty() && (m_info.m_pots.peek().getParticipant().size() == 1))
         {
-            final Pot uselessPot = m_pots.pop();
+            final Pot uselessPot = m_info.m_pots.pop();
             final PokerPlayerInfo playerInPot = uselessPot.getParticipant().firstElement();
             
             playerInPot.addMoney(uselessPot.getAmount());
-            m_pots.peek().addParticipant(playerInPot);
+            m_info.m_pots.peek().addParticipant(playerInPot);
             
             notifyObserver(IHoldEmObserver.PLAYER_MONEY_CHANGED, this, playerInPot);
         }

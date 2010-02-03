@@ -159,7 +159,7 @@ public class GUIAdvisor extends GUI
         
         if (m_statsAgent != null)
         {
-            for (int i = 0; i < m_table.m_nbSeats; ++i)
+            for (int i = 0; i < m_table.getNbSeats(); ++i)
             {
                 final PokerPlayerInfo player = m_table.getPlayer(i);
                 final HudPanel hud = getPlayer(i).m_hud;
