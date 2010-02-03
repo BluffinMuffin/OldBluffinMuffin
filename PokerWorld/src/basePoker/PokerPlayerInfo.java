@@ -4,7 +4,7 @@ import handEvaluation.HandEvalHoldem;
 
 import java.util.ArrayList;
 
-public abstract class BasePokerPlayer {
+public abstract class PokerPlayerInfo {
 	public int m_money;
     public int m_initialMoney;
     public int m_betAmount;
@@ -24,7 +24,7 @@ public abstract class BasePokerPlayer {
     /**
      * Create a new player named "Anonymous Player" with no money
      */
-    public BasePokerPlayer()
+    public PokerPlayerInfo()
     {
         this("Anonymous Player");
     }
@@ -35,7 +35,7 @@ public abstract class BasePokerPlayer {
      * @param p_name
      *            The name of the player
      */
-    public BasePokerPlayer(String p_name)
+    public PokerPlayerInfo(String p_name)
     {
         this(p_name, 0);
     }
@@ -50,7 +50,7 @@ public abstract class BasePokerPlayer {
      * @param p_money
      *            The starting chips of the player
      */
-    public BasePokerPlayer(String p_name, int p_money)
+    public PokerPlayerInfo(String p_name, int p_money)
     {
         m_name = p_name;
         m_money = p_money;
@@ -91,9 +91,9 @@ public abstract class BasePokerPlayer {
             return this.getName().equals(arg0);
         }
         
-        if (arg0 instanceof BasePokerPlayer)
+        if (arg0 instanceof PokerPlayerInfo)
         {
-            return this.getName().equals(((BasePokerPlayer) arg0).getName());
+            return this.getName().equals(((PokerPlayerInfo) arg0).getName());
         }
         
         return super.equals(arg0);
