@@ -1,4 +1,4 @@
-package tempGUI;
+package guiComponents;
 
 import java.text.NumberFormat;
 

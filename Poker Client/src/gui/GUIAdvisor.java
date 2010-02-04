@@ -1,6 +1,8 @@
 package gui;
 
 
+import guiComponents.HudPanel;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -23,8 +25,7 @@ import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import stats.PlayerStats;
 import stats.StatsAgent;
-import temp.PokerSVM;
-import tempGUI.HudPanel;
+import backendAgent.PokerSVM;
 import basePoker.Card;
 import basePoker.PokerPlayerAction;
 import basePoker.PokerPlayerInfo;

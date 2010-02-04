@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import miscUtil.HeadsUpException;
-import temp.TypeSimplifiedAction;
+import backendAgent.TypeSimplifiedAction;
 import basePoker.Card;
 import basePoker.TypePlayerAction;
 import basePoker.TypePokerGame;

@@ -1,4 +1,4 @@
-package tempGUI;
+package guiComponents;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

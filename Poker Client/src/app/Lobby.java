@@ -1,7 +1,10 @@
 package app;
 
 import gui.GUI;
-import gui.GUIAdvisor;
+import guiComponents.CurrencyIntegerEditor;
+import guiComponents.JBackgroundPanel;
+import guiComponents.JPanelObserver;
+import guiComponents.JTabbedPanePokerClient;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -60,20 +63,16 @@ import miscUtil.Bundle;
 import miscUtil.Constants;
 import miscUtil.IClosingListener;
 import stats.StatsAgent;
-import temp.FactoryAgent;
-import temp.FactoryObserver;
-import temp.PokerAI;
-import temp.PokerSVM;
-import temp.TypeAgent;
-import temp.TypeObserver;
-import tempGUI.CurrencyIntegerEditor;
-import tempGUI.JBackgroundPanel;
-import tempGUI.JPanelObserver;
-import tempGUI.JTabbedPanePokerClient;
 import utilGUI.AutoListModel;
 import backend.ClientPokerPlayerInfo;
 import backend.ClientPokerTableInfo;
 import backend.PokerClient;
+import backendAgent.FactoryAgent;
+import backendAgent.FactoryObserver;
+import backendAgent.PokerAI;
+import backendAgent.PokerSVM;
+import backendAgent.TypeAgent;
+import backendAgent.TypeObserver;
 import basePoker.TypePokerGame;
 import basePokerAI.IPokerAgentActionner;
 import basePokerAI.IPokerAgentListener;
@@ -2412,12 +2411,15 @@ public class Lobby implements IClosingListener<PokerClient>
             }
             else
             {
-                final StatsAgent statsAgent = new StatsAgent();
-                final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
-                final GUI gui = new GUIAdvisor(statsAgent, pokerSVM);
+                // final StatsAgent statsAgent = new StatsAgent();
+                // final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
+                // final GUI gui = new GUIAdvisor(statsAgent, pokerSVM);
+                // m_agent = gui;
+                // observers.add(statsAgent);
+                // observers.add(pokerSVM);
+                // observers.add(gui);
+                final GUI gui = new GUI();
                 m_agent = gui;
-                observers.add(statsAgent);
-                observers.add(pokerSVM);
                 observers.add(gui);
             }
             

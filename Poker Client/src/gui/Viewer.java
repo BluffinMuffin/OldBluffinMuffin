@@ -1,5 +1,9 @@
 package gui;
 
+import guiComponents.CardPanel;
+import guiComponents.HudPanel;
+import guiComponents.JBackgroundPanel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -24,9 +28,6 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
-import tempGUI.CardPanel;
-import tempGUI.HudPanel;
-import tempGUI.JBackgroundPanel;
 import backend.ClientPokerTableInfo;
 import basePoker.Card;
 import basePoker.PokerPlayerInfo;
