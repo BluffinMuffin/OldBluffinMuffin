@@ -28,12 +28,12 @@ import bluffinProtocol.TypeMessageLobby;
  *         This is the main lobby on which client can: connect,
  *         fetch list of available poker tables, create new table and join a table.
  */
-public class ServerLobby extends Thread
+public class OldServerLobby extends Thread
 {
     /**
      * This class represents a client for ServerLobby.
      */
-    private class ClientLobby extends Thread
+    private class OldClientLobby extends Thread
     {
         /** Client name **/
         String m_playerName = "";
@@ -43,7 +43,7 @@ public class ServerLobby extends Thread
         PrintWriter m_toClient;
         BufferedReader m_fromClient;
         
-        public ClientLobby(Socket p_socket)
+        public OldClientLobby(Socket p_socket)
         {
             m_socket = p_socket;
             
@@ -80,7 +80,7 @@ public class ServerLobby extends Thread
             final int bigBlind = Integer.parseInt(p_token.nextToken());
             final int playerCapacity = Integer.parseInt(p_token.nextToken());
             
-            final Integer noPort = ServerLobby.this.createTable(tableName, gameType, bigBlind, playerCapacity);
+            final Integer noPort = OldServerLobby.this.createTable(tableName, gameType, bigBlind, playerCapacity);
             send(noPort.toString());
         }
         
@@ -111,7 +111,7 @@ public class ServerLobby extends Thread
          */
         private void listTables(StringTokenizer p_token)
         {
-            final ArrayList<SummaryTableInfo> tables = ServerLobby.this.listTables();
+            final ArrayList<SummaryTableInfo> tables = OldServerLobby.this.listTables();
             final StringBuilder sb = new StringBuilder();
             
             Collections.sort(tables);
@@ -191,7 +191,7 @@ public class ServerLobby extends Thread
     {
         try
         {
-            final ServerLobby server = new ServerLobby(Constants.DEFAULT_NO_PORT);
+            final OldServerLobby server = new OldServerLobby(Constants.DEFAULT_NO_PORT);
             server.start();
             System.out.println("Server started");
         }
@@ -206,7 +206,7 @@ public class ServerLobby extends Thread
     
     Map<Integer, ServerTableCommunicator> m_tables = Collections.synchronizedMap(new TreeMap<Integer, ServerTableCommunicator>());
     
-    public ServerLobby(int p_noPort) throws IOException
+    public OldServerLobby(int p_noPort) throws IOException
     {
         NO_PORT = p_noPort;
         m_socketServer = new ServerSocket(NO_PORT);
@@ -315,7 +315,7 @@ public class ServerLobby extends Thread
             try
             {
                 final Socket socketClient = m_socketServer.accept();
-                final ClientLobby client = new ClientLobby(socketClient);
+                final OldClientLobby client = new OldClientLobby(socketClient);
                 client.start();
             }
             catch (final IOException e)
