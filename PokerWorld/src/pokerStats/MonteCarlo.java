@@ -3,7 +3,8 @@ package pokerStats;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import basePoker.Card;
+import pokerLogic.Card;
+
 
 
 /**

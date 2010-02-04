@@ -3,7 +3,8 @@ package handEvaluation;
 import java.util.Iterator;
 import java.util.List;
 
-import basePoker.Card;
+import pokerLogic.Card;
+
 
 public class HandEvalHoldem {
 
