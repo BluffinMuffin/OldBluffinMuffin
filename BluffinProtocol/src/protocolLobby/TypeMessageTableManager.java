@@ -1,4 +1,4 @@
-package bluffinProtocol;
+package protocolLobby;
 
 /**
  * @author Hocus

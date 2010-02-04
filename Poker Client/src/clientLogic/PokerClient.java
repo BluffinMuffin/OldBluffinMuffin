@@ -19,13 +19,13 @@ import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
+import protocolGame.TypeMessageTableToClient;
 
 import utilGUI.AutoListModel;
 import utilGUI.ListEvent;
 import utilGUI.ListListener;
 import utility.Constants;
 import utility.IClosingListener;
-import bluffinProtocol.TypeMessageTableToClient;
 
 /**
  * @author Hokus

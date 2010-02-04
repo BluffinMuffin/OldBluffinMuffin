@@ -8,10 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import protocolLobby.TypeMessageTableManager;
+import protocolLogic.BluffinAuthentificationCommand;
 import utility.Constants;
 import utility.IClosingListener;
-
-import bluffinProtocol.TypeMessageTableManager;
 
 /**
  * @author Hocus
@@ -49,15 +49,10 @@ public class ServerTableListCommunicator extends Thread implements IClosingListe
             }
         }
         
-        /**
-         * Handle authentification message.
-         * [CONNECT;playerName;]
-         */
-        private void authentification(StringTokenizer p_token)
+        private void authentification(BluffinAuthentificationCommand command)
         {
-            m_name = p_token.nextToken();
-            final Boolean success = true;
-            send(success.toString());
+            m_name = command.getPlayerName();
+            send(command.encodeResponse(true));
         }
         
         /**
@@ -116,19 +111,19 @@ public class ServerTableListCommunicator extends Thread implements IClosingListe
             try
             {
                 StringTokenizer token = new StringTokenizer(m_fromClient.readLine(), Constants.DELIMITER);
-                TypeMessageTableManager command = TypeMessageTableManager.valueOf(token.nextToken());
+                final String commandName = token.nextToken();
                 
                 // Expect client's authentification.
-                if (command != TypeMessageTableManager.AUTHENTIFICATION)
+                if (!commandName.equals(BluffinAuthentificationCommand.COMMAND_NAME))
                 {
                     System.out.println("Authentification expected!!!");
                     return;
                 }
                 
-                authentification(token);
+                authentification(new BluffinAuthentificationCommand(token));
                 
                 token = new StringTokenizer(m_fromClient.readLine(), Constants.DELIMITER);
-                command = TypeMessageTableManager.valueOf(token.nextToken());
+                final TypeMessageTableManager command = TypeMessageTableManager.valueOf(token.nextToken());
                 
                 // Expect join message from the client.
                 if (command != TypeMessageTableManager.JOIN_TABLE)

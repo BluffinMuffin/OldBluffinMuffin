@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import pokerLogic.TypePokerGame;
 
-import clientLobby.Lobby;
+import clientLobby.ClientLobby;
 
 
 
@@ -29,10 +29,10 @@ public class PokerAgentLauncher
     public static void main(String[] p_args) throws UnknownHostException, IOException
     {
         int noPort = -1;
-        final ArrayList<Lobby> clients = new ArrayList<Lobby>();
+        final ArrayList<ClientLobby> clients = new ArrayList<ClientLobby>();
         for (int i = 0; i != PokerAgentLauncher.NB_AGENTS; ++i)
         {
-            final Lobby client = new Lobby();
+            final ClientLobby client = new ClientLobby();
             
             if (i < 4)
             {

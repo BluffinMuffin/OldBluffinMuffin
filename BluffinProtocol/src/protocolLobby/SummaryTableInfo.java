@@ -1,4 +1,4 @@
-package serverLogic;
+package protocolLobby;
 
 import pokerLogic.TypePokerGame;
 

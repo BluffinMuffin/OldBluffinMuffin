@@ -1,6 +1,5 @@
 package clientLobby;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -57,7 +56,17 @@ import javax.swing.table.DefaultTableModel;
 import pokerAI.IPokerAgentActionner;
 import pokerAI.IPokerAgentListener;
 import pokerLogic.TypePokerGame;
-
+import protocolLobby.LobbyCreateTableCommand;
+import protocolLobby.LobbyDisconnectCommand;
+import protocolLobby.LobbyListTableCommand;
+import protocolLobby.TypeMessageTableManager;
+import protocolLogic.BluffinAuthentificationCommand;
+import utilGUI.AutoListModel;
+import utilGUI.CurrencyIntegerEditor;
+import utilGUI.JBackgroundPanel;
+import utility.Bundle;
+import utility.Constants;
+import utility.IClosingListener;
 import clientAI.FactoryAgent;
 import clientAI.FactoryObserver;
 import clientAI.PokerAI;
@@ -70,16 +79,6 @@ import clientLogic.ClientPokerTableInfo;
 import clientLogic.PokerClient;
 import clientStats.StatsAgent;
 
-import utilGUI.AutoListModel;
-import utilGUI.CurrencyIntegerEditor;
-import utilGUI.JBackgroundPanel;
-import utility.Bundle;
-import utility.Constants;
-import utility.IClosingListener;
-import bluffinProtocol.TypeMessageLobby;
-import bluffinProtocol.TypeMessageTableManager;
-
-
 /**
  * @author Hocus
  *         This class represents the entry point of the client application.
@@ -90,7 +89,7 @@ import bluffinProtocol.TypeMessageTableManager;
  *         connection window.
  */
 @SuppressWarnings("serial")
-public class Lobby implements IClosingListener<PokerClient>
+public class ClientLobby implements IClosingListener<PokerClient>
 {
     /*
      * ################################
@@ -107,7 +106,7 @@ public class Lobby implements IClosingListener<PokerClient>
         {
             public void run()
             {
-                final Lobby application = new Lobby();
+                final ClientLobby application = new ClientLobby();
                 application.getJFrame().setVisible(true);
             }
         });
@@ -226,7 +225,7 @@ public class Lobby implements IClosingListener<PokerClient>
      * ######################################################
      */
 
-    public Lobby()
+    public ClientLobby()
     {
     }
     
@@ -271,23 +270,8 @@ public class Lobby implements IClosingListener<PokerClient>
      */
     public int createTable(String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers)
     {
-        // Build query.
-        final StringBuilder sb = new StringBuilder();
-        sb.append(TypeMessageLobby.CREATE_TABLE);
-        sb.append(Constants.DELIMITER);
-        sb.append(p_tableName);
-        sb.append(Constants.DELIMITER);
-        sb.append(p_gameType.name());
-        sb.append(Constants.DELIMITER);
-        sb.append(p_bigBlind);
-        sb.append(Constants.DELIMITER);
-        sb.append(p_maxPlayers);
-        sb.append(Constants.DELIMITER);
-        sb.append(m_playerName);
-        sb.append(Constants.DELIMITER);
-        
         // Send query.
-        send(sb.toString());
+        send(new LobbyCreateTableCommand(p_tableName, p_gameType, p_bigBlind, p_maxPlayers, m_playerName).encodeCommand());
         // Wait for response.
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         
@@ -310,7 +294,7 @@ public class Lobby implements IClosingListener<PokerClient>
         try
         {
             // Tell ServerLobby that the user is leaving.
-            send(TypeMessageLobby.DISCONNECT + Constants.DELIMITER);
+            send(new LobbyDisconnectCommand().encodeCommand());
             
             // Close the socket
             if (m_connection != null)
@@ -635,7 +619,7 @@ public class Lobby implements IClosingListener<PokerClient>
                         }
                         
                         // Authentify the user.
-                        send(TypeMessageLobby.AUTHENTIFICATION + Constants.DELIMITER + m_playerName + Constants.DELIMITER);
+                        send(new BluffinAuthentificationCommand(m_playerName).encodeCommand());
                         
                         if (Boolean.valueOf(receive()))
                         {
@@ -1130,7 +1114,7 @@ public class Lobby implements IClosingListener<PokerClient>
                 public void windowClosing(java.awt.event.WindowEvent e)
                 {
                     disconnect();
-                    Lobby.this.getJFrame().setVisible(false);
+                    ClientLobby.this.getJFrame().setVisible(false);
                 }
             });
             jFrame.setTitle(m_bundle.get("lobby.title"));
@@ -1480,7 +1464,7 @@ public class Lobby implements IClosingListener<PokerClient>
                 public void actionPerformed(ActionEvent e)
                 {
                     disconnect();
-                    Lobby.this.getJFrame().setVisible(false);
+                    ClientLobby.this.getJFrame().setVisible(false);
                 }
             });
         }
@@ -2064,7 +2048,7 @@ public class Lobby implements IClosingListener<PokerClient>
                 public void actionPerformed(ActionEvent e)
                 {
                     m_bundle.setLocale(Locale.ENGLISH);
-                    Lobby.this.updateUI();
+                    ClientLobby.this.updateUI();
                 }
             });
         }
@@ -2096,7 +2080,7 @@ public class Lobby implements IClosingListener<PokerClient>
                 public void actionPerformed(ActionEvent e)
                 {
                     m_bundle.setLocale(Locale.FRENCH);
-                    Lobby.this.updateUI();
+                    ClientLobby.this.updateUI();
                 }
             });
         }
@@ -2281,11 +2265,8 @@ public class Lobby implements IClosingListener<PokerClient>
     @SuppressWarnings("unused")
     public Integer getNoPort(String p_table)
     {
-        final StringBuilder sb = new StringBuilder();
         // Ask the server for all available tables.
-        sb.append(TypeMessageLobby.LIST_TABLES);
-        sb.append(Constants.DELIMITER);
-        send(sb.toString());
+        send(new LobbyListTableCommand().encodeCommand());
         
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         
@@ -2350,7 +2331,7 @@ public class Lobby implements IClosingListener<PokerClient>
             fromTable = new BufferedReader(new InputStreamReader(tableSocket.getInputStream()));
             
             // Authenticate the user.
-            toTable.println(TypeMessageLobby.AUTHENTIFICATION + Constants.DELIMITER + m_playerName + Constants.DELIMITER);
+            toTable.println(new BluffinAuthentificationCommand(m_playerName).encodeCommand());
             if (!Boolean.parseBoolean(fromTable.readLine()))
             {
                 System.out.println("Authentification failed on the table: " + p_tableName);
@@ -2478,11 +2459,8 @@ public class Lobby implements IClosingListener<PokerClient>
         final DefaultTableModel model = (DefaultTableModel) getJTablePokerTables().getModel();
         model.setRowCount(0);
         
-        final StringBuilder sb = new StringBuilder();
         // Ask the server for all available tables.
-        sb.append(TypeMessageLobby.LIST_TABLES);
-        sb.append(Constants.DELIMITER);
-        send(sb.toString());
+        send(new LobbyListTableCommand().encodeCommand());
         
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         

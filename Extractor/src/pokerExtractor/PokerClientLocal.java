@@ -16,6 +16,7 @@ import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
+import protocolGame.TypeMessageTableToClient;
 
 import clientLogic.ClientPokerPlayerInfo;
 import clientLogic.ClientPokerTableInfo;
@@ -25,7 +26,6 @@ import utilGUI.ListEvent;
 import utilGUI.ListListener;
 import utility.Constants;
 import utility.IClosingListener;
-import bluffinProtocol.TypeMessageTableToClient;
 
 /**
  * This class is the representation of a generic poker client.

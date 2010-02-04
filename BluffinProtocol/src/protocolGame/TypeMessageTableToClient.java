@@ -1,4 +1,4 @@
-package bluffinProtocol;
+package protocolGame;
 
 /**
  * @author Hocus

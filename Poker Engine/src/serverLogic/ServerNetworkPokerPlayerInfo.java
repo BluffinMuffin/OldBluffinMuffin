@@ -12,10 +12,10 @@ import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import pokerLogic.TypePlayerAction;
+import protocolGame.TypeMessageTableToClient;
 import utility.Constants;
 
 
-import bluffinProtocol.TypeMessageTableToClient;
 
 /**
  * @author HOCUS

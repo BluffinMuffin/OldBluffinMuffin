@@ -11,6 +11,7 @@ import pokerLogic.PokerTableInfo;
 import pokerLogic.Pot;
 import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
+import protocolLobby.LobbyCreateTableCommand;
 import utility.Constants;
 
 public class ServerPokerTableInfo extends PokerTableInfo
@@ -45,6 +46,11 @@ public class ServerPokerTableInfo extends PokerTableInfo
         m_gameType = pGameType;
         m_bettingPlayer = -1;
         m_pots = new Stack<Pot>();
+    }
+    
+    public ServerPokerTableInfo(LobbyCreateTableCommand command)
+    {
+        this(command.getTableName(), command.getGameType(), command.getBigBlind(), command.getMaxPlayers());
     }
     
     /**

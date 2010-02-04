@@ -16,6 +16,7 @@ import pokerLogic.Pot;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
+import protocolLobby.LobbyCreateTableCommand;
 import utility.Constants;
 import utility.IClosingListener;
 
@@ -65,10 +66,11 @@ public class ServerTableCommunicator implements Runnable
      * @param p_playerCapacity
      *            Number of seat available
      */
-    public ServerTableCommunicator(String p_name, TypePokerGame p_gameType, int p_bigBlind, int p_playerCapacity)
+    
+    public ServerTableCommunicator(LobbyCreateTableCommand command)
     {
         m_stopTable = false;
-        m_info = new ServerPokerTableInfo(p_name, p_gameType, p_bigBlind, p_playerCapacity);
+        m_info = new ServerPokerTableInfo(command);
         
         m_isRunning = true;
         m_observers = new ArrayList<IServerPokerObserver>();
