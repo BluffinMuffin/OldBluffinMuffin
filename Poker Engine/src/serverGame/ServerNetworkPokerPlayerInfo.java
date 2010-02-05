@@ -184,13 +184,10 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                                     case RAISE:
                                         try
                                         {
-                                            if (message.hasMoreTokens())
+                                            final int amount = command.getAction().getAmount();
+                                            if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
                                             {
-                                                final int amount = command.getAction().getAmount();
-                                                if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
-                                                {
-                                                    action = new PokerPlayerAction(actionType, amount);
-                                                }
+                                                action = new PokerPlayerAction(actionType, amount);
                                             }
                                         }
                                         catch (final NumberFormatException e)
