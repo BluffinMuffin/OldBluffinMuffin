@@ -1,9 +1,8 @@
-package handEvaluation;
+package pokerLogic;
 
 import java.util.Iterator;
 import java.util.List;
 
-import pokerLogic.Card;
 
 
 public class HandEvalHoldem {
@@ -19,16 +18,16 @@ public class HandEvalHoldem {
      */
     public static int get7CardsHandValue(List<Card> p_cards)
     {
-        final handEvaluation.HandEvalCardSet cardSet = new handEvaluation.HandEvalCardSet(7);
+        final pokerLogic.HandEvalCardSet cardSet = new pokerLogic.HandEvalCardSet(7);
         
         Card card;
         final Iterator<Card> it = p_cards.iterator();
         while (it.hasNext())
         {
             card = it.next();
-            cardSet.add(new handEvaluation.HandEvalCard(card.getCode()));
+            cardSet.add(new pokerLogic.HandEvalCard(card.getCode()));
         }
         
-        return handEvaluation.HandEvaluator.hand7Eval(handEvaluation.HandEvaluator.encode(cardSet));
+        return pokerLogic.HandEvaluator.hand7Eval(pokerLogic.HandEvaluator.encode(cardSet));
     }
 }

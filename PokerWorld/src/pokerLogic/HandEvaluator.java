@@ -1,4 +1,4 @@
-package handEvaluation;
+package pokerLogic;
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0

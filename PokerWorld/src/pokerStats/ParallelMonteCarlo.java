@@ -1,8 +1,8 @@
 package pokerStats;
 
+import pokerLogic.HandEvaluator;
 import utility.XORShiftRandom;
 
-import handEvaluation.HandEvaluator;
 
 /**
  * @author Hocus

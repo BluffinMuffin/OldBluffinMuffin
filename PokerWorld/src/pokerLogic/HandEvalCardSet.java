@@ -1,4 +1,4 @@
-package handEvaluation;
+package pokerLogic;
 
 
 import java.util.ArrayList;
