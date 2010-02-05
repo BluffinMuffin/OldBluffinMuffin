@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 
-
 /**
  * @author Hocus
  *         This class represents a poker table on the client side.
@@ -89,145 +88,36 @@ public class ClientPokerTableInfo extends PokerTableInfo
             
             ++m_nbPlayingPlayers;
             
-            // D, SB and BB are already set by PokerClient.
-            switch (getNbPlayers() + tmpPlayers)
+            final int nb = getNbPlayers() + tmpPlayers;
+            if (i > 3)
             {
-                case 9:
-                    switch (player.m_relativePosition)
+                player.m_isCutOff = (nb == player.m_relativePosition);
+                if (i > 4)
+                {
+                    player.m_isEarlyPos = player.m_relativePosition < (2 + (nb / 2));
+                    if (i > 5)
                     {
-                        case 4:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 5:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 6:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 7:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 8:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 9:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = true;
-                            break;
+                        player.m_isMidPos = !player.m_isCutOff && !player.m_isEarlyPos;
                     }
-                    break;
-                case 8:
-                    switch (player.m_relativePosition)
+                    else
                     {
-                        case 4:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 5:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 6:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 7:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 8:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = true;
-                            break;
-                    }
-                    break;
-                case 7:
-                    switch (player.m_relativePosition)
-                    {
-                        case 4:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 5:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 6:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 7:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = true;
-                            break;
-                    }
-                    break;
-                case 6:
-                    switch (player.m_relativePosition)
-                    {
-                        case 4:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 5:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = true;
-                            player.m_isCutOff = false;
-                            break;
-                        case 6:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = true;
-                            break;
-                    }
-                    break;
-                case 5:
-                    switch (player.m_relativePosition)
-                    {
-                        case 4:
-                            player.m_isEarlyPos = true;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = false;
-                            break;
-                        case 5:
-                            player.m_isEarlyPos = false;
-                            player.m_isMidPos = false;
-                            player.m_isCutOff = true;
-                            break;
-                    }
-                    break;
-                case 4:
-                    if (player.m_relativePosition == 4)
-                    {
-                        player.m_isEarlyPos = false;
                         player.m_isMidPos = false;
-                        player.m_isCutOff = true;
                     }
-                    break;
+                }
+                else
+                {
+                    player.m_isEarlyPos = false;
+                    player.m_isMidPos = false;
+                }
             }
+            else
+            {
+                player.m_isEarlyPos = false;
+                player.m_isMidPos = false;
+                player.m_isCutOff = false;
+            }
+            
+            m_nbRemainingPlayers = m_nbPlayingPlayers;
         }
-        
-        m_nbRemainingPlayers = m_nbPlayingPlayers;
     }
 }
