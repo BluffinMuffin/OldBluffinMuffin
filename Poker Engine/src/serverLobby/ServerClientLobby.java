@@ -8,10 +8,10 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.StringTokenizer;
 
+import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyListTableCommand;
-import protocolLogic.BluffinAuthentificationCommand;
 import utility.Constants;
 
 /**
@@ -76,9 +76,9 @@ public class ServerClientLobby extends Thread
                 final StringTokenizer token = new StringTokenizer(line, Constants.DELIMITER);
                 final String commandName = token.nextToken();
                 
-                if (commandName.equals(BluffinAuthentificationCommand.COMMAND_NAME))
+                if (commandName.equals(LobbyConnectCommand.COMMAND_NAME))
                 {
-                    authentification(new BluffinAuthentificationCommand(token));
+                    authentification(new LobbyConnectCommand(token));
                 }
                 else if (commandName.equals(LobbyDisconnectCommand.COMMAND_NAME))
                 {
@@ -116,7 +116,7 @@ public class ServerClientLobby extends Thread
         send(command.encodeResponse(m_lobby.createTable(command)));
     }
     
-    private void authentification(BluffinAuthentificationCommand command)
+    private void authentification(LobbyConnectCommand command)
     {
         m_playerName = command.getPlayerName();
         send(command.encodeResponse(true));

@@ -56,11 +56,11 @@ import javax.swing.table.DefaultTableModel;
 import pokerAI.IPokerAgentActionner;
 import pokerAI.IPokerAgentListener;
 import pokerLogic.TypePokerGame;
+import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
+import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
-import protocolLobby.TypeMessageTableManager;
-import protocolLogic.BluffinAuthentificationCommand;
 import utilGUI.AutoListModel;
 import utilGUI.CurrencyIntegerEditor;
 import utilGUI.JBackgroundPanel;
@@ -619,7 +619,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                         }
                         
                         // Authentify the user.
-                        send(new BluffinAuthentificationCommand(m_playerName).encodeCommand());
+                        send(new LobbyConnectCommand(m_playerName).encodeCommand());
                         
                         if (Boolean.valueOf(receive()))
                         {
@@ -2331,7 +2331,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
             fromTable = new BufferedReader(new InputStreamReader(tableSocket.getInputStream()));
             
             // Authenticate the user.
-            toTable.println(new BluffinAuthentificationCommand(m_playerName).encodeCommand());
+            toTable.println(new LobbyConnectCommand(m_playerName).encodeCommand());
             if (!Boolean.parseBoolean(fromTable.readLine()))
             {
                 System.out.println("Authentification failed on the table: " + p_tableName);
@@ -2339,16 +2339,10 @@ public class ClientLobby implements IClosingListener<PokerClient>
             }
             
             // Build query.
-            final StringBuilder sb = new StringBuilder();
-            sb.append(TypeMessageTableManager.JOIN_TABLE);
-            sb.append(Constants.DELIMITER);
-            sb.append(p_tableName);
-            sb.append(Constants.DELIMITER);
-            sb.append(m_playerName);
-            sb.append(Constants.DELIMITER);
+            final LobbyJoinTableCommand command = new LobbyJoinTableCommand(m_playerName, p_tableName);
             
             // Send query.
-            toTable.println(sb.toString());
+            toTable.println(command.encodeCommand());
             
             // Wait for response.
             final StringTokenizer token = new StringTokenizer(fromTable.readLine(), Constants.DELIMITER);

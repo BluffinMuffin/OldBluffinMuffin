@@ -12,7 +12,6 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.SummaryTableInfo;
 import serverLogic.ServerPokerLogger;
 import serverLogic.ServerTableCommunicator;
-import serverLogic.ServerTableListCommunicator;
 import utility.Constants;
 
 /**
@@ -92,7 +91,7 @@ public class ServerLobby extends Thread
             
             // Create a new HoldEmTable and a new TableManager.
             final ServerTableCommunicator table = new ServerTableCommunicator(command);
-            final ServerTableListCommunicator manager = new ServerTableListCommunicator(table, noPort);
+            final ServerTableManager manager = new ServerTableManager(table, noPort);
             
             // Start the TableManager.
             table.addClosingListener(manager);
