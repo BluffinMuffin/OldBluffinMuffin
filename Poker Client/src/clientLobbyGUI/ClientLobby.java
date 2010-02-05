@@ -1103,7 +1103,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
      * 
      * @return javax.swing.JFrame
      */
-    private JFrame getJFrame()
+    JFrame getJFrame()
     {
         if (jFrame == null)
         {
