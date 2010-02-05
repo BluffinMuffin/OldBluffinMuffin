@@ -1,4 +1,4 @@
-package clientLogic;
+package clientGame;
 
 import pokerLogic.TypePlayerMajorPosition;
 import pokerLogic.TypePlayerMinorPosition;

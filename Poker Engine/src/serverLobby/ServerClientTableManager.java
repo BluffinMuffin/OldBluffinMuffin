@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
-import serverLogic.ServerNetworkPokerPlayerInfo;
+import serverGame.ServerNetworkPokerPlayerInfo;
 import utility.Constants;
 
 /**

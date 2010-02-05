@@ -1,5 +1,6 @@
-package serverLogic;
+package serverGame;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -11,6 +12,8 @@ import pokerLogic.PokerTableInfo;
 import pokerLogic.Pot;
 import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
+import protocolGame.GameTableInfoCommand;
+import protocolGame.SummarySeatInfo;
 import protocolLobby.LobbyCreateTableCommand;
 import utility.Constants;
 
@@ -227,52 +230,47 @@ public class ServerPokerTableInfo extends PokerTableInfo
         m_nbBetting = m_nbPlayingPlayers;
     }
     
-    public String marshal(ServerPokerPlayerInfo pPlayer)
+    public GameTableInfoCommand buildCommand(ServerPokerPlayerInfo pPlayer)
     {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(m_totalPotAmount);
-        sb.append(Constants.DELIMITER);
-        
-        sb.append(getNbSeats());
-        sb.append(Constants.DELIMITER);
+        final ArrayList<Integer> pots = new ArrayList<Integer>();
+        final ArrayList<Integer> cards = new ArrayList<Integer>();
+        final ArrayList<SummarySeatInfo> seats = new ArrayList<SummarySeatInfo>();
         
         for (final Pot pot : m_pots)
         {
-            sb.append(pot.getAmount() + Constants.DELIMITER);
+            pots.add(pot.getAmount());
         }
         
         for (int i = m_pots.size(); i < getNbSeats(); i++)
         {
-            sb.append(0 + Constants.DELIMITER);
+            pots.add(0);
         }
         
         for (int i = 0; i < 5; ++i)
         {
             if (i >= m_boardCards.size())
             {
-                sb.append(Card.NO_CARD + Constants.DELIMITER);
+                cards.add(Card.NO_CARD);
             }
             else
             {
-                sb.append(m_boardCards.get(i).getId() + Constants.DELIMITER);
+                cards.add(m_boardCards.get(i).getId());
             }
         }
         
-        sb.append(getNbPlayers() + Constants.DELIMITER);
-        
         for (int i = 0; i != getNbPlayers(); ++i)
         {
-            sb.append(i + Constants.DELIMITER); // noSeat
+            final SummarySeatInfo seat = new SummarySeatInfo(i);
             final ServerPokerPlayerInfo player = (ServerPokerPlayerInfo) getPlayer(i);
-            sb.append((player == null) + Constants.DELIMITER); // isEmpty
+            seat.m_isEmpty = (player == null);
             
-            if (player == null)
+            if (seat.m_isEmpty)
             {
                 continue;
             }
             
-            sb.append(player.getName() + Constants.DELIMITER); // playerName
-            sb.append(player.getMoney() + Constants.DELIMITER); // playerMoney
+            seat.m_playerName = player.getName(); // playerName
+            seat.m_money = player.getMoney(); // playerMoney
             
             final boolean showCard = (player.getTablePosition() == pPlayer.getTablePosition()) || player.isShowingCard();
             
@@ -282,32 +280,33 @@ public class ServerPokerTableInfo extends PokerTableInfo
             {
                 if (showCard && !player.isFolded())
                 {
-                    sb.append(player.getHand()[j].getId() + Constants.DELIMITER);
+                    seat.m_holeCardIDs.add(player.getHand()[j].getId());
                 }
                 else if (!player.isFolded())
                 {
-                    sb.append(Card.HIDDEN_CARD + Constants.DELIMITER);
+                    seat.m_holeCardIDs.add(Card.HIDDEN_CARD);
                 }
                 else
                 {
-                    sb.append(Card.NO_CARD + Constants.DELIMITER);
+                    seat.m_holeCardIDs.add(Card.NO_CARD);
                 }
             }
             
             for (; j < Constants.NB_HOLE_CARDS; ++j)
             {
-                sb.append(Card.NO_CARD + Constants.DELIMITER);
+                seat.m_holeCardIDs.add(Card.NO_CARD);
             }
             
-            sb.append(player.isDealer() + Constants.DELIMITER); // isDealer
-            sb.append(player.isSmallBlind() + Constants.DELIMITER); // isSmallBlind
-            sb.append(player.isBigBlind() + Constants.DELIMITER); // isBigBlind
-            sb.append((i == m_bettingPlayer) + Constants.DELIMITER); // isCurrentPlayer
-            sb.append(0 + Constants.DELIMITER); // timeRemaining
-            sb.append(player.getBet() + Constants.DELIMITER); // betAmount
+            seat.m_isDealer = player.isDealer(); // isDealer
+            seat.m_isSmallBlind = player.isSmallBlind(); // isSmallBlind
+            seat.m_isBigBlind = player.isBigBlind(); // isBigBlind
+            seat.m_isCurrentPlayer = (i == m_bettingPlayer); // isCurrentPlayer
+            seat.m_timeRemaining = 0; // timeRemaining
+            seat.m_bet = player.getBet(); // betAmount¸
+            seats.add(seat);
         }
         
-        return sb.toString();
+        return new GameTableInfoCommand(m_totalPotAmount, getNbSeats(), pots, cards, getNbPlayers(), seats);
     }
     
     public void placeSmallBlind()

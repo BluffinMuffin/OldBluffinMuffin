@@ -10,8 +10,8 @@ import java.util.TreeMap;
 
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.SummaryTableInfo;
-import serverLogic.ServerPokerLogger;
-import serverLogic.ServerTableCommunicator;
+import serverGame.ServerPokerLogger;
+import serverGame.ServerTableCommunicator;
 import utility.Constants;
 
 /**

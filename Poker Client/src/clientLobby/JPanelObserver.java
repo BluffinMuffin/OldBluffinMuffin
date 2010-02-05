@@ -19,7 +19,7 @@ import pokerAI.IPokerAgentListener;
 
 import clientAI.FactoryObserver;
 import clientAI.TypeObserver;
-import clientLogic.PokerClient;
+import clientGame.PokerClient;
 
 import utilGUI.AutoListModel;
 import utilGUI.ListEvent;

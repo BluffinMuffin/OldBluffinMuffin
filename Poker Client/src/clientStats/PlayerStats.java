@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import utility.Constants;
 
-import clientLogic.ClientPokerPlayerInfo;
+import clientGame.ClientPokerPlayerInfo;
 
 
 

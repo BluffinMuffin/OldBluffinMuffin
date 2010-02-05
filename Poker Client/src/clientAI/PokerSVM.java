@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import clientLogic.ClientPokerPlayerInfo;
+import clientGame.ClientPokerPlayerInfo;
 import clientStats.StatsAgent;
 
 import pokerAI.SVM;

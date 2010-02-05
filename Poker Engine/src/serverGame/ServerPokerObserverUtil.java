@@ -1,4 +1,4 @@
-package serverLogic;
+package serverGame;
 
 import java.lang.reflect.Method;
 

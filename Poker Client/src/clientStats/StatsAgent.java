@@ -12,7 +12,7 @@ import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import utility.Constants;
 
-import clientLogic.ClientPokerPlayerInfo;
+import clientGame.ClientPokerPlayerInfo;
 
 
 /**

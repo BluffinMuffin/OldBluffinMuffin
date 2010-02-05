@@ -35,7 +35,6 @@ import utility.Bundle;
 import utility.Constants;
 import utility.IClosingListener;
 
-import clientLogic.ClientPokerTableInfo;
 
 
 

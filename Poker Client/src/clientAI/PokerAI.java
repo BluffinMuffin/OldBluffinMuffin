@@ -14,7 +14,7 @@ import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import utility.IClosingListener;
 
-import clientLogic.ClientPokerTableInfo;
+import clientGame.ClientPokerTableInfo;
 
 
 /**

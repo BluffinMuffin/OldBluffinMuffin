@@ -1,4 +1,4 @@
-package serverLogic;
+package serverGame;
 
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;

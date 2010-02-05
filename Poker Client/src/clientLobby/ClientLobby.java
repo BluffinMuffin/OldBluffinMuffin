@@ -73,10 +73,10 @@ import clientAI.PokerAI;
 import clientAI.PokerSVM;
 import clientAI.TypeAgent;
 import clientAI.TypeObserver;
+import clientGame.ClientPokerPlayerInfo;
+import clientGame.ClientPokerTableInfo;
 import clientGame.GUI;
-import clientLogic.ClientPokerPlayerInfo;
-import clientLogic.ClientPokerTableInfo;
-import clientLogic.PokerClient;
+import clientGame.PokerClient;
 import clientStats.StatsAgent;
 
 /**

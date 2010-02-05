@@ -1,4 +1,4 @@
-package clientLogic;
+package clientGame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +19,24 @@ import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
-import protocolGame.TypeMessageTableToClient;
-
+import protocolGame.GameAskActionCommand;
+import protocolGame.GameBetTurnEndedCommand;
+import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameEndedCommand;
+import protocolGame.GameHoleCardsChangedCommand;
+import protocolGame.GamePINGCommand;
+import protocolGame.GamePlayerJoinedCommand;
+import protocolGame.GamePlayerLeftCommand;
+import protocolGame.GamePlayerMoneyChangedCommand;
+import protocolGame.GamePlayerTurnBeganCommand;
+import protocolGame.GamePlayerTurnEndedCommand;
+import protocolGame.GamePlayerWonPotCommand;
+import protocolGame.GameSendActionCommand;
+import protocolGame.GameStartedCommand;
+import protocolGame.GameTableClosedCommand;
+import protocolGame.GameTableInfoCommand;
+import protocolGame.GameWaitingCommand;
+import protocolGame.SummarySeatInfo;
 import utilGUI.AutoListModel;
 import utilGUI.ListEvent;
 import utilGUI.ListListener;
@@ -101,16 +117,16 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when a betting turn ends.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
      */
-    private void betTurnEnded(StringTokenizer p_token)
+    private void betTurnEnded(GameBetTurnEndedCommand command)
     {
         final ArrayList<Integer> indices = new ArrayList<Integer>();
-        for (int i = 0; i != m_table.m_pots.size(); ++i)
+        for (int i = 0; i < command.getPotsAmounts().size(); ++i)
         {
-            final int potAmount = Integer.parseInt(p_token.nextToken());
+            final int potAmount = command.getPotsAmounts().get(i);
             if (potAmount != m_table.m_pots.get(i))
             {
                 m_table.m_pots.set(i, potAmount);
@@ -123,7 +139,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             player.m_betAmount = 0;
         }
         
-        final TypePokerRound gameState = TypePokerRound.valueOf(p_token.nextToken());
+        final TypePokerRound gameState = command.getRound();
         m_table.m_gameState = gameState;
         
         m_table.m_currentBet = 0;
@@ -134,16 +150,16 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when cards on the board changes.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
      */
-    private void boardChanged(StringTokenizer p_token)
+    private void boardChanged(GameBoardChangedCommand command)
     {
         final ArrayList<Integer> indices = new ArrayList<Integer>();
         for (int i = 0; i != m_table.m_boardCards.size(); ++i)
         {
-            final Card card = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
+            final Card card = Card.getInstance().get(command.getCardsId().get(i));
             if (card != m_table.m_boardCards.get(i))
             {
                 m_table.m_boardCards.set(i, card);
@@ -200,11 +216,11 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when a game ends.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [GAME_ENDED;]
      */
-    private void gameEnded(StringTokenizer p_token)
+    private void gameEnded(GameEndedCommand command)
     {
         m_table.m_gameState = TypePokerRound.END;
         notifyObserver(IPokerAgentListener.GAME_ENDED);
@@ -213,15 +229,15 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when a game starts.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [GAME_STARTED;noSeatDealer;noSeatSmallBlind;noSeatBigBlind;]
      */
-    private void gameStarted(StringTokenizer p_token)
+    private void gameStarted(GameStartedCommand command)
     {
-        m_table.m_noSeatDealer = Integer.parseInt(p_token.nextToken());
-        m_table.m_noSeatSmallBlind = Integer.parseInt(p_token.nextToken());
-        m_table.m_noSeatBigBlind = Integer.parseInt(p_token.nextToken());
+        m_table.m_noSeatDealer = command.GetNoSeatD();
+        m_table.m_noSeatSmallBlind = command.GetNoSeatSB();
+        m_table.m_noSeatBigBlind = command.GetNoSeatBB();
         
         final PokerPlayerInfo oldDealer = m_table.m_dealer;
         final PokerPlayerInfo oldSmallBlind = m_table.m_smallBlind;
@@ -341,56 +357,70 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         
         synchronized (m_table)
         {
-            switch (TypeMessageTableToClient.valueOf(token.nextToken()))
+            final String command = token.nextToken();
+            if (command.equals(GameBetTurnEndedCommand.COMMAND_NAME))
             {
-                case BETTING_TURN_ENDED:
-                    betTurnEnded(token);
-                    break;
-                case BOARD_CHANGED:
-                    boardChanged(token);
-                    break;
-                case GAME_ENDED:
-                    gameEnded(token);
-                    break;
-                case GAME_STARTED:
-                    gameStarted(token);
-                    break;
-                case PLAYER_CARD_CHANGED:
-                    playerCardChanged(token);
-                    break;
-                case PLAYER_JOINED:
-                    playerJoined(token);
-                    break;
-                case PLAYER_LEFT:
-                    playerLeft(token);
-                    break;
-                case PLAYER_MONEY_CHANGED:
-                    playerMoneyChanged(token);
-                    break;
-                case PLAYER_TURN_BEGAN:
-                    playerTurnBegan(token);
-                    break;
-                case PLAYER_TURN_ENDED:
-                    playerTurnEnded(token);
-                    break;
-                case POT_WON:
-                    potWon(token);
-                    break;
-                case TABLE_CLOSED:
-                    tableClosed(token);
-                    break;
-                case TABLE_INFOS:
-                    tableInfos(token);
-                    break;
-                case TAKE_ACTION:
-                    takeAction(token);
-                    break;
-                case WAITING_FOR_PLAYERS:
-                    waitingForPlayers(token);
-                    break;
-                case PING:
-                    send(TypePlayerAction.PONG.name());
-                    break;
+                betTurnEnded(new GameBetTurnEndedCommand(token));
+            }
+            else if (command.equals(GameBoardChangedCommand.COMMAND_NAME))
+            {
+                boardChanged(new GameBoardChangedCommand(token));
+            }
+            else if (command.equals(GameEndedCommand.COMMAND_NAME))
+            {
+                gameEnded(new GameEndedCommand(token));
+            }
+            else if (command.equals(GameStartedCommand.COMMAND_NAME))
+            {
+                gameStarted(new GameStartedCommand(token));
+            }
+            else if (command.equals(GameHoleCardsChangedCommand.COMMAND_NAME))
+            {
+                playerCardChanged(new GameHoleCardsChangedCommand(token));
+            }
+            else if (command.equals(GamePlayerJoinedCommand.COMMAND_NAME))
+            {
+                playerJoined(new GamePlayerJoinedCommand(token));
+            }
+            else if (command.equals(GamePlayerLeftCommand.COMMAND_NAME))
+            {
+                playerLeft(new GamePlayerLeftCommand(token));
+            }
+            else if (command.equals(GamePlayerMoneyChangedCommand.COMMAND_NAME))
+            {
+                playerMoneyChanged(new GamePlayerMoneyChangedCommand(token));
+            }
+            else if (command.equals(GamePlayerTurnBeganCommand.COMMAND_NAME))
+            {
+                playerTurnBegan(new GamePlayerTurnBeganCommand(token));
+            }
+            else if (command.equals(GamePlayerTurnEndedCommand.COMMAND_NAME))
+            {
+                playerTurnEnded(new GamePlayerTurnEndedCommand(token));
+            }
+            else if (command.equals(GamePlayerWonPotCommand.COMMAND_NAME))
+            {
+                potWon(new GamePlayerWonPotCommand(token));
+            }
+            else if (command.equals(GameTableClosedCommand.COMMAND_NAME))
+            {
+                tableClosed(new GameTableClosedCommand(token));
+            }
+            else if (command.equals(GameTableInfoCommand.COMMAND_NAME))
+            {
+                tableInfos(new GameTableInfoCommand(token));
+            }
+            else if (command.equals(GameAskActionCommand.COMMAND_NAME))
+            {
+                takeAction(new GameAskActionCommand(token));
+            }
+            else if (command.equals(GameWaitingCommand.COMMAND_NAME))
+            {
+                waitingForPlayers(new GameWaitingCommand(token));
+            }
+            else if (command.equals(GamePINGCommand.COMMAND_NAME))
+            {
+                send(new GamePINGCommand(token).encodeResponse());
             }
         }
     }
@@ -433,15 +463,15 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when the cards of a player changes.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [PLAYER_CARD_CHANGED;noSeat;idCard1;idCard2;]
      */
-    private void playerCardChanged(StringTokenizer p_token)
+    private void playerCardChanged(GameHoleCardsChangedCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
-        final Card card1 = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
-        final Card card2 = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
+        final int noSeat = command.getPlayerPos();
+        final Card card1 = Card.getInstance().get(command.getCardsId().get(0));
+        final Card card2 = Card.getInstance().get(command.getCardsId().get(1));
         
         final PokerPlayerInfo player = m_table.getPlayer(noSeat);
         player.setHand(card1, card2);
@@ -452,15 +482,15 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when a player joined the table.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [PLAYER_JOINED;noSeat;playerName;moneyAmount;]
      */
-    private void playerJoined(StringTokenizer p_token)
+    private void playerJoined(GamePlayerJoinedCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
-        final String playerName = p_token.nextToken();
-        final int moneyAmount = Integer.parseInt(p_token.nextToken());
+        final int noSeat = command.getPlayerPos();
+        final String playerName = command.getPlayerName();
+        final int moneyAmount = command.getPlayerMoney();
         
         final ClientPokerPlayerInfo player = new ClientPokerPlayerInfo(noSeat, playerName, moneyAmount);
         m_table.addPlayer(noSeat, player);
@@ -471,13 +501,13 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when a player left the table.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [PLAYER_LEFT;noSeat;]
      */
-    private void playerLeft(StringTokenizer p_token)
+    private void playerLeft(GamePlayerLeftCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
+        final int noSeat = command.getPlayerPos();
         
         final PokerPlayerInfo player = m_table.getPlayer(noSeat);
         m_table.removePlayer(noSeat);
@@ -492,10 +522,10 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
      *            Message received from the server.
      * @see [PLAYER_MONEY_CHANGED;noSeat;moneyAmount;]
      */
-    private void playerMoneyChanged(StringTokenizer p_token)
+    private void playerMoneyChanged(GamePlayerMoneyChangedCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
-        final int moneyAmount = Integer.parseInt(p_token.nextToken());
+        final int noSeat = command.getPlayerPos();
+        final int moneyAmount = command.getPlayerMoney();
         
         final PokerPlayerInfo player = m_table.getPlayer(noSeat);
         final int oldMoneyAmount = player.m_money;
@@ -511,9 +541,9 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
      *            Message received from the server.
      * @see [PLAYER_TURN_BEGAN;noSeat;]
      */
-    private void playerTurnBegan(StringTokenizer p_token)
+    private void playerTurnBegan(GamePlayerTurnBeganCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
+        final int noSeat = command.getPlayerPos();
         
         final PokerPlayerInfo oldCurrentPlayer = m_table.m_currentPlayer;
         m_table.m_currentPlayer = m_table.getPlayer(noSeat);
@@ -524,20 +554,20 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when the turn of a player ends.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see
      *      [PLAYER_TURN_ENDED;noSeat;betAmount;moneyAmount;totalPotAmount;action
      *      ;actionAmount;]
      */
-    private void playerTurnEnded(StringTokenizer p_token)
+    private void playerTurnEnded(GamePlayerTurnEndedCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
-        final int betAmount = Integer.parseInt(p_token.nextToken());
-        final int moneyAmount = Integer.parseInt(p_token.nextToken());
-        final int totalPotAmount = Integer.parseInt(p_token.nextToken());
-        final TypePlayerAction action = TypePlayerAction.valueOf(p_token.nextToken());
-        final int actionAmount = Integer.parseInt(p_token.nextToken());
+        final int noSeat = command.getPlayerPos();
+        final int betAmount = command.getPlayerBet();
+        final int moneyAmount = command.getPlayerMoney();
+        final int totalPotAmount = command.getTotalPot();
+        final TypePlayerAction action = command.getActionType();
+        final int actionAmount = command.getActionAmount();
         
         final ClientPokerPlayerInfo player = (ClientPokerPlayerInfo) m_table.getPlayer(noSeat);
         player.m_betAmount = betAmount;
@@ -558,16 +588,16 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when a player wins and receives his share.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [POT_WON;noSeat;idPot;potAmountWon;moneyAmount;]
      */
-    private void potWon(StringTokenizer p_token)
+    private void potWon(GamePlayerWonPotCommand command)
     {
-        final int noSeat = Integer.parseInt(p_token.nextToken());
-        final int idPot = Integer.parseInt(p_token.nextToken());
-        final int potAmountWon = Integer.parseInt(p_token.nextToken());
-        final int moneyAmount = Integer.parseInt(p_token.nextToken());
+        final int noSeat = command.getPlayerPos();
+        final int idPot = command.getPotID();
+        final int potAmountWon = command.getShared();
+        final int moneyAmount = command.getPlayerMoney();
         
         final PokerPlayerInfo player = m_table.getPlayer(noSeat);
         player.m_money = moneyAmount;
@@ -644,19 +674,10 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
      * @param p_action
      *            - Action to send to the table.
      */
+    
     protected void send(PokerPlayerAction p_action)
     {
-        final StringBuilder sb = new StringBuilder();
-        
-        sb.append(p_action.getType().name());
-        sb.append(Constants.DELIMITER);
-        
-        if (p_action.getType() == TypePlayerAction.RAISE)
-        {
-            sb.append(p_action.getAmount());
-        }
-        
-        send(sb.toString());
+        send(new GameSendActionCommand(p_action).encodeCommand());
     }
     
     /**
@@ -760,11 +781,11 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when the table closes.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [TABLE_CLOSED;]
      */
-    private void tableClosed(StringTokenizer p_token)
+    private void tableClosed(GameTableClosedCommand command)
     {
         notifyObserver(IPokerAgentListener.TABLE_CLOSED);
         disconnect();
@@ -773,41 +794,34 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when all infos of a table is received.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [TABLE_INFOS;totalPotAmount;
      *      nbPots;{potAmount};
      *      nbPlayers;{noSeat;playerName;isWinner;moneyAmount;card1;card2;
      *      isDealer;isSmallBlind;isBigBlind;isPlaying;timeRemaining;betAmount}
      */
-    private void tableInfos(StringTokenizer p_token)
+    private void tableInfos(GameTableInfoCommand command)
     {
-        m_table.m_totalPotAmount = Integer.parseInt(p_token.nextToken());
+        m_table.m_totalPotAmount = command.getTotalPotAmount();
         
-        final int nbPots = Integer.parseInt(p_token.nextToken());
-        m_table.m_pots.clear();
-        
-        for (int i = 0; i != nbPots; ++i)
-        {
-            m_table.m_pots.add(Integer.parseInt(p_token.nextToken()));
-        }
+        m_table.m_pots = command.getPotsAmount();
         
         for (int i = 0; i != m_table.m_boardCards.size(); ++i)
         {
-            m_table.m_boardCards.set(i, Card.getInstance().get(Integer.parseInt(p_token.nextToken())));
+            m_table.m_boardCards.set(i, Card.getInstance().get(command.getBoardCardIDs().get(i)));
         }
         
-        final int nb = Integer.parseInt(p_token.nextToken());
+        final int nb = command.getNbPlayers();
         
         m_table.clearPlayers();
         m_table.addPlayer(m_table.m_localPlayer.m_noSeat, m_table.m_localPlayer);
         
         for (int i = 0; i < nb; ++i)
         {
-            final int noSeat = Integer.parseInt(p_token.nextToken());
-            
-            final boolean isEmpty = Boolean.parseBoolean(p_token.nextToken());
-            if (isEmpty)
+            final SummarySeatInfo seat = command.getSeats().get(i);
+            final int noSeat = seat.m_noSeat;
+            if (seat.m_isEmpty)
             {
                 continue;
             }
@@ -819,14 +833,14 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             
             final PokerPlayerInfo player = m_table.getPlayer(noSeat);
             
-            player.m_name = p_token.nextToken();
-            player.m_money = Integer.parseInt(p_token.nextToken());
-            final Card card1 = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
-            final Card card2 = Card.getInstance().get(Integer.parseInt(p_token.nextToken()));
+            player.m_name = seat.m_playerName;
+            player.m_money = seat.m_money;
+            final Card card1 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
+            final Card card2 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
             player.setHand(card1, card2);
-            player.m_isDealer = Boolean.parseBoolean(p_token.nextToken());
-            player.m_isSmallBlind = Boolean.parseBoolean(p_token.nextToken());
-            player.m_isBigBlind = Boolean.parseBoolean(p_token.nextToken());
+            player.m_isDealer = seat.m_isDealer;
+            player.m_isSmallBlind = seat.m_isBigBlind;
+            player.m_isBigBlind = seat.m_isSmallBlind;
             
             if (player.m_isDealer)
             {
@@ -846,14 +860,14 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 m_table.m_noSeatBigBlind = player.m_noSeat;
             }
             
-            final boolean isPlaying = Boolean.parseBoolean(p_token.nextToken());
+            final boolean isPlaying = seat.m_isCurrentPlayer;
             if (isPlaying)
             {
                 m_table.m_currentPlayer = player;
             }
             
-            player.m_timeRemaining = Integer.parseInt(p_token.nextToken());
-            player.m_betAmount = Integer.parseInt(p_token.nextToken());
+            player.m_timeRemaining = seat.m_timeRemaining;
+            player.m_betAmount = seat.m_bet;
         }
         
         notifyObserver(IPokerAgentListener.TABLE_INFOS);
@@ -862,20 +876,20 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when it is to the client to make a move.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [TAKE_ACTION;checkAllowed;foldAllowed;callAllowed;callAmount;
      *      raiseAllowed;minRaiseAmount;maxRaiseAmount]
      */
-    private void takeAction(StringTokenizer p_token)
+    private void takeAction(GameAskActionCommand command)
     {
-        final boolean checkAllowed = Boolean.parseBoolean(p_token.nextToken());
-        final boolean foldAllowed = Boolean.parseBoolean(p_token.nextToken());
-        final boolean callAllowed = Boolean.parseBoolean(p_token.nextToken());
-        final int callAmount = Integer.parseInt(p_token.nextToken());
-        final boolean raiseAllowed = Boolean.parseBoolean(p_token.nextToken());
-        final int minRaiseAmount = Integer.parseInt(p_token.nextToken());
-        final int maxRaiseAmount = Integer.parseInt(p_token.nextToken());
+        final boolean checkAllowed = command.canCheck();
+        final boolean foldAllowed = command.canFold();
+        final boolean callAllowed = command.canCall();
+        final int callAmount = command.getCallAmnt();
+        final boolean raiseAllowed = command.canRaise();
+        final int minRaiseAmount = command.getRaiseMin();
+        final int maxRaiseAmount = command.getRaiseMax();
         
         final ArrayList<TypePlayerAction> m_allowedActions = new ArrayList<TypePlayerAction>();
         
@@ -905,11 +919,11 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /**
      * Happens when waiting for other players to join.
      * 
-     * @param p_token
+     * @param command
      *            Message received from the server.
      * @see [WAIT_FOR_PLAYER;]
      */
-    private void waitingForPlayers(StringTokenizer p_token)
+    private void waitingForPlayers(GameWaitingCommand command)
     {
         notifyObserver(IPokerAgentListener.WAITING_FOR_PLAYERS);
     }

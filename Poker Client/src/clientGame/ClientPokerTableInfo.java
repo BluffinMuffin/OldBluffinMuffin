@@ -1,4 +1,4 @@
-package clientLogic;
+package clientGame;
 
 import java.util.ArrayList;
 

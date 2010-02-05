@@ -1,4 +1,4 @@
-package clientLogic;
+package clientGame;
 
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;

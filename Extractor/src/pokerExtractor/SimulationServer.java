@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import clientAI.TypeSimplifiedAction;
-import clientLogic.ClientPokerPlayerInfo;
-import clientLogic.ClientPokerTableInfo;
-import clientStats.StatsAgent;
-
 import pokerAI.IPokerAgentListener;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;
@@ -16,9 +11,20 @@ import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
-import protocolGame.TypeMessageTableToClient;
+import protocolGame.GameBetTurnEndedCommand;
+import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameEndedCommand;
+import protocolGame.GamePlayerMoneyChangedCommand;
+import protocolGame.GamePlayerTurnEndedCommand;
+import protocolGame.GameStartedCommand;
+import protocolGame.GameTableInfoCommand;
+import protocolGame.SummarySeatInfo;
 import utilGUI.AutoListModel;
 import utility.Tool;
+import clientAI.TypeSimplifiedAction;
+import clientGame.ClientPokerPlayerInfo;
+import clientGame.ClientPokerTableInfo;
+import clientStats.StatsAgent;
 import extractorDB.TupleHandHistories;
 import extractorDB.TupleHandHistories.PhaseEvents;
 import extractorDB.TupleHandHistories.TuplePlayer;
@@ -477,65 +483,30 @@ public class SimulationServer
         // {boardsCards};
         // nbPlayers;{noSeat;isEmpty;playerName;moneyAmount;card1;card2;
         // isDealer;isSmallBlind;isBigBlind;isPlaying;timeRemaining;betAmount}
-        StringBuilder sb = new StringBuilder();
-        sb.append(TypeMessageTableToClient.TABLE_INFOS);
-        sb.append(";");
-        sb.append(0);
-        sb.append(";");
-        sb.append(p_infos.m_players.size());
-        sb.append(";");
-        for (int i = 0; i != p_infos.m_players.size(); ++i)
+        
+        final ArrayList<Integer> amounts = new ArrayList<Integer>();
+        for (int i = 0; i < p_infos.m_players.size(); ++i)
         {
-            sb.append("0;");
+            amounts.add(0);
         }
-        for (int i = 0; i != 5; ++i)
+        final ArrayList<Integer> cards = new ArrayList<Integer>();
+        for (int i = 0; i < 5; ++i)
         {
-            sb.append(Card.NO_CARD);
-            sb.append(";");
+            cards.add(Card.NO_CARD);
         }
-        sb.append(p_infos.m_players.size());
-        sb.append(";");
+        final ArrayList<SummarySeatInfo> seats = new ArrayList<SummarySeatInfo>();
         for (final TuplePlayer player : p_infos.m_players)
         {
-            sb.append(player.m_noSeat);
-            sb.append(";");
-            sb.append(false);
-            sb.append(";");
-            sb.append(player.m_name);
-            sb.append(";");
-            sb.append(player.m_money);
-            sb.append(";");
-            sb.append(player.m_card1.getId());
-            sb.append(";");
-            sb.append(player.m_card2.getId());
-            sb.append(";");
-            sb.append(p_infos.m_noSeatDealer == player.m_noSeat);
-            sb.append(";");
-            sb.append(p_infos.m_noSeatSmallBlind == player.m_noSeat);
-            sb.append(";");
-            sb.append(p_infos.m_noSeatBigBlind == player.m_noSeat);
-            sb.append(";");
-            sb.append(false);
-            sb.append(";");
-            sb.append(0);
-            sb.append(";");
-            sb.append(0);
-            sb.append(";");
+            final ArrayList<Integer> holes = new ArrayList<Integer>();
+            holes.add(player.m_card1.getId());
+            holes.add(player.m_card2.getId());
+            seats.add(new SummarySeatInfo(player.m_noSeat, false, player.m_name, player.m_money, holes, p_infos.m_noSeatDealer == player.m_noSeat, p_infos.m_noSeatSmallBlind == player.m_noSeat, p_infos.m_noSeatBigBlind == player.m_noSeat, false, 0, 0));
         }
-        send(sb.toString());
+        send(new GameTableInfoCommand(0, p_infos.m_players.size(), amounts, cards, p_infos.m_players.size(), seats).encodeCommand());
         
         // Send GameStarted.
         // [GAME_STARTED;noSeatDealer;noSeatSmallBlind;noSeatBigBlind;]
-        sb = new StringBuilder();
-        sb.append(TypeMessageTableToClient.GAME_STARTED);
-        sb.append(";");
-        sb.append(p_infos.m_noSeatDealer);
-        sb.append(";");
-        sb.append(p_infos.m_noSeatSmallBlind);
-        sb.append(";");
-        sb.append(p_infos.m_noSeatBigBlind);
-        sb.append(";");
-        send(sb.toString());
+        send(new GameStartedCommand(p_infos.m_noSeatDealer, p_infos.m_noSeatSmallBlind, p_infos.m_noSeatBigBlind).encodeCommand());
         
         int totalPotAmount = 0;
         
@@ -547,23 +518,7 @@ public class SimulationServer
             smallBlindPlayer.m_betAmount = p_infos.m_smallBlind;
             smallBlindPlayer.m_money -= p_infos.m_smallBlind;
             totalPotAmount += p_infos.m_smallBlind;
-            
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.PLAYER_TURN_ENDED);
-            sb.append(";");
-            sb.append(smallBlindPlayer.m_noSeat);
-            sb.append(";");
-            sb.append(smallBlindPlayer.m_betAmount);
-            sb.append(";");
-            sb.append(smallBlindPlayer.m_money);
-            sb.append(";");
-            sb.append(totalPotAmount);
-            sb.append(";");
-            sb.append(TypePlayerAction.SMALL_BLIND);
-            sb.append(";");
-            sb.append(p_infos.m_smallBlind);
-            sb.append(";");
-            send(sb.toString());
+            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, TypePlayerAction.SMALL_BLIND, p_infos.m_smallBlind).encodeCommand());
         }
         
         // Big blind posted
@@ -573,23 +528,7 @@ public class SimulationServer
             bigBlindPlayer.m_betAmount = p_infos.m_bigBlind;
             bigBlindPlayer.m_money -= p_infos.m_bigBlind;
             totalPotAmount += p_infos.m_bigBlind;
-            
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.PLAYER_TURN_ENDED);
-            sb.append(";");
-            sb.append(bigBlindPlayer.m_noSeat);
-            sb.append(";");
-            sb.append(bigBlindPlayer.m_betAmount);
-            sb.append(";");
-            sb.append(bigBlindPlayer.m_money);
-            sb.append(";");
-            sb.append(totalPotAmount);
-            sb.append(";");
-            sb.append(TypePlayerAction.BIG_BLIND);
-            sb.append(";");
-            sb.append(p_infos.m_bigBlind);
-            sb.append(";");
-            send(sb.toString());
+            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, TypePlayerAction.BIG_BLIND, p_infos.m_bigBlind).encodeCommand());
         }
         
         m_state = TypePokerRound.PREFLOP;
@@ -598,49 +537,20 @@ public class SimulationServer
         
         // Send BetTurnEnded
         // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-        sb = new StringBuilder();
-        sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
-        sb.append(";");
-        for (int i = 0; i != p_infos.m_players.size(); ++i)
-        {
-            sb.append("0;");
-        }
-        sb.append(TypePokerRound.PREFLOP);
-        send(sb.toString());
+        send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
         
         m_state = TypePokerRound.FLOP;
         if (p_infos.m_flopEvents.size() > 0)
         {
             // *** FLOP ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.BOARD_CHANGED);
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(0).getId());
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(1).getId());
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(2).getId());
-            sb.append(";");
-            sb.append(Card.NO_CARD);
-            sb.append(";");
-            sb.append(Card.NO_CARD);
-            sb.append(";");
-            send(sb.toString());
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), Card.NO_CARD, Card.NO_CARD).encodeCommand());
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_flopEvents);
             
             // Send BetTurnEnded
             // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
-            sb.append(";");
-            for (int i = 0; i != p_infos.m_players.size(); ++i)
-            {
-                sb.append("0;");
-            }
-            sb.append(TypePokerRound.FLOP);
-            send(sb.toString());
+            send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
         }
         
         m_state = TypePokerRound.TURN;
@@ -648,34 +558,13 @@ public class SimulationServer
         {
             // *** TURN ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.BOARD_CHANGED);
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(0).getId());
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(1).getId());
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(2).getId());
-            sb.append(";");
-            sb.append(p_infos.m_turn.getId());
-            sb.append(";");
-            sb.append(Card.NO_CARD);
-            sb.append(";");
-            send(sb.toString());
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), Card.NO_CARD).encodeCommand());
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_turnEvents);
             
             // Send BetTurnEnded
             // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
-            sb.append(";");
-            for (int i = 0; i != p_infos.m_players.size(); ++i)
-            {
-                sb.append("0;");
-            }
-            sb.append(TypePokerRound.TURN);
-            send(sb.toString());
+            send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
         }
         
         m_state = TypePokerRound.RIVER;
@@ -683,34 +572,13 @@ public class SimulationServer
         {
             // *** RIVER ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.BOARD_CHANGED);
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(0).getId());
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(1).getId());
-            sb.append(";");
-            sb.append(p_infos.m_flop.get(2).getId());
-            sb.append(";");
-            sb.append(p_infos.m_turn.getId());
-            sb.append(";");
-            sb.append(p_infos.m_river.getId());
-            sb.append(";");
-            send(sb.toString());
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), p_infos.m_flop.get(4).getId()).encodeCommand());
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_riverEvents);
             
             // Send BETTING_TURN_ENDED
             // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.BETTING_TURN_ENDED);
-            sb.append(";");
-            for (int i = 0; i != p_infos.m_players.size(); ++i)
-            {
-                sb.append("0;");
-            }
-            sb.append(TypePokerRound.RIVER);
-            send(sb.toString());
+            send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
         }
         
         for (final Winner winner : p_infos.m_winners)
@@ -719,22 +587,12 @@ public class SimulationServer
             
             // Send PLAYER_MONEY_CHANGED
             // [PLAYER_MONEY_CHANGED;noSeat;moneyAmount;]
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.PLAYER_MONEY_CHANGED);
-            sb.append(";");
-            sb.append(winner.m_player.m_noSeat);
-            sb.append(";");
-            sb.append(winner.m_player.m_money);
-            sb.append(";");
-            send(sb.toString());
+            send(new GamePlayerMoneyChangedCommand(winner.m_player.m_noSeat, winner.m_player.m_money).encodeCommand());
         }
         
         // Send GAME_ENDED
         // [GAME_ENDED;]
-        sb = new StringBuilder();
-        sb.append(TypeMessageTableToClient.GAME_ENDED);
-        sb.append(";");
-        send(sb.toString());
+        send(new GameEndedCommand().encodeCommand());
     }
     
     private int simulatePhase(int p_totalPotAmount, ArrayList<PhaseEvents> p_events)
@@ -746,7 +604,6 @@ public class SimulationServer
     {
         int currentBet = p_currentBet;
         int totalPotAmount = p_totalPotAmount;
-        StringBuilder sb = new StringBuilder();
         
         for (final TuplePlayer player : m_currentInfos.m_players)
         {
@@ -792,23 +649,7 @@ public class SimulationServer
                 event.m_player.m_isFolded = true;
                 m_nbRemainingPlayers--;
             }
-            
-            sb = new StringBuilder();
-            sb.append(TypeMessageTableToClient.PLAYER_TURN_ENDED);
-            sb.append(";");
-            sb.append(event.m_player.m_noSeat);
-            sb.append(";");
-            sb.append(event.m_player.m_betAmount);
-            sb.append(";");
-            sb.append(event.m_player.m_money);
-            sb.append(";");
-            sb.append(totalPotAmount);
-            sb.append(";");
-            sb.append(event.m_action);
-            sb.append(";");
-            sb.append(event.m_actionAmount);
-            sb.append(";");
-            send(sb.toString());
+            send(new GamePlayerTurnEndedCommand(event.m_player.m_noSeat, event.m_player.m_betAmount, event.m_player.m_money, totalPotAmount, event.m_action, event.m_actionAmount).encodeCommand());
             
             if (m_state == TypePokerRound.PREFLOP)
             {

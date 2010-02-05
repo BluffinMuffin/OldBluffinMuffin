@@ -5,7 +5,7 @@ import java.awt.Component;
 
 import javax.swing.JTabbedPane;
 
-import clientLogic.PokerClient;
+import clientGame.PokerClient;
 
 import utilGUI.ListEvent;
 import utilGUI.ListListener;

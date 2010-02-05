@@ -1,4 +1,4 @@
-package serverLogic;
+package serverGame;
 
 import java.io.IOException;
 import java.io.OutputStream;

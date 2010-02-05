@@ -1,10 +1,11 @@
-package serverLogic;
+package serverGame;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -12,10 +13,23 @@ import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import pokerLogic.TypePlayerAction;
-import protocolGame.TypeMessageTableToClient;
+import protocolGame.GameAskActionCommand;
+import protocolGame.GameBetTurnEndedCommand;
+import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameEndedCommand;
+import protocolGame.GameHoleCardsChangedCommand;
+import protocolGame.GamePINGCommand;
+import protocolGame.GamePlayerJoinedCommand;
+import protocolGame.GamePlayerLeftCommand;
+import protocolGame.GamePlayerMoneyChangedCommand;
+import protocolGame.GamePlayerTurnBeganCommand;
+import protocolGame.GamePlayerTurnEndedCommand;
+import protocolGame.GamePlayerWonPotCommand;
+import protocolGame.GameSendActionCommand;
+import protocolGame.GameStartedCommand;
+import protocolGame.GameTableClosedCommand;
+import protocolGame.GameWaitingCommand;
 import utility.Constants;
-
-
 
 /**
  * @author HOCUS
@@ -70,7 +84,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void bigBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
     {
-        send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + TypePlayerAction.BIG_BLIND.name() + Constants.DELIMITER + p_bigBlind);
+        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind).encodeCommand());
     }
     
     @Override
@@ -82,43 +96,39 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void endBettingTurn(ServerTableCommunicator p_table)
     {
-        final StringBuilder message = new StringBuilder();
-        
-        message.append(TypeMessageTableToClient.BETTING_TURN_ENDED.toString());
         
         final Stack<Pot> pots = p_table.getPots();
-        
+        final ArrayList<Integer> amounts = new ArrayList<Integer>();
         for (final Pot pot : pots)
         {
-            message.append(Constants.DELIMITER + pot.getAmount());
+            amounts.add(pot.getAmount());
         }
         
         for (int i = pots.size(); i < p_table.getNbSeats(); i++)
         {
-            message.append(Constants.DELIMITER + 0);
+            amounts.add(0);
         }
         
-        message.append(Constants.DELIMITER + p_table.getGameState().toString());
-        
-        send(message.toString());
+        send(new GameBetTurnEndedCommand(amounts, p_table.getGameState()).encodeCommand());
     }
     
     @Override
     public void flopDealt(ServerTableCommunicator p_table, Card[] p_board)
     {
-        send(TypeMessageTableToClient.BOARD_CHANGED + Constants.DELIMITER + p_board[0].getId() + Constants.DELIMITER + p_board[1].getId() + Constants.DELIMITER + p_board[2].getId() + Constants.DELIMITER + Card.NO_CARD + Constants.DELIMITER + Card.NO_CARD);
+        
+        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), Card.NO_CARD, Card.NO_CARD).encodeCommand());
     }
     
     @Override
     public void gameEnded(ServerTableCommunicator p_table)
     {
-        send(TypeMessageTableToClient.GAME_ENDED.toString());
+        send(new GameEndedCommand().encodeCommand());
     }
     
     @Override
     public void gameStarted(ServerTableCommunicator p_table)
     {
-        send(TypeMessageTableToClient.GAME_STARTED.toString() + Constants.DELIMITER + p_table.getNoSeatDealer() + Constants.DELIMITER + p_table.getNoSeatSmallBlind() + Constants.DELIMITER + p_table.getNoSeatBigBlind());
+        send(new GameStartedCommand(p_table.getNoSeatDealer(), p_table.getNoSeatSmallBlind(), p_table.getNoSeatBigBlind()).encodeCommand());
     }
     
     // ---------------------------------------------
@@ -136,7 +146,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                 while ((action == null) && m_isConnected && (nbTry < 10))
                 {
                     ++nbTry;
-                    send(TypeMessageTableToClient.TAKE_ACTION.toString() + Constants.DELIMITER + p_canCheck + Constants.DELIMITER + p_canFold + Constants.DELIMITER + p_canCall + Constants.DELIMITER + p_callOf + Constants.DELIMITER + p_canRaise + Constants.DELIMITER + p_minimumRaise + Constants.DELIMITER + p_maximumRaise);
+                    send(new GameAskActionCommand(p_canCheck, p_canFold, p_canCall, p_callOf, p_canRaise, p_minimumRaise, p_maximumRaise).encodeCommand());
                     
                     final String line = m_input.readLine();
                     if (line != null)
@@ -146,44 +156,48 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                         if (message.hasMoreTokens())
                         {
                             token = message.nextToken();
-                            final TypePlayerAction actionType = TypePlayerAction.valueOf(token);
-                            switch (actionType)
+                            if (token.equals(GameSendActionCommand.COMMAND_NAME))
                             {
-                                case CHECK:
-                                    if (p_canCheck)
-                                    {
-                                        action = new PokerPlayerAction(actionType, 0);
-                                    }
-                                    break;
-                                case CALL:
-                                    if (p_canCall)
-                                    {
-                                        action = new PokerPlayerAction(actionType, p_callOf);
-                                    }
-                                    break;
-                                case FOLD:
-                                    if (p_canFold)
-                                    {
-                                        action = new PokerPlayerAction(actionType, 0);
-                                    }
-                                    break;
-                                case RAISE:
-                                    try
-                                    {
-                                        if (message.hasMoreTokens())
+                                final GameSendActionCommand command = new GameSendActionCommand(message);
+                                final TypePlayerAction actionType = command.getAction().getType();
+                                switch (actionType)
+                                {
+                                    case CHECK:
+                                        if (p_canCheck)
                                         {
-                                            final int amount = Integer.parseInt(message.nextToken());
-                                            if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
+                                            action = new PokerPlayerAction(actionType, 0);
+                                        }
+                                        break;
+                                    case CALL:
+                                        if (p_canCall)
+                                        {
+                                            action = new PokerPlayerAction(actionType, p_callOf);
+                                        }
+                                        break;
+                                    case FOLD:
+                                        if (p_canFold)
+                                        {
+                                            action = new PokerPlayerAction(actionType, 0);
+                                        }
+                                        break;
+                                    case RAISE:
+                                        try
+                                        {
+                                            if (message.hasMoreTokens())
                                             {
-                                                action = new PokerPlayerAction(actionType, amount);
+                                                final int amount = command.getAction().getAmount();
+                                                if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
+                                                {
+                                                    action = new PokerPlayerAction(actionType, amount);
+                                                }
                                             }
                                         }
-                                    }
-                                    catch (final NumberFormatException e)
-                                    {
-                                        action = null;
-                                    }
-                                    break;
+                                        catch (final NumberFormatException e)
+                                        {
+                                            action = null;
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
@@ -236,11 +250,11 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     {
         if (p_player.getTablePosition() != getTablePosition())
         {
-            send(TypeMessageTableToClient.PLAYER_CARD_CHANGED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + Card.HIDDEN_CARD + Constants.DELIMITER + Card.HIDDEN_CARD);
+            send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), Card.HIDDEN_CARD, Card.HIDDEN_CARD).encodeCommand());
         }
         else
         {
-            send(TypeMessageTableToClient.PLAYER_CARD_CHANGED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand()[0].getId() + Constants.DELIMITER + p_player.getHand()[1].getId());
+            send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()).encodeCommand());
         }
         
     }
@@ -248,49 +262,50 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
     {
-        send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + p_action.getType().name() + Constants.DELIMITER + p_action.getAmount());
+        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()).encodeCommand());
     }
     
     @Override
     public void playerJoinedTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(TypeMessageTableToClient.PLAYER_JOINED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getName() + Constants.DELIMITER + p_player.getMoney());
+        send(new GamePlayerJoinedCommand(p_player.getTablePosition(), p_player.getName(), p_player.getMoney()).encodeCommand());
     }
     
     @Override
     public void playerLeftTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(TypeMessageTableToClient.PLAYER_LEFT.toString() + Constants.DELIMITER + p_player.getTablePosition());
+        send(new GamePlayerLeftCommand(p_player.getTablePosition()).encodeCommand());
     }
     
     @Override
     public void playerMoneyChanged(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(TypeMessageTableToClient.PLAYER_MONEY_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getMoney());
+        send(new GamePlayerMoneyChangedCommand(p_player.getTablePosition(), p_player.getMoney()).encodeCommand());
     }
     
     @Override
     public void playerShowCard(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(TypeMessageTableToClient.PLAYER_CARD_CHANGED + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getHand()[0].getId() + Constants.DELIMITER + p_player.getHand()[1].getId());
+        send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()).encodeCommand());
     }
     
     @Override
     public void playerTurnStarted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(TypeMessageTableToClient.PLAYER_TURN_BEGAN.toString() + Constants.DELIMITER + p_player.getTablePosition());
+        send(new GamePlayerTurnBeganCommand(p_player.getTablePosition()).encodeCommand());
     }
     
     @Override
     public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
     {
-        send(TypeMessageTableToClient.POT_WON + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_pot.getId() + Constants.DELIMITER + p_share + Constants.DELIMITER + p_player.getMoney());
+        send(new GamePlayerWonPotCommand(p_player.getTablePosition(), p_pot.getId(), p_share, p_player.getMoney()).encodeCommand());
     }
     
     @Override
     public void riverDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
-        send(TypeMessageTableToClient.BOARD_CHANGED + Constants.DELIMITER + p_board[0].getId() + Constants.DELIMITER + p_board[1].getId() + Constants.DELIMITER + p_board[2].getId() + Constants.DELIMITER + p_board[3].getId() + Constants.DELIMITER + p_board[4].getId());
+        
+        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), p_board[4].getId()).encodeCommand());
     }
     
     /**
@@ -325,7 +340,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
             m_lastPing = System.currentTimeMillis();
             try
             {
-                send(TypeMessageTableToClient.PING.toString());
+                send(new GamePINGCommand().encodeCommand());
                 
                 final String line = m_input.readLine();
                 if (line != null)
@@ -356,19 +371,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void smallBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
     {
-        send(TypeMessageTableToClient.PLAYER_TURN_ENDED.toString() + Constants.DELIMITER + p_player.getTablePosition() + Constants.DELIMITER + p_player.getBet() + Constants.DELIMITER + p_player.getMoney() + Constants.DELIMITER + p_table.getTotalPot() + Constants.DELIMITER + TypePlayerAction.SMALL_BLIND.name() + Constants.DELIMITER + p_smallBlind);
+        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind).encodeCommand());
     }
     
     @Override
     public void tableEnded(ServerTableCommunicator p_table)
     {
-        send(TypeMessageTableToClient.TABLE_CLOSED.toString());
+        send(new GameTableClosedCommand().encodeCommand());
     }
     
     @Override
     public void tableInfos(ServerTableCommunicator p_table)
     {
-        send(TypeMessageTableToClient.TABLE_INFOS + Constants.DELIMITER + m_table.marshal(this));
+        send(m_table.buildCommand(this).encodeCommand());
     }
     
     // ---------------------------------------------
@@ -383,13 +398,13 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void turnDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
-        send(TypeMessageTableToClient.BOARD_CHANGED + Constants.DELIMITER + p_board[0].getId() + Constants.DELIMITER + p_board[1].getId() + Constants.DELIMITER + p_board[2].getId() + Constants.DELIMITER + p_board[3].getId() + Constants.DELIMITER + Card.NO_CARD);
+        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), Card.NO_CARD).encodeCommand());
     }
     
     @Override
     public void waitingForPlayers(ServerTableCommunicator p_table)
     {
-        send(TypeMessageTableToClient.WAITING_FOR_PLAYERS.toString());
+        send(new GameWaitingCommand().encodeCommand());
     }
     
 }

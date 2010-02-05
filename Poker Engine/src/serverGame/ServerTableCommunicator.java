@@ -1,4 +1,4 @@
-package serverLogic;
+package serverGame;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +16,7 @@ import pokerLogic.Pot;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
+import protocolGame.GameTableInfoCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import utility.Constants;
 import utility.IClosingListener;
@@ -463,9 +464,9 @@ public class ServerTableCommunicator implements Runnable
      * @return
      *         A string representing the table
      */
-    public String marshal(ServerPokerPlayerInfo p_player)
+    public GameTableInfoCommand buildCommand(ServerPokerPlayerInfo p_player)
     {
-        return m_info.marshal(p_player);
+        return m_info.buildCommand(p_player);
     }
     
     /**
