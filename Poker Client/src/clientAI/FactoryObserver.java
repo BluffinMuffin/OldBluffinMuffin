@@ -1,7 +1,7 @@
 package clientAI;
 
 import pokerAI.IPokerAgentListener;
-import clientGame.Viewer;
+import clientGameGUI.TableGUIViewer;
 
 /**
  * @author Hocus
@@ -24,7 +24,7 @@ public class FactoryObserver
         switch (p_observer)
         {
             case VIEWER:
-                return new Viewer();
+                return new TableGUIViewer();
             case STATS:
                 return new PokerAI();
         }

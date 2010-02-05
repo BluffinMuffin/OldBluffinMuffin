@@ -1,4 +1,4 @@
-package clientLobby;
+package clientLobbyGUI;
 
 
 import java.awt.Component;

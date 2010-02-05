@@ -5,11 +5,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import pokerLogic.TypePokerGame;
-
-import clientLobby.ClientLobby;
-
-
-
+import clientLobbyGUI.ClientLobby;
 
 /**
  * @author Hocus
@@ -34,11 +30,11 @@ public class PokerAgentLauncher
         {
             final ClientLobby client = new ClientLobby();
             
-            if (i < 4)
+            if (i < 3)
             {
                 client.setAgentType(TypeAgent.AI_GENETIC);
             }
-            else if (i < 7)
+            else if (i < 6)
             {
                 client.setAgentType(TypeAgent.AI_SVM);
             }

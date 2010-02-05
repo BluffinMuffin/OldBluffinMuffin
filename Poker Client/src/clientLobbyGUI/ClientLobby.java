@@ -1,4 +1,4 @@
-package clientLobby;
+package clientLobbyGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -76,8 +76,8 @@ import clientAI.TypeAgent;
 import clientAI.TypeObserver;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
-import clientGame.GUI;
 import clientGame.PokerClient;
+import clientGameGUI.TableGUI;
 import clientStats.StatsAgent;
 
 /**
@@ -2395,7 +2395,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                 // observers.add(statsAgent);
                 // observers.add(pokerSVM);
                 // observers.add(gui);
-                final GUI gui = new GUI();
+                final TableGUI gui = new TableGUI();
                 m_agent = gui;
                 observers.add(gui);
             }

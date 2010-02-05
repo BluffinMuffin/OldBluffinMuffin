@@ -1,6 +1,7 @@
-package clientGame;
+package clientGameGUI;
 
 import java.util.TreeMap;
+
 
 import pokerLogic.Card;
 

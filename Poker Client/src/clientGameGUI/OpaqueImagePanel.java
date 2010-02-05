@@ -1,4 +1,4 @@
-package clientGame;
+package clientGameGUI;
 
 
 import java.awt.Graphics;

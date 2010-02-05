@@ -1,4 +1,4 @@
-package clientGame;
+package clientGameGUI;
 
 
 
@@ -41,7 +41,7 @@ import pokerStats.StatsInfos;
  *         A part of this class was generated using a visual editor
  *         (http://wiki.eclipse.org/VE).
  */
-public class GUIAdvisor extends GUI
+public class TableGUIAdvisor extends TableGUI
 {
     class LoadSVMTask extends SwingWorker<Void, Void>
     {
@@ -89,9 +89,9 @@ public class GUIAdvisor extends GUI
             @Override
             public void run()
             {
-                GUIAdvisor frame;
+                TableGUIAdvisor frame;
                 
-                frame = new GUIAdvisor();
+                frame = new TableGUIAdvisor();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setTitle("Hocus Pokus");
                 frame.getContentPane().setPreferredSize(frame.getSize());
@@ -119,14 +119,14 @@ public class GUIAdvisor extends GUI
     
     private JProgressBar jProgressBarLoadingSVM = null;
     
-    private GUIAdvisor()
+    private TableGUIAdvisor()
     {
         super();
         initComponents();
         new LoadSVMTask().execute();
     }
     
-    public GUIAdvisor(StatsAgent p_statsAgent, PokerSVM p_pokerSVM)
+    public TableGUIAdvisor(StatsAgent p_statsAgent, PokerSVM p_pokerSVM)
     {
         this();
         m_statsAgent = p_statsAgent;
@@ -145,7 +145,7 @@ public class GUIAdvisor extends GUI
         final Card[] holeCards = m_table.m_localPlayer.getHand();
         final Card[] boardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
         
-        return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbRemainingPlayers, GUIAdvisor.NB_MC_ITERATIONS);
+        return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbRemainingPlayers, TableGUIAdvisor.NB_MC_ITERATIONS);
     }
     
     @Override

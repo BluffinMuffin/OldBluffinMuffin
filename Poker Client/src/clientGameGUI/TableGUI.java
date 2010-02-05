@@ -1,4 +1,4 @@
-package clientGame;
+package clientGameGUI;
 
 
 
@@ -36,7 +36,7 @@ import utility.IClosingListener;
  *         A part of this class was generated using a visual editor
  *         (http://wiki.eclipse.org/VE).
  */
-public class GUI extends Viewer implements IPokerAgentActionner
+public class TableGUI extends TableGUIViewer implements IPokerAgentActionner
 {
     private static final long serialVersionUID = -526188625940605519L;
     
@@ -65,9 +65,9 @@ public class GUI extends Viewer implements IPokerAgentActionner
             @Override
             public void run()
             {
-                GUI frame;
+                TableGUI frame;
                 
-                frame = new GUI();
+                frame = new TableGUI();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setTitle("Hocus Pokus");
                 frame.getContentPane().setPreferredSize(frame.getSize());
@@ -80,7 +80,7 @@ public class GUI extends Viewer implements IPokerAgentActionner
     
     PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     
-    public GUI()
+    public TableGUI()
     {
         super();
         initComponents();
@@ -114,7 +114,7 @@ public class GUI extends Viewer implements IPokerAgentActionner
         {
             for (final IClosingListener<IPokerAgent> listener : m_closingListeners)
             {
-                listener.closing(GUI.this);
+                listener.closing(TableGUI.this);
             }
         }
     }
@@ -317,7 +317,7 @@ public class GUI extends Viewer implements IPokerAgentActionner
         // Raise
         getJButtonRaise().setEnabled(p_actionsAllowed.contains(TypePlayerAction.RAISE));
         getJSpinnerRaise().setEnabled(p_actionsAllowed.contains(TypePlayerAction.RAISE));
-        getJSpinnerRaise().setModel(new SpinnerNumberModel(p_minRaiseAmount, p_minRaiseAmount, p_maxRaiseAmount, GUI.RAISE_STEP));
+        getJSpinnerRaise().setModel(new SpinnerNumberModel(p_minRaiseAmount, p_minRaiseAmount, p_maxRaiseAmount, TableGUI.RAISE_STEP));
         getJSpinnerRaise().setEditor(new CurrencyIntegerEditor(jSpinnerRaise));
     }
     

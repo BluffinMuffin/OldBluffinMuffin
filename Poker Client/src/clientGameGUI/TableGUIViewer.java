@@ -1,4 +1,4 @@
-package clientGame;
+package clientGameGUI;
 
 
 import java.awt.BorderLayout;
@@ -21,6 +21,8 @@ import javax.swing.WindowConstants;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
+
+import clientGame.ClientPokerTableInfo;
 
 import pokerAI.IPokerAgent;
 import pokerAI.IPokerAgentListener;
@@ -45,7 +47,7 @@ import utility.IClosingListener;
  *         A part of this class was generated using a visual editor
  *         (http://wiki.eclipse.org/VE).
  */
-public class Viewer extends JFrame implements IPokerAgentListener
+public class TableGUIViewer extends JFrame implements IPokerAgentListener
 {
     protected class GUIPlayer
     {
@@ -126,9 +128,9 @@ public class Viewer extends JFrame implements IPokerAgentListener
             @Override
             public void run()
             {
-                Viewer frame;
+                TableGUIViewer frame;
                 
-                frame = new Viewer();
+                frame = new TableGUIViewer();
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setTitle("Hocus Pokus");
                 frame.getContentPane().setPreferredSize(frame.getSize());
@@ -139,7 +141,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
         });
     }
     
-    public Viewer()
+    public TableGUIViewer()
     {
         initComponents();
         m_players.add(new GUIPlayer(getHudPanelClient(), getJLabelBetClient()));
@@ -723,7 +725,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
     
     protected GUIPlayer getPlayer(int p_noSeat)
     {
-        return m_players.get((p_noSeat + (Viewer.NB_PLAYERS - m_table.m_localPlayer.m_noSeat)) % Viewer.NB_PLAYERS);
+        return m_players.get((p_noSeat + (TableGUIViewer.NB_PLAYERS - m_table.m_localPlayer.m_noSeat)) % TableGUIViewer.NB_PLAYERS);
     }
     
     private void initComponents()
@@ -809,7 +811,7 @@ public class Viewer extends JFrame implements IPokerAgentListener
                 {
                     for (final IClosingListener<IPokerAgent> listener : m_closingListeners)
                     {
-                        listener.closing(Viewer.this);
+                        listener.closing(TableGUIViewer.this);
                     }
                 }
             }
