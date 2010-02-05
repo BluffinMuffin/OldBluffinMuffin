@@ -29,6 +29,7 @@ import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameWaitingCommand;
+import protocolLogic.IBluffinCommand;
 import utility.Constants;
 
 /**
@@ -84,7 +85,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void bigBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
     {
-        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind).encodeCommand());
+        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind));
     }
     
     @Override
@@ -109,26 +110,26 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
             amounts.add(0);
         }
         
-        send(new GameBetTurnEndedCommand(amounts, p_table.getGameState()).encodeCommand());
+        send(new GameBetTurnEndedCommand(amounts, p_table.getGameState()));
     }
     
     @Override
     public void flopDealt(ServerTableCommunicator p_table, Card[] p_board)
     {
         
-        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), Card.NO_CARD, Card.NO_CARD).encodeCommand());
+        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), Card.NO_CARD, Card.NO_CARD));
     }
     
     @Override
     public void gameEnded(ServerTableCommunicator p_table)
     {
-        send(new GameEndedCommand().encodeCommand());
+        send(new GameEndedCommand());
     }
     
     @Override
     public void gameStarted(ServerTableCommunicator p_table)
     {
-        send(new GameStartedCommand(p_table.getNoSeatDealer(), p_table.getNoSeatSmallBlind(), p_table.getNoSeatBigBlind()).encodeCommand());
+        send(new GameStartedCommand(p_table.getNoSeatDealer(), p_table.getNoSeatSmallBlind(), p_table.getNoSeatBigBlind()));
     }
     
     // ---------------------------------------------
@@ -146,7 +147,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                 while ((action == null) && m_isConnected && (nbTry < 10))
                 {
                     ++nbTry;
-                    send(new GameAskActionCommand(p_canCheck, p_canFold, p_canCall, p_callOf, p_canRaise, p_minimumRaise, p_maximumRaise).encodeCommand());
+                    send(new GameAskActionCommand(p_canCheck, p_canFold, p_canCall, p_callOf, p_canRaise, p_minimumRaise, p_maximumRaise));
                     
                     final String line = m_input.readLine();
                     if (line != null)
@@ -250,11 +251,11 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     {
         if (p_player.getTablePosition() != getTablePosition())
         {
-            send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), Card.HIDDEN_CARD, Card.HIDDEN_CARD).encodeCommand());
+            send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), Card.HIDDEN_CARD, Card.HIDDEN_CARD));
         }
         else
         {
-            send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()).encodeCommand());
+            send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
         }
         
     }
@@ -262,50 +263,50 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
     {
-        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()).encodeCommand());
+        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()));
     }
     
     @Override
     public void playerJoinedTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(new GamePlayerJoinedCommand(p_player.getTablePosition(), p_player.getName(), p_player.getMoney()).encodeCommand());
+        send(new GamePlayerJoinedCommand(p_player.getTablePosition(), p_player.getName(), p_player.getMoney()));
     }
     
     @Override
     public void playerLeftTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(new GamePlayerLeftCommand(p_player.getTablePosition()).encodeCommand());
+        send(new GamePlayerLeftCommand(p_player.getTablePosition()));
     }
     
     @Override
     public void playerMoneyChanged(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(new GamePlayerMoneyChangedCommand(p_player.getTablePosition(), p_player.getMoney()).encodeCommand());
+        send(new GamePlayerMoneyChangedCommand(p_player.getTablePosition(), p_player.getMoney()));
     }
     
     @Override
     public void playerShowCard(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()).encodeCommand());
+        send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
     }
     
     @Override
     public void playerTurnStarted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
     {
-        send(new GamePlayerTurnBeganCommand(p_player.getTablePosition()).encodeCommand());
+        send(new GamePlayerTurnBeganCommand(p_player.getTablePosition()));
     }
     
     @Override
     public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
     {
-        send(new GamePlayerWonPotCommand(p_player.getTablePosition(), p_pot.getId(), p_share, p_player.getMoney()).encodeCommand());
+        send(new GamePlayerWonPotCommand(p_player.getTablePosition(), p_pot.getId(), p_share, p_player.getMoney()));
     }
     
     @Override
     public void riverDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
         
-        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), p_board[4].getId()).encodeCommand());
+        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), p_board[4].getId()));
     }
     
     /**
@@ -314,10 +315,10 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
      * @param p_msg
      *            The message to send
      */
-    protected void send(String p_msg)
+    protected void send(IBluffinCommand command)
     {
         // System.out.println("Server SEND TO " + this.m_name + " [" + p_msg + "]");
-        m_output.println(p_msg);
+        m_output.println(command.encodeCommand());
     }
     
     /**
@@ -340,7 +341,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
             m_lastPing = System.currentTimeMillis();
             try
             {
-                send(new GamePINGCommand().encodeCommand());
+                send(new GamePINGCommand());
                 
                 final String line = m_input.readLine();
                 if (line != null)
@@ -371,19 +372,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void smallBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
     {
-        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind).encodeCommand());
+        send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind));
     }
     
     @Override
     public void tableEnded(ServerTableCommunicator p_table)
     {
-        send(new GameTableClosedCommand().encodeCommand());
+        send(new GameTableClosedCommand());
     }
     
     @Override
     public void tableInfos(ServerTableCommunicator p_table)
     {
-        send(m_table.buildCommand(this).encodeCommand());
+        send(m_table.buildCommand(this));
     }
     
     // ---------------------------------------------
@@ -398,13 +399,13 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
     @Override
     public void turnDeal(ServerTableCommunicator p_table, Card[] p_board)
     {
-        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), Card.NO_CARD).encodeCommand());
+        send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), Card.NO_CARD));
     }
     
     @Override
     public void waitingForPlayers(ServerTableCommunicator p_table)
     {
-        send(new GameWaitingCommand().encodeCommand());
+        send(new GameWaitingCommand());
     }
     
 }

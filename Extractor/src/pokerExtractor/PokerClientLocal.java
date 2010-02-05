@@ -34,6 +34,7 @@ import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.GameWaitingCommand;
 import protocolGame.SummarySeatInfo;
+import protocolLogic.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utilGUI.ListEvent;
 import utilGUI.ListListener;
@@ -367,7 +368,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                 }
                 else if (command.equals(GamePINGCommand.COMMAND_NAME))
                 {
-                    send(new GamePINGCommand(token).encodeResponse());
+                    sendMessage(new GamePINGCommand(token).encodeResponse());
                 }
             }
             catch (final Exception e)
@@ -612,13 +613,18 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     
     protected void send(PokerPlayerAction p_action)
     {
-        send(new GameSendActionCommand(p_action).encodeCommand());
+        send(new GameSendActionCommand(p_action));
     }
     
-    protected void send(String p_msg)
+    protected void sendMessage(String p_msg)
     {
         System.out.println(m_table.m_localPlayer.m_name + " SEND [" + p_msg + "]");
         m_toServer.add(p_msg);
+    }
+    
+    protected void send(IBluffinCommand p_msg)
+    {
+        sendMessage(p_msg.encodeCommand());
     }
     
     private void startAgent(IPokerAgent p_agent)

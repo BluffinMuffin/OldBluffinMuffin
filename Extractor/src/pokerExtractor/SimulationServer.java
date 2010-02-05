@@ -19,6 +19,7 @@ import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.SummarySeatInfo;
+import protocolLogic.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utility.Tool;
 import clientAI.TypeSimplifiedAction;
@@ -449,11 +450,11 @@ public class SimulationServer
         }
     }
     
-    private void send(String p_msg)
+    private void send(IBluffinCommand p_msg)
     {
         try
         {
-            m_toClient.put(p_msg);
+            m_toClient.put(p_msg.encodeCommand());
         }
         catch (final InterruptedException e)
         {
@@ -502,11 +503,11 @@ public class SimulationServer
             holes.add(player.m_card2.getId());
             seats.add(new SummarySeatInfo(player.m_noSeat, false, player.m_name, player.m_money, holes, p_infos.m_noSeatDealer == player.m_noSeat, p_infos.m_noSeatSmallBlind == player.m_noSeat, p_infos.m_noSeatBigBlind == player.m_noSeat, false, 0, 0));
         }
-        send(new GameTableInfoCommand(0, p_infos.m_players.size(), amounts, cards, p_infos.m_players.size(), seats).encodeCommand());
+        send(new GameTableInfoCommand(0, p_infos.m_players.size(), amounts, cards, p_infos.m_players.size(), seats));
         
         // Send GameStarted.
         // [GAME_STARTED;noSeatDealer;noSeatSmallBlind;noSeatBigBlind;]
-        send(new GameStartedCommand(p_infos.m_noSeatDealer, p_infos.m_noSeatSmallBlind, p_infos.m_noSeatBigBlind).encodeCommand());
+        send(new GameStartedCommand(p_infos.m_noSeatDealer, p_infos.m_noSeatSmallBlind, p_infos.m_noSeatBigBlind));
         
         int totalPotAmount = 0;
         
@@ -518,7 +519,7 @@ public class SimulationServer
             smallBlindPlayer.m_betAmount = p_infos.m_smallBlind;
             smallBlindPlayer.m_money -= p_infos.m_smallBlind;
             totalPotAmount += p_infos.m_smallBlind;
-            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, TypePlayerAction.SMALL_BLIND, p_infos.m_smallBlind).encodeCommand());
+            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, TypePlayerAction.SMALL_BLIND, p_infos.m_smallBlind));
         }
         
         // Big blind posted
@@ -528,7 +529,7 @@ public class SimulationServer
             bigBlindPlayer.m_betAmount = p_infos.m_bigBlind;
             bigBlindPlayer.m_money -= p_infos.m_bigBlind;
             totalPotAmount += p_infos.m_bigBlind;
-            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, TypePlayerAction.BIG_BLIND, p_infos.m_bigBlind).encodeCommand());
+            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, TypePlayerAction.BIG_BLIND, p_infos.m_bigBlind));
         }
         
         m_state = TypePokerRound.PREFLOP;
@@ -537,20 +538,20 @@ public class SimulationServer
         
         // Send BetTurnEnded
         // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-        send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
+        send(new GameBetTurnEndedCommand(amounts, m_state));
         
         m_state = TypePokerRound.FLOP;
         if (p_infos.m_flopEvents.size() > 0)
         {
             // *** FLOP ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), Card.NO_CARD, Card.NO_CARD).encodeCommand());
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), Card.NO_CARD, Card.NO_CARD));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_flopEvents);
             
             // Send BetTurnEnded
             // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-            send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
+            send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
         m_state = TypePokerRound.TURN;
@@ -558,13 +559,13 @@ public class SimulationServer
         {
             // *** TURN ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), Card.NO_CARD).encodeCommand());
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), Card.NO_CARD));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_turnEvents);
             
             // Send BetTurnEnded
             // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-            send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
+            send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
         m_state = TypePokerRound.RIVER;
@@ -572,13 +573,13 @@ public class SimulationServer
         {
             // *** RIVER ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), p_infos.m_flop.get(4).getId()).encodeCommand());
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), p_infos.m_flop.get(4).getId()));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_riverEvents);
             
             // Send BETTING_TURN_ENDED
             // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
-            send(new GameBetTurnEndedCommand(amounts, m_state).encodeCommand());
+            send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
         for (final Winner winner : p_infos.m_winners)
@@ -587,12 +588,12 @@ public class SimulationServer
             
             // Send PLAYER_MONEY_CHANGED
             // [PLAYER_MONEY_CHANGED;noSeat;moneyAmount;]
-            send(new GamePlayerMoneyChangedCommand(winner.m_player.m_noSeat, winner.m_player.m_money).encodeCommand());
+            send(new GamePlayerMoneyChangedCommand(winner.m_player.m_noSeat, winner.m_player.m_money));
         }
         
         // Send GAME_ENDED
         // [GAME_ENDED;]
-        send(new GameEndedCommand().encodeCommand());
+        send(new GameEndedCommand());
     }
     
     private int simulatePhase(int p_totalPotAmount, ArrayList<PhaseEvents> p_events)
@@ -649,7 +650,7 @@ public class SimulationServer
                 event.m_player.m_isFolded = true;
                 m_nbRemainingPlayers--;
             }
-            send(new GamePlayerTurnEndedCommand(event.m_player.m_noSeat, event.m_player.m_betAmount, event.m_player.m_money, totalPotAmount, event.m_action, event.m_actionAmount).encodeCommand());
+            send(new GamePlayerTurnEndedCommand(event.m_player.m_noSeat, event.m_player.m_betAmount, event.m_player.m_money, totalPotAmount, event.m_action, event.m_actionAmount));
             
             if (m_state == TypePokerRound.PREFLOP)
             {

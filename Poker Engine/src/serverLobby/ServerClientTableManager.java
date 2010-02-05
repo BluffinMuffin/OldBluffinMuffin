@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
+import protocolLogic.IBluffinCommand;
 import serverGame.ServerNetworkPokerPlayerInfo;
 import utility.Constants;
 
@@ -44,7 +45,7 @@ public class ServerClientTableManager extends Thread
     private void authentification(LobbyConnectCommand command)
     {
         m_name = command.getPlayerName();
-        send(command.encodeResponse(true));
+        sendMessage(command.encodeResponse(true));
     }
     
     /**
@@ -57,7 +58,7 @@ public class ServerClientTableManager extends Thread
         {
             if (!m_manager.m_table.isRunning())
             {
-                send(command.encodeErrorResponse());
+                sendMessage(command.encodeErrorResponse());
                 return;
             }
             
@@ -70,13 +71,13 @@ public class ServerClientTableManager extends Thread
                 final int noSeat = m_manager.m_table.getNextSeat();
                 if (noSeat == -1)
                 {
-                    send(command.encodeErrorResponse());
+                    sendMessage(command.encodeErrorResponse());
                 }
                 else
                 {
                     // Attach the client to the table.
                     // Transfert socket connection.
-                    send(command.encodeResponse(noSeat));
+                    sendMessage(command.encodeResponse(noSeat));
                     m_manager.m_table.join(player, noSeat);
                     m_manager.m_table.attach(player);
                     player.setIsConnected();
@@ -84,12 +85,12 @@ public class ServerClientTableManager extends Thread
             }
             else
             {
-                send(command.encodeErrorResponse());
+                sendMessage(command.encodeErrorResponse());
             }
         }
         catch (final IOException e)
         {
-            send(command.encodeErrorResponse());
+            sendMessage(command.encodeErrorResponse());
             e.printStackTrace();
         }
     }
@@ -138,9 +139,14 @@ public class ServerClientTableManager extends Thread
      * @param p_msg
      *            - Message to send.
      */
-    protected void send(String p_msg)
+    protected void sendMessage(String p_msg)
     {
         System.out.println("Server SEND to " + m_name + " [" + p_msg + "]");
         m_toClient.println(p_msg);
+    }
+    
+    protected void send(IBluffinCommand p_msg)
+    {
+        sendMessage(p_msg.encodeCommand());
     }
 }

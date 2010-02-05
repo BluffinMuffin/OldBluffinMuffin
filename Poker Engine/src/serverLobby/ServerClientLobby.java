@@ -12,6 +12,7 @@ import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyListTableCommand;
+import protocolLogic.IBluffinCommand;
 import utility.Constants;
 
 /**
@@ -53,10 +54,15 @@ public class ServerClientLobby extends Thread
      * @param p_msg
      *            - Message to send.
      */
-    protected void send(String p_msg)
+    protected void sendMessage(String p_msg)
     {
         System.out.println("Server SEND to " + m_playerName + " [" + p_msg + "]");
         m_toClient.println(p_msg);
+    }
+    
+    protected void send(IBluffinCommand p_msg)
+    {
+        sendMessage(p_msg.encodeCommand());
     }
     
     @Override
@@ -108,18 +114,18 @@ public class ServerClientLobby extends Thread
     
     private void listTables(LobbyListTableCommand command)
     {
-        send(command.encodeResponse(m_lobby.listTables()));
+        sendMessage(command.encodeResponse(m_lobby.listTables()));
     }
     
     private void createTable(LobbyCreateTableCommand command)
     {
-        send(command.encodeResponse(m_lobby.createTable(command)));
+        sendMessage(command.encodeResponse(m_lobby.createTable(command)));
     }
     
     private void authentification(LobbyConnectCommand command)
     {
         m_playerName = command.getPlayerName();
-        send(command.encodeResponse(true));
+        sendMessage(command.encodeResponse(true));
     }
     
     private void disconnect(LobbyDisconnectCommand command)

@@ -61,6 +61,7 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
+import protocolLogic.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utilGUI.CurrencyIntegerEditor;
 import utilGUI.JBackgroundPanel;
@@ -271,7 +272,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
     public int createTable(String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers)
     {
         // Send query.
-        send(new LobbyCreateTableCommand(p_tableName, p_gameType, p_bigBlind, p_maxPlayers, m_playerName).encodeCommand());
+        send(new LobbyCreateTableCommand(p_tableName, p_gameType, p_bigBlind, p_maxPlayers, m_playerName));
         // Wait for response.
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         
@@ -294,7 +295,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
         try
         {
             // Tell ServerLobby that the user is leaving.
-            send(new LobbyDisconnectCommand().encodeCommand());
+            send(new LobbyDisconnectCommand());
             
             // Close the socket
             if (m_connection != null)
@@ -619,7 +620,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                         }
                         
                         // Authentify the user.
-                        send(new LobbyConnectCommand(m_playerName).encodeCommand());
+                        send(new LobbyConnectCommand(m_playerName));
                         
                         if (Boolean.valueOf(receive()))
                         {
@@ -2266,7 +2267,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
     public Integer getNoPort(String p_table)
     {
         // Ask the server for all available tables.
-        send(new LobbyListTableCommand().encodeCommand());
+        send(new LobbyListTableCommand());
         
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         
@@ -2454,7 +2455,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
         model.setRowCount(0);
         
         // Ask the server for all available tables.
-        send(new LobbyListTableCommand().encodeCommand());
+        send(new LobbyListTableCommand());
         
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         
@@ -2495,7 +2496,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
      * @param p_msg
      *            - Message to send to the ServerLobby.
      */
-    public boolean send(String p_msg)
+    public boolean sendMessage(String p_msg)
     {
         if (!isConnected())
         {
@@ -2507,6 +2508,11 @@ public class ClientLobby implements IClosingListener<PokerClient>
         m_toServer.println(p_msg);
         
         return true;
+    }
+    
+    public boolean send(IBluffinCommand p_msg)
+    {
+        return sendMessage(p_msg.encodeCommand());
     }
     
     /**
