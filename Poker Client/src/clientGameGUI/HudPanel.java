@@ -1,6 +1,5 @@
 package clientGameGUI;
 
-
 import java.awt.Color;
 import java.awt.Font;
 
@@ -11,15 +10,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
-
 import pokerLogic.Card;
 import utility.Bundle;
-
 
 /**
  * @author Hocus
