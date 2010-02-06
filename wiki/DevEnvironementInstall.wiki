@@ -20,5 +20,4 @@
  # When the nightmare is over by clicking Next, another nightmare begin: the Finish button is disabled !! Just play with something, to wake him up, but make sure to change nothing ! Then click finish. :)
  # When another window appear, choose choice #2 (Find projects ...) then click Finish
  # Enable "Respect projects hierarchy" then click Finish. This will be a little long because of the SVMs folder, be patient !
- # After that, go in the "Poker Client" project outside eclipse (like in Windows Explorer). Copy "images" and "SVMs", then paste them in the "bin" folder.
  # Enjoy !! :)
