@@ -10,7 +10,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import pokerLogic.TypePokerGame;
 
@@ -31,7 +33,7 @@ public class LobbyAddTableJDialog extends JDialog
     private JLabel jGameTypeLabel = null;
     private JComboBox jGameTypeComboBox = null;
     private JLabel jBigBlindLabel = null;
-    private JTextField jBigBlindTextField = null;
+    private JSpinner jBigBlindSpinner = null;
     private JLabel jNbPlayersLabel = null;
     private JSlider jNbPlayersSlider = null;
     private JButton jAddButton = null;
@@ -42,6 +44,8 @@ public class LobbyAddTableJDialog extends JDialog
     public LobbyAddTableJDialog(Frame owner, String playerName)
     {
         super(owner);
+        pack();
+        setLocationRelativeTo(owner);
         m_playerName = playerName;
         initialize();
     }
@@ -57,6 +61,7 @@ public class LobbyAddTableJDialog extends JDialog
         this.setModal(true);
         this.setTitle("Add Table");
         this.setContentPane(getJContentPane());
+        this.getRootPane().setDefaultButton(getJAddButton());
         m_OK = false;
     }
     
@@ -88,7 +93,7 @@ public class LobbyAddTableJDialog extends JDialog
             jContentPane.add(jGameTypeLabel, null);
             jContentPane.add(getJGameTypeComboBox(), null);
             jContentPane.add(jBigBlindLabel, null);
-            jContentPane.add(getJBigBlindTextField(), null);
+            jContentPane.add(getJBigBlindSpinner(), null);
             jContentPane.add(jNbPlayersLabel, null);
             jContentPane.add(getJNbPlayersSlider(), null);
             jContentPane.add(getJAddButton(), null);
@@ -134,15 +139,16 @@ public class LobbyAddTableJDialog extends JDialog
      * 
      * @return javax.swing.JTextField
      */
-    private JTextField getJBigBlindTextField()
+    private JSpinner getJBigBlindSpinner()
     {
-        if (jBigBlindTextField == null)
+        if (jBigBlindSpinner == null)
         {
-            jBigBlindTextField = new JTextField();
-            jBigBlindTextField.setBounds(new Rectangle(10, 120, 50, 20));
-            jBigBlindTextField.setText("10");
+            jBigBlindSpinner = new JSpinner();
+            jBigBlindSpinner.setModel(new SpinnerNumberModel(10, 10, 1000, 10));
+            jBigBlindSpinner.setBounds(new Rectangle(10, 120, 75, 20));
+            jBigBlindSpinner.setEditor(new JSpinner.NumberEditor(jBigBlindSpinner, "#"));
         }
-        return jBigBlindTextField;
+        return jBigBlindSpinner;
     }
     
     /**
@@ -184,7 +190,7 @@ public class LobbyAddTableJDialog extends JDialog
                 {
                     m_tableName = getJTableNameTextField().getText();
                     m_gameType = (TypePokerGame) getJGameTypeComboBox().getSelectedItem();
-                    m_bigBlind = Integer.parseInt(getJBigBlindTextField().getText());
+                    m_bigBlind = (Integer) getJBigBlindSpinner().getValue();
                     m_nbPlayer = getJNbPlayersSlider().getValue();
                     m_OK = true;
                     setVisible(false);

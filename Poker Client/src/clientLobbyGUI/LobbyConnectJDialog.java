@@ -10,7 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 public class LobbyConnectJDialog extends JDialog
 {
@@ -27,7 +29,7 @@ public class LobbyConnectJDialog extends JDialog
     private JLabel jAdressLabel = null;
     private JComboBox jAddressComboBox = null;
     private JLabel jPortLabel = null;
-    private JTextField jPortTextField = null;
+    private JSpinner jPortSpinner = null;
     
     /**
      * @param owner
@@ -36,6 +38,8 @@ public class LobbyConnectJDialog extends JDialog
     {
         
         super(owner);
+        pack();
+        setLocationRelativeTo(owner);
         initialize();
     }
     
@@ -51,6 +55,7 @@ public class LobbyConnectJDialog extends JDialog
         this.setModal(true);
         this.setTitle("Connection");
         this.setContentPane(getJContentPane());
+        this.getRootPane().setDefaultButton(getJConnectButton());
     }
     
     /**
@@ -79,7 +84,7 @@ public class LobbyConnectJDialog extends JDialog
             jContentPane.add(jAdressLabel, null);
             jContentPane.add(getJAddressComboBox(), null);
             jContentPane.add(jPortLabel, null);
-            jContentPane.add(getJPortTextField(), null);
+            jContentPane.add(getJPortSpinner(), null);
         }
         return jContentPane;
     }
@@ -96,6 +101,7 @@ public class LobbyConnectJDialog extends JDialog
             jConnectButton = new JButton();
             jConnectButton.setText("Connect");
             jConnectButton.setBounds(new Rectangle(66, 148, 98, 26));
+            jConnectButton.setSelected(true);
             jConnectButton.setName("jConnectButton");
             jConnectButton.addActionListener(new java.awt.event.ActionListener()
             {
@@ -103,7 +109,7 @@ public class LobbyConnectJDialog extends JDialog
                 {
                     m_playerName = getJPlayerNameTextField().getText();
                     m_serverAddress = getJAddressComboBox().getSelectedItem().toString();
-                    m_serverPort = Integer.parseInt(getJPortTextField().getText());
+                    m_serverPort = (Integer) getJPortSpinner().getValue();
                     m_OK = true;
                     LobbyConnectJDialog.this.setVisible(false);
                 }
@@ -153,15 +159,16 @@ public class LobbyConnectJDialog extends JDialog
      * 
      * @return javax.swing.JTextField
      */
-    private JTextField getJPortTextField()
+    private JSpinner getJPortSpinner()
     {
-        if (jPortTextField == null)
+        if (jPortSpinner == null)
         {
-            jPortTextField = new JTextField();
-            jPortTextField.setBounds(new Rectangle(10, 120, 50, 20));
-            jPortTextField.setText("4242");
+            jPortSpinner = new JSpinner();
+            jPortSpinner.setModel(new SpinnerNumberModel(4242, 1, 65535, 1));
+            jPortSpinner.setBounds(new Rectangle(10, 120, 75, 20));
+            jPortSpinner.setEditor(new JSpinner.NumberEditor(jPortSpinner, "#"));
         }
-        return jPortTextField;
+        return jPortSpinner;
     }
     
     public boolean isOK()

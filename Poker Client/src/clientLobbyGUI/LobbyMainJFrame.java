@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -67,7 +69,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private JScrollPane jMainScrollPane = null;
     private JTable jMainTable = null;
     private JButton jConnectButton = null;
-    private JButton jDisconnectButton = null;
     private JButton jOldStyleButton = null;
     
     /**
@@ -102,7 +103,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
      */
     private void initialize()
     {
-        this.setSize(408, 423);
+        this.setSize(579, 262);
         this.setContentPane(getJContentPane());
         this.setTitle(jTitleLabel.getText());
     }
@@ -137,7 +138,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             jMainToolBar.setPreferredSize(new Dimension(18, 25));
             jMainToolBar.setFloatable(false);
             jMainToolBar.add(getJConnectButton());
-            jMainToolBar.add(getJDisconnectButton());
             jMainToolBar.add(getJRefreshButton());
             jMainToolBar.add(getJAddTableButton());
             jMainToolBar.add(getJJoinTableButton());
@@ -224,28 +224,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    if (getJMainTable().getSelectionModel().isSelectionEmpty())
-                    {
-                        return;
-                    }
-                    
-                    final int index = getJMainTable().getSelectedRow();
-                    final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
-                    final String tableName = (String) getJMainTable().getModel().getValueAt(index, 1);
-                    
-                    if (findClient() != null)
-                    {
-                        System.out.println("You are already sitting on the table: " + tableName);
-                    }
-                    else
-                    {
-                        final int bigBlind = (Integer) getJMainTable().getModel().getValueAt(index, 3);
-                        if (!joinTable(noPort, tableName, bigBlind))
-                        {
-                            System.out.println("Table '" + tableName + "' does not exist anymore.");
-                            refreshTables();
-                        }
-                    }
+                    eventJoinTable();
                 }
             });
         }
@@ -297,6 +276,17 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             jMainTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             jMainTable.setShowGrid(true);
             jMainTable.setModel(defaultTableModel);
+            jMainTable.addMouseListener(new MouseAdapter()
+            {
+                @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    if (e.getClickCount() == 2)
+                    {
+                        eventJoinTable();
+                    }
+                }
+            });
         }
         return jMainTable;
     }
@@ -316,32 +306,71 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
-                    form.setVisible(true);
-                    if (form.isOK())
+                    if (isConnected())
                     {
-                        m_playerName = form.getPlayerName();
-                        m_serverAddress = form.getServerAddress();
-                        m_serverPort = form.getServerPort();
-                        connect(m_serverAddress, m_serverPort);
-                        // Authentify the user.
-                        send(new LobbyConnectCommand(m_playerName));
+                        // Alors on disconnect
+                        send(new LobbyDisconnectCommand());
                         
-                        if (Boolean.valueOf(receive()))
+                        // Close the socket
+                        if (m_connection != null)
                         {
-                            jStatusLabel.setText("Connected as " + form.getPlayerName() + " to " + form.getServerAddress() + ":" + form.getServerPort());
-                            getJRefreshButton().setEnabled(true);
-                            getJAddTableButton().setEnabled(true);
-                            getJConnectButton().setEnabled(false);
-                            getJOldStyleButton().setEnabled(false);
-                            getJDisconnectButton().setEnabled(true);
-                            setTitle(m_playerName + " - " + jTitleLabel.getText());
-                            refreshTables();
+                            try
+                            {
+                                m_connection.close();
+                            }
+                            catch (final IOException e1)
+                            {
+                                e1.printStackTrace();
+                            }
                         }
-                        else
+                        m_connection = null;
+                        m_toServer = null;
+                        m_fromServer = null;
+                        
+                        final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
+                        model.setRowCount(0);
+                        // Disconnect all clients (PokerClient).
+                        while (m_clients.size() != 0)
                         {
-                            jStatusLabel.setText("Not connected, Authentification Failed!!!");
-                            System.out.println("Authentification Failed!!!");
+                            m_clients.get(0).disconnect();
+                        }
+                        jStatusLabel.setText("Not Connected");
+                        setTitle(jTitleLabel.getText());
+                        getJRefreshButton().setEnabled(false);
+                        getJAddTableButton().setEnabled(false);
+                        getJJoinTableButton().setEnabled(false);
+                        getJConnectButton().setText("Connect");
+                        getJOldStyleButton().setEnabled(true);
+                    }
+                    else
+                    {
+                        // Eh bien on connecte
+                        final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
+                        form.setVisible(true);
+                        if (form.isOK())
+                        {
+                            m_playerName = form.getPlayerName();
+                            m_serverAddress = form.getServerAddress();
+                            m_serverPort = form.getServerPort();
+                            connect(m_serverAddress, m_serverPort);
+                            // Authentify the user.
+                            send(new LobbyConnectCommand(m_playerName));
+                            
+                            if (Boolean.valueOf(receive()))
+                            {
+                                jStatusLabel.setText("Connected as " + form.getPlayerName() + " to " + form.getServerAddress() + ":" + form.getServerPort());
+                                getJRefreshButton().setEnabled(true);
+                                getJAddTableButton().setEnabled(true);
+                                getJOldStyleButton().setEnabled(false);
+                                getJConnectButton().setText("Disconnect");
+                                setTitle(m_playerName + " - " + jTitleLabel.getText());
+                                refreshTables();
+                            }
+                            else
+                            {
+                                jStatusLabel.setText("Not connected, Authentification Failed!!!");
+                                System.out.println("Authentification Failed!!!");
+                            }
                         }
                     }
                 }
@@ -370,61 +399,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         {
             e.printStackTrace();
         }
-    }
-    
-    /**
-     * This method initializes jDisconnectButton
-     * 
-     * @return javax.swing.JButton
-     */
-    private JButton getJDisconnectButton()
-    {
-        if (jDisconnectButton == null)
-        {
-            jDisconnectButton = new JButton();
-            jDisconnectButton.setText("Disconnect");
-            jDisconnectButton.setEnabled(false);
-            jDisconnectButton.addActionListener(new java.awt.event.ActionListener()
-            {
-                public void actionPerformed(java.awt.event.ActionEvent e)
-                {
-                    send(new LobbyDisconnectCommand());
-                    
-                    // Close the socket
-                    if (m_connection != null)
-                    {
-                        try
-                        {
-                            m_connection.close();
-                        }
-                        catch (final IOException e1)
-                        {
-                            e1.printStackTrace();
-                        }
-                    }
-                    m_connection = null;
-                    m_toServer = null;
-                    m_fromServer = null;
-                    
-                    final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
-                    model.setRowCount(0);
-                    // Disconnect all clients (PokerClient).
-                    while (m_clients.size() != 0)
-                    {
-                        m_clients.get(0).disconnect();
-                    }
-                    jStatusLabel.setText("Not Connected");
-                    setTitle(jTitleLabel.getText());
-                    getJRefreshButton().setEnabled(false);
-                    getJAddTableButton().setEnabled(false);
-                    getJJoinTableButton().setEnabled(false);
-                    getJConnectButton().setEnabled(true);
-                    getJDisconnectButton().setEnabled(false);
-                    getJOldStyleButton().setEnabled(true);
-                }
-            });
-        }
-        return jDisconnectButton;
     }
     
     /**
@@ -725,6 +699,32 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         }
         
         return m_clients.get(i);
+    }
+    
+    private void eventJoinTable()
+    {
+        if (getJMainTable().getSelectionModel().isSelectionEmpty())
+        {
+            return;
+        }
+        
+        final int index = getJMainTable().getSelectedRow();
+        final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
+        final String tableName = (String) getJMainTable().getModel().getValueAt(index, 1);
+        
+        if (findClient() != null)
+        {
+            System.out.println("You are already sitting on the table: " + tableName);
+        }
+        else
+        {
+            final int bigBlind = (Integer) getJMainTable().getModel().getValueAt(index, 3);
+            if (!joinTable(noPort, tableName, bigBlind))
+            {
+                System.out.println("Table '" + tableName + "' does not exist anymore.");
+                refreshTables();
+            }
+        }
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"
