@@ -32,7 +32,6 @@ public class LobbyAIConnectJDialog extends JDialog
 {
     final DefaultListModel model = new DefaultListModel();
     private int m_EditWho;
-    private String m_playerName;
     private String m_serverAddress;
     private int m_serverPort;
     private boolean m_OK;
@@ -161,7 +160,6 @@ public class LobbyAIConnectJDialog extends JDialog
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    m_playerName = "AIBots";
                     m_serverAddress = getJAddressComboBox().getSelectedItem().toString();
                     m_serverPort = (Integer) getJPortSpinner().getValue();
                     m_OK = true;

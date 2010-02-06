@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import pokerAI.IPokerAgentActionner;
 import pokerAI.IPokerAgentListener;
 import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyConnectCommand;
@@ -39,12 +40,18 @@ import protocolLogic.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utility.Constants;
 import utility.IClosingListener;
+import clientAI.FactoryAgent;
+import clientAI.FactoryObserver;
+import clientAI.PokerAI;
+import clientAI.PokerSVM;
+import clientAI.TypeAgent;
+import clientAI.TypeObserver;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
-import clientGameGUI.TableGUI;
-import clientLobbyGUI.LobbyAddTableJDialog;
+import clientLobbyGUI.LobbyMainJFrame;
 import clientOldAndUglyLobbyGUI.OldAndUglyClientLobby;
+import clientStats.StatsAgent;
 
 public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
@@ -56,9 +63,15 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     private List<TupleAISummary> m_AIs;
     private String m_serverAddress;
     private int m_serverPort;
+    private Boolean m_addViewer; // @jve:decl-index=0:
+    IPokerAgentActionner m_agent = null;
+    private TypeAgent m_agentType;
     
     // List of PokerClient (one for each table the player joined)
     private final AutoListModel<PokerClient> m_clients = new AutoListModel<PokerClient>();
+    
+    // List of default observers that will be attached the player.
+    private final AutoListModel<TypeObserver> m_generalObservers = new AutoListModel<TypeObserver>();
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -73,6 +86,33 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     private JTable jMainTable = null;
     private JButton jConnectButton = null;
     private JButton jOldStyleButton = null;
+    private JButton jHumanButton = null;
+    
+    /**
+     * This method initializes jHumanButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getJHumanButton()
+    {
+        if (jHumanButton == null)
+        {
+            jHumanButton = new JButton();
+            jHumanButton.setBackground(Color.cyan);
+            jHumanButton.setText("Human");
+            jHumanButton.addActionListener(new java.awt.event.ActionListener()
+            {
+                public void actionPerformed(java.awt.event.ActionEvent e)
+                {
+                    final LobbyMainJFrame oldLobby = new LobbyMainJFrame();
+                    oldLobby.setVisible(true);
+                    LobbyAIMainJFrame.this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                    setVisible(false);
+                }
+            });
+        }
+        return jHumanButton;
+    }
     
     /**
      * @param args
@@ -145,6 +185,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             jMainToolBar.add(getJRefreshButton());
             jMainToolBar.add(getJAddTableButton());
             jMainToolBar.add(getJJoinTableButton());
+            jMainToolBar.add(getJHumanButton());
             jMainToolBar.add(getJOldStyleButton());
         }
         return jMainToolBar;
@@ -167,7 +208,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     
-                    final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyAIMainJFrame.this, m_playerName);
+                    final LobbyAIAddTableJDialog form = new LobbyAIAddTableJDialog(LobbyAIMainJFrame.this, m_playerName, m_AIs.size());
                     form.setVisible(true);
                     if (form.isOK())
                     {
@@ -175,7 +216,17 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                         
                         if (noPort != -1)
                         {
-                            joinTable(noPort, form.getTableName(), form.getBigBlind());
+                            for (int i = 0; i < getAIs().size(); ++i)
+                            {
+                                final TupleAISummary tuple = getAIs().get(i);
+                                final LobbyAIMainJFrame client = new LobbyAIMainJFrame();
+                                client.setAgentType(tuple.m_AIType);
+                                client.setAddViewer(tuple.m_viewer);
+                                client.setPlayerName(tuple.m_AIName);
+                                client.connect(getAddress(), getPort());
+                                
+                                client.joinTable(noPort, form.getTableName(), form.getBigBlind());
+                            }
                             refreshTables();
                         }
                         else
@@ -187,6 +238,29 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             });
         }
         return jAddTableButton;
+    }
+    
+    protected void setPlayerName(String mAIName)
+    {
+        m_playerName = mAIName;
+        
+    }
+    
+    protected void setAddViewer(boolean mViewer)
+    {
+        m_addViewer = mViewer;
+        
+        // Update the General tab in advanced settings.
+        if (m_addViewer)
+        {
+            m_generalObservers.add(TypeObserver.VIEWER);
+        }
+    }
+    
+    protected void setAgentType(TypeAgent mAIType)
+    {
+        m_agentType = mAIType;
+        
     }
     
     /**
@@ -287,7 +361,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                 {
                     if (e.getClickCount() == 2)
                     {
-                        eventJoinTable();
+                        // eventJoinTable();
                     }
                 }
             });
@@ -345,6 +419,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                         getJJoinTableButton().setEnabled(false);
                         getJConnectButton().setText("Connect");
                         getJOldStyleButton().setEnabled(true);
+                        getJHumanButton().setEnabled(true);
                     }
                     else
                     {
@@ -367,6 +442,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                                 getJRefreshButton().setEnabled(true);
                                 getJAddTableButton().setEnabled(true);
                                 getJOldStyleButton().setEnabled(false);
+                                getJHumanButton().setEnabled(false);
                                 getJConnectButton().setText("Disconnect");
                                 setTitle(m_playerName + " - " + jTitleLabel.getText());
                                 refreshTables();
@@ -495,7 +571,8 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             // Add the table infos to the JTable of available tables.
             model.addRow(row);
         }
-        getJJoinTableButton().setEnabled(model.getRowCount() != 0);
+        // getJJoinTableButton().setEnabled(model.getRowCount() != 0);
+        getJJoinTableButton().setEnabled(false);
         // Select the first available table in the JTable.
         getJMainTable().getSelectedRow();
         final DefaultListSelectionModel selection = new DefaultListSelectionModel();
@@ -504,7 +581,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         if ((model.getRowCount() > 0) && (getJMainTable().getSelectedRow() == -1))
         {
             getJMainTable().setSelectionModel(selection);
-            getJJoinTableButton().setEnabled(true);
+            getJJoinTableButton().setEnabled(false);
         }
     }
     
@@ -661,11 +738,28 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
             final AutoListModel<IPokerAgentListener> observers = new AutoListModel<IPokerAgentListener>();
-            final TableGUI gui = new TableGUI();
-            observers.add(gui);
+            for (final TypeObserver observer : m_generalObservers)
+            {
+                observers.add(FactoryObserver.create(observer));
+            }
+            
+            if (m_agentType == TypeAgent.AI_SVM)
+            {
+                final StatsAgent statsAgent = new StatsAgent();
+                final PokerAI pokerAgent = new PokerSVM(statsAgent, m_playerName);
+                m_agent = pokerAgent;
+                observers.add(statsAgent);
+                observers.add(pokerAgent);
+            }
+            else
+            {
+                final PokerAI pokerAgent = FactoryAgent.create(m_agentType);
+                m_agent = pokerAgent;
+                observers.add(pokerAgent);
+            }
             
             // Start a the new PokerClient.
-            final PokerClient client = new PokerClient(gui, observers, localPlayer, tableSocket, table, fromTable);
+            final PokerClient client = new PokerClient(m_agent, observers, localPlayer, tableSocket, table, fromTable);
             client.addClosingListener(this);
             client.start();
             
@@ -732,4 +826,18 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         }
     }
     
+    public List<TupleAISummary> getAIs()
+    {
+        return m_AIs;
+    }
+    
+    public String getAddress()
+    {
+        return m_serverAddress;
+    }
+    
+    public int getPort()
+    {
+        return m_serverPort;
+    }
 } // @jve:decl-index=0:visual-constraint="10,10"

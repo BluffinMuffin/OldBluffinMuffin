@@ -38,6 +38,7 @@ import protocolLogic.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utility.Constants;
 import utility.IClosingListener;
+import clientAILobbyGUI.LobbyAIMainJFrame;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
@@ -70,6 +71,33 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private JTable jMainTable = null;
     private JButton jConnectButton = null;
     private JButton jOldStyleButton = null;
+    private JButton jAIsButton = null;
+    
+    /**
+     * This method initializes jAIsButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getJAIsButton()
+    {
+        if (jAIsButton == null)
+        {
+            jAIsButton = new JButton();
+            jAIsButton.setText("AIs");
+            jAIsButton.setBackground(Color.cyan);
+            jAIsButton.addActionListener(new java.awt.event.ActionListener()
+            {
+                public void actionPerformed(java.awt.event.ActionEvent e)
+                {
+                    final LobbyAIMainJFrame oldLobby = new LobbyAIMainJFrame();
+                    oldLobby.setVisible(true);
+                    LobbyMainJFrame.this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                    setVisible(false);
+                }
+            });
+        }
+        return jAIsButton;
+    }
     
     /**
      * @param args
@@ -142,6 +170,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             jMainToolBar.add(getJRefreshButton());
             jMainToolBar.add(getJAddTableButton());
             jMainToolBar.add(getJJoinTableButton());
+            jMainToolBar.add(getJAIsButton());
             jMainToolBar.add(getJOldStyleButton());
         }
         return jMainToolBar;
@@ -342,6 +371,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                         getJJoinTableButton().setEnabled(false);
                         getJConnectButton().setText("Connect");
                         getJOldStyleButton().setEnabled(true);
+                        getJAIsButton().setEnabled(true);
                     }
                     else
                     {
@@ -363,6 +393,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                                 getJRefreshButton().setEnabled(true);
                                 getJAddTableButton().setEnabled(true);
                                 getJOldStyleButton().setEnabled(false);
+                                getJAIsButton().setEnabled(false);
                                 getJConnectButton().setText("Disconnect");
                                 setTitle(m_playerName + " - " + jTitleLabel.getText());
                                 refreshTables();
