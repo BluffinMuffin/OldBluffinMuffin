@@ -76,6 +76,10 @@ public class LobbyAIConnectJDialog extends JDialog
         {
             model.add(i, liste.get(i));
         }
+        if (model.size() > 0)
+        {
+            getJConnectButton().setEnabled(true);
+        }
     }
     
     /**

@@ -163,6 +163,10 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                                 final TypePlayerAction actionType = command.getAction().getType();
                                 switch (actionType)
                                 {
+                                    case DISCONNECT:
+                                        m_isConnected = false;
+                                        m_sitOutNextHand = true;
+                                        break;
                                     case CHECK:
                                         if (p_canCheck)
                                         {
@@ -229,15 +233,18 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                 System.out.println("Player kicked out :" + m_name);
                 m_isConnected = false;
                 m_sitOutNextHand = true;
-                try
-                {
-                    m_socket.close();
-                }
-                catch (final IOException e)
-                {
-                }
-                m_socket = null;
             }
+        }
+        if (!m_isConnected && m_socket != null)
+        {
+            try
+            {
+                m_socket.close();
+            }
+            catch (final IOException e)
+            {
+            }
+            m_socket = null;
         }
         
         return action;

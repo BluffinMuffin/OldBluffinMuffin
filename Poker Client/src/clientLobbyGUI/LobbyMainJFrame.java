@@ -72,6 +72,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private JButton jConnectButton = null;
     private JButton jOldStyleButton = null;
     private JButton jAIsButton = null;
+    private JButton jLeaveTableButton = null;
     
     /**
      * This method initializes jAIsButton
@@ -97,6 +98,33 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             });
         }
         return jAIsButton;
+    }
+    
+    /**
+     * This method initializes jLeaveTableButton1
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getJLeaveTableButton()
+    {
+        if (jLeaveTableButton == null)
+        {
+            jLeaveTableButton = new JButton();
+            jLeaveTableButton.setEnabled(false);
+            jLeaveTableButton.setText("Leave Table");
+            jLeaveTableButton.addActionListener(new java.awt.event.ActionListener()
+            {
+                public void actionPerformed(java.awt.event.ActionEvent e)
+                {
+                    final PokerClient client = findClient();
+                    if (client != null)
+                    {
+                        client.disconnect();
+                    }
+                }
+            });
+        }
+        return jLeaveTableButton;
     }
     
     /**
@@ -170,10 +198,31 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             jMainToolBar.add(getJRefreshButton());
             jMainToolBar.add(getJAddTableButton());
             jMainToolBar.add(getJJoinTableButton());
+            jMainToolBar.add(getJLeaveTableButton());
             jMainToolBar.add(getJAIsButton());
             jMainToolBar.add(getJOldStyleButton());
         }
         return jMainToolBar;
+    }
+    
+    private void eventAddTable()
+    {
+        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName);
+        form.setVisible(true);
+        if (form.isOK())
+        {
+            final int noPort = createTable(form.getTableName(), form.getGameType(), form.getBigBlind(), form.getNbPlayer());
+            
+            if (noPort != -1)
+            {
+                joinTable(noPort, form.getTableName(), form.getBigBlind());
+                refreshTables();
+            }
+            else
+            {
+                System.out.println("Cannot create table: '" + form.getTableName() + "'");
+            }
+        }
     }
     
     /**
@@ -193,22 +242,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     
-                    final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName);
-                    form.setVisible(true);
-                    if (form.isOK())
-                    {
-                        final int noPort = createTable(form.getTableName(), form.getGameType(), form.getBigBlind(), form.getNbPlayer());
-                        
-                        if (noPort != -1)
-                        {
-                            joinTable(noPort, form.getTableName(), form.getBigBlind());
-                            refreshTables();
-                        }
-                        else
-                        {
-                            System.out.println("Cannot create table: '" + form.getTableName() + "'");
-                        }
-                    }
+                    eventAddTable();
                 }
             });
         }
@@ -276,6 +310,21 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         return jMainScrollPane;
     }
     
+    public void allowJoinOrLeave()
+    {
+        final PokerClient client = findClient();
+        if (client != null)
+        {
+            getJJoinTableButton().setEnabled(false);
+            getJLeaveTableButton().setEnabled(true);
+        }
+        else
+        {
+            getJJoinTableButton().setEnabled(true);
+            getJLeaveTableButton().setEnabled(false);
+        }
+    }
+    
     /**
      * This method initializes jMainTable
      * 
@@ -311,7 +360,11 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 @Override
                 public void mouseClicked(MouseEvent e)
                 {
-                    if (e.getClickCount() == 2)
+                    if (e.getClickCount() == 1)
+                    {
+                        allowJoinOrLeave();
+                    }
+                    else if (e.getClickCount() == 2)
                     {
                         eventJoinTable();
                     }
@@ -319,6 +372,42 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             });
         }
         return jMainTable;
+    }
+    
+    private void eventConnect()
+    {
+        final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
+        form.setVisible(true);
+        if (form.isOK())
+        {
+            m_playerName = form.getPlayerName();
+            m_serverAddress = form.getServerAddress();
+            m_serverPort = form.getServerPort();
+            connect(m_serverAddress, m_serverPort);
+            // Authentify the user.
+            send(new LobbyConnectCommand(m_playerName));
+            
+            if (Boolean.valueOf(receive()))
+            {
+                jStatusLabel.setText("Connected as " + form.getPlayerName() + " to " + form.getServerAddress() + ":" + form.getServerPort());
+                getJRefreshButton().setEnabled(true);
+                getJAddTableButton().setEnabled(true);
+                getJOldStyleButton().setEnabled(false);
+                getJAIsButton().setEnabled(false);
+                getJConnectButton().setText("Disconnect");
+                setTitle(m_playerName + " - " + jTitleLabel.getText());
+                refreshTables();
+                if (getJMainTable().getModel().getRowCount() == 0)
+                {
+                    eventAddTable();
+                }
+            }
+            else
+            {
+                jStatusLabel.setText("Not connected, Authentification Failed!!!");
+                System.out.println("Authentification Failed!!!");
+            }
+        }
     }
     
     /**
@@ -376,34 +465,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                     else
                     {
                         // Eh bien on connecte
-                        final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
-                        form.setVisible(true);
-                        if (form.isOK())
-                        {
-                            m_playerName = form.getPlayerName();
-                            m_serverAddress = form.getServerAddress();
-                            m_serverPort = form.getServerPort();
-                            connect(m_serverAddress, m_serverPort);
-                            // Authentify the user.
-                            send(new LobbyConnectCommand(m_playerName));
-                            
-                            if (Boolean.valueOf(receive()))
-                            {
-                                jStatusLabel.setText("Connected as " + form.getPlayerName() + " to " + form.getServerAddress() + ":" + form.getServerPort());
-                                getJRefreshButton().setEnabled(true);
-                                getJAddTableButton().setEnabled(true);
-                                getJOldStyleButton().setEnabled(false);
-                                getJAIsButton().setEnabled(false);
-                                getJConnectButton().setText("Disconnect");
-                                setTitle(m_playerName + " - " + jTitleLabel.getText());
-                                refreshTables();
-                            }
-                            else
-                            {
-                                jStatusLabel.setText("Not connected, Authentification Failed!!!");
-                                System.out.println("Authentification Failed!!!");
-                            }
-                        }
+                        eventConnect();
                     }
                 }
             });
@@ -487,7 +549,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     public void closing(PokerClient e)
     {
         m_clients.remove(e);
-        
+        refreshTables();
     }
     
     /**
@@ -522,7 +584,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             // Add the table infos to the JTable of available tables.
             model.addRow(row);
         }
-        getJJoinTableButton().setEnabled(model.getRowCount() != 0);
         // Select the first available table in the JTable.
         getJMainTable().getSelectedRow();
         final DefaultListSelectionModel selection = new DefaultListSelectionModel();
@@ -531,7 +592,12 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         if ((model.getRowCount() > 0) && (getJMainTable().getSelectedRow() == -1))
         {
             getJMainTable().setSelectionModel(selection);
-            getJJoinTableButton().setEnabled(true);
+            allowJoinOrLeave();
+        }
+        else
+        {
+            getJJoinTableButton().setEnabled(false);
+            getJLeaveTableButton().setEnabled(false);
         }
     }
     
@@ -709,16 +775,8 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         return false;
     }
     
-    private PokerClient findClient()
+    public PokerClient findClient(int noPort)
     {
-        if (getJMainTable().getSelectionModel().isSelectionEmpty())
-        {
-            return null;
-        }
-        
-        final int index = getJMainTable().getSelectedRow();
-        final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
-        
         int i = 0;
         while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))
         {
@@ -731,6 +789,18 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         }
         
         return m_clients.get(i);
+    }
+    
+    private PokerClient findClient()
+    {
+        if (getJMainTable().getSelectionModel().isSelectionEmpty())
+        {
+            return null;
+        }
+        
+        final int index = getJMainTable().getSelectedRow();
+        final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
+        return findClient(noPort);
     }
     
     private void eventJoinTable()
@@ -757,6 +827,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 refreshTables();
             }
         }
+        refreshTables();
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"

@@ -60,6 +60,13 @@ public class ServerClientLobby extends Thread
         m_toClient.println(p_msg);
     }
     
+    protected String receive() throws IOException
+    {
+        final String line = m_fromClient.readLine();
+        System.out.println("Server RECV from " + m_playerName + " [" + line + "]");
+        return line;
+    }
+    
     protected void send(IBluffinCommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
@@ -72,7 +79,7 @@ public class ServerClientLobby extends Thread
         {
             try
             {
-                final String line = m_fromClient.readLine();
+                final String line = receive();
                 
                 if (line == null)
                 {

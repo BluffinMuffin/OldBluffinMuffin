@@ -189,6 +189,7 @@ public class LobbyAddTableJDialog extends JDialog
             jNbPlayersSlider.setMajorTickSpacing(1);
             jNbPlayersSlider.setMinorTickSpacing(1);
             jNbPlayersSlider.setPaintLabels(true);
+            jNbPlayersSlider.setSnapToTicks(true);
         }
         return jNbPlayersSlider;
     }

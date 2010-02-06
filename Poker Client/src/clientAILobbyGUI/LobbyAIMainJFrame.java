@@ -58,10 +58,10 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
 {
     private Socket m_connection = null; // @jve:decl-index=0:
     private PrintWriter m_toServer = null;
-    private BufferedReader m_fromServer = null;
+    private BufferedReader m_fromServer = null; // @jve:decl-index=0:
     
     private String m_playerName;
-    private List<TupleAISummary> m_AIs = new ArrayList<TupleAISummary>();
+    private List<TupleAISummary> m_AIs = new ArrayList<TupleAISummary>(); // @jve:decl-index=0:
     private String m_serverAddress;
     private int m_serverPort;
     private Boolean m_addViewer; // @jve:decl-index=0:
@@ -73,6 +73,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     
     // List of default observers that will be attached the player.
     private final AutoListModel<TypeObserver> m_generalObservers = new AutoListModel<TypeObserver>();
+    private final List<LobbyAIMainJFrame> m_agents = new ArrayList<LobbyAIMainJFrame>(); // @jve:decl-index=0:
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -217,16 +218,9 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                         
                         if (noPort != -1)
                         {
-                            for (int i = 0; i < getAIs().size(); ++i)
+                            for (int i = 0; i < m_agents.size(); ++i)
                             {
-                                final TupleAISummary tuple = getAIs().get(i);
-                                final LobbyAIMainJFrame client = new LobbyAIMainJFrame();
-                                client.setAgentType(tuple.m_AIType);
-                                client.setAddViewer(tuple.m_viewer);
-                                client.setPlayerName(tuple.m_AIName);
-                                client.connect(getAddress(), getPort());
-                                
-                                client.joinTable(noPort, form.getTableName(), form.getBigBlind());
+                                m_agents.get(i).joinTable(noPort, form.getTableName(), form.getBigBlind());
                             }
                             refreshTables();
                         }
@@ -370,6 +364,44 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         return jMainTable;
     }
     
+    public void disconnect()
+    {
+        // Alors on disconnect
+        send(new LobbyDisconnectCommand());
+        
+        // Close the socket
+        if (m_connection != null)
+        {
+            try
+            {
+                m_connection.close();
+            }
+            catch (final IOException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+        m_connection = null;
+        m_toServer = null;
+        m_fromServer = null;
+        
+        final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
+        model.setRowCount(0);
+        // Disconnect all clients (PokerClient).
+        while (m_clients.size() != 0)
+        {
+            m_clients.get(0).disconnect();
+        }
+        jStatusLabel.setText("Not Connected");
+        setTitle(jTitleLabel.getText());
+        getJRefreshButton().setEnabled(false);
+        getJAddTableButton().setEnabled(false);
+        getJJoinTableButton().setEnabled(false);
+        getJConnectButton().setText("Connect");
+        getJOldStyleButton().setEnabled(true);
+        getJHumanButton().setEnabled(true);
+    }
+    
     /**
      * This method initializes jConnectButton
      * 
@@ -387,40 +419,13 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                 {
                     if (isConnected())
                     {
-                        // Alors on disconnect
-                        send(new LobbyDisconnectCommand());
+                        disconnect();
                         
-                        // Close the socket
-                        if (m_connection != null)
+                        for (int i = 0; i < m_agents.size(); ++i)
                         {
-                            try
-                            {
-                                m_connection.close();
-                            }
-                            catch (final IOException e1)
-                            {
-                                e1.printStackTrace();
-                            }
+                            m_agents.get(i).disconnect();
                         }
-                        m_connection = null;
-                        m_toServer = null;
-                        m_fromServer = null;
-                        
-                        final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
-                        model.setRowCount(0);
-                        // Disconnect all clients (PokerClient).
-                        while (m_clients.size() != 0)
-                        {
-                            m_clients.get(0).disconnect();
-                        }
-                        jStatusLabel.setText("Not Connected");
-                        setTitle(jTitleLabel.getText());
-                        getJRefreshButton().setEnabled(false);
-                        getJAddTableButton().setEnabled(false);
-                        getJJoinTableButton().setEnabled(false);
-                        getJConnectButton().setText("Connect");
-                        getJOldStyleButton().setEnabled(true);
-                        getJHumanButton().setEnabled(true);
+                        m_agents.clear();
                     }
                     else
                     {
@@ -446,6 +451,21 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                                 getJHumanButton().setEnabled(false);
                                 getJConnectButton().setText("Disconnect");
                                 setTitle(m_playerName + " - " + jTitleLabel.getText());
+                                
+                                for (int i = 0; i < getAIs().size(); ++i)
+                                {
+                                    final TupleAISummary tuple = getAIs().get(i);
+                                    final LobbyAIMainJFrame client = new LobbyAIMainJFrame();
+                                    client.setAgentType(tuple.m_AIType);
+                                    client.setAddViewer(tuple.m_viewer);
+                                    client.setPlayerName(tuple.m_AIName);
+                                    client.connect(getAddress(), getPort());
+                                    client.send(new LobbyConnectCommand(tuple.m_AIName));
+                                    if (Boolean.valueOf(client.receive()))
+                                    {
+                                        m_agents.add(client);
+                                    }
+                                }
                                 refreshTables();
                             }
                             else
@@ -777,16 +797,8 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         return false;
     }
     
-    private PokerClient findClient()
+    public PokerClient findClient(int noPort)
     {
-        if (getJMainTable().getSelectionModel().isSelectionEmpty())
-        {
-            return null;
-        }
-        
-        final int index = getJMainTable().getSelectedRow();
-        final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
-        
         int i = 0;
         while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))
         {
@@ -799,6 +811,18 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         }
         
         return m_clients.get(i);
+    }
+    
+    private PokerClient findClient()
+    {
+        if (getJMainTable().getSelectionModel().isSelectionEmpty())
+        {
+            return null;
+        }
+        
+        final int index = getJMainTable().getSelectedRow();
+        final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
+        return findClient(noPort);
     }
     
     private void eventJoinTable()
