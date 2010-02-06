@@ -12,12 +12,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LobbyConnectForm extends JDialog
+public class LobbyConnectJDialog extends JDialog
 {
     private String m_playerName;
     private String m_serverAddress;
     private int m_serverPort;
     private boolean m_OK;
+    
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
     private JButton jConnectButton = null;
@@ -31,7 +32,7 @@ public class LobbyConnectForm extends JDialog
     /**
      * @param owner
      */
-    public LobbyConnectForm(Frame owner)
+    public LobbyConnectJDialog(Frame owner)
     {
         
         super(owner);
@@ -104,31 +105,11 @@ public class LobbyConnectForm extends JDialog
                     m_serverAddress = getJAddressComboBox().getSelectedItem().toString();
                     m_serverPort = Integer.parseInt(getJPortTextField().getText());
                     m_OK = true;
-                    LobbyConnectForm.this.setVisible(false);
+                    LobbyConnectJDialog.this.setVisible(false);
                 }
             });
         }
         return jConnectButton;
-    }
-    
-    public boolean isOK()
-    {
-        return m_OK;
-    }
-    
-    public String getPlayerName()
-    {
-        return m_playerName;
-    }
-    
-    public String getServerAddress()
-    {
-        return m_serverAddress;
-    }
-    
-    public int getServerPort()
-    {
-        return m_serverPort;
     }
     
     /**
@@ -181,6 +162,26 @@ public class LobbyConnectForm extends JDialog
             jPortTextField.setText("4242");
         }
         return jPortTextField;
+    }
+    
+    public boolean isOK()
+    {
+        return m_OK;
+    }
+    
+    public String getPlayerName()
+    {
+        return m_playerName;
+    }
+    
+    public String getServerAddress()
+    {
+        return m_serverAddress;
+    }
+    
+    public int getServerPort()
+    {
+        return m_serverPort;
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"
