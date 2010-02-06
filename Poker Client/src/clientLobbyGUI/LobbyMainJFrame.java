@@ -442,7 +442,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final ClientLobby oldLobby = new ClientLobby();
+                    final OldAndUglyClientLobby oldLobby = new OldAndUglyClientLobby();
                     oldLobby.getJFrame().setVisible(true);
                     LobbyMainJFrame.this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                     setVisible(false);

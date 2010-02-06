@@ -89,7 +89,7 @@ import clientStats.StatsAgent;
  *         connection window.
  */
 @SuppressWarnings("serial")
-public class ClientLobby implements IClosingListener<PokerClient>
+public class OldAndUglyClientLobby implements IClosingListener<PokerClient>
 {
     /*
      * ################################
@@ -210,7 +210,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
      * ######################################################
      */
 
-    public ClientLobby()
+    public OldAndUglyClientLobby()
     {
     }
     
@@ -1099,7 +1099,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                 public void windowClosing(java.awt.event.WindowEvent e)
                 {
                     disconnect();
-                    ClientLobby.this.getJFrame().setVisible(false);
+                    OldAndUglyClientLobby.this.getJFrame().setVisible(false);
                 }
             });
             jFrame.setTitle(m_bundle.get("lobby.title"));
@@ -1449,7 +1449,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                 public void actionPerformed(ActionEvent e)
                 {
                     disconnect();
-                    ClientLobby.this.getJFrame().setVisible(false);
+                    OldAndUglyClientLobby.this.getJFrame().setVisible(false);
                 }
             });
         }
@@ -2033,7 +2033,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                 public void actionPerformed(ActionEvent e)
                 {
                     m_bundle.setLocale(Locale.ENGLISH);
-                    ClientLobby.this.updateUI();
+                    OldAndUglyClientLobby.this.updateUI();
                 }
             });
         }
@@ -2065,7 +2065,7 @@ public class ClientLobby implements IClosingListener<PokerClient>
                 public void actionPerformed(ActionEvent e)
                 {
                     m_bundle.setLocale(Locale.FRENCH);
-                    ClientLobby.this.updateUI();
+                    OldAndUglyClientLobby.this.updateUI();
                 }
             });
         }
