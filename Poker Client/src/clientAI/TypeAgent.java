@@ -8,7 +8,7 @@ import utility.Bundle;
  */
 public enum TypeAgent
 {
-    AI_BASIC, AI_SVM, AI_GENETIC;
+    AI_BASIC, AI_SVM, AI_GENETIC, AI_RANDOM;
     
     /**
      * Internationnalized string.

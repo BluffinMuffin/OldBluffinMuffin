@@ -24,6 +24,8 @@ public class FactoryAgent
                 return new PokerSVM();
             case AI_GENETIC:
                 return new PokerGeneticBasic();
+            case AI_RANDOM:
+            	return new PokerRandomAI();
         }
         
         return null;
