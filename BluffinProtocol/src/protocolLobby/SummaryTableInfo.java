@@ -1,5 +1,7 @@
 package protocolLobby;
 
+import java.util.StringTokenizer;
+
 import pokerLogic.TypePokerGame;
 
 /**
@@ -39,6 +41,16 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
         m_bigBlind = p_bigBlind;
         m_nbPlayers = p_nbPlayers;
         m_nbSeats = p_nbSeats;
+    }
+    
+    public SummaryTableInfo(StringTokenizer argsToken)
+    {
+        m_noPort = Integer.parseInt(argsToken.nextToken());
+        m_tableName = argsToken.nextToken();
+        m_gameType = TypePokerGame.valueOf(argsToken.nextToken());
+        m_bigBlind = Integer.parseInt(argsToken.nextToken());
+        m_nbPlayers = Integer.parseInt(argsToken.nextToken());
+        m_nbSeats = Integer.parseInt(argsToken.nextToken());
     }
     
     public int compareTo(SummaryTableInfo p_table)

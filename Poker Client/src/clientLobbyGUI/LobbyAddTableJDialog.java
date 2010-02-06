@@ -47,13 +47,17 @@ public class LobbyAddTableJDialog extends JDialog
     /**
      * @param owner
      */
-    public LobbyAddTableJDialog(Frame owner, String playerName)
+    public LobbyAddTableJDialog(Frame owner, String playerName, int nbPlayers)
     {
         super(owner);
         pack();
         setLocationRelativeTo(owner);
         m_playerName = playerName;
         initialize();
+        if (nbPlayers > 2)
+        {
+            getJNbPlayersSlider().setMinimum(nbPlayers);
+        }
     }
     
     /**

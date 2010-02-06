@@ -207,7 +207,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     
     private void eventAddTable()
     {
-        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName);
+        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName, 1);
         form.setVisible(true);
         if (form.isOK())
         {
