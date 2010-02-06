@@ -1,4 +1,4 @@
-package clientLobbyGUI;
+package clientOldAndUglyLobbyGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -77,6 +77,7 @@ import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientGameGUI.TableGUI;
+import clientGameGUI.TableGUIAdvisor;
 import clientStats.StatsAgent;
 
 /**
@@ -1087,7 +1088,7 @@ public class OldAndUglyClientLobby implements IClosingListener<PokerClient>
      * 
      * @return javax.swing.JFrame
      */
-    JFrame getJFrame()
+    public JFrame getJFrame()
     {
         if (jFrame == null)
         {
@@ -2372,16 +2373,16 @@ public class OldAndUglyClientLobby implements IClosingListener<PokerClient>
             }
             else
             {
-                // final StatsAgent statsAgent = new StatsAgent();
-                // final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
-                // final GUI gui = new GUIAdvisor(statsAgent, pokerSVM);
-                // m_agent = gui;
-                // observers.add(statsAgent);
-                // observers.add(pokerSVM);
-                // observers.add(gui);
-                final TableGUI gui = new TableGUI();
+                final StatsAgent statsAgent = new StatsAgent();
+                final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
+                final TableGUI gui = new TableGUIAdvisor(statsAgent, pokerSVM);
                 m_agent = gui;
+                observers.add(statsAgent);
+                observers.add(pokerSVM);
                 observers.add(gui);
+                // final TableGUI gui = new TableGUI();
+                // m_agent = gui;
+                // observers.add(gui);
             }
             
             // Start a the new PokerClient.

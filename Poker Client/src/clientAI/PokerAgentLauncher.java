@@ -5,7 +5,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import pokerLogic.TypePokerGame;
-import clientLobbyGUI.OldAndUglyClientLobby;
+import clientOldAndUglyLobbyGUI.OldAndUglyClientLobby;
 
 /**
  * @author Hocus

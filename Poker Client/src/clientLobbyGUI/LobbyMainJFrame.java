@@ -40,6 +40,7 @@ import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientGameGUI.TableGUI;
+import clientOldAndUglyLobbyGUI.OldAndUglyClientLobby;
 
 public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
