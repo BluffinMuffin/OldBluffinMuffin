@@ -2,16 +2,22 @@ package clientLobbyGUI;
 
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
 import pokerLogic.TypePokerGame;
@@ -63,6 +69,21 @@ public class LobbyAddTableJDialog extends JDialog
         this.setContentPane(getJContentPane());
         this.getRootPane().setDefaultButton(getJAddButton());
         m_OK = false;
+    }
+    
+    @Override
+    protected JRootPane createRootPane()
+    {
+        final KeyStroke stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+        final JRootPane rootPane = super.createRootPane();
+        rootPane.registerKeyboardAction(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent actionEvent)
+            {
+                setVisible(false);
+            }
+        }, stroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+        return rootPane;
     }
     
     /**

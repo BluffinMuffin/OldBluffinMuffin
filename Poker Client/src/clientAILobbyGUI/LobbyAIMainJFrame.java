@@ -1,4 +1,4 @@
-package clientLobbyGUI;
+package clientAILobbyGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.DefaultListSelectionModel;
@@ -42,15 +43,17 @@ import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientGameGUI.TableGUI;
+import clientLobbyGUI.LobbyAddTableJDialog;
 import clientOldAndUglyLobbyGUI.OldAndUglyClientLobby;
 
-public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
+public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
     private Socket m_connection = null; // @jve:decl-index=0:
     private PrintWriter m_toServer = null;
     private BufferedReader m_fromServer = null;
     
     private String m_playerName;
+    private List<TupleAISummary> m_AIs;
     private String m_serverAddress;
     private int m_serverPort;
     
@@ -80,7 +83,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         {
             public void run()
             {
-                final LobbyMainJFrame thisClass = new LobbyMainJFrame();
+                final LobbyAIMainJFrame thisClass = new LobbyAIMainJFrame();
                 thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 thisClass.setVisible(true);
             }
@@ -90,7 +93,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     /**
      * This is the default constructor
      */
-    public LobbyMainJFrame()
+    public LobbyAIMainJFrame()
     {
         super();
         initialize();
@@ -164,7 +167,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     
-                    final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName);
+                    final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyAIMainJFrame.this, m_playerName);
                     form.setVisible(true);
                     if (form.isOK())
                     {
@@ -346,11 +349,12 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                     else
                     {
                         // Eh bien on connecte
-                        final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
+                        final LobbyAIConnectJDialog form = new LobbyAIConnectJDialog(LobbyAIMainJFrame.this);
                         form.setVisible(true);
                         if (form.isOK())
                         {
                             m_playerName = form.getPlayerName();
+                            m_AIs = form.getAIs();
                             m_serverAddress = form.getServerAddress();
                             m_serverPort = form.getServerPort();
                             connect(m_serverAddress, m_serverPort);
@@ -420,7 +424,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 {
                     final OldAndUglyClientLobby oldLobby = new OldAndUglyClientLobby();
                     oldLobby.getJFrame().setVisible(true);
-                    LobbyMainJFrame.this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+                    LobbyAIMainJFrame.this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
                     setVisible(false);
                 }
             });
@@ -440,7 +444,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             jStatusLabel = new JLabel();
             jStatusLabel.setText("Not Connected");
             jTitleLabel = new JLabel();
-            jTitleLabel.setText("Poker Client Lobby 2.0");
+            jTitleLabel.setText("Poker Client For AIs 2.0");
             jTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
             jTitleLabel.setFont(new Font("Dialog", Font.BOLD, 18));
             jContentPane = new JPanel();
