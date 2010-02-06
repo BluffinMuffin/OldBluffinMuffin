@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -60,7 +61,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     private BufferedReader m_fromServer = null;
     
     private String m_playerName;
-    private List<TupleAISummary> m_AIs;
+    private List<TupleAISummary> m_AIs = new ArrayList<TupleAISummary>();
     private String m_serverAddress;
     private int m_serverPort;
     private Boolean m_addViewer; // @jve:decl-index=0:
@@ -424,7 +425,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                     else
                     {
                         // Eh bien on connecte
-                        final LobbyAIConnectJDialog form = new LobbyAIConnectJDialog(LobbyAIMainJFrame.this);
+                        final LobbyAIConnectJDialog form = new LobbyAIConnectJDialog(LobbyAIMainJFrame.this, getAIs());
                         form.setVisible(true);
                         if (form.isOK())
                         {

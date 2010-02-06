@@ -67,6 +67,18 @@ public class LobbyAIConnectJDialog extends JDialog
     }
     
     /**
+     * @param owner
+     */
+    public LobbyAIConnectJDialog(Frame owner, List<TupleAISummary> liste)
+    {
+        this(owner);
+        for (int i = 0; i < liste.size(); ++i)
+        {
+            model.add(i, liste.get(i));
+        }
+    }
+    
+    /**
      * This method initializes this
      * 
      * @return void
@@ -306,7 +318,7 @@ public class LobbyAIConnectJDialog extends JDialog
                     for (int i = 0; i < model.getSize(); ++i)
                     {
                         final TupleAISummary bob = (TupleAISummary) model.get(i);
-                        if (text.equalsIgnoreCase(bob.m_AIName))
+                        if (i != getEdithWho() && text.equalsIgnoreCase(bob.m_AIName))
                         {
                             return true;
                         }
@@ -480,6 +492,11 @@ public class LobbyAIConnectJDialog extends JDialog
     public int getServerPort()
     {
         return m_serverPort;
+    }
+    
+    public int getEdithWho()
+    {
+        return m_EditWho;
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"
