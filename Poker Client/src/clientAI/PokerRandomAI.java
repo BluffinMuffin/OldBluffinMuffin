@@ -19,7 +19,7 @@ public class PokerRandomAI extends PokerAI
     {   
     	PokerPlayerAction action = null;
     	
-        if (rnd.nextInt(3) == 0)
+        if (rnd.nextInt(3) == 0 && p_actionsAllowed.contains(TypePlayerAction.FOLD) )
         {
         	action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
         }
@@ -63,8 +63,6 @@ public class PokerRandomAI extends PokerAI
 					bet += rnd.nextInt(m / rnd.nextInt(5) );
 				}
 				
-				
-				bet = bet / (p_minRaiseAmount + rnd.nextInt(m));
 				action = new PokerPlayerAction(TypePlayerAction.RAISE, bet);
 			}
 			break;
