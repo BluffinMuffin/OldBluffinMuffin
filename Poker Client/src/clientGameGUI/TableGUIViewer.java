@@ -1,6 +1,5 @@
 package clientGameGUI;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,12 +16,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
-
-import clientGame.ClientPokerTableInfo;
 
 import pokerAI.IPokerAgent;
 import pokerAI.IPokerAgentListener;
@@ -31,14 +27,11 @@ import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
-
 import utilGUI.JBackgroundPanel;
 import utility.Bundle;
 import utility.Constants;
 import utility.IClosingListener;
-
-
-
+import clientGame.ClientPokerTableInfo;
 
 /**
  * @author Hocus
@@ -113,33 +106,6 @@ public class TableGUIViewer extends JFrame implements IPokerAgentListener
     protected ClientPokerTableInfo m_table = null;
     
     private final static Integer NB_PLAYERS = 9;
-    
-    /**
-     * Main entry of the class.
-     * Note: This class is only created so that you can easily preview the
-     * result at runtime.
-     * It is not expected to be managed by the designer.
-     * You can modify it as you like.
-     */
-    public static void main(String[] args)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                TableGUIViewer frame;
-                
-                frame = new TableGUIViewer();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setTitle("Hocus Pokus");
-                frame.getContentPane().setPreferredSize(frame.getSize());
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
-    }
     
     public TableGUIViewer()
     {

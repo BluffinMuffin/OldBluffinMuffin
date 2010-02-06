@@ -1,7 +1,5 @@
 package clientGameGUI;
 
-
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,20 +7,14 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.border.LineBorder;
 
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
-
-import clientAI.PokerSVM;
-import clientStats.PlayerStats;
-import clientStats.StatsAgent;
 
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
@@ -31,6 +23,9 @@ import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
+import clientAI.PokerSVM;
+import clientStats.PlayerStats;
+import clientStats.StatsAgent;
 
 /**
  * @author Hocus
@@ -73,34 +68,6 @@ public class TableGUIAdvisor extends TableGUI
     private static final long serialVersionUID = -526188455940605519L;
     
     private static final int NB_MC_ITERATIONS = 10000;
-    
-    /**
-     * Main entry of the class.
-     * Note: This class is only created so that you can easily preview the
-     * result at runtime.
-     * It is not expected to be managed by the designer.
-     * You can modify it as you like.
-     */
-    public static void main(String[] args)
-    {
-        // installLnF();
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                TableGUIAdvisor frame;
-                
-                frame = new TableGUIAdvisor();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setTitle("Hocus Pokus");
-                frame.getContentPane().setPreferredSize(frame.getSize());
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
-    }
     
     private StatsAgent m_statsAgent = null;
     

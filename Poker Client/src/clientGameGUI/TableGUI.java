@@ -1,7 +1,5 @@
 package clientGameGUI;
 
-
-
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,11 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
-
 
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
@@ -23,11 +18,8 @@ import pokerAI.IPokerAgent;
 import pokerAI.IPokerAgentActionner;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
-
 import utilGUI.CurrencyIntegerEditor;
 import utility.IClosingListener;
-
-
 
 /**
  * @author Hocus
@@ -50,34 +42,6 @@ public class TableGUI extends TableGUIViewer implements IPokerAgentActionner
     
     private final static int RAISE_STEP = 1;
     
-    /**
-     * Main entry of the class.
-     * Note: This class is only created so that you can easily preview the
-     * result at runtime.
-     * It is not expected to be managed by the designer.
-     * You can modify it as you like.
-     */
-    public static void main(String[] args)
-    {
-        // installLnF();
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                TableGUI frame;
-                
-                frame = new TableGUI();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setTitle("Hocus Pokus");
-                frame.getContentPane().setPreferredSize(frame.getSize());
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        });
-    }
-    
     PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     
     public TableGUI()
@@ -90,7 +54,7 @@ public class TableGUI extends TableGUIViewer implements IPokerAgentActionner
     {
         synchronized (m_playerAction)
         {
-            m_playerAction.setType( p_actionTaken.getType());
+            m_playerAction.setType(p_actionTaken.getType());
             m_playerAction.setAmount(p_actionTaken.getAmount());
             m_playerAction.notify();
         }

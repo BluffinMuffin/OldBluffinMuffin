@@ -49,7 +49,6 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -98,21 +97,6 @@ public class ClientLobby implements IClosingListener<PokerClient>
      * ################################
      */
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                final ClientLobby application = new ClientLobby();
-                application.getJFrame().setVisible(true);
-            }
-        });
-    }
-    
     private JFrame jFrame = null; // @jve:decl-index=0:visual-constraint="6,400"
     private JPanel jContentPane = null;
     private JMenuBar jJMenuBar = null;
