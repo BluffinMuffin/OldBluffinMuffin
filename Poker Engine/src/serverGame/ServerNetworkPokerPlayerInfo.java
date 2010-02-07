@@ -29,6 +29,8 @@ import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameWaitingCommand;
+import protocolGameTools.GameServerSideAdapter;
+import protocolGameTools.GameServerSideReceiver;
 import protocolTools.IBluffinCommand;
 import utility.Constants;
 
@@ -44,6 +46,7 @@ import utility.Constants;
  */
 public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implements IServerPokerObserver
 {
+    private final GameServerSideReceiver m_commandReceiver = new GameServerSideReceiver();
     
     public static final int PING_INTERVAL = 10000;
     
@@ -80,6 +83,37 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
         m_output = new PrintWriter(m_socket.getOutputStream(), true);
         m_input = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
         m_isConnected = false;
+        initializeCommandReceiver();
+    }
+    
+    private void initializeCommandReceiver()
+    {
+        m_commandReceiver.subscribe(new GameServerSideAdapter()
+        {
+            @Override
+            public void commandReceived(String command)
+            {
+                System.out.println("<" + m_table.getName() + "> RECV from " + getName() + " [" + command + "]");
+            }
+            
+            @Override
+            public void sendActionCommandReceived(GameSendActionCommand command)
+            {
+                if (command.getAction().getType() == TypePlayerAction.DISCONNECT)
+                {
+                    m_isConnected = false;
+                    m_sitOutNextHand = true;
+                }
+            }
+        });
+        
+    }
+    
+    protected String receive() throws IOException
+    {
+        final String line = m_input.readLine();
+        m_commandReceiver.receiveSomething(line);
+        return line;
     }
     
     @Override
@@ -149,7 +183,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo implemen
                     ++nbTry;
                     send(new GameAskActionCommand(p_canCheck, p_canFold, p_canCall, p_callOf, p_canRaise, p_minimumRaise, p_maximumRaise));
                     
-                    final String line = m_input.readLine();
+                    final String line = receive();
                     if (line != null)
                     {
                         final StringTokenizer message = new StringTokenizer(line, Constants.DELIMITER);

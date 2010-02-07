@@ -3,6 +3,7 @@ package protocolGame;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
 import utility.Constants;
 

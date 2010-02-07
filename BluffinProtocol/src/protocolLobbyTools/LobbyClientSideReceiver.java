@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import protocolTools.BluffinCommandReceiver;
 import utility.Constants;
 
-public class LobbyClientSideReceiver extends BluffinCommandReceiver<LobbyServerSideListener>
+public class LobbyClientSideReceiver extends BluffinCommandReceiver<LobbyClientSideListener>
 {
     @Override
     protected void onLineReceived(String line)

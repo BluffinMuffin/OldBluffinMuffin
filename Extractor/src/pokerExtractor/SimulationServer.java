@@ -18,7 +18,7 @@ import protocolGame.GamePlayerMoneyChangedCommand;
 import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableInfoCommand;
-import protocolGame.SummarySeatInfo;
+import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utility.Tool;

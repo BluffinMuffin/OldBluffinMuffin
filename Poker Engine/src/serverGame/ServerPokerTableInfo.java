@@ -13,7 +13,7 @@ import pokerLogic.Pot;
 import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
 import protocolGame.GameTableInfoCommand;
-import protocolGame.SummarySeatInfo;
+import protocolGameTools.SummarySeatInfo;
 import protocolLobby.LobbyCreateTableCommand;
 import utility.Constants;
 
