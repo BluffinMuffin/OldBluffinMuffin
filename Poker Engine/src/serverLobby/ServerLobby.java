@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -23,8 +24,9 @@ import utility.Constants;
 public class ServerLobby extends Thread
 {
     
-    final int NO_PORT;
-    ServerSocket m_socketServer;
+    private final int NO_PORT;
+    private final ServerSocket m_socketServer;
+    private final List<String> m_UsedNames = new ArrayList<String>();
     
     Map<Integer, ServerTableCommunicator> m_tables = Collections.synchronizedMap(new TreeMap<Integer, ServerTableCommunicator>());
     
@@ -32,6 +34,28 @@ public class ServerLobby extends Thread
     {
         NO_PORT = p_noPort;
         m_socketServer = new ServerSocket(NO_PORT);
+    }
+    
+    public boolean isNameUsed(String name)
+    {
+        for (final String s : m_UsedNames)
+        {
+            if (s.equalsIgnoreCase(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void addName(String name)
+    {
+        m_UsedNames.add(name);
+    }
+    
+    public void removeName(String name)
+    {
+        m_UsedNames.remove(name);
     }
     
     public static void main(String args[])

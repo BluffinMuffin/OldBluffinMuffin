@@ -132,11 +132,17 @@ public class ServerClientLobby extends Thread
     private void authentification(LobbyConnectCommand command)
     {
         m_playerName = command.getPlayerName();
-        sendMessage(command.encodeResponse(true));
+        final boolean ok = !m_lobby.isNameUsed(m_playerName);
+        sendMessage(command.encodeResponse(ok));
+        if (ok)
+        {
+            m_lobby.addName(m_playerName);
+        }
     }
     
     private void disconnect(LobbyDisconnectCommand command)
     {
+        m_lobby.removeName(m_playerName);
         try
         {
             m_socket.close();

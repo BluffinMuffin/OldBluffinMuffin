@@ -250,7 +250,7 @@ public class ServerTableCommunicator implements Runnable
      */
     public synchronized int getNextSeat()
     {
-        if (m_info.getNbPlayers() > m_info.getNbSeats())
+        if (m_info.getNbPlayers() >= m_info.getNbSeats())
         {
             return -1;
         }

@@ -383,13 +383,21 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             m_playerName = form.getPlayerName();
             m_serverAddress = form.getServerAddress();
             m_serverPort = form.getServerPort();
-            connect(m_serverAddress, m_serverPort);
-            // Authentify the user.
-            send(new LobbyConnectCommand(m_playerName));
-            
-            if (Boolean.valueOf(receive()))
+            if (connect(m_serverAddress, m_serverPort))
             {
-                jStatusLabel.setText("Connected as " + form.getPlayerName() + " to " + form.getServerAddress() + ":" + form.getServerPort());
+                send(new LobbyConnectCommand(m_playerName));
+                boolean isOk = Boolean.valueOf(receive());
+                while (!isOk)
+                {
+                    final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyMainJFrame.this, m_playerName);
+                    form2.setVisible(true);
+                    m_playerName = form2.getPlayerName();
+                    send(new LobbyConnectCommand(m_playerName));
+                    isOk = Boolean.valueOf(receive());
+                }
+                // Authentify the user.
+                
+                jStatusLabel.setText("Connected as " + m_playerName + " to " + m_playerName + ":" + m_playerName);
                 getJRefreshButton().setEnabled(true);
                 getJAddTableButton().setEnabled(true);
                 getJOldStyleButton().setEnabled(false);
@@ -481,7 +489,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
      * @param p_noPort
      *            - Port number the ServerLobby is listening to.
      */
-    public void connect(String p_host, int p_noPort)
+    public boolean connect(String p_host, int p_noPort)
     {
         try
         {
@@ -491,8 +499,10 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         }
         catch (final Exception e)
         {
-            e.printStackTrace();
+            System.err.println("Error on connect: " + e.getMessage());
+            return false;
         }
+        return true;
     }
     
     /**

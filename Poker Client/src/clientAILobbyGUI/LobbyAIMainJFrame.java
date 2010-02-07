@@ -54,6 +54,7 @@ import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientLobbyGUI.LobbyAddTableJDialog;
 import clientLobbyGUI.LobbyMainJFrame;
+import clientLobbyGUI.LobbyNameUsedJDialog;
 import clientOldAndUglyLobbyGUI.OldAndUglyClientLobby;
 import clientStats.StatsAgent;
 
@@ -487,13 +488,18 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                             m_AIs = form.getAIs();
                             m_serverAddress = form.getServerAddress();
                             m_serverPort = form.getServerPort();
-                            connect(m_serverAddress, m_serverPort);
-                            // Authentify the user.
-                            send(new LobbyConnectCommand(m_playerName));
-                            
-                            if (Boolean.valueOf(receive()))
+                            if (connect(m_serverAddress, m_serverPort))
                             {
-                                jStatusLabel.setText("Connected as " + form.getPlayerName() + " to " + form.getServerAddress() + ":" + form.getServerPort());
+                                // Authentify the user.
+                                send(new LobbyConnectCommand(m_playerName));
+                                boolean ok = Boolean.valueOf(receive());
+                                while (!ok)
+                                {
+                                    m_playerName = "0" + m_playerName;
+                                    send(new LobbyConnectCommand(m_playerName));
+                                    ok = Boolean.valueOf(receive());
+                                }
+                                jStatusLabel.setText("Connected as " + m_playerName + " to " + m_serverAddress + ":" + m_serverPort);
                                 getJRefreshButton().setEnabled(true);
                                 getJAddTableButton().setEnabled(true);
                                 getJOldStyleButton().setEnabled(false);
@@ -501,17 +507,24 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                                 getJConnectButton().setText("Disconnect");
                                 setTitle(m_playerName + " - " + jTitleLabel.getText());
                                 
-                                for (int i = 0; i < getAIs().size(); ++i)
+                                for (final TupleAISummary tuple : getAIs())
                                 {
-                                    final TupleAISummary tuple = getAIs().get(i);
                                     final LobbyAIMainJFrame client = new LobbyAIMainJFrame();
                                     client.setAgentType(tuple.m_AIType);
                                     client.setAddViewer(tuple.m_viewer);
                                     client.setPlayerName(tuple.m_AIName);
-                                    client.connect(getAddress(), getPort());
-                                    client.send(new LobbyConnectCommand(tuple.m_AIName));
-                                    if (Boolean.valueOf(client.receive()))
+                                    if (client.connect(getAddress(), getPort()))
                                     {
+                                        client.send(new LobbyConnectCommand(tuple.m_AIName));
+                                        boolean isOk = Boolean.valueOf(client.receive());
+                                        while (!isOk)
+                                        {
+                                            final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyAIMainJFrame.this, client.getPlayerName());
+                                            form2.setVisible(true);
+                                            client.setPlayerName(form2.getPlayerName());
+                                            client.send(new LobbyConnectCommand(client.getPlayerName()));
+                                            isOk = Boolean.valueOf(client.receive());
+                                        }
                                         m_agents.add(client);
                                     }
                                 }
@@ -522,6 +535,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                                 jStatusLabel.setText("Not connected, Authentification Failed!!!");
                                 System.out.println("Authentification Failed!!!");
                             }
+                            
                         }
                     }
                 }
@@ -538,7 +552,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
      * @param p_noPort
      *            - Port number the ServerLobby is listening to.
      */
-    public void connect(String p_host, int p_noPort)
+    public boolean connect(String p_host, int p_noPort)
     {
         try
         {
@@ -548,8 +562,10 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         }
         catch (final Exception e)
         {
-            e.printStackTrace();
+            System.err.println("Error on connect: " + e.getMessage());
+            return false;
         }
+        return true;
     }
     
     /**
