@@ -149,7 +149,7 @@ public class ServerClientTableManager extends Thread
                             // Transfert socket connection.
                             sendMessage(command.encodeResponse(noSeat));
                             m_manager.m_table.join(player, noSeat);
-                            m_manager.m_table.attach(player);
+                            player.setReceiver(m_manager.m_table.getReceiver());
                             player.setIsConnected();
                         }
                     }

@@ -1,7 +1,5 @@
 package serverGame;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -18,6 +16,7 @@ import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
 import protocolGame.GameTableInfoCommand;
 import protocolLobby.LobbyCreateTableCommand;
+import serverGameTools.ServerPokerReceiver;
 import utility.Constants;
 import utility.IClosingListener;
 
@@ -29,6 +28,7 @@ import utility.IClosingListener;
 public class ServerTableCommunicator implements Runnable
 {
     
+    private final ServerPokerReceiver m_receiver = new ServerPokerReceiver();
     /*
      * ######################################################
      * Class Variables
@@ -38,13 +38,11 @@ public class ServerTableCommunicator implements Runnable
     
     // Listeners
     private final List<IClosingListener<ServerTableCommunicator>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<ServerTableCommunicator>>());
-    private final List<IServerPokerObserver> m_observers;
     
     // Thread variables
     private boolean m_waitForFirstPlayer;
     private boolean m_isRunning = false;
     private boolean m_stopTable;
-    private final Object m_mutex = new Object();
     
     // Game variables
     
@@ -74,7 +72,6 @@ public class ServerTableCommunicator implements Runnable
         m_info = new ServerPokerTableInfo(command);
         
         m_isRunning = true;
-        m_observers = new ArrayList<IServerPokerObserver>();
         m_waitForFirstPlayer = true;
     }
     
@@ -96,21 +93,6 @@ public class ServerTableCommunicator implements Runnable
     }
     
     /**
-     * Add a new observer to the table
-     * 
-     * @param p_observer
-     *            The new observer
-     */
-    public void attach(IServerPokerObserver p_observer)
-    {
-        synchronized (m_mutex)
-        {
-            p_observer.tableInfos(this);
-            m_observers.add(p_observer);
-        }
-    }
-    
-    /**
      * Deal the holes card.
      */
     private void dealHole()
@@ -122,7 +104,7 @@ public class ServerTableCommunicator implements Runnable
         {
             m_info.getPlayer(m_info.m_playerTurn).setHand(m_info.m_deck.pop(), m_info.m_deck.pop());
             
-            notifyObserver(IServerPokerObserver.HOLE_CARD_DEAL, this, m_info.getPlayer(m_info.m_playerTurn));
+            m_receiver.holeCardDeal(this, (ServerPokerPlayerInfo) m_info.getPlayer(m_info.m_playerTurn));
             m_info.m_playerTurn = m_info.nextPlayingPlayer(m_info.m_playerTurn);
         }
         while (m_info.m_playerTurn != firstPlayer);
@@ -138,27 +120,13 @@ public class ServerTableCommunicator implements Runnable
     }
     
     /**
-     * Remove an observer to the table
-     * 
-     * @param p_observer
-     *            The observer to remove
-     */
-    public void detach(IServerPokerObserver p_observer)
-    {
-        synchronized (m_mutex)
-        {
-            m_observers.remove(p_observer);
-        }
-    }
-    
-    /**
      * End a game
      */
     private void endGame()
     {
         m_info.endGame();
         
-        notifyObserver(IServerPokerObserver.GAME_ENDED, this);
+        m_receiver.gameEnded(this);
         
         try
         {
@@ -363,7 +331,7 @@ public class ServerTableCommunicator implements Runnable
                             final PokerPlayerInfo deletedPlayer = m_info.getPlayer(i);
                             m_info.removePlayer(i);
                             
-                            notifyObserver(IServerPokerObserver.PLAYER_LEFT_TABLE, this, deletedPlayer);
+                            m_receiver.playerLeftTable(this, (ServerPokerPlayerInfo) deletedPlayer);
                         }
                         else if (m_info.getPlayer(i).getMoney() > 0)
                         {
@@ -387,7 +355,7 @@ public class ServerTableCommunicator implements Runnable
             }
             else
             {
-                notifyObserver(IServerPokerObserver.WAITING_FOR_PLAYERS, this);
+                m_receiver.waitingForPlayers(this);
                 
                 try
                 {
@@ -400,10 +368,11 @@ public class ServerTableCommunicator implements Runnable
             }
         }
         
+        m_receiver.tableInfos(this);
         m_info.startGame();
         
         // notify the observer that a new game is starting
-        notifyObserver(IServerPokerObserver.GAME_STARTED, this);
+        m_receiver.gameStarted(this);
         
         try
         {
@@ -424,7 +393,7 @@ public class ServerTableCommunicator implements Runnable
     private void initializeTable()
     {
         m_info.m_noSeatDealer = m_info.getNbSeats() - 1;
-        notifyObserver(IServerPokerObserver.TABLE_STARTED, this);
+        m_receiver.tableStarted(this);
     }
     
     /**
@@ -452,7 +421,7 @@ public class ServerTableCommunicator implements Runnable
         m_info.addPlayer(p_noSeat, p_player);
         p_player.setTable(this);
         p_player.setTablePosition(p_noSeat);
-        notifyObserver(IServerPokerObserver.PLAYER_JOINED_TABLE, this, p_player);
+        m_receiver.playerJoinedTable(this, p_player);
     }
     
     /**
@@ -470,40 +439,6 @@ public class ServerTableCommunicator implements Runnable
     }
     
     /**
-     * Notify the observers that an events occured
-     * 
-     * @param p_method
-     *            The method to call on the observers
-     * @param p_objects
-     *            the parameters of the method
-     */
-    private void notifyObserver(Method p_method, Object... p_objects)
-    {
-        synchronized (m_mutex)
-        {
-            for (final IServerPokerObserver observer : m_observers)
-            {
-                try
-                {
-                    p_method.invoke(observer, p_objects);
-                }
-                catch (final IllegalArgumentException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (final IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (final InvocationTargetException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    
-    /**
      * The last player the pot
      */
     private void onePlayerStanding()
@@ -518,7 +453,7 @@ public class ServerTableCommunicator implements Runnable
             final Pot pot = m_info.m_pots.pop();
             
             winner.winPot(pot.getAmount());
-            notifyObserver(IServerPokerObserver.POT_WON, this, winner, pot, pot.getAmount());
+            m_receiver.potWon(this, (ServerPokerPlayerInfo) winner, pot, pot.getAmount());
             
             try
             {
@@ -537,7 +472,7 @@ public class ServerTableCommunicator implements Runnable
     private void placeBlinds()
     {
         m_info.placeSmallBlind();
-        notifyObserver(IServerPokerObserver.SMALL_BLIND_POSTED, this, m_info.getPlayer(m_info.m_noSeatSmallBlind), m_info.m_currentBet);
+        m_receiver.smallBlindPosted(this, (ServerPokerPlayerInfo) m_info.getPlayer(m_info.m_noSeatSmallBlind), m_info.m_currentBet);
         try
         {
             Thread.sleep(Constants.SERVER_WAIT_TIME);
@@ -548,7 +483,7 @@ public class ServerTableCommunicator implements Runnable
         }
         
         m_info.placeBigBlind();
-        notifyObserver(IServerPokerObserver.BIG_BLIND_POSTED, this, m_info.getPlayer(m_info.m_noSeatBigBlind), m_info.getPlayer(m_info.m_noSeatBigBlind).getBet());
+        m_receiver.bigBlindPosted(this, (ServerPokerPlayerInfo) m_info.getPlayer(m_info.m_noSeatBigBlind), m_info.getPlayer(m_info.m_noSeatBigBlind).getBet());
         try
         {
             Thread.sleep(Constants.SERVER_WAIT_TIME);
@@ -583,15 +518,15 @@ public class ServerTableCommunicator implements Runnable
             if (startBettingRound())
             {
                 m_info.dealFlop();
-                notifyObserver(IServerPokerObserver.FLOP_DEALT, this, m_info.getBoard());
+                m_receiver.flopDealt(this, m_info.getBoard());
                 if (startBettingRound())
                 {
                     m_info.dealTurn();
-                    notifyObserver(IServerPokerObserver.TURN_DEAL, this, m_info.getBoard());
+                    m_receiver.turnDeal(this, m_info.getBoard());
                     if (startBettingRound())
                     {
                         m_info.dealRiver();
-                        notifyObserver(IServerPokerObserver.RIVER_DEAL, this, m_info.getBoard());
+                        m_receiver.riverDeal(this, m_info.getBoard());
                         if (startBettingRound())
                         {
                             showdown();
@@ -604,7 +539,7 @@ public class ServerTableCommunicator implements Runnable
         
         m_isRunning = false;
         
-        notifyObserver(IServerPokerObserver.TABLE_ENDED, this);
+        m_receiver.gameEnded(this);
         
         synchronized (m_closingListeners)
         {
@@ -626,7 +561,7 @@ public class ServerTableCommunicator implements Runnable
             if (!(player == null) && player.isPlaying() && !player.isFolded() && !player.isShowingCard())
             {
                 player.showCards();
-                notifyObserver(IServerPokerObserver.PLAYER_SHOW_CARD, this, player);
+                m_receiver.playerShowCard(this, player);
             }
         }
     }
@@ -670,7 +605,7 @@ public class ServerTableCommunicator implements Runnable
                 for (int i = 0; i < bestPlayers.size(); i++)
                 {
                     bestPlayers.elementAt(i).winPot(amountPerWinner);
-                    notifyObserver(IServerPokerObserver.POT_WON, this, bestPlayers.elementAt(i), pot, amountPerWinner);
+                    m_receiver.potWon(this, (ServerPokerPlayerInfo) bestPlayers.elementAt(i), pot, amountPerWinner);
                     
                     try
                     {
@@ -741,7 +676,7 @@ public class ServerTableCommunicator implements Runnable
             if (!(player.isFolded() || player.isAllIn()))
             {
                 final int oldBet = player.getBet();
-                notifyObserver(IServerPokerObserver.PLAYER_TURN_STARTED, this, player);
+                m_receiver.playerTurnStarted(this, player);
                 
                 // Ask an action to the player
                 action = player.takeAction(m_info.m_currentBet, m_info.getMinimumRaise(player), m_info.getMaximumRaise(player));
@@ -775,7 +710,7 @@ public class ServerTableCommunicator implements Runnable
                     m_info.m_noSeatLastRaiser = m_info.m_playerTurn;
                 }
                 
-                notifyObserver(IServerPokerObserver.PLAYER_END_TURN, this, player, action);
+                m_receiver.playerEndTurn(this, player, action);
                 
                 try
                 {
@@ -800,7 +735,7 @@ public class ServerTableCommunicator implements Runnable
         // Manage pots
         m_info.endBettingRound(bets);
         
-        notifyObserver(IServerPokerObserver.END_BETTING_TURN, this);
+        m_receiver.endBettingTurn(this);
         
         if (m_info.m_nbBetting < 2)
         {
@@ -826,7 +761,7 @@ public class ServerTableCommunicator implements Runnable
             playerInPot.addMoney(uselessPot.getAmount());
             m_info.m_pots.peek().addParticipant(playerInPot);
             
-            notifyObserver(IServerPokerObserver.PLAYER_MONEY_CHANGED, this, playerInPot);
+            m_receiver.playerMoneyChanged(this, (ServerPokerPlayerInfo) playerInPot);
         }
         
         return true;
@@ -839,5 +774,10 @@ public class ServerTableCommunicator implements Runnable
     public void stop()
     {
         m_stopTable = true;
+    }
+    
+    public ServerPokerReceiver getReceiver()
+    {
+        return m_receiver;
     }
 }

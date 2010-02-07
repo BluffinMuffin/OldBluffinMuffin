@@ -11,8 +11,8 @@ import java.util.TreeMap;
 
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
-import serverGame.ServerPokerLogger;
 import serverGame.ServerTableCommunicator;
+import serverGameTools.ServerPokerLogger;
 import utility.Constants;
 
 /**
@@ -119,7 +119,7 @@ public class ServerLobby extends Thread
             
             // Start the TableManager.
             table.addClosingListener(manager);
-            table.attach(new ServerPokerLogger(System.out));
+            new ServerPokerLogger(System.out, table.getReceiver());
             table.start();
             manager.start();
             
