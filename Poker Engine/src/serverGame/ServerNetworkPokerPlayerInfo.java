@@ -29,7 +29,7 @@ import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameWaitingCommand;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utility.Constants;
 
 /**

@@ -2,7 +2,7 @@ package protocolLobby;
 
 import java.util.StringTokenizer;
 
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utility.Constants;
 
 public class LobbyJoinTableCommand implements IBluffinCommand

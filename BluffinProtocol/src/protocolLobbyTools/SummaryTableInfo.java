@@ -1,4 +1,4 @@
-package protocolLobby;
+package protocolLobbyTools;
 
 import java.util.StringTokenizer;
 

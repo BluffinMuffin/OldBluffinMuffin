@@ -3,7 +3,7 @@ package protocolGame;
 import java.util.StringTokenizer;
 
 import pokerLogic.TypePlayerAction;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 
 public class GamePINGCommand implements IBluffinCommand
 {

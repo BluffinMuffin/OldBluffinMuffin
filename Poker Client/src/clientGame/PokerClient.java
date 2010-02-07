@@ -37,7 +37,7 @@ import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.GameWaitingCommand;
 import protocolGame.SummarySeatInfo;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utilGUI.ListEvent;
 import utilGUI.ListListener;

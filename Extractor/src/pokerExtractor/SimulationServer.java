@@ -19,7 +19,7 @@ import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.SummarySeatInfo;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utility.Tool;
 import clientAI.TypeSimplifiedAction;

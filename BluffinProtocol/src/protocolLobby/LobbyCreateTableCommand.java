@@ -3,7 +3,7 @@ package protocolLobby;
 import java.util.StringTokenizer;
 
 import pokerLogic.TypePokerGame;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utility.Constants;
 
 public class LobbyCreateTableCommand implements IBluffinCommand

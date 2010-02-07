@@ -1,4 +1,4 @@
-package protocolLogic;
+package protocolTools;
 
 public interface IBluffinCommand
 {

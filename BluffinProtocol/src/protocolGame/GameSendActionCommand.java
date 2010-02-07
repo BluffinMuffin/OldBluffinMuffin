@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utility.Constants;
 
 public class GameSendActionCommand implements IBluffinCommand

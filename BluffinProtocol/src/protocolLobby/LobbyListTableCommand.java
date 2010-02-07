@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
-import protocolLogic.IBluffinCommand;
+import protocolLobbyTools.SummaryTableInfo;
+import protocolTools.IBluffinCommand;
 import utility.Constants;
 
 public class LobbyListTableCommand implements IBluffinCommand

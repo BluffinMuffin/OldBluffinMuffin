@@ -3,7 +3,7 @@ package protocolGame;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utility.Constants;
 
 public class GameHoleCardsChangedCommand implements IBluffinCommand

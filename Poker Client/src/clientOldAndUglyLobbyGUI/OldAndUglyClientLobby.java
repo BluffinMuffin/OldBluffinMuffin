@@ -60,7 +60,7 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utilGUI.CurrencyIntegerEditor;
 import utilGUI.JBackgroundPanel;

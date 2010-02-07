@@ -2,7 +2,7 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import protocolLogic.IBluffinCommand;
+import protocolTools.IBluffinCommand;
 
 public class GameEndedCommand implements IBluffinCommand
 {

@@ -9,7 +9,9 @@ import java.util.StringTokenizer;
 
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
-import protocolLogic.IBluffinCommand;
+import protocolLobbyTools.LobbyServerSideAdapter;
+import protocolLobbyTools.LobbyServerSideReceiver;
+import protocolTools.IBluffinCommand;
 import serverGame.ServerNetworkPokerPlayerInfo;
 import utility.Constants;
 
@@ -19,8 +21,9 @@ import utility.Constants;
  */
 public class ServerClientTableManager extends Thread
 {
-    String m_name = "";
+    String m_name = "?";
     ServerTableManager m_manager;
+    private final LobbyServerSideReceiver m_commandReceiver = new LobbyServerSideReceiver();
     
     // Communications with the client
     Socket m_socket = null;
@@ -42,68 +45,16 @@ public class ServerClientTableManager extends Thread
         }
     }
     
-    private void authentification(LobbyConnectCommand command)
-    {
-        m_name = command.getPlayerName();
-        sendMessage(command.encodeResponse(true));
-    }
-    
-    /**
-     * Handle join message.
-     * [JOIN_TABLE;]
-     */
-    private void joinTable(LobbyJoinTableCommand command)
-    {
-        try
-        {
-            if (!m_manager.m_table.isRunning())
-            {
-                sendMessage(command.encodeErrorResponse());
-                return;
-            }
-            
-            // Create new NetworkPlayer.
-            final ServerNetworkPokerPlayerInfo player = new ServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
-            
-            // Verify the player does not already playing on that table.
-            if (!m_manager.m_table.getPlayers().contains(player))
-            {
-                final int noSeat = m_manager.m_table.getNextSeat();
-                if (noSeat == -1)
-                {
-                    sendMessage(command.encodeErrorResponse());
-                }
-                else
-                {
-                    // Attach the client to the table.
-                    // Transfert socket connection.
-                    sendMessage(command.encodeResponse(noSeat));
-                    m_manager.m_table.join(player, noSeat);
-                    m_manager.m_table.attach(player);
-                    player.setIsConnected();
-                }
-            }
-            else
-            {
-                sendMessage(command.encodeErrorResponse());
-            }
-        }
-        catch (final IOException e)
-        {
-            sendMessage(command.encodeErrorResponse());
-            e.printStackTrace();
-        }
-    }
-    
     /**
      * Receive all the incoming data from the client.
      */
     @Override
     public void run()
     {
+        initializeCommandReceiver();
         try
         {
-            StringTokenizer token = new StringTokenizer(m_fromClient.readLine(), Constants.DELIMITER);
+            StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
             String commandName = token.nextToken();
             
             // Expect client's authentification.
@@ -113,9 +64,7 @@ public class ServerClientTableManager extends Thread
                 return;
             }
             
-            authentification(new LobbyConnectCommand(token));
-            
-            token = new StringTokenizer(m_fromClient.readLine(), Constants.DELIMITER);
+            token = new StringTokenizer(receive(), Constants.DELIMITER);
             commandName = token.nextToken();
             
             // Expect join message from the client.
@@ -124,8 +73,6 @@ public class ServerClientTableManager extends Thread
                 System.out.println("Join table expected!!!");
                 return;
             }
-            
-            joinTable(new LobbyJoinTableCommand(token));
         }
         catch (final IOException e)
         {
@@ -141,12 +88,83 @@ public class ServerClientTableManager extends Thread
      */
     protected void sendMessage(String p_msg)
     {
-        System.out.println("Server SEND to " + m_name + " [" + p_msg + "]");
+        System.out.println("TableManager SEND to " + m_name + " [" + p_msg + "]");
         m_toClient.println(p_msg);
     }
     
     protected void send(IBluffinCommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
+    }
+    
+    protected String receive() throws IOException
+    {
+        final String line = m_fromClient.readLine();
+        m_commandReceiver.receiveSomething(line);
+        return line;
+    }
+    
+    private void initializeCommandReceiver()
+    {
+        m_commandReceiver.subscribe(new LobbyServerSideAdapter()
+        {
+            @Override
+            public void commandReceived(String command)
+            {
+                System.out.println("TableManager RECV from " + m_name + " [" + command + "]");
+            }
+            
+            @Override
+            public void connectCommandReceived(LobbyConnectCommand command)
+            {
+                m_name = command.getPlayerName();
+                sendMessage(command.encodeResponse(true));
+            }
+            
+            @Override
+            public void joinTableCommandReceived(LobbyJoinTableCommand command)
+            {
+                try
+                {
+                    if (!m_manager.m_table.isRunning())
+                    {
+                        sendMessage(command.encodeErrorResponse());
+                        return;
+                    }
+                    
+                    // Create new NetworkPlayer.
+                    final ServerNetworkPokerPlayerInfo player = new ServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
+                    
+                    // Verify the player does not already playing on that table.
+                    if (!m_manager.m_table.getPlayers().contains(player))
+                    {
+                        final int noSeat = m_manager.m_table.getNextSeat();
+                        if (noSeat == -1)
+                        {
+                            sendMessage(command.encodeErrorResponse());
+                        }
+                        else
+                        {
+                            // Attach the client to the table.
+                            // Transfert socket connection.
+                            sendMessage(command.encodeResponse(noSeat));
+                            m_manager.m_table.join(player, noSeat);
+                            m_manager.m_table.attach(player);
+                            player.setIsConnected();
+                        }
+                    }
+                    else
+                    {
+                        sendMessage(command.encodeErrorResponse());
+                    }
+                }
+                catch (final IOException e)
+                {
+                    sendMessage(command.encodeErrorResponse());
+                    e.printStackTrace();
+                }
+            }
+        });
+        
     }
 }

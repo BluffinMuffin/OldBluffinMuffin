@@ -6,22 +6,23 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.StringTokenizer;
 
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyListTableCommand;
-import protocolLogic.IBluffinCommand;
-import utility.Constants;
+import protocolLobbyTools.LobbyServerSideAdapter;
+import protocolLobbyTools.LobbyServerSideReceiver;
+import protocolTools.IBluffinCommand;
 
 /**
  * This class represents a client for ServerLobby.
  */
 public class ServerClientLobby extends Thread
 {
-    private String m_playerName = "";
+    private String m_playerName = "?";
     private final ServerLobby m_lobby;
+    private final LobbyServerSideReceiver m_commandReceiver = new LobbyServerSideReceiver();
     
     // Communications with the client
     private Socket m_socket = null;
@@ -63,7 +64,7 @@ public class ServerClientLobby extends Thread
     protected String receive() throws IOException
     {
         final String line = m_fromClient.readLine();
-        System.out.println("Server RECV from " + m_playerName + " [" + line + "]");
+        m_commandReceiver.receiveSomething(line);
         return line;
     }
     
@@ -75,36 +76,12 @@ public class ServerClientLobby extends Thread
     @Override
     public void run()
     {
+        initializeCommandReceiver();
         while (isConnected())
         {
             try
             {
-                final String line = receive();
-                
-                if (line == null)
-                {
-                    throw new Exception("null line !!");
-                }
-                
-                final StringTokenizer token = new StringTokenizer(line, Constants.DELIMITER);
-                final String commandName = token.nextToken();
-                
-                if (commandName.equals(LobbyConnectCommand.COMMAND_NAME))
-                {
-                    authentification(new LobbyConnectCommand(token));
-                }
-                else if (commandName.equals(LobbyDisconnectCommand.COMMAND_NAME))
-                {
-                    disconnect(new LobbyDisconnectCommand(token));
-                }
-                else if (commandName.equals(LobbyCreateTableCommand.COMMAND_NAME))
-                {
-                    createTable(new LobbyCreateTableCommand(token));
-                }
-                else if (commandName.equals(LobbyListTableCommand.COMMAND_NAME))
-                {
-                    listTables(new LobbyListTableCommand(token));
-                }
+                receive();
             }
             catch (final SocketException e)
             {
@@ -119,37 +96,54 @@ public class ServerClientLobby extends Thread
         }
     }
     
-    private void listTables(LobbyListTableCommand command)
+    private void initializeCommandReceiver()
     {
-        sendMessage(command.encodeResponse(m_lobby.listTables()));
-    }
-    
-    private void createTable(LobbyCreateTableCommand command)
-    {
-        sendMessage(command.encodeResponse(m_lobby.createTable(command)));
-    }
-    
-    private void authentification(LobbyConnectCommand command)
-    {
-        m_playerName = command.getPlayerName();
-        final boolean ok = !m_lobby.isNameUsed(m_playerName);
-        sendMessage(command.encodeResponse(ok));
-        if (ok)
+        m_commandReceiver.subscribe(new LobbyServerSideAdapter()
         {
-            m_lobby.addName(m_playerName);
-        }
-    }
-    
-    private void disconnect(LobbyDisconnectCommand command)
-    {
-        m_lobby.removeName(m_playerName);
-        try
-        {
-            m_socket.close();
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
+            @Override
+            public void commandReceived(String command)
+            {
+                System.out.println("Server RECV from " + m_playerName + " [" + command + "]");
+            }
+            
+            @Override
+            public void connectCommandReceived(LobbyConnectCommand command)
+            {
+                m_playerName = command.getPlayerName();
+                final boolean ok = !m_lobby.isNameUsed(m_playerName);
+                sendMessage(command.encodeResponse(ok));
+                if (ok)
+                {
+                    m_lobby.addName(m_playerName);
+                }
+            }
+            
+            @Override
+            public void disconnectCommandReceived(LobbyDisconnectCommand command)
+            {
+                m_lobby.removeName(m_playerName);
+                try
+                {
+                    m_socket.close();
+                }
+                catch (final IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            
+            @Override
+            public void createTableCommandReceived(LobbyCreateTableCommand command)
+            {
+                sendMessage(command.encodeResponse(m_lobby.createTable(command)));
+            }
+            
+            @Override
+            public void listTableCommandReceived(LobbyListTableCommand command)
+            {
+                sendMessage(command.encodeResponse(m_lobby.listTables()));
+            }
+        });
+        
     }
 }
