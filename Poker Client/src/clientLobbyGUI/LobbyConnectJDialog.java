@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -26,6 +27,7 @@ public class LobbyConnectJDialog extends JDialog
     private String m_serverAddress;
     private int m_serverPort;
     private boolean m_OK;
+    private boolean m_Advisor;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -36,6 +38,7 @@ public class LobbyConnectJDialog extends JDialog
     private JComboBox jAddressComboBox = null;
     private JLabel jPortLabel = null;
     private JSpinner jPortSpinner = null;
+    private JCheckBox jAdvisorCheckBox = null;
     
     /**
      * @param owner
@@ -57,7 +60,7 @@ public class LobbyConnectJDialog extends JDialog
     private void initialize()
     {
         m_OK = false;
-        this.setSize(250, 220);
+        this.setSize(250, 253);
         this.setModal(true);
         this.setTitle("Connection");
         this.setContentPane(getJContentPane());
@@ -106,6 +109,7 @@ public class LobbyConnectJDialog extends JDialog
             jContentPane.add(getJAddressComboBox(), null);
             jContentPane.add(jPortLabel, null);
             jContentPane.add(getJPortSpinner(), null);
+            jContentPane.add(getJAdvisorCheckBox(), null);
         }
         return jContentPane;
     }
@@ -121,8 +125,9 @@ public class LobbyConnectJDialog extends JDialog
         {
             jConnectButton = new JButton();
             jConnectButton.setText("Connect");
-            jConnectButton.setBounds(new Rectangle(66, 148, 98, 26));
             jConnectButton.setSelected(true);
+            jConnectButton.setSize(new Dimension(98, 26));
+            jConnectButton.setLocation(new Point(66, 178));
             jConnectButton.setName("jConnectButton");
             jConnectButton.addActionListener(new java.awt.event.ActionListener()
             {
@@ -131,6 +136,7 @@ public class LobbyConnectJDialog extends JDialog
                     m_playerName = getJPlayerNameTextField().getText();
                     m_serverAddress = getJAddressComboBox().getSelectedItem().toString();
                     m_serverPort = (Integer) getJPortSpinner().getValue();
+                    m_Advisor = getJAdvisorCheckBox().isSelected();
                     m_OK = true;
                     LobbyConnectJDialog.this.setVisible(false);
                 }
@@ -210,6 +216,29 @@ public class LobbyConnectJDialog extends JDialog
     public int getServerPort()
     {
         return m_serverPort;
+    }
+    
+    public boolean isAdvisor()
+    {
+        return m_Advisor;
+    }
+    
+    /**
+     * This method initializes jAdvisorCheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getJAdvisorCheckBox()
+    {
+        if (jAdvisorCheckBox == null)
+        {
+            jAdvisorCheckBox = new JCheckBox();
+            jAdvisorCheckBox.setSize(new Dimension(200, 21));
+            jAdvisorCheckBox.setText("Advisor");
+            jAdvisorCheckBox.setEnabled(false);
+            jAdvisorCheckBox.setLocation(new Point(10, 145));
+        }
+        return jAdvisorCheckBox;
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"

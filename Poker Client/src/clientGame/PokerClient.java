@@ -105,8 +105,8 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
     
     public void attach(IClientPoker client)
     {
-        m_agent.setTable(m_table);
-        m_agent.start();
+        client.setTable(m_table);
+        client.start();
     }
     
     @Override

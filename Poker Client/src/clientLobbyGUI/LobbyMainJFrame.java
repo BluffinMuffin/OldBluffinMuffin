@@ -37,11 +37,14 @@ import protocolTools.IBluffinCommand;
 import utilGUI.AutoListModel;
 import utility.Constants;
 import utility.IClosingListener;
+import clientAI.PokerSVM;
 import clientAILobbyGUI.LobbyAIMainJFrame;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientGameGUI.TableGUI;
+import clientGameGUI.TableGUIAdvisor;
+import clientStats.StatsAgent;
 
 public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
@@ -52,6 +55,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private String m_playerName;
     private String m_serverAddress;
     private int m_serverPort;
+    private boolean m_advisor;
     
     // List of PokerClient (one for each table the player joined)
     private final AutoListModel<PokerClient> m_clients = new AutoListModel<PokerClient>();
@@ -379,6 +383,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             m_playerName = form.getPlayerName();
             m_serverAddress = form.getServerAddress();
             m_serverPort = form.getServerPort();
+            m_advisor = form.isAdvisor();
             if (connect(m_serverAddress, m_serverPort))
             {
                 send(new LobbyConnectCommand(m_playerName));
@@ -732,10 +737,23 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
             final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
-            final TableGUI gui = new TableGUI();
-            gui.setPokerObserver(client.getPokerObserver());
+            TableGUI gui = null;
+            
+            if (m_advisor)
+            {
+                final StatsAgent statsAgent = new StatsAgent();
+                statsAgent.setPokerObserver(client.getPokerObserver());
+                client.attach(statsAgent);
+                final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
+                gui = new TableGUIAdvisor(statsAgent, pokerSVM);
+            }
+            else
+            {
+                gui = new TableGUI();
+            }
             
             // Start a the new PokerClient.
+            gui.setPokerObserver(client.getPokerObserver());
             client.setActionner(gui);
             client.addClosingListener(this);
             client.start();

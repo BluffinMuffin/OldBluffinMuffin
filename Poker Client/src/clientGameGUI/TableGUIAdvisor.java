@@ -25,6 +25,7 @@ import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import clientAI.PokerSVM;
 import clientGameTools.ClientPokerAdapter;
+import clientGameTools.ClientPokerObserver;
 import clientStats.PlayerStats;
 import clientStats.StatsAgent;
 
@@ -99,7 +100,6 @@ public class TableGUIAdvisor extends TableGUI
         this();
         m_statsAgent = p_statsAgent;
         m_pokerSVM = p_pokerSVM;
-        initializePokerObserver();
     }
     
     private StatsInfos calculateHandValues()
@@ -305,6 +305,14 @@ public class TableGUIAdvisor extends TableGUI
         sb.append("</color></center></html>");
         
         getJLabelProbWin().setText(sb.toString());
+    }
+    
+    @Override
+    public void setPokerObserver(ClientPokerObserver observer)
+    {
+        super.setPokerObserver(observer);
+        
+        initializePokerObserver();
     }
     
     private void initializePokerObserver()
