@@ -356,7 +356,6 @@ public class ServerTableCommunicator implements Runnable
             else
             {
                 m_pokerObserver.waitingForPlayers(this);
-                
                 try
                 {
                     Thread.sleep(Constants.SERVER_WAIT_TIME_FOR_NEW_PLAYERS);
@@ -368,7 +367,6 @@ public class ServerTableCommunicator implements Runnable
             }
         }
         
-        m_pokerObserver.tableInfos(this);
         m_info.startGame();
         
         // notify the observer that a new game is starting
@@ -422,6 +420,7 @@ public class ServerTableCommunicator implements Runnable
         p_player.setTable(this);
         p_player.setTablePosition(p_noSeat);
         m_pokerObserver.playerJoinedTable(this, p_player);
+        m_pokerObserver.tableInfos(this);
     }
     
     /**

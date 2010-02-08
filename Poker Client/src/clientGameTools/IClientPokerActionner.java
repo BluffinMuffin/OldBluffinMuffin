@@ -1,8 +1,7 @@
-package clientGame;
+package clientGameTools;
 
 import java.util.ArrayList;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 
@@ -12,7 +11,7 @@ import pokerLogic.TypePlayerAction;
  *         This interface represents a poker agent that can
  *         interact in the game (can take actions).
  */
-public interface IPokerAgentActionner extends IPokerAgent
+public interface IClientPokerActionner extends IClientPoker
 {
     /**
      * Request an action from the agent.

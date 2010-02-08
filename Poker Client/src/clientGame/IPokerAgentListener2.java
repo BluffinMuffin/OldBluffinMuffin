@@ -1,43 +1,41 @@
 package clientGame;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
-
+import clientGameTools.IClientPoker;
 
 /**
  * @author Hocus
  *         This interface represents a poker agent that can
  *         only listens to the game (cannot take actions).
  */
-public interface IPokerAgentListener extends IPokerAgent
-{
-    // Methods corresponding to messages type sent by the server.
-    public static final Method BET_TURN_ENDED = Util.getIPokerAgentListenerMethod("betTurnEnded", ArrayList.class, TypePokerRound.class);
-    public static final Method BOARD_CHANGED = Util.getIPokerAgentListenerMethod("boardChanged", ArrayList.class);
-    public static final Method GAME_ENDED = Util.getIPokerAgentListenerMethod("gameEnded");
-    public static final Method GAME_STARTED = Util.getIPokerAgentListenerMethod("gameStarted", PokerPlayerInfo.class, PokerPlayerInfo.class, PokerPlayerInfo.class);
-    public static final Method PLAYER_CARD_CHANGED = Util.getIPokerAgentListenerMethod("playerCardChanged", PokerPlayerInfo.class);
-    public static final Method PLAYER_JOINED = Util.getIPokerAgentListenerMethod("playerJoined", PokerPlayerInfo.class);
-    public static final Method PLAYER_LEFT = Util.getIPokerAgentListenerMethod("playerLeft", PokerPlayerInfo.class);
-    public static final Method PLAYER_MONEY_CHANGED = Util.getIPokerAgentListenerMethod("playerMoneyChanged", PokerPlayerInfo.class, int.class);
-    public static final Method PLAYER_TURN_BEGAN = Util.getIPokerAgentListenerMethod("playerTurnBegan", PokerPlayerInfo.class);
-    public static final Method PLAYER_TURN_ENDED = Util.getIPokerAgentListenerMethod("playerTurnEnded", PokerPlayerInfo.class, TypePlayerAction.class, int.class);
-    public static final Method POT_WON = Util.getIPokerAgentListenerMethod("potWon", PokerPlayerInfo.class, int.class, int.class);
-    public static final Method TABLE_CLOSED = Util.getIPokerAgentListenerMethod("tableClosed");
-    public static final Method TABLE_INFOS = Util.getIPokerAgentListenerMethod("tableInfos");
-    public static final Method WAITING_FOR_PLAYERS = Util.getIPokerAgentListenerMethod("waitingForPlayers");
-    
-    /**
-     * Happens when a betting turn ends.
-     * 
-     * @param p_potIndices
-     *            contains all indices of pots that have been modified.
-     */
+public interface IPokerAgentListener2 extends IClientPoker
+{/*
+  * // Methods corresponding to messages type sent by the server.
+  * public static final Method BET_TURN_ENDED = Util.getIPokerAgentListenerMethod("betTurnEnded", ArrayList.class, TypePokerRound.class);
+  * public static final Method BOARD_CHANGED = Util.getIPokerAgentListenerMethod("boardChanged", ArrayList.class);
+  * public static final Method GAME_ENDED = Util.getIPokerAgentListenerMethod("gameEnded");
+  * public static final Method GAME_STARTED = Util.getIPokerAgentListenerMethod("gameStarted", PokerPlayerInfo.class, PokerPlayerInfo.class, PokerPlayerInfo.class);
+  * public static final Method PLAYER_CARD_CHANGED = Util.getIPokerAgentListenerMethod("playerCardChanged", PokerPlayerInfo.class);
+  * public static final Method PLAYER_JOINED = Util.getIPokerAgentListenerMethod("playerJoined", PokerPlayerInfo.class);
+  * public static final Method PLAYER_LEFT = Util.getIPokerAgentListenerMethod("playerLeft", PokerPlayerInfo.class);
+  * public static final Method PLAYER_MONEY_CHANGED = Util.getIPokerAgentListenerMethod("playerMoneyChanged", PokerPlayerInfo.class, int.class);
+  * public static final Method PLAYER_TURN_BEGAN = Util.getIPokerAgentListenerMethod("playerTurnBegan", PokerPlayerInfo.class);
+  * public static final Method PLAYER_TURN_ENDED = Util.getIPokerAgentListenerMethod("playerTurnEnded", PokerPlayerInfo.class, TypePlayerAction.class, int.class);
+  * public static final Method POT_WON = Util.getIPokerAgentListenerMethod("potWon", PokerPlayerInfo.class, int.class, int.class);
+  * public static final Method TABLE_CLOSED = Util.getIPokerAgentListenerMethod("tableClosed");
+  * public static final Method TABLE_INFOS = Util.getIPokerAgentListenerMethod("tableInfos");
+  * public static final Method WAITING_FOR_PLAYERS = Util.getIPokerAgentListenerMethod("waitingForPlayers");
+  * 
+  * /**
+  * Happens when a betting turn ends.
+  * 
+  * @param p_potIndices
+  * contains all indices of pots that have been modified.
+  */
     public void betTurnEnded(ArrayList<Integer> p_potIndices, TypePokerRound p_gameStat);
     
     /**

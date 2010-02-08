@@ -3,14 +3,11 @@ package clientGame;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
@@ -37,10 +34,10 @@ import protocolGameTools.GameClientSideAdapter;
 import protocolGameTools.GameClientSideObserver;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
-import utilGUI.AutoListModel;
-import utilGUI.ListEvent;
-import utilGUI.ListListener;
 import utility.IClosingListener;
+import clientGameTools.ClientPokerObserver;
+import clientGameTools.IClientPoker;
+import clientGameTools.IClientPokerActionner;
 
 /**
  * @author Hokus
@@ -48,14 +45,14 @@ import utility.IClosingListener;
  *         It first parse message received from the server before calling
  *         corresponding methods in IPokerAgentListener.
  */
-public class PokerClient extends Thread implements ListListener<IPokerAgentListener>, IClosingListener<IPokerAgent>
+public class PokerClient extends Thread implements IClosingListener<IClientPoker>
 {
     public static final int NB_CARDS_BOARDS = 5;
     public static final int NB_SEATS = 9;
     private final GameClientSideObserver m_commandObserver = new GameClientSideObserver();
+    private final ClientPokerObserver m_pokerObserver = new ClientPokerObserver();
     
-    IPokerAgentActionner m_agent = null;
-    AutoListModel<IPokerAgentListener> m_observers = null;
+    IClientPokerActionner m_agent = null;
     
     /** Poker table **/
     ClientPokerTableInfo m_table;
@@ -68,12 +65,9 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     /** Array containing listener to be notify when PokerClient is closing. **/
     List<IClosingListener<PokerClient>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<PokerClient>>());
     
-    public PokerClient(IPokerAgentActionner p_agent, AutoListModel<IPokerAgentListener> p_observers, ClientPokerPlayerInfo p_localPlayer, Socket p_server, ClientPokerTableInfo p_table, BufferedReader p_fromServer)
+    public PokerClient(ClientPokerPlayerInfo p_localPlayer, Socket p_server, ClientPokerTableInfo p_table, BufferedReader p_fromServer)
     {
         m_table = p_table;
-        m_agent = p_agent;
-        m_observers = p_observers;
-        m_observers.addListListener(this);
         
         m_table.m_localPlayer = p_localPlayer;
         m_table.m_dealer = null;
@@ -103,16 +97,24 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         }
     }
     
+    public void setActionner(IClientPokerActionner actionner)
+    {
+        m_agent = actionner;
+        attach(actionner);
+    }
+    
+    public void attach(IClientPoker client)
+    {
+        m_agent.setTable(m_table);
+        m_agent.start();
+    }
+    
     @Override
-    public void closing(IPokerAgent e)
+    public void closing(IClientPoker e)
     {
         if (e == m_agent)
         {
             disconnect();
-        }
-        else
-        {
-            m_observers.remove(e);
         }
     }
     
@@ -128,8 +130,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             {
                 m_server.close();
                 m_server = null;
-                m_observers.clear();
-                stopAgent(m_agent);
+                // stopAgent(m_agent);
                 
                 synchronized (m_closingListeners)
                 {
@@ -146,7 +147,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         }
     }
     
-    public IPokerAgentActionner getAgent()
+    public IClientPokerActionner getAgent()
     {
         return m_agent;
     }
@@ -154,11 +155,6 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     public int getNoPort()
     {
         return m_server.getPort();
-    }
-    
-    public AutoListModel<IPokerAgentListener> getObservers()
-    {
-        return m_observers;
     }
     
     public ClientPokerTableInfo getTable()
@@ -171,73 +167,12 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         return (m_server != null) && m_server.isConnected() && !m_server.isClosed();
     }
     
-    @Override
-    public void itemsAdded(ListEvent<IPokerAgentListener> e)
-    {
-        startListeners(e.getItems());
-    }
-    
-    @Override
-    public void itemsChanged(ListEvent<IPokerAgentListener> e)
-    {
-        final IPokerAgentListener oldListener = e.getItems().get(0);
-        final IPokerAgentListener newListener = e.getItems().get(1);
-        
-        if (oldListener != newListener)
-        {
-            stopAgent(oldListener);
-            startAgent(newListener);
-            newListener.tableInfos();
-        }
-    }
-    
-    @Override
-    public void itemsRemoved(ListEvent<IPokerAgentListener> e)
-    {
-        stopListeners(e.getItems());
-    }
-    
     /*
      * *************************
      * UPDATE TABLE INFORMATIONS
      * *************************
      */
 
-    /**
-     * Notify all agents (IPokerAgentListener) by calling the right method.
-     * 
-     * @param p_method
-     *            - Method to call on each listener.
-     * @param p_objects
-     *            - Arguments to use when calling.
-     */
-    private void notifyObserver(Method p_method, Object... p_objects)
-    {
-        synchronized (m_observers)
-        {
-            for (final IPokerAgentListener observer : m_observers)
-            {
-                try
-                {
-                    p_method.invoke(observer, p_objects);
-                }
-                catch (final IllegalArgumentException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (final IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (final InvocationTargetException e)
-                {
-                    e.printStackTrace();
-                }
-                
-            }
-        }
-    }
-    
     /**
      * Add closing listener to PokerClient.
      * 
@@ -282,71 +217,10 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         }
     }
     
-    /**
-     * Start the agent.
-     * 
-     * @param p_agent
-     *            - Agent to start.
-     */
-    private void startAgent(IPokerAgent p_agent)
-    {
-        p_agent.setTable(m_table);
-        p_agent.addClosingListener(this);
-        p_agent.start();
-    }
-    
-    /**
-     * Stop the agent.
-     * 
-     * @param p_agent
-     *            - Agent to stop.
-     */
-    private void stopAgent(IPokerAgent p_agent)
-    {
-        p_agent.stop();
-    }
-    
-    /**
-     * Start agents and update their table.
-     * 
-     * @param p_listeners
-     *            - Agents to process.
-     */
-    private void startListeners(List<IPokerAgentListener> p_listeners)
-    {
-        for (final IPokerAgentListener listener : p_listeners)
-        {
-            startAgent(listener);
-            listener.tableInfos();
-        }
-    }
-    
-    /**
-     * Stop the agents.
-     * 
-     * @param p_listeners
-     *            - Agents to stop.
-     */
-    private void stopListeners(List<IPokerAgentListener> p_listeners)
-    {
-        for (final IPokerAgentListener listener : p_listeners)
-        {
-            stopAgent(listener);
-        }
-    }
-    
     @Override
     public void run()
     {
         this.setName(m_agent.getClass().getSimpleName() + " - " + m_table.m_localPlayer.m_name);
-        
-        // Start all agents
-        startListeners(m_observers);
-        
-        if (!(m_agent instanceof IPokerAgentListener))
-        {
-            startAgent(m_agent);
-        }
         
         // Beginning to listen to the server.
         startListening();
@@ -498,8 +372,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 m_table.m_gameState = gameState;
                 
                 m_table.m_currentBet = 0;
-                
-                notifyObserver(IPokerAgentListener.BET_TURN_ENDED, indices, gameState);
+                m_pokerObserver.betTurnEnded(indices, gameState);
             }
             
             @Override
@@ -515,8 +388,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                         indices.add(i);
                     }
                 }
-                
-                notifyObserver(IPokerAgentListener.BOARD_CHANGED, indices);
+                m_pokerObserver.boardChanged(indices);
             }
             
             @Override
@@ -529,7 +401,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             public void gameEndedCommandReceived(GameEndedCommand command)
             {
                 m_table.m_gameState = TypePokerRound.END;
-                notifyObserver(IPokerAgentListener.GAME_ENDED);
+                m_pokerObserver.gameEnded();
             }
             
             @Override
@@ -583,8 +455,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 {
                     player.m_initialMoney = player.m_money;
                 }
-                
-                notifyObserver(IPokerAgentListener.GAME_STARTED, oldDealer, oldSmallBlind, oldBigBlind);
+                m_pokerObserver.gameStarted(oldDealer, oldSmallBlind, oldBigBlind);
             }
             
             @Override
@@ -596,8 +467,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                 player.setHand(card1, card2);
-                
-                notifyObserver(IPokerAgentListener.PLAYER_CARD_CHANGED, player);
+                m_pokerObserver.playerCardChanged(player);
             }
             
             @Override
@@ -615,8 +485,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 
                 final ClientPokerPlayerInfo player = new ClientPokerPlayerInfo(noSeat, playerName, moneyAmount);
                 m_table.addPlayer(noSeat, player);
-                
-                notifyObserver(IPokerAgentListener.PLAYER_JOINED, player);
+                m_pokerObserver.playerJoined(player);
             }
             
             @Override
@@ -626,8 +495,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                 m_table.removePlayer(noSeat);
-                
-                notifyObserver(IPokerAgentListener.PLAYER_LEFT, player);
+                m_pokerObserver.playerLeft(player);
             }
             
             @Override
@@ -639,8 +507,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                 final int oldMoneyAmount = player.m_money;
                 player.m_money = moneyAmount;
-                
-                notifyObserver(IPokerAgentListener.PLAYER_MONEY_CHANGED, player, oldMoneyAmount);
+                m_pokerObserver.playerMoneyChanged(player, oldMoneyAmount);
             }
             
             @Override
@@ -650,8 +517,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 
                 final PokerPlayerInfo oldCurrentPlayer = m_table.m_currentPlayer;
                 m_table.m_currentPlayer = m_table.getPlayer(noSeat);
-                
-                notifyObserver(IPokerAgentListener.PLAYER_TURN_BEGAN, oldCurrentPlayer);
+                m_pokerObserver.playerTurnBegan(oldCurrentPlayer);
             }
             
             @Override
@@ -676,8 +542,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 }
                 
                 player.did(action, m_table.m_gameState);
-                
-                notifyObserver(IPokerAgentListener.PLAYER_TURN_ENDED, player, action, actionAmount);
+                m_pokerObserver.playerTurnEnded(player, action, actionAmount);
             }
             
             @Override
@@ -690,14 +555,13 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                 player.m_money = moneyAmount;
-                
-                notifyObserver(IPokerAgentListener.POT_WON, player, potAmountWon, idPot);
+                m_pokerObserver.potWon(player, potAmountWon, idPot);
             }
             
             @Override
             public void tableClosedCommandReceived(GameTableClosedCommand command)
             {
-                notifyObserver(IPokerAgentListener.TABLE_CLOSED);
+                m_pokerObserver.tableClosed();
                 disconnect();
             }
             
@@ -770,17 +634,21 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
                     player.m_timeRemaining = seat.m_timeRemaining;
                     player.m_betAmount = seat.m_bet;
                 }
-                
-                notifyObserver(IPokerAgentListener.TABLE_INFOS);
+                m_pokerObserver.tableInfos();
             }
             
             @Override
             public void waitingCommandReceived(GameWaitingCommand command)
             {
-                notifyObserver(IPokerAgentListener.WAITING_FOR_PLAYERS);
+                m_pokerObserver.waitingForPlayers();
             }
             
         };
         m_commandObserver.subscribe(adapter);
+    }
+    
+    public ClientPokerObserver getPokerObserver()
+    {
+        return m_pokerObserver;
     }
 }

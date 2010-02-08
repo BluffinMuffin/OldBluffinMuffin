@@ -24,6 +24,7 @@ import pokerLogic.TypePlayerAction;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import clientAI.PokerSVM;
+import clientGameTools.ClientPokerAdapter;
 import clientStats.PlayerStats;
 import clientStats.StatsAgent;
 
@@ -98,13 +99,7 @@ public class TableGUIAdvisor extends TableGUI
         this();
         m_statsAgent = p_statsAgent;
         m_pokerSVM = p_pokerSVM;
-    }
-    
-    @Override
-    public void boardChanged(ArrayList<Integer> p_boardCardIndices)
-    {
-        super.boardChanged(p_boardCardIndices);
-        updateProbWin();
+        initializePokerObserver();
     }
     
     private StatsInfos calculateHandValues()
@@ -113,42 +108,6 @@ public class TableGUIAdvisor extends TableGUI
         final Card[] boardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
         
         return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbRemainingPlayers, TableGUIAdvisor.NB_MC_ITERATIONS);
-    }
-    
-    @Override
-    public void gameEnded()
-    {
-        super.gameEnded();
-        
-        if (getjDialogPlayerStats().isVisible())
-        {
-            getjDialogPlayerStats().refresh();
-        }
-        
-        if (m_statsAgent != null)
-        {
-            for (int i = 0; i < m_table.getNbSeats(); ++i)
-            {
-                final PokerPlayerInfo player = m_table.getPlayer(i);
-                final HudPanel hud = getPlayer(i).m_hud;
-                
-                if (player == null)
-                {
-                    hud.setToolTipText("");
-                }
-                else
-                {
-                    if (player.m_isPlaying)
-                    {
-                        final PlayerStats stats = m_statsAgent.m_overallStats.get(player.m_name);
-                        final String tightLoose = ((stats.isTight()) ? m_bundle.get("advisor.tooltip.tight") : m_bundle.get("advisor.tooltip.loose"));
-                        final String preflopPassiveAgressive = ((stats.getPassive_PRF() > 0.5) ? m_bundle.get("advisor.tooltip.passive") + "(" + String.format("%.1f", stats.getPassive_PRF() * 100) + "%)" : m_bundle.get("advisor.tooltip.aggressive") + "(" + String.format("%.1f", (1 - stats.getPassive_PRF()) * 100) + "%)");
-                        final String postflopPassiveAgressive = ((stats.getPassive_PF() > 0.5) ? m_bundle.get("advisor.tooltip.passive") + "(" + String.format("%.1f", stats.getPassive_PF() * 100) + "%)" : m_bundle.get("advisor.tooltip.aggressive") + "(" + String.format("%.1f", (1 - stats.getPassive_PF()) * 100) + "%)");
-                        hud.setToolTipText(tightLoose + " , " + preflopPassiveAgressive + " / " + postflopPassiveAgressive);
-                    }
-                }
-            }
-        }
     }
     
     @Override
@@ -285,17 +244,6 @@ public class TableGUIAdvisor extends TableGUI
     }
     
     @Override
-    public void playerCardChanged(PokerPlayerInfo p_player)
-    {
-        super.playerCardChanged(p_player);
-        
-        if (m_table.m_localPlayer == p_player)
-        {
-            updateProbWin();
-        }
-    }
-    
-    @Override
     public void setTable(PokerTableInfo p_table)
     {
         super.setTable(p_table);
@@ -357,5 +305,61 @@ public class TableGUIAdvisor extends TableGUI
         sb.append("</color></center></html>");
         
         getJLabelProbWin().setText(sb.toString());
+    }
+    
+    private void initializePokerObserver()
+    {
+        m_pokerObserver.subscribe(new ClientPokerAdapter()
+        {
+            
+            @Override
+            public void boardChanged(ArrayList<Integer> boardCardIndices)
+            {
+                updateProbWin();
+            }
+            
+            @Override
+            public void gameEnded()
+            {
+                if (getjDialogPlayerStats().isVisible())
+                {
+                    getjDialogPlayerStats().refresh();
+                }
+                
+                if (m_statsAgent != null)
+                {
+                    for (int i = 0; i < m_table.getNbSeats(); ++i)
+                    {
+                        final PokerPlayerInfo player = m_table.getPlayer(i);
+                        final HudPanel hud = getPlayer(i).m_hud;
+                        
+                        if (player == null)
+                        {
+                            hud.setToolTipText("");
+                        }
+                        else
+                        {
+                            if (player.m_isPlaying)
+                            {
+                                final PlayerStats stats = m_statsAgent.m_overallStats.get(player.m_name);
+                                final String tightLoose = ((stats.isTight()) ? m_bundle.get("advisor.tooltip.tight") : m_bundle.get("advisor.tooltip.loose"));
+                                final String preflopPassiveAgressive = ((stats.getPassive_PRF() > 0.5) ? m_bundle.get("advisor.tooltip.passive") + "(" + String.format("%.1f", stats.getPassive_PRF() * 100) + "%)" : m_bundle.get("advisor.tooltip.aggressive") + "(" + String.format("%.1f", (1 - stats.getPassive_PRF()) * 100) + "%)");
+                                final String postflopPassiveAgressive = ((stats.getPassive_PF() > 0.5) ? m_bundle.get("advisor.tooltip.passive") + "(" + String.format("%.1f", stats.getPassive_PF() * 100) + "%)" : m_bundle.get("advisor.tooltip.aggressive") + "(" + String.format("%.1f", (1 - stats.getPassive_PF()) * 100) + "%)");
+                                hud.setToolTipText(tightLoose + " , " + preflopPassiveAgressive + " / " + postflopPassiveAgressive);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            @Override
+            public void playerCardChanged(PokerPlayerInfo player)
+            {
+                if (m_table.m_localPlayer == player)
+                {
+                    updateProbWin();
+                }
+            }
+        });
     }
 }

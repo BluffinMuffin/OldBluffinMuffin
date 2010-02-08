@@ -40,10 +40,8 @@ import utility.IClosingListener;
 import clientAILobbyGUI.LobbyAIMainJFrame;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
-import clientGame.IPokerAgentListener;
 import clientGame.PokerClient;
 import clientGameGUI.TableGUI;
-import clientOldAndUglyLobbyGUI.OldAndUglyClientLobby;
 
 public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
@@ -70,7 +68,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private JScrollPane jMainScrollPane = null;
     private JTable jMainTable = null;
     private JButton jConnectButton = null;
-    private JButton jOldStyleButton = null;
     private JButton jAIsButton = null;
     private JButton jLeaveTableButton = null;
     
@@ -84,7 +81,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         if (jAIsButton == null)
         {
             jAIsButton = new JButton();
-            jAIsButton.setText("AIs");
+            jAIsButton.setText("switch to AIs");
             jAIsButton.setBackground(Color.cyan);
             jAIsButton.addActionListener(new java.awt.event.ActionListener()
             {
@@ -200,7 +197,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             jMainToolBar.add(getJJoinTableButton());
             jMainToolBar.add(getJLeaveTableButton());
             jMainToolBar.add(getJAIsButton());
-            jMainToolBar.add(getJOldStyleButton());
         }
         return jMainToolBar;
     }
@@ -400,7 +396,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 jStatusLabel.setText("Connected as " + m_playerName + " to " + m_playerName + ":" + m_playerName);
                 getJRefreshButton().setEnabled(true);
                 getJAddTableButton().setEnabled(true);
-                getJOldStyleButton().setEnabled(false);
                 getJAIsButton().setEnabled(false);
                 getJConnectButton().setText("Disconnect");
                 setTitle(m_playerName + " - " + jTitleLabel.getText());
@@ -467,7 +462,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                         getJAddTableButton().setEnabled(false);
                         getJJoinTableButton().setEnabled(false);
                         getJConnectButton().setText("Connect");
-                        getJOldStyleButton().setEnabled(true);
                         getJAIsButton().setEnabled(true);
                     }
                     else
@@ -503,32 +497,6 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             return false;
         }
         return true;
-    }
-    
-    /**
-     * This method initializes jOldStyleButton
-     * 
-     * @return javax.swing.JButton
-     */
-    private JButton getJOldStyleButton()
-    {
-        if (jOldStyleButton == null)
-        {
-            jOldStyleButton = new JButton();
-            jOldStyleButton.setText("OldStyle");
-            jOldStyleButton.setBackground(Color.orange);
-            jOldStyleButton.addActionListener(new java.awt.event.ActionListener()
-            {
-                public void actionPerformed(java.awt.event.ActionEvent e)
-                {
-                    final OldAndUglyClientLobby oldLobby = new OldAndUglyClientLobby();
-                    oldLobby.getJFrame().setVisible(true);
-                    LobbyMainJFrame.this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-                    setVisible(false);
-                }
-            });
-        }
-        return jOldStyleButton;
     }
     
     /**
@@ -763,12 +731,12 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             table.m_bigBlindAmount = p_bigBlindAmount;
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
-            final AutoListModel<IPokerAgentListener> observers = new AutoListModel<IPokerAgentListener>();
+            final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
             final TableGUI gui = new TableGUI();
-            observers.add(gui);
+            gui.setPokerObserver(client.getPokerObserver());
             
             // Start a the new PokerClient.
-            final PokerClient client = new PokerClient(gui, observers, localPlayer, tableSocket, table, fromTable);
+            client.setActionner(gui);
             client.addClosingListener(this);
             client.start();
             

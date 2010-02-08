@@ -1,13 +1,10 @@
 package pokerExtractor;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
@@ -24,28 +21,26 @@ import protocolGameTools.GameClientSideAdapter;
 import protocolGameTools.GameClientSideObserver;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
-import utilGUI.AutoListModel;
-import utilGUI.ListEvent;
-import utilGUI.ListListener;
 import utility.IClosingListener;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
-import clientGame.IPokerAgentActionner;
-import clientGame.IPokerAgentListener;
+import clientGameTools.ClientPokerObserver;
+import clientGameTools.IClientPoker;
+import clientGameTools.IClientPokerActionner;
 
 /**
  * This class is the representation of a generic poker client.
  * 
  * @author Hokus
  */
-public class PokerClientLocal extends Thread implements ListListener<IPokerAgentListener>, IClosingListener<IPokerAgent>
+public class PokerClientLocal extends Thread implements IClosingListener<IClientPoker>
 {
     public static final int NB_CARDS_BOARDS = 5;
     public static final int NB_SEATS = 9;
     private final GameClientSideObserver m_commandObserver = new GameClientSideObserver();
+    private final ClientPokerObserver m_pokerObserver = new ClientPokerObserver();
     
-    IPokerAgentActionner m_agent = null;
-    AutoListModel<IPokerAgentListener> m_observers = null;
+    IClientPokerActionner m_agent = null;
     
     ClientPokerTableInfo m_table;
     
@@ -53,12 +48,10 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     LinkedBlockingQueue<String> m_toServer = null;
     List<IClosingListener<PokerClientLocal>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<PokerClientLocal>>());
     
-    public PokerClientLocal(IPokerAgentActionner p_agent, AutoListModel<IPokerAgentListener> p_observers, ClientPokerPlayerInfo p_localPlayer, ClientPokerTableInfo p_table, LinkedBlockingQueue<String> p_fromServer, LinkedBlockingQueue<String> p_toServer)
+    public PokerClientLocal(IClientPokerActionner p_agent, ClientPokerPlayerInfo p_localPlayer, ClientPokerTableInfo p_table, LinkedBlockingQueue<String> p_fromServer, LinkedBlockingQueue<String> p_toServer)
     {
         m_table = p_table;
         m_agent = p_agent;
-        m_observers = p_observers;
-        m_observers.addListListener(this);
         
         m_table.m_localPlayer = p_localPlayer;
         m_table.m_dealer = p_localPlayer;
@@ -87,15 +80,11 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     }
     
     @Override
-    public void closing(IPokerAgent e)
+    public void closing(IClientPoker e)
     {
         if (e == m_agent)
         {
             disconnect();
-        }
-        else
-        {
-            m_observers.remove(e);
         }
     }
     
@@ -105,8 +94,6 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         {
             m_toServer = null;
             m_fromServer = null;
-            m_observers.clear();
-            stopAgent(m_agent);
             
             synchronized (m_closingListeners)
             {
@@ -118,14 +105,9 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
         }
     }
     
-    public IPokerAgentActionner getAgent()
+    public IClientPokerActionner getAgent()
     {
         return m_agent;
-    }
-    
-    public AutoListModel<IPokerAgentListener> getObservers()
-    {
-        return m_observers;
     }
     
     public ClientPokerTableInfo getTable()
@@ -136,60 +118,6 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     public boolean isConnected()
     {
         return (m_toServer != null) && (m_fromServer != null);
-    }
-    
-    @Override
-    public void itemsAdded(ListEvent<IPokerAgentListener> e)
-    {
-        startListeners(e.getItems());
-    }
-    
-    @Override
-    public void itemsChanged(ListEvent<IPokerAgentListener> e)
-    {
-        final IPokerAgentListener oldListener = e.getItems().get(0);
-        final IPokerAgentListener newListener = e.getItems().get(1);
-        
-        if (oldListener != newListener)
-        {
-            stopAgent(oldListener);
-            startAgent(newListener);
-            newListener.tableInfos();
-        }
-    }
-    
-    @Override
-    public void itemsRemoved(ListEvent<IPokerAgentListener> e)
-    {
-        stopListeners(e.getItems());
-        
-    }
-    
-    private void notifyObserver(Method p_method, Object... p_objects)
-    {
-        synchronized (m_observers)
-        {
-            for (final IPokerAgentListener observer : m_observers)
-            {
-                try
-                {
-                    p_method.invoke(observer, p_objects);
-                }
-                catch (final IllegalArgumentException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (final IllegalAccessException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (final InvocationTargetException e)
-                {
-                    e.printStackTrace();
-                }
-                
-            }
-        }
     }
     
     public void removeClosingListener(IClosingListener<PokerClientLocal> p_listener)
@@ -218,19 +146,11 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
     {
         if (m_agent == null)
         {
-            startListeners(m_observers);
             startListening();
         }
         else
         {
             this.setName(m_agent.getClass().getSimpleName() + " - " + m_table.m_localPlayer.m_name);
-            
-            startListeners(m_observers);
-            
-            if (!(m_agent instanceof IPokerAgentListener))
-            {
-                startAgent(m_agent);
-            }
             
             startListening();
             
@@ -244,35 +164,6 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                     disconnect();
                 }
             }
-        }
-    }
-    
-    private void startAgent(IPokerAgent p_agent)
-    {
-        p_agent.setTable(m_table);
-        p_agent.addClosingListener(this);
-        p_agent.start();
-    }
-    
-    private void stopAgent(IPokerAgent p_agent)
-    {
-        p_agent.stop();
-    }
-    
-    private void startListeners(List<IPokerAgentListener> p_listeners)
-    {
-        for (final IPokerAgentListener listener : p_listeners)
-        {
-            startAgent(listener);
-            listener.tableInfos();
-        }
-    }
-    
-    private void stopListeners(List<IPokerAgentListener> p_listeners)
-    {
-        for (final IPokerAgentListener listener : p_listeners)
-        {
-            stopAgent(listener);
         }
     }
     
@@ -351,8 +242,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                 m_table.m_gameState = gameState;
                 
                 m_table.m_currentBet = 0;
-                
-                notifyObserver(IPokerAgentListener.BET_TURN_ENDED, indices, gameState);
+                m_pokerObserver.betTurnEnded(indices, gameState);
             }
             
             @Override
@@ -368,8 +258,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                         indices.add(i);
                     }
                 }
-                
-                notifyObserver(IPokerAgentListener.BOARD_CHANGED, indices);
+                m_pokerObserver.boardChanged(indices);
             }
             
             @Override
@@ -382,7 +271,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
             public void gameEndedCommandReceived(GameEndedCommand command)
             {
                 m_table.m_gameState = TypePokerRound.END;
-                notifyObserver(IPokerAgentListener.GAME_ENDED);
+                m_pokerObserver.gameEnded();
             }
             
             @Override
@@ -429,8 +318,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                 m_table.setPlayerPositions();
                 m_table.m_gameState = TypePokerRound.PREFLOP;
                 m_table.m_currentBet = 0;
-                
-                notifyObserver(IPokerAgentListener.GAME_STARTED, null, null, null);// , oldSmallBlind, oldBigBlind);
+                m_pokerObserver.gameStarted(null, null, null);
             }
             
             @Override
@@ -442,8 +330,7 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                 final int oldMoneyAmount = player.m_money;
                 player.m_money = moneyAmount;
-                
-                notifyObserver(IPokerAgentListener.PLAYER_MONEY_CHANGED, player, oldMoneyAmount);
+                m_pokerObserver.playerMoneyChanged(player, oldMoneyAmount);
             }
             
             @Override
@@ -515,11 +402,15 @@ public class PokerClientLocal extends Thread implements ListListener<IPokerAgent
                     player.m_timeRemaining = seat.m_timeRemaining;
                     player.m_betAmount = seat.m_bet;
                 }
-                
-                notifyObserver(IPokerAgentListener.TABLE_INFOS);
+                m_pokerObserver.tableInfos();
             }
             
         };
         m_commandObserver.subscribe(adapter);
+    }
+    
+    public ClientPokerObserver getPokerObserver()
+    {
+        return m_pokerObserver;
     }
 }

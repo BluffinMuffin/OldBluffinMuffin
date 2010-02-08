@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import clientGame.ClientPokerPlayerInfo;
-import clientStats.StatsAgent;
-
 import pokerAI.SVM;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
@@ -22,6 +19,10 @@ import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import utility.Constants;
 import utility.Tool;
+import clientGame.ClientPokerPlayerInfo;
+import clientGameTools.ClientPokerAdapter;
+import clientGameTools.ClientPokerObserver;
+import clientStats.StatsAgent;
 
 /**
  * @author Hocus
@@ -394,13 +395,6 @@ public class PokerSVM extends PokerAI
         return sb.toString();
     }
     
-    @Override
-    public void gameEnded()
-    {
-        super.gameEnded();
-        saveMemory();
-    }
-    
     /**
      * Get SVM corresponding to the Postflop-Fold decisions.
      * If not loaded, loads it.
@@ -666,5 +660,27 @@ public class PokerSVM extends PokerAI
     public String toString()
     {
         return "Poker SVM AI";
+    }
+    
+    @Override
+    public void setPokerObserver(ClientPokerObserver observer)
+    {
+        super.setPokerObserver(observer);
+        initializePokerObserver(observer);
+    }
+    
+    private void initializePokerObserver(ClientPokerObserver observer)
+    {
+        observer.subscribe(new ClientPokerAdapter()
+        {
+            
+            @Override
+            public void gameEnded()
+            {
+                saveMemory();
+            }
+            
+        });
+        
     }
 }

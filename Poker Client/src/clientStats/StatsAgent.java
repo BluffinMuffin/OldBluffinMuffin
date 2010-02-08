@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import utility.Constants;
-
 import clientGame.ClientPokerPlayerInfo;
-import clientGame.IPokerAgentListener;
-
+import clientGameTools.ClientPokerAdapter;
+import clientGameTools.ClientPokerObserver;
+import clientGameTools.IClientPoker;
 
 /**
  * StatsAgent.java
@@ -22,9 +21,9 @@ import clientGame.IPokerAgentListener;
  *         Description: This class log all kind of statistics related to a game
  *         of poker
  */
-public class StatsAgent implements IPokerAgentListener
+public class StatsAgent implements IClientPoker
 {
-    
+    private ClientPokerObserver m_pokerObserver;
     // Playing table
     protected PokerTableInfo m_table;
     
@@ -55,119 +54,9 @@ public class StatsAgent implements IPokerAgentListener
     boolean m_ongoingCBet;
     
     @Override
-    public void addClosingListener(utility.IClosingListener<IPokerAgent> pListener)
+    public void addClosingListener(utility.IClosingListener<IClientPoker> pListener)
     {
         
-    }
-    
-    /**
-     * Happens when a betting turn ends.
-     * 
-     * @param p_potIndices
-     *            contains all indices of pots that have been modified.
-     */
-    public void betTurnEnded(ArrayList<Integer> pPotIndices, TypePokerRound pGameStat)
-    {
-        // Notify the lastStreeRaiser that he actually was the last one.
-        if (m_lastStreetRaiser != null)
-        {
-            m_lastStreetRaiser.lastRaiser();
-        }
-        
-        ++m_turnType;
-        m_isStreetRaised = false;
-        m_nbBet = 0;
-        
-    }
-    
-    /**
-     * Happens when cards on the board changes.
-     * 
-     * @param p_boardCardIndices
-     *            contains all indices of the board cards that have been
-     *            modified.
-     */
-    public void boardChanged(ArrayList<Integer> p_boardCardIndices)
-    {
-        
-    }
-    
-    /**
-     * Happens when a game ends.
-     */
-    public void gameEnded()
-    {
-        synchronized (m_table)
-        {
-            for (final PokerPlayerInfo player : m_table.getPlayers())
-            {
-                // Notify everyone that a turn ended.
-                if (player.m_isPlaying)
-                {
-                    m_gameStats.get(player.m_name).GameEnded();
-                }
-            }
-        }
-        
-        synchronized (m_overallStats)
-        {
-            for (final PlayerStats player : m_gameStats.values())
-            {
-                m_overallStats.put(player.getName(), player);
-            }
-            m_gameStats.clear();
-        }
-    }
-    
-    /**
-     * Happens when a game starts.
-     * 
-     * @param p_oldDealer
-     *            is the previous dealer.
-     * @param p_oldSmallBlind
-     *            is the previous player with the small blind.
-     * @param p_oldBigBlind
-     *            is the previous player with the big blind.
-     */
-    public void gameStarted(PokerPlayerInfo p_oldDealer, PokerPlayerInfo p_oldSmallBlind, PokerPlayerInfo p_oldBigBlind)
-    {
-        synchronized (m_table)
-        {
-            for (final PokerPlayerInfo player : m_table.getPlayers())
-            {
-                if (!m_overallStats.containsKey(player.m_name))
-                {
-                    m_gameStats.put(player.m_name, new PlayerStats((ClientPokerPlayerInfo) player, this));
-                }
-                else
-                {
-                    try
-                    {
-                        m_gameStats.put(player.m_name, (PlayerStats) m_overallStats.get(player.m_name).clone());
-                        m_gameStats.get(player.m_name).setPlayer((ClientPokerPlayerInfo) player);
-                    }
-                    catch (final CloneNotSupportedException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                
-                // Notify everyone that a new hand is starting.
-                if (player.m_isPlaying)
-                {
-                    m_gameStats.get(player.m_name).playNewHand();
-                }
-            }
-        }
-        m_gatheringStats = true;
-        
-        m_turnType = 0; // Preflop
-        m_isUnopenedPot = true;
-        m_isStreetRaised = false;
-        m_ongoingCBet = true;
-        
-        // BB is the first Bet.
-        m_nbBet = 1;
     }
     
     /**
@@ -186,131 +75,8 @@ public class StatsAgent implements IPokerAgentListener
         return marshalData;
     }
     
-    /**
-     * Happens when the cards of a player changes.
-     * 
-     * @param p_player
-     *            is the player for whom his cards have been changed.
-     */
-    public void playerCardChanged(PokerPlayerInfo p_player)
-    {
-        
-    }
-    
-    /**
-     * Happens when a player joined the table.
-     * 
-     * @param p_player
-     *            is the player that has joined the table.
-     */
-    public void playerJoined(PokerPlayerInfo p_player)
-    {
-    }
-    
-    /**
-     * Happens when a player left the table.
-     * 
-     * @param p_player
-     *            is the player that has left the table.
-     */
-    public void playerLeft(PokerPlayerInfo p_player)
-    {
-        
-    }
-    
-    /**
-     * Happens when the money amount of a player changes.
-     * 
-     * @param p_player
-     *            is the player for whom his money has been changed.
-     * @param p_oldMoneyAmount
-     *            is the previous money amount he had.
-     */
-    public void playerMoneyChanged(PokerPlayerInfo p_player, int p_oldMoneyAmount)
-    {
-        
-    }
-    
-    /**
-     * Happens when the turn of a player begins.
-     * 
-     * @param p_oldCurrentPlayer
-     *            is the previous player that had played.
-     */
-    public void playerTurnBegan(PokerPlayerInfo p_oldCurrentPlayer)
-    {
-        
-    }
-    
-    /**
-     * Happens when the turn of a player ends.
-     * 
-     * @param p_player
-     *            is the player for whom his turn ended.
-     * @param p_action
-     *            is the action taken by the player.
-     * @param p_actionAmount
-     *            is the amount related to the action taken.
-     */
-    public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount)
-    {
-        final PlayerStats player = m_gameStats.get(p_player.m_name);
-        if (m_gatheringStats)
-        {
-            switch (p_action)
-            {
-                case FOLD:
-                    player.fold();
-                    break;
-                case CALL:
-                    player.call();
-                    break;
-                case CHECK:
-                    player.check();
-                    break;
-                case RAISE:
-                    player.raise();
-                    if (m_isUnopenedPot)
-                    {
-                        m_isUnopenedPot = false;
-                    }
-                    if (!m_isStreetRaised)
-                    {
-                        // If there was a CBet and we just broke it ^^
-                        if ((m_lastStreetRaiser != player) && (m_turnType != 0) && m_ongoingCBet)
-                        {
-                            m_ongoingCBet = false;
-                        }
-                        m_isStreetRaised = true;
-                    }
-                    m_lastStreetRaiser = player;
-                    ++m_nbBet;
-                    break;
-                case SMALL_BLIND:
-                    break;
-                case BIG_BLIND:
-                    break;
-            }
-        }
-    }
-    
-    /**
-     * Happens when a player wins and receives his share.
-     * 
-     * @param p_player
-     *            is the player that won.
-     * @param p_potAmountWon
-     *            is the share that the player won.
-     * @param p_potIndex
-     *            is the index of the pot that player won.
-     */
-    public void potWon(PokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex)
-    {
-        
-    }
-    
     @Override
-    public void removeClosingListener(utility.IClosingListener<IPokerAgent> pListener)
+    public void removeClosingListener(utility.IClosingListener<IClientPoker> pListener)
     {
         
     }
@@ -336,22 +102,6 @@ public class StatsAgent implements IPokerAgentListener
     
     @Override
     public void stop()
-    {
-        
-    }
-    
-    /**
-     * Happens when the table closes.
-     */
-    public void tableClosed()
-    {
-        
-    }
-    
-    /**
-     * Happens when all infos of a table need to be updated.
-     */
-    public void tableInfos()
     {
         
     }
@@ -397,11 +147,142 @@ public class StatsAgent implements IPokerAgentListener
         }
     }
     
-    /**
-     * Happens when waiting for other players to join.
-     */
-    public void waitingForPlayers()
+    public void setPokerObserver(ClientPokerObserver observer)
     {
+        m_pokerObserver = observer;
+        initializePokerObserver();
+    }
+    
+    private void initializePokerObserver()
+    {
+        m_pokerObserver.subscribe(new ClientPokerAdapter()
+        {
+            
+            @Override
+            public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
+            {
+                // Notify the lastStreeRaiser that he actually was the last one.
+                if (m_lastStreetRaiser != null)
+                {
+                    m_lastStreetRaiser.lastRaiser();
+                }
+                
+                ++m_turnType;
+                m_isStreetRaised = false;
+                m_nbBet = 0;
+            }
+            
+            @Override
+            public void gameEnded()
+            {
+                synchronized (m_table)
+                {
+                    for (final PokerPlayerInfo player : m_table.getPlayers())
+                    {
+                        // Notify everyone that a turn ended.
+                        if (player.m_isPlaying)
+                        {
+                            m_gameStats.get(player.m_name).GameEnded();
+                        }
+                    }
+                }
+                
+                synchronized (m_overallStats)
+                {
+                    for (final PlayerStats player : m_gameStats.values())
+                    {
+                        m_overallStats.put(player.getName(), player);
+                    }
+                    m_gameStats.clear();
+                }
+            }
+            
+            @Override
+            public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+            {
+                synchronized (m_table)
+                {
+                    for (final PokerPlayerInfo player : m_table.getPlayers())
+                    {
+                        if (!m_overallStats.containsKey(player.m_name))
+                        {
+                            m_gameStats.put(player.m_name, new PlayerStats((ClientPokerPlayerInfo) player, StatsAgent.this));
+                        }
+                        else
+                        {
+                            try
+                            {
+                                m_gameStats.put(player.m_name, (PlayerStats) m_overallStats.get(player.m_name).clone());
+                                m_gameStats.get(player.m_name).setPlayer((ClientPokerPlayerInfo) player);
+                            }
+                            catch (final CloneNotSupportedException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                        
+                        // Notify everyone that a new hand is starting.
+                        if (player.m_isPlaying)
+                        {
+                            m_gameStats.get(player.m_name).playNewHand();
+                        }
+                    }
+                }
+                m_gatheringStats = true;
+                
+                m_turnType = 0; // Preflop
+                m_isUnopenedPot = true;
+                m_isStreetRaised = false;
+                m_ongoingCBet = true;
+                
+                // BB is the first Bet.
+                m_nbBet = 1;
+            }
+            
+            @Override
+            public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction action, int actionAmount)
+            {
+                final PlayerStats player = m_gameStats.get(p_player.m_name);
+                if (m_gatheringStats)
+                {
+                    switch (action)
+                    {
+                        case FOLD:
+                            player.fold();
+                            break;
+                        case CALL:
+                            player.call();
+                            break;
+                        case CHECK:
+                            player.check();
+                            break;
+                        case RAISE:
+                            player.raise();
+                            if (m_isUnopenedPot)
+                            {
+                                m_isUnopenedPot = false;
+                            }
+                            if (!m_isStreetRaised)
+                            {
+                                // If there was a CBet and we just broke it ^^
+                                if ((m_lastStreetRaiser != player) && (m_turnType != 0) && m_ongoingCBet)
+                                {
+                                    m_ongoingCBet = false;
+                                }
+                                m_isStreetRaised = true;
+                            }
+                            m_lastStreetRaiser = player;
+                            ++m_nbBet;
+                            break;
+                        case SMALL_BLIND:
+                            break;
+                        case BIG_BLIND:
+                            break;
+                    }
+                }
+            }
+            
+        });
         
     }
     

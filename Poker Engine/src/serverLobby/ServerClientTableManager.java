@@ -148,9 +148,9 @@ public class ServerClientTableManager extends Thread
                             // Attach the client to the table.
                             // Transfert socket connection.
                             sendMessage(command.encodeResponse(noSeat));
-                            m_manager.m_table.join(player, noSeat);
-                            player.setPokerObserver(m_manager.m_table.getPokerObserver());
                             player.setIsConnected();
+                            player.setPokerObserver(m_manager.m_table.getPokerObserver());
+                            m_manager.m_table.join(player, noSeat);
                         }
                     }
                     else

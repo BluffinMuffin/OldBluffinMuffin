@@ -19,12 +19,10 @@ import protocolGame.GameStartedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
-import utilGUI.AutoListModel;
 import utility.Tool;
 import clientAI.TypeSimplifiedAction;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
-import clientGame.IPokerAgentListener;
 import clientStats.StatsAgent;
 import extractorDB.TupleHandHistories;
 import extractorDB.TupleHandHistories.PhaseEvents;
@@ -79,16 +77,9 @@ public class SimulationServer
     
     public SimulationServer()
     {
-        // try
-        // {
-        // m_output = new BufferedWriter(new FileWriter("data.dat"));
-        // }
-        // catch (IOException e) { e.printStackTrace(); }
-        
-        final AutoListModel<IPokerAgentListener> observers = new AutoListModel<IPokerAgentListener>();
-        observers.add(m_statsAgent);
         // observers.add(new Viewer());
-        m_client = new PokerClientLocal(null, observers, m_clientHero, m_table, m_toClient, m_fromClient);
+        m_client = new PokerClientLocal(null, m_clientHero, m_table, m_toClient, m_fromClient);
+        m_statsAgent.setPokerObserver(m_client.getPokerObserver());
         m_client.start();
     }
     

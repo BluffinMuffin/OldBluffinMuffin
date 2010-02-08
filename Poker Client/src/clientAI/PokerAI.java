@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
 import utility.IClosingListener;
-
 import clientGame.ClientPokerTableInfo;
-import clientGame.IPokerAgentActionner;
-import clientGame.IPokerAgentListener;
-
+import clientGameTools.ClientPokerAdapter;
+import clientGameTools.ClientPokerObserver;
+import clientGameTools.IClientPoker;
+import clientGameTools.IClientPokerActionner;
 
 /**
  * @author Hocus
@@ -29,10 +27,10 @@ import clientGame.IPokerAgentListener;
  * @see PokerSVM
  * 
  */
-public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
+public class PokerAI implements IClientPokerActionner
 {
-    private final List<IClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IPokerAgent>>());
-    
+    private final List<IClosingListener<IClientPoker>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IClientPoker>>());
+    private ClientPokerObserver m_pokerObserver;
     /** Indicates the agent is still running. **/
     private boolean m_isRunning = true;
     
@@ -76,7 +74,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void addClosingListener(IClosingListener<IPokerAgent> p_listener)
+    public void addClosingListener(IClosingListener<IClientPoker> p_listener)
     {
         m_closingListeners.add(p_listener);
     }
@@ -104,37 +102,12 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
         return new PokerPlayerAction(TypePlayerAction.FOLD);
     }
     
-    @Override
-    public void betTurnEnded(ArrayList<Integer> p_potIndices, TypePokerRound p_gameState)
-    {
-    }
-    
-    @Override
-    public void boardChanged(ArrayList<Integer> p_boardCardIndices)
-    {
-        synchronized (m_mutexNewInfos)
-        {
-            m_newInfos = true;
-            m_mutexNewInfos.notify();
-        }
-    }
-    
     /**
      * Take the action of disconnecting.
      */
     public void disconnect()
     {
         actionTaken(new PokerPlayerAction(TypePlayerAction.DISCONNECT));
-    }
-    
-    @Override
-    public void gameEnded()
-    {
-    }
-    
-    @Override
-    public void gameStarted(PokerPlayerInfo p_oldDealer, PokerPlayerInfo p_oldSmallBlind, PokerPlayerInfo p_oldBigBlind)
-    {
     }
     
     @Override
@@ -166,50 +139,7 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void playerCardChanged(PokerPlayerInfo p_player)
-    {
-        if (p_player == m_table.m_localPlayer)
-        {
-            synchronized (m_mutexNewInfos)
-            {
-                m_newInfos = true;
-                m_mutexNewInfos.notify();
-            }
-        }
-    }
-    
-    @Override
-    public void playerJoined(PokerPlayerInfo p_player)
-    {
-    }
-    
-    @Override
-    public void playerLeft(PokerPlayerInfo p_player)
-    {
-    }
-    
-    @Override
-    public void playerMoneyChanged(PokerPlayerInfo p_player, int p_oldMoneyAmount)
-    {
-    }
-    
-    @Override
-    public void playerTurnBegan(PokerPlayerInfo p_oldCurrentPlayer)
-    {
-    }
-    
-    @Override
-    public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount)
-    {
-    }
-    
-    @Override
-    public void potWon(PokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex)
-    {
-    }
-    
-    @Override
-    public void removeClosingListener(IClosingListener<IPokerAgent> p_listener)
+    public void removeClosingListener(IClosingListener<IClientPoker> p_listener)
     {
         m_closingListeners.remove(p_listener);
     }
@@ -277,17 +207,6 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
     }
     
     @Override
-    public void tableClosed()
-    {
-        disconnect();
-    }
-    
-    @Override
-    public void tableInfos()
-    {
-    }
-    
-    @Override
     public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         synchronized (m_mutexNewInfos)
@@ -308,8 +227,47 @@ public class PokerAI implements IPokerAgentListener, IPokerAgentActionner
         return "PokerAI";
     }
     
-    @Override
-    public void waitingForPlayers()
+    public void setPokerObserver(ClientPokerObserver observer)
     {
+        m_pokerObserver = observer;
+        initializePokerObserver();
+    }
+    
+    private void initializePokerObserver()
+    {
+        m_pokerObserver.subscribe(new ClientPokerAdapter()
+        {
+            
+            @Override
+            public void boardChanged(ArrayList<Integer> boardCardIndices)
+            {
+                synchronized (m_mutexNewInfos)
+                {
+                    m_newInfos = true;
+                    m_mutexNewInfos.notify();
+                }
+            }
+            
+            @Override
+            public void playerCardChanged(PokerPlayerInfo player)
+            {
+                if (player == m_table.m_localPlayer)
+                {
+                    synchronized (m_mutexNewInfos)
+                    {
+                        m_newInfos = true;
+                        m_mutexNewInfos.notify();
+                    }
+                }
+            }
+            
+            @Override
+            public void tableClosed()
+            {
+                disconnect();
+            }
+            
+        });
+        
     }
 }

@@ -14,9 +14,9 @@ import javax.swing.SpinnerNumberModel;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
 
-import clientGame.IPokerAgentActionner;
+import clientGameTools.IClientPokerActionner;
+import clientGameTools.IClientPoker;
 
-import pokerAI.IPokerAgent;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 import utilGUI.CurrencyIntegerEditor;
@@ -29,7 +29,7 @@ import utility.IClosingListener;
  *         A part of this class was generated using a visual editor
  *         (http://wiki.eclipse.org/VE).
  */
-public class TableGUI extends TableGUIViewer implements IPokerAgentActionner
+public class TableGUI extends TableGUIViewer implements IClientPokerActionner
 {
     private static final long serialVersionUID = -526188625940605519L;
     
@@ -39,7 +39,7 @@ public class TableGUI extends TableGUIViewer implements IPokerAgentActionner
     private JButton jButtonFold;
     private JSpinner jSpinnerRaise;
     
-    private final List<IClosingListener<IPokerAgent>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IPokerAgent>>());
+    private final List<IClosingListener<IClientPoker>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IClientPoker>>());
     
     private final static int RAISE_STEP = 1;
     
@@ -77,7 +77,7 @@ public class TableGUI extends TableGUIViewer implements IPokerAgentActionner
         
         synchronized (m_closingListeners)
         {
-            for (final IClosingListener<IPokerAgent> listener : m_closingListeners)
+            for (final IClosingListener<IClientPoker> listener : m_closingListeners)
             {
                 listener.closing(TableGUI.this);
             }
