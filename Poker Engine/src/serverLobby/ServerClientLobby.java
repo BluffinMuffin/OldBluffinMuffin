@@ -12,7 +12,7 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
-import protocolLobbyTools.LobbyServerSideReceiver;
+import protocolLobbyTools.LobbyServerSideObserver;
 import protocolTools.IBluffinCommand;
 
 /**
@@ -22,7 +22,7 @@ public class ServerClientLobby extends Thread
 {
     private String m_playerName = "?";
     private final ServerLobby m_lobby;
-    private final LobbyServerSideReceiver m_commandReceiver = new LobbyServerSideReceiver();
+    private final LobbyServerSideObserver m_commandObserver = new LobbyServerSideObserver();
     
     // Communications with the client
     private Socket m_socket = null;
@@ -64,7 +64,7 @@ public class ServerClientLobby extends Thread
     protected String receive() throws IOException
     {
         final String line = m_fromClient.readLine();
-        m_commandReceiver.receiveSomething(line);
+        m_commandObserver.receiveSomething(line);
         return line;
     }
     
@@ -76,7 +76,7 @@ public class ServerClientLobby extends Thread
     @Override
     public void run()
     {
-        initializeCommandReceiver();
+        initializeCommandObserver();
         while (isConnected())
         {
             try
@@ -96,9 +96,9 @@ public class ServerClientLobby extends Thread
         }
     }
     
-    private void initializeCommandReceiver()
+    private void initializeCommandObserver()
     {
-        m_commandReceiver.subscribe(new LobbyServerSideAdapter()
+        m_commandObserver.subscribe(new LobbyServerSideAdapter()
         {
             @Override
             public void commandReceived(String command)

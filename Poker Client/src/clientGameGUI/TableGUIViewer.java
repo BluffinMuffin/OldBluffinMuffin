@@ -21,7 +21,6 @@ import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
 import pokerAI.IPokerAgent;
-import pokerAI.IPokerAgentListener;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
@@ -32,6 +31,7 @@ import utility.Bundle;
 import utility.Constants;
 import utility.IClosingListener;
 import clientGame.ClientPokerTableInfo;
+import clientGame.IPokerAgentListener;
 
 /**
  * @author Hocus

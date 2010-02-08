@@ -20,7 +20,7 @@ import serverGame.ServerTableCommunicator;
 public class ServerPokerLogger
 {
     
-    private final ServerPokerReceiver m_receiver;
+    private final ServerPokerObserver m_receiver;
     private final OutputStream m_output;
     
     /**
@@ -28,7 +28,7 @@ public class ServerPokerLogger
      * 
      * @param p_output
      */
-    public ServerPokerLogger(OutputStream p_output, ServerPokerReceiver receiver)
+    public ServerPokerLogger(OutputStream p_output, ServerPokerObserver receiver)
     {
         m_receiver = receiver;
         m_output = p_output;

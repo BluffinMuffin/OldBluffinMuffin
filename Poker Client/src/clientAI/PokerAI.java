@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import pokerAI.IPokerAgent;
-import pokerAI.IPokerAgentActionner;
-import pokerAI.IPokerAgentListener;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
@@ -15,6 +13,8 @@ import pokerLogic.TypePokerRound;
 import utility.IClosingListener;
 
 import clientGame.ClientPokerTableInfo;
+import clientGame.IPokerAgentActionner;
+import clientGame.IPokerAgentListener;
 
 
 /**

@@ -7,7 +7,7 @@ import serverGame.ServerPokerPlayerInfo;
 import serverGame.ServerTableCommunicator;
 import utility.EventReceiver;
 
-public class ServerPokerReceiver extends EventReceiver<ServerPokerListener>
+public class ServerPokerObserver extends EventReceiver<ServerPokerListener>
 {
     public void bigBlindPosted(ServerTableCommunicator comm, ServerPokerPlayerInfo info, int value)
     {

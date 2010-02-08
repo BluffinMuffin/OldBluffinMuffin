@@ -1,7 +1,6 @@
-package pokerAI;
+package clientGame;
 
 import java.lang.reflect.Method;
-
 
 /**
  * @author Hocus

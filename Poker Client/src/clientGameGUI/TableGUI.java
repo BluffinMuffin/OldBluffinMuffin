@@ -14,8 +14,9 @@ import javax.swing.SpinnerNumberModel;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.Leading;
 
+import clientGame.IPokerAgentActionner;
+
 import pokerAI.IPokerAgent;
-import pokerAI.IPokerAgentActionner;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 import utilGUI.CurrencyIntegerEditor;

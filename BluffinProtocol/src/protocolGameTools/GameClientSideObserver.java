@@ -18,10 +18,10 @@ import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.GameWaitingCommand;
-import protocolTools.BluffinCommandReceiver;
+import protocolTools.BluffinCommandObserver;
 import utility.Constants;
 
-public class GameClientSideReceiver extends BluffinCommandReceiver<GameClientSideListener>
+public class GameClientSideObserver extends BluffinCommandObserver<GameClientSideListener>
 {
     @Override
     protected void onLineReceived(String line)

@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
-import protocolLobbyTools.LobbyServerSideReceiver;
+import protocolLobbyTools.LobbyServerSideObserver;
 import protocolTools.IBluffinCommand;
 import serverGame.ServerNetworkPokerPlayerInfo;
 import utility.Constants;
@@ -23,7 +23,7 @@ public class ServerClientTableManager extends Thread
 {
     String m_name = "?";
     ServerTableManager m_manager;
-    private final LobbyServerSideReceiver m_commandReceiver = new LobbyServerSideReceiver();
+    private final LobbyServerSideObserver m_commandObserver = new LobbyServerSideObserver();
     
     // Communications with the client
     Socket m_socket = null;
@@ -51,7 +51,7 @@ public class ServerClientTableManager extends Thread
     @Override
     public void run()
     {
-        initializeCommandReceiver();
+        initializeCommandObserver();
         try
         {
             StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
@@ -100,13 +100,13 @@ public class ServerClientTableManager extends Thread
     protected String receive() throws IOException
     {
         final String line = m_fromClient.readLine();
-        m_commandReceiver.receiveSomething(line);
+        m_commandObserver.receiveSomething(line);
         return line;
     }
     
-    private void initializeCommandReceiver()
+    private void initializeCommandObserver()
     {
-        m_commandReceiver.subscribe(new LobbyServerSideAdapter()
+        m_commandObserver.subscribe(new LobbyServerSideAdapter()
         {
             @Override
             public void commandReceived(String command)
@@ -149,7 +149,7 @@ public class ServerClientTableManager extends Thread
                             // Transfert socket connection.
                             sendMessage(command.encodeResponse(noSeat));
                             m_manager.m_table.join(player, noSeat);
-                            player.setReceiver(m_manager.m_table.getReceiver());
+                            player.setPokerObserver(m_manager.m_table.getPokerObserver());
                             player.setIsConnected();
                         }
                     }

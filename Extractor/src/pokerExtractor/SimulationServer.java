@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import pokerAI.IPokerAgentListener;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
@@ -25,6 +24,7 @@ import utility.Tool;
 import clientAI.TypeSimplifiedAction;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
+import clientGame.IPokerAgentListener;
 import clientStats.StatsAgent;
 import extractorDB.TupleHandHistories;
 import extractorDB.TupleHandHistories.PhaseEvents;

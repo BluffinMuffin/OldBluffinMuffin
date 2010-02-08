@@ -11,8 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import pokerAI.IPokerAgent;
-import pokerAI.IPokerAgentActionner;
-import pokerAI.IPokerAgentListener;
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
@@ -36,7 +34,7 @@ import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.GameWaitingCommand;
 import protocolGameTools.GameClientSideAdapter;
-import protocolGameTools.GameClientSideReceiver;
+import protocolGameTools.GameClientSideObserver;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
 import utilGUI.AutoListModel;
@@ -54,7 +52,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
 {
     public static final int NB_CARDS_BOARDS = 5;
     public static final int NB_SEATS = 9;
-    private final GameClientSideReceiver m_commandReceiver = new GameClientSideReceiver();
+    private final GameClientSideObserver m_commandObserver = new GameClientSideObserver();
     
     IPokerAgentActionner m_agent = null;
     AutoListModel<IPokerAgentListener> m_observers = null;
@@ -405,7 +403,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
     protected String receive() throws IOException
     {
         final String line = m_fromServer.readLine();
-        m_commandReceiver.receiveSomething(line);
+        m_commandObserver.receiveSomething(line);
         return line;
     }
     
@@ -419,7 +417,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             @Override
             public void run()
             {
-                initializeCommandReceiver();
+                initializeCommandObserver();
                 try
                 {
                     while (isConnected())
@@ -436,7 +434,7 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
         }.start();
     }
     
-    private void initializeCommandReceiver()
+    private void initializeCommandObserver()
     {
         final GameClientSideAdapter adapter = new GameClientSideAdapter()
         {
@@ -783,6 +781,6 @@ public class PokerClient extends Thread implements ListListener<IPokerAgentListe
             }
             
         };
-        m_commandReceiver.subscribe(adapter);
+        m_commandObserver.subscribe(adapter);
     }
 }

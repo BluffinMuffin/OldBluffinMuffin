@@ -1,6 +1,6 @@
 package clientAI;
 
-import pokerAI.IPokerAgentListener;
+import clientGame.IPokerAgentListener;
 import clientGameGUI.TableGUIViewer;
 
 /**

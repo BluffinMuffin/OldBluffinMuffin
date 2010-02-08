@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import pokerAI.IPokerAgent;
-import pokerAI.IPokerAgentListener;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
@@ -13,6 +12,7 @@ import pokerLogic.TypePokerRound;
 import utility.Constants;
 
 import clientGame.ClientPokerPlayerInfo;
+import clientGame.IPokerAgentListener;
 
 
 /**

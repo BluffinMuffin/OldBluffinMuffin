@@ -30,8 +30,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
-import pokerAI.IPokerAgentActionner;
-import pokerAI.IPokerAgentListener;
 import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
@@ -51,6 +49,8 @@ import clientAI.TypeAgent;
 import clientAI.TypeObserver;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
+import clientGame.IPokerAgentActionner;
+import clientGame.IPokerAgentListener;
 import clientGame.PokerClient;
 import clientLobbyGUI.LobbyAddTableJDialog;
 import clientLobbyGUI.LobbyMainJFrame;

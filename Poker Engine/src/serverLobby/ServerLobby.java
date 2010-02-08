@@ -119,7 +119,7 @@ public class ServerLobby extends Thread
             
             // Start the TableManager.
             table.addClosingListener(manager);
-            new ServerPokerLogger(System.out, table.getReceiver());
+            new ServerPokerLogger(System.out, table.getPokerObserver());
             table.start();
             manager.start();
             

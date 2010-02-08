@@ -2,10 +2,10 @@ package protocolLobbyTools;
 
 import java.util.StringTokenizer;
 
-import protocolTools.BluffinCommandReceiver;
+import protocolTools.BluffinCommandObserver;
 import utility.Constants;
 
-public class LobbyClientSideReceiver extends BluffinCommandReceiver<LobbyClientSideListener>
+public class LobbyClientSideObserver extends BluffinCommandObserver<LobbyClientSideListener>
 {
     @Override
     protected void onLineReceived(String line)

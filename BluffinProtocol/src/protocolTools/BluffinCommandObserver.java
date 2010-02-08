@@ -2,7 +2,7 @@ package protocolTools;
 
 import utility.EventReceiver;
 
-public class BluffinCommandReceiver<T extends BluffinCommandListener> extends EventReceiver<T>
+public class BluffinCommandObserver<T extends BluffinCommandListener> extends EventReceiver<T>
 {
     public void receiveSomething(String line)
     {

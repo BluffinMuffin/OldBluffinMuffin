@@ -15,10 +15,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import pokerAI.IPokerAgentListener;
 
 import clientAI.FactoryObserver;
 import clientAI.TypeObserver;
+import clientGame.IPokerAgentListener;
 import clientGame.PokerClient;
 
 import utilGUI.AutoListModel;

@@ -1,8 +1,9 @@
-package pokerAI;
+package clientGame;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import pokerAI.IPokerAgent;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;

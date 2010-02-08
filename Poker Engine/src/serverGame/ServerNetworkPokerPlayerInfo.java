@@ -30,10 +30,10 @@ import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameWaitingCommand;
 import protocolGameTools.GameServerSideAdapter;
-import protocolGameTools.GameServerSideReceiver;
+import protocolGameTools.GameServerSideObserver;
 import protocolTools.IBluffinCommand;
 import serverGameTools.ServerPokerAdapter;
-import serverGameTools.ServerPokerReceiver;
+import serverGameTools.ServerPokerObserver;
 import utility.Constants;
 
 /**
@@ -48,8 +48,8 @@ import utility.Constants;
  */
 public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
 {
-    private final GameServerSideReceiver m_commandReceiver = new GameServerSideReceiver();
-    private ServerPokerReceiver m_receiver;
+    private final GameServerSideObserver m_commandObserver = new GameServerSideObserver();
+    private ServerPokerObserver m_pokerObserver;
     
     public static final int PING_INTERVAL = 10000;
     
@@ -86,19 +86,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
         m_output = new PrintWriter(m_socket.getOutputStream(), true);
         m_input = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
         m_isConnected = false;
-        initializeCommandReceiver();
+        initializeCommandObserver();
     }
     
-    public void setReceiver(ServerPokerReceiver receiver)
+    public void setPokerObserver(ServerPokerObserver observer)
     {
-        m_receiver = receiver;
-        initializeReceiver();
+        m_pokerObserver = observer;
+        initializePokerObserver();
     }
     
     protected String receive() throws IOException
     {
         final String line = m_input.readLine();
-        m_commandReceiver.receiveSomething(line);
+        m_commandObserver.receiveSomething(line);
         return line;
     }
     
@@ -286,9 +286,9 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
         return m_sitOutNextHand;
     }
     
-    private void initializeCommandReceiver()
+    private void initializeCommandObserver()
     {
-        m_commandReceiver.subscribe(new GameServerSideAdapter()
+        m_commandObserver.subscribe(new GameServerSideAdapter()
         {
             @Override
             public void commandReceived(String command)
@@ -309,9 +309,9 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
         
     }
     
-    private void initializeReceiver()
+    private void initializePokerObserver()
     {
-        m_receiver.subscribe(new ServerPokerAdapter()
+        m_pokerObserver.subscribe(new ServerPokerAdapter()
         {
             
             @Override
