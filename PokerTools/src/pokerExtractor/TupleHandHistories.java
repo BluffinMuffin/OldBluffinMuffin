@@ -14,7 +14,7 @@ import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerGame;
 import utility.HeadsUpException;
 
-import clientAI.TypeSimplifiedAction;
+import clientGameTools.TypeSimplifiedAction;
 
 
 public class TupleHandHistories

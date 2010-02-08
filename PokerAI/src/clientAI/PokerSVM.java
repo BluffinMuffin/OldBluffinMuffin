@@ -22,6 +22,7 @@ import utility.Tool;
 import clientGame.ClientPokerPlayerInfo;
 import clientGameTools.ClientPokerAdapter;
 import clientGameTools.ClientPokerObserver;
+import clientGameTools.TypeSimplifiedAction;
 import clientStats.StatsAgent;
 
 /**

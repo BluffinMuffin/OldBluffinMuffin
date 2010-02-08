@@ -23,9 +23,9 @@ import protocolGame.GameTableInfoCommand;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IBluffinCommand;
 import utility.Tool;
-import clientAI.TypeSimplifiedAction;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
+import clientGameTools.TypeSimplifiedAction;
 import clientStats.StatsAgent;
 
 public class SimulationServer
