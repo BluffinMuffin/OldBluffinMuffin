@@ -8,10 +8,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -44,12 +46,10 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     {
         if (jCenterPanel == null)
         {
-            jCenterPanel = new JBackgroundPanel();
-            jCenterPanel.setBackground(Color.black);
-            jCenterPanel.setBackground(new ImageIcon("images/table.png"));
-            jCenterPanel.setLayout(new GridBagLayout());
-            jCenterPanel.setSize(new Dimension(874, 556));
+            jCenterPanel = new JBackgroundPanel(new ImageIcon("images/table.png"));
             jCenterPanel.setLocation(new Point(0, 50));
+            jCenterPanel.setSize(new Dimension(465, 222));
+            // jCenterPanel.add(getJButton());
         }
         return jCenterPanel;
     }
@@ -197,6 +197,189 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     }
     
     /**
+     * This method initializes jHud1Panel
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel()
+    {
+        if (jHud1Panel == null)
+        {
+            jHud1Panel = new JPanel();
+            jHud1Panel.setLayout(new GridBagLayout());
+            jHud1Panel.setBounds(new Rectangle(18, 117, 141, 111));
+        }
+        return jHud1Panel;
+    }
+    
+    /**
+     * This method initializes jHud1Panel1
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel1()
+    {
+        if (jHud1Panel1 == null)
+        {
+            jHud1Panel1 = new JPanel();
+            jHud1Panel1.setLayout(new GridBagLayout());
+            jHud1Panel1.setLocation(new Point(16, 250));
+            jHud1Panel1.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel1;
+    }
+    
+    /**
+     * This method initializes jHud1Panel11
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel11()
+    {
+        if (jHud1Panel11 == null)
+        {
+            jHud1Panel11 = new JPanel();
+            jHud1Panel11.setLayout(new GridBagLayout());
+            jHud1Panel11.setLocation(new Point(343, 30));
+            jHud1Panel11.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel11;
+    }
+    
+    /**
+     * This method initializes jHud1Panel12
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel12()
+    {
+        if (jHud1Panel12 == null)
+        {
+            jHud1Panel12 = new JPanel();
+            jHud1Panel12.setLayout(new GridBagLayout());
+            jHud1Panel12.setLocation(new Point(170, 35));
+            jHud1Panel12.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel12;
+    }
+    
+    /**
+     * This method initializes jHud1Panel13
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel13()
+    {
+        if (jHud1Panel13 == null)
+        {
+            jHud1Panel13 = new JPanel();
+            jHud1Panel13.setLayout(new GridBagLayout());
+            jHud1Panel13.setLocation(new Point(503, 30));
+            jHud1Panel13.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel13;
+    }
+    
+    /**
+     * This method initializes jHud1Panel14
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel14()
+    {
+        if (jHud1Panel14 == null)
+        {
+            jHud1Panel14 = new JPanel();
+            jHud1Panel14.setLayout(new GridBagLayout());
+            jHud1Panel14.setLocation(new Point(659, 123));
+            jHud1Panel14.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel14;
+    }
+    
+    /**
+     * This method initializes jHud1Panel15
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel15()
+    {
+        if (jHud1Panel15 == null)
+        {
+            jHud1Panel15 = new JPanel();
+            jHud1Panel15.setLayout(new GridBagLayout());
+            jHud1Panel15.setLocation(new Point(334, 352));
+            jHud1Panel15.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel15;
+    }
+    
+    /**
+     * This method initializes jHud1Panel16
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel16()
+    {
+        if (jHud1Panel16 == null)
+        {
+            jHud1Panel16 = new JPanel();
+            jHud1Panel16.setLayout(new GridBagLayout());
+            jHud1Panel16.setLocation(new Point(662, 270));
+            jHud1Panel16.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel16;
+    }
+    
+    /**
+     * This method initializes jHud1Panel17
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel17()
+    {
+        if (jHud1Panel17 == null)
+        {
+            jHud1Panel17 = new JPanel();
+            jHud1Panel17.setLayout(new GridBagLayout());
+            jHud1Panel17.setLocation(new Point(165, 351));
+            jHud1Panel17.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel17;
+    }
+    
+    /**
+     * This method initializes jHud1Panel18
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJHud1Panel18()
+    {
+        if (jHud1Panel18 == null)
+        {
+            jHud1Panel18 = new JPanel();
+            jHud1Panel18.setLayout(new GridBagLayout());
+            jHud1Panel18.setLocation(new Point(496, 351));
+            jHud1Panel18.setSize(new Dimension(141, 111));
+        }
+        return jHud1Panel18;
+    }
+    
+    /**
+     * This method initializes jButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getJButton()
+    {
+        if (jButton == null)
+        {
+            jButton = new JButton();
+        }
+        return jButton;
+    }
+    
+    /**
      * @param args
      */
     public static void main(String[] args)
@@ -223,6 +406,17 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private JTextArea jLogTextArea = null; // @jve:decl-index=0:visual-constraint="1045,149"
     private JToolBar jBottomToolBar = null;
     private JToggleButton jLockToggleButton = null;
+    private JPanel jHud1Panel = null;
+    private JPanel jHud1Panel1 = null;
+    private JPanel jHud1Panel11 = null;
+    private JPanel jHud1Panel12 = null;
+    private JPanel jHud1Panel13 = null;
+    private JPanel jHud1Panel14 = null;
+    private JPanel jHud1Panel15 = null;
+    private JPanel jHud1Panel16 = null;
+    private JPanel jHud1Panel17 = null;
+    private JPanel jHud1Panel18 = null;
+    private JButton jButton = null;
     
     /**
      * This is the default constructor
@@ -279,10 +473,116 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     }
     
     @Override
+    public void setTable(PokerTableInfo pTable)
+    {
+        super.setTable(pTable);
+        writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
+    }
+    
+    @Override
     public void setPokerObserver(ClientPokerObserver observer)
     {
         super.setPokerObserver(observer);
         initializePokerObserverForConsole();
+        initializePokerObserverForGUI();
+    }
+    
+    private void initializePokerObserverForGUI()
+    {
+        m_pokerObserver.subscribe(new ClientPokerAdapter()
+        {
+            
+            @Override
+            public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
+            {
+                // TODO Auto-generated method stub
+                super.betTurnEnded(potIndices, round);
+            }
+            
+            @Override
+            public void boardChanged(ArrayList<Integer> boardCardIndices)
+            {
+                // TODO Auto-generated method stub
+                super.boardChanged(boardCardIndices);
+            }
+            
+            @Override
+            public void gameEnded()
+            {
+                // TODO Auto-generated method stub
+                super.gameEnded();
+            }
+            
+            @Override
+            public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+            {
+                // TODO Auto-generated method stub
+                super.gameStarted(oldDealer, oldSmallBlind, oldBigBlind);
+            }
+            
+            @Override
+            public void playerCardChanged(PokerPlayerInfo player)
+            {
+                // TODO Auto-generated method stub
+                super.playerCardChanged(player);
+            }
+            
+            @Override
+            public void playerJoined(PokerPlayerInfo player)
+            {
+                // TODO Auto-generated method stub
+                super.playerJoined(player);
+            }
+            
+            @Override
+            public void playerLeft(PokerPlayerInfo player)
+            {
+                // TODO Auto-generated method stub
+                super.playerLeft(player);
+            }
+            
+            @Override
+            public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
+            {
+                // TODO Auto-generated method stub
+                super.playerMoneyChanged(player, oldMoneyAmount);
+            }
+            
+            @Override
+            public void playerTurnBegan(PokerPlayerInfo player)
+            {
+                // TODO Auto-generated method stub
+                super.playerTurnBegan(player);
+            }
+            
+            @Override
+            public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+            {
+                // TODO Auto-generated method stub
+                super.playerTurnEnded(player, action, actionAmount);
+            }
+            
+            @Override
+            public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
+            {
+                // TODO Auto-generated method stub
+                super.potWon(player, potAmountWon, potIndex);
+            }
+            
+            @Override
+            public void tableClosed()
+            {
+                // TODO Auto-generated method stub
+                super.tableClosed();
+            }
+            
+            @Override
+            public void tableInfos()
+            {
+                // TODO Auto-generated method stub
+                super.tableInfos();
+            }
+        });
     }
     
     private void initializePokerObserverForConsole()
@@ -396,12 +696,5 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 // writeLine("Waiting for players");
             }
         });
-    }
-    
-    @Override
-    public void setTable(PokerTableInfo pTable)
-    {
-        super.setTable(pTable);
-        writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
     }
 } // @jve:decl-index=0:visual-constraint="10,10"
