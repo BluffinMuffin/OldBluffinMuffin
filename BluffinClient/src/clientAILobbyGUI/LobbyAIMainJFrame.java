@@ -47,7 +47,7 @@ import clientAI.TypeAgent;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
-import clientGameGUI.GameTableJFrame;
+import clientGameGUI.GameTableViewerJFrame;
 import clientGameGUI.TableGUIViewer;
 import clientLobbyGUI.LobbyAddTableJDialog;
 import clientLobbyGUI.LobbyMainJFrame;
@@ -849,8 +849,8 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             {
                 if (m_viewer2)
                 {
-                    final GameTableJFrame viewer;
-                    viewer = new GameTableJFrame();
+                    final GameTableViewerJFrame viewer;
+                    viewer = new GameTableViewerJFrame();
                     viewer.setPokerObserver(client.getPokerObserver());
                     client.attach(viewer);
                 }

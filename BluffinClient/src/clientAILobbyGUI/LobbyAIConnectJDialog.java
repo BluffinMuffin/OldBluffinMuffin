@@ -25,6 +25,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import clientAI.TypeAgent;
 
@@ -43,6 +45,7 @@ public class LobbyAIConnectJDialog extends JDialog
     private JComboBox jAddressComboBox = null;
     private JLabel jPortLabel = null;
     private JSpinner jPortSpinner = null;
+    private JSpinner jNbSpinner = null;
     private JList jAIList = null;
     private JLabel jAILabel = null;
     private JButton jAddButton = null;
@@ -155,6 +158,7 @@ public class LobbyAIConnectJDialog extends JDialog
             jContentPane.add(getJSaveButton(), null);
             jContentPane.add(getJRemoveButton(), null);
             jContentPane.add(getJAddViewer2CheckBox(), null);
+            jContentPane.add(getJNbSpinner(), null);
         }
         return jContentPane;
     }
@@ -226,6 +230,46 @@ public class LobbyAIConnectJDialog extends JDialog
     }
     
     /**
+     * This method initializes jPortTextField
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JSpinner getJNbSpinner()
+    {
+        if (jNbSpinner == null)
+        {
+            jNbSpinner = new JSpinner();
+            jNbSpinner.setModel(new SpinnerNumberModel(1, 1, 9, 1));
+            jNbSpinner.setBounds(new Rectangle(310, 185, 75, 20));
+            jNbSpinner.setEnabled(false);
+            jNbSpinner.setEditor(new JSpinner.NumberEditor(jNbSpinner, "#"));
+            
+            jNbSpinner.addChangeListener(new ChangeListener()
+            {
+                @Override
+                public void stateChanged(ChangeEvent arg0)
+                {
+                    
+                    getJAddViewerCheckBox().setSelected(false);
+                    getJAddViewer2CheckBox().setSelected(false);
+                    getJAddViewerCheckBox().setEnabled((Integer) getJNbSpinner().getValue() == 1);
+                    getJAddViewer2CheckBox().setEnabled((Integer) getJNbSpinner().getValue() == 1);
+                    if (alreadyContain(getJAINameTextField().getText()))
+                    {
+                        getJSaveButton().setEnabled(false);
+                    }
+                    else
+                    {
+                        getJSaveButton().setEnabled(true);
+                    }
+                    
+                }
+            });
+        }
+        return jNbSpinner;
+    }
+    
+    /**
      * This method initializes jAIList
      * 
      * @return javax.swing.JList
@@ -287,6 +331,9 @@ public class LobbyAIConnectJDialog extends JDialog
                     getJAINameTextField().setText("");
                     getJAddViewerCheckBox().setEnabled(true);
                     getJAddViewerCheckBox().setSelected(false);
+                    getJAINameTextField().grabFocus();
+                    getJNbSpinner().setModel(new SpinnerNumberModel(1, 1, 9 - model.getSize(), 1));
+                    getJNbSpinner().setEnabled(true);
                 }
             });
         }
@@ -303,7 +350,7 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jAINameTextField == null)
         {
             jAINameTextField = new JTextField();
-            jAINameTextField.setBounds(new Rectangle(180, 185, 200, 20));
+            jAINameTextField.setBounds(new Rectangle(180, 185, 125, 20));
             jAINameTextField.setEnabled(false);
             jAINameTextField.addCaretListener(new javax.swing.event.CaretListener()
             {
@@ -318,22 +365,26 @@ public class LobbyAIConnectJDialog extends JDialog
                         getJSaveButton().setEnabled(true);
                     }
                 }
-                
-                private boolean alreadyContain(String text)
-                {
-                    for (int i = 0; i < model.getSize(); ++i)
-                    {
-                        final TupleAISummary bob = (TupleAISummary) model.get(i);
-                        if (i != getEdithWho() && text.equalsIgnoreCase(bob.m_AIName))
-                        {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
             });
         }
         return jAINameTextField;
+    }
+    
+    private boolean alreadyContain(String text)
+    {
+        for (int n = 1; n <= (Integer) getJNbSpinner().getValue(); ++n)
+        {
+            final String t = text + n;
+            for (int i = 0; i < model.getSize(); ++i)
+            {
+                final TupleAISummary bob = (TupleAISummary) model.get(i);
+                if (i != getEdithWho() && t.equalsIgnoreCase(bob.m_AIName))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     /**
@@ -406,7 +457,10 @@ public class LobbyAIConnectJDialog extends JDialog
                     }
                     else
                     {
-                        model.add(model.getSize(), new TupleAISummary(getJAINameTextField().getText(), (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected(), getJAddViewer2CheckBox().isSelected()));
+                        for (int i = 1; i <= (Integer) getJNbSpinner().getValue(); ++i)
+                        {
+                            model.add(model.getSize(), new TupleAISummary(getJAINameTextField().getText() + i, (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected(), getJAddViewer2CheckBox().isSelected()));
+                        }
                     }
                     getJAddButton().setEnabled(true);
                     getJSaveButton().setEnabled(false);
@@ -420,6 +474,7 @@ public class LobbyAIConnectJDialog extends JDialog
                     getJAINameTextField().setEnabled(false);
                     getJAddViewerCheckBox().setSelected(false);
                     getJAddViewerCheckBox().setEnabled(false);
+                    getJNbSpinner().setEnabled(false);
                     
                     m_EditWho = -1;
                     getJConnectButton().setEnabled(true);
@@ -466,6 +521,7 @@ public class LobbyAIConnectJDialog extends JDialog
                     getJAINameTextField().setEnabled(false);
                     getJAddViewerCheckBox().setSelected(false);
                     getJAddViewerCheckBox().setEnabled(false);
+                    getJNbSpinner().setEnabled(false);
                     
                     m_EditWho = -1;
                     getJAddButton().setEnabled(true);

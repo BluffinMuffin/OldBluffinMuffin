@@ -24,16 +24,12 @@ import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import utilGUI.JBackgroundPanel;
-import utility.IClosingListener;
-import clientGame.ClientPokerTableInfo;
 import clientGameTools.ClientPokerAdapter;
 import clientGameTools.ClientPokerObserver;
-import clientGameTools.IClientPoker;
 
-public class GameTableJFrame extends JFrame implements IClientPoker
+public class GameTableViewerJFrame extends GameTableAbstractJFrame
 {
-    protected ClientPokerObserver m_pokerObserver;
-    protected ClientPokerTableInfo m_table = null;
+    private boolean m_gotoCaret = true;
     
     /**
      * This method initializes jCenterPanel
@@ -132,6 +128,22 @@ public class GameTableJFrame extends JFrame implements IClientPoker
         if (jLogScrollPane == null)
         {
             jLogScrollPane = new JScrollPane(getJLogTextArea());
+            jLogScrollPane.addMouseListener(new java.awt.event.MouseAdapter()
+            {
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent e)
+                {
+                    m_gotoCaret = true;
+                    getJTopPanel().setBackground(Color.black);
+                }
+                
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent e)
+                {
+                    m_gotoCaret = false;
+                    getJTopPanel().setBackground(Color.red);
+                }
+            });
         }
         return jLogScrollPane;
     }
@@ -151,6 +163,23 @@ public class GameTableJFrame extends JFrame implements IClientPoker
             jLogTextArea.setForeground(Color.white);
             jLogTextArea.setWrapStyleWord(true);
             jLogTextArea.setFont(new Font("Dialog", Font.BOLD, 12));
+            
+            jLogTextArea.addMouseListener(new java.awt.event.MouseAdapter()
+            {
+                @Override
+                public void mouseExited(java.awt.event.MouseEvent e)
+                {
+                    m_gotoCaret = true;
+                    getJTopPanel().setBackground(Color.black);
+                }
+                
+                @Override
+                public void mouseEntered(java.awt.event.MouseEvent e)
+                {
+                    m_gotoCaret = false;
+                    getJTopPanel().setBackground(Color.red);
+                }
+            });
         }
         return jLogTextArea;
     }
@@ -164,7 +193,7 @@ public class GameTableJFrame extends JFrame implements IClientPoker
         {
             public void run()
             {
-                final GameTableJFrame thisClass = new GameTableJFrame();
+                final GameTableViewerJFrame thisClass = new GameTableViewerJFrame();
                 thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 thisClass.setVisible(true);
             }
@@ -184,7 +213,7 @@ public class GameTableJFrame extends JFrame implements IClientPoker
     /**
      * This is the default constructor
      */
-    public GameTableJFrame()
+    public GameTableViewerJFrame()
     {
         super();
         initialize();
@@ -202,8 +231,6 @@ public class GameTableJFrame extends JFrame implements IClientPoker
         this.setResizable(false);
         this.setPreferredSize(new Dimension(1024, 768));
         this.setSize(new Dimension(1024, 768));
-        pack();
-        setLocationRelativeTo(null);
     }
     
     /**
@@ -231,12 +258,16 @@ public class GameTableJFrame extends JFrame implements IClientPoker
     public void writeLine(String line)
     {
         getJLogTextArea().append(line + "\n");
-        // getJLogTextArea().setCaretPosition(getJLogTextArea().getText().length());
+        if (m_gotoCaret)
+        {
+            getJLogTextArea().setCaretPosition(getJLogTextArea().getText().length());
+        }
     }
     
+    @Override
     public void setPokerObserver(ClientPokerObserver observer)
     {
-        m_pokerObserver = observer;
+        super.setPokerObserver(observer);
         initializePokerObserverForConsole();
     }
     
@@ -354,43 +385,9 @@ public class GameTableJFrame extends JFrame implements IClientPoker
     }
     
     @Override
-    public void addClosingListener(IClosingListener<IClientPoker> pListener)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    @Override
-    public void removeClosingListener(IClosingListener<IClientPoker> pListener)
-    {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    @Override
     public void setTable(PokerTableInfo pTable)
     {
-        m_table = (ClientPokerTableInfo) pTable;
+        super.setTable(pTable);
         writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
-    }
-    
-    @Override
-    public void start()
-    {
-        this.setVisible(true);
-    }
-    
-    @Override
-    public void stop()
-    {
-        this.setVisible(false);
-        
-    }
-    
-    @Override
-    public void run()
-    {
-        // TODO Auto-generated method stub
-        
     }
 } // @jve:decl-index=0:visual-constraint="10,10"
