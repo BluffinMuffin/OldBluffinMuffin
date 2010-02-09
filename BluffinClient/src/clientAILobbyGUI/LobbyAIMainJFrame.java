@@ -189,7 +189,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     {
         this.setContentPane(getJContentPane());
         this.setTitle(jTitleLabel.getText());
-        this.setSize(new Dimension(558, 242));
+        this.setSize(new Dimension(462, 242));
         pack();
         setLocationRelativeTo(null);
     }
@@ -567,6 +567,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             jTitleLabel.setFont(new Font("Dialog", Font.BOLD, 18));
             jContentPane = new JPanel();
             jContentPane.setLayout(new BorderLayout());
+            jContentPane.setPreferredSize(new Dimension(442, 202));
             jContentPane.add(jTitleLabel, BorderLayout.NORTH);
             jContentPane.add(jStatusLabel, BorderLayout.SOUTH);
             jContentPane.add(getJMainPanel(), BorderLayout.CENTER);

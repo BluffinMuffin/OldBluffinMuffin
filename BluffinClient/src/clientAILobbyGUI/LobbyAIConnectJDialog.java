@@ -65,9 +65,9 @@ public class LobbyAIConnectJDialog extends JDialog
     {
         
         super(owner);
+        initialize();
         pack();
         setLocationRelativeTo(owner);
-        initialize();
     }
     
     /**
@@ -94,7 +94,8 @@ public class LobbyAIConnectJDialog extends JDialog
     private void initialize()
     {
         m_OK = false;
-        this.setSize(411, 380);
+        this.setSize(411, 336);
+        this.setPreferredSize(new Dimension(411, 336));
         this.setModal(true);
         this.setTitle("Connection");
         this.setContentPane(getJContentPane());
@@ -126,22 +127,23 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jContentPane == null)
         {
             jAITypeLabel = new JLabel();
-            jAITypeLabel.setBounds(new Rectangle(180, 120, 100, 16));
+            jAITypeLabel.setBounds(new Rectangle(180, 80, 100, 16));
             jAITypeLabel.setText("AI Type:");
             jAINameLabel = new JLabel();
-            jAINameLabel.setBounds(new Rectangle(180, 165, 100, 16));
+            jAINameLabel.setBounds(new Rectangle(180, 125, 100, 16));
             jAINameLabel.setText("AI Name:");
             jAILabel = new JLabel();
-            jAILabel.setBounds(new Rectangle(10, 100, 37, 16));
+            jAILabel.setBounds(new Rectangle(10, 60, 37, 16));
             jAILabel.setText("AIs:");
             jPortLabel = new JLabel();
-            jPortLabel.setBounds(new Rectangle(10, 55, 100, 16));
+            jPortLabel.setBounds(new Rectangle(230, 10, 100, 16));
             jPortLabel.setText("Server Port:");
             jAdressLabel = new JLabel();
             jAdressLabel.setBounds(new Rectangle(10, 10, 100, 16));
             jAdressLabel.setText("Server Address:");
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
+            jContentPane.setPreferredSize(new Dimension(391, 296));
             jContentPane.add(getJConnectButton(), null);
             jContentPane.add(jAdressLabel, null);
             jContentPane.add(getJAddressComboBox(), null);
@@ -174,7 +176,7 @@ public class LobbyAIConnectJDialog extends JDialog
         {
             jConnectButton = new JButton();
             jConnectButton.setText("Connect");
-            jConnectButton.setBounds(new Rectangle(164, 300, 81, 26));
+            jConnectButton.setBounds(new Rectangle(164, 260, 81, 26));
             jConnectButton.setSelected(true);
             jConnectButton.setEnabled(false);
             jConnectButton.setName("jConnectButton");
@@ -223,7 +225,7 @@ public class LobbyAIConnectJDialog extends JDialog
         {
             jPortSpinner = new JSpinner();
             jPortSpinner.setModel(new SpinnerNumberModel(4242, 1, 65535, 1));
-            jPortSpinner.setBounds(new Rectangle(10, 75, 75, 20));
+            jPortSpinner.setBounds(new Rectangle(230, 30, 75, 20));
             jPortSpinner.setEditor(new JSpinner.NumberEditor(jPortSpinner, "#"));
         }
         return jPortSpinner;
@@ -240,7 +242,7 @@ public class LobbyAIConnectJDialog extends JDialog
         {
             jNbSpinner = new JSpinner();
             jNbSpinner.setModel(new SpinnerNumberModel(1, 1, 9, 1));
-            jNbSpinner.setBounds(new Rectangle(310, 185, 75, 20));
+            jNbSpinner.setBounds(new Rectangle(310, 145, 75, 20));
             jNbSpinner.setEnabled(false);
             jNbSpinner.setEditor(new JSpinner.NumberEditor(jNbSpinner, "#"));
             
@@ -280,7 +282,7 @@ public class LobbyAIConnectJDialog extends JDialog
         {
             jAIList = new JList(model);
             jAIList.setSize(new Dimension(165, 167));
-            jAIList.setLocation(new Point(10, 120));
+            jAIList.setLocation(new Point(10, 80));
             jAIList.addListSelectionListener(new javax.swing.event.ListSelectionListener()
             {
                 public void valueChanged(javax.swing.event.ListSelectionEvent e)
@@ -315,7 +317,7 @@ public class LobbyAIConnectJDialog extends JDialog
             jAddButton = new JButton();
             jAddButton.setText("Add");
             jAddButton.setSize(new Dimension(60, 20));
-            jAddButton.setLocation(new Point(114, 97));
+            jAddButton.setLocation(new Point(114, 57));
             jAddButton.addActionListener(new java.awt.event.ActionListener()
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
@@ -350,7 +352,7 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jAINameTextField == null)
         {
             jAINameTextField = new JTextField();
-            jAINameTextField.setBounds(new Rectangle(180, 185, 125, 20));
+            jAINameTextField.setBounds(new Rectangle(180, 145, 125, 20));
             jAINameTextField.setEnabled(false);
             jAINameTextField.addCaretListener(new javax.swing.event.CaretListener()
             {
@@ -397,7 +399,7 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jAITypeComboBox == null)
         {
             jAITypeComboBox = new JComboBox();
-            jAITypeComboBox.setBounds(new Rectangle(180, 140, 200, 20));
+            jAITypeComboBox.setBounds(new Rectangle(180, 100, 200, 20));
             jAITypeComboBox.setModel(new DefaultComboBoxModel(TypeAgent.values()));
             jAITypeComboBox.setSelectedItem(TypeAgent.AI_BASIC);
             jAITypeComboBox.setEnabled(false);
@@ -419,7 +421,7 @@ public class LobbyAIConnectJDialog extends JDialog
             jAddViewerCheckBox.setText("Attach Viewer");
             jAddViewerCheckBox.setSize(new Dimension(106, 20));
             jAddViewerCheckBox.setEnabled(false);
-            jAddViewerCheckBox.setLocation(new Point(180, 210));
+            jAddViewerCheckBox.setLocation(new Point(180, 170));
             jAddViewerCheckBox.addItemListener(new java.awt.event.ItemListener()
             {
                 public void itemStateChanged(java.awt.event.ItemEvent e)
@@ -443,7 +445,7 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jSaveButton == null)
         {
             jSaveButton = new JButton();
-            jSaveButton.setBounds(new Rectangle(180, 250, 85, 20));
+            jSaveButton.setBounds(new Rectangle(180, 210, 85, 20));
             jSaveButton.setEnabled(false);
             jSaveButton.setText("Save");
             jSaveButton.addActionListener(new java.awt.event.ActionListener()
@@ -498,7 +500,7 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jRemoveButton == null)
         {
             jRemoveButton = new JButton();
-            jRemoveButton.setBounds(new Rectangle(295, 250, 85, 20));
+            jRemoveButton.setBounds(new Rectangle(295, 210, 85, 20));
             jRemoveButton.setEnabled(false);
             jRemoveButton.setText("Remove");
             jRemoveButton.addActionListener(new java.awt.event.ActionListener()
@@ -580,7 +582,7 @@ public class LobbyAIConnectJDialog extends JDialog
         if (jAddViewer2CheckBox == null)
         {
             jAddViewer2CheckBox = new JCheckBox();
-            jAddViewer2CheckBox.setBounds(new Rectangle(300, 210, 50, 20));
+            jAddViewer2CheckBox.setBounds(new Rectangle(300, 170, 50, 20));
             jAddViewer2CheckBox.setText("2.0");
             jAddViewer2CheckBox.setEnabled(false);
         }

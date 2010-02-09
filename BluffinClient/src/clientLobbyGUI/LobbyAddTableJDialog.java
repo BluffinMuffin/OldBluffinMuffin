@@ -1,5 +1,6 @@
 package clientLobbyGUI;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -50,10 +51,10 @@ public class LobbyAddTableJDialog extends JDialog
     public LobbyAddTableJDialog(Frame owner, String playerName, int nbPlayers)
     {
         super(owner);
-        pack();
-        setLocationRelativeTo(owner);
         m_playerName = playerName;
         initialize();
+        pack();
+        setLocationRelativeTo(owner);
         if (nbPlayers > 2)
         {
             getJNbPlayersSlider().setMinimum(nbPlayers);
@@ -113,6 +114,7 @@ public class LobbyAddTableJDialog extends JDialog
             jTableNameLabel.setText("Table Name:");
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
+            jContentPane.setPreferredSize(new Dimension(224, 261));
             jContentPane.add(jTableNameLabel, null);
             jContentPane.add(getJTableNameTextField(), null);
             jContentPane.add(jGameTypeLabel, null);

@@ -47,9 +47,9 @@ public class LobbyConnectJDialog extends JDialog
     {
         
         super(owner);
+        initialize();
         pack();
         setLocationRelativeTo(owner);
-        initialize();
     }
     
     /**
@@ -102,6 +102,7 @@ public class LobbyConnectJDialog extends JDialog
             jPlayerNameLabel.setText("Player Name:");
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
+            jContentPane.setPreferredSize(new Dimension(230, 213));
             jContentPane.add(getJConnectButton(), null);
             jContentPane.add(jPlayerNameLabel, null);
             jContentPane.add(getJPlayerNameTextField(), null);

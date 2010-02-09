@@ -1,5 +1,6 @@
 package clientLobbyGUI;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -34,9 +35,9 @@ public class LobbyNameUsedJDialog extends JDialog
         
         super(owner);
         m_playerName = name;
+        initialize();
         pack();
         setLocationRelativeTo(owner);
-        initialize();
     }
     
     /**
@@ -83,6 +84,7 @@ public class LobbyNameUsedJDialog extends JDialog
             jPlayerNameLabel.setText("New Name:");
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
+            jContentPane.setPreferredSize(new Dimension(230, 91));
             jContentPane.add(getJConnectButton(), null);
             jContentPane.add(jPlayerNameLabel, null);
             jContentPane.add(getJPlayerNameTextField(), null);
