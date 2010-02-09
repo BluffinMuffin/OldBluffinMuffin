@@ -2,7 +2,9 @@ package clientGameGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Point;
@@ -15,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -88,7 +92,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         if (jRightPanel == null)
         {
             jRightPanel = new JPanel();
-            jRightPanel.setLayout(null);
+            jRightPanel.setLayout(new FlowLayout());
             jRightPanel.setSize(new Dimension(143, 556));
             jRightPanel.setBackground(Color.black);
             jRightPanel.setLocation(new Point(874, 50));
@@ -114,6 +118,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             jBottomPanel.setBackground(Color.black);
             jBottomPanel.setLocation(new Point(0, 606));
             jBottomPanel.add(getJLogScrollPane(), BorderLayout.CENTER);
+            jBottomPanel.add(getJBottomToolBar(), BorderLayout.NORTH);
         }
         return jBottomPanel;
     }
@@ -128,22 +133,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         if (jLogScrollPane == null)
         {
             jLogScrollPane = new JScrollPane(getJLogTextArea());
-            jLogScrollPane.addMouseListener(new java.awt.event.MouseAdapter()
-            {
-                @Override
-                public void mouseExited(java.awt.event.MouseEvent e)
-                {
-                    m_gotoCaret = true;
-                    getJTopPanel().setBackground(Color.black);
-                }
-                
-                @Override
-                public void mouseEntered(java.awt.event.MouseEvent e)
-                {
-                    m_gotoCaret = false;
-                    getJTopPanel().setBackground(Color.red);
-                }
-            });
         }
         return jLogScrollPane;
     }
@@ -163,25 +152,48 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             jLogTextArea.setForeground(Color.white);
             jLogTextArea.setWrapStyleWord(true);
             jLogTextArea.setFont(new Font("Dialog", Font.BOLD, 12));
-            
-            jLogTextArea.addMouseListener(new java.awt.event.MouseAdapter()
+        }
+        return jLogTextArea;
+    }
+    
+    /**
+     * This method initializes jBottomToolBar
+     * 
+     * @return javax.swing.JToolBar
+     */
+    private JToolBar getJBottomToolBar()
+    {
+        if (jBottomToolBar == null)
+        {
+            jBottomToolBar = new JToolBar();
+            jBottomToolBar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+            jBottomToolBar.setPreferredSize(new Dimension(18, 20));
+            jBottomToolBar.setFloatable(false);
+            jBottomToolBar.add(getJLockToggleButton());
+        }
+        return jBottomToolBar;
+    }
+    
+    /**
+     * This method initializes jLockToggleButton
+     * 
+     * @return javax.swing.JToggleButton
+     */
+    private JToggleButton getJLockToggleButton()
+    {
+        if (jLockToggleButton == null)
+        {
+            jLockToggleButton = new JToggleButton();
+            jLockToggleButton.setText("Lock");
+            jLockToggleButton.addItemListener(new java.awt.event.ItemListener()
             {
-                @Override
-                public void mouseExited(java.awt.event.MouseEvent e)
+                public void itemStateChanged(java.awt.event.ItemEvent e)
                 {
-                    m_gotoCaret = true;
-                    getJTopPanel().setBackground(Color.black);
-                }
-                
-                @Override
-                public void mouseEntered(java.awt.event.MouseEvent e)
-                {
-                    m_gotoCaret = false;
-                    getJTopPanel().setBackground(Color.red);
+                    m_gotoCaret = !jLockToggleButton.isSelected();
                 }
             });
         }
-        return jLogTextArea;
+        return jLockToggleButton;
     }
     
     /**
@@ -209,6 +221,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private JLabel jTitleLabel = null;
     private JScrollPane jLogScrollPane = null;
     private JTextArea jLogTextArea = null; // @jve:decl-index=0:visual-constraint="1045,149"
+    private JToolBar jBottomToolBar = null;
+    private JToggleButton jLockToggleButton = null;
     
     /**
      * This is the default constructor
