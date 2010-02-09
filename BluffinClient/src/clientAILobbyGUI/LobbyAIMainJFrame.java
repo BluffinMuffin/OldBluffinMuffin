@@ -38,7 +38,6 @@ import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IBluffinCommand;
-import utilGUI.AutoListModel;
 import utility.Constants;
 import utility.IClosingListener;
 import clientAI.FactoryAgent;
@@ -48,6 +47,7 @@ import clientAI.TypeAgent;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
+import clientGameGUI.GameTableJFrame;
 import clientGameGUI.TableGUIViewer;
 import clientLobbyGUI.LobbyAddTableJDialog;
 import clientLobbyGUI.LobbyMainJFrame;
@@ -66,9 +66,10 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     private int m_serverPort;
     private TypeAgent m_agentType;
     private boolean m_viewer;
+    private boolean m_viewer2;
     
     // List of PokerClient (one for each table the player joined)
-    private final AutoListModel<PokerClient> m_clients = new AutoListModel<PokerClient>();
+    private final List<PokerClient> m_clients = new ArrayList<PokerClient>();
     
     // List of default observers that will be attached the player.
     // private final AutoListModel<TypeObserver> m_generalObservers = new AutoListModel<TypeObserver>(); // @jve:decl-index=0:
@@ -493,6 +494,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                                     client.setAgentType(tuple.m_AIType);
                                     client.setPlayerName(tuple.m_AIName);
                                     client.asViewer(tuple.m_viewer);
+                                    client.asViewer2(tuple.m_viewer2);
                                     if (client.connect(getAddress(), getPort()))
                                     {
                                         client.send(new LobbyConnectCommand(tuple.m_AIName));
@@ -845,9 +847,20 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             
             if (m_viewer)
             {
-                final TableGUIViewer viewer = new TableGUIViewer();
-                viewer.setPokerObserver(client.getPokerObserver());
-                client.attach(viewer);
+                if (m_viewer2)
+                {
+                    final GameTableJFrame viewer;
+                    viewer = new GameTableJFrame();
+                    viewer.setPokerObserver(client.getPokerObserver());
+                    client.attach(viewer);
+                }
+                else
+                {
+                    final TableGUIViewer viewer;
+                    viewer = new TableGUIViewer();
+                    viewer.setPokerObserver(client.getPokerObserver());
+                    client.attach(viewer);
+                }
             }
             
             // Start a the new PokerClient.
@@ -929,5 +942,10 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     public void asViewer(boolean viewer)
     {
         m_viewer = viewer;
+    }
+    
+    public void asViewer2(boolean viewer)
+    {
+        m_viewer2 = viewer;
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

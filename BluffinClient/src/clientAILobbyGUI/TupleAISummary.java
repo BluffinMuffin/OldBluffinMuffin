@@ -7,12 +7,14 @@ public class TupleAISummary
     public String m_AIName;
     public TypeAgent m_AIType;
     public boolean m_viewer;
+    public boolean m_viewer2;
     
-    public TupleAISummary(String AIName, TypeAgent AIType, boolean viewer)
+    public TupleAISummary(String AIName, TypeAgent AIType, boolean viewer, boolean viewer2)
     {
         m_AIName = AIName;
         m_AIType = AIType;
         m_viewer = viewer;
+        m_viewer2 = viewer2;
     }
     
     @Override
@@ -22,7 +24,15 @@ public class TupleAISummary
         
         if (m_viewer)
         {
-            sb.append("(V) ");
+            
+            if (m_viewer2)
+            {
+                sb.append("(V2) ");
+            }
+            else
+            {
+                sb.append("(V) ");
+            }
         }
         
         sb.append(m_AIName);

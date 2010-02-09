@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.DefaultListSelectionModel;
@@ -34,7 +36,6 @@ import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolTools.IBluffinCommand;
-import utilGUI.AutoListModel;
 import utility.Constants;
 import utility.IClosingListener;
 import clientAI.PokerSVM;
@@ -58,7 +59,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private boolean m_advisor;
     
     // List of PokerClient (one for each table the player joined)
-    private final AutoListModel<PokerClient> m_clients = new AutoListModel<PokerClient>();
+    private final List<PokerClient> m_clients = new ArrayList<PokerClient>();
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;

@@ -1,6 +1,5 @@
 package pokerLogic;
 
-
 /**
  * @author Hocus
  *         This class represent the action of a player.
@@ -34,12 +33,13 @@ public class PokerPlayerAction
         m_amountAmount = p_amount;
     }
     
-    public PokerPlayerAction(TypePlayerAction p_type) {
+    public PokerPlayerAction(TypePlayerAction p_type)
+    {
         m_typeAction = p_type;
         m_amountAmount = 0;
-	}
-
-	/**
+    }
+    
+    /**
      * Return the amount of the action
      * 
      * @return
@@ -89,27 +89,27 @@ public class PokerPlayerAction
     @Override
     public String toString()
     {
-        String result = "";
+        String result = "is eating 42 gummy bears";
         
         switch (m_typeAction)
         {
             case CALL:
-                result = "Call " + m_amountAmount;
+                result = "call $" + m_amountAmount;
                 break;
             case CHECK:
-                result = "Check";
+                result = "checks";
                 break;
             case FOLD:
-                result = "Fold";
+                result = "folds";
                 break;
             case RAISE:
-                result = "Raise to " + m_amountAmount;
+                result = "raises to $" + m_amountAmount;
                 break;
-            case NOTHING:
-                result = "Do nothing";
+            case BIG_BLIND:
+                result = "post the big blind";
                 break;
-            case UNKNOWN:
-                result = "Unknow Action";
+            case SMALL_BLIND:
+                result = "post the small blind";
                 break;
         }
         

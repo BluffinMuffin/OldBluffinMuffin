@@ -38,7 +38,7 @@ import clientGameTools.IClientPoker;
  * @author Hocus
  *         This class is a windows displaying the vision of a player.
  *         No interaction can be done through this class.
- *         A part of this class was generated using a visual editor
+ *         A part of this class was generated using aab visual editor
  *         (http://wiki.eclipse.org/VE).
  */
 public class TableGUIViewer extends JFrame implements IClientPoker

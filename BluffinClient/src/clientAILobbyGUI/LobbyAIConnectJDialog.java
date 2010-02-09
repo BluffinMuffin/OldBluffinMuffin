@@ -53,6 +53,7 @@ public class LobbyAIConnectJDialog extends JDialog
     private JCheckBox jAddViewerCheckBox = null;
     private JButton jSaveButton = null;
     private JButton jRemoveButton = null;
+    private JCheckBox jAddViewer2CheckBox = null;
     
     /**
      * @param owner
@@ -153,6 +154,7 @@ public class LobbyAIConnectJDialog extends JDialog
             jContentPane.add(getJAddViewerCheckBox(), null);
             jContentPane.add(getJSaveButton(), null);
             jContentPane.add(getJRemoveButton(), null);
+            jContentPane.add(getJAddViewer2CheckBox(), null);
         }
         return jContentPane;
     }
@@ -364,9 +366,18 @@ public class LobbyAIConnectJDialog extends JDialog
         {
             jAddViewerCheckBox = new JCheckBox();
             jAddViewerCheckBox.setText("Attach Viewer");
-            jAddViewerCheckBox.setSize(new Dimension(200, 20));
+            jAddViewerCheckBox.setSize(new Dimension(106, 20));
             jAddViewerCheckBox.setEnabled(false);
             jAddViewerCheckBox.setLocation(new Point(180, 210));
+            jAddViewerCheckBox.addItemListener(new java.awt.event.ItemListener()
+            {
+                public void itemStateChanged(java.awt.event.ItemEvent e)
+                {
+                    getJAddViewer2CheckBox().setSelected(false);
+                    getJAddViewer2CheckBox().setEnabled(getJAddViewerCheckBox().isSelected());
+                    
+                }
+            });
         }
         return jAddViewerCheckBox;
     }
@@ -391,11 +402,11 @@ public class LobbyAIConnectJDialog extends JDialog
                     
                     if (m_EditWho >= 0)
                     {
-                        model.set(m_EditWho, new TupleAISummary(getJAINameTextField().getText(), (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected()));
+                        model.set(m_EditWho, new TupleAISummary(getJAINameTextField().getText(), (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected(), getJAddViewer2CheckBox().isSelected()));
                     }
                     else
                     {
-                        model.add(model.getSize(), new TupleAISummary(getJAINameTextField().getText(), (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected()));
+                        model.add(model.getSize(), new TupleAISummary(getJAINameTextField().getText(), (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected(), getJAddViewer2CheckBox().isSelected()));
                     }
                     getJAddButton().setEnabled(true);
                     getJSaveButton().setEnabled(false);
@@ -501,6 +512,23 @@ public class LobbyAIConnectJDialog extends JDialog
     public int getEdithWho()
     {
         return m_EditWho;
+    }
+    
+    /**
+     * This method initializes jAddViewer2CheckBox
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getJAddViewer2CheckBox()
+    {
+        if (jAddViewer2CheckBox == null)
+        {
+            jAddViewer2CheckBox = new JCheckBox();
+            jAddViewer2CheckBox.setBounds(new Rectangle(300, 210, 50, 20));
+            jAddViewer2CheckBox.setText("2.0");
+            jAddViewer2CheckBox.setEnabled(false);
+        }
+        return jAddViewer2CheckBox;
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"
