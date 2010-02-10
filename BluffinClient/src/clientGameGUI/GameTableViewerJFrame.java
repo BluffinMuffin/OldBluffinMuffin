@@ -34,6 +34,7 @@ import clientGameTools.ClientPokerObserver;
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
 {
     private final PlayerHudJPanel[] huds = new PlayerHudJPanel[10];
+    private final GameCardJPanel[] board = new GameCardJPanel[5];
     private boolean m_gotoCaret = true;
     private int m_last_NiceHud = -1;
     
@@ -63,7 +64,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private JTextArea jLogTextArea = null; // @jve:decl-index=0:visual-constraint="1045,149"
     private JToolBar jBottomToolBar = null;
     private JToggleButton jLockToggleButton = null;
-    private JLabel jDummyLabel = null;
+    private JLabel jBackgroundTableLabel = null;
     private JPanel jTablePanel = null;
     private PlayerHudJPanel jHudPanel = null;
     private PlayerHudJPanel jHudPanel11 = null;
@@ -75,6 +76,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private PlayerHudJPanel jHudPanel17 = null;
     private PlayerHudJPanel jHudPanel18 = null;
     private PlayerHudJPanel jHudPanel19 = null;
+    private GameCardJPanel gameCardJPanel1 = null;
+    private GameCardJPanel gameCardJPanel2 = null;
+    private GameCardJPanel gameCardJPanel3 = null;
+    private GameCardJPanel gameCardJPanel4 = null;
+    private GameCardJPanel gameCardJPanel5 = null;
     
     /**
      * This is the default constructor
@@ -103,6 +109,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         huds[7] = getJHudPanel17();
         huds[8] = getJHudPanel();
         huds[9] = getJHudPanel11();
+        board[0] = getGameCardJPanel1();
+        board[1] = getGameCardJPanel2();
+        board[2] = getGameCardJPanel3();
+        board[3] = getGameCardJPanel4();
+        board[4] = getGameCardJPanel5();
         this.setTitle("Poker Table 2.0 (Viewer only)");
         this.setResizable(false);
         this.setPreferredSize(new Dimension(1024, 768));
@@ -118,9 +129,9 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     {
         if (jContentPane == null)
         {
-            jDummyLabel = new JLabel();
-            jDummyLabel.setBounds(new Rectangle(0, 50, 874, 556));
-            jDummyLabel.setIcon(new ImageIcon("images/table.png"));
+            jBackgroundTableLabel = new JLabel();
+            jBackgroundTableLabel.setBounds(new Rectangle(0, 50, 874, 556));
+            jBackgroundTableLabel.setIcon(new ImageIcon("images/table.png"));
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
             jContentPane.setMinimumSize(new Dimension(1024, 768));
@@ -130,9 +141,84 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             jContentPane.add(getJRightPanel(), null);
             jContentPane.add(getJBottomPanel(), null);
             jContentPane.add(getJTablePanel(), null);
-            jContentPane.add(jDummyLabel, null);
+            jContentPane.add(jBackgroundTableLabel, null);
         }
         return jContentPane;
+    }
+    
+    /**
+     * This method initializes gameCardJPanel1
+     * 
+     * @return clientGameGUI.GameCardJPanel
+     */
+    private GameCardJPanel getGameCardJPanel1()
+    {
+        if (gameCardJPanel1 == null)
+        {
+            gameCardJPanel1 = new GameCardJPanel();
+            gameCardJPanel1.setBounds(new Rectangle(269, 240, 40, 56));
+        }
+        return gameCardJPanel1;
+    }
+    
+    /**
+     * This method initializes gameCardJPanel2
+     * 
+     * @return clientGameGUI.GameCardJPanel
+     */
+    private GameCardJPanel getGameCardJPanel2()
+    {
+        if (gameCardJPanel2 == null)
+        {
+            gameCardJPanel2 = new GameCardJPanel();
+            gameCardJPanel2.setBounds(new Rectangle(329, 240, 40, 56));
+        }
+        return gameCardJPanel2;
+    }
+    
+    /**
+     * This method initializes gameCardJPanel3
+     * 
+     * @return clientGameGUI.GameCardJPanel
+     */
+    private GameCardJPanel getGameCardJPanel3()
+    {
+        if (gameCardJPanel3 == null)
+        {
+            gameCardJPanel3 = new GameCardJPanel();
+            gameCardJPanel3.setBounds(new Rectangle(389, 240, 40, 56));
+        }
+        return gameCardJPanel3;
+    }
+    
+    /**
+     * This method initializes gameCardJPanel4
+     * 
+     * @return clientGameGUI.GameCardJPanel
+     */
+    private GameCardJPanel getGameCardJPanel4()
+    {
+        if (gameCardJPanel4 == null)
+        {
+            gameCardJPanel4 = new GameCardJPanel();
+            gameCardJPanel4.setBounds(new Rectangle(469, 240, 40, 56));
+        }
+        return gameCardJPanel4;
+    }
+    
+    /**
+     * This method initializes gameCardJPanel5
+     * 
+     * @return clientGameGUI.GameCardJPanel
+     */
+    private GameCardJPanel getGameCardJPanel5()
+    {
+        if (gameCardJPanel5 == null)
+        {
+            gameCardJPanel5 = new GameCardJPanel();
+            gameCardJPanel5.setBounds(new Rectangle(549, 240, 40, 56));
+        }
+        return gameCardJPanel5;
     }
     
     /**
@@ -300,6 +386,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             jTablePanel.add(getJHudPanel17(), null);
             jTablePanel.add(getJHudPanel18(), null);
             jTablePanel.add(getJHudPanel19(), null);
+            jTablePanel.add(getGameCardJPanel1(), null);
+            jTablePanel.add(getGameCardJPanel2(), null);
+            jTablePanel.add(getGameCardJPanel3(), null);
+            jTablePanel.add(getGameCardJPanel4(), null);
+            jTablePanel.add(getGameCardJPanel5(), null);
         }
         return jTablePanel;
     }
@@ -513,8 +604,10 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void boardChanged(ArrayList<Integer> boardCardIndices)
             {
-                // TODO Auto-generated method stub
-                super.boardChanged(boardCardIndices);
+                for (final Integer i : boardCardIndices)
+                {
+                    board[i].setCard(m_table.getBoard()[i]);
+                }
             }
             
             @Override
@@ -549,6 +642,10 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 huds[m_table.m_noSeatDealer].setDealer();
                 huds[m_table.m_noSeatSmallBlind].setSmallBlind();
                 huds[m_table.m_noSeatBigBlind].setBigBlind();
+                for (int i = 0; i < 5; ++i)
+                {
+                    board[i].setCard(Card.getInstance().get(Card.HIDDEN_CARD));
+                }
             }
             
             @Override
@@ -617,13 +714,15 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
             {
-                // TODO Auto-generated method stub
-                super.playerTurnEnded(player, action, actionAmount);
                 
                 final PlayerHudJPanel php = huds[player.m_noSeat];
                 php.setPlayerMoney(player.m_money);
                 php.setPlayerAction(action);
                 php.setHeaderColor(Color.white);
+                if (action == TypePlayerAction.FOLD)
+                {
+                    php.setPlayerCards(Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD));
+                }
             }
             
             @Override
@@ -632,13 +731,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 final PlayerHudJPanel php = huds[player.m_noSeat];
                 php.setPlayerMoney(player.m_money);
                 php.setHeaderColor(Color.cyan);
-            }
-            
-            @Override
-            public void tableClosed()
-            {
-                // TODO Auto-generated method stub
-                super.tableClosed();
             }
             
             @Override
