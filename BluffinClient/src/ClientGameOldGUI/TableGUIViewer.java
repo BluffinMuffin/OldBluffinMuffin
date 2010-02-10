@@ -1,4 +1,4 @@
-package clientGameGUI;
+package ClientGameOldGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,6 +19,7 @@ import javax.swing.WindowConstants;
 import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
+
 
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;

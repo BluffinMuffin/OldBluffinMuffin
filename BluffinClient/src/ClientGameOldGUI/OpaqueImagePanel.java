@@ -1,4 +1,4 @@
-package clientGameGUI;
+package ClientGameOldGUI;
 
 import java.awt.Graphics;
 

@@ -45,6 +45,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
         panel.add(getJCheckButton());
         panel.add(getJCallButton());
         panel.add(getJRaiseButton());
+        changeSubTitle("");
     }
     
     /**

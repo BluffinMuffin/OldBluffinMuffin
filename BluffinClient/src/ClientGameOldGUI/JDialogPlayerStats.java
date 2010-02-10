@@ -1,4 +1,4 @@
-package clientGameGUI;
+package ClientGameOldGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;

@@ -34,6 +34,7 @@ import clientGameTools.ClientPokerObserver;
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
 {
     private final PlayerHudJPanel[] huds = new PlayerHudJPanel[10];
+    private final JLabel[] bets = new JLabel[10];
     private final GameCardJPanel[] board = new GameCardJPanel[5];
     private boolean m_gotoCaret = true;
     private int m_last_NiceHud = -1;
@@ -81,6 +82,18 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private GameCardJPanel gameCardJPanel3 = null;
     private GameCardJPanel gameCardJPanel4 = null;
     private GameCardJPanel gameCardJPanel5 = null;
+    private JLabel jTotalPotTitleLabel = null;
+    private JLabel jTotalPotLabel = null;
+    private JLabel jBetLabel1 = null;
+    private JLabel jBetLabel2 = null;
+    private JLabel jBetLabel3 = null;
+    private JLabel jBetLabel4 = null;
+    private JLabel jBetLabel5 = null;
+    private JLabel jBetLabel6 = null;
+    private JLabel jBetLabel7 = null;
+    private JLabel jBetLabel8 = null;
+    private JLabel jBetLabel9 = null;
+    private JLabel jBetLabel10 = null;
     
     /**
      * This is the default constructor
@@ -109,12 +122,22 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         huds[7] = getJHudPanel17();
         huds[8] = getJHudPanel();
         huds[9] = getJHudPanel11();
+        bets[0] = jBetLabel1;
+        bets[1] = jBetLabel2;
+        bets[2] = jBetLabel3;
+        bets[3] = jBetLabel4;
+        bets[4] = jBetLabel5;
+        bets[5] = jBetLabel6;
+        bets[6] = jBetLabel7;
+        bets[7] = jBetLabel8;
+        bets[8] = jBetLabel9;
+        bets[9] = jBetLabel10;
         board[0] = getGameCardJPanel1();
         board[1] = getGameCardJPanel2();
         board[2] = getGameCardJPanel3();
         board[3] = getGameCardJPanel4();
         board[4] = getGameCardJPanel5();
-        this.setTitle("Poker Table 2.0 (Viewer only)");
+        changeSubTitle("(Viewer Only)");
         this.setResizable(false);
         this.setPreferredSize(new Dimension(1024, 768));
         this.setSize(new Dimension(1024, 768));
@@ -231,7 +254,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         if (jTopPanel == null)
         {
             jTitleLabel = new JLabel();
-            jTitleLabel.setText("Poker Table 2.0 (Viewer only)");
+            changeSubTitle("(Viewer Only)");
             jTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
             jTitleLabel.setFont(new Font("Dialog", Font.BOLD, 24));
             jTitleLabel.setForeground(Color.white);
@@ -372,10 +395,71 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     {
         if (jTablePanel == null)
         {
+            jBetLabel10 = new JLabel();
+            jBetLabel10.setBounds(new Rectangle(203, 203, 100, 16));
+            jBetLabel10.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel10.setText("");
+            jBetLabel10.setForeground(Color.white);
+            jBetLabel9 = new JLabel();
+            jBetLabel9.setBounds(new Rectangle(203, 326, 100, 16));
+            jBetLabel9.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel9.setText("");
+            jBetLabel9.setForeground(Color.white);
+            jBetLabel8 = new JLabel();
+            jBetLabel8.setBounds(new Rectangle(237, 374, 100, 16));
+            jBetLabel8.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel8.setText("");
+            jBetLabel8.setForeground(Color.white);
+            jBetLabel7 = new JLabel();
+            jBetLabel7.setBounds(new Rectangle(382, 374, 100, 16));
+            jBetLabel7.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel7.setText("");
+            jBetLabel7.setForeground(Color.white);
+            jBetLabel6 = new JLabel();
+            jBetLabel6.setBounds(new Rectangle(527, 374, 100, 16));
+            jBetLabel6.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel6.setText("");
+            jBetLabel6.setForeground(Color.white);
+            jBetLabel5 = new JLabel();
+            jBetLabel5.setBounds(new Rectangle(566, 326, 100, 16));
+            jBetLabel5.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel5.setText("");
+            jBetLabel5.setForeground(Color.white);
+            jBetLabel4 = new JLabel();
+            jBetLabel4.setBounds(new Rectangle(566, 203, 100, 16));
+            jBetLabel4.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel4.setText("");
+            jBetLabel4.setForeground(Color.white);
+            jBetLabel3 = new JLabel();
+            jBetLabel3.setBounds(new Rectangle(527, 140, 100, 16));
+            jBetLabel3.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel3.setText("");
+            jBetLabel3.setForeground(Color.white);
+            jBetLabel2 = new JLabel();
+            jBetLabel2.setBounds(new Rectangle(382, 140, 100, 16));
+            jBetLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel2.setText("");
+            jBetLabel2.setForeground(Color.white);
+            jBetLabel1 = new JLabel();
+            jBetLabel1.setBounds(new Rectangle(237, 140, 100, 16));
+            jBetLabel1.setHorizontalAlignment(SwingConstants.CENTER);
+            jBetLabel1.setText("");
+            jBetLabel1.setForeground(Color.white);
+            jTotalPotLabel = new JLabel();
+            jTotalPotLabel.setBounds(new Rectangle(25, 45, 100, 16));
+            jTotalPotLabel.setText("");
+            jTotalPotLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            jTotalPotLabel.setForeground(Color.white);
+            jTotalPotTitleLabel = new JLabel();
+            jTotalPotTitleLabel.setBounds(new Rectangle(25, 25, 100, 16));
+            jTotalPotTitleLabel.setForeground(Color.white);
+            jTotalPotTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            jTotalPotTitleLabel.setText("Total Pot:");
             jTablePanel = new JPanel();
             jTablePanel.setLayout(null);
             jTablePanel.setBounds(new Rectangle(0, 50, 874, 556));
             jTablePanel.setOpaque(false);
+            jTablePanel.setBackground(Color.black);
             jTablePanel.add(getJHudPanel(), null);
             jTablePanel.add(getJHudPanel11(), null);
             jTablePanel.add(getJHudPanel12(), null);
@@ -391,6 +475,18 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             jTablePanel.add(getGameCardJPanel3(), null);
             jTablePanel.add(getGameCardJPanel4(), null);
             jTablePanel.add(getGameCardJPanel5(), null);
+            jTablePanel.add(jTotalPotTitleLabel, null);
+            jTablePanel.add(jTotalPotLabel, null);
+            jTablePanel.add(jBetLabel1, null);
+            jTablePanel.add(jBetLabel2, null);
+            jTablePanel.add(jBetLabel3, null);
+            jTablePanel.add(jBetLabel4, null);
+            jTablePanel.add(jBetLabel5, null);
+            jTablePanel.add(jBetLabel6, null);
+            jTablePanel.add(jBetLabel7, null);
+            jTablePanel.add(jBetLabel8, null);
+            jTablePanel.add(jBetLabel9, null);
+            jTablePanel.add(jBetLabel10, null);
         }
         return jTablePanel;
     }
@@ -617,6 +713,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {
                     final PlayerHudJPanel php = huds[m_table.getPlayer(i).m_noSeat];
+                    final JLabel bet = bets[m_table.getPlayer(i).m_noSeat];
+                    bet.setText("");
                     php.setPlayerMoney(m_table.getPlayer(i).m_money);
                     php.setNotDealer();
                     php.setNoBlind();
@@ -639,6 +737,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
             {
+                changePotAmount(0);
                 huds[m_table.m_noSeatDealer].setDealer();
                 huds[m_table.m_noSeatSmallBlind].setSmallBlind();
                 huds[m_table.m_noSeatBigBlind].setBigBlind();
@@ -718,10 +817,15 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 final PlayerHudJPanel php = huds[player.m_noSeat];
                 php.setPlayerMoney(player.m_money);
                 php.setPlayerAction(action);
-                php.setHeaderColor(Color.white);
+                changePotAmount(m_table.m_totalPotAmount);
                 if (action == TypePlayerAction.FOLD)
                 {
                     php.setPlayerCards(Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD));
+                }
+                if (player.getBet() > 0)
+                {
+                    final JLabel bet = bets[player.m_noSeat];
+                    bet.setText("$" + player.getBet());
                 }
             }
             
@@ -856,5 +960,15 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 // writeLine("Waiting for players");
             }
         });
+    }
+    
+    protected void changeSubTitle(String title)
+    {
+        this.setTitle("Poker Table 2.0 " + title);
+    }
+    
+    protected void changePotAmount(int amount)
+    {
+        jTotalPotLabel.setText("$" + amount);
     }
 } // @jve:decl-index=0:visual-constraint="10,10"
