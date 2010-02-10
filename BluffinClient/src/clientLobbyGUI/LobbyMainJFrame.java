@@ -38,14 +38,11 @@ import protocolLobby.LobbyListTableCommand;
 import protocolTools.IBluffinCommand;
 import utility.Constants;
 import utility.IClosingListener;
-import clientAI.PokerSVM;
 import clientAILobbyGUI.LobbyAIMainJFrame;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
-import clientGameGUI.TableGUI;
-import clientGameGUI.TableGUIAdvisor;
-import clientStats.StatsAgent;
+import clientGameGUI.GameTableJFrame;
 
 public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
@@ -740,20 +737,20 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
             final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
-            TableGUI gui = null;
+            GameTableJFrame gui = null;
             
-            if (m_advisor)
-            {
-                final StatsAgent statsAgent = new StatsAgent();
-                statsAgent.setPokerObserver(client.getPokerObserver());
-                client.attach(statsAgent);
-                final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
-                gui = new TableGUIAdvisor(statsAgent, pokerSVM);
-            }
-            else
-            {
-                gui = new TableGUI();
-            }
+            // if (m_advisor)
+            // {
+            // final StatsAgent statsAgent = new StatsAgent();
+            // statsAgent.setPokerObserver(client.getPokerObserver());
+            // client.attach(statsAgent);
+            // final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
+            // gui = new TableGUIAdvisor(statsAgent, pokerSVM);
+            // }
+            // else
+            // {
+            gui = new GameTableJFrame();
+            // }
             
             // Start a the new PokerClient.
             gui.setPokerObserver(client.getPokerObserver());

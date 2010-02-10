@@ -254,7 +254,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJRightPanel()
+    protected JPanel getJRightPanel()
     {
         if (jRightPanel == null)
         {
