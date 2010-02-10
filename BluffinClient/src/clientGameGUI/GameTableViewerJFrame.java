@@ -6,14 +6,12 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,34 +22,117 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
-import utilGUI.JBackgroundPanel;
 import clientGameTools.ClientPokerAdapter;
 import clientGameTools.ClientPokerObserver;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
 {
+    private final PlayerHudJPanel[] huds = new PlayerHudJPanel[10];
     private boolean m_gotoCaret = true;
+    private int m_last_NiceHud = -1;
     
     /**
-     * This method initializes jCenterPanel
+     * @param args
+     */
+    public static void main(String[] args)
+    {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                final GameTableViewerJFrame thisClass = new GameTableViewerJFrame();
+                thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                thisClass.setVisible(true);
+            }
+        });
+    }
+    
+    private static final long serialVersionUID = 1L;
+    private JPanel jContentPane = null;
+    private JPanel jTopPanel = null;
+    private JPanel jRightPanel = null;
+    private JPanel jBottomPanel = null;
+    private JLabel jTitleLabel = null;
+    private JScrollPane jLogScrollPane = null;
+    private JTextArea jLogTextArea = null; // @jve:decl-index=0:visual-constraint="1045,149"
+    private JToolBar jBottomToolBar = null;
+    private JToggleButton jLockToggleButton = null;
+    private JLabel jDummyLabel = null;
+    private JPanel jTablePanel = null;
+    private PlayerHudJPanel jHudPanel = null;
+    private PlayerHudJPanel jHudPanel11 = null;
+    private PlayerHudJPanel jHudPanel12 = null;
+    private PlayerHudJPanel jHudPanel13 = null;
+    private PlayerHudJPanel jHudPanel14 = null;
+    private PlayerHudJPanel jHudPanel15 = null;
+    private PlayerHudJPanel jHudPanel16 = null;
+    private PlayerHudJPanel jHudPanel17 = null;
+    private PlayerHudJPanel jHudPanel18 = null;
+    private PlayerHudJPanel jHudPanel19 = null;
+    
+    /**
+     * This is the default constructor
+     */
+    public GameTableViewerJFrame()
+    {
+        super();
+        initialize();
+    }
+    
+    /**
+     * This method initializes this
+     * 
+     * @return void
+     */
+    private void initialize()
+    {
+        this.setContentPane(getJContentPane());
+        huds[0] = getJHudPanel12();
+        huds[1] = getJHudPanel13();
+        huds[2] = getJHudPanel14();
+        huds[3] = getJHudPanel15();
+        huds[4] = getJHudPanel16();
+        huds[5] = getJHudPanel19();
+        huds[6] = getJHudPanel18();
+        huds[7] = getJHudPanel17();
+        huds[8] = getJHudPanel();
+        huds[9] = getJHudPanel11();
+        this.setTitle("Poker Table 2.0 (Viewer only)");
+        this.setResizable(false);
+        this.setPreferredSize(new Dimension(1024, 768));
+        this.setSize(new Dimension(1024, 768));
+    }
+    
+    /**
+     * This method initializes jContentPane
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJCenterPanel()
+    private JPanel getJContentPane()
     {
-        if (jCenterPanel == null)
+        if (jContentPane == null)
         {
-            jCenterPanel = new JBackgroundPanel(new ImageIcon("images/table.png"));
-            jCenterPanel.setLocation(new Point(0, 50));
-            jCenterPanel.setSize(new Dimension(465, 222));
-            // jCenterPanel.add(getJButton());
+            jDummyLabel = new JLabel();
+            jDummyLabel.setBounds(new Rectangle(0, 50, 874, 556));
+            jDummyLabel.setIcon(new ImageIcon("images/table.png"));
+            jContentPane = new JPanel();
+            jContentPane.setLayout(null);
+            jContentPane.setMinimumSize(new Dimension(1024, 768));
+            jContentPane.setMaximumSize(new Dimension(1024, 768));
+            jContentPane.setPreferredSize(new Dimension(1024, 768));
+            jContentPane.add(getJTopPanel(), null);
+            jContentPane.add(getJRightPanel(), null);
+            jContentPane.add(getJBottomPanel(), null);
+            jContentPane.add(getJTablePanel(), null);
+            jContentPane.add(jDummyLabel, null);
         }
-        return jCenterPanel;
+        return jContentPane;
     }
     
     /**
@@ -197,270 +278,200 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     }
     
     /**
-     * This method initializes jHud1Panel
+     * This method initializes jTablePanel
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel()
+    private JPanel getJTablePanel()
     {
-        if (jHud1Panel == null)
+        if (jTablePanel == null)
         {
-            jHud1Panel = new JPanel();
-            jHud1Panel.setLayout(new GridBagLayout());
-            jHud1Panel.setBounds(new Rectangle(18, 117, 141, 111));
+            jTablePanel = new JPanel();
+            jTablePanel.setLayout(null);
+            jTablePanel.setBounds(new Rectangle(0, 50, 874, 556));
+            jTablePanel.setOpaque(false);
+            jTablePanel.add(getJHudPanel(), null);
+            jTablePanel.add(getJHudPanel11(), null);
+            jTablePanel.add(getJHudPanel12(), null);
+            jTablePanel.add(getJHudPanel13(), null);
+            jTablePanel.add(getJHudPanel14(), null);
+            jTablePanel.add(getJHudPanel15(), null);
+            jTablePanel.add(getJHudPanel16(), null);
+            jTablePanel.add(getJHudPanel17(), null);
+            jTablePanel.add(getJHudPanel18(), null);
+            jTablePanel.add(getJHudPanel19(), null);
         }
-        return jHud1Panel;
+        return jTablePanel;
     }
     
     /**
-     * This method initializes jHud1Panel1
+     * This method initializes jHudPanel
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel1()
+    private PlayerHudJPanel getJHudPanel()
     {
-        if (jHud1Panel1 == null)
+        if (jHudPanel == null)
         {
-            jHud1Panel1 = new JPanel();
-            jHud1Panel1.setLayout(new GridBagLayout());
-            jHud1Panel1.setLocation(new Point(16, 250));
-            jHud1Panel1.setSize(new Dimension(141, 111));
+            jHudPanel = new PlayerHudJPanel();
+            jHudPanel.setLayout(null);
+            jHudPanel.setBounds(new Rectangle(75, 275, 125, 125));
+            jHudPanel.setVisible(false);
         }
-        return jHud1Panel1;
+        return jHudPanel;
     }
     
     /**
-     * This method initializes jHud1Panel11
+     * This method initializes jHudPanel11
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel11()
+    private PlayerHudJPanel getJHudPanel11()
     {
-        if (jHud1Panel11 == null)
+        if (jHudPanel11 == null)
         {
-            jHud1Panel11 = new JPanel();
-            jHud1Panel11.setLayout(new GridBagLayout());
-            jHud1Panel11.setLocation(new Point(343, 30));
-            jHud1Panel11.setSize(new Dimension(141, 111));
+            jHudPanel11 = new PlayerHudJPanel();
+            jHudPanel11.setLayout(null);
+            jHudPanel11.setBounds(new Rectangle(75, 130, 125, 125));
+            jHudPanel11.setVisible(false);
         }
-        return jHud1Panel11;
+        return jHudPanel11;
     }
     
     /**
-     * This method initializes jHud1Panel12
+     * This method initializes jHudPanel12
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel12()
+    private PlayerHudJPanel getJHudPanel12()
     {
-        if (jHud1Panel12 == null)
+        if (jHudPanel12 == null)
         {
-            jHud1Panel12 = new JPanel();
-            jHud1Panel12.setLayout(new GridBagLayout());
-            jHud1Panel12.setLocation(new Point(170, 35));
-            jHud1Panel12.setSize(new Dimension(141, 111));
+            jHudPanel12 = new PlayerHudJPanel();
+            jHudPanel12.setLayout(null);
+            jHudPanel12.setBounds(new Rectangle(225, 10, 125, 125));
+            jHudPanel12.setVisible(false);
         }
-        return jHud1Panel12;
+        return jHudPanel12;
     }
     
     /**
-     * This method initializes jHud1Panel13
+     * This method initializes jHudPanel13
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel13()
+    private PlayerHudJPanel getJHudPanel13()
     {
-        if (jHud1Panel13 == null)
+        if (jHudPanel13 == null)
         {
-            jHud1Panel13 = new JPanel();
-            jHud1Panel13.setLayout(new GridBagLayout());
-            jHud1Panel13.setLocation(new Point(503, 30));
-            jHud1Panel13.setSize(new Dimension(141, 111));
+            jHudPanel13 = new PlayerHudJPanel();
+            jHudPanel13.setLayout(null);
+            jHudPanel13.setBounds(new Rectangle(370, 10, 125, 125));
+            jHudPanel13.setVisible(false);
         }
-        return jHud1Panel13;
+        return jHudPanel13;
     }
     
     /**
-     * This method initializes jHud1Panel14
+     * This method initializes jHudPanel14
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel14()
+    private PlayerHudJPanel getJHudPanel14()
     {
-        if (jHud1Panel14 == null)
+        if (jHudPanel14 == null)
         {
-            jHud1Panel14 = new JPanel();
-            jHud1Panel14.setLayout(new GridBagLayout());
-            jHud1Panel14.setLocation(new Point(659, 123));
-            jHud1Panel14.setSize(new Dimension(141, 111));
+            jHudPanel14 = new PlayerHudJPanel();
+            jHudPanel14.setLayout(null);
+            jHudPanel14.setBounds(new Rectangle(515, 10, 125, 125));
+            jHudPanel14.setVisible(false);
         }
-        return jHud1Panel14;
+        return jHudPanel14;
     }
     
     /**
-     * This method initializes jHud1Panel15
+     * This method initializes jHudPanel15
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel15()
+    private PlayerHudJPanel getJHudPanel15()
     {
-        if (jHud1Panel15 == null)
+        if (jHudPanel15 == null)
         {
-            jHud1Panel15 = new JPanel();
-            jHud1Panel15.setLayout(new GridBagLayout());
-            jHud1Panel15.setLocation(new Point(334, 352));
-            jHud1Panel15.setSize(new Dimension(141, 111));
+            jHudPanel15 = new PlayerHudJPanel();
+            jHudPanel15.setLayout(null);
+            jHudPanel15.setBounds(new Rectangle(665, 130, 125, 125));
+            jHudPanel15.setVisible(false);
         }
-        return jHud1Panel15;
+        return jHudPanel15;
     }
     
     /**
-     * This method initializes jHud1Panel16
+     * This method initializes jHudPanel16
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel16()
+    private PlayerHudJPanel getJHudPanel16()
     {
-        if (jHud1Panel16 == null)
+        if (jHudPanel16 == null)
         {
-            jHud1Panel16 = new JPanel();
-            jHud1Panel16.setLayout(new GridBagLayout());
-            jHud1Panel16.setLocation(new Point(662, 270));
-            jHud1Panel16.setSize(new Dimension(141, 111));
+            jHudPanel16 = new PlayerHudJPanel();
+            jHudPanel16.setLayout(null);
+            jHudPanel16.setBounds(new Rectangle(665, 275, 125, 125));
+            jHudPanel16.setVisible(false);
         }
-        return jHud1Panel16;
+        return jHudPanel16;
     }
     
     /**
-     * This method initializes jHud1Panel17
+     * This method initializes jHudPanel17
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel17()
+    private PlayerHudJPanel getJHudPanel17()
     {
-        if (jHud1Panel17 == null)
+        if (jHudPanel17 == null)
         {
-            jHud1Panel17 = new JPanel();
-            jHud1Panel17.setLayout(new GridBagLayout());
-            jHud1Panel17.setLocation(new Point(165, 351));
-            jHud1Panel17.setSize(new Dimension(141, 111));
+            jHudPanel17 = new PlayerHudJPanel();
+            jHudPanel17.setLayout(null);
+            jHudPanel17.setBounds(new Rectangle(225, 400, 125, 125));
+            jHudPanel17.setVisible(false);
         }
-        return jHud1Panel17;
+        return jHudPanel17;
     }
     
     /**
-     * This method initializes jHud1Panel18
+     * This method initializes jHudPanel18
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJHud1Panel18()
+    private PlayerHudJPanel getJHudPanel18()
     {
-        if (jHud1Panel18 == null)
+        if (jHudPanel18 == null)
         {
-            jHud1Panel18 = new JPanel();
-            jHud1Panel18.setLayout(new GridBagLayout());
-            jHud1Panel18.setLocation(new Point(496, 351));
-            jHud1Panel18.setSize(new Dimension(141, 111));
+            jHudPanel18 = new PlayerHudJPanel();
+            jHudPanel18.setLayout(null);
+            jHudPanel18.setBounds(new Rectangle(370, 400, 125, 125));
+            jHudPanel18.setVisible(false);
         }
-        return jHud1Panel18;
+        return jHudPanel18;
     }
     
     /**
-     * This method initializes jButton
-     * 
-     * @return javax.swing.JButton
-     */
-    private JButton getJButton()
-    {
-        if (jButton == null)
-        {
-            jButton = new JButton();
-        }
-        return jButton;
-    }
-    
-    /**
-     * @param args
-     */
-    public static void main(String[] args)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                final GameTableViewerJFrame thisClass = new GameTableViewerJFrame();
-                thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                thisClass.setVisible(true);
-            }
-        });
-    }
-    
-    private static final long serialVersionUID = 1L;
-    private JPanel jContentPane = null;
-    private JBackgroundPanel jCenterPanel = null;
-    private JPanel jTopPanel = null;
-    private JPanel jRightPanel = null;
-    private JPanel jBottomPanel = null;
-    private JLabel jTitleLabel = null;
-    private JScrollPane jLogScrollPane = null;
-    private JTextArea jLogTextArea = null; // @jve:decl-index=0:visual-constraint="1045,149"
-    private JToolBar jBottomToolBar = null;
-    private JToggleButton jLockToggleButton = null;
-    private JPanel jHud1Panel = null;
-    private JPanel jHud1Panel1 = null;
-    private JPanel jHud1Panel11 = null;
-    private JPanel jHud1Panel12 = null;
-    private JPanel jHud1Panel13 = null;
-    private JPanel jHud1Panel14 = null;
-    private JPanel jHud1Panel15 = null;
-    private JPanel jHud1Panel16 = null;
-    private JPanel jHud1Panel17 = null;
-    private JPanel jHud1Panel18 = null;
-    private JButton jButton = null;
-    
-    /**
-     * This is the default constructor
-     */
-    public GameTableViewerJFrame()
-    {
-        super();
-        initialize();
-    }
-    
-    /**
-     * This method initializes this
-     * 
-     * @return void
-     */
-    private void initialize()
-    {
-        this.setContentPane(getJContentPane());
-        this.setTitle("Poker Table 2.0 (Viewer only)");
-        this.setResizable(false);
-        this.setPreferredSize(new Dimension(1024, 768));
-        this.setSize(new Dimension(1024, 768));
-    }
-    
-    /**
-     * This method initializes jContentPane
+     * This method initializes jHudPanel19
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJContentPane()
+    private PlayerHudJPanel getJHudPanel19()
     {
-        if (jContentPane == null)
+        if (jHudPanel19 == null)
         {
-            jContentPane = new JPanel();
-            jContentPane.setLayout(null);
-            jContentPane.setMinimumSize(new Dimension(1024, 768));
-            jContentPane.setMaximumSize(new Dimension(1024, 768));
-            jContentPane.setPreferredSize(new Dimension(1024, 768));
-            jContentPane.add(getJCenterPanel(), null);
-            jContentPane.add(getJTopPanel(), null);
-            jContentPane.add(getJRightPanel(), null);
-            jContentPane.add(getJBottomPanel(), null);
+            jHudPanel19 = new PlayerHudJPanel();
+            jHudPanel19.setLayout(null);
+            jHudPanel19.setBounds(new Rectangle(515, 400, 125, 125));
+            jHudPanel19.setVisible(false);
         }
-        return jContentPane;
+        return jHudPanel19;
     }
     
     public void writeLine(String line)
@@ -509,50 +520,104 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void gameEnded()
             {
-                // TODO Auto-generated method stub
+                m_last_NiceHud = -1;
+                for (int i = 0; i < m_table.getPlayers().size(); ++i)
+                {
+                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).m_noSeat];
+                    if (m_table.getPlayer(i).m_money == 0)
+                    {
+                        php.setBackground(Color.gray);
+                        php.setHeaderColor(Color.gray);
+                    }
+                    else
+                    {
+                        php.setBackground(Color.white);
+                        php.setHeaderColor(Color.white);
+                    }
+                    php.setPlayerAction(TypePlayerAction.NOTHING);
+                }
                 super.gameEnded();
             }
             
             @Override
             public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
             {
-                // TODO Auto-generated method stub
-                super.gameStarted(oldDealer, oldSmallBlind, oldBigBlind);
+                if (oldDealer != null)
+                {
+                    huds[oldDealer.m_noSeat].setNotDealer();
+                }
+                if (oldSmallBlind != null)
+                {
+                    huds[oldSmallBlind.m_noSeat].setNoBlind();
+                }
+                if (oldBigBlind != null)
+                {
+                    huds[oldBigBlind.m_noSeat].setNoBlind();
+                }
+                huds[m_table.m_noSeatDealer].setDealer();
+                huds[m_table.m_noSeatSmallBlind].setSmallBlind();
+                huds[m_table.m_noSeatBigBlind].setBigBlind();
             }
             
             @Override
             public void playerCardChanged(PokerPlayerInfo player)
             {
-                // TODO Auto-generated method stub
-                super.playerCardChanged(player);
+                final PlayerHudJPanel php = huds[player.m_noSeat];
+                php.setPlayerCards(player.getHand()[0], player.getHand()[1]);
             }
             
             @Override
             public void playerJoined(PokerPlayerInfo player)
             {
-                // TODO Auto-generated method stub
-                super.playerJoined(player);
+                final PlayerHudJPanel php = huds[player.m_noSeat];
+                intallPlayer(php, player);
+            }
+            
+            private void intallPlayer(PlayerHudJPanel php, PokerPlayerInfo player)
+            {
+                php.setPlayerName(player.getName());
+                php.setPlayerInfo("");// TODO: Human or BOT
+                php.setPlayerAction(TypePlayerAction.NOTHING);
+                php.setPlayerCards(Card.getInstance().get(Card.HIDDEN_CARD), Card.getInstance().get(Card.HIDDEN_CARD));
+                php.setPlayerMoney(player.m_money);
+                php.setBackground(Color.white);
+                php.setHeaderColor(Color.white);
+                php.setVisible(true);
             }
             
             @Override
             public void playerLeft(PokerPlayerInfo player)
             {
-                // TODO Auto-generated method stub
-                super.playerLeft(player);
+                final PlayerHudJPanel php = huds[player.m_noSeat];
+                php.setVisible(false);
             }
             
             @Override
             public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
             {
-                // TODO Auto-generated method stub
-                super.playerMoneyChanged(player, oldMoneyAmount);
             }
             
             @Override
             public void playerTurnBegan(PokerPlayerInfo player)
             {
-                // TODO Auto-generated method stub
-                super.playerTurnBegan(player);
+                if (m_last_NiceHud >= 0)
+                {
+                    final PlayerHudJPanel php = huds[m_last_NiceHud];
+                    php.setHeaderColor(Color.white);
+                }
+                if (player != null)
+                {
+                    final PlayerHudJPanel php = huds[player.m_noSeat];
+                    if (player == m_table.m_localPlayer)
+                    {
+                        php.setHeaderColor(Color.green);
+                    }
+                    else
+                    {
+                        php.setHeaderColor(new Color(102, 255, 102));
+                    }
+                    m_last_NiceHud = player.m_noSeat;
+                }
             }
             
             @Override
@@ -560,13 +625,17 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             {
                 // TODO Auto-generated method stub
                 super.playerTurnEnded(player, action, actionAmount);
+                
+                final PlayerHudJPanel php = huds[player.m_noSeat];
+                php.setPlayerMoney(player.m_money);
+                php.setPlayerAction(action);
             }
             
             @Override
             public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
             {
-                // TODO Auto-generated method stub
-                super.potWon(player, potAmountWon, potIndex);
+                final PlayerHudJPanel php = huds[player.m_noSeat];
+                php.setHeaderColor(Color.cyan);
             }
             
             @Override
@@ -579,8 +648,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void tableInfos()
             {
-                // TODO Auto-generated method stub
-                super.tableInfos();
+                for (int i = 0; i < m_table.getPlayers().size(); ++i)
+                {
+                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).m_noSeat];
+                    intallPlayer(php, m_table.getPlayer(i));
+                }
             }
         });
     }

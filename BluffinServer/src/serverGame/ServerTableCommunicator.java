@@ -355,7 +355,7 @@ public class ServerTableCommunicator implements Runnable
             }
             else
             {
-                m_pokerObserver.waitingForPlayers(this);
+                // m_pokerObserver.waitingForPlayers(this);
                 try
                 {
                     Thread.sleep(Constants.SERVER_WAIT_TIME_FOR_NEW_PLAYERS);

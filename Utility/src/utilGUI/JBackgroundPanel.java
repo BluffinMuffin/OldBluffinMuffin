@@ -62,11 +62,11 @@ public class JBackgroundPanel extends JPanel
         this.remove(m_bgImage);
         // make the passed in swing component transparent
         component.setOpaque(false);
+        // add the background label
+        super.add(m_bgImage, JBackgroundPanel.m_gbc);
         
         // add the passed in swing component first to ensure that it is in front
         super.add(component, JBackgroundPanel.m_gbc);
-        // add the background label
-        super.add(m_bgImage, JBackgroundPanel.m_gbc);
     }
     
     /**
