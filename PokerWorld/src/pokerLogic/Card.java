@@ -321,7 +321,7 @@ public class Card implements Comparable<Card>
      */
     public String getCode()
     {
-        return (m_id >= 0) ? Card.getCode(m_id) : "";
+        return (m_id >= 0) ? Card.getCode(m_id) : "" + m_id;
     }
     
     /**

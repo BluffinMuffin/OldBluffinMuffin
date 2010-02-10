@@ -1,6 +1,5 @@
 package clientGameGUI;
 
-
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
@@ -48,9 +47,12 @@ public class OpaqueImagePanel extends JPanel
     
     public void setImage(Image p_image)
     {
-        m_height = p_image.m_height;
-        m_width = p_image.m_width;
-        m_img = p_image.m_img;
+        if (p_image != null)
+        {
+            m_height = p_image.m_height;
+            m_width = p_image.m_width;
+            m_img = p_image.m_img;
+        }
         // m_scale = p_image.m_scale;
     }
     

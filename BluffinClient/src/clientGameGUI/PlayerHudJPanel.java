@@ -26,8 +26,8 @@ public class PlayerHudJPanel extends JPanel
     private JLabel jStatusLabel = null;
     private JLabel jActionLabel = null;
     private JPanel jCenterPanel = null;
-    private CardPanel cardPanel1 = null;
-    private CardPanel cardPanel2 = null;
+    private GameCardJPanel cardPanel1 = null;
+    private GameCardJPanel cardPanel2 = null;
     private JLabel jDealerLabel = null;
     private JLabel jBlindLabel = null;
     
@@ -132,12 +132,12 @@ public class PlayerHudJPanel extends JPanel
      * 
      * @return clientGameGUI.CardPanel
      */
-    private CardPanel getCardPanel1()
+    private GameCardJPanel getCardPanel1()
     {
         if (cardPanel1 == null)
         {
-            cardPanel1 = CardPanel.getInstance(Card.C2);
-            cardPanel1.setBounds(new Rectangle(5, 2, 43, 60));
+            cardPanel1 = new GameCardJPanel();
+            cardPanel1.setBounds(new Rectangle(5, 3, 40, 56));
         }
         return cardPanel1;
     }
@@ -147,12 +147,12 @@ public class PlayerHudJPanel extends JPanel
      * 
      * @return clientGameGUI.CardPanel
      */
-    private CardPanel getCardPanel2()
+    private GameCardJPanel getCardPanel2()
     {
         if (cardPanel2 == null)
         {
-            cardPanel2 = CardPanel.getInstance(Card.D8);
-            cardPanel2.setBounds(new Rectangle(50, 2, 43, 60));
+            cardPanel2 = new GameCardJPanel();
+            cardPanel2.setBounds(new Rectangle(50, 3, 40, 56));
         }
         return cardPanel2;
     }
@@ -185,8 +185,8 @@ public class PlayerHudJPanel extends JPanel
     
     public void setPlayerCards(Card c1, Card c2)
     {
-        getCardPanel1().changeCard(c1);
-        getCardPanel2().changeCard(c2);
+        getCardPanel1().setCard(c1);
+        getCardPanel2().setCard(c2);
     }
     
     public void setPlayerMoney(int money)

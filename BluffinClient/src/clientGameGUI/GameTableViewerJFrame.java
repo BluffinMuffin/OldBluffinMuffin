@@ -524,10 +524,14 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {
                     final PlayerHudJPanel php = huds[m_table.getPlayer(i).m_noSeat];
+                    php.setPlayerMoney(m_table.getPlayer(i).m_money);
+                    php.setNotDealer();
+                    php.setNoBlind();
                     if (m_table.getPlayer(i).m_money == 0)
                     {
                         php.setBackground(Color.gray);
                         php.setHeaderColor(Color.gray);
+                        php.setPlayerCards(Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD));
                     }
                     else
                     {
@@ -542,18 +546,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
             {
-                if (oldDealer != null)
-                {
-                    huds[oldDealer.m_noSeat].setNotDealer();
-                }
-                if (oldSmallBlind != null)
-                {
-                    huds[oldSmallBlind.m_noSeat].setNoBlind();
-                }
-                if (oldBigBlind != null)
-                {
-                    huds[oldBigBlind.m_noSeat].setNoBlind();
-                }
                 huds[m_table.m_noSeatDealer].setDealer();
                 huds[m_table.m_noSeatSmallBlind].setSmallBlind();
                 huds[m_table.m_noSeatBigBlind].setBigBlind();
@@ -595,6 +587,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
             {
+                final PlayerHudJPanel php = huds[player.m_noSeat];
+                php.setPlayerMoney(player.m_money);
             }
             
             @Override
@@ -629,12 +623,14 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 final PlayerHudJPanel php = huds[player.m_noSeat];
                 php.setPlayerMoney(player.m_money);
                 php.setPlayerAction(action);
+                php.setHeaderColor(Color.white);
             }
             
             @Override
             public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
             {
                 final PlayerHudJPanel php = huds[player.m_noSeat];
+                php.setPlayerMoney(player.m_money);
                 php.setHeaderColor(Color.cyan);
             }
             

@@ -2,10 +2,7 @@ package clientGameGUI;
 
 import java.util.TreeMap;
 
-
 import pokerLogic.Card;
-
-
 
 /**
  * @author Hocus
@@ -39,7 +36,7 @@ public class CardPanel extends OpaqueImagePanel
     {
         if (!CardPanel.m_cardPanels.containsKey(p_card))
         {
-            final String url = CardPanel.PATH_IMAGE_CARD + ((p_card.isNoCard() || p_card.isHidden()) ? "default" : p_card.getCode() + ".png");
+            final String url = CardPanel.PATH_IMAGE_CARD + ((p_card.isNoCard() || p_card.isHidden()) ? "default" + ".png" : p_card.getCode() + ".png");
             CardPanel.m_cardPanels.put(p_card, url);
             
         }
