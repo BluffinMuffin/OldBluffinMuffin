@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
@@ -14,7 +16,6 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
 {
     
     PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
-    private int m_minRaise;
     /**
      * 
      */
@@ -23,6 +24,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
     private JButton jCheckButton = null;
     private JButton jCallButton = null;
     private JButton jRaiseButton = null;
+    private JSpinner jRaiseSpinner = null;
     
     /**
      * This method initializes
@@ -45,7 +47,24 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
         panel.add(getJCheckButton());
         panel.add(getJCallButton());
         panel.add(getJRaiseButton());
+        panel.add(getJRaiseSpinner());
         changeSubTitle("");
+    }
+    
+    /**
+     * This method initializes jCheckButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JSpinner getJRaiseSpinner()
+    {
+        if (jRaiseSpinner == null)
+        {
+            jRaiseSpinner = new JSpinner();
+            jRaiseSpinner.setEnabled(false);
+            jRaiseSpinner.setPreferredSize(new Dimension(125, 25));
+        }
+        return jRaiseSpinner;
     }
     
     /**
@@ -141,7 +160,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    actionTaken(new PokerPlayerAction(TypePlayerAction.RAISE, m_minRaise));
+                    actionTaken(new PokerPlayerAction(TypePlayerAction.RAISE, (Integer) getJRaiseSpinner().getValue()));
                 }
             });
         }
@@ -164,6 +183,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
         getJCheckButton().setEnabled(false);
         getJCallButton().setEnabled(false);
         getJRaiseButton().setEnabled(false);
+        getJRaiseSpinner().setEnabled(false);
     }
     
     @Override
@@ -213,8 +233,8 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
         if (p_actionsAllowed.contains(TypePlayerAction.RAISE))
         {
             getJRaiseButton().setEnabled(true);
+            getJRaiseSpinner().setEnabled(true);
+            getJRaiseSpinner().setModel(new SpinnerNumberModel(p_minRaiseAmount, p_minRaiseAmount, p_maxRaiseAmount, p_minRaiseAmount));
         }
-        m_minRaise = p_minRaiseAmount;
     }
-    
 }

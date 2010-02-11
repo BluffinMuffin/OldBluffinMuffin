@@ -1,4 +1,4 @@
-package clientGameOldGUI2;
+package clientGameOldGUI;
 
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
