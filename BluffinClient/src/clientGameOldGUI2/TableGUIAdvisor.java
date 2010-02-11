@@ -1,4 +1,4 @@
-package ClientGameOldGUI;
+package clientGameOldGUI2;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -53,7 +53,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     private String m_playerName;
     private String m_serverAddress;
     private int m_serverPort;
-    private boolean m_advisor;
+    // private boolean m_advisor;
     
     // List of PokerClient (one for each table the player joined)
     private final List<PokerClient> m_clients = new ArrayList<PokerClient>();
@@ -382,7 +382,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
             m_playerName = form.getPlayerName();
             m_serverAddress = form.getServerAddress();
             m_serverPort = form.getServerPort();
-            m_advisor = form.isAdvisor();
+            // m_advisor = form.isAdvisor();
             if (connect(m_serverAddress, m_serverPort))
             {
                 send(new LobbyConnectCommand(m_playerName));
