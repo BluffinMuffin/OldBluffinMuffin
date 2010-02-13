@@ -28,7 +28,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
         // Initialize all player's attributes to default value.
         for (final PokerPlayerInfo player : getPlayers())
         {
-            player.m_isPlaying = player.m_money > 0;
+            player.m_isPlaying = player.getMoney() > 0;
             player.m_isEarlyPos = false;
             player.m_isCutOff = false;
             player.m_isMidPos = false;

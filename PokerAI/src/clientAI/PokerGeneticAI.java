@@ -8,7 +8,6 @@ import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import pokerStats.MonteCarlo;
 
-
 @Deprecated
 public class PokerGeneticAI extends PokerAI
 {
@@ -51,7 +50,7 @@ public class PokerGeneticAI extends PokerAI
         }
         
         final double rnd = (Math.random() - 0.5);
-        int bet = (int) (phi[gameState] * ((mc - alpha[gameState]) + (beta[gameState]) * rnd) * (m_table.m_localPlayer.m_money - m_table.m_localPlayer.m_betAmount));
+        int bet = (int) (phi[gameState] * ((mc - alpha[gameState]) + (beta[gameState]) * rnd) * (m_table.m_localPlayer.getMoney() - m_table.m_localPlayer.m_betAmount));
         
         bet -= m_table.m_localPlayer.m_betAmount;
         

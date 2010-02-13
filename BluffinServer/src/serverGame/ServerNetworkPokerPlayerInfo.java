@@ -317,7 +317,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void bigBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
             {
-                send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind));
+                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind));
             }
             
             @Override
@@ -361,13 +361,13 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void holeCardDeal(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                if (p_player.getTablePosition() != getTablePosition())
+                if (p_player.getNoSeat() != getNoSeat())
                 {
-                    send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), Card.HIDDEN_CARD, Card.HIDDEN_CARD));
+                    send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), Card.HIDDEN_CARD, Card.HIDDEN_CARD));
                 }
                 else
                 {
-                    send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
+                    send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
                 }
                 
             }
@@ -375,43 +375,43 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
             {
-                send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()));
+                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()));
             }
             
             @Override
             public void playerJoinedTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                send(new GamePlayerJoinedCommand(p_player.getTablePosition(), p_player.getName(), p_player.getMoney()));
+                send(new GamePlayerJoinedCommand(p_player.getNoSeat(), p_player.getName(), p_player.getMoney()));
             }
             
             @Override
             public void playerLeftTable(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                send(new GamePlayerLeftCommand(p_player.getTablePosition()));
+                send(new GamePlayerLeftCommand(p_player.getNoSeat()));
             }
             
             @Override
             public void playerMoneyChanged(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                send(new GamePlayerMoneyChangedCommand(p_player.getTablePosition(), p_player.getMoney()));
+                send(new GamePlayerMoneyChangedCommand(p_player.getNoSeat(), p_player.getMoney()));
             }
             
             @Override
             public void playerShowCard(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                send(new GameHoleCardsChangedCommand(p_player.getTablePosition(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
+                send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
             }
             
             @Override
             public void playerTurnStarted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                send(new GamePlayerTurnBeganCommand(p_player.getTablePosition()));
+                send(new GamePlayerTurnBeganCommand(p_player.getNoSeat()));
             }
             
             @Override
             public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
             {
-                send(new GamePlayerWonPotCommand(p_player.getTablePosition(), p_pot.getId(), p_share, p_player.getMoney()));
+                send(new GamePlayerWonPotCommand(p_player.getNoSeat(), p_pot.getId(), p_share, p_player.getMoney()));
             }
             
             @Override
@@ -424,7 +424,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void smallBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
             {
-                send(new GamePlayerTurnEndedCommand(p_player.getTablePosition(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind));
+                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind));
             }
             
             @Override

@@ -712,13 +712,13 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 m_last_NiceHud = -1;
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {
-                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).m_noSeat];
-                    final JLabel bet = bets[m_table.getPlayer(i).m_noSeat];
+                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).getNoSeat()];
+                    final JLabel bet = bets[m_table.getPlayer(i).getNoSeat()];
                     bet.setText("");
-                    php.setPlayerMoney(m_table.getPlayer(i).m_money);
+                    php.setPlayerMoney(m_table.getPlayer(i).getMoney());
                     php.setNotDealer();
                     php.setNoBlind();
-                    if (m_table.getPlayer(i).m_money == 0)
+                    if (m_table.getPlayer(i).getMoney() == 0)
                     {
                         php.setBackground(Color.gray);
                         php.setHeaderColor(Color.gray);
@@ -750,14 +750,14 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerCardChanged(PokerPlayerInfo player)
             {
-                final PlayerHudJPanel php = huds[player.m_noSeat];
+                final PlayerHudJPanel php = huds[player.getNoSeat()];
                 php.setPlayerCards(player.getHand()[0], player.getHand()[1]);
             }
             
             @Override
             public void playerJoined(PokerPlayerInfo player)
             {
-                final PlayerHudJPanel php = huds[player.m_noSeat];
+                final PlayerHudJPanel php = huds[player.getNoSeat()];
                 intallPlayer(php, player);
             }
             
@@ -767,7 +767,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 php.setPlayerInfo("");// TODO: Human or BOT
                 php.setPlayerAction(TypePlayerAction.NOTHING);
                 php.setPlayerCards(Card.getInstance().get(Card.HIDDEN_CARD), Card.getInstance().get(Card.HIDDEN_CARD));
-                php.setPlayerMoney(player.m_money);
+                php.setPlayerMoney(player.getMoney());
                 php.setBackground(Color.white);
                 php.setHeaderColor(Color.white);
                 php.setVisible(true);
@@ -776,15 +776,15 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerLeft(PokerPlayerInfo player)
             {
-                final PlayerHudJPanel php = huds[player.m_noSeat];
+                final PlayerHudJPanel php = huds[player.getNoSeat()];
                 php.setVisible(false);
             }
             
             @Override
             public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
             {
-                final PlayerHudJPanel php = huds[player.m_noSeat];
-                php.setPlayerMoney(player.m_money);
+                final PlayerHudJPanel php = huds[player.getNoSeat()];
+                php.setPlayerMoney(player.getMoney());
             }
             
             @Override
@@ -797,7 +797,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 }
                 if (player != null)
                 {
-                    final PlayerHudJPanel php = huds[player.m_noSeat];
+                    final PlayerHudJPanel php = huds[player.getNoSeat()];
                     if (player == m_table.m_localPlayer)
                     {
                         php.setHeaderColor(Color.green);
@@ -806,7 +806,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                     {
                         php.setHeaderColor(new Color(102, 255, 102));
                     }
-                    m_last_NiceHud = player.m_noSeat;
+                    m_last_NiceHud = player.getNoSeat();
                 }
             }
             
@@ -814,8 +814,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
             {
                 
-                final PlayerHudJPanel php = huds[player.m_noSeat];
-                php.setPlayerMoney(player.m_money);
+                final PlayerHudJPanel php = huds[player.getNoSeat()];
+                php.setPlayerMoney(player.getMoney());
                 php.setPlayerAction(action);
                 changePotAmount(m_table.m_totalPotAmount);
                 if (action == TypePlayerAction.FOLD)
@@ -824,7 +824,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 }
                 if (player.getBet() > 0)
                 {
-                    final JLabel bet = bets[player.m_noSeat];
+                    final JLabel bet = bets[player.getNoSeat()];
                     bet.setText("$" + player.getBet());
                 }
             }
@@ -832,8 +832,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
             {
-                final PlayerHudJPanel php = huds[player.m_noSeat];
-                php.setPlayerMoney(player.m_money);
+                final PlayerHudJPanel php = huds[player.getNoSeat()];
+                php.setPlayerMoney(player.getMoney());
                 php.setHeaderColor(Color.cyan);
             }
             
@@ -842,7 +842,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             {
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {
-                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).m_noSeat];
+                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).getNoSeat()];
                     intallPlayer(php, m_table.getPlayer(i));
                 }
             }

@@ -1,10 +1,11 @@
 package pokerLogic;
 
-
 import java.util.ArrayList;
 
-public abstract class PokerPlayerInfo {
-	public int m_money;
+public abstract class PokerPlayerInfo
+{
+    private int m_money;
+    
     public int m_initialMoney;
     public int m_betAmount;
     public boolean m_isCutOff;
@@ -17,15 +18,28 @@ public abstract class PokerPlayerInfo {
     public int m_relativePosition;
     public boolean m_isPlaying;
     public String m_name;
-    public int m_noSeat;
-    private ArrayList<Card> m_hand;
+    private int m_noSeat;
+    private final ArrayList<Card> m_hand;
     
     /**
      * Create a new player named "Anonymous Player" with no money
      */
     public PokerPlayerInfo()
     {
-        this("Anonymous Player");
+        m_name = "Anonymous Player";
+        m_money = 0;
+        m_initialMoney = 0;
+        m_betAmount = 0;
+        m_isPlaying = false;
+        m_isCutOff = false;
+        m_isDealer = false;
+        m_isSmallBlind = false;
+        m_isBigBlind = false;
+        m_isEarlyPos = false;
+        m_isMidPos = false;
+        m_timeRemaining = 0;
+        m_hand = new ArrayList<Card>();
+        setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
     }
     
     /**
@@ -36,10 +50,9 @@ public abstract class PokerPlayerInfo {
      */
     public PokerPlayerInfo(String p_name)
     {
-        this(p_name, 0);
+        this();
+        m_name = p_name;
     }
-    
-
     
     /**
      * Create a new player
@@ -51,18 +64,43 @@ public abstract class PokerPlayerInfo {
      */
     public PokerPlayerInfo(String p_name, int p_money)
     {
-        m_name = p_name;
+        this(p_name);
         m_money = p_money;
-        m_isPlaying = false;
-        m_isDealer = false;
-        m_isSmallBlind = false;
-        m_isBigBlind = false;
-        m_hand = new ArrayList<Card>();
     }
+    
+    /**
+     * Create a new player
+     * 
+     * @param p_name
+     *            The name of the player
+     * @param p_money
+     *            The starting chips of the player
+     */
+    public PokerPlayerInfo(int p_noSeat, String p_name, int p_money)
+    {
+        this(p_name, p_money);
+        setNoSeat(p_noSeat);
+    }
+    
+    /**
+     * Create a new player
+     * 
+     * @param p_name
+     *            The name of the player
+     * @param p_money
+     *            The starting chips of the player
+     */
+    public PokerPlayerInfo(int p_noSeat)
+    {
+        this();
+        setNoSeat(p_noSeat);
+    }
+    
     public void addMoney(int p_amount)
     {
         m_money += p_amount;
     }
+    
     public boolean canStartGame()
     {
         if ((m_money <= 0) || m_isPlaying)
@@ -71,6 +109,7 @@ public abstract class PokerPlayerInfo {
         }
         return true;
     }
+    
     public void endGame()
     {
         m_isPlaying = false;
@@ -79,10 +118,13 @@ public abstract class PokerPlayerInfo {
         m_isDealer = false;
         m_hand.clear();
     }
+    
     public void endTurn()
     {
         m_betAmount = 0;
     }
+    
+    @Override
     public boolean equals(Object arg0)
     {
         if (arg0 instanceof String)
@@ -97,34 +139,41 @@ public abstract class PokerPlayerInfo {
         
         return super.equals(arg0);
     }
-       public int getBet()
+    
+    public int getBet()
     {
         return m_betAmount;
     }
+    
     public Card[] getHand()
     {
-    	Card[] dest = new Card[2];
-    	if(m_hand.size()<2)
-    		setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
-    	dest[0] = m_hand.get(0);
-    	dest[1] = m_hand.get(1);
+        final Card[] dest = new Card[2];
+        if (m_hand.size() < 2)
+        {
+            setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
+        }
+        dest[0] = m_hand.get(0);
+        dest[1] = m_hand.get(1);
         return dest;
     }
+    
     public void setHand(Card card1, Card card2)
     {
         m_hand.clear();
         m_hand.add(card1);
         m_hand.add(card2);
     }
+    
     public int getMoney()
     {
         return m_money;
     }
+    
     public String getName()
     {
         return m_name;
     }
-
+    
     public long handValue(Card[] p_board)
     {
         final ArrayList<Card> hand = new ArrayList<Card>(m_hand);
@@ -134,14 +183,17 @@ public abstract class PokerPlayerInfo {
         }
         return HandEvalHoldem.get7CardsHandValue(hand);
     }
+    
     public boolean isAllIn()
     {
         return (m_isPlaying && (m_money <= 0));
     }
+    
     public boolean isBigBlind()
     {
         return m_isBigBlind;
     }
+    
     public boolean isDealer()
     {
         return m_isDealer;
@@ -215,6 +267,16 @@ public abstract class PokerPlayerInfo {
         m_money = p_money;
     }
     
+    public void setNoSeat(int m_noSeat)
+    {
+        this.m_noSeat = m_noSeat;
+    }
+
+    public int getNoSeat()
+    {
+        return m_noSeat;
+    }
+
     public void winPot(int p_potValue)
     {
         m_money += p_potValue;

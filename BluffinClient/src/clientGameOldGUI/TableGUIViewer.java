@@ -20,7 +20,6 @@ import org.dyno.visual.swing.layouts.Constraints;
 import org.dyno.visual.swing.layouts.GroupLayout;
 import org.dyno.visual.swing.layouts.Leading;
 
-
 import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
@@ -634,7 +633,7 @@ public class TableGUIViewer extends JFrame implements IClientPoker
     
     protected GUIPlayer getPlayer(int p_noSeat)
     {
-        return m_players.get((p_noSeat + (TableGUIViewer.NB_PLAYERS - m_table.m_localPlayer.m_noSeat)) % TableGUIViewer.NB_PLAYERS);
+        return m_players.get((p_noSeat + (TableGUIViewer.NB_PLAYERS - m_table.m_localPlayer.getNoSeat())) % TableGUIViewer.NB_PLAYERS);
     }
     
     private void initComponents()
@@ -766,25 +765,25 @@ public class TableGUIViewer extends JFrame implements IClientPoker
                     player.m_hud.setIsBigBlind(false);
                 }
                 
-                getPlayer(m_table.m_dealer.m_noSeat).m_hud.setIsDealer(true);
-                getPlayer(m_table.m_smallBlind.m_noSeat).m_hud.setIsSmallBlind(true);
-                getPlayer(m_table.m_bigBlind.m_noSeat).m_hud.setIsBigBlind(true);
+                getPlayer(m_table.m_dealer.getNoSeat()).m_hud.setIsDealer(true);
+                getPlayer(m_table.m_smallBlind.getNoSeat()).m_hud.setIsSmallBlind(true);
+                getPlayer(m_table.m_bigBlind.getNoSeat()).m_hud.setIsBigBlind(true);
             }
             
             @Override
             public void playerCardChanged(PokerPlayerInfo player)
             {
-                getPlayer(player.m_noSeat).m_hud.setCards(player.getHand()[0], player.getHand()[1]);
+                getPlayer(player.getNoSeat()).m_hud.setCards(player.getHand()[0], player.getHand()[1]);
             }
             
             @Override
             public void playerJoined(PokerPlayerInfo player)
             {
-                final GUIPlayer playerGUI = getPlayer(player.m_noSeat);
+                final GUIPlayer playerGUI = getPlayer(player.getNoSeat());
                 playerGUI.m_bet.setText(format(player.m_betAmount));
                 playerGUI.m_bet.setVisible(true);
                 playerGUI.m_hud.setPlayerName(player.m_name);
-                playerGUI.m_hud.setMoney(format(player.m_money));
+                playerGUI.m_hud.setMoney(format(player.getMoney()));
                 playerGUI.m_hud.setCards(player.getHand()[0], player.getHand()[1]);
                 playerGUI.m_hud.setIsDealer(player.m_isDealer);
                 playerGUI.m_hud.setIsSmallBlind(player.m_isSmallBlind);
@@ -796,7 +795,7 @@ public class TableGUIViewer extends JFrame implements IClientPoker
             @Override
             public void playerLeft(PokerPlayerInfo player)
             {
-                final GUIPlayer playerGUI = getPlayer(player.m_noSeat);
+                final GUIPlayer playerGUI = getPlayer(player.getNoSeat());
                 playerGUI.m_hud.setVisible(false);
                 playerGUI.m_bet.setVisible(false);
             }
@@ -804,22 +803,22 @@ public class TableGUIViewer extends JFrame implements IClientPoker
             @Override
             public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
             {
-                final GUIPlayer playerGUI = getPlayer(player.m_noSeat);
-                playerGUI.m_hud.setMoney(format(player.m_money));
+                final GUIPlayer playerGUI = getPlayer(player.getNoSeat());
+                playerGUI.m_hud.setMoney(format(player.getMoney()));
             }
             
             @Override
             public void playerTurnBegan(PokerPlayerInfo player)
             {
-                getPlayer(m_table.m_currentPlayer.m_noSeat).m_hud.setIsPlaying(true);
+                getPlayer(m_table.m_currentPlayer.getNoSeat()).m_hud.setIsPlaying(true);
             }
             
             @Override
             public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
             {
-                final GUIPlayer p = getPlayer(player.m_noSeat);
+                final GUIPlayer p = getPlayer(player.getNoSeat());
                 p.m_bet.setText(format(player.m_betAmount));
-                p.m_hud.setMoney(format(player.m_money));
+                p.m_hud.setMoney(format(player.getMoney()));
                 doAction(p, action, actionAmount);
                 p.m_hud.setIsPlaying(false);
                 getJLabelTotalPot().setText(format(m_table.m_totalPotAmount));
@@ -829,8 +828,8 @@ public class TableGUIViewer extends JFrame implements IClientPoker
             public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
             {
                 m_pots.get(potIndex).setVisible(false);
-                final GUIPlayer playerGUI = getPlayer(player.m_noSeat);
-                playerGUI.m_hud.setMoney(format(player.m_money));
+                final GUIPlayer playerGUI = getPlayer(player.getNoSeat());
+                playerGUI.m_hud.setMoney(format(player.getMoney()));
                 playerGUI.m_hud.setIsWinner(true);
             }
             
@@ -872,7 +871,7 @@ public class TableGUIViewer extends JFrame implements IClientPoker
                     playerGUI.m_bet.setText(format(player.m_betAmount));
                     playerGUI.m_bet.setVisible(true);
                     playerGUI.m_hud.setPlayerName(player.m_name);
-                    playerGUI.m_hud.setMoney(format(player.m_money));
+                    playerGUI.m_hud.setMoney(format(player.getMoney()));
                     playerGUI.m_hud.setCards(player.getHand()[0], player.getHand()[1]);
                     playerGUI.m_hud.setIsDealer(player.m_isDealer);
                     playerGUI.m_hud.setIsSmallBlind(player.m_isSmallBlind);

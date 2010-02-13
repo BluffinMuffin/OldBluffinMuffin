@@ -463,7 +463,7 @@ public class SimulationServer
     
     public void simulate(TupleHandHistories p_infos)
     {
-        m_clientHero.m_noSeat = p_infos.getHero().m_noSeat;
+        m_clientHero.setNoSeat(p_infos.getHero().m_noSeat);
         m_hero = p_infos.getHero();
         m_currentInfos = p_infos;
         m_nbRemainingPlayers = m_currentInfos.m_players.size();

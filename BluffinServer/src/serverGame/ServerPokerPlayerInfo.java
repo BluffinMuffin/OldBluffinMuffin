@@ -11,7 +11,6 @@ import pokerLogic.TypePlayerAction;
  */
 public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
 {
-    protected int m_position;
     protected boolean m_isFolded;
     protected boolean m_cardShowed;
     protected boolean m_sitOutNextHand;
@@ -47,18 +46,12 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
     public ServerPokerPlayerInfo(String p_name, int p_money)
     {
         super(p_name, p_money);
-        m_isPlaying = false;
         m_isFolded = false;
     }
     
     public ServerTableCommunicator getTable()
     {
         return m_table;
-    }
-    
-    public int getTablePosition()
-    {
-        return m_position;
     }
     
     public boolean isFolded()
@@ -90,11 +83,6 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
     public void setTable(ServerTableCommunicator p_table)
     {
         m_table = p_table;
-    }
-    
-    public void setTablePosition(int p_position)
-    {
-        m_position = p_position;
     }
     
     public void showCards()
@@ -146,11 +134,12 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
         
         final boolean canCheck = p_betOnTable <= m_betAmount;
         int callOf = p_betOnTable - m_betAmount;
-        if (callOf > m_money)
+        final int money = getMoney();
+        if (callOf > money)
         {
-            callOf = m_money;
+            callOf = money;
         }
-        final boolean canRaise = p_minimumRaise <= m_betAmount + m_money;
+        final boolean canRaise = p_minimumRaise <= m_betAmount + money;
         final int minimumRaise = (canRaise) ? p_minimumRaise : 0;
         final int maximumRaise = (canRaise) ? p_maximumRaise : 0;
         
@@ -162,12 +151,12 @@ public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
         }
         else if (action.getType() == TypePlayerAction.CALL)
         {
-            m_money -= action.getAmount();
+            setMoney(money - action.getAmount());
             m_betAmount += action.getAmount();
         }
         else if (action.getType() == TypePlayerAction.RAISE)
         {
-            m_money -= (action.getAmount() - m_betAmount);
+            setMoney(money - (action.getAmount() - m_betAmount));
             m_betAmount = action.getAmount();
         }
         

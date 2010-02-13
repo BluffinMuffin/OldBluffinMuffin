@@ -1,10 +1,9 @@
 package clientGame;
 
-import clientGameTools.TypeSimplifiedAction;
-import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
+import clientGameTools.TypeSimplifiedAction;
 
 /**
  * @author Hocus
@@ -20,26 +19,12 @@ public class ClientPokerPlayerInfo extends PokerPlayerInfo
     
     public ClientPokerPlayerInfo(int p_noSeat)
     {
-        m_noSeat = p_noSeat;
-        m_money = 0;
-        m_initialMoney = 0;
-        m_betAmount = 0;
-        m_name = "";
-        m_isCutOff = false;
-        m_isDealer = false;
-        m_isSmallBlind = false;
-        m_isBigBlind = false;
-        m_isEarlyPos = false;
-        m_isMidPos = false;
-        m_timeRemaining = 0;
-        setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
+        super(p_noSeat);
     }
     
     public ClientPokerPlayerInfo(int p_noSeat, String p_name, int p_money)
     {
-        this(p_noSeat);
-        m_money = p_money;
-        m_name = p_name;
+        super(p_noSeat, p_name, p_money);
     }
     
     /**
@@ -159,7 +144,7 @@ public class ClientPokerPlayerInfo extends PokerPlayerInfo
     @Override
     public String toString()
     {
-        return m_noSeat + ": " + m_name;
+        return getNoSeat() + ": " + m_name;
     }
     
 }

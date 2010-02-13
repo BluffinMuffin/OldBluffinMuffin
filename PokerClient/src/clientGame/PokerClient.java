@@ -73,7 +73,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
         m_table.m_dealer = null;
         m_table.m_smallBlind = null;
         m_table.m_bigBlind = null;
-        m_table.addPlayer(p_localPlayer.m_noSeat, p_localPlayer);
+        m_table.addPlayer(p_localPlayer.getNoSeat(), p_localPlayer);
         m_server = p_server;
         
         for (int i = 0; i != PokerClient.NB_CARDS_BOARDS; ++i)
@@ -453,7 +453,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 
                 for (final PokerPlayerInfo player : m_table.getPlayers())
                 {
-                    player.m_initialMoney = player.m_money;
+                    player.m_initialMoney = player.getMoney();
                 }
                 m_pokerObserver.gameStarted(oldDealer, oldSmallBlind, oldBigBlind);
             }
@@ -505,8 +505,8 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int moneyAmount = command.getPlayerMoney();
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
-                final int oldMoneyAmount = player.m_money;
-                player.m_money = moneyAmount;
+                final int oldMoneyAmount = player.getMoney();
+                player.setMoney(moneyAmount);
                 m_pokerObserver.playerMoneyChanged(player, oldMoneyAmount);
             }
             
@@ -532,7 +532,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 
                 final ClientPokerPlayerInfo player = (ClientPokerPlayerInfo) m_table.getPlayer(noSeat);
                 player.m_betAmount = betAmount;
-                player.m_money = moneyAmount;
+                player.setMoney(moneyAmount);
                 m_table.m_totalPotAmount = totalPotAmount;
                 m_table.m_currentBet = Math.max(m_table.m_currentBet, betAmount);
                 
@@ -554,7 +554,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int moneyAmount = command.getPlayerMoney();
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
-                player.m_money = moneyAmount;
+                player.setMoney(moneyAmount);
                 m_pokerObserver.potWon(player, potAmountWon, idPot);
             }
             
@@ -580,7 +580,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int nb = command.getNbPlayers();
                 
                 m_table.clearPlayers();
-                m_table.addPlayer(m_table.m_localPlayer.m_noSeat, m_table.m_localPlayer);
+                m_table.addPlayer(m_table.m_localPlayer.getNoSeat(), m_table.m_localPlayer);
                 
                 for (int i = 0; i < nb; ++i)
                 {
@@ -599,7 +599,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                     final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                     
                     player.m_name = seat.m_playerName;
-                    player.m_money = seat.m_money;
+                    player.setMoney(seat.m_money);
                     final Card card1 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
                     final Card card2 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
                     player.setHand(card1, card2);
@@ -610,19 +610,19 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                     if (player.m_isDealer)
                     {
                         m_table.m_dealer = player;
-                        m_table.m_noSeatDealer = player.m_noSeat;
+                        m_table.m_noSeatDealer = player.getNoSeat();
                     }
                     
                     if (player.m_isSmallBlind)
                     {
                         m_table.m_smallBlind = player;
-                        m_table.m_noSeatSmallBlind = player.m_noSeat;
+                        m_table.m_noSeatSmallBlind = player.getNoSeat();
                     }
                     
                     if (player.m_isBigBlind)
                     {
                         m_table.m_bigBlind = player;
-                        m_table.m_noSeatBigBlind = player.m_noSeat;
+                        m_table.m_noSeatBigBlind = player.getNoSeat();
                     }
                     
                     final boolean isPlaying = seat.m_isCurrentPlayer;

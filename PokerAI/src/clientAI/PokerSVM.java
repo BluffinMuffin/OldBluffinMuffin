@@ -477,7 +477,7 @@ public class PokerSVM extends PokerAI
         double highMoney = 0.0;
         for (final PokerPlayerInfo player : m_table.getPlayers())
         {
-            highMoney = Math.max(highMoney, player.m_money);
+            highMoney = Math.max(highMoney, player.getMoney());
         }
         
         m_cptID = 1;
@@ -487,7 +487,7 @@ public class PokerSVM extends PokerAI
         sb.append(Constants.SVM_SEPARATOR);
         sb.append(format(infos.m_winRatio)); // 1
         sb.append(format(infos.m_standardDeviation)); // 2
-        sb.append(format(m_table.m_localPlayer.m_money / highMoney)); // 3
+        sb.append(format(m_table.m_localPlayer.getMoney() / highMoney)); // 3
         sb.append(format((double) (m_callAmount - m_table.m_localPlayer.m_betAmount) / (double) m_table.m_localPlayer.m_initialMoney));// 4
         sb.append(format((double) (m_callAmount - m_table.m_localPlayer.m_betAmount) / (double) m_table.m_totalPotAmount));// 5
         sb.append(formatPosition(m_table.m_localPlayer.m_relativePosition)); // 5-13
@@ -497,7 +497,7 @@ public class PokerSVM extends PokerAI
         sb.append(formatEnum(((ClientPokerPlayerInfo) m_table.m_localPlayer).m_lastActionsTurn, TypeSimplifiedAction.class)); // 28-34
         sb.append(formatEnum(((ClientPokerPlayerInfo) m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
         
-        sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.m_money)); // 42
+        sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.getMoney())); // 42
         sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
@@ -513,7 +513,7 @@ public class PokerSVM extends PokerAI
             }
             
             sb.append(formatPosition(player.m_relativePosition)); // 48-56
-            sb.append(format(player.m_money / highMoney)); // 57
+            sb.append(format(player.getMoney() / highMoney)); // 57
             sb.append(format((double) player.m_betAmount / (double) player.m_initialMoney)); // 58
             sb.append(formatEnum(((ClientPokerPlayerInfo) player).m_lastActionsPreflop, TypeSimplifiedAction.class)); // 59-65
             sb.append(formatEnum(((ClientPokerPlayerInfo) player).m_lastActionsFlop, TypeSimplifiedAction.class)); // 66-72

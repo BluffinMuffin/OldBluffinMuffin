@@ -328,8 +328,8 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
                 final int moneyAmount = command.getPlayerMoney();
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
-                final int oldMoneyAmount = player.m_money;
-                player.m_money = moneyAmount;
+                final int oldMoneyAmount = player.getMoney();
+                player.setMoney(moneyAmount);
                 m_pokerObserver.playerMoneyChanged(player, oldMoneyAmount);
             }
             
@@ -367,7 +367,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
                     final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                     
                     player.m_name = seat.m_playerName;
-                    player.m_money = seat.m_money;
+                    player.setMoney(seat.m_money);
                     final Card card1 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
                     final Card card2 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
                     player.setHand(card1, card2);
@@ -378,19 +378,19 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
                     if (player.m_isDealer)
                     {
                         m_table.m_dealer = player;
-                        m_table.m_noSeatDealer = player.m_noSeat;
+                        m_table.m_noSeatDealer = player.getNoSeat();
                     }
                     
                     if (player.m_isSmallBlind)
                     {
                         m_table.m_smallBlind = player;
-                        m_table.m_noSeatSmallBlind = player.m_noSeat;
+                        m_table.m_noSeatSmallBlind = player.getNoSeat();
                     }
                     
                     if (player.m_isBigBlind)
                     {
                         m_table.m_bigBlind = player;
-                        m_table.m_noSeatBigBlind = player.m_noSeat;
+                        m_table.m_noSeatBigBlind = player.getNoSeat();
                     }
                     
                     final boolean isPlaying = seat.m_isCurrentPlayer;

@@ -418,7 +418,7 @@ public class ServerTableCommunicator implements Runnable
         m_waitForFirstPlayer = false;
         m_info.addPlayer(p_noSeat, p_player);
         p_player.setTable(this);
-        p_player.setTablePosition(p_noSeat);
+        p_player.setNoSeat(p_noSeat);
         m_pokerObserver.playerJoinedTable(this, p_player);
         m_pokerObserver.tableInfos(this);
     }

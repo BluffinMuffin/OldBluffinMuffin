@@ -272,7 +272,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
             seat.m_playerName = player.getName(); // playerName
             seat.m_money = player.getMoney(); // playerMoney
             
-            final boolean showCard = (player.getTablePosition() == pPlayer.getTablePosition()) || player.isShowingCard();
+            final boolean showCard = (player.getNoSeat() == pPlayer.getNoSeat()) || player.isShowingCard();
             
             // Player cards
             int j = 0;
