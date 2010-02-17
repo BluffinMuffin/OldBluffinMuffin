@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 
 public class GameCardJPanel extends JPanel
 {
@@ -25,7 +25,7 @@ public class GameCardJPanel extends JPanel
         this.add(label);
         for (int i = 0; i < 52; ++i)
         {
-            final String code = Card.getInstance().get(i).getCode();
+            final String code = GameCard.getInstance(i).toString();
             label = new GameCardJLabel(GameCardJPanel.PATH_IMAGE_CARD + code + ".png");
             m_labels.put(code, label);
             this.add(label);
@@ -43,12 +43,12 @@ public class GameCardJPanel extends JPanel
         hideCurrent();
     }
     
-    public void setCard(Card c)
+    public void setCard(GameCard c)
     {
         hideCurrent();
         if (!c.isNoCard())
         {
-            m_current = c.getCode();
+            m_current = c.toString();
             m_labels.get(m_current).setVisible(true);
         }
     }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
@@ -78,7 +78,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
         
         for (int i = 0; i != PokerClient.NB_CARDS_BOARDS; ++i)
         {
-            m_table.m_boardCards.add(Card.getInstance().get(-1));
+            m_table.m_boardCards.add(GameCard.NO_CARD);
         }
         
         for (int i = 0; i != PokerClient.NB_SEATS; ++i)
@@ -202,7 +202,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
     {
         for (int i = 0; i != PokerClient.NB_CARDS_BOARDS; ++i)
         {
-            m_table.m_boardCards.set(i, Card.getInstance().get(-1));
+            m_table.m_boardCards.set(i, GameCard.NO_CARD);
         }
     }
     
@@ -381,7 +381,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final ArrayList<Integer> indices = new ArrayList<Integer>();
                 for (int i = 0; i != m_table.m_boardCards.size(); ++i)
                 {
-                    final Card card = Card.getInstance().get(command.getCardsId().get(i));
+                    final GameCard card = GameCard.getInstance(command.getCardsId().get(i));
                     if (card != m_table.m_boardCards.get(i))
                     {
                         m_table.m_boardCards.set(i, card);
@@ -462,8 +462,8 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
             public void holeCardsChangedCommandReceived(GameHoleCardsChangedCommand command)
             {
                 final int noSeat = command.getPlayerPos();
-                final Card card1 = Card.getInstance().get(command.getCardsId().get(0));
-                final Card card2 = Card.getInstance().get(command.getCardsId().get(1));
+                final GameCard card1 = GameCard.getInstance(command.getCardsId().get(0));
+                final GameCard card2 = GameCard.getInstance(command.getCardsId().get(1));
                 
                 final PokerPlayerInfo player = m_table.getPlayer(noSeat);
                 player.setHand(card1, card2);
@@ -574,7 +574,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 
                 for (int i = 0; i != m_table.m_boardCards.size(); ++i)
                 {
-                    m_table.m_boardCards.set(i, Card.getInstance().get(command.getBoardCardIDs().get(i)));
+                    m_table.m_boardCards.set(i, GameCard.getInstance(command.getBoardCardIDs().get(i)));
                 }
                 
                 final int nb = command.getNbPlayers();
@@ -600,8 +600,8 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                     
                     player.m_name = seat.m_playerName;
                     player.setMoney(seat.m_money);
-                    final Card card1 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
-                    final Card card2 = Card.getInstance().get(seat.m_holeCardIDs.get(0));
+                    final GameCard card1 = GameCard.getInstance(seat.m_holeCardIDs.get(0));
+                    final GameCard card2 = GameCard.getInstance(seat.m_holeCardIDs.get(0));
                     player.setHand(card1, card2);
                     player.m_isDealer = seat.m_isDealer;
                     player.m_isSmallBlind = seat.m_isBigBlind;

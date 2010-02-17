@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import newPokerLogic.GameCard;
 import pokerAI.SVM;
-import pokerLogic.Card;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
@@ -270,8 +270,8 @@ public class PokerSVM extends PokerAI
      */
     private StatsInfos calculateHandValues()
     {
-        final Card[] holeCards = m_table.m_localPlayer.getHand();
-        final Card[] boardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
+        final GameCard[] holeCards = m_table.m_localPlayer.getHand();
+        final GameCard[] boardCards = m_table.m_boardCards.toArray(new GameCard[m_table.m_boardCards.size()]);
         
         return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbPlayingPlayers, PokerSVM.NB_MC_ITERATIONS);
     }

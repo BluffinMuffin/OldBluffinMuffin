@@ -1,6 +1,6 @@
 package pokerStats;
 
-import pokerLogic.HandEvaluator;
+import newPokerLogic.HandEvaluator;
 import utility.XORShiftRandom;
 
 

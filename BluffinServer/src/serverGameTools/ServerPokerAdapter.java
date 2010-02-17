@@ -1,6 +1,6 @@
 package serverGameTools;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;
@@ -22,7 +22,7 @@ public abstract class ServerPokerAdapter implements ServerPokerListener
     }
     
     @Override
-    public void flopDealt(ServerTableCommunicator comm, Card[] cards)
+    public void flopDealt(ServerTableCommunicator comm, GameCard[] cards)
     {
         
     }
@@ -88,7 +88,7 @@ public abstract class ServerPokerAdapter implements ServerPokerListener
     }
     
     @Override
-    public void riverDeal(ServerTableCommunicator comm, Card[] cards)
+    public void riverDeal(ServerTableCommunicator comm, GameCard[] cards)
     {
         
     }
@@ -118,7 +118,7 @@ public abstract class ServerPokerAdapter implements ServerPokerListener
     }
     
     @Override
-    public void turnDeal(ServerTableCommunicator comm, Card[] cards)
+    public void turnDeal(ServerTableCommunicator comm, GameCard[] cards)
     {
         
     }

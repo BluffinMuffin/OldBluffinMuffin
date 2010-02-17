@@ -2,6 +2,10 @@ package pokerLogic;
 
 import java.util.ArrayList;
 
+import newPokerLogic.GameCard;
+import newPokerLogic.GameCardSet;
+import newPokerLogic.HandEvaluator;
+
 public abstract class PokerPlayerInfo
 {
     private int m_money;
@@ -19,7 +23,7 @@ public abstract class PokerPlayerInfo
     public boolean m_isPlaying;
     public String m_name;
     private int m_noSeat;
-    private final ArrayList<Card> m_hand;
+    private final ArrayList<GameCard> m_hand;
     
     /**
      * Create a new player named "Anonymous Player" with no money
@@ -38,8 +42,8 @@ public abstract class PokerPlayerInfo
         m_isEarlyPos = false;
         m_isMidPos = false;
         m_timeRemaining = 0;
-        m_hand = new ArrayList<Card>();
-        setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
+        m_hand = new ArrayList<GameCard>();
+        setHand(GameCard.NO_CARD, GameCard.NO_CARD);
     }
     
     /**
@@ -145,19 +149,19 @@ public abstract class PokerPlayerInfo
         return m_betAmount;
     }
     
-    public Card[] getHand()
+    public GameCard[] getHand()
     {
-        final Card[] dest = new Card[2];
+        final GameCard[] dest = new GameCard[2];
         if (m_hand.size() < 2)
         {
-            setHand(Card.getInstance().get(-1), Card.getInstance().get(-1));
+            setHand(GameCard.NO_CARD, GameCard.NO_CARD);
         }
         dest[0] = m_hand.get(0);
         dest[1] = m_hand.get(1);
         return dest;
     }
     
-    public void setHand(Card card1, Card card2)
+    public void setHand(GameCard card1, GameCard card2)
     {
         m_hand.clear();
         m_hand.add(card1);
@@ -174,14 +178,15 @@ public abstract class PokerPlayerInfo
         return m_name;
     }
     
-    public long handValue(Card[] p_board)
+    public long handValue(GameCard[] p_board)
     {
-        final ArrayList<Card> hand = new ArrayList<Card>(m_hand);
-        for (final Card element : p_board)
+        final ArrayList<GameCard> hand = new ArrayList<GameCard>(m_hand);
+        for (final GameCard element : p_board)
         {
             hand.add(element);
         }
-        return HandEvalHoldem.get7CardsHandValue(hand);
+        
+        return HandEvaluator.hand7Eval(HandEvaluator.encode(new GameCardSet(hand)));
     }
     
     public boolean isAllIn()
@@ -271,12 +276,12 @@ public abstract class PokerPlayerInfo
     {
         this.m_noSeat = m_noSeat;
     }
-
+    
     public int getNoSeat()
     {
         return m_noSeat;
     }
-
+    
     public void winPot(int p_potValue)
     {
         m_money += p_potValue;

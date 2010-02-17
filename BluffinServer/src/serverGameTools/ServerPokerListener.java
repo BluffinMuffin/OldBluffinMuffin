@@ -2,7 +2,7 @@ package serverGameTools;
 
 import java.util.EventListener;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;
@@ -14,7 +14,7 @@ public interface ServerPokerListener extends EventListener
     
     void endBettingTurn(ServerTableCommunicator comm);
     
-    void flopDealt(ServerTableCommunicator comm, Card[] cards);
+    void flopDealt(ServerTableCommunicator comm, GameCard[] cards);
     
     void gameEnded(ServerTableCommunicator comm);
     
@@ -36,7 +36,7 @@ public interface ServerPokerListener extends EventListener
     
     void potWon(ServerTableCommunicator comm, ServerPokerPlayerInfo info, Pot pot, int value);
     
-    void riverDeal(ServerTableCommunicator comm, Card[] cards);
+    void riverDeal(ServerTableCommunicator comm, GameCard[] cards);
     
     void smallBlindPosted(ServerTableCommunicator comm, ServerPokerPlayerInfo info, int value);
     
@@ -46,7 +46,7 @@ public interface ServerPokerListener extends EventListener
     
     void tableStarted(ServerTableCommunicator comm);
     
-    void turnDeal(ServerTableCommunicator comm, Card[] cards);
+    void turnDeal(ServerTableCommunicator comm, GameCard[] cards);
     
     void waitingForPlayers(ServerTableCommunicator comm);
 }

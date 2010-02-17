@@ -22,7 +22,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
@@ -722,7 +722,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                     {
                         php.setBackground(Color.gray);
                         php.setHeaderColor(Color.gray);
-                        php.setPlayerCards(Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD));
+                        php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
                     }
                     else
                     {
@@ -743,7 +743,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 huds[m_table.m_noSeatBigBlind].setBigBlind();
                 for (int i = 0; i < 5; ++i)
                 {
-                    board[i].setCard(Card.getInstance().get(Card.HIDDEN_CARD));
+                    board[i].setCard(GameCard.HIDDEN_CARD);
                 }
             }
             
@@ -766,7 +766,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 php.setPlayerName(player.getName());
                 php.setPlayerInfo("");// TODO: Human or BOT
                 php.setPlayerAction(TypePlayerAction.NOTHING);
-                php.setPlayerCards(Card.getInstance().get(Card.HIDDEN_CARD), Card.getInstance().get(Card.HIDDEN_CARD));
+                php.setPlayerCards(GameCard.HIDDEN_CARD, GameCard.HIDDEN_CARD);
                 php.setPlayerMoney(player.getMoney());
                 php.setBackground(Color.white);
                 php.setHeaderColor(Color.white);
@@ -820,7 +820,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 changePotAmount(m_table.m_totalPotAmount);
                 if (action == TypePlayerAction.FOLD)
                 {
-                    php.setPlayerCards(Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD));
+                    php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
                 }
                 if (player.getBet() > 0)
                 {
@@ -868,7 +868,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 for (final Integer i : boardCardIndices)
                 {
                     sb.append(" ");
-                    sb.append(m_table.getBoard()[i].getCode());
+                    sb.append(m_table.getBoard()[i].toString());
                 }
                 writeLine(sb.toString());
             }

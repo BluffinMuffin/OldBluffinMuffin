@@ -9,13 +9,11 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerGame;
 import utility.HeadsUpException;
-
 import clientGameTools.TypeSimplifiedAction;
-
 
 public class TupleHandHistories
 {
@@ -46,8 +44,8 @@ public class TupleHandHistories
         public int m_money;
         public boolean m_isFolded = false;
         public int m_initialMoney;
-        public Card m_card1 = Card.getInstance().get(Card.HIDDEN_CARD);
-        public Card m_card2 = Card.getInstance().get(Card.HIDDEN_CARD);
+        public GameCard m_card1 = GameCard.HIDDEN_CARD;
+        public GameCard m_card2 = GameCard.HIDDEN_CARD;
         public boolean m_isHero = false;
         public boolean m_isSittingOut = false;
         public int m_betAmount = 0;
@@ -142,11 +140,11 @@ public class TupleHandHistories
     
     public ArrayList<TuplePlayer> m_players = new ArrayList<TuplePlayer>();
     
-    public ArrayList<Card> m_flop = new ArrayList<Card>();
+    public ArrayList<GameCard> m_flop = new ArrayList<GameCard>();
     
-    public Card m_turn = null;
+    public GameCard m_turn = null;
     
-    public Card m_river = null;
+    public GameCard m_river = null;
     
     public ArrayList<PhaseEvents> m_preflopEvents = new ArrayList<PhaseEvents>();
     
@@ -385,9 +383,9 @@ public class TupleHandHistories
             // *** FLOP ***
             m = TupleHandHistories.GENERIC_FLOP_CARDS.matcher(line);
             m.find();
-            m_flop.add(Card.getInstance().get(m.group(1)));
-            m_flop.add(Card.getInstance().get(m.group(2)));
-            m_flop.add(Card.getInstance().get(m.group(3)));
+            m_flop.add(GameCard.getInstance(m.group(1)));
+            m_flop.add(GameCard.getInstance(m.group(2)));
+            m_flop.add(GameCard.getInstance(m.group(3)));
             line = parseEvents(p_token, m_flopEvents);
         }
         
@@ -427,8 +425,8 @@ public class TupleHandHistories
                 m.find();
                 
                 player.m_isHero = true;
-                player.m_card1 = Card.getInstance().get(m.group(1));
-                player.m_card2 = Card.getInstance().get(m.group(2));
+                player.m_card1 = GameCard.getInstance(m.group(1));
+                player.m_card2 = GameCard.getInstance(m.group(2));
                 
                 if ((player.m_card1 == null) || (player.m_card2 == null))
                 {
@@ -491,7 +489,7 @@ public class TupleHandHistories
             // *** RIVER ***
             m = TupleHandHistories.GENERIC_RIVER_CARD.matcher(line);
             m.find();
-            m_river = Card.getInstance().get(m.group(1));
+            m_river = GameCard.getInstance(m.group(1));
             line = parseEvents(p_token, m_riverEvents);
         }
         
@@ -691,7 +689,7 @@ public class TupleHandHistories
             // *** TURN ***
             m = TupleHandHistories.GENERIC_TURN_CARD.matcher(line);
             m.find();
-            m_turn = Card.getInstance().get(m.group(1));
+            m_turn = GameCard.getInstance(m.group(1));
             line = parseEvents(p_token, m_turnEvents);
         }
         

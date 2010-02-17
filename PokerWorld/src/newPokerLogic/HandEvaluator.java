@@ -1,9 +1,10 @@
-package pokerLogic;
+package newPokerLogic;
+
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0
  * Adapted by Bluffin Muffin
- *
+ * 
  * 
  * Non-instantiable class containing a variety of static poker hand evaluation and related utility methods.
  * <p>
@@ -11,7 +12,7 @@ package pokerLogic;
  * <p>
  * Each evaluation method takes a single parameter representing a hand of five to seven cards represented in four 13-bit masks, one mask per suit, in the low-order 52 bits of a long (64 bits). In each mask, bit 0 set (0x0001) for a deuce, ..., bit 12 set (0x1000) for an ace. Each mask denotes the ranks present in one of the suits. The ordering of the 13-bit suit fields is immaterial.
  * <p>
- * A hand parameter can be built by encoding a {@link HandEvalCardSet} or by bitwise OR-ing, or adding, the encoded values of individual {@link HandEvalCard}s. These encodings are returned by an {@link #encode encode} method.
+ * A hand parameter can be built by encoding a {@link GameCardSet} or by bitwise OR-ing, or adding, the encoded values of individual {@link HandEvalCard}s. These encodings are returned by an {@link #encode encode} method.
  * <p>
  * Different methods are called for high and for lowball evaluation. The return value format below is the same except:&nbsp;&nbsp;For low evaluation, as for wheels in high evaluation, Ace is rank 1 and its mask bit is the LS bit; otherwise Ace is rank 14, mask bit 0x1000, and the deuce's mask bit is the LS bit. 8-or-better low evaluation methods may also return {@link #NO_8_LOW}.
  * <p>
@@ -170,24 +171,24 @@ public final class HandEvaluator
      * @return a value which may be bitwise OR'ed or added to other such
      *         values to build a parameter to one of the HandEval evaluation methods.
      */
-    public static long encode(final HandEvalCard card)
+    public static long encode(final GameCard card)
     {
-        return 0x1L << (card.suitOf().ordinal() * 13 + card.rankOf().ordinal());
+        return 0x1L << (card.getSuit().ordinal() * 13 + card.getRank().ordinal());
     }
     
     /**
      * Returns a value which can be used as a parameter to one of the HandEval evaluation methods.
      * 
      * @param cs
-     *            a {@link HandEvalCardSet}
+     *            a {@link GameCardSet}
      * @return a value which can be used as a parameter to one of the HandEval evaluation methods.
      *         The value may also be bitwise OR'ed or added to other such
      *         values to build an evaluation method parameter.
      */
-    public static long encode(final HandEvalCardSet cs)
+    public static long encode(final GameCardSet cs)
     {
         long result = 0;
-        for (final HandEvalCard c : cs)
+        for (final GameCard c : cs)
         {
             result |= HandEvaluator.encode(c);
         }

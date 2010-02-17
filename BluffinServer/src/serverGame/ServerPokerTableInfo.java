@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import pokerLogic.Card;
-import pokerLogic.Deck;
+import newPokerLogic.GameCard;
+import newPokerLogic.GameCardSet;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.Pot;
@@ -25,7 +25,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
     public int m_nbBetting;
     
     // Game variables
-    public Deck m_deck;
+    public GameCardSet m_deck;
     public int m_noSeatLastRaiser;
     public int m_playerTurn;
     public int m_bettingPlayer;
@@ -79,7 +79,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
         super.initializeGame();
         
         // Reset the games variables
-        m_deck = new Deck();
+        m_deck = GameCardSet.shuffledDeck();
         m_noSeatLastRaiser = -1;
         m_pots = new Stack<Pot>();
         m_pots.push(new Pot(0));
@@ -250,7 +250,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
         {
             if (i >= m_boardCards.size())
             {
-                cards.add(Card.NO_CARD);
+                cards.add(GameCard.NO_CARD_ID);
             }
             else
             {
@@ -284,17 +284,17 @@ public class ServerPokerTableInfo extends PokerTableInfo
                 }
                 else if (!player.isFolded())
                 {
-                    seat.m_holeCardIDs.add(Card.HIDDEN_CARD);
+                    seat.m_holeCardIDs.add(GameCard.HIDDEN_CARD_ID);
                 }
                 else
                 {
-                    seat.m_holeCardIDs.add(Card.NO_CARD);
+                    seat.m_holeCardIDs.add(GameCard.NO_CARD_ID);
                 }
             }
             
             for (; j < Constants.NB_HOLE_CARDS; ++j)
             {
-                seat.m_holeCardIDs.add(Card.NO_CARD);
+                seat.m_holeCardIDs.add(GameCard.NO_CARD_ID);
             }
             
             seat.m_isDealer = player.isDealer(); // isDealer

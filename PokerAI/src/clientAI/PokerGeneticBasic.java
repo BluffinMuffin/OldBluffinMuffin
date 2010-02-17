@@ -2,11 +2,10 @@ package clientAI;
 
 import java.util.ArrayList;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 import pokerStats.MonteCarlo;
-
 
 /**
  * @author Hocus
@@ -32,8 +31,8 @@ public class PokerGeneticBasic extends PokerAI
     @Override
     protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
-        final Card[] myCards = m_table.m_localPlayer.getHand();
-        final Card[] myBoardCards = m_table.m_boardCards.toArray(new Card[m_table.m_boardCards.size()]);
+        final GameCard[] myCards = m_table.m_localPlayer.getHand();
+        final GameCard[] myBoardCards = m_table.m_boardCards.toArray(new GameCard[m_table.m_boardCards.size()]);
         
         System.out.println("Calculating MonteCarlo score...");
         

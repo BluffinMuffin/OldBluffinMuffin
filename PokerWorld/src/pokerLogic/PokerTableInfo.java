@@ -3,6 +3,8 @@ package pokerLogic;
 import java.util.ArrayList;
 import java.util.List;
 
+import newPokerLogic.GameCard;
+
 public class PokerTableInfo
 {
     
@@ -20,7 +22,7 @@ public class PokerTableInfo
     
     public int m_smallBlindAmount;
     public int m_bigBlindAmount;
-    public ArrayList<Card> m_boardCards = new ArrayList<Card>();
+    public ArrayList<GameCard> m_boardCards = new ArrayList<GameCard>();
     
     public TypePokerRound m_gameState = TypePokerRound.BEGINNING;
     public String m_name;
@@ -45,7 +47,7 @@ public class PokerTableInfo
         m_name = pName;
         m_bigBlindAmount = pBigBlind;
         m_smallBlindAmount = pBigBlind / 2;
-        m_boardCards = new ArrayList<Card>(5);
+        m_boardCards = new ArrayList<GameCard>(5);
     }
     
     public List<PokerPlayerInfo> getPlayers()
@@ -158,9 +160,9 @@ public class PokerTableInfo
      * @return
      *         The cards of the boards
      */
-    public Card[] getBoard()
+    public GameCard[] getBoard()
     {
-        final Card[] cards = new Card[m_boardCards.size()];
+        final GameCard[] cards = new GameCard[m_boardCards.size()];
         
         return m_boardCards.toArray(cards);
     }
@@ -186,7 +188,7 @@ public class PokerTableInfo
     
     public void initializeGame()
     {
-        m_boardCards = new ArrayList<Card>(5);
+        m_boardCards = new ArrayList<GameCard>(5);
         m_currentBet = 0;
         m_totalPotAmount = 0;
         m_gameState = TypePokerRound.PREFLOP;

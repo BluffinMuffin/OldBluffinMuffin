@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import newPokerLogic.GameCard;
 import pokerExtractor.TupleHandHistories.PhaseEvents;
 import pokerExtractor.TupleHandHistories.TuplePlayer;
 import pokerExtractor.TupleHandHistories.Winner;
-import pokerLogic.Card;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
@@ -84,24 +84,24 @@ public class SimulationServer
     
     private StatsInfos calculateHandValues()
     {
-        final Card[] holeCards = new Card[] { m_hero.m_card1, m_hero.m_card2 };
-        final Card[] boardCcards = new Card[5];
+        final GameCard[] holeCards = new GameCard[] { m_hero.m_card1, m_hero.m_card2 };
+        final GameCard[] boardCcards = new GameCard[5];
         
         if (m_state == TypePokerRound.PREFLOP)
         {
-            boardCcards[0] = Card.getInstance().get(Card.NO_CARD);
-            boardCcards[1] = Card.getInstance().get(Card.NO_CARD);
-            boardCcards[2] = Card.getInstance().get(Card.NO_CARD);
-            boardCcards[3] = Card.getInstance().get(Card.NO_CARD);
-            boardCcards[4] = Card.getInstance().get(Card.NO_CARD);
+            boardCcards[0] = GameCard.NO_CARD;
+            boardCcards[1] = GameCard.NO_CARD;
+            boardCcards[2] = GameCard.NO_CARD;
+            boardCcards[3] = GameCard.NO_CARD;
+            boardCcards[4] = GameCard.NO_CARD;
         }
         else if (m_state == TypePokerRound.FLOP)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
             boardCcards[2] = m_currentInfos.m_flop.get(2);
-            boardCcards[3] = Card.getInstance().get(Card.NO_CARD);
-            boardCcards[4] = Card.getInstance().get(Card.NO_CARD);
+            boardCcards[3] = GameCard.NO_CARD;
+            boardCcards[4] = GameCard.NO_CARD;
         }
         else if (m_state == TypePokerRound.TURN)
         {
@@ -109,7 +109,7 @@ public class SimulationServer
             boardCcards[1] = m_currentInfos.m_flop.get(1);
             boardCcards[2] = m_currentInfos.m_flop.get(2);
             boardCcards[3] = m_currentInfos.m_turn;
-            boardCcards[4] = Card.getInstance().get(Card.NO_CARD);
+            boardCcards[4] = GameCard.NO_CARD;
         }
         else if (m_state == TypePokerRound.RIVER)
         {
@@ -483,7 +483,7 @@ public class SimulationServer
         final ArrayList<Integer> cards = new ArrayList<Integer>();
         for (int i = 0; i < 5; ++i)
         {
-            cards.add(Card.NO_CARD);
+            cards.add(GameCard.NO_CARD_ID);
         }
         final ArrayList<SummarySeatInfo> seats = new ArrayList<SummarySeatInfo>();
         for (final TuplePlayer player : p_infos.m_players)
@@ -535,7 +535,7 @@ public class SimulationServer
         {
             // *** FLOP ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), Card.NO_CARD, Card.NO_CARD));
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), GameCard.NO_CARD_ID, GameCard.NO_CARD_ID));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_flopEvents);
             
@@ -549,7 +549,7 @@ public class SimulationServer
         {
             // *** TURN ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), Card.NO_CARD));
+            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), GameCard.NO_CARD_ID));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_turnEvents);
             

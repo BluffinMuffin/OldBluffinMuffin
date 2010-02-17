@@ -3,9 +3,7 @@ package pokerStats;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pokerLogic.Card;
-
-
+import newPokerLogic.GameCard;
 
 /**
  * @author Hocus
@@ -32,7 +30,7 @@ public class MonteCarlo
      *            Number of wanted iteration
      * @return Number of game won
      */
-    public static long CalculateNbWins(Card[] p_playerCards, Card[] p_tableCards, int p_nbPlayers, long p_nbIterations)
+    public static long CalculateNbWins(GameCard[] p_playerCards, GameCard[] p_tableCards, int p_nbPlayers, long p_nbIterations)
     {
         if ((p_playerCards[0].getId() < 0) || (p_playerCards[1].getId() < 0))
         {
@@ -127,7 +125,7 @@ public class MonteCarlo
      *            Number of iteration
      * @return The winratio and the StandardDerivation in StatsInfo
      */
-    public static StatsInfos CalculateWinRatio(Card[] p_playerCards, Card[] p_tableCards, int p_nbPlayers, long p_nbIterations)
+    public static StatsInfos CalculateWinRatio(GameCard[] p_playerCards, GameCard[] p_tableCards, int p_nbPlayers, long p_nbIterations)
     {
         final StatsInfos result = new StatsInfos();
         if ((p_playerCards[0].getId() < 0) || (p_playerCards[1].getId() < 0))
@@ -273,11 +271,11 @@ public class MonteCarlo
      */
     public static void main(String[] args)
     {
-        final Card[] playerCards = new Card[2];
-        playerCards[0] = Card.DK;
-        playerCards[1] = Card.SQ;
+        final GameCard[] playerCards = new GameCard[2];
+        playerCards[0] = GameCard.getInstance("DK");
+        playerCards[1] = GameCard.getInstance("SQ");
         
-        final Card[] tableCards = new Card[] { Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD), Card.getInstance().get(Card.NO_CARD) };
+        final GameCard[] tableCards = new GameCard[] { GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD };
         
         final long startTime = System.currentTimeMillis();
         

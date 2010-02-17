@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import pokerLogic.TypePlayerAction;
@@ -340,10 +340,10 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             }
             
             @Override
-            public void flopDealt(ServerTableCommunicator p_table, Card[] p_board)
+            public void flopDealt(ServerTableCommunicator p_table, GameCard[] p_board)
             {
                 
-                send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), Card.NO_CARD, Card.NO_CARD));
+                send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), GameCard.NO_CARD_ID, GameCard.NO_CARD_ID));
             }
             
             @Override
@@ -363,7 +363,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             {
                 if (p_player.getNoSeat() != getNoSeat())
                 {
-                    send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), Card.HIDDEN_CARD, Card.HIDDEN_CARD));
+                    send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), GameCard.HIDDEN_CARD_ID, GameCard.HIDDEN_CARD_ID));
                 }
                 else
                 {
@@ -415,7 +415,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             }
             
             @Override
-            public void riverDeal(ServerTableCommunicator p_table, Card[] p_board)
+            public void riverDeal(ServerTableCommunicator p_table, GameCard[] p_board)
             {
                 
                 send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), p_board[4].getId()));
@@ -440,9 +440,9 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             }
             
             @Override
-            public void turnDeal(ServerTableCommunicator p_table, Card[] p_board)
+            public void turnDeal(ServerTableCommunicator p_table, GameCard[] p_board)
             {
-                send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), Card.NO_CARD));
+                send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), GameCard.NO_CARD_ID));
             }
             
             @Override

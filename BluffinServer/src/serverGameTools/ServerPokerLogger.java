@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.Pot;
@@ -92,9 +92,9 @@ public class ServerPokerLogger
             }
             
             @Override
-            public void flopDealt(ServerTableCommunicator p_table, Card[] p_board)
+            public void flopDealt(ServerTableCommunicator p_table, GameCard[] p_board)
             {
-                println("Flop: " + Card.CardArrayToCode(p_board));
+                println("Flop: " + GameCard.CardArrayToCode(p_board));
             }
             
             @Override
@@ -156,7 +156,7 @@ public class ServerPokerLogger
             @Override
             public void playerShowCard(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player)
             {
-                println(p_player.getName() + " show his card " + Card.CardArrayToCode(p_player.getHand()));
+                println(p_player.getName() + " show his card " + GameCard.CardArrayToCode(p_player.getHand()));
             }
             
             @Override
@@ -172,9 +172,9 @@ public class ServerPokerLogger
             }
             
             @Override
-            public void riverDeal(ServerTableCommunicator p_table, Card[] p_board)
+            public void riverDeal(ServerTableCommunicator p_table, GameCard[] p_board)
             {
-                println("River: " + Card.CardArrayToCode(p_board));
+                println("River: " + GameCard.CardArrayToCode(p_board));
             }
             
             @Override
@@ -202,9 +202,9 @@ public class ServerPokerLogger
             }
             
             @Override
-            public void turnDeal(ServerTableCommunicator p_table, Card[] p_board)
+            public void turnDeal(ServerTableCommunicator p_table, GameCard[] p_board)
             {
-                println("Turn: " + Card.CardArrayToCode(p_board));
+                println("Turn: " + GameCard.CardArrayToCode(p_board));
             }
             
             @Override

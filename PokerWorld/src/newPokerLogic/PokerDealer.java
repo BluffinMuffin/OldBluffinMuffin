@@ -1,11 +1,9 @@
 package newPokerLogic;
 
-import pokerLogic.Card;
-import pokerLogic.Deck;
 
 public class PokerDealer
 {
-    private Deck m_Deck;
+    private GameCardSet m_Deck;
     private final PokerGame m_Game;
     
     public PokerDealer(PokerGame game)
@@ -15,7 +13,7 @@ public class PokerDealer
     
     public void initialize()
     {
-        m_Deck = new Deck(false);
+        m_Deck = GameCardSet.shuffledDeck();
     }
     
     public void DealHoles()
@@ -25,19 +23,19 @@ public class PokerDealer
     
     public void DealFlop()
     {
-        final Card c1 = m_Deck.pop();
-        final Card c2 = m_Deck.pop();
-        final Card c3 = m_Deck.pop();
+        final GameCard c1 = m_Deck.pop();
+        final GameCard c2 = m_Deck.pop();
+        final GameCard c3 = m_Deck.pop();
     }
     
     public void DealTurn()
     {
-        final Card c = m_Deck.pop();
+        final GameCard c = m_Deck.pop();
     }
     
     public void DealRiver()
     {
-        final Card c = m_Deck.pop();
+        final GameCard c = m_Deck.pop();
     }
     
     public PokerGame getGame()

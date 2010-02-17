@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.TypePlayerAction;
 
 public class PlayerHudJPanel extends JPanel
@@ -183,7 +183,7 @@ public class PlayerHudJPanel extends JPanel
         jActionLabel.setText(sb.toString());
     }
     
-    public void setPlayerCards(Card c1, Card c2)
+    public void setPlayerCards(GameCard c1, GameCard c2)
     {
         getCardPanel1().setCard(c1);
         getCardPanel2().setCard(c2);

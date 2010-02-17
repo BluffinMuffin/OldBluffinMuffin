@@ -1,6 +1,6 @@
 package serverGameTools;
 
-import pokerLogic.Card;
+import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;
@@ -25,7 +25,7 @@ public class ServerPokerObserver extends EventReceiver<ServerPokerListener>
         }
     }
     
-    public void flopDealt(ServerTableCommunicator comm, Card[] cards)
+    public void flopDealt(ServerTableCommunicator comm, GameCard[] cards)
     {
         for (final ServerPokerListener listener : getSubscribers())
         {
@@ -113,7 +113,7 @@ public class ServerPokerObserver extends EventReceiver<ServerPokerListener>
         }
     }
     
-    public void riverDeal(ServerTableCommunicator comm, Card[] cards)
+    public void riverDeal(ServerTableCommunicator comm, GameCard[] cards)
     {
         for (final ServerPokerListener listener : getSubscribers())
         {
@@ -153,7 +153,7 @@ public class ServerPokerObserver extends EventReceiver<ServerPokerListener>
         }
     }
     
-    public void turnDeal(ServerTableCommunicator comm, Card[] cards)
+    public void turnDeal(ServerTableCommunicator comm, GameCard[] cards)
     {
         for (final ServerPokerListener listener : getSubscribers())
         {
