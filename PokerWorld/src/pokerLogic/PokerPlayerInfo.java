@@ -1,9 +1,10 @@
 package pokerLogic;
 
+import gameLogic.GameCard;
+import gameLogic.GameCardSet;
+
 import java.util.ArrayList;
 
-import newPokerLogic.GameCard;
-import newPokerLogic.GameCardSet;
 import newPokerLogic.HandEvaluator;
 
 public abstract class PokerPlayerInfo

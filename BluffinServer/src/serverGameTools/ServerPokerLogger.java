@@ -1,10 +1,11 @@
 package serverGameTools;
 
+import gameLogic.GameCard;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.Pot;

@@ -1,12 +1,13 @@
 package serverGame;
 
+import gameLogic.GameCard;
+import gameLogic.GameCardSet;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import newPokerLogic.GameCard;
-import newPokerLogic.GameCardSet;
 import pokerLogic.PokerPlayerInfo;
 import pokerLogic.PokerTableInfo;
 import pokerLogic.Pot;
@@ -302,7 +303,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
             seat.m_isBigBlind = player.isBigBlind(); // isBigBlind
             seat.m_isCurrentPlayer = (i == m_bettingPlayer); // isCurrentPlayer
             seat.m_timeRemaining = 0; // timeRemaining
-            seat.m_bet = player.getBet(); // betAmount¸
+            seat.m_bet = player.getBet(); // betAmountï¿½
             seats.add(seat);
         }
         

@@ -1,5 +1,7 @@
 package pokerExtractor;
 
+import gameLogic.GameCard;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +11,6 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import newPokerLogic.GameCard;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerGame;
 import utility.HeadsUpException;

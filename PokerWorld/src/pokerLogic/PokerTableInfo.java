@@ -1,9 +1,10 @@
 package pokerLogic;
 
+import gameLogic.GameCard;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import newPokerLogic.GameCard;
 
 public class PokerTableInfo
 {

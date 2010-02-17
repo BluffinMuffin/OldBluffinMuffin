@@ -1,4 +1,4 @@
-package newPokerLogic;
+package gameLogic;
 
 public enum TypeGameCardRank
 {

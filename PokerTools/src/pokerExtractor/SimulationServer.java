@@ -1,10 +1,11 @@
 package pokerExtractor;
 
+import gameLogic.GameCard;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import newPokerLogic.GameCard;
 import pokerExtractor.TupleHandHistories.PhaseEvents;
 import pokerExtractor.TupleHandHistories.TuplePlayer;
 import pokerExtractor.TupleHandHistories.Winner;

@@ -1,8 +1,9 @@
 package clientAI;
 
+import gameLogic.GameCard;
+
 import java.util.ArrayList;
 
-import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 import pokerStats.MonteCarlo;
@@ -40,7 +41,7 @@ public class PokerBasic extends PokerAI
             return super.analyze(p_actionsAllowed, p_minRaiseAmount, p_maxRaiseAmount);
         }
         
-        // Calculate Monte Carlo scoreé
+        // Calculate Monte Carlo scoreï¿½
         final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, PokerBasic.NB_SIMULATIONS).m_winRatio;
         
         System.out.println("Analyzing " + score);

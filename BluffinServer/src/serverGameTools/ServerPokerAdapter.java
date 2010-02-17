@@ -1,6 +1,6 @@
 package serverGameTools;
 
-import newPokerLogic.GameCard;
+import gameLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;

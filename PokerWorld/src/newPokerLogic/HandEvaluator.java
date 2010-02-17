@@ -1,5 +1,8 @@
 package newPokerLogic;
 
+import gameLogic.GameCard;
+import gameLogic.GameCardSet;
+
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0

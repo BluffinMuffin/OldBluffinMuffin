@@ -1,8 +1,9 @@
 package clientAI;
 
+import gameLogic.GameCard;
+
 import java.util.ArrayList;
 
-import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 import pokerStats.MonteCarlo;

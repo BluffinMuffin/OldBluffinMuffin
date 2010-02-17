@@ -1,6 +1,7 @@
-package newPokerLogic;
+package gameLogic;
 
 import java.util.ArrayList;
+
 
 public class GameCard implements Comparable<GameCard>
 {

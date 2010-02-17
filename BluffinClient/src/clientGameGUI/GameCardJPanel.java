@@ -1,11 +1,12 @@
 package clientGameGUI;
 
+import gameLogic.GameCard;
+
 import java.awt.FlowLayout;
 import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
-import newPokerLogic.GameCard;
 
 public class GameCardJPanel extends JPanel
 {

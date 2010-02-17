@@ -1,8 +1,9 @@
 package serverGameTools;
 
+import gameLogic.GameCard;
+
 import java.util.EventListener;
 
-import newPokerLogic.GameCard;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;

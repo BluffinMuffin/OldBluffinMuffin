@@ -1,9 +1,10 @@
 package pokerStats;
 
+import gameLogic.GameCard;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
-import newPokerLogic.GameCard;
 
 /**
  * @author Hocus
@@ -285,7 +286,7 @@ public class MonteCarlo
         System.out.println("Total elapsed time in execution is :" + (double) (endTime - startTime) / 1000);
         
         System.out.println("Mean = " + result.m_winRatio);
-        System.out.println("Écart-type = " + result.m_standardDeviation);
+        System.out.println("ï¿½cart-type = " + result.m_standardDeviation);
     }
     
     public MonteCarlo()

@@ -1,4 +1,4 @@
-package newPokerLogic;
+package gameLogic;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0
