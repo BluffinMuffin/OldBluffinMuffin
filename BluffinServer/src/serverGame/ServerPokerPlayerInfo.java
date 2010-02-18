@@ -1,7 +1,7 @@
 package serverGame;
 
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 
 /**
@@ -9,7 +9,7 @@ import pokerLogic.TypePlayerAction;
  *         Abstract class implementing the basic behaviour of a player.
  *         To make a working player, we only need to override the getActionFromUser method.
  */
-public abstract class ServerPokerPlayerInfo extends PokerPlayerInfo
+public abstract class ServerPokerPlayerInfo extends OldPokerPlayerInfo
 {
     protected boolean m_isFolded;
     protected boolean m_cardShowed;

@@ -2,22 +2,22 @@ package clientGame;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerInfo;
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerPlayerInfo;
+import pokerLogic.OldPokerTableInfo;
 
 /**
  * @author Hocus
  *         This class represents a poker table on the client side.
  */
-public class ClientPokerTableInfo extends PokerTableInfo
+public class ClientPokerTableInfo extends OldPokerTableInfo
 {
     
     public ArrayList<Integer> m_pots = new ArrayList<Integer>();
-    public PokerPlayerInfo m_localPlayer = null;
-    public PokerPlayerInfo m_bigBlind = null;
-    public PokerPlayerInfo m_smallBlind = null;
-    public PokerPlayerInfo m_dealer = null;
-    public PokerPlayerInfo m_currentPlayer = null;
+    public OldPokerPlayerInfo m_localPlayer = null;
+    public OldPokerPlayerInfo m_bigBlind = null;
+    public OldPokerPlayerInfo m_smallBlind = null;
+    public OldPokerPlayerInfo m_dealer = null;
+    public OldPokerPlayerInfo m_currentPlayer = null;
     public int m_nbRemainingPlayers;
     
     /**
@@ -26,7 +26,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
     public void setPlayerPositions()
     {
         // Initialize all player's attributes to default value.
-        for (final PokerPlayerInfo player : getPlayers())
+        for (final OldPokerPlayerInfo player : getPlayers())
         {
             player.m_isPlaying = player.getMoney() > 0;
             player.m_isEarlyPos = false;
@@ -67,7 +67,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
         i = (i + 1) % getNbSeats();
         while (i != m_noSeatDealer)
         {
-            final PokerPlayerInfo player = getPlayer(i);
+            final OldPokerPlayerInfo player = getPlayer(i);
             if ((player != null) && player.m_isPlaying)
             {
                 player.m_relativePosition = position;
@@ -79,7 +79,7 @@ public class ClientPokerTableInfo extends PokerTableInfo
         
         // Set boolean attributes depending the player relative position.
         m_nbPlayingPlayers = 0;
-        for (final PokerPlayerInfo player : getPlayers())
+        for (final OldPokerPlayerInfo player : getPlayers())
         {
             if (!player.m_isPlaying)
             {

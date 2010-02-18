@@ -25,8 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerPlayerInfo;
+import pokerLogic.OldPokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import clientGameTools.ClientPokerAdapter;
@@ -672,7 +672,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     }
     
     @Override
-    public void setTable(PokerTableInfo pTable)
+    public void setTable(OldPokerTableInfo pTable)
     {
         super.setTable(pTable);
         writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
@@ -736,7 +736,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+            public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
             {
                 changePotAmount(0);
                 huds[m_table.m_noSeatDealer].setDealer();
@@ -749,20 +749,20 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void playerCardChanged(PokerPlayerInfo player)
+            public void playerCardChanged(OldPokerPlayerInfo player)
             {
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
                 php.setPlayerCards(player.getHand()[0], player.getHand()[1]);
             }
             
             @Override
-            public void playerJoined(PokerPlayerInfo player)
+            public void playerJoined(OldPokerPlayerInfo player)
             {
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
                 intallPlayer(php, player);
             }
             
-            private void intallPlayer(PlayerHudJPanel php, PokerPlayerInfo player)
+            private void intallPlayer(PlayerHudJPanel php, OldPokerPlayerInfo player)
             {
                 php.setPlayerName(player.getName());
                 php.setPlayerInfo("");// TODO: Human or BOT
@@ -775,21 +775,21 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void playerLeft(PokerPlayerInfo player)
+            public void playerLeft(OldPokerPlayerInfo player)
             {
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
                 php.setVisible(false);
             }
             
             @Override
-            public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
+            public void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount)
             {
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
                 php.setPlayerMoney(player.getMoney());
             }
             
             @Override
-            public void playerTurnBegan(PokerPlayerInfo player)
+            public void playerTurnBegan(OldPokerPlayerInfo player)
             {
                 if (m_last_NiceHud >= 0)
                 {
@@ -812,7 +812,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+            public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
             {
                 
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
@@ -831,7 +831,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
+            public void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex)
             {
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
                 php.setPlayerMoney(player.getMoney());
@@ -881,7 +881,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+            public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
             {
                 writeLine("==> Game started");
                 writeLine("==> " + m_table.m_dealer.getName() + " is the Dealer");
@@ -890,7 +890,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void playerCardChanged(PokerPlayerInfo player)
+            public void playerCardChanged(OldPokerPlayerInfo player)
             {
                 if (player == m_table.m_localPlayer)
                 {
@@ -907,38 +907,38 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void playerJoined(PokerPlayerInfo player)
+            public void playerJoined(OldPokerPlayerInfo player)
             {
                 writeLine(player.getName() + " joined the table");
             }
             
             @Override
-            public void playerLeft(PokerPlayerInfo player)
+            public void playerLeft(OldPokerPlayerInfo player)
             {
                 writeLine(player.getName() + " left the table");
             }
             
             @Override
-            public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
+            public void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount)
             {
                 writeLine(player.getName() + " money changed");
             }
             
             @Override
-            public void playerTurnBegan(PokerPlayerInfo player)
+            public void playerTurnBegan(OldPokerPlayerInfo player)
             {
                 // writeLine("Player turn began");
             }
             
             @Override
-            public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+            public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
             {
                 final PokerPlayerAction ppa = new PokerPlayerAction(action, actionAmount);
                 writeLine(player.getName() + " " + ppa);
             }
             
             @Override
-            public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
+            public void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex)
             {
                 writeLine(player.getName() + " won pot");
             }

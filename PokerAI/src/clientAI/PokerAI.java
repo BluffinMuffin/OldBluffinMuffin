@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerPlayerInfo;
+import pokerLogic.OldPokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import utility.IClosingListener;
 import clientGame.ClientPokerTableInfo;
@@ -187,7 +187,7 @@ public class PokerAI implements IClientPokerActionner
     }
     
     @Override
-    public void setTable(PokerTableInfo p_table)
+    public void setTable(OldPokerTableInfo p_table)
     {
         m_table = (ClientPokerTableInfo) p_table;
     }
@@ -249,7 +249,7 @@ public class PokerAI implements IClientPokerActionner
             }
             
             @Override
-            public void playerCardChanged(PokerPlayerInfo player)
+            public void playerCardChanged(OldPokerPlayerInfo player)
             {
                 if (player == m_table.m_localPlayer)
                 {

@@ -5,7 +5,7 @@ import java.util.EventListener;
 
 import javax.swing.event.EventListenerList;
 
-public class EventReceiver<T extends EventListener>
+public class EventObserver<T extends EventListener>
 {
     private final EventListenerList listeners = new EventListenerList();
     

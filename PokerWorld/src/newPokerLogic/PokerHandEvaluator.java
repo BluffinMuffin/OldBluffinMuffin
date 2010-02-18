@@ -49,7 +49,7 @@ import gameLogic.GameCardSet;
 // 2006Dec05.0
 // original Java release, ported from C
 
-public final class HandEvaluator
+public final class PokerHandEvaluator
 {
     
     public static enum HandCategory
@@ -59,41 +59,41 @@ public final class HandEvaluator
     
     private static final int BOT_SHIFT = 16;
     
-    private static final int TOP_SHIFT = HandEvaluator.BOT_SHIFT + 4;
+    private static final int TOP_SHIFT = PokerHandEvaluator.BOT_SHIFT + 4;
     
-    private static final int VALUE_SHIFT = HandEvaluator.TOP_SHIFT + 4;
+    private static final int VALUE_SHIFT = PokerHandEvaluator.TOP_SHIFT + 4;
     
     // javac doesn't propagate NO_PAIR (==0) so doesn't constant-fold it out of bitwise-or expressions
     // private static final int NO_PAIR = HandCategory.NO_PAIR.ordinal() << VALUE_SHIFT;
-    private static final int PAIR = HandCategory.PAIR.ordinal() << HandEvaluator.VALUE_SHIFT;
-    private static final int TWO_PAIR = HandCategory.TWO_PAIR.ordinal() << HandEvaluator.VALUE_SHIFT;
-    private static final int THREE_OF_A_KIND = HandCategory.THREE_OF_A_KIND.ordinal() << HandEvaluator.VALUE_SHIFT;
+    private static final int PAIR = HandCategory.PAIR.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
+    private static final int TWO_PAIR = HandCategory.TWO_PAIR.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
+    private static final int THREE_OF_A_KIND = HandCategory.THREE_OF_A_KIND.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
     
-    private static final int STRAIGHT = HandCategory.STRAIGHT.ordinal() << HandEvaluator.VALUE_SHIFT;
-    private static final int FLUSH = HandCategory.FLUSH.ordinal() << HandEvaluator.VALUE_SHIFT;
-    private static final int FULL_HOUSE = HandCategory.FULL_HOUSE.ordinal() << HandEvaluator.VALUE_SHIFT;
-    private static final int FOUR_OF_A_KIND = HandCategory.FOUR_OF_A_KIND.ordinal() << HandEvaluator.VALUE_SHIFT;
-    private static final int STRAIGHT_FLUSH = HandCategory.STRAIGHT_FLUSH.ordinal() << HandEvaluator.VALUE_SHIFT;
+    private static final int STRAIGHT = HandCategory.STRAIGHT.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
+    private static final int FLUSH = HandCategory.FLUSH.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
+    private static final int FULL_HOUSE = HandCategory.FULL_HOUSE.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
+    private static final int FOUR_OF_A_KIND = HandCategory.FOUR_OF_A_KIND.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
+    private static final int STRAIGHT_FLUSH = HandCategory.STRAIGHT_FLUSH.ordinal() << PokerHandEvaluator.VALUE_SHIFT;
     /* Arrays for which index is bit mask of card ranks in hand: */
     private static final int ARRAY_SIZE = 0x1FC0 + 1; // all combos of up to 7 of LS 13 bits on
-    private static final int[] straightValue = new int[HandEvaluator.ARRAY_SIZE]; // STRAIGHT | (straight's high card rank (5..14) << BOT_SHIFT); 0 if no straight
-    private static final int[] nbrOfRanks = new int[HandEvaluator.ARRAY_SIZE]; // count of bits set
+    private static final int[] straightValue = new int[PokerHandEvaluator.ARRAY_SIZE]; // STRAIGHT | (straight's high card rank (5..14) << BOT_SHIFT); 0 if no straight
+    private static final int[] nbrOfRanks = new int[PokerHandEvaluator.ARRAY_SIZE]; // count of bits set
     
-    private static final int[] hiTopRankTWO_PAIR = new int[HandEvaluator.ARRAY_SIZE]; // TWO_PAIR | ((rank (2..kA) of the highest bit set) << TOP_SHIFT)
+    private static final int[] hiTopRankTWO_PAIR = new int[PokerHandEvaluator.ARRAY_SIZE]; // TWO_PAIR | ((rank (2..kA) of the highest bit set) << TOP_SHIFT)
     
-    private static final int[] hiBotRank = new int[HandEvaluator.ARRAY_SIZE]; // (rank (2..kA) of the highest bit set) << BOT_SHIFT
-    private static final int[] hiRankMask = new int[HandEvaluator.ARRAY_SIZE]; // all bits except highest reset
-    private static final int[] hi2RanksMask = new int[HandEvaluator.ARRAY_SIZE]; // all bits except highest 2 reset
-    private static final int[] hi3RanksMask = new int[HandEvaluator.ARRAY_SIZE]; // all bits except highest 3 reset
-    private static final int[] hi5RanksMask = new int[HandEvaluator.ARRAY_SIZE]; // all bits except highest 5 reset
-    private static final int[] lo5RanksMask = new int[HandEvaluator.ARRAY_SIZE]; // all bits except lowest 5 8-or-better reset; 0 if not at least 5 8-or-better bits set
-    private static final int[] lo3RanksMask = new int[HandEvaluator.ARRAY_SIZE]; // all bits except lowest 3 8-or-better reset; 0 if not at least 3 8-or-better bits set
+    private static final int[] hiBotRank = new int[PokerHandEvaluator.ARRAY_SIZE]; // (rank (2..kA) of the highest bit set) << BOT_SHIFT
+    private static final int[] hiRankMask = new int[PokerHandEvaluator.ARRAY_SIZE]; // all bits except highest reset
+    private static final int[] hi2RanksMask = new int[PokerHandEvaluator.ARRAY_SIZE]; // all bits except highest 2 reset
+    private static final int[] hi3RanksMask = new int[PokerHandEvaluator.ARRAY_SIZE]; // all bits except highest 3 reset
+    private static final int[] hi5RanksMask = new int[PokerHandEvaluator.ARRAY_SIZE]; // all bits except highest 5 reset
+    private static final int[] lo5RanksMask = new int[PokerHandEvaluator.ARRAY_SIZE]; // all bits except lowest 5 8-or-better reset; 0 if not at least 5 8-or-better bits set
+    private static final int[] lo3RanksMask = new int[PokerHandEvaluator.ARRAY_SIZE]; // all bits except lowest 3 8-or-better reset; 0 if not at least 3 8-or-better bits set
     /**
      * Greater than any return value of the HandEval evaluation methods.
      */
-    public static final int NO_8_LOW = HandEvaluator.STRAIGHT_FLUSH + (1 << HandEvaluator.VALUE_SHIFT);
+    public static final int NO_8_LOW = PokerHandEvaluator.STRAIGHT_FLUSH + (1 << PokerHandEvaluator.VALUE_SHIFT);
     
-    private static final int[] loEvalOrNo8Low = new int[HandEvaluator.ARRAY_SIZE]; // 5 bits set in LS 8 bits, or NO_8_LOW */
+    private static final int[] loEvalOrNo8Low = new int[PokerHandEvaluator.ARRAY_SIZE]; // 5 bits set in LS 8 bits, or NO_8_LOW */
     /** ********** Initialization ********************** */
     
     private static final int ACE_RANK = 14;
@@ -107,33 +107,33 @@ public final class HandEvaluator
         int shiftReg, i;
         int value;
         
-        for (mask = 1; mask < HandEvaluator.ARRAY_SIZE; ++mask)
+        for (mask = 1; mask < PokerHandEvaluator.ARRAY_SIZE; ++mask)
         {
             bitCount = 0;
             shiftReg = mask;
-            for (i = HandEvaluator.ACE_RANK - 1; i > 0; --i, shiftReg <<= 1)
+            for (i = PokerHandEvaluator.ACE_RANK - 1; i > 0; --i, shiftReg <<= 1)
             {
                 if ((shiftReg & 0x1000) != 0)
                 {
                     switch (++bitCount)
                     {
                         case 1:
-                            HandEvaluator.hiTopRankTWO_PAIR[mask] = HandEvaluator.TWO_PAIR | ((i + 1) << HandEvaluator.TOP_SHIFT);
-                            HandEvaluator.hiBotRank[mask] = (i + 1) << HandEvaluator.BOT_SHIFT;
-                            HandEvaluator.hiRankMask[mask] = 0x1000 >> (HandEvaluator.ACE_RANK - 1 - i);
+                            PokerHandEvaluator.hiTopRankTWO_PAIR[mask] = PokerHandEvaluator.TWO_PAIR | ((i + 1) << PokerHandEvaluator.TOP_SHIFT);
+                            PokerHandEvaluator.hiBotRank[mask] = (i + 1) << PokerHandEvaluator.BOT_SHIFT;
+                            PokerHandEvaluator.hiRankMask[mask] = 0x1000 >> (PokerHandEvaluator.ACE_RANK - 1 - i);
                             break;
                         case 2:
-                            HandEvaluator.hi2RanksMask[mask] = (shiftReg & 0x03FFF000) >> (HandEvaluator.ACE_RANK - 1 - i);
+                            PokerHandEvaluator.hi2RanksMask[mask] = (shiftReg & 0x03FFF000) >> (PokerHandEvaluator.ACE_RANK - 1 - i);
                             break;
                         case 3:
-                            HandEvaluator.hi3RanksMask[mask] = (shiftReg & 0x03FFF000) >> (HandEvaluator.ACE_RANK - 1 - i);
+                            PokerHandEvaluator.hi3RanksMask[mask] = (shiftReg & 0x03FFF000) >> (PokerHandEvaluator.ACE_RANK - 1 - i);
                             break;
                         case 5:
-                            HandEvaluator.hi5RanksMask[mask] = (shiftReg & 0x03FFF000) >> (HandEvaluator.ACE_RANK - 1 - i);
+                            PokerHandEvaluator.hi5RanksMask[mask] = (shiftReg & 0x03FFF000) >> (PokerHandEvaluator.ACE_RANK - 1 - i);
                     }
                 }
             }
-            HandEvaluator.nbrOfRanks[mask] = bitCount;
+            PokerHandEvaluator.nbrOfRanks[mask] = bitCount;
             
             bitCount = 0;
             /* rotate the 13 bits left to get ace into LS bit */
@@ -148,22 +148,22 @@ public final class HandEvaluator
                     value |= (1 << i); /* undo previous shifts, copy bit */
                     if (++bitCount == 5)
                     {
-                        HandEvaluator.lo5RanksMask[mask] = value;
+                        PokerHandEvaluator.lo5RanksMask[mask] = value;
                         break;
                     }
                     if (bitCount == 3)
                     {
-                        HandEvaluator.lo3RanksMask[mask] = value;
+                        PokerHandEvaluator.lo3RanksMask[mask] = value;
                     }
                 }
             }
-            HandEvaluator.loEvalOrNo8Low[mask] = (bitCount == 5) ? value : HandEvaluator.NO_8_LOW;
+            PokerHandEvaluator.loEvalOrNo8Low[mask] = (bitCount == 5) ? value : PokerHandEvaluator.NO_8_LOW;
         }
         for (mask = 0x1F00/* A..T */; mask >= 0x001F/* 6..2 */; mask >>= 1)
         {
-            HandEvaluator.setStraight(mask);
+            PokerHandEvaluator.setStraight(mask);
         }
-        HandEvaluator.setStraight(HandEvaluator.WHEEL); /* A,5..2 */
+        PokerHandEvaluator.setStraight(PokerHandEvaluator.WHEEL); /* A,5..2 */
     }
     
     /**
@@ -193,7 +193,7 @@ public final class HandEvaluator
         long result = 0;
         for (final GameCard c : cs)
         {
-            result |= HandEvaluator.encode(c);
+            result |= PokerHandEvaluator.encode(c);
         }
         return result;
     }
@@ -203,60 +203,60 @@ public final class HandEvaluator
         
         int i, j;
         
-        if ((j = HandEvaluator.nbrOfRanks[c]) > 6 - 5)
+        if ((j = PokerHandEvaluator.nbrOfRanks[c]) > 6 - 5)
         {
             // there's either a club flush or no flush
             if (j >= 5)
             {
-                if ((i = HandEvaluator.straightValue[c]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[c]) == 0)
                 {
-                    return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[c];
+                    return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[c];
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
             }
         }
-        else if ((j += (i = HandEvaluator.nbrOfRanks[d])) > 6 - 5)
+        else if ((j += (i = PokerHandEvaluator.nbrOfRanks[d])) > 6 - 5)
         {
             if (i >= 5)
             {
-                if ((i = HandEvaluator.straightValue[d]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[d]) == 0)
                 {
-                    return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[d];
+                    return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[d];
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
             }
         }
-        else if ((j += (i = HandEvaluator.nbrOfRanks[h])) > 6 - 5)
+        else if ((j += (i = PokerHandEvaluator.nbrOfRanks[h])) > 6 - 5)
         {
             if (i >= 5)
             {
-                if ((i = HandEvaluator.straightValue[h]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[h]) == 0)
                 {
-                    return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[h];
+                    return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[h];
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
             }
         }
         else
         /* total cards in other suits <= N-5: spade flush: */
-        if ((i = HandEvaluator.straightValue[s]) == 0)
+        if ((i = PokerHandEvaluator.straightValue[s]) == 0)
         {
-            return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[s];
+            return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[s];
         }
         else
         {
-            return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+            return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
         }
-        return HandEvaluator.straightValue[ranks];
+        return PokerHandEvaluator.straightValue[ranks];
     }
     
     private static int flushAndOrStraight7(final int ranks, final int c, final int d, final int h, final int s)
@@ -264,60 +264,60 @@ public final class HandEvaluator
         
         int i, j;
         
-        if ((j = HandEvaluator.nbrOfRanks[c]) > 7 - 5)
+        if ((j = PokerHandEvaluator.nbrOfRanks[c]) > 7 - 5)
         {
             // there's either a club flush or no flush
             if (j >= 5)
             {
-                if ((i = HandEvaluator.straightValue[c]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[c]) == 0)
                 {
-                    return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[c];
+                    return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[c];
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
             }
         }
-        else if ((j += (i = HandEvaluator.nbrOfRanks[d])) > 7 - 5)
+        else if ((j += (i = PokerHandEvaluator.nbrOfRanks[d])) > 7 - 5)
         {
             if (i >= 5)
             {
-                if ((i = HandEvaluator.straightValue[d]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[d]) == 0)
                 {
-                    return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[d];
+                    return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[d];
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
             }
         }
-        else if ((j += (i = HandEvaluator.nbrOfRanks[h])) > 7 - 5)
+        else if ((j += (i = PokerHandEvaluator.nbrOfRanks[h])) > 7 - 5)
         {
             if (i >= 5)
             {
-                if ((i = HandEvaluator.straightValue[h]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[h]) == 0)
                 {
-                    return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[h];
+                    return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[h];
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
             }
         }
         else
         /* total cards in other suits <= 7-5: spade flush: */
-        if ((i = HandEvaluator.straightValue[s]) == 0)
+        if ((i = PokerHandEvaluator.straightValue[s]) == 0)
         {
-            return HandEvaluator.FLUSH | HandEvaluator.hi5RanksMask[s];
+            return PokerHandEvaluator.FLUSH | PokerHandEvaluator.hi5RanksMask[s];
         }
         else
         {
-            return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+            return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
         }
-        return HandEvaluator.straightValue[ranks];
+        return PokerHandEvaluator.straightValue[ranks];
     }
     
     /**
@@ -340,7 +340,7 @@ public final class HandEvaluator
         final int ranks = c | d | h | s;
         int i, j;
         
-        switch (HandEvaluator.nbrOfRanks[ranks])
+        switch (PokerHandEvaluator.nbrOfRanks[ranks])
         {
             
             case 2: /* quads or full house */
@@ -348,7 +348,7 @@ public final class HandEvaluator
                 if ((i & h & s) == 0)
                 { /* no bit common to all suits */
                     i = c ^ d ^ h ^ s; /* trips bit */
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 }
                 else
                 {
@@ -357,7 +357,7 @@ public final class HandEvaluator
                      * but the kicker bit in no more than one; so we need
                      * only AND any two suit masks to get the quad bit:
                      */
-                    return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                    return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 }
                 
             case 3: /*
@@ -369,22 +369,22 @@ public final class HandEvaluator
                     /* trips and two kickers */
                     if ((i = c & d) != 0)
                     {
-                        return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                        return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                     }
                     if ((i = c & h) != 0)
                     {
-                        return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                        return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                     }
                     i = d & h;
-                    return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                    return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 }
                 /* two pair and kicker; i has kicker bit */
                 j = i ^ ranks; /* j has pairs bits */
-                return HandEvaluator.hiTopRankTWO_PAIR[j] | HandEvaluator.hiBotRank[j ^ HandEvaluator.hiRankMask[j]] | i;
+                return PokerHandEvaluator.hiTopRankTWO_PAIR[j] | PokerHandEvaluator.hiBotRank[j ^ PokerHandEvaluator.hiRankMask[j]] | i;
                 
             case 4: /* pair and three kickers */
                 i = c ^ d ^ h ^ s; /* kicker bits */
-                return HandEvaluator.PAIR | HandEvaluator.hiBotRank[ranks ^ i] | i;
+                return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[ranks ^ i] | i;
                 
             case 5: /* no pair */
                 return ranks;
@@ -411,7 +411,7 @@ public final class HandEvaluator
         final int ranks = c | d | h | s;
         int i, j;
         
-        switch (HandEvaluator.nbrOfRanks[ranks])
+        switch (PokerHandEvaluator.nbrOfRanks[ranks])
         {
             
             case 2: /* quads or full house */
@@ -419,7 +419,7 @@ public final class HandEvaluator
                 if ((i & h & s) == 0)
                 { /* no bit common to all suits */
                     i = c ^ d ^ h ^ s; /* trips bit */
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 }
                 else
                 {
@@ -428,7 +428,7 @@ public final class HandEvaluator
                      * but the kicker bit in no more than one; so we need
                      * only AND any two suit masks to get the quad bit:
                      */
-                    return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                    return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 }
                 
             case 3: /*
@@ -440,25 +440,25 @@ public final class HandEvaluator
                     /* trips and two kickers */
                     if ((i = c & d) != 0)
                     {
-                        return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                        return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                     }
                     if ((i = c & h) != 0)
                     {
-                        return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                        return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                     }
                     i = d & h;
-                    return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                    return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 }
                 /* two pair and kicker; i has kicker bit */
                 j = i ^ ranks; /* j has pairs bits */
-                return HandEvaluator.hiTopRankTWO_PAIR[j] | HandEvaluator.hiBotRank[j ^ HandEvaluator.hiRankMask[j]] | i;
+                return PokerHandEvaluator.hiTopRankTWO_PAIR[j] | PokerHandEvaluator.hiBotRank[j ^ PokerHandEvaluator.hiRankMask[j]] | i;
                 
             case 4: /* pair and three kickers */
                 i = c ^ d ^ h ^ s; /* kicker bits */
-                return HandEvaluator.PAIR | HandEvaluator.hiBotRank[ranks ^ i] | i;
+                return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[ranks ^ i] | i;
                 
             case 5: /* flush and/or straight, or no pair */
-                if ((i = HandEvaluator.straightValue[ranks]) == 0)
+                if ((i = PokerHandEvaluator.straightValue[ranks]) == 0)
                 {
                     i = ranks;
                 }
@@ -488,11 +488,11 @@ public final class HandEvaluator
                 if (i == ranks)
                 {
                     /* no straight */
-                    return HandEvaluator.FLUSH | ranks;
+                    return PokerHandEvaluator.FLUSH | ranks;
                 }
                 else
                 {
-                    return (HandEvaluator.STRAIGHT_FLUSH - HandEvaluator.STRAIGHT) + i;
+                    return (PokerHandEvaluator.STRAIGHT_FLUSH - PokerHandEvaluator.STRAIGHT) + i;
                 }
         }
         
@@ -517,7 +517,7 @@ public final class HandEvaluator
         final int ranks = c | d | h | s;
         int i, j, k;
         
-        switch (HandEvaluator.nbrOfRanks[ranks])
+        switch (PokerHandEvaluator.nbrOfRanks[ranks])
         {
             
             case 2: /*
@@ -525,14 +525,14 @@ public final class HandEvaluator
                      * or two trips (full house)
                      */
                 /* bits for trips, if any: */
-                if ((HandEvaluator.nbrOfRanks[i = c ^ d ^ h ^ s]) != 0)
+                if ((PokerHandEvaluator.nbrOfRanks[i = c ^ d ^ h ^ s]) != 0)
                 {
                     /* two trips (full house) */
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (i ^ HandEvaluator.hiRankMask[i]);
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (i ^ PokerHandEvaluator.hiRankMask[i]);
                 }
                 /* quads with pair kicker */
                 i = c & d & h & s; /* bit for quads */
-                return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 
             case 3: /*
                      * quads with singleton kicker and non-playing singleton,
@@ -542,10 +542,10 @@ public final class HandEvaluator
                 if ((c ^ d ^ h ^ s) == 0)
                 {
                     /* no trips or singletons: three pair */
-                    i = HandEvaluator.hiRankMask[ranks]; /* bit for the top pair */
+                    i = PokerHandEvaluator.hiRankMask[ranks]; /* bit for the top pair */
                     k = ranks ^ i; /* bits for the bottom two pairs */
-                    j = HandEvaluator.hiRankMask[k]; /* bit for the middle pair */
-                    return HandEvaluator.hiTopRankTWO_PAIR[i] | HandEvaluator.hiBotRank[j] | (k ^ j);
+                    j = PokerHandEvaluator.hiRankMask[k]; /* bit for the middle pair */
+                    return PokerHandEvaluator.hiTopRankTWO_PAIR[i] | PokerHandEvaluator.hiBotRank[j] | (k ^ j);
                 }
                 if ((i = c & d & h & s) == 0)
                 {
@@ -564,10 +564,10 @@ public final class HandEvaluator
                                         * the bits of the trips
                                         * and singleton
                                         */
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (j ^ ranks);
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (j ^ ranks);
                 }
                 /* quads with kicker and singleton */
-                return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[i] | (HandEvaluator.hiRankMask[i ^ ranks]);
+                return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (PokerHandEvaluator.hiRankMask[i ^ ranks]);
                 
             case 4: /*
                      * trips and three singletons,
@@ -577,33 +577,33 @@ public final class HandEvaluator
                 {
                     /* two pair and two singletons */
                     j = i ^ ranks; /* the two bits for the pairs */
-                    return HandEvaluator.hiTopRankTWO_PAIR[j] | HandEvaluator.hiBotRank[HandEvaluator.hiRankMask[j] ^ j] | HandEvaluator.hiRankMask[i];
+                    return PokerHandEvaluator.hiTopRankTWO_PAIR[j] | PokerHandEvaluator.hiBotRank[PokerHandEvaluator.hiRankMask[j] ^ j] | PokerHandEvaluator.hiRankMask[i];
                 }
                 /* trips and three singletons */
                 if ((i = c & d) == 0)
                 {
                     i = h & s; /* bit of trips */
                 }
-                return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[i] | (HandEvaluator.hi2RanksMask[i ^ ranks]);
+                return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (PokerHandEvaluator.hi2RanksMask[i ^ ranks]);
                 
             case 5: /*
                      * flush and/or straight,
                      * or one pair and three kickers and
                      * one non-playing singleton
                      */
-                if ((i = HandEvaluator.flushAndOrStraight6(ranks, c, d, h, s)) != 0)
+                if ((i = PokerHandEvaluator.flushAndOrStraight6(ranks, c, d, h, s)) != 0)
                 {
                     return i;
                 }
                 i = c ^ d ^ h ^ s; /* the bits of the four singletons */
-                return HandEvaluator.PAIR | HandEvaluator.hiBotRank[ranks ^ i] | HandEvaluator.hi3RanksMask[i];
+                return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[ranks ^ i] | PokerHandEvaluator.hi3RanksMask[i];
                 
             case 6: /* flush and/or straight or no pair */
-                if ((i = HandEvaluator.flushAndOrStraight6(ranks, c, d, h, s)) != 0)
+                if ((i = PokerHandEvaluator.flushAndOrStraight6(ranks, c, d, h, s)) != 0)
                 {
                     return i;
                 }
-                return /* NO_PAIR | */HandEvaluator.hi5RanksMask[ranks];
+                return /* NO_PAIR | */PokerHandEvaluator.hi5RanksMask[ranks];
                 
         } /* end switch */
         
@@ -632,7 +632,7 @@ public final class HandEvaluator
         final int h = (int) (hand >>> 26) & 0x1FFF;
         final int s = (int) (hand >>> 39);
         
-        switch (HandEvaluator.nbrOfRanks[ranks = c | d | h | s])
+        switch (PokerHandEvaluator.nbrOfRanks[ranks = c | d | h | s])
         {
             
             case 2:
@@ -640,7 +640,7 @@ public final class HandEvaluator
                  * quads with trips kicker
                  */
                 i = c & d & h & s; /* bit for quads */
-                return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[i] | (i ^ ranks);
+                return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[i] | (i ^ ranks);
                 
             case 3:
                 /*
@@ -649,18 +649,18 @@ public final class HandEvaluator
                  * or quads with pair and singleton
                  */
                 /* bits for singleton, if any, and trips, if any: */
-                if (HandEvaluator.nbrOfRanks[i = c ^ d ^ h ^ s] == 3)
+                if (PokerHandEvaluator.nbrOfRanks[i = c ^ d ^ h ^ s] == 3)
                 {
                     /* two trips (full house) with non-playing singleton */
-                    if (HandEvaluator.nbrOfRanks[i = c & d] != 2)
+                    if (PokerHandEvaluator.nbrOfRanks[i = c & d] != 2)
                     {
-                        if (HandEvaluator.nbrOfRanks[i = c & h] != 2)
+                        if (PokerHandEvaluator.nbrOfRanks[i = c & h] != 2)
                         {
-                            if (HandEvaluator.nbrOfRanks[i = c & s] != 2)
+                            if (PokerHandEvaluator.nbrOfRanks[i = c & s] != 2)
                             {
-                                if (HandEvaluator.nbrOfRanks[i = d & h] != 2)
+                                if (PokerHandEvaluator.nbrOfRanks[i = d & h] != 2)
                                 {
-                                    if (HandEvaluator.nbrOfRanks[i = d & s] != 2)
+                                    if (PokerHandEvaluator.nbrOfRanks[i = d & s] != 2)
                                     {
                                         i = h & s; /* bits for the trips */
                                     }
@@ -668,15 +668,15 @@ public final class HandEvaluator
                             }
                         }
                     }
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (i ^ HandEvaluator.hiRankMask[i]);
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (i ^ PokerHandEvaluator.hiRankMask[i]);
                 }
                 if ((j = c & d & h & s) != 0)
                 {
                     /* quads with pair and singleton */
-                    return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[j] | (HandEvaluator.hiRankMask[ranks ^ j]);
+                    return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[j] | (PokerHandEvaluator.hiRankMask[ranks ^ j]);
                 }
                 /* trips and pair (full house) with non-playing pair */
-                return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (HandEvaluator.hiRankMask[ranks ^ i]);
+                return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (PokerHandEvaluator.hiRankMask[ranks ^ i]);
                 
             case 4:
                 /*
@@ -685,13 +685,13 @@ public final class HandEvaluator
                  * or quads with singleton kicker and two non-playing singletons
                  */
                 i = c ^ d ^ h ^ s; // the bit(s) of the trips, if any, and singleton(s)
-                if (HandEvaluator.nbrOfRanks[i] == 1)
+                if (PokerHandEvaluator.nbrOfRanks[i] == 1)
                 {
                     /* three pair and singleton */
                     j = ranks ^ i; /* the three bits for the pairs */
-                    ranks = HandEvaluator.hiRankMask[j]; /* bit for the top pair */
+                    ranks = PokerHandEvaluator.hiRankMask[j]; /* bit for the top pair */
                     j ^= ranks; /* bits for the two bottom pairs */
-                    return HandEvaluator.hiTopRankTWO_PAIR[ranks] | HandEvaluator.hiBotRank[j] | HandEvaluator.hiRankMask[(HandEvaluator.hiRankMask[j] ^ j) | i];
+                    return PokerHandEvaluator.hiTopRankTWO_PAIR[ranks] | PokerHandEvaluator.hiBotRank[j] | PokerHandEvaluator.hiRankMask[(PokerHandEvaluator.hiRankMask[j] ^ j) | i];
                 }
                 if ((j = c & d & h & s) == 0)
                 {
@@ -701,10 +701,10 @@ public final class HandEvaluator
                     {
                         j = (h & s) & (~i); /* bit for the trips */
                     }
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[j] | i;
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[j] | i;
                 }
                 // quads with singleton kicker and two non-playing singletons
-                return HandEvaluator.FOUR_OF_A_KIND | HandEvaluator.hiBotRank[j] | (HandEvaluator.hiRankMask[i]);
+                return PokerHandEvaluator.FOUR_OF_A_KIND | PokerHandEvaluator.hiBotRank[j] | (PokerHandEvaluator.hiRankMask[i]);
                 
             case 5:
                 /*
@@ -712,45 +712,45 @@ public final class HandEvaluator
                  * or two pair and three singletons,
                  * or trips and four singletons
                  */
-                if ((i = HandEvaluator.flushAndOrStraight7(ranks, c, d, h, s)) != 0)
+                if ((i = PokerHandEvaluator.flushAndOrStraight7(ranks, c, d, h, s)) != 0)
                 {
                     return i;
                 }
                 i = c ^ d ^ h ^ s; // the bits of the trips, if any, and singletons
-                if (HandEvaluator.nbrOfRanks[i] != 5)
+                if (PokerHandEvaluator.nbrOfRanks[i] != 5)
                 {
                     /* two pair and three singletons */
                     j = i ^ ranks; /* the two bits for the pairs */
-                    return HandEvaluator.hiTopRankTWO_PAIR[j] | HandEvaluator.hiBotRank[HandEvaluator.hiRankMask[j] ^ j] | HandEvaluator.hiRankMask[i];
+                    return PokerHandEvaluator.hiTopRankTWO_PAIR[j] | PokerHandEvaluator.hiBotRank[PokerHandEvaluator.hiRankMask[j] ^ j] | PokerHandEvaluator.hiRankMask[i];
                 }
                 /* trips and four singletons */
                 if ((j = c & d) == 0)
                 {
                     j = h & s;
                 }
-                return HandEvaluator.THREE_OF_A_KIND | HandEvaluator.hiBotRank[j] | (HandEvaluator.hi2RanksMask[i ^ j]);
+                return PokerHandEvaluator.THREE_OF_A_KIND | PokerHandEvaluator.hiBotRank[j] | (PokerHandEvaluator.hi2RanksMask[i ^ j]);
                 
             case 6:
                 /*
                  * flush and/or straight,
                  * or one pair and three kickers and two nonplaying singletons
                  */
-                if ((i = HandEvaluator.flushAndOrStraight7(ranks, c, d, h, s)) != 0)
+                if ((i = PokerHandEvaluator.flushAndOrStraight7(ranks, c, d, h, s)) != 0)
                 {
                     return i;
                 }
                 i = c ^ d ^ h ^ s; /* the bits of the five singletons */
-                return HandEvaluator.PAIR | HandEvaluator.hiBotRank[ranks ^ i] | HandEvaluator.hi3RanksMask[i];
+                return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[ranks ^ i] | PokerHandEvaluator.hi3RanksMask[i];
                 
             case 7:
                 /*
                  * flush and/or straight or no pair
                  */
-                if ((i = HandEvaluator.flushAndOrStraight7(ranks, c, d, h, s)) != 0)
+                if ((i = PokerHandEvaluator.flushAndOrStraight7(ranks, c, d, h, s)) != 0)
                 {
                     return i;
                 }
-                return /* NO_PAIR | */HandEvaluator.hi5RanksMask[ranks];
+                return /* NO_PAIR | */PokerHandEvaluator.hi5RanksMask[ranks];
                 
         } /* end switch */
         
@@ -767,7 +767,7 @@ public final class HandEvaluator
     public static int hand8LowEval(long hand)
     {
         
-        return HandEvaluator.loEvalOrNo8Low[
+        return PokerHandEvaluator.loEvalOrNo8Low[
         /* rotate each 13-bit suit field left to put Ace in LS bit */
         ((((int) hand & 0x1FFF) << 1) + (((int) hand ^ 0x1000) >> 12)) | ((((int) hand >> 12) & 0x3FFE) + (((int) hand ^ (0x1000 << 13)) >> 25)) | (((int) (hand >> 25) & 0x3FFE) + (int) ((hand ^ (0x1000L << 26)) >> 38)) | (((int) (hand >> 38) & 0x3FFE) + (int) ((hand ^ (0x1000L << 39)) >> 51))];
     }
@@ -792,7 +792,7 @@ public final class HandEvaluator
         final int ranks = c | d | h | s;
         int i, j;
         
-        switch (HandEvaluator.nbrOfRanks[ranks])
+        switch (PokerHandEvaluator.nbrOfRanks[ranks])
         {
             
             case 2:
@@ -803,9 +803,9 @@ public final class HandEvaluator
                 // but we return the correct value per relative ranks
                 if (i > j)
                 {
-                    return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[i] | (j);
+                    return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[i] | (j);
                 }
-                return HandEvaluator.FULL_HOUSE | HandEvaluator.hiBotRank[j] | (i);
+                return PokerHandEvaluator.FULL_HOUSE | PokerHandEvaluator.hiBotRank[j] | (i);
                 
             case 3:
                 /*
@@ -814,18 +814,18 @@ public final class HandEvaluator
                  * AAABBCC -- two pair w/ kicker = highest rank.
                  */
                 /* bits for singleton, if any, and trips, if any: */
-                if (HandEvaluator.nbrOfRanks[i = c ^ d ^ h ^ s] == 3)
+                if (PokerHandEvaluator.nbrOfRanks[i = c ^ d ^ h ^ s] == 3)
                 {
                     /* odd number of each rank: AAABBBC -- two pair */
-                    if (HandEvaluator.nbrOfRanks[i = c & d] != 2)
+                    if (PokerHandEvaluator.nbrOfRanks[i = c & d] != 2)
                     {
-                        if (HandEvaluator.nbrOfRanks[i = c & h] != 2)
+                        if (PokerHandEvaluator.nbrOfRanks[i = c & h] != 2)
                         {
-                            if (HandEvaluator.nbrOfRanks[i = c & s] != 2)
+                            if (PokerHandEvaluator.nbrOfRanks[i = c & s] != 2)
                             {
-                                if (HandEvaluator.nbrOfRanks[i = d & h] != 2)
+                                if (PokerHandEvaluator.nbrOfRanks[i = d & h] != 2)
                                 {
-                                    if (HandEvaluator.nbrOfRanks[i = d & s] != 2)
+                                    if (PokerHandEvaluator.nbrOfRanks[i = d & s] != 2)
                                     {
                                         i = h & s; /* bits for the trips */
                                     }
@@ -833,18 +833,18 @@ public final class HandEvaluator
                             }
                         }
                     }
-                    return HandEvaluator.hiTopRankTWO_PAIR[i] | HandEvaluator.hiBotRank[i ^ HandEvaluator.hiRankMask[i]] | (ranks ^ i);
+                    return PokerHandEvaluator.hiTopRankTWO_PAIR[i] | PokerHandEvaluator.hiBotRank[i ^ PokerHandEvaluator.hiRankMask[i]] | (ranks ^ i);
                 }
                 if ((j = c & d & h & s) != 0)
                 { /* bit for quads */
                     /* AAAABBC -- two pair */
                     j = ranks ^ i; /* bits for pairs */
-                    return HandEvaluator.hiTopRankTWO_PAIR[j] | HandEvaluator.hiBotRank[j ^ HandEvaluator.hiRankMask[j]] | i;
+                    return PokerHandEvaluator.hiTopRankTWO_PAIR[j] | PokerHandEvaluator.hiBotRank[j ^ PokerHandEvaluator.hiRankMask[j]] | i;
                 }
                 /* AAABBCC -- two pair w/ kicker = highest rank */
-                i = HandEvaluator.hiRankMask[ranks]; /* kicker bit */
+                i = PokerHandEvaluator.hiRankMask[ranks]; /* kicker bit */
                 j = ranks ^ i; /* pairs bits */
-                return HandEvaluator.hiTopRankTWO_PAIR[j] | HandEvaluator.hiBotRank[j ^ HandEvaluator.hiRankMask[j]] | i;
+                return PokerHandEvaluator.hiTopRankTWO_PAIR[j] | PokerHandEvaluator.hiBotRank[j ^ PokerHandEvaluator.hiRankMask[j]] | i;
                 
             case 4:
                 /*
@@ -856,12 +856,12 @@ public final class HandEvaluator
                                     * the bit(s) of the trips, if any,
                                     * and singleton(s)
                                     */
-                if (HandEvaluator.nbrOfRanks[i] == 1)
+                if (PokerHandEvaluator.nbrOfRanks[i] == 1)
                 {
                     /* AABBCCD -- one pair (C with ABD) */
                     /* D's bit is in i */
-                    j = HandEvaluator.hi2RanksMask[ranks ^ i] | i; /* kickers */
-                    return HandEvaluator.PAIR | HandEvaluator.hiBotRank[ranks ^ j] | j;
+                    j = PokerHandEvaluator.hi2RanksMask[ranks ^ i] | i; /* kickers */
+                    return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[ranks ^ j] | j;
                 }
                 if ((j = c & d & h & s) == 0)
                 {
@@ -873,21 +873,21 @@ public final class HandEvaluator
                     }
                     if (i < j)
                     {
-                        return HandEvaluator.PAIR | HandEvaluator.hiBotRank[i] | (ranks ^ i);
+                        return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[i] | (ranks ^ i);
                     }
-                    return HandEvaluator.PAIR | HandEvaluator.hiBotRank[j] | (ranks ^ j);
+                    return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[j] | (ranks ^ j);
                 }
                 /* AAAABCD -- one pair (A) */
-                return HandEvaluator.PAIR | HandEvaluator.hiBotRank[j] | i;
+                return PokerHandEvaluator.PAIR | PokerHandEvaluator.hiBotRank[j] | i;
                 
             case 5:
                 return /* NO_PAIR | */ranks;
                 
             case 6:
-                return /* NO_PAIR | */HandEvaluator.lo5RanksMask[ranks];
+                return /* NO_PAIR | */PokerHandEvaluator.lo5RanksMask[ranks];
                 
             case 7:
-                return /* NO_PAIR | */HandEvaluator.lo5RanksMask[ranks];
+                return /* NO_PAIR | */PokerHandEvaluator.lo5RanksMask[ranks];
                 
         } /* end switch */
         
@@ -906,7 +906,7 @@ public final class HandEvaluator
      */
     public static int Omaha8LowEval(int holeRanks, int boardRanks)
     {
-        return HandEvaluator.loEvalOrNo8Low[HandEvaluator.lo3RanksMask[boardRanks & ~holeRanks] | holeRanks];
+        return PokerHandEvaluator.loEvalOrNo8Low[PokerHandEvaluator.lo3RanksMask[boardRanks & ~holeRanks] | holeRanks];
     }
     
     // The following exports of accessors to arrays used by the
@@ -982,22 +982,22 @@ public final class HandEvaluator
             for (j = 0x1000; j > 0; j >>= 1)
             {
                 es = ts | i | j; /* 5 straight bits plus up to two other bits */
-                if (HandEvaluator.straightValue[es] == 0)
+                if (PokerHandEvaluator.straightValue[es] == 0)
                 {
-                    if (ts == HandEvaluator.WHEEL)
+                    if (ts == PokerHandEvaluator.WHEEL)
                     {
-                        HandEvaluator.straightValue[es] = HandEvaluator.STRAIGHT | (5 << HandEvaluator.BOT_SHIFT);
+                        PokerHandEvaluator.straightValue[es] = PokerHandEvaluator.STRAIGHT | (5 << PokerHandEvaluator.BOT_SHIFT);
                     }
                     else
                     {
-                        HandEvaluator.straightValue[es] = HandEvaluator.STRAIGHT | HandEvaluator.hiBotRank[ts];
+                        PokerHandEvaluator.straightValue[es] = PokerHandEvaluator.STRAIGHT | PokerHandEvaluator.hiBotRank[ts];
                     }
                 }
             }
         }
     }
     
-    private HandEvaluator()
+    private PokerHandEvaluator()
     {
     } // no instances
 }

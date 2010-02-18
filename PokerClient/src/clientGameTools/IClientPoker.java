@@ -1,6 +1,6 @@
 package clientGameTools;
 
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerTableInfo;
 import utility.IClosingListener;
 
 /**
@@ -31,7 +31,7 @@ public interface IClientPoker extends Runnable
      * @param p_table
      *            - Reference to the Poker table.
      */
-    public void setTable(PokerTableInfo p_table);
+    public void setTable(OldPokerTableInfo p_table);
     
     /**
      * Start the agent.

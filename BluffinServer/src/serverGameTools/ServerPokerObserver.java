@@ -5,9 +5,9 @@ import pokerLogic.PokerPlayerAction;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;
 import serverGame.ServerTableCommunicator;
-import utility.EventReceiver;
+import utility.EventObserver;
 
-public class ServerPokerObserver extends EventReceiver<ServerPokerListener>
+public class ServerPokerObserver extends EventObserver<ServerPokerListener>
 {
     public void bigBlindPosted(ServerTableCommunicator comm, ServerPokerPlayerInfo info, int value)
     {

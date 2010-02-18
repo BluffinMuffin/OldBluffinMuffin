@@ -1,8 +1,8 @@
 package protocolTools;
 
-import utility.EventReceiver;
+import utility.EventObserver;
 
-public class BluffinCommandObserver<T extends BluffinCommandListener> extends EventReceiver<T>
+public class BluffinCommandObserver<T extends BluffinCommandListener> extends EventObserver<T>
 {
     public void receiveSomething(String line)
     {

@@ -2,7 +2,7 @@ package clientGameTools;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 
@@ -28,49 +28,49 @@ public abstract class ClientPokerAdapter implements ClientPokerListener
     }
     
     @Override
-    public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+    public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
     {
         
     }
     
     @Override
-    public void playerCardChanged(PokerPlayerInfo player)
+    public void playerCardChanged(OldPokerPlayerInfo player)
     {
         
     }
     
     @Override
-    public void playerJoined(PokerPlayerInfo player)
+    public void playerJoined(OldPokerPlayerInfo player)
     {
         
     }
     
     @Override
-    public void playerLeft(PokerPlayerInfo player)
+    public void playerLeft(OldPokerPlayerInfo player)
     {
         
     }
     
     @Override
-    public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
+    public void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount)
     {
         
     }
     
     @Override
-    public void playerTurnBegan(PokerPlayerInfo player)
+    public void playerTurnBegan(OldPokerPlayerInfo player)
     {
         
     }
     
     @Override
-    public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+    public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
     {
         
     }
     
     @Override
-    public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
+    public void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex)
     {
         
     }

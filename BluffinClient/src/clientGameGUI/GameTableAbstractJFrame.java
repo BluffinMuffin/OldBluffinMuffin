@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerTableInfo;
 import utility.IClosingListener;
 import clientGame.ClientPokerTableInfo;
 import clientGameTools.ClientPokerObserver;
@@ -37,7 +37,7 @@ public abstract class GameTableAbstractJFrame extends JFrame implements IClientP
     }
     
     @Override
-    public void setTable(PokerTableInfo pTable)
+    public void setTable(OldPokerTableInfo pTable)
     {
         m_table = (ClientPokerTableInfo) pTable;
         

@@ -2,12 +2,12 @@ package clientGameTools;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
-import utility.EventReceiver;
+import utility.EventObserver;
 
-public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
+public class ClientPokerObserver extends EventObserver<ClientPokerListener>
 {
     public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
     {
@@ -33,7 +33,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+    public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -41,7 +41,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void playerCardChanged(PokerPlayerInfo player)
+    public void playerCardChanged(OldPokerPlayerInfo player)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -49,7 +49,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void playerJoined(PokerPlayerInfo player)
+    public void playerJoined(OldPokerPlayerInfo player)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -57,7 +57,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void playerLeft(PokerPlayerInfo player)
+    public void playerLeft(OldPokerPlayerInfo player)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -65,7 +65,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount)
+    public void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -73,7 +73,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void playerTurnBegan(PokerPlayerInfo player)
+    public void playerTurnBegan(OldPokerPlayerInfo player)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -81,7 +81,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+    public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -89,7 +89,7 @@ public class ClientPokerObserver extends EventReceiver<ClientPokerListener>
         }
     }
     
-    public void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex)
+    public void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {

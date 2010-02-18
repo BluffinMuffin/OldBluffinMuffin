@@ -1,6 +1,6 @@
 package pokerStats;
 
-import newPokerLogic.HandEvaluator;
+import newPokerLogic.PokerHandEvaluator;
 import utility.XORShiftRandom;
 
 
@@ -78,14 +78,14 @@ public class ParallelMonteCarlo extends Thread
             }
             
             final long boardCode = (MonteCarlo.Encode(m_dynamicTable, 0));
-            final long myResult = HandEvaluator.hand7Eval(MonteCarlo.Encode(m_playerCards, boardCode));
+            final long myResult = PokerHandEvaluator.hand7Eval(MonteCarlo.Encode(m_playerCards, boardCode));
             
             boolean lost = false;
             for (int j = m_nbMissingTableCards; j < m_nbCardsToDraw; j += 2)
             {
                 opponentCards[0] = m_deck[j];
                 opponentCards[1] = m_deck[j + 1];
-                final int opponentResult = HandEvaluator.hand7Eval(MonteCarlo.Encode(opponentCards, boardCode));
+                final int opponentResult = PokerHandEvaluator.hand7Eval(MonteCarlo.Encode(opponentCards, boardCode));
                 
                 if (opponentResult > myResult)
                 {

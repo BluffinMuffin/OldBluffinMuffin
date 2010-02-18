@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.Pot;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerGame;
@@ -270,7 +270,7 @@ public class ServerTableCommunicator implements Runnable
      * @return
      *         The list of player
      */
-    public List<PokerPlayerInfo> getPlayers()
+    public List<OldPokerPlayerInfo> getPlayers()
     {
         return m_info.getPlayers();
     }
@@ -328,7 +328,7 @@ public class ServerTableCommunicator implements Runnable
                     {
                         if (((ServerPokerPlayerInfo) m_info.getPlayer(i)).sitOutNextHand())
                         {
-                            final PokerPlayerInfo deletedPlayer = m_info.getPlayer(i);
+                            final OldPokerPlayerInfo deletedPlayer = m_info.getPlayer(i);
                             m_info.removePlayer(i);
                             
                             m_pokerObserver.playerLeftTable(this, (ServerPokerPlayerInfo) deletedPlayer);
@@ -442,9 +442,9 @@ public class ServerTableCommunicator implements Runnable
      */
     private void onePlayerStanding()
     {
-        PokerPlayerInfo winner;
+        OldPokerPlayerInfo winner;
         
-        final Iterator<PokerPlayerInfo> it = m_info.m_pots.peek().getParticipant().iterator();
+        final Iterator<OldPokerPlayerInfo> it = m_info.m_pots.peek().getParticipant().iterator();
         winner = it.next();
         
         while (!m_info.m_pots.empty())
@@ -574,7 +574,7 @@ public class ServerTableCommunicator implements Runnable
         
         showAllHands();
         
-        final Vector<PokerPlayerInfo> bestPlayers = new Vector<PokerPlayerInfo>();
+        final Vector<OldPokerPlayerInfo> bestPlayers = new Vector<OldPokerPlayerInfo>();
         long bestHand = 0;
         
         while (!m_info.m_pots.empty())
@@ -582,10 +582,10 @@ public class ServerTableCommunicator implements Runnable
             final Pot pot = m_info.m_pots.pop();
             if (pot.getParticipant().size() > 0)
             {
-                final Iterator<PokerPlayerInfo> it = pot.getParticipant().iterator();
+                final Iterator<OldPokerPlayerInfo> it = pot.getParticipant().iterator();
                 while (it.hasNext())
                 {
-                    final PokerPlayerInfo player = it.next();
+                    final OldPokerPlayerInfo player = it.next();
                     final long handValue = player.handValue(m_info.getBoard());
                     
                     if (handValue > bestHand)
@@ -653,7 +653,7 @@ public class ServerTableCommunicator implements Runnable
         // Check if the blinds are all-in
         if (m_info.m_gameState == TypePokerRound.PREFLOP)
         {
-            PokerPlayerInfo blind = m_info.getPlayer(m_info.m_noSeatSmallBlind);
+            OldPokerPlayerInfo blind = m_info.getPlayer(m_info.m_noSeatSmallBlind);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
             {
                 bets.add(blind.getBet());
@@ -755,7 +755,7 @@ public class ServerTableCommunicator implements Runnable
         if (!m_info.m_pots.isEmpty() && (m_info.m_pots.peek().getParticipant().size() == 1))
         {
             final Pot uselessPot = m_info.m_pots.pop();
-            final PokerPlayerInfo playerInPot = uselessPot.getParticipant().firstElement();
+            final OldPokerPlayerInfo playerInPot = uselessPot.getParticipant().firstElement();
             
             playerInPot.addMoney(uselessPot.getAmount());
             m_info.m_pots.peek().addParticipant(playerInPot);

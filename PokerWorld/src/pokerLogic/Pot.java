@@ -13,14 +13,14 @@ public class Pot
     
     private int m_id;
     private int m_amount;
-    private Vector<PokerPlayerInfo> m_participant;
+    private Vector<OldPokerPlayerInfo> m_participant;
     
     /**
      * Create a new pot with zero chips, no participant and the id 0.
      */
     public Pot()
     {
-        this(0, 0, new Vector<PokerPlayerInfo>());
+        this(0, 0, new Vector<OldPokerPlayerInfo>());
     }
     
     /**
@@ -31,7 +31,7 @@ public class Pot
      */
     public Pot(int p_id)
     {
-        this(p_id, 0, new Vector<PokerPlayerInfo>());
+        this(p_id, 0, new Vector<OldPokerPlayerInfo>());
     }
     
     /**
@@ -44,7 +44,7 @@ public class Pot
      * @param p_participants
      *            Participant to the pot
      */
-    public Pot(int p_id, int p_amount, Vector<PokerPlayerInfo> p_participants)
+    public Pot(int p_id, int p_amount, Vector<OldPokerPlayerInfo> p_participants)
     {
         m_id = p_id;
         m_amount = p_amount;
@@ -70,7 +70,7 @@ public class Pot
      * @return
      *         True if the participant was added
      */
-    public boolean addParticipant(PokerPlayerInfo p_participant)
+    public boolean addParticipant(OldPokerPlayerInfo p_participant)
     {
         return m_participant.add(p_participant);
     }
@@ -102,7 +102,7 @@ public class Pot
      * @return
      *         The list of participant
      */
-    public Vector<PokerPlayerInfo> getParticipant()
+    public Vector<OldPokerPlayerInfo> getParticipant()
     {
         return m_participant;
     }
@@ -112,7 +112,7 @@ public class Pot
      */
     public void removeAllParticipant()
     {
-        m_participant = new Vector<PokerPlayerInfo>();
+        m_participant = new Vector<OldPokerPlayerInfo>();
     }
     
     /**
@@ -156,7 +156,7 @@ public class Pot
      * @param p_participant
      *            The new list of participant
      */
-    public void setParticipant(Vector<PokerPlayerInfo> p_participant)
+    public void setParticipant(Vector<OldPokerPlayerInfo> p_participant)
     {
         m_participant = p_participant;
     }

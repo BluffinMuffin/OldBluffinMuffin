@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import pokerExtractor.TupleHandHistories.PhaseEvents;
 import pokerExtractor.TupleHandHistories.TuplePlayer;
 import pokerExtractor.TupleHandHistories.Winner;
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import pokerStats.MonteCarlo;
@@ -244,7 +244,7 @@ public class SimulationServer
     
     private int getPosition(String p_name)
     {
-        for (final PokerPlayerInfo player : m_client.m_table.getPlayers())
+        for (final OldPokerPlayerInfo player : m_client.m_table.getPlayers())
         {
             if (player.m_name.equals(p_name))
             {

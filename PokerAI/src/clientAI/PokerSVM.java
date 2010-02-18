@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import pokerAI.SVM;
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import pokerStats.MonteCarlo;
@@ -476,7 +476,7 @@ public class PokerSVM extends PokerAI
     private String getVector(TypePokerRound p_state)
     {
         double highMoney = 0.0;
-        for (final PokerPlayerInfo player : m_table.getPlayers())
+        for (final OldPokerPlayerInfo player : m_table.getPlayers())
         {
             highMoney = Math.max(highMoney, player.getMoney());
         }
@@ -502,7 +502,7 @@ public class PokerSVM extends PokerAI
         sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
-        for (final PokerPlayerInfo player : m_table.getPlayers())
+        for (final OldPokerPlayerInfo player : m_table.getPlayers())
         {
             if (player == m_table.m_localPlayer)
             {

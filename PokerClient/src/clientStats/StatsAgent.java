@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import pokerLogic.PokerPlayerInfo;
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerPlayerInfo;
+import pokerLogic.OldPokerTableInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import utility.Constants;
@@ -25,7 +25,7 @@ public class StatsAgent implements IClientPoker
 {
     private ClientPokerObserver m_pokerObserver;
     // Playing table
-    protected PokerTableInfo m_table;
+    protected OldPokerTableInfo m_table;
     
     // Stats overall on every player we played against
     public TreeMap<String, PlayerStats> m_overallStats = new TreeMap<String, PlayerStats>();
@@ -88,7 +88,7 @@ public class StatsAgent implements IClientPoker
     }
     
     @Override
-    public void setTable(PokerTableInfo pTable)
+    public void setTable(OldPokerTableInfo pTable)
     {
         m_table = pTable;
         
@@ -177,7 +177,7 @@ public class StatsAgent implements IClientPoker
             {
                 synchronized (m_table)
                 {
-                    for (final PokerPlayerInfo player : m_table.getPlayers())
+                    for (final OldPokerPlayerInfo player : m_table.getPlayers())
                     {
                         // Notify everyone that a turn ended.
                         if (player.m_isPlaying)
@@ -198,11 +198,11 @@ public class StatsAgent implements IClientPoker
             }
             
             @Override
-            public void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind)
+            public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
             {
                 synchronized (m_table)
                 {
-                    for (final PokerPlayerInfo player : m_table.getPlayers())
+                    for (final OldPokerPlayerInfo player : m_table.getPlayers())
                     {
                         if (!m_overallStats.containsKey(player.m_name))
                         {
@@ -240,7 +240,7 @@ public class StatsAgent implements IClientPoker
             }
             
             @Override
-            public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction action, int actionAmount)
+            public void playerTurnEnded(OldPokerPlayerInfo p_player, TypePlayerAction action, int actionAmount)
             {
                 final PlayerStats player = m_gameStats.get(p_player.m_name);
                 if (m_gatheringStats)

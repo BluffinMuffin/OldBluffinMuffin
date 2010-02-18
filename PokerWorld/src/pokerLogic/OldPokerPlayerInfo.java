@@ -5,9 +5,9 @@ import gameLogic.GameCardSet;
 
 import java.util.ArrayList;
 
-import newPokerLogic.HandEvaluator;
+import newPokerLogic.PokerHandEvaluator;
 
-public abstract class PokerPlayerInfo
+public abstract class OldPokerPlayerInfo
 {
     private int m_money;
     
@@ -29,7 +29,7 @@ public abstract class PokerPlayerInfo
     /**
      * Create a new player named "Anonymous Player" with no money
      */
-    public PokerPlayerInfo()
+    public OldPokerPlayerInfo()
     {
         m_name = "Anonymous Player";
         m_money = 0;
@@ -53,7 +53,7 @@ public abstract class PokerPlayerInfo
      * @param p_name
      *            The name of the player
      */
-    public PokerPlayerInfo(String p_name)
+    public OldPokerPlayerInfo(String p_name)
     {
         this();
         m_name = p_name;
@@ -67,7 +67,7 @@ public abstract class PokerPlayerInfo
      * @param p_money
      *            The starting chips of the player
      */
-    public PokerPlayerInfo(String p_name, int p_money)
+    public OldPokerPlayerInfo(String p_name, int p_money)
     {
         this(p_name);
         m_money = p_money;
@@ -81,7 +81,7 @@ public abstract class PokerPlayerInfo
      * @param p_money
      *            The starting chips of the player
      */
-    public PokerPlayerInfo(int p_noSeat, String p_name, int p_money)
+    public OldPokerPlayerInfo(int p_noSeat, String p_name, int p_money)
     {
         this(p_name, p_money);
         setNoSeat(p_noSeat);
@@ -95,7 +95,7 @@ public abstract class PokerPlayerInfo
      * @param p_money
      *            The starting chips of the player
      */
-    public PokerPlayerInfo(int p_noSeat)
+    public OldPokerPlayerInfo(int p_noSeat)
     {
         this();
         setNoSeat(p_noSeat);
@@ -137,9 +137,9 @@ public abstract class PokerPlayerInfo
             return this.getName().equals(arg0);
         }
         
-        if (arg0 instanceof PokerPlayerInfo)
+        if (arg0 instanceof OldPokerPlayerInfo)
         {
-            return this.getName().equals(((PokerPlayerInfo) arg0).getName());
+            return this.getName().equals(((OldPokerPlayerInfo) arg0).getName());
         }
         
         return super.equals(arg0);
@@ -187,7 +187,7 @@ public abstract class PokerPlayerInfo
             hand.add(element);
         }
         
-        return HandEvaluator.hand7Eval(HandEvaluator.encode(new GameCardSet(hand)));
+        return PokerHandEvaluator.hand7Eval(PokerHandEvaluator.encode(new GameCardSet(hand)));
     }
     
     public boolean isAllIn()

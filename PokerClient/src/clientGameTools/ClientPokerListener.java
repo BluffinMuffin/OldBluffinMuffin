@@ -3,7 +3,7 @@ package clientGameTools;
 import java.util.ArrayList;
 import java.util.EventListener;
 
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 
@@ -15,21 +15,21 @@ public interface ClientPokerListener extends EventListener
     
     void gameEnded();
     
-    void gameStarted(PokerPlayerInfo oldDealer, PokerPlayerInfo oldSmallBlind, PokerPlayerInfo oldBigBlind);
+    void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind);
     
-    void playerCardChanged(PokerPlayerInfo player);
+    void playerCardChanged(OldPokerPlayerInfo player);
     
-    void playerJoined(PokerPlayerInfo player);
+    void playerJoined(OldPokerPlayerInfo player);
     
-    void playerLeft(PokerPlayerInfo player);
+    void playerLeft(OldPokerPlayerInfo player);
     
-    void playerMoneyChanged(PokerPlayerInfo player, int oldMoneyAmount);
+    void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount);
     
-    void playerTurnBegan(PokerPlayerInfo player);
+    void playerTurnBegan(OldPokerPlayerInfo player);
     
-    void playerTurnEnded(PokerPlayerInfo player, TypePlayerAction action, int actionAmount);
+    void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount);
     
-    void potWon(PokerPlayerInfo player, int potAmountWon, int potIndex);
+    void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex);
     
     void tableClosed();
     

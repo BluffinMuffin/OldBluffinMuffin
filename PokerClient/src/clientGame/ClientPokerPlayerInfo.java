@@ -1,6 +1,6 @@
 package clientGame;
 
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import clientGameTools.TypeSimplifiedAction;
@@ -9,7 +9,7 @@ import clientGameTools.TypeSimplifiedAction;
  * @author Hocus
  *         This class represents a poker player on the client side.
  */
-public class ClientPokerPlayerInfo extends PokerPlayerInfo
+public class ClientPokerPlayerInfo extends OldPokerPlayerInfo
 {
     
     public TypeSimplifiedAction m_lastActionsPreflop = null;

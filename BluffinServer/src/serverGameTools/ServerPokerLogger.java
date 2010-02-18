@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.Pot;
 import serverGame.ServerPokerPlayerInfo;
 import serverGame.ServerTableCommunicator;
@@ -109,7 +109,7 @@ public class ServerPokerLogger
             {
                 println("Game Start");
                 
-                final List<PokerPlayerInfo> players = p_table.getPlayers();
+                final List<OldPokerPlayerInfo> players = p_table.getPlayers();
                 
                 for (int i = 0; i < players.size(); i++)
                 {

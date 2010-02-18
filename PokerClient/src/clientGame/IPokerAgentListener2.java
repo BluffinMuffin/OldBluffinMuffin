@@ -2,7 +2,7 @@ package clientGame;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import clientGameTools.IClientPoker;
@@ -62,7 +62,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_oldBigBlind
      *            is the previous player with the big blind.
      */
-    public void gameStarted(PokerPlayerInfo p_oldDealer, PokerPlayerInfo p_oldSmallBlind, PokerPlayerInfo p_oldBigBlind);
+    public void gameStarted(OldPokerPlayerInfo p_oldDealer, OldPokerPlayerInfo p_oldSmallBlind, OldPokerPlayerInfo p_oldBigBlind);
     
     /**
      * Happens when the cards of a player changes.
@@ -70,7 +70,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_player
      *            is the player for whom his cards have been changed.
      */
-    public void playerCardChanged(PokerPlayerInfo p_player);
+    public void playerCardChanged(OldPokerPlayerInfo p_player);
     
     /**
      * Happens when a player joined the table.
@@ -78,7 +78,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_player
      *            is the player that has joined the table.
      */
-    public void playerJoined(PokerPlayerInfo p_player);
+    public void playerJoined(OldPokerPlayerInfo p_player);
     
     /**
      * Happens when a player left the table.
@@ -86,7 +86,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_player
      *            is the player that has left the table.
      */
-    public void playerLeft(PokerPlayerInfo p_player);
+    public void playerLeft(OldPokerPlayerInfo p_player);
     
     /**
      * Happens when the money amount of a player changes.
@@ -96,7 +96,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_oldMoneyAmount
      *            is the previous money amount he had.
      */
-    public void playerMoneyChanged(PokerPlayerInfo p_player, int p_oldMoneyAmount);
+    public void playerMoneyChanged(OldPokerPlayerInfo p_player, int p_oldMoneyAmount);
     
     /**
      * Happens when the turn of a player begins.
@@ -104,7 +104,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_oldCurrentPlayer
      *            is the previous player that had played.
      */
-    public void playerTurnBegan(PokerPlayerInfo p_oldCurrentPlayer);
+    public void playerTurnBegan(OldPokerPlayerInfo p_oldCurrentPlayer);
     
     /**
      * Happens when the turn of a player ends.
@@ -116,7 +116,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_actionAmount
      *            is the amount related to the action taken.
      */
-    public void playerTurnEnded(PokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount);
+    public void playerTurnEnded(OldPokerPlayerInfo p_player, TypePlayerAction p_action, int p_actionAmount);
     
     /**
      * Happens when a player wins and receives his share.
@@ -128,7 +128,7 @@ public interface IPokerAgentListener2 extends IClientPoker
      * @param p_potIndex
      *            is the index of the pot that player won.
      */
-    public void potWon(PokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex);
+    public void potWon(OldPokerPlayerInfo p_player, int p_potAmountWon, int p_potIndex);
     
     /**
      * Happens when the table closes.

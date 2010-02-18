@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pokerLogic.PokerPlayerAction;
-import pokerLogic.PokerPlayerInfo;
+import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
 import protocolGame.GameAskActionCommand;
@@ -364,7 +364,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                     }
                 }
                 
-                for (final PokerPlayerInfo player : m_table.getPlayers())
+                for (final OldPokerPlayerInfo player : m_table.getPlayers())
                 {
                     player.m_betAmount = 0;
                 }
@@ -412,14 +412,14 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 m_table.m_noSeatSmallBlind = command.GetNoSeatSB();
                 m_table.m_noSeatBigBlind = command.GetNoSeatBB();
                 
-                final PokerPlayerInfo oldDealer = m_table.m_dealer;
-                final PokerPlayerInfo oldSmallBlind = m_table.m_smallBlind;
-                final PokerPlayerInfo oldBigBlind = m_table.m_bigBlind;
+                final OldPokerPlayerInfo oldDealer = m_table.m_dealer;
+                final OldPokerPlayerInfo oldSmallBlind = m_table.m_smallBlind;
+                final OldPokerPlayerInfo oldBigBlind = m_table.m_bigBlind;
                 
                 // Set dealer, small blind and big blind.
-                final PokerPlayerInfo dealer = m_table.getPlayer(m_table.m_noSeatDealer);
-                final PokerPlayerInfo smallBlind = m_table.getPlayer(m_table.m_noSeatSmallBlind);
-                final PokerPlayerInfo bigBlind = m_table.getPlayer(m_table.m_noSeatBigBlind);
+                final OldPokerPlayerInfo dealer = m_table.getPlayer(m_table.m_noSeatDealer);
+                final OldPokerPlayerInfo smallBlind = m_table.getPlayer(m_table.m_noSeatSmallBlind);
+                final OldPokerPlayerInfo bigBlind = m_table.getPlayer(m_table.m_noSeatBigBlind);
                 
                 m_table.m_dealer = dealer;
                 m_table.m_dealer.m_isDealer = true;
@@ -452,7 +452,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 m_table.m_gameState = TypePokerRound.PREFLOP;
                 m_table.m_currentBet = 0;
                 
-                for (final PokerPlayerInfo player : m_table.getPlayers())
+                for (final OldPokerPlayerInfo player : m_table.getPlayers())
                 {
                     player.m_initialMoney = player.getMoney();
                 }
@@ -466,7 +466,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final GameCard card1 = GameCard.getInstance(command.getCardsId().get(0));
                 final GameCard card2 = GameCard.getInstance(command.getCardsId().get(1));
                 
-                final PokerPlayerInfo player = m_table.getPlayer(noSeat);
+                final OldPokerPlayerInfo player = m_table.getPlayer(noSeat);
                 player.setHand(card1, card2);
                 m_pokerObserver.playerCardChanged(player);
             }
@@ -494,7 +494,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
             {
                 final int noSeat = command.getPlayerPos();
                 
-                final PokerPlayerInfo player = m_table.getPlayer(noSeat);
+                final OldPokerPlayerInfo player = m_table.getPlayer(noSeat);
                 m_table.removePlayer(noSeat);
                 m_pokerObserver.playerLeft(player);
             }
@@ -505,7 +505,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int noSeat = command.getPlayerPos();
                 final int moneyAmount = command.getPlayerMoney();
                 
-                final PokerPlayerInfo player = m_table.getPlayer(noSeat);
+                final OldPokerPlayerInfo player = m_table.getPlayer(noSeat);
                 final int oldMoneyAmount = player.getMoney();
                 player.setMoney(moneyAmount);
                 m_pokerObserver.playerMoneyChanged(player, oldMoneyAmount);
@@ -516,7 +516,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
             {
                 final int noSeat = command.getPlayerPos();
                 
-                final PokerPlayerInfo oldCurrentPlayer = m_table.m_currentPlayer;
+                final OldPokerPlayerInfo oldCurrentPlayer = m_table.m_currentPlayer;
                 m_table.m_currentPlayer = m_table.getPlayer(noSeat);
                 m_pokerObserver.playerTurnBegan(oldCurrentPlayer);
             }
@@ -554,7 +554,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int potAmountWon = command.getShared();
                 final int moneyAmount = command.getPlayerMoney();
                 
-                final PokerPlayerInfo player = m_table.getPlayer(noSeat);
+                final OldPokerPlayerInfo player = m_table.getPlayer(noSeat);
                 player.setMoney(moneyAmount);
                 m_pokerObserver.potWon(player, potAmountWon, idPot);
             }
@@ -597,7 +597,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                         m_table.addPlayer(noSeat, new ClientPokerPlayerInfo(noSeat));
                     }
                     
-                    final PokerPlayerInfo player = m_table.getPlayer(noSeat);
+                    final OldPokerPlayerInfo player = m_table.getPlayer(noSeat);
                     
                     player.m_name = seat.m_playerName;
                     player.setMoney(seat.m_money);

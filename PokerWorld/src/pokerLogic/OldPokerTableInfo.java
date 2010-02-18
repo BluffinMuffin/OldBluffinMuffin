@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PokerTableInfo
+public class OldPokerTableInfo
 {
     
     private int m_nbSeats;
-    private PokerPlayerInfo[] m_players;
+    private OldPokerPlayerInfo[] m_players;
     private int m_nbPlayers;
     
     public int m_nbPlayingPlayers;
@@ -30,17 +30,17 @@ public class PokerTableInfo
     
     public int m_currentBet;
     
-    public PokerTableInfo()
+    public OldPokerTableInfo()
     {
         this(9);
     }
     
-    public PokerTableInfo(int nbSeats)
+    public OldPokerTableInfo(int nbSeats)
     {
         this("Anonymous", 5, nbSeats);
     }
     
-    public PokerTableInfo(String pName, int pBigBlind, int nbSeats)
+    public OldPokerTableInfo(String pName, int pBigBlind, int nbSeats)
     {
         m_nbSeats = nbSeats;
         initializePlayers(nbSeats);
@@ -51,9 +51,9 @@ public class PokerTableInfo
         m_boardCards = new ArrayList<GameCard>(5);
     }
     
-    public List<PokerPlayerInfo> getPlayers()
+    public List<OldPokerPlayerInfo> getPlayers()
     {
-        final ArrayList<PokerPlayerInfo> players = new ArrayList<PokerPlayerInfo>();
+        final ArrayList<OldPokerPlayerInfo> players = new ArrayList<OldPokerPlayerInfo>();
         for (int i = 0; i < m_nbSeats; ++i)
         {
             if (m_players[i] != null)
@@ -77,7 +77,7 @@ public class PokerTableInfo
         return ids;
     }
     
-    public PokerPlayerInfo getPlayer(int i)
+    public OldPokerPlayerInfo getPlayer(int i)
     {
         return m_players[i];
     }
@@ -101,7 +101,7 @@ public class PokerTableInfo
         m_players[i] = null;
     }
     
-    public void removePlayer(PokerPlayerInfo p)
+    public void removePlayer(OldPokerPlayerInfo p)
     {
         int count = 0;
         for (int i = 0; i < m_nbSeats; ++i)
@@ -115,7 +115,7 @@ public class PokerTableInfo
         }
     }
     
-    public int addPlayer(PokerPlayerInfo p)
+    public int addPlayer(OldPokerPlayerInfo p)
     {
         for (int i = 0; i < m_nbSeats; ++i)
         {
@@ -129,7 +129,7 @@ public class PokerTableInfo
         return -1;
     }
     
-    public void addPlayer(int id, PokerPlayerInfo p)
+    public void addPlayer(int id, OldPokerPlayerInfo p)
     {
         if (m_players[id] == null)
         {
@@ -151,7 +151,7 @@ public class PokerTableInfo
     {
         m_nbPlayers = 0;
         m_nbSeats = nbSeat;
-        m_players = new PokerPlayerInfo[nbSeat];
+        m_players = new OldPokerPlayerInfo[nbSeat];
     }
     
     /**

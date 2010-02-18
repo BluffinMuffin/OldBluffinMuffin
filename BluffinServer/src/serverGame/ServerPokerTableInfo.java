@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import pokerLogic.PokerPlayerInfo;
-import pokerLogic.PokerTableInfo;
+import pokerLogic.OldPokerPlayerInfo;
+import pokerLogic.OldPokerTableInfo;
 import pokerLogic.Pot;
 import pokerLogic.TypePokerGame;
 import pokerLogic.TypePokerRound;
@@ -18,7 +18,7 @@ import protocolGameTools.SummarySeatInfo;
 import protocolLobby.LobbyCreateTableCommand;
 import utility.Constants;
 
-public class ServerPokerTableInfo extends PokerTableInfo
+public class ServerPokerTableInfo extends OldPokerTableInfo
 {
     // Players variables
     public int m_nbFolded;
@@ -313,7 +313,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
     public void placeSmallBlind()
     {
         // Place the small blind
-        final PokerPlayerInfo player = getPlayer(m_noSeatSmallBlind);
+        final OldPokerPlayerInfo player = getPlayer(m_noSeatSmallBlind);
         player.placeSmallBlind(m_smallBlindAmount);
         m_currentBet = player.getBet();
         m_totalPotAmount += m_currentBet;
@@ -328,7 +328,7 @@ public class ServerPokerTableInfo extends PokerTableInfo
     {
         
         // place the Big Blind
-        final PokerPlayerInfo player = getPlayer(m_noSeatBigBlind);
+        final OldPokerPlayerInfo player = getPlayer(m_noSeatBigBlind);
         player.placeBigBlind(m_bigBlindAmount);
         final int bet = player.getBet();
         m_currentBet = Math.max(m_currentBet, bet);
