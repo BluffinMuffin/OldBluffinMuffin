@@ -49,6 +49,14 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    public void playerLeaved(PokerPlayerInfo p)
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.playerLeaved(p);
+        }
+    }
+    
     public void playerRaised(PokerPlayerInfo p, int playedAmount, int totalRaiseValue)
     {
         for (final PokerGameListener listener : getSubscribers())

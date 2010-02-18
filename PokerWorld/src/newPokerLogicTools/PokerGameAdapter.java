@@ -34,6 +34,11 @@ public abstract class PokerGameAdapter implements PokerGameListener
     }
     
     @Override
+    public void playerLeaved(PokerPlayerInfo p)
+    {
+    }
+    
+    @Override
     public void playerRaised(PokerPlayerInfo p, int playedAmount, int totalRaiseValue)
     {
     }

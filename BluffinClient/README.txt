@@ -1,14 +1,4 @@
------
-SETUP
------
-In order to start correctly the project two folders need to be copied in the bin folder:
- -images
- -SVMs
 
-*Sometime, Eclipse flush the bin folder, so each time, 
- you will have to manually copy them in the bin folder.
- 
- 
 ---------
 SVM FILES
 ---------

@@ -84,4 +84,33 @@ public class PokerTableInfo
     {
         return m_tableName;
     }
+    
+    public boolean joinTable(PokerPlayerInfo p)
+    {
+    	if( m_nbUsedSeats >= m_nbMaxSeats)
+    		return false;
+    	
+    	if(containsPlayer(p))
+    		return false;
+    	
+    	//TODO: ASSIS
+    	
+    	return true;
+    }
+
+	public boolean leaveTable(PokerPlayerInfo p) {
+		
+    	if(!containsPlayer(p))
+    		return false;
+    	
+    	//TODO: LEAVE
+    	
+    	return true;
+	}
+    
+    private boolean containsPlayer(PokerPlayerInfo p)
+    {
+    	//TODO: contains player ??!
+    	return false;
+    }
 }

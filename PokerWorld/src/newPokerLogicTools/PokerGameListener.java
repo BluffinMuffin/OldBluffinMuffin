@@ -17,6 +17,8 @@ public interface PokerGameListener extends EventListener
     
     void playerJoined(PokerPlayerInfo p);
     
+    void playerLeaved(PokerPlayerInfo p);
+    
     void bigBlindPosted(PokerPlayerInfo p, int bbAmount);
     
     void smallBlindPosted(PokerPlayerInfo p, int sbAmount);
