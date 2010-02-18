@@ -13,10 +13,9 @@ public class main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// ArrayList<String> logPaths =
-		// PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive/FullTit");
-		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
+
+		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/New folder", ".txt");
+		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
 		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive/PokerTracker/hhdb2.mdb", ".txt");
 
 		FullTiltParser ftp = FullTiltParser.getInstance();
