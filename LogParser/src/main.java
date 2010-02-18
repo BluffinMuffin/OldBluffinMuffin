@@ -30,21 +30,20 @@ public class main {
 
 			try {
 				fileContent = readFileAsString(s);
+
+				// System.out.print(s + "  :  ");
+				// Read the header & spawn parser accordingly
+				if (fileContent.startsWith("PokerStars")) {
+					psp.parse(fileContent);
+				} else if (fileContent.startsWith("Full Tilt Poker") || fileContent.startsWith("FullTiltPoker")) {
+					ftp.parse(fileContent);
+				} else {
+					System.out.println("Unknown log type at" + s);
+				}
+
 			} catch (IOException e) {
 				System.out.println("Can't read file at: " + s);
 			}
-
-			// System.out.print(s + "  :  ");
-			// Read the header & spawn parser accordingly
-			if (fileContent.startsWith("PokerStars")) {
-				// psp.parse(fileContent);
-
-			} else if (fileContent.startsWith("Full Tilt Poker") || fileContent.startsWith("FullTiltPoker")) {
-				// ftp.parse(fileContent);
-
-			}
-
-			fileContent = null;
 		}
 
 		System.out.println(logPaths.size());
