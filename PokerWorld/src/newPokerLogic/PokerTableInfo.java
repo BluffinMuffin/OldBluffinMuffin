@@ -1,6 +1,7 @@
 package newPokerLogic;
 
 import gameLogic.GameCard;
+import gameLogic.GameCardSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class PokerTableInfo
     private final int m_smallBlindAmount;
     private final int m_bigBlindAmount;
     
-    private final GameCard[] m_currentBoardCards = new GameCard[5];
+    private final GameCardSet m_currentBoardCards = new GameCardSet(5);
     
     private final String m_tableName;
     private final Stack<Integer> m_RemainingSeats = new Stack<Integer>();
@@ -38,7 +39,6 @@ public class PokerTableInfo
         m_tableName = pName;
         m_bigBlindAmount = pBigBlind;
         m_smallBlindAmount = pBigBlind / 2;
-        setBoardCards(GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD);
         
         for (int i = 1; i <= m_nbMaxSeats; ++i)
         {
@@ -48,11 +48,31 @@ public class PokerTableInfo
     
     public void setBoardCards(GameCard c1, GameCard c2, GameCard c3, GameCard c4, GameCard c5)
     {
-        m_currentBoardCards[0] = c1;
-        m_currentBoardCards[1] = c2;
-        m_currentBoardCards[2] = c3;
-        m_currentBoardCards[3] = c4;
-        m_currentBoardCards[4] = c5;
+        m_currentBoardCards.clear();
+        addBoardCard(c1);
+        addBoardCard(c2);
+        addBoardCard(c3);
+        addBoardCard(c4);
+        addBoardCard(c5);
+    }
+    
+    public void setBoardCards(GameCardSet set)
+    {
+        m_currentBoardCards.clear();
+        addBoardCards(set);
+    }
+    
+    public void addBoardCards(GameCardSet set)
+    {
+        while (!set.isEmpty())
+        {
+            addBoardCard(set.pop());
+        }
+    }
+    
+    public void addBoardCard(GameCard c)
+    {
+        m_currentBoardCards.add(c);
     }
     
     public int getNbUsedSeats()
@@ -85,7 +105,7 @@ public class PokerTableInfo
         return m_bigBlindAmount;
     }
     
-    public GameCard[] getCurrentBoardCards()
+    public GameCardSet getCurrentBoardCards()
     {
         return m_currentBoardCards;
     }
@@ -93,6 +113,29 @@ public class PokerTableInfo
     public String getTableName()
     {
         return m_tableName;
+    }
+    
+    public boolean joinTable(PokerPlayerInfo p, int seat)
+    {
+        if (m_RemainingSeats.size() == 0)
+        {
+            return false;
+        }
+        
+        if (containsPlayer(p))
+        {
+            return false;
+        }
+        
+        if (!m_RemainingSeats.contains(seat))
+        {
+            return false;
+        }
+        m_RemainingSeats.remove(seat);
+        p.setFolded();
+        p.setCurrentTablePosition(seat);
+        m_currentPlayers[seat] = p;
+        return true;
     }
     
     public boolean joinTable(PokerPlayerInfo p)
@@ -130,12 +173,25 @@ public class PokerTableInfo
         return true;
     }
     
-    private List<PokerPlayerInfo> getPlayers()
+    public List<PokerPlayerInfo> getPlayers()
     {
         final List<PokerPlayerInfo> list = new ArrayList<PokerPlayerInfo>();
         for (int i = 0; i < m_nbMaxSeats; ++i)
         {
             if (m_currentPlayers[i] != null)
+            {
+                list.add(m_currentPlayers[i]);
+            }
+        }
+        return list;
+    }
+    
+    public List<PokerPlayerInfo> getPlayingPlayers()
+    {
+        final List<PokerPlayerInfo> list = new ArrayList<PokerPlayerInfo>();
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            if (m_currentPlayers[i] != null && m_currentPlayers[i].isPlaying())
             {
                 list.add(m_currentPlayers[i]);
             }
@@ -151,5 +207,25 @@ public class PokerTableInfo
     public int getAndSetNbPlayingPlayers()
     {
         return 0;
+    }
+    
+    private PokerPlayerInfo nextPlayer(int seat, List<PokerPlayerInfo> players)
+    {
+        return players.get((seat + 1) % players.size());
+    }
+    
+    public PokerPlayerInfo nextPlayer(int seat)
+    {
+        return nextPlayer(seat, getPlayers());
+    }
+    
+    public PokerPlayerInfo nextPlayingPlayer(int seat)
+    {
+        return nextPlayer(seat, getPlayingPlayers());
+    }
+    
+    public PokerPlayerInfo getPlayer(int seat)
+    {
+        return m_currentPlayers[seat];
     }
 }

@@ -17,6 +17,14 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    public void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue)
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.blindsNeeded(sb, bb, sbValue, bbValue);
+        }
+    }
+    
     public void gameStateChanged(TypePokerGameState oldState, TypePokerGameState newState)
     {
         for (final PokerGameListener listener : getSubscribers())

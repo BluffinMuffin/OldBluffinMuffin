@@ -1,6 +1,7 @@
 package newPokerLogic;
 
 import gameLogic.GameCard;
+import gameLogic.GameCardSet;
 
 public abstract class PokerPlayerInfo
 {
@@ -8,7 +9,7 @@ public abstract class PokerPlayerInfo
     private int m_currentBetMoneyAmount;
     private int m_currentTablePosition;
     
-    private final GameCard[] m_currentHand = new GameCard[2];
+    private final GameCardSet m_currentHand = new GameCardSet(2);
     private String m_playerName;
     private boolean m_playing;
     private boolean m_stillThereForShowDown;
@@ -18,7 +19,6 @@ public abstract class PokerPlayerInfo
         m_playerName = "Anonymous Player";
         m_currentTablePosition = -1;
         m_currentSafeMoneyAmount = 0;
-        setHand(GameCard.NO_CARD, GameCard.NO_CARD);
     }
     
     public PokerPlayerInfo(String p_name)
@@ -47,8 +47,18 @@ public abstract class PokerPlayerInfo
     
     public void setHand(GameCard card1, GameCard card2)
     {
-        m_currentHand[0] = card1;
-        m_currentHand[1] = card2;
+        m_currentHand.clear();
+        m_currentHand.add(card1);
+        m_currentHand.add(card2);
+    }
+    
+    public void setHand(GameCardSet set)
+    {
+        m_currentHand.clear();
+        while (!set.isEmpty())
+        {
+            m_currentHand.add(set.pop());
+        }
     }
     
     public int getCurrentSafeMoneyAmount()
@@ -61,7 +71,7 @@ public abstract class PokerPlayerInfo
         return m_currentTablePosition;
     }
     
-    public GameCard[] getCurrentHand()
+    public GameCardSet getCurrentHand()
     {
         return m_currentHand;
     }

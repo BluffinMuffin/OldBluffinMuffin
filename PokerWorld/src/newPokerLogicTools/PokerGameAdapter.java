@@ -14,6 +14,11 @@ public abstract class PokerGameAdapter implements PokerGameListener
     }
     
     @Override
+    public void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue)
+    {
+    }
+    
+    @Override
     public void gameStateChanged(TypePokerGameState oldState, TypePokerGameState newState)
     {
     }
