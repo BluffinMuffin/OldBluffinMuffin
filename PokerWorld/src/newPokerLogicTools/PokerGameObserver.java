@@ -6,9 +6,10 @@ import newPokerLogic.TypePokerGameRoundState;
 import newPokerLogic.TypePokerGameState;
 import utility.EventObserver;
 
-public class PokerGameObserver extends EventObserver<PokerGameListener>
+public class PokerGameObserver extends EventObserver<PokerGameListener> implements PokerGameListener
 {
     
+    @Override
     public void bigBlindPosted(PokerPlayerInfo p, int bbAmount)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -17,6 +18,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -25,6 +27,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void gameStateChanged(TypePokerGameState oldState, TypePokerGameState newState)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -33,6 +36,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void playerCalled(PokerPlayerInfo p, int playedAmount, int totalCallValue)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -41,6 +45,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void playerFolded(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -49,6 +54,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void playerJoined(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -57,6 +63,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void playerLeaved(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -65,6 +72,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void playerRaised(PokerPlayerInfo p, int playedAmount, int totalRaiseValue)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -73,6 +81,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void roundChanged(TypePokerGameState gameState, TypePokerGameRound oldRound, TypePokerGameRound newRound)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -81,6 +90,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void roundStateChanged(TypePokerGameState gameState, TypePokerGameRound round, TypePokerGameRoundState oldRoundState, TypePokerGameRoundState newRoundState)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -89,6 +99,7 @@ public class PokerGameObserver extends EventObserver<PokerGameListener>
         }
     }
     
+    @Override
     public void smallBlindPosted(PokerPlayerInfo p, int sbAmount)
     {
         for (final PokerGameListener listener : getSubscribers())

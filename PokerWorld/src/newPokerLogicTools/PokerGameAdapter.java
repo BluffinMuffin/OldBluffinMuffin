@@ -5,7 +5,7 @@ import newPokerLogic.TypePokerGameRound;
 import newPokerLogic.TypePokerGameRoundState;
 import newPokerLogic.TypePokerGameState;
 
-public abstract class PokerGameAdapter implements PokerGameListener
+public class PokerGameAdapter implements PokerGameListener
 {
     
     @Override
