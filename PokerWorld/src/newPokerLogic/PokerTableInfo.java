@@ -2,6 +2,10 @@ package newPokerLogic;
 
 import gameLogic.GameCard;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
 public class PokerTableInfo
 {
     private final int m_nbMaxSeats;
@@ -14,6 +18,7 @@ public class PokerTableInfo
     private final GameCard[] m_currentBoardCards = new GameCard[5];
     
     private final String m_tableName;
+    private final Stack<Integer> m_RemainingSeats = new Stack<Integer>();
     
     public PokerTableInfo()
     {
@@ -34,6 +39,11 @@ public class PokerTableInfo
         m_bigBlindAmount = pBigBlind;
         m_smallBlindAmount = pBigBlind / 2;
         setBoardCards(GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD, GameCard.NO_CARD);
+        
+        for (int i = 1; i <= m_nbMaxSeats; ++i)
+        {
+            m_RemainingSeats.push(m_nbMaxSeats - i);
+        }
     }
     
     public void setBoardCards(GameCard c1, GameCard c2, GameCard c3, GameCard c4, GameCard c5)
@@ -87,30 +97,59 @@ public class PokerTableInfo
     
     public boolean joinTable(PokerPlayerInfo p)
     {
-    	if( m_nbUsedSeats >= m_nbMaxSeats)
-    		return false;
-    	
-    	if(containsPlayer(p))
-    		return false;
-    	
-    	//TODO: ASSIS
-    	
-    	return true;
+        if (m_RemainingSeats.size() == 0)
+        {
+            return false;
+        }
+        
+        if (containsPlayer(p))
+        {
+            return false;
+        }
+        
+        final int seat = m_RemainingSeats.pop();
+        p.setFolded();
+        p.setCurrentTablePosition(seat);
+        m_currentPlayers[seat] = p;
+        return true;
     }
-
-	public boolean leaveTable(PokerPlayerInfo p) {
-		
-    	if(!containsPlayer(p))
-    		return false;
-    	
-    	//TODO: LEAVE
-    	
-    	return true;
-	}
+    
+    public boolean leaveTable(PokerPlayerInfo p)
+    {
+        
+        if (!containsPlayer(p))
+        {
+            return false;
+        }
+        
+        final int seat = p.getCurrentTablePosition();
+        p.setFolded();
+        p.setCurrentTablePosition(-1);
+        m_currentPlayers[seat] = null;
+        
+        return true;
+    }
+    
+    private List<PokerPlayerInfo> getPlayers()
+    {
+        final List<PokerPlayerInfo> list = new ArrayList<PokerPlayerInfo>();
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            if (m_currentPlayers[i] != null)
+            {
+                list.add(m_currentPlayers[i]);
+            }
+        }
+        return list;
+    }
     
     private boolean containsPlayer(PokerPlayerInfo p)
     {
-    	//TODO: contains player ??!
-    	return false;
+        return getPlayers().contains(p);
+    }
+    
+    public int getAndSetNbPlayingPlayers()
+    {
+        return 0;
     }
 }

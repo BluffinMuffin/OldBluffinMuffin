@@ -5,13 +5,14 @@ import gameLogic.GameCard;
 public abstract class PokerPlayerInfo
 {
     private int m_currentSafeMoneyAmount;
+    private int m_currentBetMoneyAmount;
     private int m_currentTablePosition;
+    
     private final GameCard[] m_currentHand = new GameCard[2];
     private String m_playerName;
+    private boolean m_playing;
+    private boolean m_stillThereForShowDown;
     
-    /**
-     * Create a new player named "Anonymous Player" with no money
-     */
     public PokerPlayerInfo()
     {
         m_playerName = "Anonymous Player";
@@ -20,54 +21,24 @@ public abstract class PokerPlayerInfo
         setHand(GameCard.NO_CARD, GameCard.NO_CARD);
     }
     
-    /**
-     * Create a new player with no money
-     * 
-     * @param p_name
-     *            The name of the player
-     */
     public PokerPlayerInfo(String p_name)
     {
         this();
         m_playerName = p_name;
     }
     
-    /**
-     * Create a new player
-     * 
-     * @param p_name
-     *            The name of the player
-     * @param p_money
-     *            The starting chips of the player
-     */
     public PokerPlayerInfo(String p_name, int p_money)
     {
         this(p_name);
         m_currentSafeMoneyAmount = p_money;
     }
     
-    /**
-     * Create a new player
-     * 
-     * @param p_name
-     *            The name of the player
-     * @param p_money
-     *            The starting chips of the player
-     */
     public PokerPlayerInfo(int p_noSeat, String p_name, int p_money)
     {
         this(p_name, p_money);
         m_currentTablePosition = p_noSeat;
     }
     
-    /**
-     * Create a new player
-     * 
-     * @param p_name
-     *            The name of the player
-     * @param p_money
-     *            The starting chips of the player
-     */
     public PokerPlayerInfo(int p_noSeat)
     {
         this();
@@ -98,5 +69,59 @@ public abstract class PokerPlayerInfo
     public String getPlayerName()
     {
         return m_playerName;
+    }
+    
+    public boolean isPlaying()
+    {
+        return m_playing;
+    }
+    
+    public boolean isStillThereForShowDown()
+    {
+        return m_stillThereForShowDown;
+    }
+    
+    public boolean canPlay()
+    {
+        return m_currentTablePosition >= 0 && m_currentSafeMoneyAmount > 0;
+    }
+    
+    public void setAllIn()
+    {
+        m_stillThereForShowDown = true;
+        m_playing = false;
+    }
+    
+    public void setFolded()
+    {
+        m_stillThereForShowDown = false;
+        m_playing = false;
+    }
+    
+    public void setPlaying()
+    {
+        m_stillThereForShowDown = true;
+        m_playing = true;
+    }
+    
+    public void setCurrentTablePosition(int currentTablePosition)
+    {
+        m_currentTablePosition = currentTablePosition;
+    }
+    
+    public boolean bet(int money)
+    {
+        if (money > m_currentSafeMoneyAmount)
+        {
+            return false;
+        }
+        m_currentSafeMoneyAmount -= money;
+        m_currentBetMoneyAmount += money;
+        return true;
+    }
+    
+    public int getCurrentBetMoneyAmount()
+    {
+        return m_currentBetMoneyAmount;
     }
 }
