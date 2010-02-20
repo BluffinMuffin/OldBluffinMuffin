@@ -4,31 +4,26 @@ import gameLogic.GameCard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.SystemColor;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import pokerLogic.PokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.OldPokerTableInfo;
+import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 import pokerLogic.TypePokerRound;
+import utilGUI.ConsoleJPanel;
 import clientGameTools.ClientPokerAdapter;
 import clientGameTools.ClientPokerObserver;
 
@@ -37,7 +32,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private final PlayerHudJPanel[] huds = new PlayerHudJPanel[10];
     private final JLabel[] bets = new JLabel[10];
     private final GameCardJPanel[] board = new GameCardJPanel[5];
-    private boolean m_gotoCaret = true;
     private int m_last_NiceHud = -1;
     
     /**
@@ -60,12 +54,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private JPanel jContentPane = null;
     private JPanel jTopPanel = null;
     private JPanel jRightPanel = null;
-    private JPanel jBottomPanel = null;
+    private ConsoleJPanel jBottomConsolePanel = null;
     private JLabel jTitleLabel = null;
-    private JScrollPane jLogScrollPane = null;
-    private JTextArea jLogTextArea = null; // @jve:decl-index=0:visual-constraint="1045,149"
-    private JToolBar jBottomToolBar = null;
-    private JToggleButton jLockToggleButton = null;
     private JLabel jBackgroundTableLabel = null;
     private JPanel jTablePanel = null;
     private PlayerHudJPanel jHudPanel = null;
@@ -163,7 +153,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             jContentPane.setPreferredSize(new Dimension(1024, 768));
             jContentPane.add(getJTopPanel(), null);
             jContentPane.add(getJRightPanel(), null);
-            jContentPane.add(getJBottomPanel(), null);
+            jContentPane.add(getJBottomConsolePanel(), null);
             jContentPane.add(getJTablePanel(), null);
             jContentPane.add(jBackgroundTableLabel, null);
         }
@@ -296,95 +286,19 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private JPanel getJBottomPanel()
+    private ConsoleJPanel getJBottomConsolePanel()
     {
-        if (jBottomPanel == null)
+        if (jBottomConsolePanel == null)
         {
-            jBottomPanel = new JPanel();
-            jBottomPanel.setLayout(new BorderLayout());
-            jBottomPanel.setSize(new Dimension(1017, 132));
-            jBottomPanel.setMaximumSize(new Dimension(874, 132));
-            jBottomPanel.setMinimumSize(new Dimension(874, 132));
-            jBottomPanel.setPreferredSize(new Dimension(874, 132));
-            jBottomPanel.setBackground(Color.black);
-            jBottomPanel.setLocation(new Point(0, 606));
-            jBottomPanel.add(getJLogScrollPane(), BorderLayout.CENTER);
-            jBottomPanel.add(getJBottomToolBar(), BorderLayout.NORTH);
+            jBottomConsolePanel = new ConsoleJPanel();
+            jBottomConsolePanel.setSize(new Dimension(1017, 132));
+            jBottomConsolePanel.setMaximumSize(new Dimension(1017, 132));
+            jBottomConsolePanel.setMinimumSize(new Dimension(1017, 132));
+            jBottomConsolePanel.setPreferredSize(new Dimension(1017, 132));
+            jBottomConsolePanel.setBackground(Color.black);
+            jBottomConsolePanel.setLocation(new Point(0, 606));
         }
-        return jBottomPanel;
-    }
-    
-    /**
-     * This method initializes jLogScrollPane
-     * 
-     * @return javax.swing.JScrollPane
-     */
-    private JScrollPane getJLogScrollPane()
-    {
-        if (jLogScrollPane == null)
-        {
-            jLogScrollPane = new JScrollPane(getJLogTextArea());
-        }
-        return jLogScrollPane;
-    }
-    
-    /**
-     * This method initializes jLogTextArea
-     * 
-     * @return javax.swing.JTextArea
-     */
-    private JTextArea getJLogTextArea()
-    {
-        if (jLogTextArea == null)
-        {
-            jLogTextArea = new JTextArea();
-            jLogTextArea.setBackground(SystemColor.controlDkShadow);
-            jLogTextArea.setEditable(false);
-            jLogTextArea.setForeground(Color.white);
-            jLogTextArea.setWrapStyleWord(true);
-            jLogTextArea.setFont(new Font("Dialog", Font.BOLD, 12));
-        }
-        return jLogTextArea;
-    }
-    
-    /**
-     * This method initializes jBottomToolBar
-     * 
-     * @return javax.swing.JToolBar
-     */
-    private JToolBar getJBottomToolBar()
-    {
-        if (jBottomToolBar == null)
-        {
-            jBottomToolBar = new JToolBar();
-            jBottomToolBar.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-            jBottomToolBar.setPreferredSize(new Dimension(18, 20));
-            jBottomToolBar.setFloatable(false);
-            jBottomToolBar.add(getJLockToggleButton());
-        }
-        return jBottomToolBar;
-    }
-    
-    /**
-     * This method initializes jLockToggleButton
-     * 
-     * @return javax.swing.JToggleButton
-     */
-    private JToggleButton getJLockToggleButton()
-    {
-        if (jLockToggleButton == null)
-        {
-            jLockToggleButton = new JToggleButton();
-            jLockToggleButton.setText("Lock");
-            jLockToggleButton.addItemListener(new java.awt.event.ItemListener()
-            {
-                public void itemStateChanged(java.awt.event.ItemEvent e)
-                {
-                    m_gotoCaret = !jLockToggleButton.isSelected();
-                }
-            });
-        }
-        return jLockToggleButton;
+        return jBottomConsolePanel;
     }
     
     /**
@@ -664,11 +578,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     
     public void writeLine(String line)
     {
-        getJLogTextArea().append(line + "\n");
-        if (m_gotoCaret)
-        {
-            getJLogTextArea().setCaretPosition(getJLogTextArea().getText().length());
-        }
+        getJBottomConsolePanel().writeLine(line);
     }
     
     @Override
