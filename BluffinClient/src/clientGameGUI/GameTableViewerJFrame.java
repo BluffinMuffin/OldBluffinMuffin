@@ -677,7 +677,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 php.setPlayerName(player.getName());
                 php.setPlayerInfo("");// TODO: Human or BOT
                 php.setPlayerAction(TypePlayerAction.NOTHING);
-                php.setPlayerCards(GameCard.HIDDEN_CARD, GameCard.HIDDEN_CARD);
+                php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
                 php.setPlayerMoney(player.getMoney());
                 php.setBackground(Color.white);
                 php.setHeaderColor(Color.white);
