@@ -1,4 +1,4 @@
-package newPokerLobbyServer;
+package pokerLobbyServer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
