@@ -107,4 +107,13 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
             listener.smallBlindPosted(p, sbAmount);
         }
     }
+    
+    @Override
+    public void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise)
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.actionNeeded(p, amountToCall, maxRaise);
+        }
+    }
 }

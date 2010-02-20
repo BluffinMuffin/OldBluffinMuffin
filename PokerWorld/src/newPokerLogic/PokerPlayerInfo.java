@@ -119,9 +119,14 @@ public abstract class PokerPlayerInfo
         m_currentTablePosition = currentTablePosition;
     }
     
-    public boolean bet(int money)
+    public boolean canBet(int money)
     {
-        if (money > m_currentSafeMoneyAmount)
+        return (money <= m_currentSafeMoneyAmount);
+    }
+    
+    public boolean tryBet(int money)
+    {
+        if (!canBet(money))
         {
             return false;
         }

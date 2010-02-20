@@ -31,4 +31,6 @@ public interface PokerGameListener extends EventListener
     
     void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue);
     
+    void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise);
+    
 }

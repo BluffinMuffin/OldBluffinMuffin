@@ -63,4 +63,9 @@ public class PokerGameAdapter implements PokerGameListener
     {
     }
     
+    @Override
+    public void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise)
+    {
+    }
+    
 }

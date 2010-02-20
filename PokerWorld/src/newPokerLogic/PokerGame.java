@@ -263,23 +263,28 @@ public class PokerGame
                 return false;
             }
             
-            // TODO: Gestion des AllIn
-            
             if (amnt == -1)
             {
                 foldPlayer(p);
                 continueBettingRound();
                 return true;
             }
-            if (amnt < amountNeeded(p))
+            int amntNeeded = amountNeeded(p);
+            if (amnt < amntNeeded)
+            {
+                if (!p.canBet(amnt + 1))
+                {
+                    return false;
+                }
+                amntNeeded = amnt;
+                p.setAllIn();
+                m_nbPlaying--;
+            }
+            if (!p.tryBet(amnt))
             {
                 return false;
             }
-            if (!p.bet(amnt))
-            {
-                return false;
-            }
-            if (amnt == amountNeeded(p))
+            if (amnt == amntNeeded)
             {
                 callPlayer(p, amnt);
                 continueBettingRound();
@@ -319,21 +324,27 @@ public class PokerGame
     
     private void startCumulRound()
     {
-        // TODO: si juste 1 player restant non-AllIn, goto showdown
-        switch (m_currentGameRound)
+        if (m_nbPlaying == 1)
         {
-            case PREFLOP:
-                setCurrentGameRound(TypePokerGameRound.FLOP);
-                break;
-            case FLOP:
-                setCurrentGameRound(TypePokerGameRound.TURN);
-                break;
-            case TURN:
-                setCurrentGameRound(TypePokerGameRound.RIVER);
-                break;
-            case RIVER:
-                setCurrentGameState(TypePokerGameState.SHOWDOWN);
-                break;
+            setCurrentGameState(TypePokerGameState.SHOWDOWN);
+        }
+        else
+        {
+            switch (m_currentGameRound)
+            {
+                case PREFLOP:
+                    setCurrentGameRound(TypePokerGameRound.FLOP);
+                    break;
+                case FLOP:
+                    setCurrentGameRound(TypePokerGameRound.TURN);
+                    break;
+                case TURN:
+                    setCurrentGameRound(TypePokerGameRound.RIVER);
+                    break;
+                case RIVER:
+                    setCurrentGameState(TypePokerGameState.SHOWDOWN);
+                    break;
+            }
         }
     }
     
@@ -468,6 +479,7 @@ public class PokerGame
     
     private void playNext()
     {
-        // TODO: playNext
+        final PokerPlayerInfo player = m_pokerTable.nextPlayingPlayer(m_currentPlayerNoSeat);
+        m_currentPlayerNoSeat = player.getCurrentTablePosition();
     }
 }
