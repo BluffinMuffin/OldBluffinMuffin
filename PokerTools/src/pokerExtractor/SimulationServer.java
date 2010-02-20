@@ -22,7 +22,7 @@ import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGameTools.SummarySeatInfo;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Tool;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
@@ -441,7 +441,7 @@ public class SimulationServer
         }
     }
     
-    private void send(IBluffinCommand p_msg)
+    private void send(IPokerCommand p_msg)
     {
         try
         {

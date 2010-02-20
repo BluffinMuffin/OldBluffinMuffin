@@ -1,9 +1,9 @@
 package protocolGameTools;
 
 import protocolGame.GameSendActionCommand;
-import protocolTools.BluffinCommandListener;
+import protocolTools.PokerCommandListener;
 
-public interface GameServerSideListener extends BluffinCommandListener
+public interface GameServerSideListener extends PokerCommandListener
 {
     void sendActionCommandReceived(GameSendActionCommand command);
 }

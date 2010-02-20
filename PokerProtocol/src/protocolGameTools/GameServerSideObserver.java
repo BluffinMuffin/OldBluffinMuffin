@@ -3,10 +3,10 @@ package protocolGameTools;
 import java.util.StringTokenizer;
 
 import protocolGame.GameSendActionCommand;
-import protocolTools.BluffinCommandObserver;
+import protocolTools.PokerCommandObserver;
 import utility.Constants;
 
-public class GameServerSideObserver extends BluffinCommandObserver<GameServerSideListener>
+public class GameServerSideObserver extends PokerCommandObserver<GameServerSideListener>
 {
     @Override
     protected void onLineReceived(String line)

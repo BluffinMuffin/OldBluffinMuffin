@@ -2,10 +2,10 @@ package protocolLobby;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class LobbyConnectCommand implements IBluffinCommand
+public class LobbyConnectCommand implements IPokerCommand
 {
     public static String COMMAND_NAME = "lobbyCONNECT";
     

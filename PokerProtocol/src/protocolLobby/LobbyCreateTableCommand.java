@@ -3,10 +3,10 @@ package protocolLobby;
 import java.util.StringTokenizer;
 
 import pokerLogic.TypePokerGame;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class LobbyCreateTableCommand implements IBluffinCommand
+public class LobbyCreateTableCommand implements IPokerCommand
 {
     public static String COMMAND_NAME = "lobbyCREATE_TABLE";
     

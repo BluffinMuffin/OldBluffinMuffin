@@ -13,7 +13,7 @@ import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
 import protocolLobbyTools.LobbyServerSideObserver;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 
 /**
  * This class represents a client for ServerLobby.
@@ -68,7 +68,7 @@ public class ServerClientLobby extends Thread
         return line;
     }
     
-    protected void send(IBluffinCommand p_msg)
+    protected void send(IPokerCommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
     }

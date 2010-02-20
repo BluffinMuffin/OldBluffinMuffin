@@ -3,9 +3,9 @@ package protocolGame;
 import java.util.StringTokenizer;
 
 import pokerLogic.TypePlayerAction;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 
-public class GamePINGCommand implements IBluffinCommand
+public class GamePINGCommand implements IPokerCommand
 {
     public static String COMMAND_NAME = "gamePing";
     

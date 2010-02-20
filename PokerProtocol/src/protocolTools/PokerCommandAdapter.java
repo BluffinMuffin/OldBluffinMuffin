@@ -1,6 +1,6 @@
 package protocolTools;
 
-public abstract class BluffinCommandAdapter implements BluffinCommandListener
+public abstract class PokerCommandAdapter implements PokerCommandListener
 {
     public void commandReceived(String command)
     {

@@ -2,7 +2,7 @@ package protocolTools;
 
 import java.util.EventListener;
 
-public interface BluffinCommandListener extends EventListener
+public interface PokerCommandListener extends EventListener
 {
     void commandReceived(String command);
 }

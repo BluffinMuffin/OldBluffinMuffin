@@ -11,7 +11,7 @@ import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
 import protocolLobbyTools.LobbyServerSideObserver;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import serverGame.ServerNetworkPokerPlayerInfo;
 import utility.Constants;
 
@@ -92,7 +92,7 @@ public class ServerClientTableManager extends Thread
         m_toClient.println(p_msg);
     }
     
-    protected void send(IBluffinCommand p_msg)
+    protected void send(IPokerCommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
     }

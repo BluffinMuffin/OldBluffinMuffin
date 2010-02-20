@@ -4,10 +4,10 @@ import java.util.StringTokenizer;
 
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GameSendActionCommand implements IBluffinCommand
+public class GameSendActionCommand implements IPokerCommand
 {
     
     private final PokerPlayerAction m_action;

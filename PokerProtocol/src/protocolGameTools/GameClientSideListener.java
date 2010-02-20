@@ -16,9 +16,9 @@ import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.GameWaitingCommand;
-import protocolTools.BluffinCommandListener;
+import protocolTools.PokerCommandListener;
 
-public interface GameClientSideListener extends BluffinCommandListener
+public interface GameClientSideListener extends PokerCommandListener
 {
     void askActionCommandReceived(GameAskActionCommand command);
     

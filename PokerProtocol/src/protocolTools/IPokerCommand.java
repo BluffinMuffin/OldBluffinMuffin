@@ -1,6 +1,6 @@
 package protocolTools;
 
-public interface IBluffinCommand
+public interface IPokerCommand
 {
     public String encodeCommand();
 }

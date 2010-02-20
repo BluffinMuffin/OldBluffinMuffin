@@ -21,7 +21,7 @@ import protocolGame.GameTableInfoCommand;
 import protocolGameTools.GameClientSideAdapter;
 import protocolGameTools.GameClientSideObserver;
 import protocolGameTools.SummarySeatInfo;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.IClosingListener;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
@@ -203,7 +203,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
         m_toServer.add(p_msg);
     }
     
-    protected void send(IBluffinCommand p_msg)
+    protected void send(IPokerCommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
     }

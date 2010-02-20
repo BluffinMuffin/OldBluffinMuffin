@@ -7,10 +7,10 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
-import protocolTools.BluffinCommandObserver;
+import protocolTools.PokerCommandObserver;
 import utility.Constants;
 
-public class LobbyServerSideObserver extends BluffinCommandObserver<LobbyServerSideListener>
+public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSideListener>
 {
     @Override
     protected void onLineReceived(String line)

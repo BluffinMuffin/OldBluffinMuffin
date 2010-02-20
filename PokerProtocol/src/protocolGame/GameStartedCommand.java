@@ -2,10 +2,10 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GameStartedCommand implements IBluffinCommand
+public class GameStartedCommand implements IPokerCommand
 {
     private final int m_noSeatD;
     private final int m_noSeatSB;

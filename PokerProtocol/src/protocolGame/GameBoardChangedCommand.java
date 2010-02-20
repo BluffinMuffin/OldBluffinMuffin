@@ -3,10 +3,10 @@ package protocolGame;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GameBoardChangedCommand implements IBluffinCommand
+public class GameBoardChangedCommand implements IPokerCommand
 {
     private final ArrayList<Integer> m_cardsID = new ArrayList<Integer>();
     public static String COMMAND_NAME = "gameBOARD_CHANGED";

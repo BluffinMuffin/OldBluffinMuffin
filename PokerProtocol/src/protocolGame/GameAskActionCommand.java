@@ -2,10 +2,10 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GameAskActionCommand implements IBluffinCommand
+public class GameAskActionCommand implements IPokerCommand
 {
     
     private final boolean m_canCheck;

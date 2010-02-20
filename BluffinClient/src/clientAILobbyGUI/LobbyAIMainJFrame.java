@@ -37,7 +37,7 @@ import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 import utility.IClosingListener;
 import clientAI.FactoryAgent;
@@ -693,7 +693,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         return true;
     }
     
-    public boolean send(IBluffinCommand p_msg)
+    public boolean send(IPokerCommand p_msg)
     {
         return sendMessage(p_msg.encodeCommand());
     }

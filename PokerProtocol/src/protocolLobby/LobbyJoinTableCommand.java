@@ -2,10 +2,10 @@ package protocolLobby;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class LobbyJoinTableCommand implements IBluffinCommand
+public class LobbyJoinTableCommand implements IPokerCommand
 {
     private final String m_tableName;
     private final String m_playerName;

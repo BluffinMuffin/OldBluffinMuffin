@@ -2,9 +2,9 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 
-public class GameTableClosedCommand implements IBluffinCommand
+public class GameTableClosedCommand implements IPokerCommand
 {
     public static String COMMAND_NAME = "gameTABLE_CLOSED";
     

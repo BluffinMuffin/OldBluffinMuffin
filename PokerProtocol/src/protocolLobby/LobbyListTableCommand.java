@@ -5,10 +5,10 @@ import java.util.Collections;
 import java.util.StringTokenizer;
 
 import protocolLobbyTools.SummaryTableInfo;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class LobbyListTableCommand implements IBluffinCommand
+public class LobbyListTableCommand implements IPokerCommand
 {
     public static String COMMAND_NAME = "lobbyLIST_TABLES";
     

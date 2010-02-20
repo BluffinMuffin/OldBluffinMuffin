@@ -32,7 +32,7 @@ import protocolGame.GameTableClosedCommand;
 import protocolGame.GameWaitingCommand;
 import protocolGameTools.GameServerSideAdapter;
 import protocolGameTools.GameServerSideObserver;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import serverGameTools.ServerPokerAdapter;
 import serverGameTools.ServerPokerObserver;
 import utility.Constants;
@@ -233,7 +233,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
      * @param p_msg
      *            The message to send
      */
-    protected void send(IBluffinCommand command)
+    protected void send(IPokerCommand command)
     {
         // System.out.println("Server SEND TO " + this.m_name + " [" + p_msg + "]");
         m_output.println(command.encodeCommand());

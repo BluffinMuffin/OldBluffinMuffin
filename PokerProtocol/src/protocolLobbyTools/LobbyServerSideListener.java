@@ -5,9 +5,9 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
-import protocolTools.BluffinCommandListener;
+import protocolTools.PokerCommandListener;
 
-public interface LobbyServerSideListener extends BluffinCommandListener
+public interface LobbyServerSideListener extends PokerCommandListener
 {
     void connectCommandReceived(LobbyConnectCommand command);
     

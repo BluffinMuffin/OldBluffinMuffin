@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import protocolGameTools.SummarySeatInfo;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GameTableInfoCommand implements IBluffinCommand
+public class GameTableInfoCommand implements IPokerCommand
 {
     private final int m_totalPotAmount;
     private final int m_nbSeats;

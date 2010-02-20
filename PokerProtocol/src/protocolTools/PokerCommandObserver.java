@@ -2,7 +2,7 @@ package protocolTools;
 
 import utility.EventObserver;
 
-public class BluffinCommandObserver<T extends BluffinCommandListener> extends EventObserver<T>
+public class PokerCommandObserver<T extends PokerCommandListener> extends EventObserver<T>
 {
     public void receiveSomething(String line)
     {

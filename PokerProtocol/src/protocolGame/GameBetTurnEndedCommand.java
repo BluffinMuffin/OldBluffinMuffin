@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import pokerLogic.TypePokerRound;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GameBetTurnEndedCommand implements IBluffinCommand
+public class GameBetTurnEndedCommand implements IPokerCommand
 {
     private final ArrayList<Integer> m_potsAmounts;
     private final TypePokerRound m_round;

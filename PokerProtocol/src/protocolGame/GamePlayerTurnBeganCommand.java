@@ -2,10 +2,10 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GamePlayerTurnBeganCommand implements IBluffinCommand
+public class GamePlayerTurnBeganCommand implements IPokerCommand
 {
     private final int m_playerPos;
     public static String COMMAND_NAME = "gamePLAYER_TURN_BEGAN";

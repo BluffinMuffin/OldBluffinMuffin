@@ -3,10 +3,10 @@ package protocolGame;
 import java.util.StringTokenizer;
 
 import pokerLogic.TypePlayerAction;
-import protocolTools.IBluffinCommand;
+import protocolTools.IPokerCommand;
 import utility.Constants;
 
-public class GamePlayerTurnEndedCommand implements IBluffinCommand
+public class GamePlayerTurnEndedCommand implements IPokerCommand
 {
     private final int m_playerPos;
     private final int m_playerBet;
