@@ -669,10 +669,10 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             public void playerJoined(OldPokerPlayerInfo player)
             {
                 final PlayerHudJPanel php = huds[player.getNoSeat()];
-                intallPlayer(php, player);
+                installPlayer(php, player);
             }
             
-            private void intallPlayer(PlayerHudJPanel php, OldPokerPlayerInfo player)
+            private void installPlayer(PlayerHudJPanel php, OldPokerPlayerInfo player)
             {
                 php.setPlayerName(player.getName());
                 php.setPlayerInfo("");// TODO: Human or BOT
@@ -699,8 +699,9 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void playerTurnBegan(OldPokerPlayerInfo player)
+            public void playerTurnBegan(OldPokerPlayerInfo oldPlayer)
             {
+                final OldPokerPlayerInfo player = m_table.m_currentPlayer;
                 if (m_last_NiceHud >= 0)
                 {
                     final PlayerHudJPanel php = huds[m_last_NiceHud];
@@ -715,7 +716,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                     }
                     else
                     {
-                        php.setHeaderColor(new Color(102, 255, 102));
+                        php.setHeaderColor(new Color(175, 200, 75));
                     }
                     m_last_NiceHud = player.getNoSeat();
                 }
@@ -754,7 +755,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {
                     final PlayerHudJPanel php = huds[m_table.getPlayer(i).getNoSeat()];
-                    intallPlayer(php, m_table.getPlayer(i));
+                    installPlayer(php, m_table.getPlayer(i));
                 }
             }
         });
