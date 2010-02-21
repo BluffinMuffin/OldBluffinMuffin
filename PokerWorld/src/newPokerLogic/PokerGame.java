@@ -43,6 +43,11 @@ public class PokerGame
         m_currentBigBlindNoSeat = -1;
     }
     
+    public void start()
+    {
+        setCurrentGameState(TypePokerGameState.PLAYERS_WAITING);
+    }
+    
     public int getCurrentDealerNoSeat()
     {
         return m_currentDealerNoSeat;
@@ -78,6 +83,16 @@ public class PokerGame
         return m_currentGameState;
     }
     
+    public TypePokerGameRound getCurrentGameRound()
+    {
+        return m_currentGameRound;
+    }
+    
+    public TypePokerGameRoundState getCurrentGameRoundState()
+    {
+        return m_currentGameRoundState;
+    }
+    
     private void setCurrentGameState(TypePokerGameState newGS)
     {
         
@@ -95,27 +110,31 @@ public class PokerGame
         
         m_currentGameState = newGS;
         
-        if (m_currentGameState == TypePokerGameState.PLAYING)
+        switch (m_currentGameState)
         {
-            m_currentGameRound = TypePokerGameRound.PREFLOP;
-            m_currentGameRoundState = TypePokerGameRoundState.CARDS;
+            case INIT:
+                break;
+            case PLAYERS_WAITING:
+                TryToBegin();
+                break;
+            case BLIND_WAITING:
+                break;
+            case PLAYING:
+                m_currentGameRound = TypePokerGameRound.PREFLOP;
+                m_currentGameRoundState = TypePokerGameRoundState.CARDS;
+                startRound();
+                break;
+            case SHOWDOWN:
+                break;
+            case DECIDE_WINNERS:
+                break;
+            case MONEY_DISTRIBUTION:
+                break;
+            case END:
+                m_gameObserver.end();
+                break;
+            
         }
-        
-        m_gameObserver.gameStateChanged(oldGS, newGS);
-        
-        if (m_currentGameState == TypePokerGameState.PLAYERS_WAITING)
-        {
-            TryToBegin();
-        }
-        else if (m_currentGameState == TypePokerGameState.PLAYING)
-        {
-            startRound();
-        }
-    }
-    
-    public TypePokerGameRound getCurrentGameRound()
-    {
-        return m_currentGameRound;
     }
     
     private void setCurrentGameRound(TypePokerGameRound newGR)
@@ -136,13 +155,7 @@ public class PokerGame
         m_currentGameRoundState = TypePokerGameRoundState.CARDS;
         m_currentPlayerNoSeat = m_currentDealerNoSeat;
         m_currentGameRound = newGR;
-        m_gameObserver.roundChanged(m_currentGameState, oldGR, newGR);
         startRound();
-    }
-    
-    public TypePokerGameRoundState getCurrentGameRoundState()
-    {
-        return m_currentGameRoundState;
     }
     
     private void setCurrentGameRoundState(TypePokerGameRoundState newGRS)
@@ -161,7 +174,6 @@ public class PokerGame
         }
         
         m_currentGameRoundState = newGRS;
-        m_gameObserver.roundStateChanged(m_currentGameState, m_currentGameRound, oldGRS, newGRS);
         startRound();
     }
     
@@ -319,6 +331,7 @@ public class PokerGame
                 break;
             case CUMUL:
                 startCumulRound();
+                break;
         }
     }
     
@@ -417,6 +430,7 @@ public class PokerGame
         {
             m_nbPlayed = 0;
             placeButtons();
+            m_pokerTable.initPots();
             setCurrentGameState(TypePokerGameState.BLIND_WAITING);
         }
         else

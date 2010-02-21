@@ -21,6 +21,9 @@ public class PokerTableInfo
     private final String m_tableName;
     private final Stack<Integer> m_RemainingSeats = new Stack<Integer>();
     
+    private final Stack<PokerMoneyPot> m_pots = new Stack<PokerMoneyPot>();
+    private int m_totalPotAmount;
+    
     public PokerTableInfo()
     {
         this(10);
@@ -227,5 +230,27 @@ public class PokerTableInfo
     public PokerPlayerInfo getPlayer(int seat)
     {
         return m_currentPlayers[seat];
+    }
+    
+    public Stack<PokerMoneyPot> getPots()
+    {
+        return m_pots;
+    }
+    
+    public void initPots()
+    {
+        setTotalPotAmount(0);
+        m_pots.clear();
+        m_pots.push(new PokerMoneyPot(0));
+    }
+
+    public void setTotalPotAmount(int totalPotAmount)
+    {
+        m_totalPotAmount = totalPotAmount;
+    }
+
+    public int getTotalPotAmount()
+    {
+        return m_totalPotAmount;
     }
 }

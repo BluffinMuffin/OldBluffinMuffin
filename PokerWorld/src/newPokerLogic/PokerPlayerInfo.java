@@ -3,7 +3,7 @@ package newPokerLogic;
 import gameLogic.GameCard;
 import gameLogic.GameCardSet;
 
-public abstract class PokerPlayerInfo
+public class PokerPlayerInfo
 {
     private int m_currentSafeMoneyAmount;
     private int m_currentBetMoneyAmount;

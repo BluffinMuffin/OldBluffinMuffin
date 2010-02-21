@@ -318,6 +318,7 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void bigBlindPosted(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player, int p_bigBlind)
             {
+                // OK
                 send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind));
             }
             
@@ -343,7 +344,7 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void flopDealt(TempServerTableCommunicator p_table, GameCard[] p_board)
             {
-                
+                // OK
                 send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), GameCard.NO_CARD_ID, GameCard.NO_CARD_ID));
             }
             
@@ -382,12 +383,14 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void playerJoinedTable(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player)
             {
+                // OK
                 send(new GamePlayerJoinedCommand(p_player.getNoSeat(), p_player.getName(), p_player.getMoney()));
             }
             
             @Override
             public void playerLeftTable(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player)
             {
+                // OK
                 send(new GamePlayerLeftCommand(p_player.getNoSeat()));
             }
             
@@ -418,19 +421,21 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void riverDeal(TempServerTableCommunicator p_table, GameCard[] p_board)
             {
-                
+                // OK
                 send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), p_board[4].getId()));
             }
             
             @Override
             public void smallBlindPosted(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player, int p_smallBlind)
             {
+                // OK
                 send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind));
             }
             
             @Override
             public void tableEnded(TempServerTableCommunicator p_table)
             {
+                // OK
                 send(new GameTableClosedCommand());
             }
             
@@ -443,12 +448,14 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void turnDeal(TempServerTableCommunicator p_table, GameCard[] p_board)
             {
+                // OK
                 send(new GameBoardChangedCommand(p_board[0].getId(), p_board[1].getId(), p_board[2].getId(), p_board[3].getId(), GameCard.NO_CARD_ID));
             }
             
             @Override
             public void waitingForPlayers(TempServerTableCommunicator p_table)
             {
+                // NOT USED
                 send(new GameWaitingCommand());
             }
         });

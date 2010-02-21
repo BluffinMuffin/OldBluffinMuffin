@@ -1,9 +1,7 @@
 package newPokerLogicTools;
 
 import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.TypePokerGameRound;
-import newPokerLogic.TypePokerGameRoundState;
-import newPokerLogic.TypePokerGameState;
+import newPokerLogic.PokerTableInfo;
 
 public class PokerGameAdapter implements PokerGameListener
 {
@@ -15,11 +13,6 @@ public class PokerGameAdapter implements PokerGameListener
     
     @Override
     public void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue)
-    {
-    }
-    
-    @Override
-    public void gameStateChanged(TypePokerGameState oldState, TypePokerGameState newState)
     {
     }
     
@@ -49,22 +42,27 @@ public class PokerGameAdapter implements PokerGameListener
     }
     
     @Override
-    public void roundChanged(TypePokerGameState gameState, TypePokerGameRound oldRound, TypePokerGameRound newRound)
-    {
-    }
-    
-    @Override
-    public void roundStateChanged(TypePokerGameState gameState, TypePokerGameRound round, TypePokerGameRoundState oldRoundState, TypePokerGameRoundState newRoundState)
-    {
-    }
-    
-    @Override
     public void smallBlindPosted(PokerPlayerInfo p, int sbAmount)
     {
     }
     
     @Override
     public void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise)
+    {
+    }
+    
+    @Override
+    public void boardCardsChanged(PokerTableInfo t)
+    {
+    }
+    
+    @Override
+    public void end()
+    {
+    }
+    
+    @Override
+    public void playerMoneyChanged(PokerPlayerInfo p)
     {
     }
     

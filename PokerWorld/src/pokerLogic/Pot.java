@@ -2,7 +2,6 @@ package pokerLogic;
 
 import java.util.Vector;
 
-
 /**
  * @author Hocus
  *         This class represent a pot of a Poker game.

@@ -3,25 +3,26 @@ package newPokerLogicTools;
 import java.util.EventListener;
 
 import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.TypePokerGameRound;
-import newPokerLogic.TypePokerGameRoundState;
-import newPokerLogic.TypePokerGameState;
+import newPokerLogic.PokerTableInfo;
 
 public interface PokerGameListener extends EventListener
 {
-    void gameStateChanged(TypePokerGameState oldState, TypePokerGameState newState);
+    //
+    // GAME ////////////////////////////////////////////////
+    void boardCardsChanged(PokerTableInfo t);
     
-    void roundChanged(TypePokerGameState gameState, TypePokerGameRound oldRound, TypePokerGameRound newRound);
+    void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue);
     
-    void roundStateChanged(TypePokerGameState gameState, TypePokerGameRound round, TypePokerGameRoundState oldRoundState, TypePokerGameRoundState newRoundState);
+    void end();
     
+    //
+    // BLINDS ////////////////////////////////////////////////
+    
+    //
+    // PLAYER ////////////////////////////////////////////////
     void playerJoined(PokerPlayerInfo p);
     
     void playerLeaved(PokerPlayerInfo p);
-    
-    void bigBlindPosted(PokerPlayerInfo p, int bbAmount);
-    
-    void smallBlindPosted(PokerPlayerInfo p, int sbAmount);
     
     void playerFolded(PokerPlayerInfo p);
     
@@ -29,8 +30,11 @@ public interface PokerGameListener extends EventListener
     
     void playerRaised(PokerPlayerInfo p, int playedAmount, int totalRaiseValue);
     
-    void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue);
+    void playerMoneyChanged(PokerPlayerInfo p);
     
     void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise);
     
+    void bigBlindPosted(PokerPlayerInfo p, int bbAmount);
+    
+    void smallBlindPosted(PokerPlayerInfo p, int sbAmount);
 }

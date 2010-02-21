@@ -1,9 +1,7 @@
 package newPokerLogicTools;
 
 import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.TypePokerGameRound;
-import newPokerLogic.TypePokerGameRoundState;
-import newPokerLogic.TypePokerGameState;
+import newPokerLogic.PokerTableInfo;
 import utility.EventObserver;
 
 public class PokerGameObserver extends EventObserver<PokerGameListener> implements PokerGameListener
@@ -24,15 +22,6 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
         for (final PokerGameListener listener : getSubscribers())
         {
             listener.blindsNeeded(sb, bb, sbValue, bbValue);
-        }
-    }
-    
-    @Override
-    public void gameStateChanged(TypePokerGameState oldState, TypePokerGameState newState)
-    {
-        for (final PokerGameListener listener : getSubscribers())
-        {
-            listener.gameStateChanged(oldState, newState);
         }
     }
     
@@ -82,24 +71,6 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
     }
     
     @Override
-    public void roundChanged(TypePokerGameState gameState, TypePokerGameRound oldRound, TypePokerGameRound newRound)
-    {
-        for (final PokerGameListener listener : getSubscribers())
-        {
-            listener.roundChanged(gameState, oldRound, newRound);
-        }
-    }
-    
-    @Override
-    public void roundStateChanged(TypePokerGameState gameState, TypePokerGameRound round, TypePokerGameRoundState oldRoundState, TypePokerGameRoundState newRoundState)
-    {
-        for (final PokerGameListener listener : getSubscribers())
-        {
-            listener.roundStateChanged(gameState, round, oldRoundState, newRoundState);
-        }
-    }
-    
-    @Override
     public void smallBlindPosted(PokerPlayerInfo p, int sbAmount)
     {
         for (final PokerGameListener listener : getSubscribers())
@@ -114,6 +85,33 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
         for (final PokerGameListener listener : getSubscribers())
         {
             listener.actionNeeded(p, amountToCall, maxRaise);
+        }
+    }
+    
+    @Override
+    public void boardCardsChanged(PokerTableInfo t)
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.boardCardsChanged(t);
+        }
+    }
+    
+    @Override
+    public void end()
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.end();
+        }
+    }
+    
+    @Override
+    public void playerMoneyChanged(PokerPlayerInfo p)
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.playerMoneyChanged(p);
         }
     }
 }
