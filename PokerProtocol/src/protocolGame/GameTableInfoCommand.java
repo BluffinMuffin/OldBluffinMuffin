@@ -106,26 +106,10 @@ public class GameTableInfoCommand implements IPokerCommand
             final boolean showCard = (i == pPlayer.getCurrentTablePosition());
             
             // Player cards
-            final GameCard[] holeCards = new GameCard[2];
-            player.getCurrentHand().toArray(holeCards);
+            final GameCard[] holeCards = player.getCurrentHand(showCard);
             for (int j = 0; j < 2; ++j)
             {
-                if (holeCards[i] == null)
-                {
-                    seat.m_holeCardIDs.add(GameCard.NO_CARD_ID);
-                }
-                else if (!player.isPlaying())
-                {
-                    seat.m_holeCardIDs.add(GameCard.NO_CARD_ID);
-                }
-                else if (!showCard)
-                {
-                    seat.m_holeCardIDs.add(GameCard.HIDDEN_CARD_ID);
-                }
-                else
-                {
-                    seat.m_holeCardIDs.add(holeCards[j].getId());
-                }
+                seat.m_holeCardIDs.add(holeCards[j].getId());
             }
             
             seat.m_isDealer = info.getCurrentDealerNoSeat() == i; // isDealer

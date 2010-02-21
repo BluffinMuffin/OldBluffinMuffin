@@ -325,6 +325,7 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void endBettingTurn(TempServerTableCommunicator p_table)
             {
+                // OK
                 
                 final Stack<Pot> pots = p_table.getPots();
                 final ArrayList<Integer> amounts = new ArrayList<Integer>();
@@ -351,18 +352,21 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void gameEnded(TempServerTableCommunicator p_table)
             {
+                // OK
                 send(new GameEndedCommand());
             }
             
             @Override
             public void gameStarted(TempServerTableCommunicator p_table)
             {
+                // OK
                 send(new GameStartedCommand(p_table.getNoSeatDealer(), p_table.getNoSeatSmallBlind(), p_table.getNoSeatBigBlind()));
             }
             
             @Override
             public void holeCardDeal(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player)
             {
+                // OK
                 if (p_player.getNoSeat() != getNoSeat())
                 {
                     send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), GameCard.HIDDEN_CARD_ID, GameCard.HIDDEN_CARD_ID));
@@ -377,6 +381,7 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void playerEndTurn(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
             {
+                // OK
                 send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()));
             }
             
@@ -397,24 +402,28 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void playerMoneyChanged(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player)
             {
+                // OK
                 send(new GamePlayerMoneyChangedCommand(p_player.getNoSeat(), p_player.getMoney()));
             }
             
             @Override
             public void playerShowCard(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player)
             {
+                // OK
                 send(new GameHoleCardsChangedCommand(p_player.getNoSeat(), p_player.getHand()[0].getId(), p_player.getHand()[1].getId()));
             }
             
             @Override
             public void playerTurnStarted(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player)
             {
+                // OK
                 send(new GamePlayerTurnBeganCommand(p_player.getNoSeat()));
             }
             
             @Override
             public void potWon(TempServerTableCommunicator p_table, TempServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
             {
+                // OK
                 send(new GamePlayerWonPotCommand(p_player.getNoSeat(), p_pot.getId(), p_share, p_player.getMoney()));
             }
             
@@ -442,6 +451,7 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void tableInfos(TempServerTableCommunicator p_table)
             {
+                // I DONT LIKE IT !!
                 send(m_table.buildCommand(TempServerNetworkPokerPlayerInfo.this));
             }
             
@@ -455,7 +465,7 @@ public class TempServerNetworkPokerPlayerInfo extends TempServerPokerPlayerInfo
             @Override
             public void waitingForPlayers(TempServerTableCommunicator p_table)
             {
-                // NOT USED
+                // DIFFUSION OF THIS NOT USED
                 send(new GameWaitingCommand());
             }
         });

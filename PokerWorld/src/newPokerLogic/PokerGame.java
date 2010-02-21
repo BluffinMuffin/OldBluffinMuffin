@@ -83,7 +83,7 @@ public class PokerGame
             case MONEY_DISTRIBUTION:
                 break;
             case END:
-                m_gameObserver.end();
+                m_gameObserver.everythingEnded(m_pokerTable);
                 break;
             
         }
@@ -163,7 +163,7 @@ public class PokerGame
         
         if (m_pokerTable.joinTable(p))
         {
-            m_gameObserver.playerJoined(p);
+            m_gameObserver.playerJoined(m_pokerTable, p);
             if (m_currentGameState == TypePokerGameState.PLAYERS_WAITING)
             {
                 TryToBegin();
@@ -178,7 +178,7 @@ public class PokerGame
     {
         if (m_pokerTable.leaveTable(p))
         {
-            m_gameObserver.playerLeaved(p);
+            m_gameObserver.playerLeaved(m_pokerTable, p);
             return true;
         }
         return false;
@@ -186,26 +186,26 @@ public class PokerGame
     
     public boolean playMoney(PokerPlayerInfo p, int amnt)
     {
-        
         if (m_currentGameState == TypePokerGameState.BLIND_WAITING)
         {
             if (amnt != m_pokerTable.blindNeeded(p))
             {
+                // TODO: authorise si ALL IN
                 return false;
             }
             if (!p.tryBet(amnt))
             {
                 return false;
             }
-            m_gameObserver.playerMoneyChanged(p);
+            m_gameObserver.playerMoneyChanged(m_pokerTable, p);
             m_pokerTable.setBlindNeeded(p, 0);
             if (amnt == m_pokerTable.getSmallBlindAmount())
             {
-                m_gameObserver.smallBlindPosted(p, amnt);
+                m_gameObserver.playerActionTaken(m_pokerTable, p, TypePokerGameAction.SMALL_BLIND_POSTED, amnt);
             }
             else
             {
-                m_gameObserver.bigBlindPosted(p, amnt);
+                m_gameObserver.playerActionTaken(m_pokerTable, p, TypePokerGameAction.BIG_BLIND_POSTED, amnt);
             }
             m_pokerTable.setTotalBlindNeeded(m_pokerTable.getTotalBlindNeeded() - amnt);
             if (m_pokerTable.getTotalBlindNeeded() == 0)
@@ -243,7 +243,7 @@ public class PokerGame
             {
                 return false;
             }
-            m_gameObserver.playerMoneyChanged(p);
+            m_gameObserver.playerMoneyChanged(m_pokerTable, p);
             if (amnt == amntNeeded)
             {
                 callPlayer(p, amnt);
@@ -461,8 +461,7 @@ public class PokerGame
     {
         p.setFolded();
         m_pokerTable.decNbPlaying();
-        
-        m_gameObserver.playerFolded(p);
+        m_gameObserver.playerActionTaken(m_pokerTable, p, TypePokerGameAction.FOLDED, -1);
     }
     
     private void TryToBegin()
@@ -472,7 +471,7 @@ public class PokerGame
         {
             m_pokerTable.setNbPlayed(0);
             m_pokerTable.placeButtons();
-            m_gameObserver.blindsNeeded(m_pokerTable.getPlayer(m_pokerTable.getCurrentSmallBlindNoSeat()), m_pokerTable.getPlayer(m_pokerTable.getCurrentBigBlindNoSeat()), m_pokerTable.getSmallBlindAmount(), m_pokerTable.getBigBlindAmount());
+            m_gameObserver.gameBlindsNeeded(m_pokerTable);
             m_pokerTable.initPots();
             setCurrentGameState(TypePokerGameState.BLIND_WAITING);
         }
@@ -487,14 +486,14 @@ public class PokerGame
     private void callPlayer(PokerPlayerInfo p, int played)
     {
         m_pokerTable.incNbPlayed();
-        m_gameObserver.playerCalled(p, played, m_pokerTable.getCurrentHigherBet());
+        m_gameObserver.playerActionTaken(m_pokerTable, p, TypePokerGameAction.CALLED, played);
     }
     
     private void raisePlayer(PokerPlayerInfo p, int played)
     {
         m_pokerTable.setNbPlayed(1);
         m_pokerTable.setCurrentHigherBet(p.getCurrentBetMoneyAmount());
-        m_gameObserver.playerRaised(p, played, m_pokerTable.getCurrentHigherBet());
+        m_gameObserver.playerActionTaken(m_pokerTable, p, TypePokerGameAction.RAISED, played);
     }
     
     private void continueBettingRound()

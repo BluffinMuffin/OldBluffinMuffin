@@ -7,19 +7,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Stack;
 
 import newPokerLogic.PokerGame;
+import newPokerLogic.PokerMoneyPot;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
+import newPokerLogic.TypePokerGameAction;
+import newPokerLogic.TypePokerGameRound;
 import newPokerLogicTools.PokerGameAdapter;
 import newPokerLogicTools.PokerGameObserver;
 import pokerLogic.TypePlayerAction;
+import pokerLogic.TypePokerRound;
+import protocolGame.GameAskActionCommand;
+import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameEndedCommand;
+import protocolGame.GameHoleCardsChangedCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
+import protocolGame.GamePlayerTurnBeganCommand;
 import protocolGame.GamePlayerTurnEndedCommand;
+import protocolGame.GamePlayerWonPotCommand;
 import protocolGame.GameSendActionCommand;
+import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGameTools.GameServerSideAdapter;
 import protocolGameTools.GameServerSideObserver;
@@ -102,42 +115,116 @@ public class TcpPokerClient
         m_isConnected = true;
     }
     
+    // TODO: Envoyer les infos de la table lorsque le player join, uniquement !!
     private void initializePokerObserver()
     {
         m_pokerObserver.subscribe(new PokerGameAdapter()
         {
+            @Override
+            public void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r)
+            {
+                final Stack<PokerMoneyPot> pots = t.getPots();
+                final ArrayList<Integer> amounts = new ArrayList<Integer>();
+                for (final PokerMoneyPot pot : pots)
+                {
+                    amounts.add(pot.getAmount());
+                }
+                
+                for (int i = pots.size(); i < t.getNbMaxSeats(); i++)
+                {
+                    amounts.add(0);
+                }
+                // TODO: eventuellement, GamePlayerTurnEndedCommand devrait utiliser directement TypePokerGameRound
+                switch (r)
+                {
+                    case PREFLOP:
+                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.PREFLOP));
+                        break;
+                    case FLOP:
+                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.FLOP));
+                        break;
+                    case TURN:
+                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.TURN));
+                        break;
+                    case RIVER:
+                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.RIVER));
+                        break;
+                }
+            }
             
             @Override
-            public void playerMoneyChanged(PokerPlayerInfo p)
+            public void playerHoleCardsChanged(PokerTableInfo t, PokerPlayerInfo p)
+            {
+                final GameCard[] holeCards = p.getCurrentHand(p.getCurrentTablePosition() == m_player.getCurrentTablePosition());
+                send(new GameHoleCardsChangedCommand(p.getCurrentTablePosition(), holeCards[0].getId(), holeCards[1].getId()));
+            }
+            
+            @Override
+            public void gameEnded(PokerTableInfo t)
+            {
+                send(new GameEndedCommand());
+            }
+            
+            @Override
+            public void playerWonPot(PokerTableInfo t, PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
+            {
+                send(new GamePlayerWonPotCommand(p.getCurrentTablePosition(), pot.getId(), wonAmount, p.getCurrentSafeMoneyAmount()));
+            }
+            
+            @Override
+            public void playerActionTaken(PokerTableInfo t, PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
+            {
+                // TODO: eventuellement, GamePlayerTurnEndedCommand devrait utiliser directement TypePokerGameAction
+                switch (reason)
+                {
+                    case FOLDED:
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), t.getTotalPotAmount(), TypePlayerAction.FOLD, playedAmount));
+                        break;
+                    case CALLED:
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), t.getTotalPotAmount(), TypePlayerAction.CALL, playedAmount));
+                        break;
+                    case RAISED:
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), t.getTotalPotAmount(), TypePlayerAction.RAISE, playedAmount));
+                        break;
+                    case SMALL_BLIND_POSTED:
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), t.getTotalPotAmount(), TypePlayerAction.SMALL_BLIND, playedAmount));
+                        break;
+                    case BIG_BLIND_POSTED:
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), t.getTotalPotAmount(), TypePlayerAction.BIG_BLIND, playedAmount));
+                        break;
+                }
+            }
+            
+            @Override
+            public void playerMoneyChanged(PokerTableInfo t, PokerPlayerInfo p)
             {
                 send(new GamePlayerMoneyChangedCommand(p.getCurrentTablePosition(), p.getCurrentSafeMoneyAmount()));
             }
             
             @Override
-            public void end()
+            public void everythingEnded(PokerTableInfo t)
             {
                 send(new GameTableClosedCommand());
             }
             
             @Override
-            public void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise)
+            public void playerActionNeeded(PokerTableInfo t, PokerPlayerInfo p)
             {
+                send(new GamePlayerTurnBeganCommand(p.getCurrentTablePosition()));
+                if (p.getCurrentTablePosition() == m_player.getCurrentTablePosition())
+                {
+                    send(new GameAskActionCommand(t.getCurrentHigherBet() == 0, t.getCurrentHigherBet() > 0, t.getCurrentHigherBet() > 0, t.getCurrentHigherBet(), true, t.getCurrentHigherBet(), p.getCurrentSafeMoneyAmount()));
+                }
             }
             
             @Override
-            public void bigBlindPosted(PokerPlayerInfo p, int bbAmount)
+            public void gameBlindsNeeded(PokerTableInfo t)
             {
-                // TODO: le 0 est total pot !!
-                send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), 0, TypePlayerAction.BIG_BLIND, bbAmount));
+                send(new GameStartedCommand(t.getCurrentDealerNoSeat(), t.getCurrentSmallBlindNoSeat(), t.getCurrentBigBlindNoSeat()));
             }
             
             @Override
-            public void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue)
-            {
-            }
-            
-            @Override
-            public void boardCardsChanged(PokerTableInfo t)
+            public void gameBoardCardsChanged(PokerTableInfo t)
             {
                 final GameCard[] cards = new GameCard[5];
                 t.getCurrentBoardCards().toArray(cards);
@@ -152,43 +239,15 @@ public class TcpPokerClient
             }
             
             @Override
-            public void playerCalled(PokerPlayerInfo p, int playedAmount, int totalCallValue)
-            {
-                // TODO: le 0 est total pot !!
-                send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), 0, TypePlayerAction.CALL, totalCallValue));
-            }
-            
-            @Override
-            public void playerFolded(PokerPlayerInfo p)
-            {
-                // TODO: le 0 est total pot !!
-                send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), 0, TypePlayerAction.FOLD, -1));
-            }
-            
-            @Override
-            public void playerJoined(PokerPlayerInfo p)
+            public void playerJoined(PokerTableInfo t, PokerPlayerInfo p)
             {
                 send(new GamePlayerJoinedCommand(p.getCurrentTablePosition(), p.getPlayerName(), p.getCurrentSafeMoneyAmount()));
             }
             
             @Override
-            public void playerLeaved(PokerPlayerInfo p)
+            public void playerLeaved(PokerTableInfo t, PokerPlayerInfo p)
             {
                 send(new GamePlayerLeftCommand(p.getCurrentTablePosition()));
-            }
-            
-            @Override
-            public void playerRaised(PokerPlayerInfo p, int playedAmount, int totalRaiseValue)
-            {
-                // TODO: le 0 est total pot !!
-                send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), 0, TypePlayerAction.RAISE, totalRaiseValue));
-            }
-            
-            @Override
-            public void smallBlindPosted(PokerPlayerInfo p, int sbAmount)
-            {
-                // TODO: le 0 est total pot !!
-                send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), 0, TypePlayerAction.BIG_BLIND, sbAmount));
             }
         });
     }

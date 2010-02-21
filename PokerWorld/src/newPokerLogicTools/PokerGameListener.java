@@ -2,39 +2,40 @@ package newPokerLogicTools;
 
 import java.util.EventListener;
 
+import newPokerLogic.PokerMoneyPot;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
+import newPokerLogic.TypePokerGameAction;
+import newPokerLogic.TypePokerGameRound;
 
 public interface PokerGameListener extends EventListener
 {
+    
+    void everythingEnded(PokerTableInfo t);
+    
     //
     // GAME ////////////////////////////////////////////////
-    void boardCardsChanged(PokerTableInfo t);
+    void gameBoardCardsChanged(PokerTableInfo t);
     
-    void blindsNeeded(PokerPlayerInfo sb, PokerPlayerInfo bb, int sbValue, int bbValue);
+    void gameBlindsNeeded(PokerTableInfo t);
     
-    void end();
+    void gameEnded(PokerTableInfo t);
     
-    //
-    // BLINDS ////////////////////////////////////////////////
+    void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r);
     
     //
     // PLAYER ////////////////////////////////////////////////
-    void playerJoined(PokerPlayerInfo p);
+    void playerJoined(PokerTableInfo t, PokerPlayerInfo p);
     
-    void playerLeaved(PokerPlayerInfo p);
+    void playerLeaved(PokerTableInfo t, PokerPlayerInfo p);
     
-    void playerFolded(PokerPlayerInfo p);
+    void playerActionTaken(PokerTableInfo t, PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount);
     
-    void playerCalled(PokerPlayerInfo p, int playedAmount, int totalCallValue);
+    void playerMoneyChanged(PokerTableInfo t, PokerPlayerInfo p);
     
-    void playerRaised(PokerPlayerInfo p, int playedAmount, int totalRaiseValue);
+    void playerActionNeeded(PokerTableInfo t, PokerPlayerInfo p);
     
-    void playerMoneyChanged(PokerPlayerInfo p);
+    void playerHoleCardsChanged(PokerTableInfo t, PokerPlayerInfo p);
     
-    void actionNeeded(PokerPlayerInfo p, int amountToCall, int maxRaise);
-    
-    void bigBlindPosted(PokerPlayerInfo p, int bbAmount);
-    
-    void smallBlindPosted(PokerPlayerInfo p, int sbAmount);
+    void playerWonPot(PokerTableInfo t, PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount);
 }

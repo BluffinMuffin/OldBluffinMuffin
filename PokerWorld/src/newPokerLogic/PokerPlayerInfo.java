@@ -12,7 +12,8 @@ public class PokerPlayerInfo
     private final GameCardSet m_currentHand = new GameCardSet(2);
     private String m_playerName;
     private boolean m_playing;
-    private boolean m_stillThereForShowDown;
+    private boolean m_allIn;
+    private boolean m_showingCards;
     
     public PokerPlayerInfo()
     {
@@ -71,9 +72,27 @@ public class PokerPlayerInfo
         return m_currentTablePosition;
     }
     
-    public GameCardSet getCurrentHand()
+    public GameCard[] getCurrentHand(boolean canSeeCards)
     {
-        return m_currentHand;
+        final GameCard[] holeCards = new GameCard[2];
+        m_currentHand.toArray(holeCards);
+        for (int j = 0; j < 2; ++j)
+        {
+            if (holeCards[j] == null)
+            {
+                holeCards[j] = GameCard.NO_CARD;
+            }
+            else if (m_playing)
+            {
+                holeCards[j] = GameCard.NO_CARD;
+            }
+            else if (!canSeeCards && !m_showingCards)
+            {
+                holeCards[j] = GameCard.HIDDEN_CARD;
+            }
+        }
+        
+        return holeCards;
     }
     
     public String getPlayerName()
@@ -86,9 +105,9 @@ public class PokerPlayerInfo
         return m_playing;
     }
     
-    public boolean isStillThereForShowDown()
+    public boolean isAllIn()
     {
-        return m_stillThereForShowDown;
+        return m_allIn;
     }
     
     public boolean canPlay()
@@ -98,19 +117,20 @@ public class PokerPlayerInfo
     
     public void setAllIn()
     {
-        m_stillThereForShowDown = true;
+        m_allIn = true;
         m_playing = false;
     }
     
     public void setFolded()
     {
-        m_stillThereForShowDown = false;
+        m_allIn = false;
         m_playing = false;
     }
     
     public void setPlaying()
     {
-        m_stillThereForShowDown = true;
+        m_showingCards = false;
+        m_allIn = true;
         m_playing = true;
     }
     
@@ -138,5 +158,15 @@ public class PokerPlayerInfo
     public int getCurrentBetMoneyAmount()
     {
         return m_currentBetMoneyAmount;
+    }
+    
+    public void setShowingCards(boolean showingCards)
+    {
+        m_showingCards = showingCards;
+    }
+    
+    public boolean isShowingCards()
+    {
+        return m_showingCards;
     }
 }

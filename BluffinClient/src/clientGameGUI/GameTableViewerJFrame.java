@@ -604,7 +604,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
             {
-                // TODO Auto-generated method stub
+                // TODO: update POTS
                 super.betTurnEnded(potIndices, round);
             }
             
