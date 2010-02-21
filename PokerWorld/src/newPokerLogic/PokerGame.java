@@ -1,29 +1,14 @@
 package newPokerLogic;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import newPokerLogicTools.PokerGameObserver;
 
 public class PokerGame
 {
     private final PokerGameObserver m_gameObserver;
     private final PokerTableInfo m_pokerTable;
-    
-    private int m_currentDealerNoSeat;
-    private int m_currentSmallBlindNoSeat;
-    private int m_currentBigBlindNoSeat;
     private TypePokerGameState m_currentGameState;
     private TypePokerGameRound m_currentGameRound;
     private TypePokerGameRoundState m_currentGameRoundState;
-    private int m_currentPlayerNoSeat;
-    
-    private final Map<PokerPlayerInfo, Integer> m_blindNeeded = new HashMap<PokerPlayerInfo, Integer>();
-    private int m_totalBlindNeeded;
-    
-    private int m_nbPlayed;
-    private int m_nbPlaying;
-    private int m_currentHigherBet;
     
     private final AbstractPokerDealer m_pokerDealer;
     
@@ -38,44 +23,11 @@ public class PokerGame
         m_gameObserver = new PokerGameObserver();
         m_pokerTable = new PokerTableInfo();
         m_currentGameState = TypePokerGameState.INIT;
-        m_currentDealerNoSeat = -1;
-        m_currentSmallBlindNoSeat = -1;
-        m_currentBigBlindNoSeat = -1;
     }
     
     public void start()
     {
         setCurrentGameState(TypePokerGameState.PLAYERS_WAITING);
-    }
-    
-    public int getCurrentDealerNoSeat()
-    {
-        return m_currentDealerNoSeat;
-    }
-    
-    public void setCurrentDealerNoSeat(int currentDealerNoSeat)
-    {
-        m_currentDealerNoSeat = currentDealerNoSeat;
-    }
-    
-    public int getCurrentSmallBlindNoSeat()
-    {
-        return m_currentSmallBlindNoSeat;
-    }
-    
-    public void setCurrentSmallBlindNoSeat(int currentSmallBlindNoSeat)
-    {
-        m_currentSmallBlindNoSeat = currentSmallBlindNoSeat;
-    }
-    
-    public int getCurrentBigBlindNoSeat()
-    {
-        return m_currentBigBlindNoSeat;
-    }
-    
-    public void setCurrentBigBlindNoSeat(int currentBigBlindNoSeat)
-    {
-        m_currentBigBlindNoSeat = currentBigBlindNoSeat;
     }
     
     public TypePokerGameState getCurrentGameState()
@@ -153,7 +105,7 @@ public class PokerGame
         }
         
         m_currentGameRoundState = TypePokerGameRoundState.CARDS;
-        m_currentPlayerNoSeat = m_currentDealerNoSeat;
+        m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentDealerNoSeat());
         m_currentGameRound = newGR;
         startRound();
     }
@@ -175,16 +127,6 @@ public class PokerGame
         
         m_currentGameRoundState = newGRS;
         startRound();
-    }
-    
-    public int getCurrentPlayerNoSeat()
-    {
-        return m_currentPlayerNoSeat;
-    }
-    
-    public void setCurrentPlayerNoSeat(int currentPlayerNoSeat)
-    {
-        m_currentPlayerNoSeat = currentPlayerNoSeat;
     }
     
     public PokerGameObserver getGameObserver()
@@ -247,11 +189,16 @@ public class PokerGame
         
         if (m_currentGameState == TypePokerGameState.BLIND_WAITING)
         {
-            if (amnt != blindNeeded(p))
+            if (amnt != m_pokerTable.blindNeeded(p))
             {
                 return false;
             }
-            m_blindNeeded.put(p, 0);
+            if (!p.tryBet(amnt))
+            {
+                return false;
+            }
+            m_gameObserver.playerMoneyChanged(p);
+            m_pokerTable.setBlindNeeded(p, 0);
             if (amnt == m_pokerTable.getSmallBlindAmount())
             {
                 m_gameObserver.smallBlindPosted(p, amnt);
@@ -260,8 +207,8 @@ public class PokerGame
             {
                 m_gameObserver.bigBlindPosted(p, amnt);
             }
-            m_totalBlindNeeded -= amnt;
-            if (m_totalBlindNeeded == 0)
+            m_pokerTable.setTotalBlindNeeded(m_pokerTable.getTotalBlindNeeded() - amnt);
+            if (m_pokerTable.getTotalBlindNeeded() == 0)
             {
                 setCurrentGameState(TypePokerGameState.PLAYING);
             }
@@ -270,7 +217,7 @@ public class PokerGame
         
         else if (m_currentGameState == TypePokerGameState.PLAYING && m_currentGameRoundState == TypePokerGameRoundState.BETTING)
         {
-            if (p.getCurrentTablePosition() != m_currentPlayerNoSeat)
+            if (p.getCurrentTablePosition() != m_pokerTable.getCurrentPlayerNoSeat())
             {
                 return false;
             }
@@ -290,12 +237,13 @@ public class PokerGame
                 }
                 amntNeeded = amnt;
                 p.setAllIn();
-                m_nbPlaying--;
+                m_pokerTable.decNbPlaying();
             }
             if (!p.tryBet(amnt))
             {
                 return false;
             }
+            m_gameObserver.playerMoneyChanged(p);
             if (amnt == amntNeeded)
             {
                 callPlayer(p, amnt);
@@ -337,7 +285,101 @@ public class PokerGame
     
     private void startCumulRound()
     {
-        if (m_nbPlaying == 1)
+        // m_bettingPlayer = -1;
+        //            
+        // // Modify the pots
+        // boolean addAPot = false;
+        // Pot lastPot = null;
+        // if (m_currentBet != 0)
+        // {
+        // if (bets.contains(m_currentBet))
+        // {
+        // addAPot = true;
+        // lastPot = new Pot(m_pots.peek().getId() + bets.size() + 1);
+        // }
+        // bets.add(m_currentBet);
+        // final int nbPots = bets.size();
+        // final Pot[] newPots = new Pot[nbPots];
+        // for (int i = 1; i < nbPots; i++)
+        // {
+        // newPots[i] = new Pot(m_pots.peek().getId() + i);
+        // }
+        // newPots[0] = m_pots.peek();
+        // newPots[0].removeAllParticipant();
+        //                
+        // final int firstPlayer = nextPlayer(m_noSeatDealer);
+        // m_playerTurn = firstPlayer;
+        // int bet = 0;
+        // do
+        // {
+        // bet = getPlayer(m_playerTurn).getBet();
+        //                    
+        // if (bet > 0)
+        // {
+        // int lastPotBet = 0;
+        // final Iterator<Integer> it = bets.iterator();
+        // boolean betPlaced = false;
+        // int potIndex = 0;
+        //                        
+        // while (it.hasNext() && !betPlaced)
+        // {
+        // final int nextPotBet = it.next();
+        // final Pot nextPot = newPots[potIndex];
+        // if (bet >= nextPotBet)
+        // {
+        // nextPot.addAmount(nextPotBet - lastPotBet);
+        // if (bet == nextPotBet)
+        // {
+        //                                    
+        // betPlaced = true;
+        // if (addAPot && !getPlayer(m_playerTurn).isAllIn())
+        // {
+        // lastPot.addParticipant(getPlayer(m_playerTurn));
+        // }
+        // else
+        // {
+        // nextPot.addParticipant(getPlayer(m_playerTurn));
+        // }
+        // }
+        // }
+        // else
+        // {
+        // nextPot.addAmount(bet - lastPotBet);
+        // betPlaced = true;
+        // }
+        //                            
+        // ++potIndex;
+        // lastPotBet = nextPotBet;
+        // }
+        // }
+        //                    
+        // m_playerTurn = nextPlayer(m_playerTurn);
+        // }
+        // while (m_playerTurn != firstPlayer);
+        //                
+        // for (int i = 1; i < nbPots; i++)
+        // {
+        // m_pots.push(newPots[i]);
+        // }
+        // if (addAPot && (lastPot.getParticipant().size() > 0))
+        // {
+        // m_pots.push(lastPot);
+        // }
+        // }
+        //            
+        // m_currentBet = 0;
+        //            
+        // // notify the players that the turn ended
+        // final int start = m_noSeatDealer;
+        // int i = start;
+        // do
+        // {
+        // getPlayer(i).endTurn();
+        // i = nextPlayer(i);
+        // }
+        // while (i != start);
+        
+        if (m_pokerTable.getNbPlaying() == 1)
         {
             setCurrentGameState(TypePokerGameState.SHOWDOWN);
         }
@@ -363,6 +405,7 @@ public class PokerGame
     
     private void startBettingRound()
     {
+        m_pokerTable.setNbPlayed(0);
         playNext();
     }
     
@@ -371,7 +414,7 @@ public class PokerGame
         switch (m_currentGameRound)
         {
             case PREFLOP:
-                m_currentPlayerNoSeat = m_currentBigBlindNoSeat;
+                m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentBigBlindNoSeat());
                 dealHole();
                 break;
             case FLOP:
@@ -411,63 +454,52 @@ public class PokerGame
     
     private int amountNeeded(PokerPlayerInfo p)
     {
-        return m_currentHigherBet - p.getCurrentBetMoneyAmount();
+        return m_pokerTable.getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
     }
     
     private void foldPlayer(PokerPlayerInfo p)
     {
         p.setFolded();
-        
-        m_nbPlaying--;
+        m_pokerTable.decNbPlaying();
         
         m_gameObserver.playerFolded(p);
     }
     
     private void TryToBegin()
     {
-        m_nbPlaying = m_pokerTable.getAndSetNbPlayingPlayers();
-        if (m_nbPlaying > 1)
+        m_pokerTable.setNbPlaying(m_pokerTable.getAndSetNbPlayingPlayers());
+        if (m_pokerTable.getNbPlaying() > 1)
         {
-            m_nbPlayed = 0;
-            placeButtons();
+            m_pokerTable.setNbPlayed(0);
+            m_pokerTable.placeButtons();
+            m_gameObserver.blindsNeeded(m_pokerTable.getPlayer(m_pokerTable.getCurrentSmallBlindNoSeat()), m_pokerTable.getPlayer(m_pokerTable.getCurrentBigBlindNoSeat()), m_pokerTable.getSmallBlindAmount(), m_pokerTable.getBigBlindAmount());
             m_pokerTable.initPots();
             setCurrentGameState(TypePokerGameState.BLIND_WAITING);
         }
         else
         {
-            m_currentDealerNoSeat = -1;
-            m_currentSmallBlindNoSeat = -1;
-            m_currentBigBlindNoSeat = -1;
+            m_pokerTable.setCurrentDealerNoSeat(-1);
+            m_pokerTable.setCurrentSmallBlindNoSeat(-1);
+            m_pokerTable.setCurrentSmallBlindNoSeat(-1);
         }
-    }
-    
-    private void placeButtons()
-    {
-        m_currentDealerNoSeat = m_pokerTable.nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
-        m_currentSmallBlindNoSeat = m_pokerTable.nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
-        m_currentBigBlindNoSeat = m_pokerTable.nextPlayingPlayer(m_currentSmallBlindNoSeat).getCurrentTablePosition();
-        m_blindNeeded.clear();
-        m_blindNeeded.put(m_pokerTable.getPlayer(m_currentSmallBlindNoSeat), m_pokerTable.getSmallBlindAmount());
-        m_blindNeeded.put(m_pokerTable.getPlayer(m_currentBigBlindNoSeat), m_pokerTable.getBigBlindAmount());
-        m_gameObserver.blindsNeeded(m_pokerTable.getPlayer(m_currentSmallBlindNoSeat), m_pokerTable.getPlayer(m_currentBigBlindNoSeat), m_pokerTable.getSmallBlindAmount(), m_pokerTable.getBigBlindAmount());
     }
     
     private void callPlayer(PokerPlayerInfo p, int played)
     {
-        m_nbPlayed++;
-        m_gameObserver.playerCalled(p, played, m_currentHigherBet);
+        m_pokerTable.incNbPlayed();
+        m_gameObserver.playerCalled(p, played, m_pokerTable.getCurrentHigherBet());
     }
     
     private void raisePlayer(PokerPlayerInfo p, int played)
     {
-        m_nbPlayed = 1;
-        m_currentHigherBet = p.getCurrentBetMoneyAmount();
-        m_gameObserver.playerRaised(p, played, m_currentHigherBet);
+        m_pokerTable.setNbPlayed(1);
+        m_pokerTable.setCurrentHigherBet(p.getCurrentBetMoneyAmount());
+        m_gameObserver.playerRaised(p, played, m_pokerTable.getCurrentHigherBet());
     }
     
     private void continueBettingRound()
     {
-        if (m_nbPlayed == m_nbPlaying)
+        if (m_pokerTable.getNbPlayed() == m_pokerTable.getNbPlaying())
         {
             endBettingRound();
         }
@@ -482,18 +514,9 @@ public class PokerGame
         setCurrentGameRoundState(TypePokerGameRoundState.CUMUL);
     }
     
-    private int blindNeeded(PokerPlayerInfo p)
-    {
-        if (m_blindNeeded.containsKey(p))
-        {
-            return m_blindNeeded.get(p);
-        }
-        return 0;
-    }
-    
     private void playNext()
     {
-        final PokerPlayerInfo player = m_pokerTable.nextPlayingPlayer(m_currentPlayerNoSeat);
-        m_currentPlayerNoSeat = player.getCurrentTablePosition();
+        final PokerPlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
+        m_pokerTable.setCurrentPlayerNoSeat(player.getCurrentTablePosition());
     }
 }

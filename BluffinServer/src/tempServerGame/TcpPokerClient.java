@@ -17,6 +17,7 @@ import pokerLogic.TypePlayerAction;
 import protocolGame.GameBoardChangedCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
+import protocolGame.GamePlayerMoneyChangedCommand;
 import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GameSendActionCommand;
 import protocolGame.GameTableClosedCommand;
@@ -105,6 +106,12 @@ public class TcpPokerClient
     {
         m_pokerObserver.subscribe(new PokerGameAdapter()
         {
+            
+            @Override
+            public void playerMoneyChanged(PokerPlayerInfo p)
+            {
+                send(new GamePlayerMoneyChangedCommand(p.getCurrentTablePosition(), p.getCurrentSafeMoneyAmount()));
+            }
             
             @Override
             public void end()
@@ -206,4 +213,160 @@ public class TcpPokerClient
             }
         });
     }
+    
+    // @Override
+    // protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
+    // {
+    // PokerPlayerAction action = null;
+    // int nbTry = 0;
+    // if (m_isConnected)
+    // {
+    // try
+    // {
+    // while ((action == null) && m_isConnected && (nbTry < 10))
+    // {
+    // ++nbTry;
+    // send(new GameAskActionCommand(p_canCheck, p_canFold, p_canCall, p_callOf, p_canRaise, p_minimumRaise, p_maximumRaise));
+    //                    
+    // final String line = receive();
+    // if (line != null)
+    // {
+    // final StringTokenizer message = new StringTokenizer(line, Constants.DELIMITER);
+    // String token;
+    // if (message.hasMoreTokens())
+    // {
+    // token = message.nextToken();
+    // if (token.equals(GameSendActionCommand.COMMAND_NAME))
+    // {
+    // final GameSendActionCommand command = new GameSendActionCommand(message);
+    // final TypePlayerAction actionType = command.getAction().getType();
+    // switch (actionType)
+    // {
+    // case DISCONNECT:
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // break;
+    // case CHECK:
+    // if (p_canCheck)
+    // {
+    // action = new PokerPlayerAction(actionType, 0);
+    // }
+    // break;
+    // case CALL:
+    // if (p_canCall)
+    // {
+    // action = new PokerPlayerAction(actionType, p_callOf);
+    // }
+    // break;
+    // case FOLD:
+    // if (p_canFold)
+    // {
+    // action = new PokerPlayerAction(actionType, 0);
+    // }
+    // break;
+    // case RAISE:
+    // try
+    // {
+    // final int amount = command.getAction().getAmount();
+    // if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
+    // {
+    // action = new PokerPlayerAction(actionType, amount);
+    // }
+    // }
+    // catch (final NumberFormatException e)
+    // {
+    // action = null;
+    // }
+    // break;
+    // }
+    // }
+    // }
+    // }
+    // else
+    // {
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // }
+    // }
+    // }
+    // catch (final IOException e)
+    // {
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // }
+    // }
+    //        
+    // if (action == null)
+    // {
+    // if (p_canCheck)
+    // {
+    // action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
+    // }
+    // else
+    // {
+    // action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
+    // }
+    //            
+    // if (nbTry >= 10)
+    // {
+    // System.out.println("Player kicked out :" + m_name);
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // }
+    // }
+    // if (!m_isConnected && m_socket != null)
+    // {
+    // try
+    // {
+    // m_socket.close();
+    // }
+    // catch (final IOException e)
+    // {
+    // }
+    // m_socket = null;
+    // }
+    //        
+    // return action;
+    // }
+    
+    /**
+     * To test if the player is connected, we send a ping to the client and wait his repsonse.
+     * We do not send a new ping until the PING_INTERVAL milliseconds have past.
+     */
+    // @Override
+    // public boolean sitOutNextHand()
+    // {
+    // if (m_isConnected && !m_sitOutNextHand && ((m_lastPing + TempServerNetworkPokerPlayerInfo.PING_INTERVAL) <= System.currentTimeMillis()))
+    // {
+    // m_lastPing = System.currentTimeMillis();
+    // try
+    // {
+    // send(new GamePINGCommand());
+    //                
+    // final String line = m_input.readLine();
+    // if (line != null)
+    // {
+    // final StringTokenizer message = new StringTokenizer(line, Constants.DELIMITER);
+    // if (!message.hasMoreTokens())
+    // {
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // }
+    // }
+    // else
+    // {
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // }
+    // }
+    // catch (final IOException e)
+    // {
+    // m_isConnected = false;
+    // m_sitOutNextHand = true;
+    // }
+    // }
+    //        
+    // return m_sitOutNextHand;
+    // }
+    
 }

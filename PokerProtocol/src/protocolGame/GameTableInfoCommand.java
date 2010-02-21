@@ -1,8 +1,13 @@
 package protocolGame;
 
+import gameLogic.GameCard;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import newPokerLogic.PokerMoneyPot;
+import newPokerLogic.PokerPlayerInfo;
+import newPokerLogic.PokerTableInfo;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IPokerCommand;
 import utility.Constants;
@@ -49,6 +54,89 @@ public class GameTableInfoCommand implements IPokerCommand
         m_boardCardIDs = boardCardIDs;
         m_nbPlayers = nbPlayers;
         m_seats = seats;
+    }
+    
+    public GameTableInfoCommand(PokerTableInfo info, PokerPlayerInfo pPlayer)
+    {
+        m_potsAmount = new ArrayList<Integer>();
+        m_boardCardIDs = new ArrayList<Integer>();
+        m_seats = new ArrayList<SummarySeatInfo>();
+        
+        m_totalPotAmount = info.getTotalPotAmount();
+        m_nbSeats = info.getNbMaxSeats();
+        m_nbPlayers = info.getNbMaxSeats();
+        
+        for (final PokerMoneyPot pot : info.getPots())
+        {
+            m_potsAmount.add(pot.getAmount());
+        }
+        
+        for (int i = info.getPots().size(); i < m_nbSeats; i++)
+        {
+            m_potsAmount.add(0);
+        }
+        final GameCard[] boardCards = new GameCard[5];
+        info.getCurrentBoardCards().toArray(boardCards);
+        for (int i = 0; i < 5; ++i)
+        {
+            if (boardCards[i] == null)
+            {
+                m_boardCardIDs.add(GameCard.NO_CARD_ID);
+            }
+            else
+            {
+                m_boardCardIDs.add(boardCards[i].getId());
+            }
+        }
+        
+        for (int i = 0; i != m_nbPlayers; ++i)
+        {
+            final SummarySeatInfo seat = new SummarySeatInfo(i);
+            final PokerPlayerInfo player = info.getPlayer(i);
+            seat.m_isEmpty = (player == null);
+            
+            if (seat.m_isEmpty)
+            {
+                continue;
+            }
+            
+            seat.m_playerName = player.getPlayerName(); // playerName
+            seat.m_money = player.getCurrentSafeMoneyAmount(); // playerMoney
+            
+            final boolean showCard = (i == pPlayer.getCurrentTablePosition());
+            
+            // Player cards
+            final GameCard[] holeCards = new GameCard[2];
+            player.getCurrentHand().toArray(holeCards);
+            for (int j = 0; j < 2; ++j)
+            {
+                if (holeCards[i] == null)
+                {
+                    seat.m_holeCardIDs.add(GameCard.NO_CARD_ID);
+                }
+                else if (!player.isPlaying())
+                {
+                    seat.m_holeCardIDs.add(GameCard.NO_CARD_ID);
+                }
+                else if (!showCard)
+                {
+                    seat.m_holeCardIDs.add(GameCard.HIDDEN_CARD_ID);
+                }
+                else
+                {
+                    seat.m_holeCardIDs.add(holeCards[j].getId());
+                }
+            }
+            
+            seat.m_isDealer = info.getCurrentDealerNoSeat() == i; // isDealer
+            seat.m_isSmallBlind = info.getCurrentSmallBlindNoSeat() == i; // isSmallBlind
+            seat.m_isBigBlind = info.getCurrentBigBlindNoSeat() == i; // isBigBlind
+            seat.m_isCurrentPlayer = info.getCurrentPlayerNoSeat() == i; // isCurrentPlayer
+            seat.m_timeRemaining = 0; // timeRemaining
+            seat.m_bet = player.getCurrentBetMoneyAmount(); // betAmount
+            
+            m_seats.add(seat);
+        }
     }
     
     @Override
