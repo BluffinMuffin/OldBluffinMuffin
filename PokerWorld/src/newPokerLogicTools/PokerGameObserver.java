@@ -39,7 +39,6 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
     @Override
     public void playerActionNeeded(PokerTableInfo t, PokerPlayerInfo p)
     {
-        // TODO: on me call jamais :(
         for (final PokerGameListener listener : getSubscribers())
         {
             listener.playerActionNeeded(t, p);
@@ -49,7 +48,6 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
     @Override
     public void gameBoardCardsChanged(PokerTableInfo t)
     {
-        // TODO: on me call jamais :(
         for (final PokerGameListener listener : getSubscribers())
         {
             listener.gameBoardCardsChanged(t);
@@ -106,7 +104,6 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
     @Override
     public void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r)
     {
-        // TODO: on me call jamais :(
         for (final PokerGameListener listener : getSubscribers())
         {
             listener.gameBettingRoundEnded(t, r);
@@ -116,7 +113,6 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
     @Override
     public void playerHoleCardsChanged(PokerTableInfo t, PokerPlayerInfo p)
     {
-        // TODO: on me call jamais :(
         for (final PokerGameListener listener : getSubscribers())
         {
             listener.playerHoleCardsChanged(t, p);

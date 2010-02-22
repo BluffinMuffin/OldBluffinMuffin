@@ -17,11 +17,21 @@ public class PokerGame
         this(new RandomPokerDealer());
     }
     
+    public PokerGame(PokerTableInfo info)
+    {
+        this(new RandomPokerDealer(), info);
+    }
+    
     public PokerGame(AbstractPokerDealer dealer)
+    {
+        this(new RandomPokerDealer(), new PokerTableInfo());
+    }
+    
+    public PokerGame(AbstractPokerDealer dealer, PokerTableInfo info)
     {
         m_pokerDealer = dealer;
         m_gameObserver = new PokerGameObserver();
-        m_pokerTable = new PokerTableInfo();
+        m_pokerTable = info;
         m_currentGameState = TypePokerGameState.INIT;
     }
     
@@ -137,6 +147,11 @@ public class PokerGame
     public PokerTableInfo getPokerTable()
     {
         return m_pokerTable;
+    }
+    
+    public boolean isRunning()
+    {
+        return m_currentGameState != TypePokerGameState.END;
     }
     
     // /////////////////////////////////
@@ -285,6 +300,7 @@ public class PokerGame
     
     private void startCumulRound()
     {
+        // TODO: lots of things
         // m_bettingPlayer = -1;
         //            
         // // Modify the pots
@@ -378,7 +394,7 @@ public class PokerGame
         // i = nextPlayer(i);
         // }
         // while (i != start);
-        
+        m_gameObserver.gameBettingRoundEnded(m_pokerTable, m_currentGameRound);
         if (m_pokerTable.getNbPlaying() == 1)
         {
             setCurrentGameState(TypePokerGameState.SHOWDOWN);
@@ -427,6 +443,7 @@ public class PokerGame
                 dealRiver();
                 break;
         }
+        m_gameObserver.gameBoardCardsChanged(m_pokerTable);
     }
     
     private void dealRiver()
@@ -449,6 +466,7 @@ public class PokerGame
         for (final PokerPlayerInfo p : m_pokerTable.getPlayingPlayers())
         {
             p.setHand(m_pokerDealer.dealHoles(p));
+            m_gameObserver.playerHoleCardsChanged(m_pokerTable, p);
         }
     }
     
@@ -517,5 +535,6 @@ public class PokerGame
     {
         final PokerPlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
         m_pokerTable.setCurrentPlayerNoSeat(player.getCurrentTablePosition());
+        m_gameObserver.playerActionNeeded(m_pokerTable, player);
     }
 }

@@ -7,12 +7,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import newPokerLogic.PokerGame;
+import newPokerLogic.PokerTableInfo;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
 import protocolLobbyTools.LobbyServerSideObserver;
 import protocolTools.IPokerCommand;
-import tempServerGame.TempServerNetworkPokerPlayerInfo;
+import tempServerGame.TcpPokerClient;
 import utility.Constants;
 
 /**
@@ -126,31 +128,30 @@ public class TempServerClientTableManager extends Thread
             {
                 try
                 {
-                    if (!m_manager.m_table.isRunning())
+                    if (!m_manager.m_game.isRunning())
                     {
                         sendMessage(command.encodeErrorResponse());
                         return;
                     }
                     
                     // Create new NetworkPlayer.
-                    final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
+                    final TcpPokerClient client = new TcpPokerClient(m_manager.m_game, m_name, Constants.STARTING_MONEY, m_socket);
+                    final PokerGame game = m_manager.m_game;
+                    final PokerTableInfo table = game.getPokerTable();
+                    // final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
                     
                     // Verify the player does not already playing on that table.
-                    if (!m_manager.m_table.getPlayers().contains(player))
+                    if (!table.containsPlayer(m_name))
                     {
-                        final int noSeat = m_manager.m_table.getNextSeat();
-                        if (noSeat == -1)
+                        final boolean ok = client.joinGame();
+                        if (!ok)
                         {
                             sendMessage(command.encodeErrorResponse());
                         }
                         else
                         {
-                            // Attach the client to the table.
-                            // Transfert socket connection.
-                            sendMessage(command.encodeResponse(noSeat));
-                            player.setIsConnected();
-                            player.setPokerObserver(m_manager.m_table.getPokerObserver());
-                            m_manager.m_table.join(player, noSeat);
+                            client.setIsConnected();
+                            sendMessage(command.encodeResponse(client.getPlayer().getCurrentTablePosition()));
                         }
                     }
                     else

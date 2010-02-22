@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Stack;
 
 public class PokerTableInfo
-{
+{// TODO: Gestion TypePokerGame
     private final int m_nbMaxSeats;
     private int m_nbUsedSeats;
     private final PokerPlayerInfo[] m_currentPlayers;
@@ -393,5 +393,17 @@ public class PokerTableInfo
     public int getCurrentHigherBet()
     {
         return m_currentHigherBet;
+    }
+    
+    public boolean containsPlayer(String name)
+    {
+        for (final PokerPlayerInfo p : getPlayers())
+        {
+            if (p.getPlayerName().equalsIgnoreCase(name))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

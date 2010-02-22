@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import newPokerLogic.PokerGame;
+import newPokerLogic.PokerTableInfo;
+import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
-import tempServerGame.TempServerTableCommunicator;
-import tempServerGameTools.TempServerPokerLogger;
 import utility.Constants;
 
 /**
@@ -28,7 +29,7 @@ public class TempServerLobby extends Thread
     private final ServerSocket m_socketServer;
     private final List<String> m_UsedNames = new ArrayList<String>();
     
-    Map<Integer, TempServerTableCommunicator> m_tables = Collections.synchronizedMap(new TreeMap<Integer, TempServerTableCommunicator>());
+    Map<Integer, PokerGame> m_games = Collections.synchronizedMap(new TreeMap<Integer, PokerGame>());
     
     public TempServerLobby(int p_noPort) throws IOException
     {
@@ -97,7 +98,7 @@ public class TempServerLobby extends Thread
     {
         listTables();
         
-        if (m_tables.size() >= Constants.NB_MAX_TABLES)
+        if (m_games.size() >= Constants.NB_MAX_TABLES)
         {
             return -1;
         }
@@ -108,23 +109,26 @@ public class TempServerLobby extends Thread
             // Only a certain number of port can be used at the same time.
             int noPort = NO_PORT + 1;
             final int endPortRange = NO_PORT + Constants.NB_MAX_TABLES + 1;
-            while ((noPort != endPortRange) && m_tables.containsKey(noPort))
+            while ((noPort != endPortRange) && m_games.containsKey(noPort))
             {
                 noPort++;
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
-            final TempServerTableManager manager = new TempServerTableManager(table, noPort);
+            // TODO: Gestion TypePokerGame
+            final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers()));
+            // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
+            final TempServerTableManager manager = new TempServerTableManager(game, noPort);
             
             // Start the TableManager.
-            table.addClosingListener(manager);
-            new TempServerPokerLogger(System.out, table.getPokerObserver());
-            table.start();
+            // table.addClosingListener(manager);
+            // TODO: Logger!
+            // new TempServerPokerLogger(System.out, table.getPokerObserver());
+            // table.start();
             manager.start();
             
             // Associate the port number to the table.
-            m_tables.put(noPort, table);
+            m_games.put(noPort, game);
             
             return noPort;
         }
@@ -141,14 +145,16 @@ public class TempServerLobby extends Thread
         final ArrayList<SummaryTableInfo> tables = new ArrayList<SummaryTableInfo>();
         final ArrayList<Integer> tablesToRemove = new ArrayList<Integer>();
         
-        for (final Integer noPort : m_tables.keySet())
+        for (final Integer noPort : m_games.keySet())
         {
-            final TempServerTableCommunicator table = m_tables.get(noPort);
+            final PokerGame game = m_games.get(noPort);
             
             // Check if the table is still running.
-            if (table.isRunning())
+            if (game.isRunning())
             {
-                tables.add(new SummaryTableInfo(noPort, table.getName(), table.getGameType(), table.getBigBlind(), table.getNbPlayers(), table.getNbSeats()));
+                final PokerTableInfo table = game.getPokerTable();
+                // TODO: Gestion TypePokerGame
+                tables.add(new SummaryTableInfo(noPort, table.getTableName(), TypePokerGame.NO_LIMIT, table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats()));
             }
             else
             {
@@ -159,10 +165,9 @@ public class TempServerLobby extends Thread
         // Remove closed tables.
         for (final Integer key : tablesToRemove)
         {
-            m_tables.remove(key);
+            m_games.remove(key);
         }
         
         return tables;
     }
-    
 }

@@ -4,46 +4,32 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import tempServerGame.TempServerTableCommunicator;
-import utility.IClosingListener;
+import newPokerLogic.PokerGame;
 
 /**
  * @author Hocus
  *         This class listens to new connection on a certain port number.
  *         It transferts the new connection to the HoldEmTable it manages.
  */
-public class TempServerTableManager extends Thread implements IClosingListener<TempServerTableCommunicator>
+public class TempServerTableManager extends Thread
 {
     
     /** Socket TableManager listen to. **/
     ServerSocket m_socketServer;
     /** Poker Table **/
-    TempServerTableCommunicator m_table;
+    PokerGame m_game;
     
-    public TempServerTableManager(TempServerTableCommunicator p_table, int p_noPort) throws IOException
+    public TempServerTableManager(PokerGame p_game, int p_noPort) throws IOException
     {
-        m_table = p_table;
+        m_game = p_game;
         m_socketServer = new ServerSocket(p_noPort);
-    }
-    
-    public void closing(TempServerTableCommunicator e)
-    {
-        try
-        {
-            m_socketServer.close();
-            m_socketServer = null;
-        }
-        catch (final IOException e1)
-        {
-            e1.printStackTrace();
-        }
     }
     
     @Override
     public void run()
     {
         // Start listening and handle new client connection.
-        while ((m_socketServer != null) && m_table.isRunning())
+        while ((m_socketServer != null) && m_game.isRunning())
         {
             try
             {
@@ -53,9 +39,9 @@ public class TempServerTableManager extends Thread implements IClosingListener<T
             }
             catch (final Exception e)
             {
-                if (!m_table.isRunning())
+                if (!m_game.isRunning())
                 {
-                    System.out.println("Table manager close for: " + m_table.getName());
+                    System.out.println("Table manager close for: " + m_game.getPokerTable().getTableName());
                 }
             }
         }

@@ -34,6 +34,7 @@ import protocolGame.GamePlayerWonPotCommand;
 import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
+import protocolGame.GameTableInfoCommand;
 import protocolGameTools.GameServerSideAdapter;
 import protocolGameTools.GameServerSideObserver;
 import protocolTools.IPokerCommand;
@@ -77,12 +78,6 @@ public class TcpPokerClient
         initializeCommandObserver();
     }
     
-    public void setPokerObserver(PokerGameObserver observer)
-    {
-        m_pokerObserver = observer;
-        initializePokerObserver();
-    }
-    
     protected String receive() throws IOException
     {
         final String line = m_input.readLine();
@@ -115,7 +110,23 @@ public class TcpPokerClient
         m_isConnected = true;
     }
     
-    // TODO: Envoyer les infos de la table lorsque le player join, uniquement !!
+    public PokerPlayerInfo getPlayer()
+    {
+        return m_player;
+    }
+    
+    public boolean joinGame()
+    {
+        m_pokerObserver = m_game.getGameObserver();
+        initializePokerObserver();
+        final boolean ok = m_game.joinGame(m_player);
+        if (ok)
+        {
+            send(new GameTableInfoCommand(m_game.getPokerTable(), m_player));
+        }
+        return ok;
+    }
+    
     private void initializePokerObserver()
     {
         m_pokerObserver.subscribe(new PokerGameAdapter()
@@ -134,7 +145,7 @@ public class TcpPokerClient
                 {
                     amounts.add(0);
                 }
-                // TODO: eventuellement, GamePlayerTurnEndedCommand devrait utiliser directement TypePokerGameRound
+                // TODO: eventuellement, GameBetTurnEndedCommand devrait utiliser directement TypePokerGameRound
                 switch (r)
                 {
                     case PREFLOP:
@@ -265,14 +276,27 @@ public class TcpPokerClient
             @Override
             public void sendActionCommandReceived(GameSendActionCommand command)
             {
-                if (command.getAction().getType() == TypePlayerAction.DISCONNECT)
+                switch (command.getAction().getType())
                 {
-                    m_isConnected = false;
+                    case DISCONNECT:
+                        m_isConnected = false;
+                        m_game.leaveGame(m_player);
+                        break;
+                    case FOLD:
+                        m_game.playMoney(m_player, -1);
+                        break;
+                    case CALL:
+                    case CHECK:
+                    case BIG_BLIND:
+                    case SMALL_BLIND:
+                    case RAISE:
+                        m_game.playMoney(m_player, command.getAction().getAmount());
                 }
             }
         });
     }
     
+    // TODO: lots of things
     // @Override
     // protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
     // {
