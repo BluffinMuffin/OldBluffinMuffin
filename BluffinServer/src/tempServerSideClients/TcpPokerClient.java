@@ -1,4 +1,4 @@
-package tempServerGame;
+package tempServerSideClients;
 
 import gameLogic.GameCard;
 
@@ -119,12 +119,13 @@ public class TcpPokerClient
     {
         m_pokerObserver = m_game.getGameObserver();
         initializePokerObserver();
-        final boolean ok = m_game.joinGame(m_player);
-        if (ok)
-        {
-            send(new GameTableInfoCommand(m_game.getPokerTable(), m_player));
-        }
-        return ok;
+        return m_game.joinGame(m_player);
+    }
+    
+    public void sitIn()
+    {
+        m_game.sitInGame(m_player);
+        send(new GameTableInfoCommand(m_game.getPokerTable(), m_player));
     }
     
     private void initializePokerObserver()

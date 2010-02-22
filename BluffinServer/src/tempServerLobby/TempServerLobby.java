@@ -117,6 +117,7 @@ public class TempServerLobby extends Thread
             // Create a new HoldEmTable and a new TableManager.
             // TODO: Gestion TypePokerGame
             final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers()));
+            game.start();
             // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
             final TempServerTableManager manager = new TempServerTableManager(game, noPort);
             

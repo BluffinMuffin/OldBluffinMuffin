@@ -14,7 +14,7 @@ import protocolLobby.LobbyJoinTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
 import protocolLobbyTools.LobbyServerSideObserver;
 import protocolTools.IPokerCommand;
-import tempServerGame.TcpPokerClient;
+import tempServerSideClients.TcpPokerClient;
 import utility.Constants;
 
 /**
@@ -152,6 +152,7 @@ public class TempServerClientTableManager extends Thread
                         {
                             client.setIsConnected();
                             sendMessage(command.encodeResponse(client.getPlayer().getCurrentTablePosition()));
+                            client.sitIn();
                         }
                     }
                     else

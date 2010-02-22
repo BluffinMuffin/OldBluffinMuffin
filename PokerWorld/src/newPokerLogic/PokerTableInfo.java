@@ -162,11 +162,13 @@ public class PokerTableInfo
     {
         if (m_RemainingSeats.size() == 0)
         {
+            System.err.println("Too bad: m_RemainingSeats.size() == 0");
             return false;
         }
         
         if (containsPlayer(p))
         {
+            System.err.println("Too bad: containsPlayer(p)");
             return false;
         }
         

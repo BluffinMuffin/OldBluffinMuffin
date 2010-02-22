@@ -173,20 +173,20 @@ public class PokerGame
     {
         if (m_currentGameState == TypePokerGameState.INIT || m_currentGameState == TypePokerGameState.END)
         {
+            System.err.println("Bad timing:" + m_currentGameState);
             return false;
         }
         
-        if (m_pokerTable.joinTable(p))
+        return m_pokerTable.joinTable(p);
+    }
+    
+    public void sitInGame(PokerPlayerInfo p)
+    {
+        m_gameObserver.playerJoined(m_pokerTable, p);
+        if (m_currentGameState == TypePokerGameState.PLAYERS_WAITING)
         {
-            m_gameObserver.playerJoined(m_pokerTable, p);
-            if (m_currentGameState == TypePokerGameState.PLAYERS_WAITING)
-            {
-                TryToBegin();
-            }
-            return true;
+            TryToBegin();
         }
-        
-        return false;
     }
     
     public boolean leaveGame(PokerPlayerInfo p)
