@@ -14,6 +14,19 @@ public class main {
 	 */
 	public static void main(String[] args) {
 
+		// // EXAMPLE DB USE
+		// PostgresConnector p = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinWifEnum", "postgres", "27053");
+		// ResultSet r = p.query("select * from domain");
+		// try {
+		// while (r.next()) {
+		// System.out.println(r.getString(0));
+		// }
+		// } catch (SQLException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
+		// System.exit(1);
+
 		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/New folder", ".txt");
 		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
 		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive/PokerTracker/hhdb2.mdb", ".txt");
