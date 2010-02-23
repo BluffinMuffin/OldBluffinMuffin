@@ -217,6 +217,7 @@ public class PokerGame
                 System.err.println(p.getPlayerName() + " just .. can't !! ");
                 return false;
             }
+            m_pokerTable.incTotalPotAmount(amnt);
             m_gameObserver.playerMoneyChanged(m_pokerTable, p);
             m_pokerTable.setBlindNeeded(p, 0);
             if (amnt == m_pokerTable.getSmallBlindAmount())
@@ -237,13 +238,16 @@ public class PokerGame
         
         else if (m_currentGameState == TypePokerGameState.PLAYING && m_currentGameRoundState == TypePokerGameRoundState.BETTING)
         {
+            System.out.println("Currently, we need " + amountNeeded(p) + " minimum money from this player");
             if (p.getCurrentTablePosition() != m_pokerTable.getCurrentPlayerNoSeat())
             {
+                System.err.println("BUT SCREW YOU, IT'S NOT YOUR TURN !!!!!");
                 return false;
             }
             
             if (amnt == -1)
             {
+                System.out.println("So ... the little girl folds !");
                 foldPlayer(p);
                 continueBettingRound();
                 return true;
@@ -251,29 +255,37 @@ public class PokerGame
             int amntNeeded = amountNeeded(p);
             if (amnt < amntNeeded)
             {
-                if (!p.canBet(amnt + 1))
+                if (p.canBet(amnt + 1))
                 {
+                    System.err.println("BUT SCREW YOU, IT'S NOT ENOUGH !!!!!");
                     return false;
                 }
+                System.out.println("So ... All-In !");
                 amntNeeded = amnt;
                 p.setAllIn();
                 m_pokerTable.decNbPlaying();
             }
             if (!p.tryBet(amnt))
             {
+                System.err.println("BUT SCREW YOU, YOU JUST CAN'T !!!!!");
                 return false;
             }
             m_gameObserver.playerMoneyChanged(m_pokerTable, p);
             if (amnt == amntNeeded)
             {
+                System.out.println("Will call with $" + amnt);
+                m_pokerTable.incTotalPotAmount(amnt);
                 callPlayer(p, amnt);
                 continueBettingRound();
                 return true;
             }
+            System.out.println("Will raise with $" + amnt);
+            m_pokerTable.incTotalPotAmount(amnt);
             raisePlayer(p, amnt);
             playNext();
             return true;
         }
+        System.err.println("BUT WE DON'T CARE !!!!!");
         return false;
     }
     
@@ -306,8 +318,7 @@ public class PokerGame
     private void startCumulRound()
     {
         // TODO: lots of things
-        // m_bettingPlayer = -1;
-        //            
+        
         // // Modify the pots
         // boolean addAPot = false;
         // Pot lastPot = null;
@@ -399,6 +410,7 @@ public class PokerGame
         // i = nextPlayer(i);
         // }
         // while (i != start);
+        m_pokerTable.setCurrentHigherBet(0);
         m_gameObserver.gameBettingRoundEnded(m_pokerTable, m_currentGameRound);
         if (m_pokerTable.getNbPlaying() == 1)
         {
@@ -437,6 +449,7 @@ public class PokerGame
             case PREFLOP:
                 m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentBigBlindNoSeat());
                 dealHole();
+                m_pokerTable.setCurrentHigherBet(m_pokerTable.getBigBlindAmount());
                 break;
             case FLOP:
                 dealFlop();

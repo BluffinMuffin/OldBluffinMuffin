@@ -39,7 +39,7 @@ import protocolGameTools.GameServerSideAdapter;
 import protocolGameTools.GameServerSideObserver;
 import protocolTools.IPokerCommand;
 
-public class TcpPokerClient
+public class TcpPokerClient implements Runnable
 {
     // TCP Things
     public static final int PING_INTERVAL = 10000;
@@ -80,7 +80,6 @@ public class TcpPokerClient
     
     protected String receive() throws IOException
     {
-        // TODO: Nobody is waiting for this to happen !
         final String line = m_input.readLine();
         m_commandObserver.receiveSomething(line);
         return line;
@@ -127,6 +126,27 @@ public class TcpPokerClient
     {
         send(new GameTableInfoCommand(m_game.getPokerTable(), m_player));
         m_game.sitInGame(m_player);
+    }
+    
+    @Override
+    public void run()
+    {
+        try
+        {
+            while (true)
+            {
+                receive();
+            }
+        }
+        catch (final IOException e)
+        {
+            return;
+        }
+    }
+    
+    public void start()
+    {
+        new Thread(this).start();
     }
     
     private void initializePokerObserver()
@@ -226,7 +246,7 @@ public class TcpPokerClient
                 send(new GamePlayerTurnBeganCommand(p.getCurrentTablePosition()));
                 if (p.getCurrentTablePosition() == m_player.getCurrentTablePosition())
                 {
-                    send(new GameAskActionCommand(t.getCurrentHigherBet() == 0, t.getCurrentHigherBet() > 0, t.getCurrentHigherBet() > 0, t.getCurrentHigherBet(), true, t.getCurrentHigherBet(), p.getCurrentSafeMoneyAmount()));
+                    send(new GameAskActionCommand(t.getCurrentHigherBet() == p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet(), true, t.getCurrentHigherBet(), p.getCurrentSafeMoneyAmount()));
                 }
             }
             
@@ -257,7 +277,7 @@ public class TcpPokerClient
                         cards[i] = GameCard.NO_CARD;
                     }
                 }
-                send(new GameBoardChangedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[3].getId()));
+                send(new GameBoardChangedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[4].getId()));
             }
             
             @Override
@@ -281,12 +301,13 @@ public class TcpPokerClient
             @Override
             public void commandReceived(String command)
             {
-                System.out.println("<" + m_game.getPokerTable().getTableName() + "> RECV from " + m_player.getPlayerName() + " [" + command + "]");
+                System.out.println("<TcpPokerClient :" + m_player.getPlayerName() + "> RECV [" + command + "]");
             }
             
             @Override
             public void sendActionCommandReceived(GameSendActionCommand command)
             {
+                // TODO: en theorie, ca devrait etre pluss cool ! :p
                 switch (command.getAction().getType())
                 {
                     case DISCONNECT:
@@ -297,6 +318,8 @@ public class TcpPokerClient
                         m_game.playMoney(m_player, -1);
                         break;
                     case CALL:
+                        m_game.playMoney(m_player, command.getAction().getAmount() - m_player.getCurrentBetMoneyAmount());
+                        break;
                     case CHECK:
                     case BIG_BLIND:
                     case SMALL_BLIND:
@@ -306,7 +329,6 @@ public class TcpPokerClient
             }
         });
     }
-    
     // TODO: lots of things
     // @Override
     // protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)

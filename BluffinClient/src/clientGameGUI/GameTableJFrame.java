@@ -14,8 +14,8 @@ import clientGameTools.IClientPokerActionner;
 
 public class GameTableJFrame extends GameTableViewerJFrame implements IClientPokerActionner
 {
-    
-    PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
+    private int m_minAmount;
+    private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     /**
      * 
      */
@@ -135,7 +135,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    actionTaken(new PokerPlayerAction(TypePlayerAction.CALL));
+                    actionTaken(new PokerPlayerAction(TypePlayerAction.CALL, m_minAmount));
                 }
             });
         }
@@ -215,6 +215,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
     @Override
     public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
+        m_minAmount = p_callAmount;
         if (p_actionsAllowed.contains(TypePlayerAction.CALL))
         {
             getJCallButton().setEnabled(true);

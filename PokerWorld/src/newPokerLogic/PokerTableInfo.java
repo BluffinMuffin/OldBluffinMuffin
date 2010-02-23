@@ -297,6 +297,13 @@ public class PokerTableInfo
         m_totalPotAmount = totalPotAmount;
     }
     
+    public void incTotalPotAmount(int inc)
+    {
+        System.out.print("incTotalPotAmount from $" + m_totalPotAmount);
+        m_totalPotAmount += inc;
+        System.out.println(" to $" + m_totalPotAmount);
+    }
+    
     public int getTotalPotAmount()
     {
         return m_totalPotAmount;

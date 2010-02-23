@@ -151,6 +151,7 @@ public class TempServerClientTableManager extends Thread
                         else
                         {
                             client.setIsConnected();
+                            client.start();
                             sendMessage(command.encodeResponse(client.getPlayer().getCurrentTablePosition()));
                             client.sitIn();
                         }

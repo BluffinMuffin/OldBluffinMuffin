@@ -86,6 +86,7 @@ public class TempServerClientLobby extends Thread
             catch (final SocketException e)
             {
                 System.out.println("Connection lost with " + m_playerName);
+                m_lobby.removeName(m_playerName);
                 return;
             }
             catch (final Exception e)
