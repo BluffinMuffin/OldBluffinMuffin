@@ -88,17 +88,40 @@ public class FullTiltParser extends AbsParser {
 						/*
 						 * group(1) : Domain
 						 * group(2) : idGame
-						 * group(3): tableName
-						 * group(4): small blind
-						 * group(5): big blind
-						 * group(6): bettype group(7): startTime - keep as timestamp or go time and date seperate?
+						 * group(3) : unimportant tournament data
+						 * group(4): tableName
+						 * group(5): max players on table optional
+						 * group(6): small blind
+						 * group(7): big blind
+						 * group(8): bettype group(7): startTime - keep as timestamp or go time and date seperate?
+						 * group(9): time
+						 * group(10): timezone
+						 * group(11): date
 						 */
-						String normalGameHeaderRegex = "(\\w+) Poker Game"; // \\#(\\d+): Table (\\w+) - \\$(\\d+)\\/\\$(\\d+) - (\\w+) Hold'em -";
 
-						p = Pattern.compile(normalGameHeaderRegex, Pattern.CASE_INSENSITIVE);
+						// String tableInfo = "(\\w+\\s)+Game.#(\\d+):(..+[\\x28](\\d+)[\\x29],)?.Table.(\\w+\\s)+([\\x28](\\d) max[\\x29])? ?- ";
+						String tableInfo = "(\\w+\\s)+Game.#(\\d+):(..+,)?.Table.(\\w+\\s)+([\\x28]\\d max[\\x29])? ?- ";
+						String sbbb = "\\$?(\\d+(.\\d+)?)\\/\\$?(\\d+(.\\d+)?).-.";
+						String bettype = "(\\w+\\s)+Hold'em - ";
+						String timestmp = "([0-9]{0,2}:[0-9]{0,2}:[0-9]{0,2}) (\\w+) - ([0-9]{0,4}\\/[0-9]{0,2}\\/[0-9]{0,2})";
+
+						p = Pattern.compile(tableInfo + sbbb + bettype + timestmp, Pattern.CASE_INSENSITIVE);
 						RegexMatcher = p.matcher(firstLine);
 						if (RegexMatcher.find()) {
 							System.out.println("FILEHEADER: " + RegexMatcher.group(0));
+							System.out.println("1: " + RegexMatcher.group(1));
+							System.out.println("2: " + RegexMatcher.group(2));
+							System.out.println("3: " + RegexMatcher.group(3));
+							System.out.println("4: " + RegexMatcher.group(4));
+							System.out.println("5: " + RegexMatcher.group(5));
+							System.out.println("6: " + RegexMatcher.group(6));
+							System.out.println("7: " + RegexMatcher.group(7));
+							System.out.println("8: " + RegexMatcher.group(8));
+							System.out.println("9: " + RegexMatcher.group(9));
+							System.out.println("10: " + RegexMatcher.group(10));
+							System.out.println("10: " + RegexMatcher.group(11));
+							System.out.println("10: " + RegexMatcher.group(12));
+
 						}
 
 						System.exit(-1);
