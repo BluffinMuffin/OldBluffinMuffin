@@ -27,41 +27,97 @@ public class FullTiltParser extends AbsParser {
 
 		for (String log : gameLogs) {
 
-			rounds = log.split("\r\n\\u002A\\u002A\\u002A.");
+			rounds = log.split("\r\n\\*\\*\\*.");
+			nbPlayers = 0;
 
-			for (int x = 0; x < rounds.length; x++) { // Do a for each? Need to increment a car anyways
+			for (int x = 0; x < rounds.length; x++) { // Do a for each? Need to
+				// increment a car
+				// anyways
 
-				if (x == 0) {
-					// First line is header
-					/*
-					 * ValBB, ValSB
-					 */
+				if (rounds[x].length() > 0) {
 
-					// Count player seats
-					Pattern myregex = Pattern.compile("Seat.\\d:");
+					if (x == 0) {
+						// First line is header
+						/*
+						 * ValBB, ValSB, BetType, GameType,
+						 */
 
-					Matcher matcher = myregex.matcher(rounds[x]); // Woudn't have to do this with a for each
+						// Count player seats
+						Pattern myregex = Pattern.compile("Seat.\\d:");
 
-					while (matcher.find()) {
-						nbPlayers++;
+						Matcher matcher = myregex.matcher(rounds[x]); // Woudn't
+						// have to
+						// do this
+						// with a
+						// for each
+
+						while (matcher.find()) {
+							nbPlayers++;
+						}
+						// System.out.println("yous got " + nbPlayers + " ppl sitting down");
+
+						//
+						myregex = Pattern.compile("is sitting out");
+
+						while (matcher.find()) {
+							nbPlayers--;
+						}
+						// System.out.println("But some are sitting out for a total of "
+						// + nbPlayers );
+
+						// Insert into GameSet (nbPlayers) values nbPlayers
+
+						String firstLine = (rounds[x].split("\r\n"))[0];
+
+						// Pattern p = Pattern.compile("$(\\d+)\\/$(\\d+)", Pattern.CASE_INSENSITIVE);
+						Pattern p = Pattern.compile("\\$(\\d+)\\/\\$(\\d+)", Pattern.CASE_INSENSITIVE);
+
+						Matcher RegexMatcher = p.matcher(firstLine);
+
+						// BB and SB values
+						if (RegexMatcher.find()) {
+							System.out.println("SmallBlind : $" + RegexMatcher.group(1));
+							System.out.println("BigBlind : $" + RegexMatcher.group(2));
+						}
+
+						// idDealer
+						// Full Tilt Poker Game #4718288226: Table Amistad (6 max) - $1/$2 - No Limit Hold'em - 0:53:10 ET - 2008/01/03
+						// FullTiltPoker Game #7736018171: Table Corwood Green - $0.05/$0.10 - No Limit Hold'em - 2:23:01 ET - 2008/08/21
+						// FullTiltPoker Game #6776317222: $5 + $0.25 Heads Up Sit & Go (51507932), Table 1 - 10/20 - No Limit Hold'em - 21:46:06 ET - 2008/06/10
+
+						/*
+						 * group(1) : Domain
+						 * group(2) : idGame
+						 * group(3): tableName
+						 * group(4): small blind
+						 * group(5): big blind
+						 * group(6): bettype group(7): startTime - keep as timestamp or go time and date seperate?
+						 */
+						String normalGameHeaderRegex = "(\\w+) Poker Game"; // \\#(\\d+): Table (\\w+) - \\$(\\d+)\\/\\$(\\d+) - (\\w+) Hold'em -";
+
+						p = Pattern.compile(normalGameHeaderRegex, Pattern.CASE_INSENSITIVE);
+						RegexMatcher = p.matcher(firstLine);
+						if (RegexMatcher.find()) {
+							System.out.println("FILEHEADER: " + RegexMatcher.group(0));
+						}
+
+						System.exit(-1);
+
+						/*
+						 * Dealing round Dealer id BB and SB betting round
+						 */
+
+					} else if (x == rounds.length - 1) {
+						// Game Summary
+
+					} else {
+						// is typical betting round
+						// First word is bettingRoundType
+
 					}
-					System.out.println("yous got " + nbPlayers + " ppl sitting down");
-
-					/*
-					 * Dealing round Dealer id BB and SB betting round
-					 */
-
-				} else if (x == rounds.length - 1) {
-					// Game Summary
-
-				} else {
-					// is typical betting round
-					// First word is bettingRoundType
 
 				}
-
 			}
-
 		}
 
 	}
