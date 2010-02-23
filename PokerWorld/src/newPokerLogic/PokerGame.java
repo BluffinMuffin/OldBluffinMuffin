@@ -201,15 +201,20 @@ public class PokerGame
     
     public boolean playMoney(PokerPlayerInfo p, int amnt)
     {
+        System.out.println(p.getPlayerName() + " is playing " + amnt + " money on state: " + m_currentGameState);
         if (m_currentGameState == TypePokerGameState.BLIND_WAITING)
         {
+            System.out.println(p.getPlayerName() + " is putting blind of " + amnt);
+            System.out.println("Total still needed is " + m_pokerTable.getTotalBlindNeeded());
             if (amnt != m_pokerTable.blindNeeded(p))
             {
-                // TODO: authorise si ALL IN
+                System.err.println(p.getPlayerName() + " needed to put " + m_pokerTable.blindNeeded(p));
                 return false;
             }
             if (!p.tryBet(amnt))
             {
+                // TODO: authorise si ALL IN
+                System.err.println(p.getPlayerName() + " just .. can't !! ");
                 return false;
             }
             m_gameObserver.playerMoneyChanged(m_pokerTable, p);
@@ -443,22 +448,25 @@ public class PokerGame
                 dealRiver();
                 break;
         }
-        m_gameObserver.gameBoardCardsChanged(m_pokerTable);
+        setCurrentGameRoundState(TypePokerGameRoundState.BETTING);
     }
     
     private void dealRiver()
     {
         m_pokerTable.addBoardCard(m_pokerDealer.dealRiver());
+        m_gameObserver.gameBoardCardsChanged(m_pokerTable);
     }
     
     private void dealTurn()
     {
         m_pokerTable.addBoardCard(m_pokerDealer.dealTurn());
+        m_gameObserver.gameBoardCardsChanged(m_pokerTable);
     }
     
     private void dealFlop()
     {
         m_pokerTable.addBoardCards(m_pokerDealer.dealFlop());
+        m_gameObserver.gameBoardCardsChanged(m_pokerTable);
     }
     
     private void dealHole()
@@ -484,17 +492,20 @@ public class PokerGame
     
     private void TryToBegin()
     {
+        System.out.print("Trying to begin ...");
         m_pokerTable.setNbPlaying(m_pokerTable.getAndSetNbPlayingPlayers());
         if (m_pokerTable.getNbPlaying() > 1)
         {
+            System.out.println(" yep ! do it !");
             m_pokerTable.setNbPlayed(0);
             m_pokerTable.placeButtons();
-            m_gameObserver.gameBlindsNeeded(m_pokerTable);
             m_pokerTable.initPots();
             setCurrentGameState(TypePokerGameState.BLIND_WAITING);
+            m_gameObserver.gameBlindsNeeded(m_pokerTable);
         }
         else
         {
+            System.out.println(" just too bad :(");
             m_pokerTable.setCurrentDealerNoSeat(-1);
             m_pokerTable.setCurrentSmallBlindNoSeat(-1);
             m_pokerTable.setCurrentSmallBlindNoSeat(-1);

@@ -228,7 +228,16 @@ public class PokerTableInfo
     
     public int getAndSetNbPlayingPlayers()
     {
-        return 0;
+        int count = 0;
+        for (final PokerPlayerInfo p : getPlayers())
+        {
+            if (p.canPlay())
+            {
+                p.setPlaying();
+                count++;
+            }
+        }
+        return count;
     }
     
     private PokerPlayerInfo nextPlayer(int seat, List<PokerPlayerInfo> players)
@@ -266,11 +275,12 @@ public class PokerTableInfo
     public void placeButtons()
     {
         m_currentDealerNoSeat = nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
-        m_currentSmallBlindNoSeat = nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
+        m_currentSmallBlindNoSeat = m_nbPlaying == 2 ? m_currentDealerNoSeat : nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
         m_currentBigBlindNoSeat = nextPlayingPlayer(m_currentSmallBlindNoSeat).getCurrentTablePosition();
         m_blindNeeded.clear();
         m_blindNeeded.put(getPlayer(m_currentSmallBlindNoSeat), getSmallBlindAmount());
         m_blindNeeded.put(getPlayer(m_currentBigBlindNoSeat), getBigBlindAmount());
+        m_totalBlindNeeded = getSmallBlindAmount() + getBigBlindAmount();
     }
     
     public int blindNeeded(PokerPlayerInfo p)

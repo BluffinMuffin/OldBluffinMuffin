@@ -89,9 +89,10 @@ public class GameTableInfoCommand implements IPokerCommand
             }
         }
         
-        for (int i = 0; i != m_nbPlayers; ++i)
+        for (int i = 0; i < info.getNbMaxSeats(); ++i)
         {
             final SummarySeatInfo seat = new SummarySeatInfo(i);
+            m_seats.add(seat);
             final PokerPlayerInfo player = info.getPlayer(i);
             seat.m_isEmpty = (player == null);
             
@@ -118,8 +119,6 @@ public class GameTableInfoCommand implements IPokerCommand
             seat.m_isCurrentPlayer = info.getCurrentPlayerNoSeat() == i; // isCurrentPlayer
             seat.m_timeRemaining = 0; // timeRemaining
             seat.m_bet = player.getCurrentBetMoneyAmount(); // betAmount
-            
-            m_seats.add(seat);
         }
     }
     

@@ -80,6 +80,7 @@ public class TcpPokerClient
     
     protected String receive() throws IOException
     {
+        // TODO: Nobody is waiting for this to happen !
         final String line = m_input.readLine();
         m_commandObserver.receiveSomething(line);
         return line;
@@ -124,8 +125,8 @@ public class TcpPokerClient
     
     public void sitIn()
     {
-        m_game.sitInGame(m_player);
         send(new GameTableInfoCommand(m_game.getPokerTable(), m_player));
+        m_game.sitInGame(m_player);
     }
     
     private void initializePokerObserver()
@@ -233,6 +234,15 @@ public class TcpPokerClient
             public void gameBlindsNeeded(PokerTableInfo t)
             {
                 send(new GameStartedCommand(t.getCurrentDealerNoSeat(), t.getCurrentSmallBlindNoSeat(), t.getCurrentBigBlindNoSeat()));
+                // TODO: eventuellement le client devrait par lui meme répondre a cette question
+                if (m_player.getCurrentTablePosition() == t.getCurrentSmallBlindNoSeat())
+                {
+                    m_game.playMoney(m_player, t.getSmallBlindAmount());
+                }
+                else if (m_player.getCurrentTablePosition() == t.getCurrentBigBlindNoSeat())
+                {
+                    m_game.playMoney(m_player, t.getBigBlindAmount());
+                }
             }
             
             @Override
