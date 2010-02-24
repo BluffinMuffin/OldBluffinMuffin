@@ -160,6 +160,11 @@ public class PokerPlayerInfo
         return m_currentBetMoneyAmount;
     }
     
+    public void setCurrentBetMoneyAmount(int currentBetMoneyAmount)
+    {
+        m_currentBetMoneyAmount = currentBetMoneyAmount;
+    }
+    
     public void setShowingCards(boolean showingCards)
     {
         m_showingCards = showingCards;

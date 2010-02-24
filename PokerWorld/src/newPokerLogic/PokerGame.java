@@ -199,8 +199,9 @@ public class PokerGame
         return false;
     }
     
-    public boolean playMoney(PokerPlayerInfo p, int amnt)
+    public boolean playMoney(PokerPlayerInfo p, int amount)
     {
+        final int amnt = Math.min(amount, p.getCurrentSafeMoneyAmount());
         System.out.println(p.getPlayerName() + " is playing " + amnt + " money on state: " + m_currentGameState);
         if (m_currentGameState == TypePokerGameState.BLIND_WAITING)
         {
@@ -260,9 +261,10 @@ public class PokerGame
                     System.err.println("BUT SCREW YOU, IT'S NOT ENOUGH !!!!!");
                     return false;
                 }
-                System.out.println("So ... All-In !");
+                System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getCurrentBetMoneyAmount());
                 amntNeeded = amnt;
                 p.setAllIn();
+                m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
                 m_pokerTable.decNbPlaying();
             }
             if (!p.tryBet(amnt))
@@ -317,100 +319,7 @@ public class PokerGame
     
     private void startCumulRound()
     {
-        // TODO: lots of things
-        
-        // // Modify the pots
-        // boolean addAPot = false;
-        // Pot lastPot = null;
-        // if (m_currentBet != 0)
-        // {
-        // if (bets.contains(m_currentBet))
-        // {
-        // addAPot = true;
-        // lastPot = new Pot(m_pots.peek().getId() + bets.size() + 1);
-        // }
-        // bets.add(m_currentBet);
-        // final int nbPots = bets.size();
-        // final Pot[] newPots = new Pot[nbPots];
-        // for (int i = 1; i < nbPots; i++)
-        // {
-        // newPots[i] = new Pot(m_pots.peek().getId() + i);
-        // }
-        // newPots[0] = m_pots.peek();
-        // newPots[0].removeAllParticipant();
-        //                
-        // final int firstPlayer = nextPlayer(m_noSeatDealer);
-        // m_playerTurn = firstPlayer;
-        // int bet = 0;
-        // do
-        // {
-        // bet = getPlayer(m_playerTurn).getBet();
-        //                    
-        // if (bet > 0)
-        // {
-        // int lastPotBet = 0;
-        // final Iterator<Integer> it = bets.iterator();
-        // boolean betPlaced = false;
-        // int potIndex = 0;
-        //                        
-        // while (it.hasNext() && !betPlaced)
-        // {
-        // final int nextPotBet = it.next();
-        // final Pot nextPot = newPots[potIndex];
-        // if (bet >= nextPotBet)
-        // {
-        // nextPot.addAmount(nextPotBet - lastPotBet);
-        // if (bet == nextPotBet)
-        // {
-        //                                    
-        // betPlaced = true;
-        // if (addAPot && !getPlayer(m_playerTurn).isAllIn())
-        // {
-        // lastPot.addParticipant(getPlayer(m_playerTurn));
-        // }
-        // else
-        // {
-        // nextPot.addParticipant(getPlayer(m_playerTurn));
-        // }
-        // }
-        // }
-        // else
-        // {
-        // nextPot.addAmount(bet - lastPotBet);
-        // betPlaced = true;
-        // }
-        //                            
-        // ++potIndex;
-        // lastPotBet = nextPotBet;
-        // }
-        // }
-        //                    
-        // m_playerTurn = nextPlayer(m_playerTurn);
-        // }
-        // while (m_playerTurn != firstPlayer);
-        //                
-        // for (int i = 1; i < nbPots; i++)
-        // {
-        // m_pots.push(newPots[i]);
-        // }
-        // if (addAPot && (lastPot.getParticipant().size() > 0))
-        // {
-        // m_pots.push(lastPot);
-        // }
-        // }
-        //            
-        // m_currentBet = 0;
-        //            
-        // // notify the players that the turn ended
-        // final int start = m_noSeatDealer;
-        // int i = start;
-        // do
-        // {
-        // getPlayer(i).endTurn();
-        // i = nextPlayer(i);
-        // }
-        // while (i != start);
-        m_pokerTable.setCurrentHigherBet(0);
+        m_pokerTable.managePotsRoundEnd();
         m_gameObserver.gameBettingRoundEnded(m_pokerTable, m_currentGameRound);
         if (m_pokerTable.getNbPlaying() == 1)
         {
@@ -540,7 +449,7 @@ public class PokerGame
     
     private void continueBettingRound()
     {
-        if (m_pokerTable.getNbPlayed() == m_pokerTable.getNbPlaying())
+        if (m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
         {
             endBettingRound();
         }

@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.List;
 
 import newPokerLogic.PokerGame;
 import newPokerLogic.PokerMoneyPot;
@@ -156,7 +156,7 @@ public class TcpPokerClient implements Runnable
             @Override
             public void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r)
             {
-                final Stack<PokerMoneyPot> pots = t.getPots();
+                final List<PokerMoneyPot> pots = t.getPots();
                 final ArrayList<Integer> amounts = new ArrayList<Integer>();
                 for (final PokerMoneyPot pot : pots)
                 {
@@ -246,7 +246,10 @@ public class TcpPokerClient implements Runnable
                 send(new GamePlayerTurnBeganCommand(p.getCurrentTablePosition()));
                 if (p.getCurrentTablePosition() == m_player.getCurrentTablePosition())
                 {
-                    send(new GameAskActionCommand(t.getCurrentHigherBet() == p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet(), true, t.getCurrentHigherBet(), p.getCurrentSafeMoneyAmount()));
+                    final int minRaise = t.getCurrentHigherBet() + t.getBigBlindAmount();
+                    final int maxRaise = p.getCurrentSafeMoneyAmount();
+                    
+                    send(new GameAskActionCommand(t.getCurrentHigherBet() == p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), t.getCurrentHigherBet(), minRaise < maxRaise, minRaise, maxRaise));
                 }
             }
             

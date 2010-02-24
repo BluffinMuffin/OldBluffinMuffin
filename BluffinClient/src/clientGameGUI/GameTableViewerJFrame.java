@@ -606,6 +606,12 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             {
                 // TODO: update POTS
                 super.betTurnEnded(potIndices, round);
+                
+                for (int i = 0; i < m_table.getPlayers().size(); ++i)
+                {
+                    final JLabel bet = bets[m_table.getPlayer(i).getNoSeat()];
+                    bet.setText("");
+                }
             }
             
             @Override
