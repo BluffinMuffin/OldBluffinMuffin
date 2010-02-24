@@ -87,6 +87,7 @@ public class PokerGame
                 startRound();
                 break;
             case SHOWDOWN:
+                showAllCards();
                 break;
             case DECIDE_WINNERS:
                 break;
@@ -264,6 +265,7 @@ public class PokerGame
                 System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getCurrentBetMoneyAmount());
                 amntNeeded = amnt;
                 p.setAllIn();
+                m_pokerTable.incNbAllIn();
                 m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
                 m_pokerTable.decNbPlaying();
             }
@@ -317,11 +319,24 @@ public class PokerGame
         }
     }
     
+    private void showAllCards()
+    {
+        for (final PokerPlayerInfo p : m_pokerTable.getPlayers())
+        {
+            if (p.isPlaying() || p.isAllIn())
+            {
+                p.setShowingCards(true);
+                m_gameObserver.playerHoleCardsChanged(m_pokerTable, p);
+            }
+        }
+        setCurrentGameState(TypePokerGameState.DECIDE_WINNERS);
+    }
+    
     private void startCumulRound()
     {
         m_pokerTable.managePotsRoundEnd();
         m_gameObserver.gameBettingRoundEnded(m_pokerTable, m_currentGameRound);
-        if (m_pokerTable.getNbPlaying() == 1)
+        if (m_pokerTable.getNbPlaying() == 1 && m_pokerTable.getNbAllIn() == 0)
         {
             setCurrentGameState(TypePokerGameState.SHOWDOWN);
         }
@@ -348,7 +363,7 @@ public class PokerGame
     private void startBettingRound()
     {
         m_pokerTable.setNbPlayed(0);
-        playNext();
+        continueBettingRound();
     }
     
     private void startCardRound()
@@ -449,7 +464,7 @@ public class PokerGame
     
     private void continueBettingRound()
     {
-        if (m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
+        if (m_pokerTable.getNbPlaying() == 1 || m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
         {
             endBettingRound();
         }

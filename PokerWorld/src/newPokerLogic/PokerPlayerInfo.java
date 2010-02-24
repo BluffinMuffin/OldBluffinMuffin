@@ -82,7 +82,7 @@ public class PokerPlayerInfo
             {
                 holeCards[j] = GameCard.NO_CARD;
             }
-            else if (!m_playing)
+            else if (!m_playing && !m_allIn)
             {
                 holeCards[j] = GameCard.NO_CARD;
             }

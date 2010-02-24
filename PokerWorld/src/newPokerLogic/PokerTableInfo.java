@@ -39,6 +39,7 @@ public class PokerTableInfo
     
     private int m_nbPlayed;
     private int m_nbPlaying;
+    private int m_nbAllIn;
     private int m_currentHigherBet;
     
     public PokerTableInfo()
@@ -274,6 +275,7 @@ public class PokerTableInfo
         m_allInCaps.clear();
         m_pots.add(new PokerMoneyPot(0));
         m_currentPotId = 0;
+        setNbAllIn(0);
     }
     
     public void placeButtons()
@@ -510,5 +512,20 @@ public class PokerTableInfo
                 System.out.println(">>> Attached: " + p.getPlayerName());
             }
         }
+    }
+    
+    public void setNbAllIn(int nbAllIn)
+    {
+        m_nbAllIn = nbAllIn;
+    }
+    
+    public void incNbAllIn()
+    {
+        m_nbAllIn++;
+    }
+    
+    public int getNbAllIn()
+    {
+        return m_nbAllIn;
     }
 }
