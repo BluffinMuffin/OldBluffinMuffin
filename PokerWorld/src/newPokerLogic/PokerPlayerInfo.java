@@ -72,6 +72,13 @@ public class PokerPlayerInfo
         return m_currentTablePosition;
     }
     
+    public long handValue(GameCardSet p_board)
+    {
+        final GameCardSet hand = new GameCardSet(p_board);
+        hand.addAll(m_currentHand);
+        return PokerHandEvaluator.hand7Eval(PokerHandEvaluator.encode(hand));
+    }
+    
     public GameCard[] getCurrentHand(boolean canSeeCards)
     {
         final GameCard[] holeCards = new GameCard[2];
@@ -173,5 +180,15 @@ public class PokerPlayerInfo
     public boolean isShowingCards()
     {
         return m_showingCards;
+    }
+    
+    public void setCurrentSafeMoneyAmount(int currentSafeMoneyAmount)
+    {
+        m_currentSafeMoneyAmount = currentSafeMoneyAmount;
+    }
+    
+    public void incCurrentSafeMoneyAmount(int inc)
+    {
+        m_currentSafeMoneyAmount += inc;
     }
 }

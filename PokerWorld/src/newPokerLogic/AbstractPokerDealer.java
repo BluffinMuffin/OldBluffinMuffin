@@ -9,7 +9,7 @@ public abstract class AbstractPokerDealer
     
     public AbstractPokerDealer()
     {
-        m_deck = GameCardSet.freshDeck();
+        freshDeck();
     }
     
     public abstract GameCardSet dealHoles(PokerPlayerInfo p);
@@ -19,4 +19,6 @@ public abstract class AbstractPokerDealer
     public abstract GameCard dealTurn();
     
     public abstract GameCard dealRiver();
+    
+    public abstract void freshDeck();
 }

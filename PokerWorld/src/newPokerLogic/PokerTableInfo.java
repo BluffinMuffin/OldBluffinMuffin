@@ -69,6 +69,14 @@ public class PokerTableInfo
         }
     }
     
+    public void initTable()
+    {
+        m_currentBoardCards.clear();
+        setNbPlayed(0);
+        placeButtons();
+        initPots();
+    }
+    
     public void setBoardCards(GameCard c1, GameCard c2, GameCard c3, GameCard c4, GameCard c5)
     {
         m_currentBoardCards.clear();
@@ -499,6 +507,11 @@ public class PokerTableInfo
                     curPot.attachPlayer(p);
                 }
             }
+            else
+            {
+                curPot.addAmount(p.getCurrentBetMoneyAmount());
+                p.setCurrentBetMoneyAmount(0);
+            }
         }
         m_currentHigherBet = 0;
         
@@ -527,5 +540,30 @@ public class PokerTableInfo
     public int getNbAllIn()
     {
         return m_nbAllIn;
+    }
+    
+    public void cleanPotsForWinning()
+    {
+        for (int i = 0; i <= m_currentPotId; ++i)
+        {
+            final PokerMoneyPot pot = m_pots.get(i);
+            long bestHand = 0;
+            final List<PokerPlayerInfo> info = new ArrayList<PokerPlayerInfo>(pot.getAttachedPlayers());
+            pot.detachAll();
+            for (final PokerPlayerInfo p : info)
+            {
+                final long handValue = p.handValue(m_currentBoardCards);
+                if (handValue > bestHand)
+                {
+                    pot.detachAll();
+                    pot.attachPlayer(p);
+                    bestHand = handValue;
+                }
+                else if (handValue == bestHand)
+                {
+                    pot.attachPlayer(p);
+                }
+            }
+        }
     }
 }

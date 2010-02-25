@@ -136,7 +136,7 @@ public class TempServerClientTableManager extends Thread
                     }
                     
                     // Create new NetworkPlayer.
-                    final TcpPokerClient client = new TcpPokerClient(m_manager.m_game, m_name, Hasard.RandomMinMax(Constants.STARTING_MONEY, Constants.STARTING_MONEY * 5), m_socket);
+                    final TcpPokerClient client = new TcpPokerClient(m_manager.m_game, m_name, Hasard.RandomMinMax(Constants.STARTING_MONEY, Constants.STARTING_MONEY /*  * 5 */), m_socket);
                     final PokerGame game = m_manager.m_game;
                     final PokerTableInfo table = game.getPokerTable();
                     // final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);

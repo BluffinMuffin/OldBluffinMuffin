@@ -8,7 +8,6 @@ public class RandomPokerDealer extends AbstractPokerDealer
     public RandomPokerDealer()
     {
         super();
-        m_deck = GameCardSet.shuffledDeck();
     }
     
     @Override
@@ -40,6 +39,12 @@ public class RandomPokerDealer extends AbstractPokerDealer
     public GameCard dealTurn()
     {
         return m_deck.pop();
+    }
+    
+    @Override
+    public void freshDeck()
+    {
+        m_deck = GameCardSet.shuffledDeck();
     }
     
 }

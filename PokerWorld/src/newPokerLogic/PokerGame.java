@@ -1,5 +1,7 @@
 package newPokerLogic;
 
+import java.util.List;
+
 import newPokerLogicTools.PokerGameObserver;
 
 public class PokerGame
@@ -90,8 +92,10 @@ public class PokerGame
                 showAllCards();
                 break;
             case DECIDE_WINNERS:
+                decideWinners();
                 break;
             case MONEY_DISTRIBUTION:
+                distributeMoney();
                 break;
             case END:
                 m_gameObserver.everythingEnded(m_pokerTable);
@@ -434,9 +438,8 @@ public class PokerGame
         if (m_pokerTable.getNbPlaying() > 1)
         {
             System.out.println(" yep ! do it !");
-            m_pokerTable.setNbPlayed(0);
-            m_pokerTable.placeButtons();
-            m_pokerTable.initPots();
+            m_pokerTable.initTable();
+            m_pokerDealer.freshDeck();
             setCurrentGameState(TypePokerGameState.BLIND_WAITING);
             m_gameObserver.gameBlindsNeeded(m_pokerTable);
         }
@@ -484,5 +487,29 @@ public class PokerGame
         final PokerPlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
         m_pokerTable.setCurrentPlayerNoSeat(player.getCurrentTablePosition());
         m_gameObserver.playerActionNeeded(m_pokerTable, player);
+    }
+    
+    private void distributeMoney()
+    {
+        for (final PokerMoneyPot pot : m_pokerTable.getPots())
+        {
+            final List<PokerPlayerInfo> players = pot.getAttachedPlayers();
+            final int wonAmount = pot.getAmount() / players.size();
+            for (final PokerPlayerInfo p : players)
+            {
+                p.incCurrentSafeMoneyAmount(wonAmount);
+                m_gameObserver.playerMoneyChanged(m_pokerTable, p);
+                m_gameObserver.playerWonPot(m_pokerTable, p, pot, wonAmount);
+            }
+        }
+        m_gameObserver.gameEnded(m_pokerTable);
+        m_currentGameState = TypePokerGameState.PLAYERS_WAITING;
+        TryToBegin();
+    }
+    
+    private void decideWinners()
+    {
+        m_pokerTable.cleanPotsForWinning();
+        setCurrentGameState(TypePokerGameState.MONEY_DISTRIBUTION);
     }
 }
