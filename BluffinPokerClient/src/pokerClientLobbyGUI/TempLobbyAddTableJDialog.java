@@ -23,7 +23,7 @@ import javax.swing.SpinnerNumberModel;
 
 import pokerLogic.TypePokerGame;
 
-public class LobbyAddTableJDialog extends JDialog
+public class TempLobbyAddTableJDialog extends JDialog
 {
     private final String m_playerName;
     
@@ -48,7 +48,7 @@ public class LobbyAddTableJDialog extends JDialog
     /**
      * @param owner
      */
-    public LobbyAddTableJDialog(Frame owner, String playerName, int nbPlayers)
+    public TempLobbyAddTableJDialog(Frame owner, String playerName, int nbPlayers)
     {
         super(owner);
         m_playerName = playerName;

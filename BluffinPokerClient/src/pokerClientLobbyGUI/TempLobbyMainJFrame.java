@@ -41,7 +41,7 @@ import protocolTools.IPokerCommand;
 import utility.Constants;
 import utility.IClosingListener;
 
-public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
+public class TempLobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
     private Socket m_connection = null; // @jve:decl-index=0:
     private PrintWriter m_toServer = null;
@@ -105,7 +105,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
         {
             public void run()
             {
-                final LobbyMainJFrame thisClass = new LobbyMainJFrame();
+                final TempLobbyMainJFrame thisClass = new TempLobbyMainJFrame();
                 thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 thisClass.setVisible(true);
             }
@@ -115,7 +115,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     /**
      * This is the default constructor
      */
-    public LobbyMainJFrame()
+    public TempLobbyMainJFrame()
     {
         super();
         initialize();
@@ -175,7 +175,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     
     private void eventAddTable()
     {
-        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName, 1);
+        final TempLobbyAddTableJDialog form = new TempLobbyAddTableJDialog(TempLobbyMainJFrame.this, m_playerName, 1);
         form.setVisible(true);
         if (form.isOK())
         {
@@ -344,7 +344,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
     
     private void eventConnect()
     {
-        final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
+        final TempLobbyConnectJDialog form = new TempLobbyConnectJDialog(TempLobbyMainJFrame.this);
         form.setVisible(true);
         if (form.isOK())
         {
@@ -358,7 +358,7 @@ public class LobbyMainJFrame extends JFrame implements IClosingListener<PokerCli
                 boolean isOk = Boolean.valueOf(receive());
                 while (!isOk)
                 {
-                    final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyMainJFrame.this, m_playerName);
+                    final TempLobbyNameUsedJDialog form2 = new TempLobbyNameUsedJDialog(TempLobbyMainJFrame.this, m_playerName);
                     form2.setVisible(true);
                     m_playerName = form2.getPlayerName();
                     send(new LobbyConnectCommand(m_playerName));

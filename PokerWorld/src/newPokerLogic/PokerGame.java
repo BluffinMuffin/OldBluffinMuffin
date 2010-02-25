@@ -4,7 +4,7 @@ import java.util.List;
 
 import newPokerLogicTools.PokerGameObserver;
 
-public class PokerGame
+public class PokerGame implements IPokerGame
 {
     private final PokerGameObserver m_gameObserver;
     private final PokerTableInfo m_pokerTable;
