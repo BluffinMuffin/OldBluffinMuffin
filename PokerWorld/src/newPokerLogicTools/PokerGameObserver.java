@@ -2,7 +2,6 @@ package newPokerLogicTools;
 
 import newPokerLogic.PokerMoneyPot;
 import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 import utility.EventObserver;
@@ -10,119 +9,119 @@ import utility.EventObserver;
 public class PokerGameObserver extends EventObserver<PokerGameListener> implements PokerGameListener
 {
     @Override
-    public void gameBlindsNeeded(PokerTableInfo t)
+    public void gameBlindsNeeded()
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.gameBlindsNeeded(t);
+            listener.gameBlindsNeeded();
         }
     }
     
     @Override
-    public void playerJoined(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerJoined(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerJoined(t, p);
+            listener.playerJoined(p);
         }
     }
     
     @Override
-    public void playerLeaved(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerLeaved(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerLeaved(t, p);
+            listener.playerLeaved(p);
         }
     }
     
     @Override
-    public void playerActionNeeded(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerActionNeeded(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerActionNeeded(t, p);
+            listener.playerActionNeeded(p);
         }
     }
     
     @Override
-    public void gameBoardCardsChanged(PokerTableInfo t)
+    public void gameBettingRoundStarted()
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.gameBoardCardsChanged(t);
+            listener.gameBettingRoundStarted();
         }
     }
     
     @Override
-    public void everythingEnded(PokerTableInfo t)
+    public void everythingEnded()
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.everythingEnded(t);
+            listener.everythingEnded();
         }
     }
     
     @Override
-    public void playerMoneyChanged(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerMoneyChanged(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerMoneyChanged(t, p);
+            listener.playerMoneyChanged(p);
         }
     }
     
     @Override
-    public void playerActionTaken(PokerTableInfo t, PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
+    public void playerActionTaken(PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerActionTaken(t, p, reason, playedAmount);
+            listener.playerActionTaken(p, reason, playedAmount);
         }
     }
     
     @Override
-    public void gameEnded(PokerTableInfo t)
+    public void gameEnded()
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.gameEnded(t);
+            listener.gameEnded();
         }
     }
     
     @Override
-    public void playerWonPot(PokerTableInfo t, PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
+    public void playerWonPot(PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerWonPot(t, p, pot, 0);
+            listener.playerWonPot(p, pot, 0);
         }
     }
     
     @Override
-    public void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r)
+    public void gameBettingRoundEnded(TypePokerGameRound r)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.gameBettingRoundEnded(t, r);
+            listener.gameBettingRoundEnded(r);
         }
     }
     
     @Override
-    public void playerHoleCardsChanged(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerHoleCardsChanged(PokerPlayerInfo p)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.playerHoleCardsChanged(t, p);
+            listener.playerHoleCardsChanged(p);
         }
     }
     
     @Override
-    public void gameGenerallyUpdated(PokerTableInfo t)
+    public void gameGenerallyUpdated()
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.gameGenerallyUpdated(t);
+            listener.gameGenerallyUpdated();
         }
     }
 }

@@ -146,6 +146,12 @@ public class ClientSidePokerTcpServer implements IPokerGame
     }
     
     @Override
+    public PokerTableInfo getPokerTable()
+    {
+        return m_pokerTable;
+    }
+    
+    @Override
     public PokerGameObserver getGameObserver()
     {
         return m_gameObserver;
@@ -212,7 +218,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 {
                     p.setCurrentBetMoneyAmount(0);
                 }
-                m_gameObserver.gameBettingRoundEnded(m_pokerTable, round);
+                m_gameObserver.gameBettingRoundEnded(round);
             }
             
             @Override
@@ -224,13 +230,13 @@ public class ClientSidePokerTcpServer implements IPokerGame
                     cards[i] = GameCard.getInstance(command.getCardsId().get(i));
                 }
                 m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
-                m_gameObserver.gameBoardCardsChanged(m_pokerTable);
+                m_gameObserver.gameBettingRoundStarted();
             }
             
             @Override
             public void gameEndedCommandReceived(GameEndedCommand command)
             {
-                m_gameObserver.gameEnded(m_pokerTable);
+                m_gameObserver.gameEnded();
             }
             
             @Override
@@ -239,7 +245,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 m_pokerTable.setCurrentDealerNoSeat(command.GetNoSeatD());
                 m_pokerTable.setCurrentSmallBlindNoSeat(command.GetNoSeatSB());
                 m_pokerTable.setCurrentBigBlindNoSeat(command.GetNoSeatBB());
-                m_gameObserver.gameBlindsNeeded(m_pokerTable);
+                m_gameObserver.gameBlindsNeeded();
             }
             
             @Override
@@ -248,7 +254,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 final List<Integer> ids = command.getCardsId();
                 p.setHand(GameCard.getInstance(ids.get(0)), GameCard.getInstance(ids.get(1)));
-                m_gameObserver.playerHoleCardsChanged(m_pokerTable, p);
+                m_gameObserver.playerHoleCardsChanged(p);
             }
             
             @Override
@@ -256,7 +262,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             {
                 final PokerPlayerInfo p = new PokerPlayerInfo(command.getPlayerPos(), command.getPlayerName(), command.getPlayerMoney());
                 m_pokerTable.forceJoinTable(p, command.getPlayerPos());
-                m_gameObserver.playerJoined(m_pokerTable, p);
+                m_gameObserver.playerJoined(p);
             }
             
             @Override
@@ -264,7 +270,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             {
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 m_pokerTable.leaveTable(p);
-                m_gameObserver.playerLeaved(m_pokerTable, p);
+                m_gameObserver.playerLeaved(p);
             }
             
             @Override
@@ -272,7 +278,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             {
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
-                m_gameObserver.playerMoneyChanged(m_pokerTable, p);
+                m_gameObserver.playerMoneyChanged(p);
             }
             
             @Override
@@ -280,7 +286,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             {
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 m_pokerTable.setCurrentPlayerNoSeat(command.getPlayerPos());
-                m_gameObserver.playerActionNeeded(m_pokerTable, p);
+                m_gameObserver.playerActionNeeded(p);
             }
             
             @Override
@@ -315,7 +321,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                         m_pokerTable.incTotalPotAmount(a);
                         break;
                 }
-                m_gameObserver.playerActionTaken(m_pokerTable, p, action, a);
+                m_gameObserver.playerActionTaken(p, action, a);
             }
             
             @Override
@@ -323,13 +329,13 @@ public class ClientSidePokerTcpServer implements IPokerGame
             {
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
-                m_gameObserver.playerWonPot(m_pokerTable, p, m_pokerTable.getPots().get(command.getPotID()), command.getShared());
+                m_gameObserver.playerWonPot(p, m_pokerTable.getPots().get(command.getPotID()), command.getShared());
             }
             
             @Override
             public void tableClosedCommandReceived(GameTableClosedCommand command)
             {
-                m_gameObserver.everythingEnded(m_pokerTable);
+                m_gameObserver.everythingEnded();
             }
             
             @Override
@@ -351,7 +357,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 }
                 m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 
-                m_gameObserver.gameGenerallyUpdated(m_pokerTable);
+                m_gameObserver.gameGenerallyUpdated();
                 
                 for (final PokerPlayerInfo p : m_pokerTable.getPlayers())
                 {
@@ -389,7 +395,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                     
                     p.setCurrentBetMoneyAmount(seat.m_bet);
                     
-                    m_gameObserver.playerHoleCardsChanged(m_pokerTable, p);
+                    m_gameObserver.playerHoleCardsChanged(p);
                     
                 }
             }

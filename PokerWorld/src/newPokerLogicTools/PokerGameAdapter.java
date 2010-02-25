@@ -2,7 +2,6 @@ package newPokerLogicTools;
 
 import newPokerLogic.PokerMoneyPot;
 import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 
@@ -10,67 +9,67 @@ public class PokerGameAdapter implements PokerGameListener
 {
     
     @Override
-    public void gameBlindsNeeded(PokerTableInfo t)
+    public void gameBlindsNeeded()
     {
     }
     
     @Override
-    public void playerJoined(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerJoined(PokerPlayerInfo p)
     {
     }
     
     @Override
-    public void playerLeaved(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerLeaved(PokerPlayerInfo p)
     {
     }
     
     @Override
-    public void playerActionNeeded(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerActionNeeded(PokerPlayerInfo p)
     {
     }
     
     @Override
-    public void gameBoardCardsChanged(PokerTableInfo t)
+    public void gameBettingRoundStarted()
     {
     }
     
     @Override
-    public void everythingEnded(PokerTableInfo t)
+    public void everythingEnded()
     {
     }
     
     @Override
-    public void playerMoneyChanged(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerMoneyChanged(PokerPlayerInfo p)
     {
     }
     
     @Override
-    public void playerActionTaken(PokerTableInfo t, PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
+    public void playerActionTaken(PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
     {
     }
     
     @Override
-    public void gameEnded(PokerTableInfo t)
+    public void gameEnded()
     {
     }
     
     @Override
-    public void playerWonPot(PokerTableInfo t, PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
+    public void playerWonPot(PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
     {
     }
     
     @Override
-    public void playerHoleCardsChanged(PokerTableInfo t, PokerPlayerInfo p)
+    public void playerHoleCardsChanged(PokerPlayerInfo p)
     {
     }
     
     @Override
-    public void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r)
+    public void gameBettingRoundEnded(TypePokerGameRound r)
     {
     }
     
     @Override
-    public void gameGenerallyUpdated(PokerTableInfo t)
+    public void gameGenerallyUpdated()
     {
     }
     

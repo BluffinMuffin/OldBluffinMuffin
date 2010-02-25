@@ -4,40 +4,39 @@ import java.util.EventListener;
 
 import newPokerLogic.PokerMoneyPot;
 import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 
 public interface PokerGameListener extends EventListener
 {
     
-    void everythingEnded(PokerTableInfo t);
+    void everythingEnded();
     
     //
     // GAME ////////////////////////////////////////////////
-    void gameBoardCardsChanged(PokerTableInfo t);
+    void gameBettingRoundStarted();
     
-    void gameBlindsNeeded(PokerTableInfo t);
+    void gameBlindsNeeded();
     
-    void gameEnded(PokerTableInfo t);
+    void gameEnded();
     
-    void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r);
+    void gameBettingRoundEnded(TypePokerGameRound r);
     
-    void gameGenerallyUpdated(PokerTableInfo t);
+    void gameGenerallyUpdated();
     
     //
     // PLAYER ////////////////////////////////////////////////
-    void playerJoined(PokerTableInfo t, PokerPlayerInfo p);
+    void playerJoined(PokerPlayerInfo p);
     
-    void playerLeaved(PokerTableInfo t, PokerPlayerInfo p);
+    void playerLeaved(PokerPlayerInfo p);
     
-    void playerActionTaken(PokerTableInfo t, PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount);
+    void playerActionTaken(PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount);
     
-    void playerMoneyChanged(PokerTableInfo t, PokerPlayerInfo p);
+    void playerMoneyChanged(PokerPlayerInfo p);
     
-    void playerActionNeeded(PokerTableInfo t, PokerPlayerInfo p);
+    void playerActionNeeded(PokerPlayerInfo p);
     
-    void playerHoleCardsChanged(PokerTableInfo t, PokerPlayerInfo p);
+    void playerHoleCardsChanged(PokerPlayerInfo p);
     
-    void playerWonPot(PokerTableInfo t, PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount);
+    void playerWonPot(PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount);
 }
