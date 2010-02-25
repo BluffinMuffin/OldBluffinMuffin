@@ -146,23 +146,8 @@ public class PokerTableInfo
         return m_tableName;
     }
     
-    public boolean joinTable(PokerPlayerInfo p, int seat)
+    public boolean forceJoinTable(PokerPlayerInfo p, int seat)
     {
-        if (m_RemainingSeats.size() == 0)
-        {
-            return false;
-        }
-        
-        if (containsPlayer(p))
-        {
-            return false;
-        }
-        
-        if (!m_RemainingSeats.contains(seat))
-        {
-            return false;
-        }
-        m_RemainingSeats.remove(seat);
         p.setFolded();
         p.setCurrentTablePosition(seat);
         m_currentPlayers[seat] = p;

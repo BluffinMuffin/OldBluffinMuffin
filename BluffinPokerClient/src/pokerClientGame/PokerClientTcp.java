@@ -46,7 +46,7 @@ import utility.IClosingListener;
  *         It first parse message received from the server before calling
  *         corresponding methods in IPokerAgentListener.
  */
-public class PokerClient extends Thread implements IClosingListener<IClientPoker>
+public class PokerClientTcp extends Thread implements IClosingListener<IClientPoker>
 {
     public static final int NB_CARDS_BOARDS = 5;
     public static final int NB_SEATS = 9;
@@ -64,9 +64,9 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
     PrintWriter m_toServer = null;
     
     /** Array containing listener to be notify when PokerClient is closing. **/
-    List<IClosingListener<PokerClient>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<PokerClient>>());
+    List<IClosingListener<PokerClientTcp>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<PokerClientTcp>>());
     
-    public PokerClient(ClientPokerPlayerInfo p_localPlayer, Socket p_server, ClientPokerTableInfo p_table, BufferedReader p_fromServer)
+    public PokerClientTcp(ClientPokerPlayerInfo p_localPlayer, Socket p_server, ClientPokerTableInfo p_table, BufferedReader p_fromServer)
     {
         m_table = p_table;
         
@@ -77,12 +77,12 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
         m_table.addPlayer(p_localPlayer.getNoSeat(), p_localPlayer);
         m_server = p_server;
         
-        for (int i = 0; i != PokerClient.NB_CARDS_BOARDS; ++i)
+        for (int i = 0; i != PokerClientTcp.NB_CARDS_BOARDS; ++i)
         {
             m_table.m_boardCards.add(GameCard.NO_CARD);
         }
         
-        for (int i = 0; i != PokerClient.NB_SEATS; ++i)
+        for (int i = 0; i != PokerClientTcp.NB_SEATS; ++i)
         {
             m_table.m_pots.add(0);
         }
@@ -135,7 +135,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 
                 synchronized (m_closingListeners)
                 {
-                    for (final IClosingListener<PokerClient> listener : m_closingListeners)
+                    for (final IClosingListener<PokerClientTcp> listener : m_closingListeners)
                     {
                         listener.closing(this);
                     }
@@ -180,7 +180,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
      * @param p_listener
      *            - Listener to be call when PokerClient will be closing.
      */
-    public void addClosingListener(IClosingListener<PokerClient> p_listener)
+    public void addClosingListener(IClosingListener<PokerClientTcp> p_listener)
     {
         m_closingListeners.add(p_listener);
     }
@@ -191,7 +191,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
      * @param p_listener
      *            - Listener to remove.
      */
-    public void removeClosingListener(IClosingListener<PokerClient> p_listener)
+    public void removeClosingListener(IClosingListener<PokerClientTcp> p_listener)
     {
         m_closingListeners.remove(p_listener);
     }
@@ -201,7 +201,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
      */
     private void resetBoardCards()
     {
-        for (int i = 0; i != PokerClient.NB_CARDS_BOARDS; ++i)
+        for (int i = 0; i != PokerClientTcp.NB_CARDS_BOARDS; ++i)
         {
             m_table.m_boardCards.set(i, GameCard.NO_CARD);
         }

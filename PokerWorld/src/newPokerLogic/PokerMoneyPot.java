@@ -14,6 +14,12 @@ public class PokerMoneyPot
         m_id = id;
     }
     
+    public PokerMoneyPot(int id, int amount)
+    {
+        m_id = id;
+        m_amount = amount;
+    }
+    
     public void setAmount(int amount)
     {
         m_amount = amount;

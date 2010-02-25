@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import newPokerLogic.IPokerGame;
+import newPokerLogic.PokerGame;
 import newPokerLogic.PokerMoneyPot;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
@@ -51,7 +51,7 @@ public class ServerSidePokerTcpClient implements Runnable
     
     // POKER Things
     private final PokerPlayerInfo m_player;
-    private final IPokerGame m_game;
+    private final PokerGame m_game;
     private final GameServerSideObserver m_commandObserver = new GameServerSideObserver();
     private PokerGameObserver m_pokerObserver;
     
@@ -67,7 +67,7 @@ public class ServerSidePokerTcpClient implements Runnable
      * @throws IOException
      *             Error with the TCP connection
      */
-    public ServerSidePokerTcpClient(IPokerGame game, String name, int money, Socket socket) throws IOException
+    public ServerSidePokerTcpClient(PokerGame game, String name, int money, Socket socket) throws IOException
     {
         m_game = game;
         m_player = new PokerPlayerInfo(name, money);

@@ -116,4 +116,13 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
             listener.playerHoleCardsChanged(t, p);
         }
     }
+    
+    @Override
+    public void gameGenerallyUpdated(PokerTableInfo t)
+    {
+        for (final PokerGameListener listener : getSubscribers())
+        {
+            listener.gameGenerallyUpdated(t);
+        }
+    }
 }

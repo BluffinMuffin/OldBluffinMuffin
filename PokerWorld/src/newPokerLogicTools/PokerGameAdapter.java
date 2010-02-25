@@ -69,4 +69,9 @@ public class PokerGameAdapter implements PokerGameListener
     {
     }
     
+    @Override
+    public void gameGenerallyUpdated(PokerTableInfo t)
+    {
+    }
+    
 }

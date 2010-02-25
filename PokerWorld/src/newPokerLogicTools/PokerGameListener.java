@@ -23,6 +23,8 @@ public interface PokerGameListener extends EventListener
     
     void gameBettingRoundEnded(PokerTableInfo t, TypePokerGameRound r);
     
+    void gameGenerallyUpdated(PokerTableInfo t);
+    
     //
     // PLAYER ////////////////////////////////////////////////
     void playerJoined(PokerTableInfo t, PokerPlayerInfo p);

@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import pokerClientGame.ClientPokerPlayerInfo;
 import pokerClientGame.ClientPokerTableInfo;
-import pokerClientGame.PokerClient;
+import pokerClientGame.PokerClientTcp;
 import pokerClientGameGUI.GameTableJFrame;
 import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyConnectCommand;
@@ -41,7 +41,7 @@ import protocolTools.IPokerCommand;
 import utility.Constants;
 import utility.IClosingListener;
 
-public class TempLobbyMainJFrame extends JFrame implements IClosingListener<PokerClient>
+public class TempLobbyMainJFrame extends JFrame implements IClosingListener<PokerClientTcp>
 {
     private Socket m_connection = null; // @jve:decl-index=0:
     private PrintWriter m_toServer = null;
@@ -53,7 +53,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
     // private boolean m_advisor;
     
     // List of PokerClient (one for each table the player joined)
-    private final List<PokerClient> m_clients = new ArrayList<PokerClient>();
+    private final List<PokerClientTcp> m_clients = new ArrayList<PokerClientTcp>();
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -85,7 +85,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final PokerClient client = findClient();
+                    final PokerClientTcp client = findClient();
                     if (client != null)
                     {
                         client.disconnect();
@@ -280,7 +280,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
     
     public void allowJoinOrLeave()
     {
-        final PokerClient client = findClient();
+        final PokerClientTcp client = findClient();
         if (client != null)
         {
             getJJoinTableButton().setEnabled(false);
@@ -496,7 +496,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
     }
     
     @Override
-    public void closing(PokerClient e)
+    public void closing(PokerClientTcp e)
     {
         m_clients.remove(e);
         refreshTables();
@@ -703,7 +703,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
             table.m_bigBlindAmount = p_bigBlindAmount;
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
-            final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
+            final PokerClientTcp client = new PokerClientTcp(localPlayer, tableSocket, table, fromTable);
             GameTableJFrame gui = null;
             
             // if (m_advisor)
@@ -738,7 +738,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
         return false;
     }
     
-    public PokerClient findClient(int noPort)
+    public PokerClientTcp findClient(int noPort)
     {
         int i = 0;
         while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))
@@ -754,7 +754,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
         return m_clients.get(i);
     }
     
-    private PokerClient findClient()
+    private PokerClientTcp findClient()
     {
         if (getJMainTable().getSelectionModel().isSelectionEmpty())
         {
