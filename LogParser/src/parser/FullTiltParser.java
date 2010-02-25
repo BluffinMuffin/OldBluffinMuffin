@@ -1,11 +1,22 @@
 package parser;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import db.PostgresConnector;
 
 public class FullTiltParser extends AbsParser {
 
 	private static final FullTiltParser INSTANCE = new FullTiltParser();
+
+	private PostgresConnector dbConnector;
+
+	private Connection bob;
+
 	private String splitter = "\r\n\r\n\r\n";
 
 	public static FullTiltParser getInstance() {
@@ -16,12 +27,15 @@ public class FullTiltParser extends AbsParser {
 	@Override
 	void understand(String fileContent) {
 
+		dbConnector = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinWifEnum", "postgres", "27053");
+
 		System.out.println("I am a FullTilt");
 
 		String[] gameLogs = null;
 		String[] rounds = null;
 
 		int nbPlayers = 0;
+		HashMap<String, Integer> playerMap = new HashMap<String, Integer>();
 
 		gameLogs = fileContent.split(splitter);
 
@@ -30,29 +44,30 @@ public class FullTiltParser extends AbsParser {
 			rounds = log.split("\r\n\\*\\*\\*.");
 			nbPlayers = 0;
 
-			for (int x = 0; x < rounds.length; x++) { // Do a for each? Need to
-				// increment a car
-				// anyways
-
+			for (int x = 0; x < rounds.length; x++) {
 				if (rounds[x].length() > 0) {
 
-					if (x == 0) {
-						// First line is header
-						/*
-						 * ValBB, ValSB, BetType, GameType,
-						 */
+					if (x == 0) { // Si on est dans la section info générales de la game
+						// Get player info
+						Pattern myregex = Pattern.compile("Seat \\d: ([\\w+\\s]+)[\\x28]\\$?(.+)[\\x29]");
 
-						// Count player seats
-						Pattern myregex = Pattern.compile("Seat.\\d:");
-
-						Matcher matcher = myregex.matcher(rounds[x]); // Woudn't
-						// have to
-						// do this
-						// with a
-						// for each
+						Matcher matcher = myregex.matcher(rounds[x]);
 
 						while (matcher.find()) {
 							nbPlayers++;
+							if (playerMap.isEmpty()) {
+
+								System.out.println("Player: " + matcher.group(1));
+								System.out.println("Monies: " + matcher.group(2));
+
+								// Obtenir les id Player des joueurs et ajouter comme value du hashmap
+								playerMap.put(matcher.group(1), getPlayerID(matcher.group(1)));
+
+							} else {
+								// Fait un check si les player ont changé
+								// But: éviter de refaire des query dans la bd à chaque game du même log
+							}
+
 						}
 						// System.out.println("yous got " + nbPlayers + " ppl sitting down");
 
@@ -100,10 +115,11 @@ public class FullTiltParser extends AbsParser {
 						 */
 
 						// String tableInfo = "(\\w+\\s)+Game.#(\\d+):(..+[\\x28](\\d+)[\\x29],)?.Table.(\\w+\\s)+([\\x28](\\d) max[\\x29])? ?- ";
-						String tableInfo = "(\\w+\\s)+Game.#(\\d+):(..+,)?.Table.(\\w+\\s)+([\\x28]\\d max[\\x29])? ?- ";
-						String sbbb = "\\$?(\\d+(.\\d+)?)\\/\\$?(\\d+(.\\d+)?).-.";
-						String bettype = "(\\w+\\s)+Hold'em - ";
+						String tableInfo = "([\\w+\\s]+)Game.#(\\d+):(..+,)?.Table.(\\w+\\s)+([\\x28]\\d max[\\x29])? ?- ";
+						String bettype = "([\\w+\\s]+)Hold'em - ";
 						String timestmp = "([0-9]{0,2}:[0-9]{0,2}:[0-9]{0,2}) (\\w+) - ([0-9]{0,4}\\/[0-9]{0,2}\\/[0-9]{0,2})";
+
+						String sbbb = "\\$?(\\d+[.]?[0-9]?{2})\\/\\$?(\\d+[.]?[0-9]?{2}).-.";
 
 						p = Pattern.compile(tableInfo + sbbb + bettype + timestmp, Pattern.CASE_INSENSITIVE);
 						RegexMatcher = p.matcher(firstLine);
@@ -119,8 +135,8 @@ public class FullTiltParser extends AbsParser {
 							System.out.println("8: " + RegexMatcher.group(8));
 							System.out.println("9: " + RegexMatcher.group(9));
 							System.out.println("10: " + RegexMatcher.group(10));
-							System.out.println("10: " + RegexMatcher.group(11));
-							System.out.println("10: " + RegexMatcher.group(12));
+							System.out.println("11: " + RegexMatcher.group(11));
+							// System.out.println("10: " + RegexMatcher.group(12));
 
 						}
 
@@ -144,4 +160,26 @@ public class FullTiltParser extends AbsParser {
 		}
 
 	}
+
+	private Integer getPlayerID(String playerName) {
+		ResultSet rs = dbConnector.query("SELECT idPlayer from Player WHERE playerName = " + playerName);
+		try {
+			if (rs.wasNull()) {
+
+				rs = dbConnector.query("INSERT INTO Player (playerName, idDomain) VALUES (" + playerName + ", " + "2");
+
+				rs = dbConnector.query("SELECT idPlayer FROM Player where playerName = " + playerName);
+
+				System.out.println("The attributed id for " + playerName + " was " + rs.getInt(1));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return 0;
+
+	}
+
 }
