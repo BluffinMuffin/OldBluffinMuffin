@@ -30,6 +30,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import pokerLobbyGUI.LobbyAddTableJDialog;
+import pokerLobbyGUI.LobbyNameUsedJDialog;
 import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
@@ -48,9 +50,7 @@ import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientGameGUI.GameTableViewerJFrame;
-import clientLobbyGUI.LobbyAddTableJDialog;
 import clientLobbyGUI.LobbyMainJFrame;
-import clientLobbyGUI.LobbyNameUsedJDialog;
 import clientStats.StatsAgent;
 
 public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerClient>

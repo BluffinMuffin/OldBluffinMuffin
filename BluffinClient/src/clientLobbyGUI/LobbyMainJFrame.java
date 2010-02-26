@@ -29,6 +29,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import pokerLobbyGUI.LobbyAddTableJDialog;
+import pokerLobbyGUI.LobbyNameUsedJDialog;
 import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;

@@ -30,7 +30,9 @@ import javax.swing.table.DefaultTableModel;
 import pokerClientGame.ClientPokerPlayerInfo;
 import pokerClientGame.ClientPokerTableInfo;
 import pokerClientGame.PokerClientTcp;
-import pokerClientGameGUI.GameTableJFrame;
+import pokerGameGUI.GameTableJFrame;
+import pokerLobbyGUI.LobbyAddTableJDialog;
+import pokerLobbyGUI.LobbyNameUsedJDialog;
 import pokerLogic.TypePokerGame;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
@@ -175,7 +177,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
     
     private void eventAddTable()
     {
-        final TempLobbyAddTableJDialog form = new TempLobbyAddTableJDialog(TempLobbyMainJFrame.this, m_playerName, 1);
+        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(TempLobbyMainJFrame.this, m_playerName, 1);
         form.setVisible(true);
         if (form.isOK())
         {
@@ -358,7 +360,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
                 boolean isOk = Boolean.valueOf(receive());
                 while (!isOk)
                 {
-                    final TempLobbyNameUsedJDialog form2 = new TempLobbyNameUsedJDialog(TempLobbyMainJFrame.this, m_playerName);
+                    final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(TempLobbyMainJFrame.this, m_playerName);
                     form2.setVisible(true);
                     m_playerName = form2.getPlayerName();
                     send(new LobbyConnectCommand(m_playerName));
@@ -720,8 +722,9 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
             // }
             
             // Start a the new PokerClient.
-            gui.setPokerObserver(client.getPokerObserver());
-            client.setActionner(gui);
+            // TODO: gui.setPokerObserver
+            // gui.setPokerObserver(client.getPokerObserver());
+            // client.setActionner(gui);
             client.addClosingListener(this);
             client.start();
             

@@ -1,4 +1,4 @@
-package clientGameGUI;
+package pokerGameGUI;
 
 import gameLogic.GameCard;
 

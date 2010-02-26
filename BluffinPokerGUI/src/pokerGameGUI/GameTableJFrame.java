@@ -1,4 +1,4 @@
-package pokerClientGameGUI;
+package pokerGameGUI;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -8,11 +8,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import pokerClientGameTools.IClientPokerActionner;
 import pokerLogic.PokerPlayerAction;
 import pokerLogic.TypePlayerAction;
 
-public class GameTableJFrame extends GameTableViewerJFrame implements IClientPokerActionner
+public class GameTableJFrame extends GameTableViewerJFrame
 {
     private int m_minAmount;
     private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
@@ -186,7 +185,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
         getJRaiseSpinner().setEnabled(false);
     }
     
-    @Override
+    // TODO: this is a problem @Override
     public PokerPlayerAction getAction()
     {
         final PokerPlayerAction actionTaken = new PokerPlayerAction(TypePlayerAction.NOTHING);
@@ -212,7 +211,7 @@ public class GameTableJFrame extends GameTableViewerJFrame implements IClientPok
         return actionTaken;
     }
     
-    @Override
+    // TODO: this is a problem @Override
     public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         m_minAmount = p_callAmount;

@@ -1,4 +1,4 @@
-package tempServerLobby;
+package newServerLobby;
 
 import java.io.BufferedReader;
 import java.io.IOException;

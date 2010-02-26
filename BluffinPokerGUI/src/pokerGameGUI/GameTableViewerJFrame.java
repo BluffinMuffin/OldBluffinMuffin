@@ -1,6 +1,4 @@
-package pokerClientGameGUI;
-
-import gameLogic.GameCard;
+package pokerGameGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,13 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import pokerClientGameTools.ClientPokerAdapter;
-import pokerClientGameTools.ClientPokerObserver;
-import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.OldPokerTableInfo;
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import newPokerLogic.IPokerGame;
+import newPokerLogicTools.PokerGameAdapter;
+import newPokerLogicTools.PokerGameObserver;
 import utilGUI.ConsoleJPanel;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
@@ -32,7 +25,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private final PlayerHudJPanel[] huds = new PlayerHudJPanel[10];
     private final JLabel[] bets = new JLabel[10];
     private final GameCardJPanel[] board = new GameCardJPanel[5];
-    private int m_last_NiceHud = -1;
     
     /**
      * @param args
@@ -582,302 +574,18 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     }
     
     @Override
-    public void setTable(OldPokerTableInfo pTable)
+    public void setGame(IPokerGame game)
     {
-        super.setTable(pTable);
-        writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
+        super.setGame(game);
+        // writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
     }
     
     @Override
-    public void setPokerObserver(ClientPokerObserver observer)
+    public void setPokerObserver(PokerGameObserver observer)
     {
         super.setPokerObserver(observer);
         initializePokerObserverForConsole();
         initializePokerObserverForGUI();
-    }
-    
-    private void initializePokerObserverForGUI()
-    {
-        m_pokerObserver.subscribe(new ClientPokerAdapter()
-        {
-            
-            @Override
-            public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
-            {
-                // TODO: update POTS
-                super.betTurnEnded(potIndices, round);
-                
-                for (int i = 0; i < m_table.getPlayers().size(); ++i)
-                {
-                    final JLabel bet = bets[m_table.getPlayer(i).getNoSeat()];
-                    bet.setText("");
-                }
-            }
-            
-            @Override
-            public void boardChanged(ArrayList<Integer> boardCardIndices)
-            {
-                for (final Integer i : boardCardIndices)
-                {
-                    board[i].setCard(m_table.getBoard()[i]);
-                }
-            }
-            
-            @Override
-            public void gameEnded()
-            {
-                m_last_NiceHud = -1;
-                for (int i = 0; i < m_table.getPlayers().size(); ++i)
-                {
-                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).getNoSeat()];
-                    final JLabel bet = bets[m_table.getPlayer(i).getNoSeat()];
-                    bet.setText("");
-                    php.setPlayerMoney(m_table.getPlayer(i).getMoney());
-                    php.setNotDealer();
-                    php.setNoBlind();
-                    if (m_table.getPlayer(i).getMoney() == 0)
-                    {
-                        php.setBackground(Color.gray);
-                        php.setHeaderColor(Color.gray);
-                        php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
-                    }
-                    else
-                    {
-                        php.setBackground(Color.white);
-                        php.setHeaderColor(Color.white);
-                    }
-                    php.setPlayerAction(TypePlayerAction.NOTHING);
-                }
-                super.gameEnded();
-            }
-            
-            @Override
-            public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
-            {
-                changePotAmount(0);
-                huds[m_table.m_noSeatDealer].setDealer();
-                huds[m_table.m_noSeatSmallBlind].setSmallBlind();
-                huds[m_table.m_noSeatBigBlind].setBigBlind();
-                for (int i = 0; i < 5; ++i)
-                {
-                    board[i].setCard(GameCard.HIDDEN_CARD);
-                }
-            }
-            
-            @Override
-            public void playerCardChanged(OldPokerPlayerInfo player)
-            {
-                final PlayerHudJPanel php = huds[player.getNoSeat()];
-                php.setPlayerCards(player.getHand()[0], player.getHand()[1]);
-            }
-            
-            @Override
-            public void playerJoined(OldPokerPlayerInfo player)
-            {
-                final PlayerHudJPanel php = huds[player.getNoSeat()];
-                installPlayer(php, player);
-            }
-            
-            private void installPlayer(PlayerHudJPanel php, OldPokerPlayerInfo player)
-            {
-                php.setPlayerName(player.getName());
-                php.setPlayerInfo("");// TODO: Human or BOT
-                php.setPlayerAction(TypePlayerAction.NOTHING);
-                php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
-                php.setPlayerMoney(player.getMoney());
-                php.setBackground(Color.white);
-                php.setHeaderColor(Color.white);
-                php.setVisible(true);
-            }
-            
-            @Override
-            public void playerLeft(OldPokerPlayerInfo player)
-            {
-                final PlayerHudJPanel php = huds[player.getNoSeat()];
-                php.setVisible(false);
-            }
-            
-            @Override
-            public void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount)
-            {
-                final PlayerHudJPanel php = huds[player.getNoSeat()];
-                php.setPlayerMoney(player.getMoney());
-            }
-            
-            @Override
-            public void playerTurnBegan(OldPokerPlayerInfo oldPlayer)
-            {
-                final OldPokerPlayerInfo player = m_table.m_currentPlayer;
-                if (m_last_NiceHud >= 0)
-                {
-                    final PlayerHudJPanel php = huds[m_last_NiceHud];
-                    php.setHeaderColor(Color.white);
-                }
-                if (player != null)
-                {
-                    final PlayerHudJPanel php = huds[player.getNoSeat()];
-                    if (player == m_table.m_localPlayer)
-                    {
-                        php.setHeaderColor(Color.green);
-                    }
-                    else
-                    {
-                        php.setHeaderColor(new Color(175, 200, 75));
-                    }
-                    m_last_NiceHud = player.getNoSeat();
-                }
-            }
-            
-            @Override
-            public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
-            {
-                
-                final PlayerHudJPanel php = huds[player.getNoSeat()];
-                php.setPlayerMoney(player.getMoney());
-                php.setPlayerAction(action);
-                changePotAmount(m_table.m_totalPotAmount);
-                if (action == TypePlayerAction.FOLD)
-                {
-                    php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
-                }
-                if (player.getBet() > 0)
-                {
-                    final JLabel bet = bets[player.getNoSeat()];
-                    bet.setText("$" + player.getBet());
-                }
-            }
-            
-            @Override
-            public void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex)
-            {
-                final PlayerHudJPanel php = huds[player.getNoSeat()];
-                php.setPlayerMoney(player.getMoney());
-                php.setHeaderColor(Color.cyan);
-            }
-            
-            @Override
-            public void tableInfos()
-            {
-                for (int i = 0; i < m_table.getPlayers().size(); ++i)
-                {
-                    final PlayerHudJPanel php = huds[m_table.getPlayer(i).getNoSeat()];
-                    installPlayer(php, m_table.getPlayer(i));
-                }
-            }
-        });
-    }
-    
-    private void initializePokerObserverForConsole()
-    {
-        m_pokerObserver.subscribe(new ClientPokerAdapter()
-        {
-            
-            @Override
-            public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
-            {
-                writeLine("==> End of " + round.name());
-            }
-            
-            @Override
-            public void boardChanged(ArrayList<Integer> boardCardIndices)
-            {
-                final StringBuilder sb = new StringBuilder();
-                sb.append("==> Board Card dealt:");
-                for (final Integer i : boardCardIndices)
-                {
-                    sb.append(" ");
-                    sb.append(m_table.getBoard()[i].toString());
-                }
-                writeLine(sb.toString());
-            }
-            
-            @Override
-            public void gameEnded()
-            {
-                writeLine("==> End of the Game");
-            }
-            
-            @Override
-            public void gameStarted(OldPokerPlayerInfo oldDealer, OldPokerPlayerInfo oldSmallBlind, OldPokerPlayerInfo oldBigBlind)
-            {
-                writeLine("==> Game started");
-                writeLine("==> " + m_table.m_dealer.getName() + " is the Dealer");
-                writeLine("==> " + m_table.m_smallBlind.getName() + " is the SmallBlind");
-                writeLine("==> " + m_table.m_bigBlind.getName() + " is the BigBlind");
-            }
-            
-            @Override
-            public void playerCardChanged(OldPokerPlayerInfo player)
-            {
-                if (player == m_table.m_localPlayer)
-                {
-                    final StringBuilder sb = new StringBuilder();
-                    sb.append("==> Hole Card dealt:");
-                    
-                    sb.append(" ");
-                    sb.append(player.getHand()[0]);
-                    sb.append(" ");
-                    sb.append(player.getHand()[1]);
-                    
-                    writeLine(sb.toString());
-                }
-            }
-            
-            @Override
-            public void playerJoined(OldPokerPlayerInfo player)
-            {
-                writeLine(player.getName() + " joined the table");
-            }
-            
-            @Override
-            public void playerLeft(OldPokerPlayerInfo player)
-            {
-                writeLine(player.getName() + " left the table");
-            }
-            
-            @Override
-            public void playerMoneyChanged(OldPokerPlayerInfo player, int oldMoneyAmount)
-            {
-                writeLine(player.getName() + " money changed");
-            }
-            
-            @Override
-            public void playerTurnBegan(OldPokerPlayerInfo player)
-            {
-                // writeLine("Player turn began");
-            }
-            
-            @Override
-            public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
-            {
-                final PokerPlayerAction ppa = new PokerPlayerAction(action, actionAmount);
-                writeLine(player.getName() + " " + ppa);
-            }
-            
-            @Override
-            public void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex)
-            {
-                writeLine(player.getName() + " won pot");
-            }
-            
-            @Override
-            public void tableClosed()
-            {
-                writeLine("==> Table closed");
-            }
-            
-            @Override
-            public void tableInfos()
-            {
-                writeLine("==> Table info received");
-            }
-            
-            @Override
-            public void waitingForPlayers()
-            {
-                // writeLine("Waiting for players");
-            }
-        });
     }
     
     protected void changeSubTitle(String title)
@@ -888,5 +596,21 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     protected void changePotAmount(int amount)
     {
         jTotalPotLabel.setText("$" + amount);
+    }
+    
+    private void initializePokerObserverForGUI()
+    {
+        m_pokerObserver.subscribe(new PokerGameAdapter()
+        {
+            // TODO: it's obvious :p
+        });
+    }
+    
+    private void initializePokerObserverForConsole()
+    {
+        m_pokerObserver.subscribe(new PokerGameAdapter()
+        {
+            // TODO: it's obvious :p
+        });
     }
 } // @jve:decl-index=0:visual-constraint="10,10"
