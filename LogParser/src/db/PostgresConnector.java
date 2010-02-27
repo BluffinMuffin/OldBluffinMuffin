@@ -2,11 +2,25 @@ package db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class PostgresConnector {
+
+	// // EXAMPLE DB USE
+	// PostgresConnector p = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinWifEnum", "postgres", "27053");
+	// ResultSet r = p.query("select * from domain");
+	// try {
+	// while (r.next()) {
+	// System.out.println(r.getString(0));
+	// }
+	// } catch (SQLException e1) {
+	// // TODO Auto-generated catch block
+	// e1.printStackTrace();
+	// }
+	// System.exit(1);
 
 	private Connection c = null;
 
@@ -14,7 +28,7 @@ public class PostgresConnector {
 	private PostgresConnector() {
 	};
 
-	public PostgresConnector(String serverName, String dbName, String user, String pass) {
+	protected PostgresConnector(String serverName, String dbName, String user, String pass) {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException cnfe) {
@@ -31,10 +45,49 @@ public class PostgresConnector {
 			System.exit(1);
 		}
 
+		try {
+			c.setAutoCommit(false);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
 		System.out.println("Connected to database \"" + dbName + "\" on server(" + serverName + ")");
 	}
 
-	public ResultSet query(String sql) {
+	protected int rowCount(String colToCount, String table, String theRest) {
+		ResultSet r = query("SELECT count(" + colToCount + ") FROM " + table + " " + theRest);
+		int nbRow = 0;
+		try {
+			r.next();
+			nbRow = r.getInt(1);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			System.exit(-1);
+		}
+		return nbRow;
+	}
+
+	protected void rollback() {
+		try {
+			c.rollback();
+		} catch (SQLException e) {
+			System.out.println("ROLLBACK FAILED!");
+			System.out.println(e.getMessage());
+			System.exit(-1);
+		}
+	}
+
+	protected void commit() {
+		try {
+			c.commit();
+		} catch (SQLException e) {
+			System.out.println("COMMIT FAILED!");
+			System.out.println(e.getMessage());
+			System.exit(-1);
+		}
+	}
+
+	protected ResultSet query(String sql) {
 		Statement s = null;
 		try {
 			s = c.createStatement();
@@ -53,6 +106,19 @@ public class PostgresConnector {
 		}
 
 		return rs;
+	}
+
+	protected PreparedStatement getPreparedStatement(String sql) {
+		PreparedStatement s = null;
+
+		try {
+			s = c.prepareStatement(sql);
+		} catch (SQLException se) {
+			System.out.println(se.getMessage());
+			System.exit(1);
+		}
+
+		return s;
 	}
 
 }
