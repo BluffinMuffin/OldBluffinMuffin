@@ -1,18 +1,16 @@
 package parser;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import db.PostgresConnector;
+import db.PokerLogsDBManager;
 
 public class FullTiltParser extends AbsParser {
 
 	private static final FullTiltParser INSTANCE = new FullTiltParser();
 
-	private PostgresConnector dbConnector;
+	private PokerLogsDBManager DBManager;
 
 	private HashMap<String, Integer> playerMap = new HashMap<String, Integer>();
 
@@ -24,7 +22,7 @@ public class FullTiltParser extends AbsParser {
 	@Override
 	void understand(String fileContent) {
 
-		// dbConnector = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinWifEnum", "postgres", "27053");
+		DBManager = new PokerLogsDBManager();
 
 		String[] gameLogs = null;
 		String[] rounds = null;
@@ -77,27 +75,6 @@ public class FullTiltParser extends AbsParser {
 
 	}
 
-	private Integer getPlayerID(String playerName) {
-		ResultSet rs = dbConnector.query("SELECT idPlayer from Player WHERE playerName = " + playerName);
-		try {
-			if (rs.wasNull()) {
-
-				rs = dbConnector.query("INSERT INTO Player (playerName, idDomain) VALUES (" + playerName + ", " + "2");
-
-				rs = dbConnector.query("SELECT idPlayer FROM Player where playerName = " + playerName);
-
-				System.out.println("The attributed id for " + playerName + " was " + rs.getInt(1));
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return 0;
-
-	}
-
 	private void setDealerID(String info) {
 
 		/*
@@ -118,17 +95,7 @@ public class FullTiltParser extends AbsParser {
 	private void readHeader(String header) {
 
 		/*
-		 * group(1) : Domain
-		 * group(2) : idGame
-		 * group(3) : unimportant tournament data
-		 * group(4): tableName
-		 * group(5): max players on table optional
-		 * group(6): small blind
-		 * group(7): big blind
-		 * group(8): bettype group(7): startTime - keep as timestamp or go time and date seperate?
-		 * group(9): time
-		 * group(10): timezone
-		 * group(11): date
+		 * group(1) : Domain group(2) : idGame group(3) : unimportant tournament data group(4): tableName group(5): max players on table optional group(6): small blind group(7): big blind group(8): bettype group(7): startTime - keep as timestamp or go time and date seperate? group(9): time group(10): timezone group(11): date
 		 */
 
 		String tableInfo = "([\\w+\\s]+)Game.#(\\d+):(..+,)?.Table.(\\w+\\s)+([\\x28]\\d max[\\x29])? ?- ";
@@ -174,7 +141,7 @@ public class FullTiltParser extends AbsParser {
 				System.out.println("Monies: " + matcher.group(2));
 
 				// Obtenir les id Player des joueurs et ajouter comme value du hashmap
-				// playerMap.put(matcher.group(1), getPlayerID(matcher.group(1)));
+				playerMap.put(matcher.group(1), DBManager.getPlayerID(matcher.group(1).trim()));
 
 			} else {
 				// Fait un check si les player ont changé
