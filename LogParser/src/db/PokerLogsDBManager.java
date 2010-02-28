@@ -16,9 +16,11 @@ public class PokerLogsDBManager {
 	private PreparedStatement insertDeltCards = null;
 	private PreparedStatement insertBettingRound = null;
 	private PreparedStatement insertShowdown = null;
+	private PreparedStatement selectPlayerID = null;
 
 	public PokerLogsDBManager() {
-		db = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinWifEnum", "postgres", "27053");
+		// db = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinWifEnum", "postgres", "27053");
+		db = new PostgresConnector("srv-prj-05.dmi.usherb.ca", "BluffinDB", "postgres", "27053");
 		initStatement();
 	}
 
@@ -29,6 +31,9 @@ public class PokerLogsDBManager {
 
 		// INSERT PLAYER
 		insertPlayer = db.getPreparedStatement("INSERT into Player (playerName, idDomain) values(?,?)");
+
+		// SELECT PLAYER ID
+		selectPlayerID = db.getPreparedStatement("SELECT idPlayer from Player WHERE playerName = ?");
 	}
 
 	public void addDomain(String domainName, String domainUrl) {
@@ -133,5 +138,33 @@ public class PokerLogsDBManager {
 		}
 
 		return domainMap;
+	}
+
+	public Integer getPlayerID(String playerName) {
+
+		try {
+
+			selectPlayerID.setString(1, playerName);
+			ResultSet rs = selectPlayerID.executeQuery();
+
+			if (!rs.next()) {
+				insertPlayer.clearParameters();
+				insertPlayer.setString(1, playerName);
+				insertPlayer.setInt(2, 2);
+				insertPlayer.executeUpdate();
+			}
+
+			rs = selectPlayerID.executeQuery();
+			rs.next();
+			System.out.println("The attributed id for " + playerName + " was " + rs.getInt(1));
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("There was a problen retriving player id");
+			System.out.println(e.getMessage());
+		}
+		db.commit();
+		return 0;
+
 	}
 }
