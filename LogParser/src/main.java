@@ -27,14 +27,17 @@ public class main {
 		// }
 		// System.exit(1);
 
-		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/New folder", ".txt");
-		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
+		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/New folder", ".txt");
+		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
 		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive/PokerTracker/hhdb2.mdb", ".txt");
 
 		FullTiltParser ftp = FullTiltParser.getInstance();
 		PokerStarsParser psp = PokerStarsParser.getInstance();
 
 		String fileContent = null;
+		/*
+		 * Integer nbGames = 0; Integer nbPokerStarGames = 0; Integer nbFullTiltGames = 0; Integer wtf = 0;
+		 */
 
 		for (String s : logPaths) {
 			// System.out.println(s);
@@ -42,9 +45,19 @@ public class main {
 
 			try {
 				fileContent = readFileAsString(s);
+				/*
+				 * String[] gameLogs = null;
+				 * 
+				 * gameLogs = fileContent.split("\r\n\r\n\r\n");
+				 * 
+				 * for (String log : gameLogs) { nbGames++; if (fileContent.startsWith("PokerStars")) { nbPokerStarGames++; } else if (fileContent.startsWith("Full")) { nbFullTiltGames++; } else { wtf++; System.out.println("Path: " + s); }
+				 * 
+				 * }
+				 */
 
 				// System.out.print(s + "  :  ");
 				// Read the header & spawn parser accordingly
+
 				if (fileContent.startsWith("PokerStars")) {
 					psp.parse(fileContent);
 				} else if (fileContent.startsWith("Full Tilt Poker") || fileContent.startsWith("FullTiltPoker")) {
@@ -57,7 +70,9 @@ public class main {
 				System.out.println("Can't read file at: " + s);
 			}
 		}
-
+		/*
+		 * System.out.println("You has " + nbGames + " games in your poker archive"); System.out.println(nbPokerStarGames + " of then are from pokerStars"); System.out.println(nbFullTiltGames + " of then are from Full Tilt modafucka"); System.out.println(wtf + " of then are i don't know the fuck where"); System.out.println(nbGames - (nbPokerStarGames + nbFullTiltGames + wtf) + "games are unaccounted for");
+		 */
 		System.out.println(logPaths.size());
 
 	}
