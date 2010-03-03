@@ -607,7 +607,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
             {
                 // TODO: update POTS
-                super.betTurnEnded(potIndices, round);
                 
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {

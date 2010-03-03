@@ -366,7 +366,7 @@ public class PokerGame implements IPokerGame
     
     private void startBettingRound()
     {
-        m_gameObserver.gameBettingRoundStarted();
+        m_gameObserver.gameBettingRoundStarted(m_currentGameRound);
         m_pokerTable.setNbPlayed(0);
         continueBettingRound();
     }

@@ -27,9 +27,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import pokerClientGame.ClientPokerPlayerInfo;
-import pokerClientGame.ClientPokerTableInfo;
 import pokerClientGame.PokerClientTcp;
+import pokerClientSide.ClientSidePokerTcpServer;
 import pokerGameGUI.GameTableJFrame;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
@@ -55,7 +54,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
     // private boolean m_advisor;
     
     // List of PokerClient (one for each table the player joined)
-    private final List<PokerClientTcp> m_clients = new ArrayList<PokerClientTcp>();
+    private final List<ClientSidePokerTcpServer> m_clients = new ArrayList<ClientSidePokerTcpServer>();
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -87,7 +86,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final PokerClientTcp client = findClient();
+                    final ClientSidePokerTcpServer client = findClient();
                     if (client != null)
                     {
                         client.disconnect();
@@ -282,7 +281,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
     
     public void allowJoinOrLeave()
     {
-        final PokerClientTcp client = findClient();
+        final ClientSidePokerTcpServer client = findClient();
         if (client != null)
         {
             getJJoinTableButton().setEnabled(false);
@@ -699,13 +698,14 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
             
             // Add a tab associated to the newly created table in advanced
             // settings.
-            final ClientPokerPlayerInfo localPlayer = new ClientPokerPlayerInfo(noSeat, m_playerName, 0);
-            final ClientPokerTableInfo table = new ClientPokerTableInfo();
-            table.m_name = p_tableName;
-            table.m_bigBlindAmount = p_bigBlindAmount;
-            table.m_smallBlindAmount = p_bigBlindAmount / 2;
+            // final ClientPokerPlayerInfo localPlayer = new ClientPokerPlayerInfo(noSeat, m_playerName, 0);
+            // final ClientPokerTableInfo table = new ClientPokerTableInfo();
+            // table.m_name = p_tableName;
+            // table.m_bigBlindAmount = p_bigBlindAmount;
+            // table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
-            final PokerClientTcp client = new PokerClientTcp(localPlayer, tableSocket, table, fromTable);
+            final ClientSidePokerTcpServer client = new ClientSidePokerTcpServer(tableSocket, fromTable, noSeat, m_playerName);
+            // final PokerClientTcp client = new PokerClientTcp(localPlayer, tableSocket, table, fromTable);
             GameTableJFrame gui = null;
             
             // if (m_advisor)
@@ -723,11 +723,12 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
             
             // Start a the new PokerClient.
             // TODO: gui.setPokerObserver
-            // gui.setPokerObserver(client.getPokerObserver());
+            gui.setPokerObserver(client.getGameObserver());
+            gui.setGame(client, noSeat);
             // client.setActionner(gui);
-            client.addClosingListener(this);
+            // client.addClosingListener(this);
             client.start();
-            
+            gui.start();
             m_clients.add(client);
             
             return true;
@@ -741,7 +742,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
         return false;
     }
     
-    public PokerClientTcp findClient(int noPort)
+    public ClientSidePokerTcpServer findClient(int noPort)
     {
         int i = 0;
         while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))
@@ -757,7 +758,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
         return m_clients.get(i);
     }
     
-    private PokerClientTcp findClient()
+    private ClientSidePokerTcpServer findClient()
     {
         if (getJMainTable().getSelectionModel().isSelectionEmpty())
         {

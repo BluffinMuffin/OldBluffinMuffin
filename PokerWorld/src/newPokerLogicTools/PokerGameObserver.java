@@ -45,11 +45,11 @@ public class PokerGameObserver extends EventObserver<PokerGameListener> implemen
     }
     
     @Override
-    public void gameBettingRoundStarted()
+    public void gameBettingRoundStarted(TypePokerGameRound r)
     {
         for (final PokerGameListener listener : getSubscribers())
         {
-            listener.gameBettingRoundStarted();
+            listener.gameBettingRoundStarted(r);
         }
     }
     

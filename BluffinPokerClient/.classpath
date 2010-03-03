@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerWorld"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Utility"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/BluffinPokerGUI"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PokerClientServerWorld"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

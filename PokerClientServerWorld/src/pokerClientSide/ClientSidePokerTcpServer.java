@@ -63,7 +63,6 @@ public class ClientSidePokerTcpServer implements IPokerGame
         {
             e.printStackTrace();
         }
-        initializeCommandObserver();
     }
     
     public boolean isConnected()
@@ -131,6 +130,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
     protected String receive() throws IOException
     {
         final String line = m_fromServer.readLine();
+        System.out.println(m_playerName + " RECV something");
         m_commandObserver.receiveSomething(line);
         return line;
     }
@@ -181,7 +181,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void commandReceived(String command)
             {
-                System.out.println(m_playerName + " RECV [" + command + "]");
+                System.out.println(m_playerName + " RECV -=" + command + "=-");
             }
             
             @Override
@@ -230,7 +230,23 @@ public class ClientSidePokerTcpServer implements IPokerGame
                     cards[i] = GameCard.getInstance(command.getCardsId().get(i));
                 }
                 m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
-                m_gameObserver.gameBettingRoundStarted();
+                // TODO: get rid of this !
+                if (cards[0].getId() == GameCard.NO_CARD_ID)
+                {
+                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.PREFLOP);
+                }
+                else if (cards[3].getId() == GameCard.NO_CARD_ID)
+                {
+                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.FLOP);
+                }
+                else if (cards[4].getId() == GameCard.NO_CARD_ID)
+                {
+                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.TURN);
+                }
+                else
+                {
+                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.RIVER);
+                }
             }
             
             @Override
@@ -401,5 +417,10 @@ public class ClientSidePokerTcpServer implements IPokerGame
             }
         };
         m_commandObserver.subscribe(adapter);
+    }
+    
+    public int getNoPort()
+    {
+        return m_socket.getPort();
     }
 }

@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
+import newPokerLogic.TypePokerGameAction;
 import pokerLogic.TypePlayerAction;
 
 public class PlayerHudJPanel extends JPanel
@@ -178,6 +179,32 @@ public class PlayerHudJPanel extends JPanel
             case FOLD:
             case RAISE:
                 sb.append(action.name());
+                break;
+        }
+        
+        jActionLabel.setText(sb.toString());
+    }
+    
+    public void setPlayerAction(TypePokerGameAction action, int amnt)
+    {
+        final StringBuilder sb = new StringBuilder("Last Action: ");
+        switch (action)
+        {
+            case CALLED:
+                if (amnt == 0)
+                {
+                    sb.append("CHECK");
+                }
+                else
+                {
+                    sb.append("CALL");
+                }
+                break;
+            case FOLDED:
+                sb.append("FOLD");
+                break;
+            case RAISED:
+                sb.append("RAISE");
                 break;
         }
         

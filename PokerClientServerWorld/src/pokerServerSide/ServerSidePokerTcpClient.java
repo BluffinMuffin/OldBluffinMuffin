@@ -268,7 +268,7 @@ public class ServerSidePokerTcpClient implements Runnable
             }
             
             @Override
-            public void gameBettingRoundStarted()
+            public void gameBettingRoundStarted(TypePokerGameRound r)
             {
                 final GameCard[] cards = new GameCard[5];
                 m_game.getPokerTable().getCurrentBoardCards().toArray(cards);

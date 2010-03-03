@@ -10,15 +10,15 @@ public abstract class GameTableAbstractJFrame extends JFrame
     private static final long serialVersionUID = 1L;
     protected PokerGameObserver m_pokerObserver;
     protected IPokerGame m_game;
+    protected int m_currentTablePosition;
     
-    public void setGame(IPokerGame game)
+    public void setGame(IPokerGame game, int seatViewed)
     {
         m_game = game;
-        
+        m_currentTablePosition = seatViewed;
     }
     
-    @Override
-    public void show()
+    public void start()
     {
         setTitle(getTitle());
         getContentPane().setPreferredSize(getSize());

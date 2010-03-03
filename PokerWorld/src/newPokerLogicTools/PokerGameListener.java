@@ -14,7 +14,7 @@ public interface PokerGameListener extends EventListener
     
     //
     // GAME ////////////////////////////////////////////////
-    void gameBettingRoundStarted();
+    void gameBettingRoundStarted(TypePokerGameRound r);
     
     void gameBlindsNeeded();
     
