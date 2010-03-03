@@ -47,11 +47,13 @@ public class FullTiltParser extends AbsParser {
 				if (rounds[x].length() > 0) {
 					if (x == 0) { // Si on est dans la section info générales de la game
 
-						setPlayers(rounds[x]);
-						readHeader((rounds[x].split("\r\n"))[0]);
+						// setPlayers(rounds[x]);
+						// readHeader((rounds[x].split("\r\n"))[0]);
+						//
+						// setDealerID(rounds[x]);
 
-						setDealerID(rounds[x]);
-						setBlindBettingRound(rounds[x]); // Big blind Broken
+						setBlindBettingRound(rounds[x], "big"); // Set the BIG blinds
+						setBlindBettingRound(rounds[x], "small"); // Set the SMALL blinds
 
 					} else if (x == rounds.length - 1) {
 						// Game Summary
@@ -79,11 +81,7 @@ public class FullTiltParser extends AbsParser {
 
 		// TODO: Replace by megaMatcher of DOOOMM!!
 		/*
-		 * Pattern fold = Pattern.compile("([\\w+\\s]+) folds");
-		 * Pattern raise = Pattern.compile("([\\w+\\s]+)raises to \\$?(\\d+[.]?[0-9]?{2})");
-		 * Pattern call = Pattern.compile("([\\w+\\s]+) calls \\$?(\\d+[.]?[0-9]?{2})");
-		 * Pattern check = Pattern.compile("");
-		 * Pattern voluntaryBet = Pattern.compile("([\\w+\\s]+)adds \\$?(\\d+[.]?[0-9]?{2})");
+		 * Pattern fold = Pattern.compile("([\\w+\\s]+) folds"); Pattern raise = Pattern.compile("([\\w+\\s]+)raises to \\$?(\\d+[.]?[0-9]?{2})"); Pattern call = Pattern.compile("([\\w+\\s]+) calls \\$?(\\d+[.]?[0-9]?{2})"); Pattern check = Pattern.compile(""); Pattern voluntaryBet = Pattern.compile("([\\w+\\s]+)adds \\$?(\\d+[.]?[0-9]?{2})");
 		 */
 
 		Pattern cardsDealt = Pattern.compile("Dealt to ([\\w+\\s]+)\\x5B(..) (..)\\x5D");
@@ -259,32 +257,30 @@ public class FullTiltParser extends AbsParser {
 
 	}
 
-	private void setBlindBettingRound(String info) {
+	private void setBlindBettingRound(String info, String blindType) {
 
 		/*
 		 * TODO: Get corresponding ID's from playerMap once bd is up and running
 		 */
 
-		Pattern p = Pattern.compile("\r\n([\\w+\\s]+)posts the small blind of \\$?(\\d+[.]?[0-9]?{2})");
+		// Pattern p = Pattern.compile("\r\n([\\w+\\s]+)posts the small blind of \\$?(\\d+[.]?[0-9]?{2})");
+
+		// Find the blinds
+		String rexName = "(.+)";
+		String rexStaticString = "\\s+posts the " + blindType + " blind of\\s+";
+		String rexMoney = "\\$(\\d+(\\.\\d{1,2})?)";
+
+		Pattern p = Pattern.compile(rexName + rexStaticString + rexMoney);
 		Matcher RegexMatcher = p.matcher(info);
 
-		if (RegexMatcher.find()) {
-			System.out.println("id smallBlind: " + RegexMatcher.group(1));
+		while (RegexMatcher.find()) {
+			System.out.println("id " + blindType + "Blind($" + RegexMatcher.group(2) + "): " + RegexMatcher.group(1));
 			Bet b = new Bet();
 			b.forced = true;
 			b.forceType = Bet.ForcedBetType.Blind;
 			b.playerName = RegexMatcher.group(1);
 			b.amount = Double.valueOf(RegexMatcher.group(2));
 			game.add(b);
-
-		}
-
-		Pattern m = Pattern.compile("\r\n([\\w+\\s]+)posts the big blind of \\$?(\\d+[.]?[0-9]?{2})");
-		Matcher RegexMatcher2 = m.matcher(info);
-
-		if (RegexMatcher2.find()) {
-			System.out.println("id bigBlind: " + RegexMatcher2.group(1));
-
 		}
 
 		// INSERT INTO bettingRounds(idGame, idGameSet, idPlayer, round, seq, amountRaised) VALUES (idGame, idGameset, idSmallBlind, 'BLIND', 1, 0)
