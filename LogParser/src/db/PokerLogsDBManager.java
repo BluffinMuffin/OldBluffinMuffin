@@ -141,7 +141,7 @@ public class PokerLogsDBManager {
 	}
 
 	public Integer getPlayerID(String playerName) {
-
+		Integer pId = null;
 		try {
 
 			selectPlayerID.setString(1, playerName);
@@ -156,7 +156,8 @@ public class PokerLogsDBManager {
 
 			rs = selectPlayerID.executeQuery();
 			rs.next();
-			System.out.println("The attributed id for " + playerName + " was " + rs.getInt(1));
+			pId = rs.getInt(1);
+			System.out.println("The attributed id for " + playerName + " was " + pId);
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -164,7 +165,7 @@ public class PokerLogsDBManager {
 			System.out.println(e.getMessage());
 		}
 		db.commit();
-		return 0;
+		return pId;
 
 	}
 }
