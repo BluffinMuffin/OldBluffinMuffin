@@ -9,7 +9,7 @@ public class Bet {
 	};
 
 	public enum ForcedBetType {
-		Blind, Post, Ante
+		SmallBlind, BigBlind, Post, Ante
 	};
 
 	public String round = null;
