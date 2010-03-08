@@ -83,6 +83,10 @@ public class PokerPlayerInfo
     {
         final GameCard[] holeCards = new GameCard[2];
         m_currentHand.toArray(holeCards);
+        if (holeCards[0] != null && holeCards[1] == null && holeCards[0].getId() < 0)
+        {
+            holeCards[1] = holeCards[0];
+        }
         for (int j = 0; j < 2; ++j)
         {
             if (holeCards[j] == null)

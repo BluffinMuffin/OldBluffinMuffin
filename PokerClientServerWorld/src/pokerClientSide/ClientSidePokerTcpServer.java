@@ -278,6 +278,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             {
                 final PokerPlayerInfo p = new PokerPlayerInfo(command.getPlayerPos(), command.getPlayerName(), command.getPlayerMoney());
                 m_pokerTable.forceJoinTable(p, command.getPlayerPos());
+                p.setPlaying();
                 m_gameObserver.playerJoined(p);
             }
             
@@ -373,8 +374,6 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 }
                 m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 
-                m_gameObserver.gameGenerallyUpdated();
-                
                 for (final PokerPlayerInfo p : m_pokerTable.getPlayers())
                 {
                     m_pokerTable.leaveTable(p);
@@ -391,6 +390,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                     m_pokerTable.forceJoinTable(p, noSeat);
                     final List<Integer> ids = seat.m_holeCardIDs;
                     p.setHand(GameCard.getInstance(ids.get(0)), GameCard.getInstance(ids.get(1)));
+                    p.setPlaying();
                     
                     if (seat.m_isDealer)
                     {
@@ -414,6 +414,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                     m_gameObserver.playerHoleCardsChanged(p);
                     
                 }
+                m_gameObserver.gameGenerallyUpdated();
             }
         };
         m_commandObserver.subscribe(adapter);

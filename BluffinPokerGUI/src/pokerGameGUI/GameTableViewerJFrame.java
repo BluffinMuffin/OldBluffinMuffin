@@ -692,10 +692,10 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             public void gameGenerallyUpdated()
             {
                 final PokerTableInfo table = m_game.getPokerTable();
-                for (int i = 0; i < table.getPlayers().size(); ++i)
+                for (final PokerPlayerInfo p : table.getPlayers())
                 {
-                    final PlayerHudJPanel php = huds[i];
-                    installPlayer(php, table.getPlayer(i));
+                    final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                    installPlayer(php, p);
                 }
             }
             
@@ -759,15 +759,16 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerMoneyChanged(PokerPlayerInfo p)
             {
-                // TODO Auto-generated method stub
-                super.playerMoneyChanged(p);
+                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
             }
             
             @Override
             public void playerWonPot(PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
             {
-                // TODO Auto-generated method stub
-                super.playerWonPot(p, pot, wonAmount);
+                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
+                php.setHeaderColor(Color.cyan);
             }
             
             private void installPlayer(PlayerHudJPanel php, PokerPlayerInfo player)
@@ -775,7 +776,8 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 php.setPlayerName(player.getPlayerName());
                 php.setPlayerInfo("");// TODO: Human or BOT
                 php.setPlayerAction(TypePlayerAction.NOTHING);
-                php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
+                final GameCard[] cards = player.getCurrentHand(true);
+                php.setPlayerCards(cards[0], cards[1]);
                 php.setPlayerMoney(player.getCurrentSafeMoneyAmount());
                 php.setBackground(Color.white);
                 php.setHeaderColor(Color.white);
