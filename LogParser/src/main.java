@@ -27,12 +27,13 @@ public class main {
 		// }
 		// System.exit(1);
 
-		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/New folder", ".txt");
-		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
+		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/^.^/Downloads/scratch/data/Poker Archive/Poker Archive", ".txt");
+		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive", ".txt");
 		// ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/BUNNI/Desktop/Poker Archive/Poker Archive/PokerTracker/hhdb2.mdb", ".txt");
+		ArrayList<String> logPaths = PathBuilder.getlogPaths("C:/Users/^.^/Downloads/scratch/data/Poker Archive/Poker Archive/New folder", ".txt");
 
-		FullTiltParser ftp = FullTiltParser.getInstance();
-		PokerStarsParser psp = PokerStarsParser.getInstance();
+		// FullTiltParser ftp = FullTiltParser.getInstance();
+		// PokerStarsParser psp = PokerStarsParser.getInstance();
 
 		String fileContent = null;
 		/*
@@ -59,9 +60,12 @@ public class main {
 				// Read the header & spawn parser accordingly
 
 				if (fileContent.startsWith("PokerStars")) {
+					PokerStarsParser psp = new PokerStarsParser();
 					psp.parse(fileContent);
 				} else if (fileContent.startsWith("Full Tilt Poker") || fileContent.startsWith("FullTiltPoker")) {
+					FullTiltParser ftp = new FullTiltParser(); // TODO: new FulltTiltParser(fileContent);
 					ftp.parse(fileContent);
+
 				} else {
 					System.out.println("Unknown log type at" + s);
 				}
