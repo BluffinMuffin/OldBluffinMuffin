@@ -1,26 +1,24 @@
 package pokerGameGUI;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
+import newPokerLogic.PokerPlayerInfo;
+import newPokerLogic.PokerTableInfo;
+import newPokerLogicTools.PokerGameAdapter;
+import newPokerLogicTools.PokerGameObserver;
 
 public class GameTableJFrame extends GameTableViewerJFrame
 {
-    private int m_minAmount;
-    private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     private JButton jFoldButton = null;
-    private JButton jCheckButton = null;
     private JButton jCallButton = null;
     private JButton jRaiseButton = null;
     private JSpinner jRaiseSpinner = null;
@@ -43,7 +41,6 @@ public class GameTableJFrame extends GameTableViewerJFrame
     {
         final JPanel panel = super.getJRightPanel();
         panel.add(getJFoldButton());
-        panel.add(getJCheckButton());
         panel.add(getJCallButton());
         panel.add(getJRaiseButton());
         panel.add(getJRaiseSpinner());
@@ -84,36 +81,13 @@ public class GameTableJFrame extends GameTableViewerJFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    actionTaken(new PokerPlayerAction(TypePlayerAction.FOLD));
+                    final PokerTableInfo table = m_game.getPokerTable();
+                    final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+                    m_game.playMoney(p, -1);
                 }
             });
         }
         return jFoldButton;
-    }
-    
-    /**
-     * This method initializes jCheckButton
-     * 
-     * @return javax.swing.JButton
-     */
-    private JButton getJCheckButton()
-    {
-        if (jCheckButton == null)
-        {
-            jCheckButton = new JButton();
-            jCheckButton.setText("CHECK");
-            jCheckButton.setEnabled(false);
-            jCheckButton.setPreferredSize(new Dimension(125, 25));
-            jCheckButton.addActionListener(new java.awt.event.ActionListener()
-            {
-                public void actionPerformed(java.awt.event.ActionEvent e)
-                {
-                    disableButtons();
-                    actionTaken(new PokerPlayerAction(TypePlayerAction.CHECK));
-                }
-            });
-        }
-        return jCheckButton;
     }
     
     /**
@@ -134,7 +108,9 @@ public class GameTableJFrame extends GameTableViewerJFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    actionTaken(new PokerPlayerAction(TypePlayerAction.CALL, m_minAmount));
+                    final PokerTableInfo table = m_game.getPokerTable();
+                    final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+                    m_game.playMoney(p, table.getCurrentHigherBet() - p.getCurrentBetMoneyAmount());
                 }
             });
         }
@@ -159,82 +135,76 @@ public class GameTableJFrame extends GameTableViewerJFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    actionTaken(new PokerPlayerAction(TypePlayerAction.RAISE, (Integer) getJRaiseSpinner().getValue()));
+                    final PokerTableInfo table = m_game.getPokerTable();
+                    final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+                    m_game.playMoney(p, (Integer) getJRaiseSpinner().getValue() - p.getCurrentBetMoneyAmount());
                 }
             });
         }
         return jRaiseButton;
     }
     
-    private void actionTaken(PokerPlayerAction p_actionTaken)
-    {
-        synchronized (m_playerAction)
-        {
-            m_playerAction.setType(p_actionTaken.getType());
-            m_playerAction.setAmount(p_actionTaken.getAmount());
-            m_playerAction.notify();
-        }
-    }
-    
     private void disableButtons()
     {
         getJFoldButton().setEnabled(false);
-        getJCheckButton().setEnabled(false);
         getJCallButton().setEnabled(false);
         getJRaiseButton().setEnabled(false);
         getJRaiseSpinner().setEnabled(false);
     }
     
-    // TODO: this is a problem @Override
-    public PokerPlayerAction getAction()
+    @Override
+    public void setPokerObserver(PokerGameObserver observer)
     {
-        final PokerPlayerAction actionTaken = new PokerPlayerAction(TypePlayerAction.NOTHING);
-        
-        synchronized (m_playerAction)
-        {
-            try
-            {
-                if (m_playerAction.getType() == TypePlayerAction.NOTHING)
-                {
-                    m_playerAction.wait();
-                }
-                
-                actionTaken.setType(m_playerAction.getType());
-                actionTaken.setAmount(m_playerAction.getAmount());
-                m_playerAction.setType(TypePlayerAction.NOTHING);
-            }
-            catch (final InterruptedException e)
-            {
-            }
-        }
-        
-        return actionTaken;
+        super.setPokerObserver(observer);
+        initializePokerObserver();
     }
     
-    // TODO: this is a problem @Override
-    public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
+    private void initializePokerObserver()
     {
-        m_minAmount = p_callAmount;
-        if (p_actionsAllowed.contains(TypePlayerAction.CALL))
+        m_pokerObserver.subscribe(new PokerGameAdapter()
         {
-            getJCallButton().setEnabled(true);
-        }
-        
-        if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
+            
+            @Override
+            public void playerActionNeeded(PokerPlayerInfo p)
+            {
+                if (p.getCurrentTablePosition() == m_currentTablePosition)
+                {
+                    getJFoldButton().setEnabled(true);
+                    setCallButtonName();
+                    getJCallButton().setEnabled(true);
+                    final PokerTableInfo table = m_game.getPokerTable();
+                    final int totalAmnt = p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount();
+                    if (table.getCurrentHigherBet() < totalAmnt)
+                    {
+                        final int min = table.getCurrentHigherBet() + table.getBigBlindAmount();
+                        getJRaiseButton().setEnabled(true);
+                        getJRaiseSpinner().setEnabled(true);
+                        getJRaiseSpinner().setModel(new SpinnerNumberModel(min, min, totalAmnt, min));
+                    }
+                }
+            }
+            
+        });
+    }
+    
+    // TODO: Pas pentoute rapport ici: si tout le monde est all-in au preflop ca chie :p
+    public void setCallButtonName()
+    {
+        final PokerTableInfo table = m_game.getPokerTable();
+        final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+        String s;
+        if (table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount())
         {
-            getJCheckButton().setEnabled(true);
+            s = "CHECK";
         }
-        
-        if (p_actionsAllowed.contains(TypePlayerAction.FOLD))
+        else if (table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount()))
         {
-            getJFoldButton().setEnabled(true);
+            s = "ALL-IN";
         }
-        
-        if (p_actionsAllowed.contains(TypePlayerAction.RAISE))
+        else
         {
-            getJRaiseButton().setEnabled(true);
-            getJRaiseSpinner().setEnabled(true);
-            getJRaiseSpinner().setModel(new SpinnerNumberModel(p_minRaiseAmount, p_minRaiseAmount, p_maxRaiseAmount, p_minRaiseAmount));
+            s = "CALL";
         }
+        getJCallButton().setText(s);
     }
 }

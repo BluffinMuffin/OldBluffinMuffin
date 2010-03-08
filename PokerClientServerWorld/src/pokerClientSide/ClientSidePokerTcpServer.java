@@ -190,6 +190,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 final List<Integer> amounts = command.getPotsAmounts();
                 m_pokerTable.getPots().clear();
                 m_pokerTable.setTotalPotAmount(0);
+                m_pokerTable.setCurrentHigherBet(0);
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)
                 {
                     m_pokerTable.getPots().add(new PokerMoneyPot(i, amounts.get(i)));
@@ -309,6 +310,10 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void playerTurnEndedCommandReceived(GamePlayerTurnEndedCommand command)
             {
+                if (m_pokerTable.getCurrentHigherBet() < command.getPlayerBet())
+                {
+                    m_pokerTable.setCurrentHigherBet(command.getPlayerBet());
+                }
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 final int a = command.getActionAmount();
                 TypePokerGameAction action = TypePokerGameAction.FOLDED;

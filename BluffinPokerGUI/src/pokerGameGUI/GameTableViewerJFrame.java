@@ -593,14 +593,6 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         // writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
     }
     
-    @Override
-    public void setPokerObserver(PokerGameObserver observer)
-    {
-        super.setPokerObserver(observer);
-        initializePokerObserverForConsole();
-        initializePokerObserverForGUI();
-    }
-    
     protected void changeSubTitle(String title)
     {
         this.setTitle("Poker Table 2.0 " + title);
@@ -609,6 +601,14 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     protected void changePotAmount(int amount)
     {
         jTotalPotLabel.setText("$" + amount);
+    }
+    
+    @Override
+    public void setPokerObserver(PokerGameObserver observer)
+    {
+        super.setPokerObserver(observer);
+        initializePokerObserverForConsole();
+        initializePokerObserverForGUI();
     }
     
     private void initializePokerObserverForGUI()
