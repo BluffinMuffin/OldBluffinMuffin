@@ -19,11 +19,6 @@ public class PokerAIBasic extends AbstractPokerAI
 {
     private final static int NB_SIMULATIONS = 10000;
     
-    public PokerAIBasic()
-    {
-        super();
-    }
-    
     @Override
     protected int PlayMoney()
     {
