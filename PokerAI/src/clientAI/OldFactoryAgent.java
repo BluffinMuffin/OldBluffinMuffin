@@ -4,7 +4,7 @@ package clientAI;
  * @author Hocus
  *         This class is a factory pattern for creating poker Agent.
  */
-public class FactoryAgent
+public class OldFactoryAgent
 {
     /**
      * Create a PokerAI depending on the TypeAgent.
@@ -14,24 +14,24 @@ public class FactoryAgent
      * @return
      *         Newly created PokerAI corresponding to the given TypeAgent.
      */
-    public static PokerAI create(TypeAgent p_agent)
+    public static OldPokerAI create(OldTypeAgent p_agent)
     {
         switch (p_agent)
         {
             case AI_BASIC:
-                return new PokerBasic();
+                return new OldPokerBasic();
             case AI_SVM:
                 return new PokerSVM();
             case AI_GENETIC:
                 return new PokerGeneticBasic();
             case AI_RANDOM:
-            	return new PokerRandomAI();
+            	return new OldPokerRandomAI();
         }
         
         return null;
     }
     
-    private FactoryAgent()
+    private OldFactoryAgent()
     {
     }
 }

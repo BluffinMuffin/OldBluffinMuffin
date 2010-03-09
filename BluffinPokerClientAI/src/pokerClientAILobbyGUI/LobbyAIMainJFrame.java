@@ -40,10 +40,10 @@ import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IPokerCommand;
 import utility.Constants;
 import utility.IClosingListener;
-import clientAI.FactoryAgent;
-import clientAI.PokerAI;
+import clientAI.OldFactoryAgent;
+import clientAI.OldPokerAI;
 import clientAI.PokerSVM;
-import clientAI.TypeAgent;
+import clientAI.OldTypeAgent;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
@@ -60,7 +60,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     private List<TupleAISummary> m_AIs = new ArrayList<TupleAISummary>(); // @jve:decl-index=0:
     private String m_serverAddress;
     private int m_serverPort;
-    private TypeAgent m_agentType;
+    private OldTypeAgent m_agentType;
     private boolean m_viewer;
     
     // List of PokerClient (one for each table the player joined)
@@ -248,7 +248,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         
     }
     
-    protected void setAgentType(TypeAgent mAIType)
+    protected void setAgentType(OldTypeAgent mAIType)
     {
         m_agentType = mAIType;
         
@@ -793,19 +793,19 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
             final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
-            if (m_agentType == TypeAgent.AI_SVM)
+            if (m_agentType == OldTypeAgent.AI_SVM)
             {
                 final StatsAgent statsAgent = new StatsAgent();
                 statsAgent.setPokerObserver(client.getPokerObserver());
                 client.attach(statsAgent);
                 
-                final PokerAI pokerAgent = new PokerSVM(statsAgent, m_playerName);
+                final OldPokerAI pokerAgent = new PokerSVM(statsAgent, m_playerName);
                 pokerAgent.setPokerObserver(client.getPokerObserver());
                 client.setActionner(pokerAgent);
             }
             else
             {
-                final PokerAI pokerAgent = FactoryAgent.create(m_agentType);
+                final OldPokerAI pokerAgent = OldFactoryAgent.create(m_agentType);
                 pokerAgent.setPokerObserver(client.getPokerObserver());
                 client.setActionner(pokerAgent);
             }

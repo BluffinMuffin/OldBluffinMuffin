@@ -21,13 +21,13 @@ import clientGameTools.IClientPokerActionner;
  *         All it does is check/fold when it is asked to take an action. <br>
  * <br>
  *         For more interesting artificial poker player see derivates.
- * @see PokerBasic
- * @see PokerGeneticAI
+ * @see OldPokerBasic
+ * @see OldPokerGeneticAI
  * @see PokerGeneticBasic
  * @see PokerSVM
  * 
  */
-public class PokerAI implements IClientPokerActionner
+public class OldPokerAI implements IClientPokerActionner
 {
     private final List<IClosingListener<IClientPoker>> m_closingListeners = Collections.synchronizedList(new ArrayList<IClosingListener<IClientPoker>>());
     private ClientPokerObserver m_pokerObserver;
@@ -52,7 +52,7 @@ public class PokerAI implements IClientPokerActionner
     /** Maximum amount the agent can raise to. **/
     protected int m_maxRaiseAmount;
     
-    public PokerAI()
+    public OldPokerAI()
     {
     }
     

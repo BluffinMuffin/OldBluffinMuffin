@@ -6,11 +6,11 @@ import java.util.Random;
 import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldTypePlayerAction;
 
-public class PokerRandomAI extends PokerAI
+public class OldPokerRandomAI extends OldPokerAI
 {
     private Random rnd = new Random();
     
-    public PokerRandomAI()
+    public OldPokerRandomAI()
     {
     }
     

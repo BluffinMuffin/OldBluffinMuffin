@@ -6,7 +6,7 @@ import utility.Bundle;
  * @author Hocus
  *         This enum represents type of agent.
  */
-public enum TypeAgent
+public enum OldTypeAgent
 {
     AI_BASIC, AI_SVM, AI_GENETIC, AI_RANDOM;
     

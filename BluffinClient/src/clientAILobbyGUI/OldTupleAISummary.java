@@ -1,14 +1,14 @@
 package clientAILobbyGUI;
 
-import clientAI.TypeAgent;
+import clientAI.OldTypeAgent;
 
 public class OldTupleAISummary
 {
     public String m_AIName;
-    public TypeAgent m_AIType;
+    public OldTypeAgent m_AIType;
     public boolean m_viewer;
     
-    public OldTupleAISummary(String AIName, TypeAgent AIType, boolean viewer)
+    public OldTupleAISummary(String AIName, OldTypeAgent AIType, boolean viewer)
     {
         m_AIName = AIName;
         m_AIType = AIType;

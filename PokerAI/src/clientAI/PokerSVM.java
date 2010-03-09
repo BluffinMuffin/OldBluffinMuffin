@@ -33,7 +33,7 @@ import clientStats.StatsAgent;
  * <br>
  *         See documentation for explaination about the algorithm used.
  */
-public class PokerSVM extends PokerAI
+public class PokerSVM extends OldPokerAI
 {
     private final static int NB_MAX_NB_RAISE = 3;
     /** Number of times the agent raise in a row. **/

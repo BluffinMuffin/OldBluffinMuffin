@@ -18,11 +18,11 @@ import pokerStats.MonteCarlo;
  *         X > t2 => Raise<br>
  *         else => Check/Call<br>
  */
-public class PokerBasic extends PokerAI
+public class OldPokerBasic extends OldPokerAI
 {
     private final static int NB_SIMULATIONS = 10000;
     
-    public PokerBasic()
+    public OldPokerBasic()
     {
     }
     
@@ -42,7 +42,7 @@ public class PokerBasic extends PokerAI
         }
         
         // Calculate Monte Carlo score�
-        final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, PokerBasic.NB_SIMULATIONS).m_winRatio;
+        final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, OldPokerBasic.NB_SIMULATIONS).m_winRatio;
         
         System.out.println("Analyzing " + score);
         final int x = m_table.m_nbRemainingPlayers;

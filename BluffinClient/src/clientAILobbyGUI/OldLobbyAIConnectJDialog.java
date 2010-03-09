@@ -28,7 +28,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import clientAI.TypeAgent;
+import clientAI.OldTypeAgent;
 
 public class OldLobbyAIConnectJDialog extends JDialog
 {
@@ -396,8 +396,8 @@ public class OldLobbyAIConnectJDialog extends JDialog
         {
             jAITypeComboBox = new JComboBox();
             jAITypeComboBox.setBounds(new Rectangle(180, 100, 200, 20));
-            jAITypeComboBox.setModel(new DefaultComboBoxModel(TypeAgent.values()));
-            jAITypeComboBox.setSelectedItem(TypeAgent.AI_BASIC);
+            jAITypeComboBox.setModel(new DefaultComboBoxModel(OldTypeAgent.values()));
+            jAITypeComboBox.setSelectedItem(OldTypeAgent.AI_BASIC);
             jAITypeComboBox.setEnabled(false);
             jAITypeComboBox.setSelectedIndex(-1);
         }
@@ -442,13 +442,13 @@ public class OldLobbyAIConnectJDialog extends JDialog
                     
                     if (m_EditWho >= 0)
                     {
-                        model.set(m_EditWho, new OldTupleAISummary(getJAINameTextField().getText(), (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected()));
+                        model.set(m_EditWho, new OldTupleAISummary(getJAINameTextField().getText(), (OldTypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected()));
                     }
                     else
                     {
                         for (int i = 1; i <= (Integer) getJNbSpinner().getValue(); ++i)
                         {
-                            model.add(model.getSize(), new OldTupleAISummary(getJAINameTextField().getText() + i, (TypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected()));
+                            model.add(model.getSize(), new OldTupleAISummary(getJAINameTextField().getText() + i, (OldTypeAgent) getJAITypeComboBox().getSelectedItem(), getJAddViewerCheckBox().isSelected()));
                         }
                     }
                     getJAddButton().setEnabled(true);

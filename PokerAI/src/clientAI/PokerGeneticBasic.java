@@ -15,7 +15,7 @@ import pokerStats.MonteCarlo;
  *         by a genetic algorithm.
  */
 
-public class PokerGeneticBasic extends PokerAI
+public class PokerGeneticBasic extends OldPokerAI
 {
     private final static int NB_SIMULATIONS = 10000;
     

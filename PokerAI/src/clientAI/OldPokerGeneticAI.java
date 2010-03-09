@@ -10,7 +10,7 @@ import pokerLogic.OldTypePokerRound;
 import pokerStats.MonteCarlo;
 
 @Deprecated
-public class PokerGeneticAI extends PokerAI
+public class OldPokerGeneticAI extends OldPokerAI
 {
     
     private final static int NB_SIMULATIONS = 10000;
@@ -20,12 +20,12 @@ public class PokerGeneticAI extends PokerAI
     private final double[] sigma = new double[2];
     private final double[] phi = new double[2];
     
-    public PokerGeneticAI()
+    public OldPokerGeneticAI()
     {
         this(new double[] { 0.09796216575881056, 0.05873844040051912, 0.11932433543686727, 0.6461736739523037, 0.48315192075952695, 0.2903068543987788, 0.8896891202927723, 0.7165465583082452 });
     }
     
-    public PokerGeneticAI(double[] p_adn)
+    public OldPokerGeneticAI(double[] p_adn)
     {
         alpha[0] = p_adn[0];
         alpha[1] = p_adn[1];
@@ -113,7 +113,7 @@ public class PokerGeneticAI extends PokerAI
         final GameCard[] myCards = m_table.m_localPlayer.getHand();
         final GameCard[] myBoardCards = m_table.m_boardCards.toArray(new GameCard[m_table.m_boardCards.size()]);
         
-        final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, PokerGeneticAI.NB_SIMULATIONS).m_winRatio;
+        final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, OldPokerGeneticAI.NB_SIMULATIONS).m_winRatio;
         
         return score;
     }
