@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBoardChangedCommand;
@@ -230,10 +230,10 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
         // ask the agent (actionner) to take an action.
         while (isConnected())
         {
-            final PokerPlayerAction action = m_agent.getAction();
+            final OldPokerPlayerAction action = m_agent.getAction();
             send(action);
             
-            if (action.getType() == TypePlayerAction.DISCONNECT)
+            if (action.getType() == OldTypePlayerAction.DISCONNECT)
             {
                 disconnect();
             }
@@ -247,7 +247,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
      *            - Action to send to the table.
      */
     
-    protected void send(PokerPlayerAction p_action)
+    protected void send(OldPokerPlayerAction p_action)
     {
         send(new GameSendActionCommand(p_action));
     }
@@ -325,26 +325,26 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int minRaiseAmount = command.getRaiseMin();
                 final int maxRaiseAmount = command.getRaiseMax();
                 
-                final ArrayList<TypePlayerAction> m_allowedActions = new ArrayList<TypePlayerAction>();
+                final ArrayList<OldTypePlayerAction> m_allowedActions = new ArrayList<OldTypePlayerAction>();
                 
                 if (checkAllowed)
                 {
-                    m_allowedActions.add(TypePlayerAction.CHECK);
+                    m_allowedActions.add(OldTypePlayerAction.CHECK);
                 }
                 
                 if (foldAllowed)
                 {
-                    m_allowedActions.add(TypePlayerAction.FOLD);
+                    m_allowedActions.add(OldTypePlayerAction.FOLD);
                 }
                 
                 if (callAllowed)
                 {
-                    m_allowedActions.add(TypePlayerAction.CALL);
+                    m_allowedActions.add(OldTypePlayerAction.CALL);
                 }
                 
                 if (raiseAllowed)
                 {
-                    m_allowedActions.add(TypePlayerAction.RAISE);
+                    m_allowedActions.add(OldTypePlayerAction.RAISE);
                 }
                 
                 m_agent.takeAction(m_allowedActions, callAmount, minRaiseAmount, maxRaiseAmount);
@@ -369,7 +369,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                     player.m_betAmount = 0;
                 }
                 
-                final TypePokerRound gameState = command.getRound();
+                final OldTypePokerRound gameState = command.getRound();
                 m_table.m_gameState = gameState;
                 
                 m_table.m_currentBet = 0;
@@ -401,7 +401,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
             @Override
             public void gameEndedCommandReceived(GameEndedCommand command)
             {
-                m_table.m_gameState = TypePokerRound.END;
+                m_table.m_gameState = OldTypePokerRound.END;
                 m_pokerObserver.gameEnded();
             }
             
@@ -449,7 +449,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 resetBoardCards();
                 
                 m_table.setPlayerPositions();
-                m_table.m_gameState = TypePokerRound.PREFLOP;
+                m_table.m_gameState = OldTypePokerRound.PREFLOP;
                 m_table.m_currentBet = 0;
                 
                 for (final OldPokerPlayerInfo player : m_table.getPlayers())
@@ -528,7 +528,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int betAmount = command.getPlayerBet();
                 final int moneyAmount = command.getPlayerMoney();
                 final int totalPotAmount = command.getTotalPot();
-                final TypePlayerAction action = command.getActionType();
+                final OldTypePlayerAction action = command.getActionType();
                 final int actionAmount = command.getActionAmount();
                 
                 final ClientPokerPlayerInfo player = (ClientPokerPlayerInfo) m_table.getPlayer(noSeat);
@@ -537,7 +537,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 m_table.m_totalPotAmount = totalPotAmount;
                 m_table.m_currentBet = Math.max(m_table.m_currentBet, betAmount);
                 
-                if (action.equals(TypePlayerAction.FOLD))
+                if (action.equals(OldTypePlayerAction.FOLD))
                 {
                     m_table.m_nbRemainingPlayers--;
                 }

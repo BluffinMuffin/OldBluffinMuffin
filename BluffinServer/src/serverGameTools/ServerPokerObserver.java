@@ -1,8 +1,8 @@
 package serverGameTools;
 
 import gameLogic.GameCard;
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.Pot;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldPot;
 import serverGame.ServerPokerPlayerInfo;
 import serverGame.ServerTableCommunicator;
 import utility.EventObserver;
@@ -57,7 +57,7 @@ public class ServerPokerObserver extends EventObserver<ServerPokerListener>
         }
     }
     
-    public void playerEndTurn(ServerTableCommunicator comm, ServerPokerPlayerInfo info, PokerPlayerAction action)
+    public void playerEndTurn(ServerTableCommunicator comm, ServerPokerPlayerInfo info, OldPokerPlayerAction action)
     {
         for (final ServerPokerListener listener : getSubscribers())
         {
@@ -105,7 +105,7 @@ public class ServerPokerObserver extends EventObserver<ServerPokerListener>
         }
     }
     
-    public void potWon(ServerTableCommunicator comm, ServerPokerPlayerInfo info, Pot pot, int value)
+    public void potWon(ServerTableCommunicator comm, ServerPokerPlayerInfo info, OldPot pot, int value)
     {
         for (final ServerPokerListener listener : getSubscribers())
         {

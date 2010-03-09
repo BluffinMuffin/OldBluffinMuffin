@@ -27,12 +27,11 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import pokerClientGame.PokerClientTcp;
 import pokerClientSide.ClientSidePokerTcpServer;
 import pokerGameGUI.GameTableJFrame;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
-import pokerLogic.TypePokerGame;
+import pokerLogic.OldTypePokerGame;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
@@ -40,9 +39,8 @@ import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolTools.IPokerCommand;
 import utility.Constants;
-import utility.IClosingListener;
 
-public class TempLobbyMainJFrame extends JFrame implements IClosingListener<PokerClientTcp>
+public class TempLobbyMainJFrame extends JFrame
 {
     private Socket m_connection = null; // @jve:decl-index=0:
     private PrintWriter m_toServer = null;
@@ -496,13 +494,6 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
         return jContentPane;
     }
     
-    @Override
-    public void closing(PokerClientTcp e)
-    {
-        m_clients.remove(e);
-        refreshTables();
-    }
-    
     /**
      * Refresh the list of available tables on the ServerLobby.
      */
@@ -521,7 +512,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
         {
             final Integer noPort = Integer.parseInt(token.nextToken());
             final String tableName = token.nextToken();
-            final TypePokerGame gameType = TypePokerGame.valueOf(token.nextToken());
+            final OldTypePokerGame gameType = OldTypePokerGame.valueOf(token.nextToken());
             final int bigBlind = Integer.parseInt(token.nextToken());
             final int nbPlayers = Integer.parseInt(token.nextToken());
             final int nbSeats = Integer.parseInt(token.nextToken());
@@ -633,7 +624,7 @@ public class TempLobbyMainJFrame extends JFrame implements IClosingListener<Poke
      *         <b>false</b> if no seat is free, someone with the same name
      *         has already joined this table, or the table does not exist.
      */
-    public int createTable(String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers)
+    public int createTable(String p_tableName, OldTypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers)
     {
         // Send query.
         send(new LobbyCreateTableCommand(p_tableName, p_gameType, p_bigBlind, p_maxPlayers, m_playerName));

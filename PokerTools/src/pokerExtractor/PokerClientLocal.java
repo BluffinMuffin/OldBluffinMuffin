@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBoardChangedCommand;
 import protocolGame.GameEndedCommand;
@@ -157,10 +157,10 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
             
             while (isConnected())
             {
-                final PokerPlayerAction action = m_agent.getAction();
+                final OldPokerPlayerAction action = m_agent.getAction();
                 send(action);
                 
-                if (action.getType() == TypePlayerAction.DISCONNECT)
+                if (action.getType() == OldTypePlayerAction.DISCONNECT)
                 {
                     disconnect();
                 }
@@ -192,7 +192,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
         }.start();
     }
     
-    protected void send(PokerPlayerAction p_action)
+    protected void send(OldPokerPlayerAction p_action)
     {
         send(new GameSendActionCommand(p_action));
     }
@@ -239,7 +239,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
                     player.m_betAmount = 0;
                 }
                 
-                final TypePokerRound gameState = command.getRound();
+                final OldTypePokerRound gameState = command.getRound();
                 m_table.m_gameState = gameState;
                 
                 m_table.m_currentBet = 0;
@@ -271,7 +271,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
             @Override
             public void gameEndedCommandReceived(GameEndedCommand command)
             {
-                m_table.m_gameState = TypePokerRound.END;
+                m_table.m_gameState = OldTypePokerRound.END;
                 m_pokerObserver.gameEnded();
             }
             
@@ -317,7 +317,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
                 resetBoardCards();
                 
                 m_table.setPlayerPositions();
-                m_table.m_gameState = TypePokerRound.PREFLOP;
+                m_table.m_gameState = OldTypePokerRound.PREFLOP;
                 m_table.m_currentBet = 0;
                 m_pokerObserver.gameStarted(null, null, null);
             }

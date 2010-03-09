@@ -3,14 +3,14 @@ package clientGameTools;
 import java.util.ArrayList;
 
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 
 public abstract class ClientPokerAdapter implements ClientPokerListener
 {
     
     @Override
-    public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
+    public void betTurnEnded(ArrayList<Integer> potIndices, OldTypePokerRound round)
     {
         
     }
@@ -64,7 +64,7 @@ public abstract class ClientPokerAdapter implements ClientPokerListener
     }
     
     @Override
-    public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+    public void playerTurnEnded(OldPokerPlayerInfo player, OldTypePlayerAction action, int actionAmount)
     {
         
     }

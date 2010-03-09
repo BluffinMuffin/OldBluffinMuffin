@@ -4,8 +4,8 @@ import gameLogic.GameCard;
 
 import java.util.EventListener;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.Pot;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldPot;
 import serverGame.ServerPokerPlayerInfo;
 import serverGame.ServerTableCommunicator;
 
@@ -23,7 +23,7 @@ public interface ServerPokerListener extends EventListener
     
     void holeCardDeal(ServerTableCommunicator comm, ServerPokerPlayerInfo info);
     
-    void playerEndTurn(ServerTableCommunicator comm, ServerPokerPlayerInfo info, PokerPlayerAction action);
+    void playerEndTurn(ServerTableCommunicator comm, ServerPokerPlayerInfo info, OldPokerPlayerAction action);
     
     void playerJoinedTable(ServerTableCommunicator comm, ServerPokerPlayerInfo info);
     
@@ -35,7 +35,7 @@ public interface ServerPokerListener extends EventListener
     
     void playerTurnStarted(ServerTableCommunicator comm, ServerPokerPlayerInfo info);
     
-    void potWon(ServerTableCommunicator comm, ServerPokerPlayerInfo info, Pot pot, int value);
+    void potWon(ServerTableCommunicator comm, ServerPokerPlayerInfo info, OldPot pot, int value);
     
     void riverDeal(ServerTableCommunicator comm, GameCard[] cards);
     

@@ -2,7 +2,7 @@ package protocolLobby;
 
 import java.util.StringTokenizer;
 
-import pokerLogic.TypePokerGame;
+import pokerLogic.OldTypePokerGame;
 import protocolTools.IPokerCommand;
 import utility.Constants;
 
@@ -11,7 +11,7 @@ public class LobbyCreateTableCommand implements IPokerCommand
     public static String COMMAND_NAME = "lobbyCREATE_TABLE";
     
     private final String m_tableName;
-    private final TypePokerGame m_gameType;
+    private final OldTypePokerGame m_gameType;
     private final int m_bigBlind;
     private final int m_maxPlayers;
     private final String m_playerName;
@@ -19,13 +19,13 @@ public class LobbyCreateTableCommand implements IPokerCommand
     public LobbyCreateTableCommand(StringTokenizer argsToken)
     {
         m_tableName = argsToken.nextToken();
-        m_gameType = TypePokerGame.valueOf(argsToken.nextToken());
+        m_gameType = OldTypePokerGame.valueOf(argsToken.nextToken());
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
         m_maxPlayers = Integer.parseInt(argsToken.nextToken());
         m_playerName = argsToken.nextToken();
     }
     
-    public LobbyCreateTableCommand(String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers, String p_playerName)
+    public LobbyCreateTableCommand(String p_tableName, OldTypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers, String p_playerName)
     {
         m_tableName = p_tableName;
         m_gameType = p_gameType;
@@ -63,7 +63,7 @@ public class LobbyCreateTableCommand implements IPokerCommand
         return m_tableName;
     }
     
-    public TypePokerGame getGameType()
+    public OldTypePokerGame getGameType()
     {
         return m_gameType;
     }

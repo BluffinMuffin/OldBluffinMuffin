@@ -1,8 +1,8 @@
 package serverGame;
 
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldTypePlayerAction;
 
 /**
  * @author HOCUS
@@ -123,13 +123,13 @@ public abstract class ServerPokerPlayerInfo extends OldPokerPlayerInfo
      * @return
      *         The action taken
      */
-    abstract protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise);
+    abstract protected OldPokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise);
     
-    public PokerPlayerAction takeAction(int p_betOnTable, int p_minimumRaise, int p_maximumRaise)
+    public OldPokerPlayerAction takeAction(int p_betOnTable, int p_minimumRaise, int p_maximumRaise)
     {
         if (this.isAllIn())
         {
-            return new PokerPlayerAction(TypePlayerAction.NOTHING, 0);
+            return new OldPokerPlayerAction(OldTypePlayerAction.NOTHING, 0);
         }
         
         final boolean canCheck = p_betOnTable <= m_betAmount;
@@ -143,18 +143,18 @@ public abstract class ServerPokerPlayerInfo extends OldPokerPlayerInfo
         final int minimumRaise = (canRaise) ? p_minimumRaise : 0;
         final int maximumRaise = (canRaise) ? p_maximumRaise : 0;
         
-        final PokerPlayerAction action = getActionFromUser(canCheck, !canCheck, !canCheck, callOf, canRaise, minimumRaise, maximumRaise);
+        final OldPokerPlayerAction action = getActionFromUser(canCheck, !canCheck, !canCheck, callOf, canRaise, minimumRaise, maximumRaise);
         
-        if (action.getType() == TypePlayerAction.FOLD)
+        if (action.getType() == OldTypePlayerAction.FOLD)
         {
             m_isFolded = true;
         }
-        else if (action.getType() == TypePlayerAction.CALL)
+        else if (action.getType() == OldTypePlayerAction.CALL)
         {
             setMoney(money - action.getAmount());
             m_betAmount += action.getAmount();
         }
-        else if (action.getType() == TypePlayerAction.RAISE)
+        else if (action.getType() == OldTypePlayerAction.RAISE)
         {
             setMoney(money - (action.getAmount() - m_betAmount));
             m_betAmount = action.getAmount();

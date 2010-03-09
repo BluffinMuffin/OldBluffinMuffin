@@ -17,8 +17,8 @@ import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 import newPokerLogicTools.PokerGameAdapter;
 import newPokerLogicTools.PokerGameObserver;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBoardChangedCommand;
@@ -170,16 +170,16 @@ public class ServerSidePokerTcpClient implements Runnable
                 switch (r)
                 {
                     case PREFLOP:
-                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.PREFLOP));
+                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.PREFLOP));
                         break;
                     case FLOP:
-                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.FLOP));
+                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.FLOP));
                         break;
                     case TURN:
-                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.TURN));
+                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.TURN));
                         break;
                     case RIVER:
-                        send(new GameBetTurnEndedCommand(amounts, TypePokerRound.RIVER));
+                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.RIVER));
                         break;
                 }
             }
@@ -210,19 +210,19 @@ public class ServerSidePokerTcpClient implements Runnable
                 switch (reason)
                 {
                     case FOLDED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), TypePlayerAction.FOLD, playedAmount));
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.FOLD, playedAmount));
                         break;
                     case CALLED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), TypePlayerAction.CALL, playedAmount));
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.CALL, playedAmount));
                         break;
                     case RAISED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), TypePlayerAction.RAISE, playedAmount));
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.RAISE, playedAmount));
                         break;
                     case SMALL_BLIND_POSTED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), TypePlayerAction.SMALL_BLIND, playedAmount));
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.SMALL_BLIND, playedAmount));
                         break;
                     case BIG_BLIND_POSTED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), TypePlayerAction.BIG_BLIND, playedAmount));
+                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.BIG_BLIND, playedAmount));
                         break;
                 }
             }

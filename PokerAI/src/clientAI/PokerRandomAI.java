@@ -3,8 +3,8 @@ package clientAI;
 import java.util.ArrayList;
 import java.util.Random;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldTypePlayerAction;
 
 public class PokerRandomAI extends PokerAI
 {
@@ -15,13 +15,13 @@ public class PokerRandomAI extends PokerAI
     }
     
     @Override
-    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected OldPokerPlayerAction analyze(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {   
-    	PokerPlayerAction action = null;
+    	OldPokerPlayerAction action = null;
     	
-        if (rnd.nextInt(3) == 0 && p_actionsAllowed.contains(TypePlayerAction.FOLD) )
+        if (rnd.nextInt(3) == 0 && p_actionsAllowed.contains(OldTypePlayerAction.FOLD) )
         {
-        	action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
+        	action = new OldPokerPlayerAction(OldTypePlayerAction.FOLD, 0);
         }
         else
         {
@@ -33,21 +33,21 @@ public class PokerRandomAI extends PokerAI
         return action;
     }
     
-    private PokerPlayerAction chooseAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount){
-    	PokerPlayerAction action = null;
+    private OldPokerPlayerAction chooseAction(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount){
+    	OldPokerPlayerAction action = null;
     	switch (rnd.nextInt(3)) {
 		case 0:
-			if(p_actionsAllowed.contains(TypePlayerAction.CHECK)){
-				action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
+			if(p_actionsAllowed.contains(OldTypePlayerAction.CHECK)){
+				action = new OldPokerPlayerAction(OldTypePlayerAction.CHECK, 0);
 			}
 			break;
 		case 1:
-			if(p_actionsAllowed.contains(TypePlayerAction.CALL)){
-				action = new PokerPlayerAction(TypePlayerAction.CALL, m_callAmount);
+			if(p_actionsAllowed.contains(OldTypePlayerAction.CALL)){
+				action = new OldPokerPlayerAction(OldTypePlayerAction.CALL, m_callAmount);
 			}
 			break;
 		case 2:
-			if(p_actionsAllowed.contains(TypePlayerAction.RAISE)){
+			if(p_actionsAllowed.contains(OldTypePlayerAction.RAISE)){
 				int bet = m_minRaiseAmount;
 				int choice = rnd.nextInt(100);
 				int m = m_maxRaiseAmount - m_minRaiseAmount;
@@ -63,7 +63,7 @@ public class PokerRandomAI extends PokerAI
 					bet += rnd.nextInt(m / rnd.nextInt(5) );
 				}
 				
-				action = new PokerPlayerAction(TypePlayerAction.RAISE, bet);
+				action = new OldPokerPlayerAction(OldTypePlayerAction.RAISE, bet);
 			}
 			break;
 		}

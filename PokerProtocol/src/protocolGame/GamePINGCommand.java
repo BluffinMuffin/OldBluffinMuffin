@@ -2,7 +2,7 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldTypePlayerAction;
 import protocolTools.IPokerCommand;
 
 public class GamePINGCommand implements IPokerCommand
@@ -28,7 +28,7 @@ public class GamePINGCommand implements IPokerCommand
     public String encodeResponse()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(TypePlayerAction.PONG.name());
+        sb.append(OldTypePlayerAction.PONG.name());
         return sb.toString();
     }
 }

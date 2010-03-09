@@ -8,12 +8,12 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.Pot;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerGame;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldPot;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerGame;
+import pokerLogic.OldTypePokerRound;
 import protocolGame.GameTableInfoCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import serverGameTools.ServerPokerObserver;
@@ -155,7 +155,7 @@ public class ServerTableCommunicator implements Runnable
      * @return
      *         The state of the game.
      */
-    public TypePokerRound getGameState()
+    public OldTypePokerRound getGameState()
     {
         return m_info.m_gameState;
     }
@@ -166,7 +166,7 @@ public class ServerTableCommunicator implements Runnable
      * @return
      *         The type of the game
      */
-    public TypePokerGame getGameType()
+    public OldTypePokerGame getGameType()
     {
         return m_info.m_gameType;
     }
@@ -281,7 +281,7 @@ public class ServerTableCommunicator implements Runnable
      * @return
      *         The pots
      */
-    public Stack<Pot> getPots()
+    public Stack<OldPot> getPots()
     {
         return m_info.m_pots;
     }
@@ -449,7 +449,7 @@ public class ServerTableCommunicator implements Runnable
         
         while (!m_info.m_pots.empty())
         {
-            final Pot pot = m_info.m_pots.pop();
+            final OldPot pot = m_info.m_pots.pop();
             
             winner.winPot(pot.getAmount());
             m_pokerObserver.potWon(this, (ServerPokerPlayerInfo) winner, pot, pot.getAmount());
@@ -570,7 +570,7 @@ public class ServerTableCommunicator implements Runnable
      */
     private void showdown()
     {
-        m_info.m_gameState = TypePokerRound.SHOWDOWN;
+        m_info.m_gameState = OldTypePokerRound.SHOWDOWN;
         
         showAllHands();
         
@@ -579,7 +579,7 @@ public class ServerTableCommunicator implements Runnable
         
         while (!m_info.m_pots.empty())
         {
-            final Pot pot = m_info.m_pots.pop();
+            final OldPot pot = m_info.m_pots.pop();
             if (pot.getParticipant().size() > 0)
             {
                 final Iterator<OldPokerPlayerInfo> it = pot.getParticipant().iterator();
@@ -638,11 +638,11 @@ public class ServerTableCommunicator implements Runnable
     {
         m_info.m_firstTurn = true;
         int lastPlayer = m_info.m_noSeatDealer;
-        if ((m_info.m_nbPlayingPlayers == 2) && (m_info.m_gameState == TypePokerRound.PREFLOP))
+        if ((m_info.m_nbPlayingPlayers == 2) && (m_info.m_gameState == OldTypePokerRound.PREFLOP))
         {
             lastPlayer = m_info.nextPlayingPlayer(m_info.m_noSeatDealer);
         }
-        else if ((m_info.m_nbPlayingPlayers > 2) && (m_info.m_gameState == TypePokerRound.PREFLOP))
+        else if ((m_info.m_nbPlayingPlayers > 2) && (m_info.m_gameState == OldTypePokerRound.PREFLOP))
         {
             lastPlayer = getNoSeatBigBlind();
         }
@@ -651,7 +651,7 @@ public class ServerTableCommunicator implements Runnable
         final TreeSet<Integer> bets = new TreeSet<Integer>();
         
         // Check if the blinds are all-in
-        if (m_info.m_gameState == TypePokerRound.PREFLOP)
+        if (m_info.m_gameState == OldTypePokerRound.PREFLOP)
         {
             OldPokerPlayerInfo blind = m_info.getPlayer(m_info.m_noSeatSmallBlind);
             if (blind.isAllIn() && !bets.contains(blind.getBet()))
@@ -667,7 +667,7 @@ public class ServerTableCommunicator implements Runnable
         
         // Ask each player to take a decision until they can't bet.
         ServerPokerPlayerInfo player;
-        PokerPlayerAction action;
+        OldPokerPlayerAction action;
         while (m_info.continueBetting())
         {
             player = (ServerPokerPlayerInfo) m_info.getPlayer(m_info.m_playerTurn);
@@ -693,7 +693,7 @@ public class ServerTableCommunicator implements Runnable
                     m_info.m_nbBetting--;
                 }
                 
-                if (action.getType() == TypePlayerAction.RAISE)
+                if (action.getType() == OldTypePlayerAction.RAISE)
                 {
                     m_info.m_currentBet = player.getBet();
                     m_info.m_noSeatLastRaiser = m_info.m_playerTurn;
@@ -754,7 +754,7 @@ public class ServerTableCommunicator implements Runnable
         // Make sure that no pot can be won only by one player
         if (!m_info.m_pots.isEmpty() && (m_info.m_pots.peek().getParticipant().size() == 1))
         {
-            final Pot uselessPot = m_info.m_pots.pop();
+            final OldPot uselessPot = m_info.m_pots.pop();
             final OldPokerPlayerInfo playerInPot = uselessPot.getParticipant().firstElement();
             
             playerInPot.addMoney(uselessPot.getAmount());

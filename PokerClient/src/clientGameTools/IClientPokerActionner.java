@@ -2,8 +2,8 @@ package clientGameTools;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldTypePlayerAction;
 
 
 /**
@@ -18,7 +18,7 @@ public interface IClientPokerActionner extends IClientPoker
      * 
      * @return the action taken by the agent.
      */
-    public PokerPlayerAction getAction();
+    public OldPokerPlayerAction getAction();
     
     /**
      * Happens when it is to the client to make a move.
@@ -32,5 +32,5 @@ public interface IClientPokerActionner extends IClientPoker
      * @param p_maxRaiseAmount
      *            is the maximum raise allowed.
      */
-    public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount);
+    public void takeAction(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount);
 }

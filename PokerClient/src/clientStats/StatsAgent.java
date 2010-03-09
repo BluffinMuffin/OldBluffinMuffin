@@ -6,8 +6,8 @@ import java.util.TreeMap;
 
 import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.OldPokerTableInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import utility.Constants;
 import clientGame.ClientPokerPlayerInfo;
 import clientGameTools.ClientPokerAdapter;
@@ -118,7 +118,7 @@ public class StatsAgent implements IClientPoker
      * @param p_maxRaiseAmount
      *            is the maximum raise allowed.
      */
-    public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
+    public void takeAction(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         
     }
@@ -159,7 +159,7 @@ public class StatsAgent implements IClientPoker
         {
             
             @Override
-            public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
+            public void betTurnEnded(ArrayList<Integer> potIndices, OldTypePokerRound round)
             {
                 // Notify the lastStreeRaiser that he actually was the last one.
                 if (m_lastStreetRaiser != null)
@@ -240,7 +240,7 @@ public class StatsAgent implements IClientPoker
             }
             
             @Override
-            public void playerTurnEnded(OldPokerPlayerInfo p_player, TypePlayerAction action, int actionAmount)
+            public void playerTurnEnded(OldPokerPlayerInfo p_player, OldTypePlayerAction action, int actionAmount)
             {
                 final PlayerStats player = m_gameStats.get(p_player.m_name);
                 if (m_gatheringStats)

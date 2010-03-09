@@ -4,8 +4,8 @@ import gameLogic.GameCard;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldTypePlayerAction;
 import pokerStats.MonteCarlo;
 
 /**
@@ -30,7 +30,7 @@ public class PokerGeneticBasic extends PokerAI
     }
     
     @Override
-    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected OldPokerPlayerAction analyze(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         final GameCard[] myCards = m_table.m_localPlayer.getHand();
         final GameCard[] myBoardCards = m_table.m_boardCards.toArray(new GameCard[m_table.m_boardCards.size()]);
@@ -50,23 +50,23 @@ public class PokerGeneticBasic extends PokerAI
         final double threshold1 = Math.sqrt(m_adn[0] * (1.0 / (x - m_adn[1]))) + m_adn[2];
         final double threshold2 = Math.sqrt(1.0 / (m_adn[3] * (x + (1 / m_adn[4])))) - m_adn[5];
         
-        if ((score >= threshold1) && p_actionsAllowed.contains(TypePlayerAction.RAISE))
+        if ((score >= threshold1) && p_actionsAllowed.contains(OldTypePlayerAction.RAISE))
         {
-            return new PokerPlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + m_table.m_smallBlindAmount, p_maxRaiseAmount));
+            return new OldPokerPlayerAction(OldTypePlayerAction.RAISE, Math.min(p_minRaiseAmount + m_table.m_smallBlindAmount, p_maxRaiseAmount));
         }
-        else if ((score >= threshold2) && p_actionsAllowed.contains(TypePlayerAction.CALL))
+        else if ((score >= threshold2) && p_actionsAllowed.contains(OldTypePlayerAction.CALL))
         {
-            return new PokerPlayerAction(TypePlayerAction.CALL);
+            return new OldPokerPlayerAction(OldTypePlayerAction.CALL);
         }
         else
         {
-            if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
+            if (p_actionsAllowed.contains(OldTypePlayerAction.CHECK))
             {
-                return new PokerPlayerAction(TypePlayerAction.CHECK);
+                return new OldPokerPlayerAction(OldTypePlayerAction.CHECK);
             }
             else
             {
-                return new PokerPlayerAction(TypePlayerAction.FOLD);
+                return new OldPokerPlayerAction(OldTypePlayerAction.FOLD);
             }
         }
     }

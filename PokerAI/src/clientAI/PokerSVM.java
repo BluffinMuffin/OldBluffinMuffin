@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import pokerAI.SVM;
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import utility.Constants;
@@ -149,7 +149,7 @@ public class PokerSVM extends PokerAI
     }
     
     @Override
-    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected OldPokerPlayerAction analyze(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         while (!isReady())
         {
@@ -163,28 +163,28 @@ public class PokerSVM extends PokerAI
             }
         }
         
-        if (m_table.m_gameState == TypePokerRound.PREFLOP)
+        if (m_table.m_gameState == OldTypePokerRound.PREFLOP)
         {
-            if (getSVM_PreflopFold().predict(getVector(TypePokerRound.PREFLOP)) <= 0)
+            if (getSVM_PreflopFold().predict(getVector(OldTypePokerRound.PREFLOP)) <= 0)
             {
                 m_cptRaise = 0;
                 return super.analyze(p_actionsAllowed, p_minRaiseAmount, p_maxRaiseAmount);
             }
             else
             {
-                if (getSVM_PreflopaRaise().predict(getVector(TypePokerRound.PREFLOP)) > 0)
+                if (getSVM_PreflopaRaise().predict(getVector(OldTypePokerRound.PREFLOP)) > 0)
                 {
                     // If we should raise, we need to check if m_cptRaise is
                     // under a certain constant.
-                    if (p_actionsAllowed.contains(TypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
+                    if (p_actionsAllowed.contains(OldTypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
                     {
                         m_cptRaise++;
-                        return new PokerPlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
+                        return new OldPokerPlayerAction(OldTypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
                     }
-                    else if (p_actionsAllowed.contains(TypePlayerAction.CALL))
+                    else if (p_actionsAllowed.contains(OldTypePlayerAction.CALL))
                     {
                         m_cptRaise = 0;
-                        return new PokerPlayerAction(TypePlayerAction.CALL);
+                        return new OldPokerPlayerAction(OldTypePlayerAction.CALL);
                     }
                     else
                     {
@@ -196,13 +196,13 @@ public class PokerSVM extends PokerAI
                 else
                 {
                     m_cptRaise = 0;
-                    if (p_actionsAllowed.contains(TypePlayerAction.CALL))
+                    if (p_actionsAllowed.contains(OldTypePlayerAction.CALL))
                     {
-                        return new PokerPlayerAction(TypePlayerAction.CALL);
+                        return new OldPokerPlayerAction(OldTypePlayerAction.CALL);
                     }
-                    else if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
+                    else if (p_actionsAllowed.contains(OldTypePlayerAction.CHECK))
                     {
-                        return new PokerPlayerAction(TypePlayerAction.CHECK);
+                        return new OldPokerPlayerAction(OldTypePlayerAction.CHECK);
                     }
                     else
                     {
@@ -214,26 +214,26 @@ public class PokerSVM extends PokerAI
         }
         else
         {
-            if (getSVM_PostflopFold().predict(getVector(TypePokerRound.FLOP)) <= 0)
+            if (getSVM_PostflopFold().predict(getVector(OldTypePokerRound.FLOP)) <= 0)
             {
                 m_cptRaise = 0;
                 return super.analyze(p_actionsAllowed, p_minRaiseAmount, p_maxRaiseAmount);
             }
             else
             {
-                if (getSVM_PostflopRaise().predict(getVector(TypePokerRound.FLOP)) > 0)
+                if (getSVM_PostflopRaise().predict(getVector(OldTypePokerRound.FLOP)) > 0)
                 {
                     // If we should raise, we need to check if m_cptRaise is
                     // under a certain constant.
-                    if (p_actionsAllowed.contains(TypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
+                    if (p_actionsAllowed.contains(OldTypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
                     {
                         m_cptRaise++;
-                        return new PokerPlayerAction(TypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
+                        return new OldPokerPlayerAction(OldTypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
                     }
-                    else if (p_actionsAllowed.contains(TypePlayerAction.CALL))
+                    else if (p_actionsAllowed.contains(OldTypePlayerAction.CALL))
                     {
                         m_cptRaise = 0;
-                        return new PokerPlayerAction(TypePlayerAction.CALL);
+                        return new OldPokerPlayerAction(OldTypePlayerAction.CALL);
                     }
                     else
                     {
@@ -245,13 +245,13 @@ public class PokerSVM extends PokerAI
                 else
                 {
                     m_cptRaise = 0;
-                    if (p_actionsAllowed.contains(TypePlayerAction.CALL))
+                    if (p_actionsAllowed.contains(OldTypePlayerAction.CALL))
                     {
-                        return new PokerPlayerAction(TypePlayerAction.CALL);
+                        return new OldPokerPlayerAction(OldTypePlayerAction.CALL);
                     }
-                    else if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
+                    else if (p_actionsAllowed.contains(OldTypePlayerAction.CHECK))
                     {
-                        return new PokerPlayerAction(TypePlayerAction.CHECK);
+                        return new OldPokerPlayerAction(OldTypePlayerAction.CHECK);
                     }
                     else
                     {
@@ -473,7 +473,7 @@ public class PokerSVM extends PokerAI
      * @return
      *         Vector of attributes
      */
-    private String getVector(TypePokerRound p_state)
+    private String getVector(OldTypePokerRound p_state)
     {
         double highMoney = 0.0;
         for (final OldPokerPlayerInfo player : m_table.getPlayers())
@@ -499,7 +499,7 @@ public class PokerSVM extends PokerAI
         sb.append(formatEnum(((ClientPokerPlayerInfo) m_table.m_localPlayer).m_lastActionsRiver, TypeSimplifiedAction.class)); // 35-41
         
         sb.append(format((double) m_table.m_totalPotAmount / (double) m_table.m_localPlayer.getMoney())); // 42
-        sb.append(formatEnum(p_state, TypePokerRound.class)); // 43-46
+        sb.append(formatEnum(p_state, OldTypePokerRound.class)); // 43-46
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
         for (final OldPokerPlayerInfo player : m_table.getPlayers())
@@ -530,7 +530,7 @@ public class PokerSVM extends PokerAI
             }
             else
             {
-                if (p_state == TypePokerRound.PREFLOP)
+                if (p_state == OldTypePokerRound.PREFLOP)
                 {
                     // Stats preflop
                     sb.append(format(m_statsAgent.m_overallStats.get(player.m_name).getProbVPIPTotal_PRF())); // 87

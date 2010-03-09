@@ -15,8 +15,8 @@ import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 import newPokerLogicTools.PokerGameObserver;
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldTypePlayerAction;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBoardChangedCommand;
 import protocolGame.GameEndedCommand;
@@ -111,7 +111,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
         }
     }
     
-    protected void send(PokerPlayerAction p_action)
+    protected void send(OldPokerPlayerAction p_action)
     {
         send(new GameSendActionCommand(p_action));
     }
@@ -160,7 +160,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
     @Override
     public boolean leaveGame(PokerPlayerInfo player)
     {
-        send(new GameSendActionCommand(new PokerPlayerAction(TypePlayerAction.DISCONNECT)));
+        send(new GameSendActionCommand(new OldPokerPlayerAction(OldTypePlayerAction.DISCONNECT)));
         return true;
     }
     
@@ -169,7 +169,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
     {
         // TODO: en theorie, ca devrait etre pluss cool ! :p
         // La on patch le leack en envoyant un RAISE peu importe ce que ca devrait reelement etre
-        send(new GameSendActionCommand(new PokerPlayerAction(TypePlayerAction.RAISE, amount)));
+        send(new GameSendActionCommand(new OldPokerPlayerAction(OldTypePlayerAction.RAISE, amount)));
         return true;
     }
     

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.Pot;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldPot;
+import pokerLogic.OldTypePlayerAction;
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBoardChangedCommand;
@@ -113,9 +113,9 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
     // Player
     // ---------------------------------------------
     @Override
-    protected PokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
+    protected OldPokerPlayerAction getActionFromUser(boolean p_canCheck, boolean p_canFold, boolean p_canCall, int p_callOf, boolean p_canRaise, int p_minimumRaise, int p_maximumRaise)
     {
-        PokerPlayerAction action = null;
+        OldPokerPlayerAction action = null;
         int nbTry = 0;
         if (m_isConnected)
         {
@@ -137,7 +137,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
                             if (token.equals(GameSendActionCommand.COMMAND_NAME))
                             {
                                 final GameSendActionCommand command = new GameSendActionCommand(message);
-                                final TypePlayerAction actionType = command.getAction().getType();
+                                final OldTypePlayerAction actionType = command.getAction().getType();
                                 switch (actionType)
                                 {
                                     case DISCONNECT:
@@ -147,19 +147,19 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
                                     case CHECK:
                                         if (p_canCheck)
                                         {
-                                            action = new PokerPlayerAction(actionType, 0);
+                                            action = new OldPokerPlayerAction(actionType, 0);
                                         }
                                         break;
                                     case CALL:
                                         if (p_canCall)
                                         {
-                                            action = new PokerPlayerAction(actionType, p_callOf);
+                                            action = new OldPokerPlayerAction(actionType, p_callOf);
                                         }
                                         break;
                                     case FOLD:
                                         if (p_canFold)
                                         {
-                                            action = new PokerPlayerAction(actionType, 0);
+                                            action = new OldPokerPlayerAction(actionType, 0);
                                         }
                                         break;
                                     case RAISE:
@@ -168,7 +168,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
                                             final int amount = command.getAction().getAmount();
                                             if (p_canRaise && (amount >= p_minimumRaise) && (amount <= p_maximumRaise))
                                             {
-                                                action = new PokerPlayerAction(actionType, amount);
+                                                action = new OldPokerPlayerAction(actionType, amount);
                                             }
                                         }
                                         catch (final NumberFormatException e)
@@ -198,11 +198,11 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
         {
             if (p_canCheck)
             {
-                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.CHECK, 0);
             }
             else
             {
-                action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.FOLD, 0);
             }
             
             if (nbTry >= 10)
@@ -300,7 +300,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void sendActionCommandReceived(GameSendActionCommand command)
             {
-                if (command.getAction().getType() == TypePlayerAction.DISCONNECT)
+                if (command.getAction().getType() == OldTypePlayerAction.DISCONNECT)
                 {
                     m_isConnected = false;
                     m_sitOutNextHand = true;
@@ -318,16 +318,16 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void bigBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_bigBlind)
             {
-                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.BIG_BLIND, p_bigBlind));
+                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), OldTypePlayerAction.BIG_BLIND, p_bigBlind));
             }
             
             @Override
             public void endBettingTurn(ServerTableCommunicator p_table)
             {
                 
-                final Stack<Pot> pots = p_table.getPots();
+                final Stack<OldPot> pots = p_table.getPots();
                 final ArrayList<Integer> amounts = new ArrayList<Integer>();
-                for (final Pot pot : pots)
+                for (final OldPot pot : pots)
                 {
                     amounts.add(pot.getAmount());
                 }
@@ -374,7 +374,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             }
             
             @Override
-            public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
+            public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, OldPokerPlayerAction p_action)
             {
                 send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), p_action.getType(), p_action.getAmount()));
             }
@@ -410,7 +410,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             }
             
             @Override
-            public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
+            public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, OldPot p_pot, int p_share)
             {
                 send(new GamePlayerWonPotCommand(p_player.getNoSeat(), p_pot.getId(), p_share, p_player.getMoney()));
             }
@@ -425,7 +425,7 @@ public class ServerNetworkPokerPlayerInfo extends ServerPokerPlayerInfo
             @Override
             public void smallBlindPosted(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, int p_smallBlind)
             {
-                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), TypePlayerAction.SMALL_BLIND, p_smallBlind));
+                send(new GamePlayerTurnEndedCommand(p_player.getNoSeat(), p_player.getBet(), p_player.getMoney(), p_table.getTotalPot(), OldTypePlayerAction.SMALL_BLIND, p_smallBlind));
             }
             
             @Override

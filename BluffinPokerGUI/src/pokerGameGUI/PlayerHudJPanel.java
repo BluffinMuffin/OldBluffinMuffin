@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
 import newPokerLogic.TypePokerGameAction;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldTypePlayerAction;
 
 public class PlayerHudJPanel extends JPanel
 {
@@ -169,7 +169,7 @@ public class PlayerHudJPanel extends JPanel
         jInfoLabel.setText(info);
     }
     
-    public void setPlayerAction(TypePlayerAction action)
+    public void setPlayerAction(OldTypePlayerAction action)
     {
         final StringBuilder sb = new StringBuilder("Last Action: ");
         switch (action)

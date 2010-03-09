@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerGame;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerGame;
 import utility.HeadsUpException;
 import clientGameTools.TypeSimplifiedAction;
 
@@ -21,16 +21,16 @@ public class TupleHandHistories
     public class PhaseEvents
     {
         public TuplePlayer m_player;
-        public TypePlayerAction m_action;
+        public OldTypePlayerAction m_action;
         public int m_actionAmount = -1;
         
-        public PhaseEvents(TuplePlayer p_player, TypePlayerAction p_action)
+        public PhaseEvents(TuplePlayer p_player, OldTypePlayerAction p_action)
         {
             m_player = p_player;
             m_action = p_action;
         }
         
-        public PhaseEvents(TuplePlayer p_player, TypePlayerAction p_action, int p_actionAmount)
+        public PhaseEvents(TuplePlayer p_player, OldTypePlayerAction p_action, int p_actionAmount)
         {
             m_player = p_player;
             m_action = p_action;
@@ -125,7 +125,7 @@ public class TupleHandHistories
     
     public String m_text;
     
-    public TypePokerGame m_type;
+    public OldTypePokerGame m_type;
     
     public Calendar m_startedTime;
     
@@ -300,27 +300,27 @@ public class TupleHandHistories
                 {
                     if (m.group(1).startsWith("calls"))
                     {
-                        p_events.add(new PhaseEvents(player, TypePlayerAction.CALL, parseMoney(m.group(2))));
+                        p_events.add(new PhaseEvents(player, OldTypePlayerAction.CALL, parseMoney(m.group(2))));
                     }
                     else if (m.group(1).startsWith("bets"))
                     {
-                        p_events.add(new PhaseEvents(player, TypePlayerAction.RAISE, parseMoney(m.group(5))));
+                        p_events.add(new PhaseEvents(player, OldTypePlayerAction.RAISE, parseMoney(m.group(5))));
                     }
                     else if (m.group(1).startsWith("folds"))
                     {
-                        p_events.add(new PhaseEvents(player, TypePlayerAction.FOLD));
+                        p_events.add(new PhaseEvents(player, OldTypePlayerAction.FOLD));
                     }
                     else if (m.group(1).startsWith("checks"))
                     {
-                        p_events.add(new PhaseEvents(player, TypePlayerAction.CHECK));
+                        p_events.add(new PhaseEvents(player, OldTypePlayerAction.CHECK));
                     }
                     else if (m.group(1).startsWith("raises"))
                     {
-                        p_events.add(new PhaseEvents(player, TypePlayerAction.RAISE, parseMoney(m.group(8))));
+                        p_events.add(new PhaseEvents(player, OldTypePlayerAction.RAISE, parseMoney(m.group(8))));
                     }
                     else if (m.group(1).startsWith("Uncalled"))
                     {
-                        p_events.add(new PhaseEvents(player, TypePlayerAction.UNCALLED, parseMoney(m.group(11))));
+                        p_events.add(new PhaseEvents(player, OldTypePlayerAction.UNCALLED, parseMoney(m.group(11))));
                     }
                     else
                     {
@@ -341,7 +341,7 @@ public class TupleHandHistories
         final String line = p_token.nextToken("\n");
         if (line.contains("No Limit") && line.contains("Hold'em"))
         {
-            m_type = TypePokerGame.NO_LIMIT;
+            m_type = OldTypePokerGame.NO_LIMIT;
         }
         else
         {
@@ -563,7 +563,7 @@ public class TupleHandHistories
                 if (m.find())
                 {
                     final TuplePlayer player = getPlayer(m.group(1));
-                    m_preflopEvents.add(new PhaseEvents(player, TypePlayerAction.BIG_BLIND));
+                    m_preflopEvents.add(new PhaseEvents(player, OldTypePlayerAction.BIG_BLIND));
                 }
             }
             
@@ -573,7 +573,7 @@ public class TupleHandHistories
                 if (m.find())
                 {
                     final TuplePlayer player = getPlayer(m.group(1));
-                    m_preflopEvents.add(new PhaseEvents(player, TypePlayerAction.SMALL_BLIND));
+                    m_preflopEvents.add(new PhaseEvents(player, OldTypePlayerAction.SMALL_BLIND));
                 }
             }
         }

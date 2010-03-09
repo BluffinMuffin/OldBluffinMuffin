@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 
 public interface ClientPokerListener extends EventListener
 {
-    void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round);
+    void betTurnEnded(ArrayList<Integer> potIndices, OldTypePokerRound round);
     
     void boardChanged(ArrayList<Integer> boardCardIndices);
     
@@ -27,7 +27,7 @@ public interface ClientPokerListener extends EventListener
     
     void playerTurnBegan(OldPokerPlayerInfo player);
     
-    void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount);
+    void playerTurnEnded(OldPokerPlayerInfo player, OldTypePlayerAction action, int actionAmount);
     
     void potWon(OldPokerPlayerInfo player, int potAmountWon, int potIndex);
     

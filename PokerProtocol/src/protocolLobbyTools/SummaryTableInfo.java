@@ -2,7 +2,7 @@ package protocolLobbyTools;
 
 import java.util.StringTokenizer;
 
-import pokerLogic.TypePokerGame;
+import pokerLogic.OldTypePokerGame;
 
 /**
  * @author Hocus
@@ -12,7 +12,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
 {
     public int m_noPort;
     public String m_tableName;
-    public TypePokerGame m_gameType;
+    public OldTypePokerGame m_gameType;
     public int m_bigBlind;
     public int m_nbPlayers;
     public int m_nbSeats;
@@ -33,7 +33,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
      * @param p_nbSeats
      *            Number of seat
      */
-    public SummaryTableInfo(int p_noPort, String p_tableName, TypePokerGame p_gameType, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
+    public SummaryTableInfo(int p_noPort, String p_tableName, OldTypePokerGame p_gameType, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
@@ -47,7 +47,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
     {
         m_noPort = Integer.parseInt(argsToken.nextToken());
         m_tableName = argsToken.nextToken();
-        m_gameType = TypePokerGame.valueOf(argsToken.nextToken());
+        m_gameType = OldTypePokerGame.valueOf(argsToken.nextToken());
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());

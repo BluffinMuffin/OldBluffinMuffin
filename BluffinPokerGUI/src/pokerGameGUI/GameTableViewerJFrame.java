@@ -25,7 +25,7 @@ import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 import newPokerLogicTools.PokerGameAdapter;
 import newPokerLogicTools.PokerGameObserver;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldTypePlayerAction;
 import utilGUI.ConsoleJPanel;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
@@ -683,7 +683,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                         php.setBackground(Color.white);
                         php.setHeaderColor(Color.white);
                     }
-                    php.setPlayerAction(TypePlayerAction.NOTHING);
+                    php.setPlayerAction(OldTypePlayerAction.NOTHING);
                 }
                 super.gameEnded();
             }
@@ -775,7 +775,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             {
                 php.setPlayerName(player.getPlayerName());
                 php.setPlayerInfo("");// TODO: Human or BOT
-                php.setPlayerAction(TypePlayerAction.NOTHING);
+                php.setPlayerAction(OldTypePlayerAction.NOTHING);
                 final GameCard[] cards = player.getCurrentHand(true);
                 php.setPlayerCards(cards[0], cards[1]);
                 php.setPlayerMoney(player.getCurrentSafeMoneyAmount());

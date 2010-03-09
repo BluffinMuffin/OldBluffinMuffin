@@ -1,8 +1,8 @@
 package clientGame;
 
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import clientGameTools.TypeSimplifiedAction;
 
 /**
@@ -35,7 +35,7 @@ public class ClientPokerPlayerInfo extends OldPokerPlayerInfo
      * @param p_state
      *            - Moment in a poker game.
      */
-    public void did(TypePlayerAction p_action, TypePokerRound p_state)
+    public void did(OldTypePlayerAction p_action, OldTypePokerRound p_state)
     {
         switch (p_state)
         {
@@ -65,7 +65,7 @@ public class ClientPokerPlayerInfo extends OldPokerPlayerInfo
      * @return
      *         If the player is folded.
      */
-    public boolean isFolded(TypePokerRound p_state)
+    public boolean isFolded(OldTypePokerRound p_state)
     {
         switch (p_state)
         {
@@ -95,13 +95,13 @@ public class ClientPokerPlayerInfo extends OldPokerPlayerInfo
      *         SimplifiedAction depending the current action and previous
      *         actions.
      */
-    private TypeSimplifiedAction manageLastActions(TypePlayerAction p_currentAction, TypeSimplifiedAction p_lastActions)
+    private TypeSimplifiedAction manageLastActions(OldTypePlayerAction p_currentAction, TypeSimplifiedAction p_lastActions)
     {
-        if (p_currentAction == TypePlayerAction.FOLD)
+        if (p_currentAction == OldTypePlayerAction.FOLD)
         {
             return TypeSimplifiedAction.FOLD;
         }
-        else if (p_currentAction == TypePlayerAction.CHECK)
+        else if (p_currentAction == OldTypePlayerAction.CHECK)
         {
             return TypeSimplifiedAction.CHECK;
         }
@@ -109,29 +109,29 @@ public class ClientPokerPlayerInfo extends OldPokerPlayerInfo
         {
             if (p_lastActions == null)
             {
-                if (p_currentAction == TypePlayerAction.CALL)
+                if (p_currentAction == OldTypePlayerAction.CALL)
                 {
                     return TypeSimplifiedAction.CALL;
                 }
-                else if (p_currentAction == TypePlayerAction.RAISE)
+                else if (p_currentAction == OldTypePlayerAction.RAISE)
                 {
                     return TypeSimplifiedAction.RAISE;
                 }
             }
             else if (p_lastActions == TypeSimplifiedAction.CALL)
             {
-                if (p_currentAction == TypePlayerAction.RAISE)
+                if (p_currentAction == OldTypePlayerAction.RAISE)
                 {
                     return TypeSimplifiedAction.CALL_RAISE;
                 }
             }
             else if (p_lastActions == TypeSimplifiedAction.RAISE)
             {
-                if (p_currentAction == TypePlayerAction.CALL)
+                if (p_currentAction == OldTypePlayerAction.CALL)
                 {
                     return TypeSimplifiedAction.RAISE_CALL;
                 }
-                else if (p_currentAction == TypePlayerAction.RAISE)
+                else if (p_currentAction == OldTypePlayerAction.RAISE)
                 {
                     return TypeSimplifiedAction.RAISE_RAISE;
                 }

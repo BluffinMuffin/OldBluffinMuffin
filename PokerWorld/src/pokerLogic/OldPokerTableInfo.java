@@ -25,7 +25,7 @@ public class OldPokerTableInfo
     public int m_bigBlindAmount;
     public ArrayList<GameCard> m_boardCards = new ArrayList<GameCard>();
     
-    public TypePokerRound m_gameState = TypePokerRound.BEGINNING;
+    public OldTypePokerRound m_gameState = OldTypePokerRound.BEGINNING;
     public String m_name;
     
     public int m_currentBet;
@@ -192,7 +192,7 @@ public class OldPokerTableInfo
         m_boardCards = new ArrayList<GameCard>(5);
         m_currentBet = 0;
         m_totalPotAmount = 0;
-        m_gameState = TypePokerRound.PREFLOP;
+        m_gameState = OldTypePokerRound.PREFLOP;
         m_nbPlayingPlayers = 0;
     }
     

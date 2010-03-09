@@ -4,9 +4,9 @@ import gameLogic.GameCard;
 
 import java.util.ArrayList;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import pokerStats.MonteCarlo;
 
 @Deprecated
@@ -38,14 +38,14 @@ public class PokerGeneticAI extends PokerAI
     }
     
     @Override
-    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> pActionsAllowed, int pMinRaiseAmount, int pMaxRaiseAmount)
+    protected OldPokerPlayerAction analyze(ArrayList<OldTypePlayerAction> pActionsAllowed, int pMinRaiseAmount, int pMaxRaiseAmount)
     {
         
-        PokerPlayerAction action = null;
+        OldPokerPlayerAction action = null;
         final double mc = calculateHandValues();
         
         int gameState = 1;
-        if (m_table.m_gameState == TypePokerRound.PREFLOP)
+        if (m_table.m_gameState == OldTypePokerRound.PREFLOP)
         {
             gameState = 0;
         }
@@ -58,48 +58,48 @@ public class PokerGeneticAI extends PokerAI
         if (bet < 0)
         {
             // Check - Fold
-            if (pActionsAllowed.contains(TypePlayerAction.CALL))
+            if (pActionsAllowed.contains(OldTypePlayerAction.CALL))
             {
-                action = new PokerPlayerAction(TypePlayerAction.FOLD, 0);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.FOLD, 0);
             }
             else
             {
-                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.CHECK, 0);
             }
         }
         else if ((m_callAmount > (1 - sigma[gameState]) * bet) && (m_callAmount < (1 + sigma[gameState]) * bet))
         {
             // Check - Call
-            if (pActionsAllowed.contains(TypePlayerAction.CALL))
+            if (pActionsAllowed.contains(OldTypePlayerAction.CALL))
             {
-                action = new PokerPlayerAction(TypePlayerAction.CALL, m_callAmount);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.CALL, m_callAmount);
             }
             else
             {
-                action = new PokerPlayerAction(TypePlayerAction.CHECK, 0);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.CHECK, 0);
             }
         }
         else
         {
             // Raise
-            if (pActionsAllowed.contains(TypePlayerAction.RAISE))
+            if (pActionsAllowed.contains(OldTypePlayerAction.RAISE))
             {
                 if (bet < pMinRaiseAmount)
                 {
-                    action = new PokerPlayerAction(TypePlayerAction.RAISE, pMinRaiseAmount);
+                    action = new OldPokerPlayerAction(OldTypePlayerAction.RAISE, pMinRaiseAmount);
                 }
                 else if (bet > pMaxRaiseAmount)
                 {
-                    action = new PokerPlayerAction(TypePlayerAction.RAISE, pMaxRaiseAmount);
+                    action = new OldPokerPlayerAction(OldTypePlayerAction.RAISE, pMaxRaiseAmount);
                 }
                 else
                 {
-                    action = new PokerPlayerAction(TypePlayerAction.RAISE, bet);
+                    action = new OldPokerPlayerAction(OldTypePlayerAction.RAISE, bet);
                 }
             }
-            else if (pActionsAllowed.contains(TypePlayerAction.CALL))
+            else if (pActionsAllowed.contains(OldTypePlayerAction.CALL))
             {
-                action = new PokerPlayerAction(TypePlayerAction.CALL, m_callAmount);
+                action = new OldPokerPlayerAction(OldTypePlayerAction.CALL, m_callAmount);
             }
         }
         

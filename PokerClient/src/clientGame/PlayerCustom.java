@@ -1,12 +1,12 @@
 package clientGame;
 
-import pokerLogic.TypePlayerMajorPosition;
-import pokerLogic.TypePlayerMinorPosition;
+import pokerLogic.OldTypePlayerMajorPosition;
+import pokerLogic.OldTypePlayerMinorPosition;
 
 public class PlayerCustom extends ClientPokerPlayerInfo
 {
-    public TypePlayerMinorPosition m_minorPosition = null;
-    public TypePlayerMajorPosition m_majorPosition = null;
+    public OldTypePlayerMinorPosition m_minorPosition = null;
+    public OldTypePlayerMajorPosition m_majorPosition = null;
     
     public PlayerCustom(int pNoSeat)
     {

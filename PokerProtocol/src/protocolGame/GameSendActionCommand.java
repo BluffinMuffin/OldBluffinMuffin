@@ -2,25 +2,25 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import pokerLogic.PokerPlayerAction;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldPokerPlayerAction;
+import pokerLogic.OldTypePlayerAction;
 import protocolTools.IPokerCommand;
 import utility.Constants;
 
 public class GameSendActionCommand implements IPokerCommand
 {
     
-    private final PokerPlayerAction m_action;
+    private final OldPokerPlayerAction m_action;
     public static String COMMAND_NAME = "gameSEND_ACTION";
     
     public GameSendActionCommand(StringTokenizer argsToken)
     {
-        m_action = new PokerPlayerAction();
-        m_action.setType(TypePlayerAction.valueOf(argsToken.nextToken()));
+        m_action = new OldPokerPlayerAction();
+        m_action.setType(OldTypePlayerAction.valueOf(argsToken.nextToken()));
         m_action.setAmount(Integer.parseInt(argsToken.nextToken()));
     }
     
-    public GameSendActionCommand(PokerPlayerAction action)
+    public GameSendActionCommand(OldPokerPlayerAction action)
     {
         m_action = action;
     }
@@ -37,7 +37,7 @@ public class GameSendActionCommand implements IPokerCommand
         return sb.toString();
     }
     
-    public PokerPlayerAction getAction()
+    public OldPokerPlayerAction getAction()
     {
         return m_action;
     }

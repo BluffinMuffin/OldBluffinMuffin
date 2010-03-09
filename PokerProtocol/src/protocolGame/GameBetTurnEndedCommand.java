@@ -3,14 +3,14 @@ package protocolGame;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePokerRound;
 import protocolTools.IPokerCommand;
 import utility.Constants;
 
 public class GameBetTurnEndedCommand implements IPokerCommand
 {
     private final ArrayList<Integer> m_potsAmounts;
-    private final TypePokerRound m_round;
+    private final OldTypePokerRound m_round;
     public static String COMMAND_NAME = "gameBET_TURN_ENDED";
     
     public GameBetTurnEndedCommand(StringTokenizer argsToken)
@@ -21,10 +21,10 @@ public class GameBetTurnEndedCommand implements IPokerCommand
         {
             m_potsAmounts.add(Integer.parseInt(argsToken.nextToken()));
         }
-        m_round = TypePokerRound.valueOf(argsToken.nextToken());
+        m_round = OldTypePokerRound.valueOf(argsToken.nextToken());
     }
     
-    public GameBetTurnEndedCommand(ArrayList<Integer> potsAmounts, TypePokerRound round)
+    public GameBetTurnEndedCommand(ArrayList<Integer> potsAmounts, OldTypePokerRound round)
     {
         m_potsAmounts = potsAmounts;
         m_round = round;
@@ -52,7 +52,7 @@ public class GameBetTurnEndedCommand implements IPokerCommand
         return m_potsAmounts;
     }
     
-    public TypePokerRound getRound()
+    public OldTypePokerRound getRound()
     {
         return m_round;
     }

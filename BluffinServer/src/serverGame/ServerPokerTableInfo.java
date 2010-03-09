@@ -10,9 +10,9 @@ import java.util.TreeSet;
 
 import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.OldPokerTableInfo;
-import pokerLogic.Pot;
-import pokerLogic.TypePokerGame;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldPot;
+import pokerLogic.OldTypePokerGame;
+import pokerLogic.OldTypePokerRound;
 import protocolGame.GameTableInfoCommand;
 import protocolGameTools.SummarySeatInfo;
 import protocolLobby.LobbyCreateTableCommand;
@@ -31,8 +31,8 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
     public int m_playerTurn;
     public int m_bettingPlayer;
     public boolean m_firstTurn;
-    public Stack<Pot> m_pots = new Stack<Pot>();
-    public TypePokerGame m_gameType;
+    public Stack<OldPot> m_pots = new Stack<OldPot>();
+    public OldTypePokerGame m_gameType;
     
     public ServerPokerTableInfo()
     {
@@ -41,15 +41,15 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
     
     public ServerPokerTableInfo(int nbSeats)
     {
-        this("Anonymous", TypePokerGame.NO_LIMIT, 5, nbSeats);
+        this("Anonymous", OldTypePokerGame.NO_LIMIT, 5, nbSeats);
     }
     
-    public ServerPokerTableInfo(String pName, TypePokerGame pGameType, int pBigBlind, int nbSeats)
+    public ServerPokerTableInfo(String pName, OldTypePokerGame pGameType, int pBigBlind, int nbSeats)
     {
         super(pName, pBigBlind, nbSeats);
         m_gameType = pGameType;
         m_bettingPlayer = -1;
-        m_pots = new Stack<Pot>();
+        m_pots = new Stack<OldPot>();
     }
     
     public ServerPokerTableInfo(LobbyCreateTableCommand command)
@@ -62,7 +62,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
      */
     public void endGame()
     {
-        m_gameState = TypePokerRound.END;
+        m_gameState = OldTypePokerRound.END;
         
         final int start = m_noSeatDealer;
         int i = start;
@@ -82,8 +82,8 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
         // Reset the games variables
         m_deck = GameCardSet.shuffledDeck();
         m_noSeatLastRaiser = -1;
-        m_pots = new Stack<Pot>();
-        m_pots.push(new Pot(0));
+        m_pots = new Stack<OldPot>();
+        m_pots.push(new OldPot(0));
         m_nbFolded = 0;
         m_nbAllIn = 0;
     }
@@ -99,9 +99,9 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
     public int getMinimumRaise(ServerPokerPlayerInfo p_player)
     {
         int minimumRaise = m_currentBet + m_bigBlindAmount;
-        if (m_gameType == TypePokerGame.FIXED_LIMIT)
+        if (m_gameType == OldTypePokerGame.FIXED_LIMIT)
         {
-            if (!((m_gameState == TypePokerRound.PREFLOP) || (m_gameState == TypePokerRound.FLOP)))
+            if (!((m_gameState == OldTypePokerRound.PREFLOP) || (m_gameState == OldTypePokerRound.FLOP)))
             {
                 minimumRaise += m_bigBlindAmount;
             }
@@ -126,9 +126,9 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
     public int getMaximumRaise(ServerPokerPlayerInfo p_player)
     {
         int maximumRaise = Integer.MAX_VALUE;
-        if (m_gameType == TypePokerGame.FIXED_LIMIT)
+        if (m_gameType == OldTypePokerGame.FIXED_LIMIT)
         {
-            if ((m_gameState == TypePokerRound.PREFLOP) || (m_gameState == TypePokerRound.FLOP))
+            if ((m_gameState == OldTypePokerRound.PREFLOP) || (m_gameState == OldTypePokerRound.FLOP))
             {
                 maximumRaise = m_bigBlindAmount + m_currentBet;
             }
@@ -137,7 +137,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
                 maximumRaise = m_bigBlindAmount * 2 + m_currentBet;
             }
         }
-        else if (m_gameType == TypePokerGame.POT_LIMIT)
+        else if (m_gameType == OldTypePokerGame.POT_LIMIT)
         {
             maximumRaise = m_totalPotAmount + 2 * (m_currentBet - p_player.getBet()) + p_player.getBet();
         }
@@ -172,7 +172,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
      */
     public void dealFlop()
     {
-        m_gameState = TypePokerRound.FLOP;
+        m_gameState = OldTypePokerRound.FLOP;
         for (int i = 0; i < 3; ++i)
         {
             m_boardCards.add(m_deck.pop());
@@ -193,7 +193,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
      */
     public void dealRiver()
     {
-        m_gameState = TypePokerRound.RIVER;
+        m_gameState = OldTypePokerRound.RIVER;
         m_boardCards.add(m_deck.pop());
         
         try
@@ -211,7 +211,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
      */
     public void dealTurn()
     {
-        m_gameState = TypePokerRound.TURN;
+        m_gameState = OldTypePokerRound.TURN;
         m_boardCards.add(m_deck.pop());
         
         try
@@ -237,7 +237,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
         final ArrayList<Integer> cards = new ArrayList<Integer>();
         final ArrayList<SummarySeatInfo> seats = new ArrayList<SummarySeatInfo>();
         
-        for (final Pot pot : m_pots)
+        for (final OldPot pot : m_pots)
         {
             pots.add(pot.getAmount());
         }
@@ -346,20 +346,20 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
         
         // Modify the pots
         boolean addAPot = false;
-        Pot lastPot = null;
+        OldPot lastPot = null;
         if (m_currentBet != 0)
         {
             if (bets.contains(m_currentBet))
             {
                 addAPot = true;
-                lastPot = new Pot(m_pots.peek().getId() + bets.size() + 1);
+                lastPot = new OldPot(m_pots.peek().getId() + bets.size() + 1);
             }
             bets.add(m_currentBet);
             final int nbPots = bets.size();
-            final Pot[] newPots = new Pot[nbPots];
+            final OldPot[] newPots = new OldPot[nbPots];
             for (int i = 1; i < nbPots; i++)
             {
-                newPots[i] = new Pot(m_pots.peek().getId() + i);
+                newPots[i] = new OldPot(m_pots.peek().getId() + i);
             }
             newPots[0] = m_pots.peek();
             newPots[0].removeAllParticipant();
@@ -381,7 +381,7 @@ public class ServerPokerTableInfo extends OldPokerTableInfo
                     while (it.hasNext() && !betPlaced)
                     {
                         final int nextPotBet = it.next();
-                        final Pot nextPot = newPots[potIndex];
+                        final OldPot nextPot = newPots[potIndex];
                         if (bet >= nextPotBet)
                         {
                             nextPot.addAmount(nextPotBet - lastPotBet);

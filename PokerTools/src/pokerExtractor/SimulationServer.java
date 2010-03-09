@@ -10,8 +10,8 @@ import pokerExtractor.TupleHandHistories.PhaseEvents;
 import pokerExtractor.TupleHandHistories.TuplePlayer;
 import pokerExtractor.TupleHandHistories.Winner;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import protocolGame.GameBetTurnEndedCommand;
@@ -31,7 +31,7 @@ import clientStats.StatsAgent;
 
 public class SimulationServer
 {
-    TypePokerRound m_state = TypePokerRound.PREFLOP;
+    OldTypePokerRound m_state = OldTypePokerRound.PREFLOP;
     PokerClientLocal m_client;
     StatsAgent m_statsAgent = new StatsAgent();
     LinkedBlockingQueue<String> m_fromClient = new LinkedBlockingQueue<String>(1);
@@ -88,7 +88,7 @@ public class SimulationServer
         final GameCard[] holeCards = new GameCard[] { m_hero.m_card1, m_hero.m_card2 };
         final GameCard[] boardCcards = new GameCard[5];
         
-        if (m_state == TypePokerRound.PREFLOP)
+        if (m_state == OldTypePokerRound.PREFLOP)
         {
             boardCcards[0] = GameCard.NO_CARD;
             boardCcards[1] = GameCard.NO_CARD;
@@ -96,7 +96,7 @@ public class SimulationServer
             boardCcards[3] = GameCard.NO_CARD;
             boardCcards[4] = GameCard.NO_CARD;
         }
-        else if (m_state == TypePokerRound.FLOP)
+        else if (m_state == OldTypePokerRound.FLOP)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -104,7 +104,7 @@ public class SimulationServer
             boardCcards[3] = GameCard.NO_CARD;
             boardCcards[4] = GameCard.NO_CARD;
         }
-        else if (m_state == TypePokerRound.TURN)
+        else if (m_state == OldTypePokerRound.TURN)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -112,7 +112,7 @@ public class SimulationServer
             boardCcards[3] = m_currentInfos.m_turn;
             boardCcards[4] = GameCard.NO_CARD;
         }
-        else if (m_state == TypePokerRound.RIVER)
+        else if (m_state == OldTypePokerRound.RIVER)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -267,11 +267,11 @@ public class SimulationServer
     
     private void manageLastActionsFlop(PhaseEvents p_event)
     {
-        if (p_event.m_action == TypePlayerAction.FOLD)
+        if (p_event.m_action == OldTypePlayerAction.FOLD)
         {
             p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.FOLD;
         }
-        else if (p_event.m_action == TypePlayerAction.CHECK)
+        else if (p_event.m_action == OldTypePlayerAction.CHECK)
         {
             p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.CHECK;
         }
@@ -279,29 +279,29 @@ public class SimulationServer
         {
             if (p_event.m_player.m_lastActionsFlop == null)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsFlop == TypeSimplifiedAction.CALL)
             {
-                if (p_event.m_action == TypePlayerAction.RAISE)
+                if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.CALL_RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsFlop == TypeSimplifiedAction.RAISE)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.RAISE_CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsFlop = TypeSimplifiedAction.RAISE_RAISE;
                 }
@@ -311,11 +311,11 @@ public class SimulationServer
     
     private void manageLastActionsPreflop(PhaseEvents p_event)
     {
-        if (p_event.m_action == TypePlayerAction.FOLD)
+        if (p_event.m_action == OldTypePlayerAction.FOLD)
         {
             p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.FOLD;
         }
-        else if (p_event.m_action == TypePlayerAction.CHECK)
+        else if (p_event.m_action == OldTypePlayerAction.CHECK)
         {
             p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.CHECK;
         }
@@ -323,29 +323,29 @@ public class SimulationServer
         {
             if (p_event.m_player.m_lastActionsPreflop == null)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsPreflop == TypeSimplifiedAction.CALL)
             {
-                if (p_event.m_action == TypePlayerAction.RAISE)
+                if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.CALL_RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsPreflop == TypeSimplifiedAction.RAISE)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.RAISE_CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsPreflop = TypeSimplifiedAction.RAISE_RAISE;
                 }
@@ -355,11 +355,11 @@ public class SimulationServer
     
     private void manageLastActionsRiver(PhaseEvents p_event)
     {
-        if (p_event.m_action == TypePlayerAction.FOLD)
+        if (p_event.m_action == OldTypePlayerAction.FOLD)
         {
             p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.FOLD;
         }
-        else if (p_event.m_action == TypePlayerAction.CHECK)
+        else if (p_event.m_action == OldTypePlayerAction.CHECK)
         {
             p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.CHECK;
         }
@@ -367,29 +367,29 @@ public class SimulationServer
         {
             if (p_event.m_player.m_lastActionsRiver == null)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsRiver == TypeSimplifiedAction.CALL)
             {
-                if (p_event.m_action == TypePlayerAction.RAISE)
+                if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.CALL_RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsRiver == TypeSimplifiedAction.RAISE)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.RAISE_CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsRiver = TypeSimplifiedAction.RAISE_RAISE;
                 }
@@ -399,11 +399,11 @@ public class SimulationServer
     
     private void manageLastActionsTurn(PhaseEvents p_event)
     {
-        if (p_event.m_action == TypePlayerAction.FOLD)
+        if (p_event.m_action == OldTypePlayerAction.FOLD)
         {
             p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.FOLD;
         }
-        else if (p_event.m_action == TypePlayerAction.CHECK)
+        else if (p_event.m_action == OldTypePlayerAction.CHECK)
         {
             p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.CHECK;
         }
@@ -411,29 +411,29 @@ public class SimulationServer
         {
             if (p_event.m_player.m_lastActionsTurn == null)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsTurn == TypeSimplifiedAction.CALL)
             {
-                if (p_event.m_action == TypePlayerAction.RAISE)
+                if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.CALL_RAISE;
                 }
             }
             else if (p_event.m_player.m_lastActionsTurn == TypeSimplifiedAction.RAISE)
             {
-                if (p_event.m_action == TypePlayerAction.CALL)
+                if (p_event.m_action == OldTypePlayerAction.CALL)
                 {
                     p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.RAISE_CALL;
                 }
-                else if (p_event.m_action == TypePlayerAction.RAISE)
+                else if (p_event.m_action == OldTypePlayerAction.RAISE)
                 {
                     p_event.m_player.m_lastActionsTurn = TypeSimplifiedAction.RAISE_RAISE;
                 }
@@ -510,7 +510,7 @@ public class SimulationServer
             smallBlindPlayer.m_betAmount = p_infos.m_smallBlind;
             smallBlindPlayer.m_money -= p_infos.m_smallBlind;
             totalPotAmount += p_infos.m_smallBlind;
-            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, TypePlayerAction.SMALL_BLIND, p_infos.m_smallBlind));
+            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, OldTypePlayerAction.SMALL_BLIND, p_infos.m_smallBlind));
         }
         
         // Big blind posted
@@ -520,10 +520,10 @@ public class SimulationServer
             bigBlindPlayer.m_betAmount = p_infos.m_bigBlind;
             bigBlindPlayer.m_money -= p_infos.m_bigBlind;
             totalPotAmount += p_infos.m_bigBlind;
-            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, TypePlayerAction.BIG_BLIND, p_infos.m_bigBlind));
+            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, OldTypePlayerAction.BIG_BLIND, p_infos.m_bigBlind));
         }
         
-        m_state = TypePokerRound.PREFLOP;
+        m_state = OldTypePokerRound.PREFLOP;
         // *** PREFLOP ***//
         totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_preflopEvents, p_infos.m_bigBlind);
         
@@ -531,7 +531,7 @@ public class SimulationServer
         // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
         send(new GameBetTurnEndedCommand(amounts, m_state));
         
-        m_state = TypePokerRound.FLOP;
+        m_state = OldTypePokerRound.FLOP;
         if (p_infos.m_flopEvents.size() > 0)
         {
             // *** FLOP ***//
@@ -545,7 +545,7 @@ public class SimulationServer
             send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
-        m_state = TypePokerRound.TURN;
+        m_state = OldTypePokerRound.TURN;
         if (p_infos.m_turnEvents.size() > 0)
         {
             // *** TURN ***//
@@ -559,7 +559,7 @@ public class SimulationServer
             send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
-        m_state = TypePokerRound.RIVER;
+        m_state = OldTypePokerRound.RIVER;
         if (p_infos.m_riverEvents.size() > 0)
         {
             // *** RIVER ***//
@@ -600,7 +600,7 @@ public class SimulationServer
         for (final TuplePlayer player : m_currentInfos.m_players)
         {
             
-            if ((m_state != TypePokerRound.PREFLOP) || ((player.m_noSeat != m_currentInfos.m_noSeatBigBlind) && (player.m_noSeat != m_currentInfos.m_noSeatSmallBlind)))
+            if ((m_state != OldTypePokerRound.PREFLOP) || ((player.m_noSeat != m_currentInfos.m_noSeatBigBlind) && (player.m_noSeat != m_currentInfos.m_noSeatSmallBlind)))
             {
                 player.m_betAmount = 0;
             }
@@ -610,12 +610,12 @@ public class SimulationServer
         // [PLAYER_TURN_ENDED;noSeat;betAmount;moneyAmount;totalPotAmount;action;actionAmount;]
         for (final PhaseEvents event : p_events)
         {
-            if ((event.m_player == m_hero) && ((event.m_action == TypePlayerAction.RAISE) || (event.m_action == TypePlayerAction.CALL) || (event.m_action == TypePlayerAction.CHECK) || (event.m_action == TypePlayerAction.FOLD)))
+            if ((event.m_player == m_hero) && ((event.m_action == OldTypePlayerAction.RAISE) || (event.m_action == OldTypePlayerAction.CALL) || (event.m_action == OldTypePlayerAction.CHECK) || (event.m_action == OldTypePlayerAction.FOLD)))
             {
                 write(event.m_action, totalPotAmount, currentBet);
             }
             
-            if (event.m_action == TypePlayerAction.RAISE)
+            if (event.m_action == OldTypePlayerAction.RAISE)
             {
                 totalPotAmount -= event.m_player.m_betAmount;
                 totalPotAmount += event.m_actionAmount;
@@ -624,38 +624,38 @@ public class SimulationServer
                 event.m_player.m_money -= event.m_actionAmount;
                 event.m_player.m_betAmount = event.m_actionAmount;
             }
-            else if (event.m_action == TypePlayerAction.CALL)
+            else if (event.m_action == OldTypePlayerAction.CALL)
             {
                 totalPotAmount += event.m_actionAmount;
                 event.m_player.m_betAmount += event.m_actionAmount;
                 event.m_player.m_money -= event.m_actionAmount;
             }
-            else if (event.m_action == TypePlayerAction.UNCALLED)
+            else if (event.m_action == OldTypePlayerAction.UNCALLED)
             {
                 totalPotAmount -= event.m_actionAmount;
                 event.m_player.m_money += event.m_actionAmount;
                 event.m_player.m_betAmount -= event.m_actionAmount;
             }
-            else if (event.m_action == TypePlayerAction.FOLD)
+            else if (event.m_action == OldTypePlayerAction.FOLD)
             {
                 event.m_player.m_isFolded = true;
                 m_nbRemainingPlayers--;
             }
             send(new GamePlayerTurnEndedCommand(event.m_player.m_noSeat, event.m_player.m_betAmount, event.m_player.m_money, totalPotAmount, event.m_action, event.m_actionAmount));
             
-            if (m_state == TypePokerRound.PREFLOP)
+            if (m_state == OldTypePokerRound.PREFLOP)
             {
                 manageLastActionsPreflop(event);
             }
-            else if (m_state == TypePokerRound.FLOP)
+            else if (m_state == OldTypePokerRound.FLOP)
             {
                 manageLastActionsFlop(event);
             }
-            else if (m_state == TypePokerRound.TURN)
+            else if (m_state == OldTypePokerRound.TURN)
             {
                 manageLastActionsTurn(event);
             }
-            else if (m_state == TypePokerRound.RIVER)
+            else if (m_state == OldTypePokerRound.RIVER)
             {
                 manageLastActionsRiver(event);
             }
@@ -669,7 +669,7 @@ public class SimulationServer
     // totalPot;handPhase;nbPlayers
     // {playerPosition;playerMoney;playerBet;playerPreflopActions;playerFlopActions;playerTurnActions;playerRiverActions;
     // playerPreflopStats[28];playerPostflopStats[9];}
-    private void write(TypePlayerAction p_action, int p_totalPotAmount, int p_currentBet)
+    private void write(OldTypePlayerAction p_action, int p_totalPotAmount, int p_currentBet)
     {
         double highMoney = 0.0;
         for (final TuplePlayer player : m_currentInfos.m_players)
@@ -696,7 +696,7 @@ public class SimulationServer
         sb.append(formatEnum(m_hero.m_lastActionsRiver, TypeSimplifiedAction.class)); // 36-42
         
         sb.append(format((double) p_totalPotAmount / (double) m_hero.m_money)); // 43
-        sb.append(formatEnum(m_state, TypePokerRound.class)); // 44-47
+        sb.append(formatEnum(m_state, OldTypePokerRound.class)); // 44-47
         // sb.append(format(m_currentInfos.m_players.size())); //47
         
         for (final TuplePlayer player : m_currentInfos.m_players)
@@ -729,7 +729,7 @@ public class SimulationServer
             }
             else
             {
-                if (m_state == TypePokerRound.PREFLOP)
+                if (m_state == OldTypePokerRound.PREFLOP)
                 {
                     // Stats preflop
                     sb.append(format(m_statsAgent.m_overallStats.get(player.m_name).getProbVPIPTotal_PRF())); // 87

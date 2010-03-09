@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.Pot;
+import pokerLogic.OldPot;
 import serverGame.ServerPokerPlayerInfo;
 import serverGame.ServerTableCommunicator;
 
@@ -131,7 +131,7 @@ public class ServerPokerLogger
             }
             
             @Override
-            public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, PokerPlayerAction p_action)
+            public void playerEndTurn(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, OldPokerPlayerAction p_action)
             {
                 println(p_player.getName() + " " + p_action.toString() + ". Bet = " + p_player.getBet());
             }
@@ -167,7 +167,7 @@ public class ServerPokerLogger
             }
             
             @Override
-            public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, Pot p_pot, int p_share)
+            public void potWon(ServerTableCommunicator p_table, ServerPokerPlayerInfo p_player, OldPot p_pot, int p_share)
             {
                 println(p_player.getName() + " won " + p_share);
             }

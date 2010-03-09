@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pokerLogic.PokerPlayerAction;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.OldPokerTableInfo;
-import pokerLogic.TypePlayerAction;
+import pokerLogic.OldTypePlayerAction;
 import utility.IClosingListener;
 import clientGame.ClientPokerTableInfo;
 import clientGameTools.ClientPokerAdapter;
@@ -37,14 +37,14 @@ public class PokerAI implements IClientPokerActionner
     /** Represents the poker table the agent is playing on. **/
     protected ClientPokerTableInfo m_table = null;
     /** Is the next action the agent has decided to take. **/
-    private final PokerPlayerAction m_playerAction = new PokerPlayerAction(TypePlayerAction.NOTHING);
+    private final OldPokerPlayerAction m_playerAction = new OldPokerPlayerAction(OldTypePlayerAction.NOTHING);
     /** Indicates if new infos are available to the agent. **/
     Boolean m_newInfos = false;
     
     /** Mutex to change m_newInfos. **/
     Object m_mutexNewInfos = new Object();
     /** Array containing all allowed actions to take the decision. **/
-    protected ArrayList<TypePlayerAction> m_actionsAllowed = new ArrayList<TypePlayerAction>();
+    protected ArrayList<OldTypePlayerAction> m_actionsAllowed = new ArrayList<OldTypePlayerAction>();
     /** Amount to call. **/
     protected int m_callAmount;
     /** Minimum amount the agent must raise to. **/
@@ -62,7 +62,7 @@ public class PokerAI implements IClientPokerActionner
      * @param p_actionTaken
      *            - Action the agent decided to take.
      */
-    private void actionTaken(PokerPlayerAction p_actionTaken)
+    private void actionTaken(OldPokerPlayerAction p_actionTaken)
     {
         System.out.println("Taking action: " + p_actionTaken.getType().toString());
         synchronized (m_playerAction)
@@ -92,14 +92,14 @@ public class PokerAI implements IClientPokerActionner
      * @return
      *         Action the agent choose.
      */
-    protected PokerPlayerAction analyze(ArrayList<TypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
+    protected OldPokerPlayerAction analyze(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
-        if (p_actionsAllowed.contains(TypePlayerAction.CHECK))
+        if (p_actionsAllowed.contains(OldTypePlayerAction.CHECK))
         {
-            return new PokerPlayerAction(TypePlayerAction.CHECK);
+            return new OldPokerPlayerAction(OldTypePlayerAction.CHECK);
         }
         
-        return new PokerPlayerAction(TypePlayerAction.FOLD);
+        return new OldPokerPlayerAction(OldTypePlayerAction.FOLD);
     }
     
     /**
@@ -107,20 +107,20 @@ public class PokerAI implements IClientPokerActionner
      */
     public void disconnect()
     {
-        actionTaken(new PokerPlayerAction(TypePlayerAction.DISCONNECT));
+        actionTaken(new OldPokerPlayerAction(OldTypePlayerAction.DISCONNECT));
     }
     
     @Override
-    public PokerPlayerAction getAction()
+    public OldPokerPlayerAction getAction()
     {
-        final PokerPlayerAction actionTaken = new PokerPlayerAction(TypePlayerAction.NOTHING);
+        final OldPokerPlayerAction actionTaken = new OldPokerPlayerAction(OldTypePlayerAction.NOTHING);
         
         synchronized (m_playerAction)
         {
             try
             {
                 // Be sure, the agent has not take its action at this point.
-                if (m_playerAction.getType() == TypePlayerAction.NOTHING)
+                if (m_playerAction.getType() == OldTypePlayerAction.NOTHING)
                 {
                     m_playerAction.wait();
                 }
@@ -128,7 +128,7 @@ public class PokerAI implements IClientPokerActionner
                 // Look the decision taken and prepare to return it.
                 actionTaken.setType(m_playerAction.getType());
                 actionTaken.setAmount(m_playerAction.getAmount());
-                m_playerAction.setType(TypePlayerAction.NOTHING);
+                m_playerAction.setType(OldTypePlayerAction.NOTHING);
             }
             catch (final InterruptedException e)
             {
@@ -148,7 +148,7 @@ public class PokerAI implements IClientPokerActionner
     {
         while (m_isRunning)
         {
-            PokerPlayerAction action = null;
+            OldPokerPlayerAction action = null;
             
             try
             {
@@ -207,7 +207,7 @@ public class PokerAI implements IClientPokerActionner
     }
     
     @Override
-    public void takeAction(ArrayList<TypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
+    public void takeAction(ArrayList<OldTypePlayerAction> p_actionsAllowed, int p_callAmount, int p_minRaiseAmount, int p_maxRaiseAmount)
     {
         synchronized (m_mutexNewInfos)
         {

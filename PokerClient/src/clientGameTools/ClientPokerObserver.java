@@ -3,13 +3,13 @@ package clientGameTools;
 import java.util.ArrayList;
 
 import pokerLogic.OldPokerPlayerInfo;
-import pokerLogic.TypePlayerAction;
-import pokerLogic.TypePokerRound;
+import pokerLogic.OldTypePlayerAction;
+import pokerLogic.OldTypePokerRound;
 import utility.EventObserver;
 
 public class ClientPokerObserver extends EventObserver<ClientPokerListener>
 {
-    public void betTurnEnded(ArrayList<Integer> potIndices, TypePokerRound round)
+    public void betTurnEnded(ArrayList<Integer> potIndices, OldTypePokerRound round)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
@@ -81,7 +81,7 @@ public class ClientPokerObserver extends EventObserver<ClientPokerListener>
         }
     }
     
-    public void playerTurnEnded(OldPokerPlayerInfo player, TypePlayerAction action, int actionAmount)
+    public void playerTurnEnded(OldPokerPlayerInfo player, OldTypePlayerAction action, int actionAmount)
     {
         for (final ClientPokerListener listener : getSubscribers())
         {
