@@ -173,7 +173,7 @@ public class PokerAISVM extends AbstractPokerAI
     }
     
     @Override
-    protected int PlayMoney()
+    protected int playMoney()
     {
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
@@ -199,7 +199,7 @@ public class PokerAISVM extends AbstractPokerAI
             if (getSVM_PreflopFold().predict(getVector(TypePokerGameRound.PREFLOP, p, table)) <= 0)
             {
                 m_cptRaise = 0;
-                return super.PlayMoney();
+                return super.playMoney();
             }
             else
             {
@@ -230,7 +230,7 @@ public class PokerAISVM extends AbstractPokerAI
             if (getSVM_PostflopFold().predict(getVector(TypePokerGameRound.FLOP, p, table)) <= 0)
             {
                 m_cptRaise = 0;
-                return super.PlayMoney();
+                return super.playMoney();
             }
             else
             {

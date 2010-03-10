@@ -20,7 +20,7 @@ public class PokerAIBasic extends AbstractPokerAI
     private final static int NB_SIMULATIONS = 10000;
     
     @Override
-    protected int PlayMoney()
+    protected int playMoney()
     {
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
@@ -34,7 +34,7 @@ public class PokerAIBasic extends AbstractPokerAI
         if ((myCards[0] == null) || (myCards[1] == null))
         {
             System.err.println("Watch IT!!! Cannot take decision if I don't hava any cards.");
-            return super.PlayMoney();
+            return super.playMoney();
         }
         
         // Calculate Monte Carlo score�

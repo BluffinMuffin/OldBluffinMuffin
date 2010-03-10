@@ -33,7 +33,7 @@ public abstract class AbstractPokerAI
             {
                 if (p.getCurrentTablePosition() == m_currentTablePosition)
                 {
-                    final int played = PlayMoney();
+                    final int played = playMoney();
                     m_game.playMoney(p, played);
                 }
             }
@@ -47,7 +47,7 @@ public abstract class AbstractPokerAI
      * @return
      *         Money played.
      */
-    protected int PlayMoney()
+    protected int playMoney()
     {
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);

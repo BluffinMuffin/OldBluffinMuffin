@@ -58,7 +58,7 @@ public class PokerAIGenetic extends AbstractPokerAI
     }
     
     @Override
-    protected int PlayMoney()
+    protected int playMoney()
     {
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);

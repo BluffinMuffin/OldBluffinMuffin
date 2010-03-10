@@ -8,7 +8,7 @@ public class PokerAIRandom extends AbstractPokerAI
 {
     
     @Override
-    protected int PlayMoney()
+    protected int playMoney()
     {
         int bet = 0;
         final PokerTableInfo table = m_game.getPokerTable();
