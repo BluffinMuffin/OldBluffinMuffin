@@ -1,4 +1,4 @@
-package newServerLobby;
+package pokerServerLobby;
 
 import java.io.IOException;
 import java.net.ServerSocket;

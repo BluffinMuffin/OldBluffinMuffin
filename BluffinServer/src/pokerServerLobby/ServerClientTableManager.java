@@ -1,4 +1,4 @@
-package serverLobby;
+package pokerServerLobby;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,22 +7,25 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import newPokerLogic.PokerGame;
+import newPokerLogic.PokerTableInfo;
+import pokerServerSide.ServerSidePokerTcpClient;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
 import protocolLobbyTools.LobbyServerSideObserver;
 import protocolTools.IPokerCommand;
-import serverGame.ServerNetworkPokerPlayerInfo;
 import utility.Constants;
+import utility.Hasard;
 
 /**
  * @author Hocus
  *         This class represents a client for a TableManger.
  */
-public class OldServerClientTableManager extends Thread
+public class ServerClientTableManager extends Thread
 {
     String m_name = "?";
-    OldServerTableManager m_manager;
+    ServerTableManager m_manager;
     private final LobbyServerSideObserver m_commandObserver = new LobbyServerSideObserver();
     
     // Communications with the client
@@ -30,7 +33,7 @@ public class OldServerClientTableManager extends Thread
     PrintWriter m_toClient;
     BufferedReader m_fromClient;
     
-    public OldServerClientTableManager(Socket p_socket, OldServerTableManager p_manager)
+    public ServerClientTableManager(Socket p_socket, ServerTableManager p_manager)
     {
         m_socket = p_socket;
         m_manager = p_manager;
@@ -126,31 +129,32 @@ public class OldServerClientTableManager extends Thread
             {
                 try
                 {
-                    if (!m_manager.m_table.isRunning())
+                    if (!m_manager.m_game.isRunning())
                     {
                         sendMessage(command.encodeErrorResponse());
                         return;
                     }
                     
                     // Create new NetworkPlayer.
-                    final ServerNetworkPokerPlayerInfo player = new ServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
+                    final ServerSidePokerTcpClient client = new ServerSidePokerTcpClient(m_manager.m_game, m_name, Hasard.RandomMinMax(Constants.STARTING_MONEY, Constants.STARTING_MONEY /*   * 5 */), m_socket);
+                    final PokerGame game = m_manager.m_game;
+                    final PokerTableInfo table = game.getPokerTable();
+                    // final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
                     
                     // Verify the player does not already playing on that table.
-                    if (!m_manager.m_table.getPlayers().contains(player))
+                    if (!table.containsPlayer(m_name))
                     {
-                        final int noSeat = m_manager.m_table.getNextSeat();
-                        if (noSeat == -1)
+                        final boolean ok = client.joinGame();
+                        if (!ok)
                         {
                             sendMessage(command.encodeErrorResponse());
                         }
                         else
                         {
-                            // Attach the client to the table.
-                            // Transfert socket connection.
-                            sendMessage(command.encodeResponse(noSeat));
-                            player.setIsConnected();
-                            player.setPokerObserver(m_manager.m_table.getPokerObserver());
-                            m_manager.m_table.join(player, noSeat);
+                            client.setIsConnected();
+                            client.start();
+                            sendMessage(command.encodeResponse(client.getPlayer().getCurrentTablePosition()));
+                            client.sitIn();
                         }
                     }
                     else

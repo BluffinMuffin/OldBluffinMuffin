@@ -1,4 +1,4 @@
-package serverLobby;
+package pokerServerLobby;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import newPokerLogic.PokerGame;
+import newPokerLogic.PokerTableInfo;
+import pokerLogic.OldTypePokerGame;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
-import serverGame.ServerTableCommunicator;
-import serverGameTools.ServerPokerLogger;
 import utility.Constants;
 
 /**
@@ -21,16 +22,16 @@ import utility.Constants;
  *         This is the main lobby on which client can: connect,
  *         fetch list of available poker tables, create new table and join a table.
  */
-public class OldServerLobby extends Thread
+public class ServerLobby extends Thread
 {
     
     private final int NO_PORT;
     private final ServerSocket m_socketServer;
     private final List<String> m_UsedNames = new ArrayList<String>();
     
-    Map<Integer, ServerTableCommunicator> m_tables = Collections.synchronizedMap(new TreeMap<Integer, ServerTableCommunicator>());
+    Map<Integer, PokerGame> m_games = Collections.synchronizedMap(new TreeMap<Integer, PokerGame>());
     
-    public OldServerLobby(int p_noPort) throws IOException
+    public ServerLobby(int p_noPort) throws IOException
     {
         NO_PORT = p_noPort;
         m_socketServer = new ServerSocket(NO_PORT);
@@ -62,7 +63,7 @@ public class OldServerLobby extends Thread
     {
         try
         {
-            final OldServerLobby server = new OldServerLobby(Constants.DEFAULT_NO_PORT);
+            final ServerLobby server = new ServerLobby(Constants.DEFAULT_NO_PORT);
             server.start();
             System.out.println("Server started");
         }
@@ -83,7 +84,7 @@ public class OldServerLobby extends Thread
             try
             {
                 final Socket socketClient = m_socketServer.accept();
-                final OldServerClientLobby client = new OldServerClientLobby(socketClient, this);
+                final ServerClientLobby client = new ServerClientLobby(socketClient, this);
                 client.start();
             }
             catch (final IOException e)
@@ -97,7 +98,7 @@ public class OldServerLobby extends Thread
     {
         listTables();
         
-        if (m_tables.size() >= Constants.NB_MAX_TABLES)
+        if (m_games.size() >= Constants.NB_MAX_TABLES)
         {
             return -1;
         }
@@ -108,23 +109,27 @@ public class OldServerLobby extends Thread
             // Only a certain number of port can be used at the same time.
             int noPort = NO_PORT + 1;
             final int endPortRange = NO_PORT + Constants.NB_MAX_TABLES + 1;
-            while ((noPort != endPortRange) && m_tables.containsKey(noPort))
+            while ((noPort != endPortRange) && m_games.containsKey(noPort))
             {
                 noPort++;
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            final ServerTableCommunicator table = new ServerTableCommunicator(command);
-            final OldServerTableManager manager = new OldServerTableManager(table, noPort);
+            // TODO: Gestion TypePokerGame
+            final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers()));
+            game.start();
+            // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
+            final ServerTableManager manager = new ServerTableManager(game, noPort);
             
             // Start the TableManager.
-            table.addClosingListener(manager);
-            new ServerPokerLogger(System.out, table.getPokerObserver());
-            table.start();
+            // table.addClosingListener(manager);
+            // TODO: Logger!
+            // new TempServerPokerLogger(System.out, table.getPokerObserver());
+            // table.start();
             manager.start();
             
             // Associate the port number to the table.
-            m_tables.put(noPort, table);
+            m_games.put(noPort, game);
             
             return noPort;
         }
@@ -141,14 +146,16 @@ public class OldServerLobby extends Thread
         final ArrayList<SummaryTableInfo> tables = new ArrayList<SummaryTableInfo>();
         final ArrayList<Integer> tablesToRemove = new ArrayList<Integer>();
         
-        for (final Integer noPort : m_tables.keySet())
+        for (final Integer noPort : m_games.keySet())
         {
-            final ServerTableCommunicator table = m_tables.get(noPort);
+            final PokerGame game = m_games.get(noPort);
             
             // Check if the table is still running.
-            if (table.isRunning())
+            if (game.isRunning())
             {
-                tables.add(new SummaryTableInfo(noPort, table.getName(), table.getGameType(), table.getBigBlind(), table.getNbPlayers(), table.getNbSeats()));
+                final PokerTableInfo table = game.getPokerTable();
+                // TODO: Gestion TypePokerGame
+                tables.add(new SummaryTableInfo(noPort, table.getTableName(), OldTypePokerGame.NO_LIMIT, table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats()));
             }
             else
             {
@@ -159,10 +166,9 @@ public class OldServerLobby extends Thread
         // Remove closed tables.
         for (final Integer key : tablesToRemove)
         {
-            m_tables.remove(key);
+            m_games.remove(key);
         }
         
         return tables;
     }
-    
 }

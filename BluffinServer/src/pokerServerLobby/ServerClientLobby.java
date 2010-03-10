@@ -1,4 +1,4 @@
-package serverLobby;
+package pokerServerLobby;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,10 +18,10 @@ import protocolTools.IPokerCommand;
 /**
  * This class represents a client for ServerLobby.
  */
-public class OldServerClientLobby extends Thread
+public class ServerClientLobby extends Thread
 {
     private String m_playerName = "?";
-    private final OldServerLobby m_lobby;
+    private final ServerLobby m_lobby;
     private final LobbyServerSideObserver m_commandObserver = new LobbyServerSideObserver();
     
     // Communications with the client
@@ -29,7 +29,7 @@ public class OldServerClientLobby extends Thread
     private PrintWriter m_toClient;
     private BufferedReader m_fromClient;
     
-    public OldServerClientLobby(Socket socket, OldServerLobby lobby)
+    public ServerClientLobby(Socket socket, ServerLobby lobby)
     {
         m_socket = socket;
         m_lobby = lobby;
@@ -86,6 +86,7 @@ public class OldServerClientLobby extends Thread
             catch (final SocketException e)
             {
                 System.out.println("Connection lost with " + m_playerName);
+                m_lobby.removeName(m_playerName);
                 return;
             }
             catch (final Exception e)
