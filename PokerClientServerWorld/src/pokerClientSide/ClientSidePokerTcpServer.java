@@ -242,20 +242,21 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 // TODO: get rid of this !
                 if (cards[0].getId() == GameCard.NO_CARD_ID)
                 {
-                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.PREFLOP);
+                    m_pokerTable.setCurrentGameRound(TypePokerGameRound.PREFLOP);
                 }
                 else if (cards[3].getId() == GameCard.NO_CARD_ID)
                 {
-                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.FLOP);
+                    m_pokerTable.setCurrentGameRound(TypePokerGameRound.FLOP);
                 }
                 else if (cards[4].getId() == GameCard.NO_CARD_ID)
                 {
-                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.TURN);
+                    m_pokerTable.setCurrentGameRound(TypePokerGameRound.TURN);
                 }
                 else
                 {
-                    m_gameObserver.gameBettingRoundStarted(TypePokerGameRound.RIVER);
+                    m_pokerTable.setCurrentGameRound(TypePokerGameRound.RIVER);
                 }
+                m_gameObserver.gameBettingRoundStarted();
             }
             
             @Override

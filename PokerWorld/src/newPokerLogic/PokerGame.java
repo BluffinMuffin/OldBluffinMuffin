@@ -9,7 +9,6 @@ public class PokerGame implements IPokerGame
     private final PokerGameObserver m_gameObserver;
     private final PokerTableInfo m_pokerTable;
     private TypePokerGameState m_currentGameState;
-    private TypePokerGameRound m_currentGameRound;
     private TypePokerGameRoundState m_currentGameRoundState;
     
     private final AbstractPokerDealer m_pokerDealer;
@@ -49,7 +48,7 @@ public class PokerGame implements IPokerGame
     
     public TypePokerGameRound getCurrentGameRound()
     {
-        return m_currentGameRound;
+        return m_pokerTable.getCurrentGameRound();
     }
     
     public TypePokerGameRoundState getCurrentGameRoundState()
@@ -84,7 +83,7 @@ public class PokerGame implements IPokerGame
             case BLIND_WAITING:
                 break;
             case PLAYING:
-                m_currentGameRound = TypePokerGameRound.PREFLOP;
+                m_pokerTable.setCurrentGameRound(TypePokerGameRound.PREFLOP);
                 m_currentGameRoundState = TypePokerGameRoundState.CARDS;
                 startRound();
                 break;
@@ -107,7 +106,7 @@ public class PokerGame implements IPokerGame
     private void setCurrentGameRound(TypePokerGameRound newGR)
     {
         
-        final TypePokerGameRound oldGR = m_currentGameRound;
+        final TypePokerGameRound oldGR = m_pokerTable.getCurrentGameRound();
         
         if (m_currentGameState != TypePokerGameState.PLAYING)
         {
@@ -121,7 +120,7 @@ public class PokerGame implements IPokerGame
         
         m_currentGameRoundState = TypePokerGameRoundState.CARDS;
         m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentDealerNoSeat());
-        m_currentGameRound = newGR;
+        m_pokerTable.setCurrentGameRound(newGR);
         startRound();
     }
     
@@ -350,14 +349,14 @@ public class PokerGame implements IPokerGame
     private void startCumulRound()
     {
         m_pokerTable.managePotsRoundEnd();
-        m_gameObserver.gameBettingRoundEnded(m_currentGameRound);
+        m_gameObserver.gameBettingRoundEnded(m_pokerTable.getCurrentGameRound());
         if (m_pokerTable.getNbPlaying() == 1 && m_pokerTable.getNbAllIn() == 0)
         {
             setCurrentGameState(TypePokerGameState.SHOWDOWN);
         }
         else
         {
-            switch (m_currentGameRound)
+            switch (m_pokerTable.getCurrentGameRound())
             {
                 case PREFLOP:
                     setCurrentGameRound(TypePokerGameRound.FLOP);
@@ -377,14 +376,14 @@ public class PokerGame implements IPokerGame
     
     private void startBettingRound()
     {
-        m_gameObserver.gameBettingRoundStarted(m_currentGameRound);
+        m_gameObserver.gameBettingRoundStarted();
         m_pokerTable.setNbPlayed(0);
         continueBettingRound();
     }
     
     private void startCardRound()
     {
-        switch (m_currentGameRound)
+        switch (m_pokerTable.getCurrentGameRound())
         {
             case PREFLOP:
                 m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentBigBlindNoSeat());

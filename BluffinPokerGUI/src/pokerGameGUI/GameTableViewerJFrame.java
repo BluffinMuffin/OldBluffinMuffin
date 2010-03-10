@@ -630,7 +630,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void gameBettingRoundStarted(TypePokerGameRound r)
+            public void gameBettingRoundStarted()
             {
                 int i = 0;
                 final GameCard[] cards = new GameCard[5];
@@ -804,14 +804,16 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             }
             
             @Override
-            public void gameBettingRoundStarted(TypePokerGameRound r)
+            public void gameBettingRoundStarted()
             {
+                final PokerTableInfo table = m_game.getPokerTable();
+                final TypePokerGameRound r = table.getCurrentGameRound();
                 writeLine("==> Beginning of " + r.name());
                 if (r != TypePokerGameRound.PREFLOP)
                 {
                     write("==> Current board cards:");
                     final GameCard[] cards = new GameCard[5];
-                    m_game.getPokerTable().getCurrentBoardCards().toArray(cards);
+                    table.getCurrentBoardCards().toArray(cards);
                     for (int i = 0; i < 5 && cards[i].getId() != GameCard.NO_CARD_ID; ++i)
                     {
                         write(" " + cards[i].toString());

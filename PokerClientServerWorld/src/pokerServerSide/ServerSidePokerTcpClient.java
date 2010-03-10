@@ -46,7 +46,6 @@ public class ServerSidePokerTcpClient implements Runnable
     private final PrintWriter m_output;
     private final BufferedReader m_input;
     private boolean m_isConnected;
-    // TODO: private long m_lastPing;
     
     // POKER Things
     private final PokerPlayerInfo m_player;
@@ -268,7 +267,7 @@ public class ServerSidePokerTcpClient implements Runnable
             }
             
             @Override
-            public void gameBettingRoundStarted(TypePokerGameRound r)
+            public void gameBettingRoundStarted()
             {
                 final GameCard[] cards = new GameCard[5];
                 m_game.getPokerTable().getCurrentBoardCards().toArray(cards);

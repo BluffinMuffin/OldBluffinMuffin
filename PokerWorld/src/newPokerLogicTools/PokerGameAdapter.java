@@ -29,7 +29,7 @@ public class PokerGameAdapter implements PokerGameListener
     }
     
     @Override
-    public void gameBettingRoundStarted(TypePokerGameRound r)
+    public void gameBettingRoundStarted()
     {
     }
     

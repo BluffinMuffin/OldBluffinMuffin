@@ -42,6 +42,8 @@ public class PokerTableInfo
     private int m_nbAllIn;
     private int m_currentHigherBet;
     
+    private TypePokerGameRound m_currentGameRound;
+    
     public PokerTableInfo()
     {
         this(10);
@@ -550,5 +552,15 @@ public class PokerTableInfo
                 }
             }
         }
+    }
+
+    public void setCurrentGameRound(TypePokerGameRound currentGameRound)
+    {
+        m_currentGameRound = currentGameRound;
+    }
+
+    public TypePokerGameRound getCurrentGameRound()
+    {
+        return m_currentGameRound;
     }
 }

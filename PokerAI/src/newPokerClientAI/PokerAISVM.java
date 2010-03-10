@@ -34,7 +34,6 @@ import clientStats.StatsAgent;
  */
 public class PokerAISVM extends AbstractPokerAI
 {
-    private TypePokerGameRound m_round;
     private final static int NB_MAX_NB_RAISE = 3;
     /** Number of times the agent raise in a row. **/
     private int m_cptRaise = 0;
@@ -89,12 +88,6 @@ public class PokerAISVM extends AbstractPokerAI
             public void gameEnded()
             {
                 saveMemory();
-            }
-            
-            @Override
-            public void gameBettingRoundStarted(TypePokerGameRound r)
-            {
-                m_round = r;
             }
         });
     }
@@ -194,7 +187,7 @@ public class PokerAISVM extends AbstractPokerAI
             }
         }
         
-        if (m_round == TypePokerGameRound.PREFLOP)
+        if (table.getCurrentGameRound() == TypePokerGameRound.PREFLOP)
         {
             if (getSVM_PreflopFold().predict(getVector(TypePokerGameRound.PREFLOP, p, table)) <= 0)
             {

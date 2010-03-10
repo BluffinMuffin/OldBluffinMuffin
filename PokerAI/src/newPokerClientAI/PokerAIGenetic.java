@@ -1,18 +1,13 @@
 package newPokerClientAI;
 
 import gameLogic.GameCard;
-import newPokerLogic.IPokerGame;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameRound;
-import newPokerLogicTools.PokerGameAdapter;
-import newPokerLogicTools.PokerGameObserver;
 import pokerStats.MonteCarlo;
 
 public class PokerAIGenetic extends AbstractPokerAI
 {
-    
-    private TypePokerGameRound m_round;
     
     private final static int NB_SIMULATIONS = 10000;
     
@@ -39,25 +34,6 @@ public class PokerAIGenetic extends AbstractPokerAI
     }
     
     @Override
-    public void init(IPokerGame game, int seatViewed, PokerGameObserver observer)
-    {
-        super.init(game, seatViewed, observer);
-        initializePokerObserver();
-    }
-    
-    private void initializePokerObserver()
-    {
-        m_pokerObserver.subscribe(new PokerGameAdapter()
-        {
-            @Override
-            public void gameBettingRoundStarted(TypePokerGameRound r)
-            {
-                m_round = r;
-            }
-        });
-    }
-    
-    @Override
     protected int playMoney()
     {
         final PokerTableInfo table = m_game.getPokerTable();
@@ -68,7 +44,7 @@ public class PokerAIGenetic extends AbstractPokerAI
         final double mc = calculateHandValues(p, table);
         
         int gameState = 1;
-        if (m_round == TypePokerGameRound.PREFLOP)
+        if (table.getCurrentGameRound() == TypePokerGameRound.PREFLOP)
         {
             gameState = 0;
         }
