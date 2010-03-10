@@ -8,6 +8,7 @@ public class PokerPlayerInfo
     private int m_currentSafeMoneyAmount;
     private int m_currentBetMoneyAmount;
     private int m_currentTablePosition;
+    private int m_initialMoneyAmount;
     
     private final GameCardSet m_currentHand = new GameCardSet(2);
     private String m_playerName;
@@ -20,6 +21,7 @@ public class PokerPlayerInfo
         m_playerName = "Anonymous Player";
         m_currentTablePosition = -1;
         m_currentSafeMoneyAmount = 0;
+        m_initialMoneyAmount = 0;
     }
     
     public PokerPlayerInfo(String p_name)
@@ -32,6 +34,7 @@ public class PokerPlayerInfo
     {
         this(p_name);
         m_currentSafeMoneyAmount = p_money;
+        m_initialMoneyAmount = p_money;
     }
     
     public PokerPlayerInfo(int p_noSeat, String p_name, int p_money)
@@ -194,5 +197,10 @@ public class PokerPlayerInfo
     public void incCurrentSafeMoneyAmount(int inc)
     {
         m_currentSafeMoneyAmount += inc;
+    }
+    
+    public int getInitialMoneyAmount()
+    {
+        return m_initialMoneyAmount;
     }
 }

@@ -33,7 +33,7 @@ import clientStats.StatsAgent;
  * <br>
  *         See documentation for explaination about the algorithm used.
  */
-public class PokerSVM extends OldPokerAI
+public class OldPokerSVM extends OldPokerAI
 {
     private final static int NB_MAX_NB_RAISE = 3;
     /** Number of times the agent raise in a row. **/
@@ -41,7 +41,7 @@ public class PokerSVM extends OldPokerAI
     
     private final static String DEFAULT_FILENAME = "Default.mem";
     /** Is the file in which the statistics will be saved. **/
-    private String m_filename = PokerSVM.DEFAULT_FILENAME;
+    private String m_filename = OldPokerSVM.DEFAULT_FILENAME;
     
     private SVM m_SVM_preflopFold = null;
     private SVM m_SVM_preflopRaise = null;
@@ -68,7 +68,7 @@ public class PokerSVM extends OldPokerAI
     
     private final static int NB_STATS_POSTFLOP = 9;
     
-    private final static int NB_STATS = PokerSVM.NB_STATS_PREFLOP + PokerSVM.NB_STATS_POSTFLOP;
+    private final static int NB_STATS = OldPokerSVM.NB_STATS_PREFLOP + OldPokerSVM.NB_STATS_POSTFLOP;
     
     private final static int NB_MC_ITERATIONS = 10000;
     
@@ -101,7 +101,7 @@ public class PokerSVM extends OldPokerAI
     
     private Integer m_cptID = 1;
     
-    public PokerSVM()
+    public OldPokerSVM()
     {
     }
     
@@ -113,13 +113,13 @@ public class PokerSVM extends OldPokerAI
      * @param p_playerName
      *            - Name of the agent used to load the .mem file.
      */
-    public PokerSVM(StatsAgent p_statsAgent, String p_playerName)
+    public OldPokerSVM(StatsAgent p_statsAgent, String p_playerName)
     {
         this();
         loadSVMs();
         m_statsAgent = p_statsAgent;
         
-        if (m_filename == PokerSVM.DEFAULT_FILENAME)
+        if (m_filename == OldPokerSVM.DEFAULT_FILENAME)
         {
             m_filename = p_playerName + ".mem";
             
@@ -176,7 +176,7 @@ public class PokerSVM extends OldPokerAI
                 {
                     // If we should raise, we need to check if m_cptRaise is
                     // under a certain constant.
-                    if (p_actionsAllowed.contains(OldTypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
+                    if (p_actionsAllowed.contains(OldTypePlayerAction.RAISE) && (m_cptRaise < OldPokerSVM.NB_MAX_NB_RAISE))
                     {
                         m_cptRaise++;
                         return new OldPokerPlayerAction(OldTypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
@@ -225,7 +225,7 @@ public class PokerSVM extends OldPokerAI
                 {
                     // If we should raise, we need to check if m_cptRaise is
                     // under a certain constant.
-                    if (p_actionsAllowed.contains(OldTypePlayerAction.RAISE) && (m_cptRaise < PokerSVM.NB_MAX_NB_RAISE))
+                    if (p_actionsAllowed.contains(OldTypePlayerAction.RAISE) && (m_cptRaise < OldPokerSVM.NB_MAX_NB_RAISE))
                     {
                         m_cptRaise++;
                         return new OldPokerPlayerAction(OldTypePlayerAction.RAISE, Math.min(p_minRaiseAmount + 3 * m_table.m_bigBlindAmount, p_maxRaiseAmount));
@@ -274,7 +274,7 @@ public class PokerSVM extends OldPokerAI
         final GameCard[] holeCards = m_table.m_localPlayer.getHand();
         final GameCard[] boardCards = m_table.m_boardCards.toArray(new GameCard[m_table.m_boardCards.size()]);
         
-        return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbPlayingPlayers, PokerSVM.NB_MC_ITERATIONS);
+        return MonteCarlo.CalculateWinRatio(holeCards, boardCards, m_table.m_nbPlayingPlayers, OldPokerSVM.NB_MC_ITERATIONS);
     }
     
     @SuppressWarnings("unchecked")
@@ -297,7 +297,7 @@ public class PokerSVM extends OldPokerAI
         }
         else if (p_object instanceof Double)
         {
-            final double value = PokerSVM.round(((Double) p_object).doubleValue(), 3);
+            final double value = OldPokerSVM.round(((Double) p_object).doubleValue(), 3);
             if ((int) value == value)
             {
                 if (value != 0.0)
@@ -408,7 +408,7 @@ public class PokerSVM extends OldPokerAI
     {
         if (m_SVM_postflopFold == null)
         {
-            m_SVM_postflopFold = new SVM(PokerSVM.SVM_POSTFLOP_FOLD);
+            m_SVM_postflopFold = new SVM(OldPokerSVM.SVM_POSTFLOP_FOLD);
         }
         
         return m_SVM_postflopFold;
@@ -425,7 +425,7 @@ public class PokerSVM extends OldPokerAI
     {
         if (m_SVM_postflopRaise == null)
         {
-            m_SVM_postflopRaise = new SVM(PokerSVM.SVM_POSTFLOP_RAISE);
+            m_SVM_postflopRaise = new SVM(OldPokerSVM.SVM_POSTFLOP_RAISE);
         }
         
         return m_SVM_postflopRaise;
@@ -442,7 +442,7 @@ public class PokerSVM extends OldPokerAI
     {
         if (m_SVM_preflopRaise == null)
         {
-            m_SVM_preflopRaise = new SVM(PokerSVM.SVM_PREFLOP_RAISE);
+            m_SVM_preflopRaise = new SVM(OldPokerSVM.SVM_PREFLOP_RAISE);
         }
         
         return m_SVM_preflopRaise;
@@ -459,7 +459,7 @@ public class PokerSVM extends OldPokerAI
     {
         if (m_SVM_preflopFold == null)
         {
-            m_SVM_preflopFold = new SVM(PokerSVM.SVM_PREFLOP_FOLD);
+            m_SVM_preflopFold = new SVM(OldPokerSVM.SVM_PREFLOP_FOLD);
         }
         
         return m_SVM_preflopFold;
@@ -523,7 +523,7 @@ public class PokerSVM extends OldPokerAI
             
             if (m_statsAgent.m_overallStats.get(player.m_name) == null)
             {
-                for (int j = 0; j != PokerSVM.NB_STATS; ++j)
+                for (int j = 0; j != OldPokerSVM.NB_STATS; ++j)
                 {
                     sb.append(format(null)); // 87-123
                 }
@@ -569,7 +569,7 @@ public class PokerSVM extends OldPokerAI
                     sb.append(format(m_statsAgent.m_overallStats.get(player.m_name).getProbFoldTo3Bet_SB())); // 114
                     
                     // Stats postflop
-                    for (int j = 0; j != PokerSVM.NB_STATS_POSTFLOP; ++j)
+                    for (int j = 0; j != OldPokerSVM.NB_STATS_POSTFLOP; ++j)
                     {
                         sb.append(format(null)); // 115-123
                     }
@@ -577,7 +577,7 @@ public class PokerSVM extends OldPokerAI
                 else
                 {
                     // Stats preflop
-                    for (int j = 0; j != PokerSVM.NB_STATS_PREFLOP; ++j)
+                    for (int j = 0; j != OldPokerSVM.NB_STATS_PREFLOP; ++j)
                     {
                         sb.append(format(null)); // 87-114
                     }
@@ -628,10 +628,10 @@ public class PokerSVM extends OldPokerAI
             public void run()
             {
                 m_isLoading = true;
-                m_SVM_preflopFold = new SVM(PokerSVM.SVM_PREFLOP_FOLD);
-                m_SVM_preflopRaise = new SVM(PokerSVM.SVM_PREFLOP_RAISE);
-                m_SVM_postflopFold = new SVM(PokerSVM.SVM_POSTFLOP_FOLD);
-                m_SVM_postflopRaise = new SVM(PokerSVM.SVM_POSTFLOP_RAISE);
+                m_SVM_preflopFold = new SVM(OldPokerSVM.SVM_PREFLOP_FOLD);
+                m_SVM_preflopRaise = new SVM(OldPokerSVM.SVM_PREFLOP_RAISE);
+                m_SVM_postflopFold = new SVM(OldPokerSVM.SVM_POSTFLOP_FOLD);
+                m_SVM_postflopRaise = new SVM(OldPokerSVM.SVM_POSTFLOP_RAISE);
                 m_isLoading = false;
             }
         }.start();

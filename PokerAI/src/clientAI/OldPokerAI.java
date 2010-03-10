@@ -23,8 +23,8 @@ import clientGameTools.IClientPokerActionner;
  *         For more interesting artificial poker player see derivates.
  * @see OldPokerBasic
  * @see OldPokerGeneticAI
- * @see PokerGeneticBasic
- * @see PokerSVM
+ * @see OldPokerGeneticBasic
+ * @see OldPokerSVM
  * 
  */
 public class OldPokerAI implements IClientPokerActionner

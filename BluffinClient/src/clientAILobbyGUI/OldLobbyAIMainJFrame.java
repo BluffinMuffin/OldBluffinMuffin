@@ -44,7 +44,7 @@ import utility.Constants;
 import utility.IClosingListener;
 import clientAI.OldFactoryAgent;
 import clientAI.OldPokerAI;
-import clientAI.PokerSVM;
+import clientAI.OldPokerSVM;
 import clientAI.OldTypeAgent;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
@@ -832,7 +832,7 @@ public class OldLobbyAIMainJFrame extends JFrame implements IClosingListener<Pok
                 statsAgent.setPokerObserver(client.getPokerObserver());
                 client.attach(statsAgent);
                 
-                final OldPokerAI pokerAgent = new PokerSVM(statsAgent, m_playerName);
+                final OldPokerAI pokerAgent = new OldPokerSVM(statsAgent, m_playerName);
                 pokerAgent.setPokerObserver(client.getPokerObserver());
                 client.setActionner(pokerAgent);
             }

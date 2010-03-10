@@ -15,7 +15,7 @@ import pokerStats.MonteCarlo;
  *         by a genetic algorithm.
  */
 
-public class PokerGeneticBasic extends OldPokerAI
+public class OldPokerGeneticBasic extends OldPokerAI
 {
     private final static int NB_SIMULATIONS = 10000;
     
@@ -25,7 +25,7 @@ public class PokerGeneticBasic extends OldPokerAI
     // Second working ADN: {0.6, 0.21131060545158453, 0.37403662092474566,
     // 0.6975896343117947, 0.8464545870554965, 0.26968160234329386};
     
-    public PokerGeneticBasic()
+    public OldPokerGeneticBasic()
     {
     }
     
@@ -43,7 +43,7 @@ public class PokerGeneticBasic extends OldPokerAI
             return super.analyze(p_actionsAllowed, p_minRaiseAmount, p_maxRaiseAmount);
         }
         
-        final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, PokerGeneticBasic.NB_SIMULATIONS).m_winRatio;
+        final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, m_table.m_nbRemainingPlayers, OldPokerGeneticBasic.NB_SIMULATIONS).m_winRatio;
         
         System.out.println("Analyzing " + score);
         final double x = m_table.m_nbRemainingPlayers;
