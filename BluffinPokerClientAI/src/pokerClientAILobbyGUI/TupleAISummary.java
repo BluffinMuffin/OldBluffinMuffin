@@ -1,14 +1,14 @@
 package pokerClientAILobbyGUI;
 
-import clientAI.OldTypeAgent;
+import newPokerClientAI.TypePokerAI;
 
 public class TupleAISummary
 {
     public String m_AIName;
-    public OldTypeAgent m_AIType;
+    public TypePokerAI m_AIType;
     public boolean m_viewer;
     
-    public TupleAISummary(String AIName, OldTypeAgent AIType, boolean viewer)
+    public TupleAISummary(String AIName, TypePokerAI AIType, boolean viewer)
     {
         m_AIName = AIName;
         m_AIType = AIType;

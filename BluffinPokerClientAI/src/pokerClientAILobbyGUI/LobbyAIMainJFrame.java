@@ -28,6 +28,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import newPokerClientAI.AbstractPokerAI;
+import newPokerClientAI.FactoryPokerAI;
+import newPokerClientAI.PokerAISVM;
+import newPokerClientAI.TypePokerAI;
+import pokerClientSide.ClientSidePokerTcpServer;
+import pokerGameGUI.GameTableViewerJFrame;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
 import pokerLogic.OldTypePokerGame;
@@ -39,18 +45,9 @@ import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IPokerCommand;
 import utility.Constants;
-import utility.IClosingListener;
-import clientAI.OldFactoryAgent;
-import clientAI.OldPokerAI;
-import clientAI.OldPokerSVM;
-import clientAI.OldTypeAgent;
-import clientGame.ClientPokerPlayerInfo;
-import clientGame.ClientPokerTableInfo;
-import clientGame.PokerClient;
-import clientGameGUI.OldGameTableViewerJFrame;
 import clientStats.StatsAgent;
 
-public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerClient>
+public class LobbyAIMainJFrame extends JFrame
 {
     private Socket m_connection = null; // @jve:decl-index=0:
     private PrintWriter m_toServer = null;
@@ -60,11 +57,11 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
     private List<TupleAISummary> m_AIs = new ArrayList<TupleAISummary>(); // @jve:decl-index=0:
     private String m_serverAddress;
     private int m_serverPort;
-    private OldTypeAgent m_agentType;
+    private TypePokerAI m_agentType;
     private boolean m_viewer;
     
     // List of PokerClient (one for each table the player joined)
-    private final List<PokerClient> m_clients = new ArrayList<PokerClient>();
+    private final List<ClientSidePokerTcpServer> m_clients = new ArrayList<ClientSidePokerTcpServer>();
     
     // List of default observers that will be attached the player.
     // private final AutoListModel<TypeObserver> m_generalObservers = new AutoListModel<TypeObserver>(); // @jve:decl-index=0:
@@ -109,7 +106,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                         final SummaryTableInfo info = m_tables.get(noPort);
                         for (int i = 0; i < m_agents.size(); ++i)
                         {
-                            final PokerClient client = m_agents.get(i).findClient(info.m_noPort);
+                            final ClientSidePokerTcpServer client = m_agents.get(i).findClient(info.m_noPort);
                             if (client != null)
                             {
                                 client.disconnect();
@@ -221,7 +218,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
                     form.setVisible(true);
                     if (form.isOK())
                     {
-                        final int noPort = createTable(form.getTableName(), form.getGameType(), form.getBigBlind(), form.getNbPlayer());
+                        final int noPort = createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer());
                         
                         if (noPort != -1)
                         {
@@ -248,7 +245,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         
     }
     
-    protected void setAgentType(OldTypeAgent mAIType)
+    protected void setAgentType(TypePokerAI mAIType)
     {
         m_agentType = mAIType;
         
@@ -539,13 +536,6 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         return jContentPane;
     }
     
-    @Override
-    public void closing(PokerClient e)
-    {
-        m_clients.remove(e);
-        
-    }
-    
     public void allowJoinAndLeave()
     {
         getJJoinTableButton().setEnabled(canJoin());
@@ -721,10 +711,10 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
      *         <b>false</b> if no seat is free, someone with the same name
      *         has already joined this table, or the table does not exist.
      */
-    public int createTable(String p_tableName, OldTypePokerGame p_gameType, int p_bigBlind, int p_maxPlayers)
+    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers)
     {
         // Send query.
-        send(new LobbyCreateTableCommand(p_tableName, p_gameType, p_bigBlind, p_maxPlayers, m_playerName));
+        send(new LobbyCreateTableCommand(p_tableName, OldTypePokerGame.NO_LIMIT, p_bigBlind, p_maxPlayers, m_playerName));
         // Wait for response.
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         
@@ -786,40 +776,33 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
             
             // Add a tab associated to the newly created table in advanced
             // settings.
-            final ClientPokerPlayerInfo localPlayer = new ClientPokerPlayerInfo(noSeat, m_playerName, 0);
-            final ClientPokerTableInfo table = new ClientPokerTableInfo();
-            table.m_name = p_tableName;
-            table.m_bigBlindAmount = p_bigBlindAmount;
-            table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
-            final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
-            if (m_agentType == OldTypeAgent.AI_SVM)
+            final ClientSidePokerTcpServer client = new ClientSidePokerTcpServer(tableSocket, fromTable, noSeat, m_playerName);
+            AbstractPokerAI pokerAgent;
+            if (m_agentType == TypePokerAI.SVM)
             {
                 final StatsAgent statsAgent = new StatsAgent();
-                statsAgent.setPokerObserver(client.getPokerObserver());
-                client.attach(statsAgent);
+                // TODO: SVM WANNA DIE
+                // statsAgent.setPokerObserver(client.getPokerObserver());
+                // client.attach(statsAgent);
                 
-                final OldPokerAI pokerAgent = new OldPokerSVM(statsAgent, m_playerName);
-                pokerAgent.setPokerObserver(client.getPokerObserver());
-                client.setActionner(pokerAgent);
+                pokerAgent = new PokerAISVM(statsAgent, m_playerName);
             }
             else
             {
-                final OldPokerAI pokerAgent = OldFactoryAgent.create(m_agentType);
-                pokerAgent.setPokerObserver(client.getPokerObserver());
-                client.setActionner(pokerAgent);
+                pokerAgent = FactoryPokerAI.create(m_agentType);
             }
+            
+            pokerAgent.init(client, noSeat, client.getGameObserver());
             
             if (m_viewer)
             {
-                final OldGameTableViewerJFrame viewer;
-                viewer = new OldGameTableViewerJFrame();
-                viewer.setPokerObserver(client.getPokerObserver());
-                client.attach(viewer);
+                final GameTableViewerJFrame viewer = new GameTableViewerJFrame();
+                viewer.setPokerObserver(client.getGameObserver());
+                viewer.setGame(client, noSeat);
             }
             
             // Start a the new PokerClient.
-            client.addClosingListener(this);
             client.start();
             
             m_clients.add(client);
@@ -835,7 +818,7 @@ public class LobbyAIMainJFrame extends JFrame implements IClosingListener<PokerC
         return false;
     }
     
-    public PokerClient findClient(int noPort)
+    public ClientSidePokerTcpServer findClient(int noPort)
     {
         int i = 0;
         while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))

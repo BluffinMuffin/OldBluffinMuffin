@@ -713,7 +713,6 @@ public class TempLobbyMainJFrame extends JFrame
             // }
             
             // Start a the new PokerClient.
-            // TODO: gui.setPokerObserver
             gui.setPokerObserver(client.getGameObserver());
             gui.setGame(client, noSeat);
             // client.setActionner(gui);
