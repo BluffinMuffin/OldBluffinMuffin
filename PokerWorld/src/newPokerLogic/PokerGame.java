@@ -212,14 +212,25 @@ public class PokerGame implements IPokerGame
         {
             System.out.println(p.getPlayerName() + " is putting blind of " + amnt);
             System.out.println("Total still needed is " + m_pokerTable.getTotalBlindNeeded());
-            if (amnt != m_pokerTable.blindNeeded(p))
+            final int needed = m_pokerTable.blindNeeded(p);
+            if (amnt != needed)
             {
-                System.err.println(p.getPlayerName() + " needed to put " + m_pokerTable.blindNeeded(p));
-                return false;
+                if (p.canBet(amnt + 1))
+                {
+                    System.err.println(p.getPlayerName() + " needed to put " + needed);
+                    return false;
+                }
+                else
+                {
+                    System.out.println("So ... All-In !");
+                    p.setAllIn();
+                    m_pokerTable.incNbAllIn();
+                    m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
+                    m_pokerTable.decNbPlaying();
+                }
             }
             if (!p.tryBet(amnt))
             {
-                // TODO: authorise si ALL IN
                 System.err.println(p.getPlayerName() + " just .. can't !! ");
                 return false;
             }
@@ -234,7 +245,7 @@ public class PokerGame implements IPokerGame
             {
                 m_gameObserver.playerActionTaken(p, TypePokerGameAction.BIG_BLIND_POSTED, amnt);
             }
-            m_pokerTable.setTotalBlindNeeded(m_pokerTable.getTotalBlindNeeded() - amnt);
+            m_pokerTable.setTotalBlindNeeded(m_pokerTable.getTotalBlindNeeded() - needed);
             if (m_pokerTable.getTotalBlindNeeded() == 0)
             {
                 setCurrentGameState(TypePokerGameState.PLAYING);
@@ -492,12 +503,19 @@ public class PokerGame implements IPokerGame
         for (final PokerMoneyPot pot : m_pokerTable.getPots())
         {
             final List<PokerPlayerInfo> players = pot.getAttachedPlayers();
-            final int wonAmount = pot.getAmount() / players.size();
-            for (final PokerPlayerInfo p : players)
+            if (players.size() > 0)
             {
-                p.incCurrentSafeMoneyAmount(wonAmount);
-                m_gameObserver.playerMoneyChanged(p);
-                m_gameObserver.playerWonPot(p, pot, wonAmount);
+                final int wonAmount = pot.getAmount() / players.size();
+                for (final PokerPlayerInfo p : players)
+                {
+                    p.incCurrentSafeMoneyAmount(wonAmount);
+                    m_gameObserver.playerMoneyChanged(p);
+                    m_gameObserver.playerWonPot(p, pot, wonAmount);
+                }
+            }
+            else
+            {
+                System.err.println(">> POT SANS PLAYER: ANORMAL !!");
             }
         }
         m_gameObserver.gameEnded();

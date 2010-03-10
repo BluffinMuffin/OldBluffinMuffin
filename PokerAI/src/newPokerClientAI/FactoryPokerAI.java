@@ -1,6 +1,5 @@
 package newPokerClientAI;
 
-
 public class FactoryPokerAI
 {
     public static AbstractPokerAI create(TypePokerAI ai)
@@ -9,12 +8,12 @@ public class FactoryPokerAI
         {
             case BASIC:
                 return new PokerAIBasic();
-                // case SVM:
-                // return new PokerSVM();
-                // case GENETIC:
-                // return new PokerGeneticBasic();
-                // case RANDOM:
-                // return new PokerRandomAI();
+            case SVM:
+                return new PokerAISVM();
+            case GENETIC:
+                return new PokerAIGeneticBasic();
+            case RANDOM:
+                return new PokerAIRandom();
         }
         
         return null;

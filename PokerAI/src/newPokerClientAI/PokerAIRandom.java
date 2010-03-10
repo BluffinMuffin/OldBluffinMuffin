@@ -13,7 +13,7 @@ public class PokerAIRandom extends AbstractPokerAI
         int bet = 0;
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
-        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
+        final boolean canRaise = table.getCurrentHigherBet() < (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
         final boolean canCheck = table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount();
         
         final int rndChx = Hasard.RandomMinMax(1, 3);
@@ -21,11 +21,12 @@ public class PokerAIRandom extends AbstractPokerAI
         {
             // CHECK/CALL
             bet = table.getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
+            System.out.println(p.getPlayerName() + " randomly CHECK/CALL with " + bet);
         }
         else if (rndChx == 3)
         {
             // RAISE
-            final int maxRaise = (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
+            final int maxRaise = (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount()) - table.getCurrentHigherBet();
             final int minRaise = Math.min((table.getCurrentHigherBet() + table.getBigBlindAmount()) - p.getCurrentBetMoneyAmount(), maxRaise);
             bet = minRaise;
             
@@ -41,13 +42,15 @@ public class PokerAIRandom extends AbstractPokerAI
             }
             else
             {
-                bet += Hasard.randomWithMax(m / Hasard.randomWithMax(5));
+                bet += Hasard.randomWithMax(m / Hasard.RandomMinMax(1, 5));
             }
+            System.out.println(p.getPlayerName() + " randomly RAISE with " + bet);
         }
         else
         {
             // FOLD
             bet = -1;
+            System.out.println(p.getPlayerName() + " randomly FOLD with " + bet);
         }
         return bet;
     }

@@ -504,7 +504,7 @@ public class PokerTableInfo
         for (int i = 0; i <= m_currentPotId; ++i)
         {
             final PokerMoneyPot cPot = m_pots.get(i);
-            System.out.println(">> Pot #" + cPot.getId() + " $" + cPot.getAmount());
+            System.out.println(">> Pot #" + cPot.getId() + " $" + cPot.getAmount() + " :: " + cPot.getAttachedPlayers().size());
             for (final PokerPlayerInfo p : cPot.getAttachedPlayers())
             {
                 System.out.println(">>> Attached: " + p.getPlayerName());

@@ -800,6 +800,7 @@ public class LobbyAIMainJFrame extends JFrame
                 final GameTableViewerJFrame viewer = new GameTableViewerJFrame();
                 viewer.setPokerObserver(client.getGameObserver());
                 viewer.setGame(client, noSeat);
+                viewer.start();
             }
             
             // Start a the new PokerClient.
