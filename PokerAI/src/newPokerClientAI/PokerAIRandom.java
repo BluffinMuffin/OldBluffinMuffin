@@ -1,11 +1,16 @@
 package newPokerClientAI;
 
+import newPokerLogic.IPokerGame;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
 import utility.Hasard;
 
 public class PokerAIRandom extends AbstractPokerAI
 {
+    public PokerAIRandom(IPokerGame game, int seatViewed)
+    {
+        super(game, seatViewed);
+    }
     
     @Override
     protected int playMoney()

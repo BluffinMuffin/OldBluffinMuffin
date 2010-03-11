@@ -786,14 +786,12 @@ public class LobbyAIMainJFrame extends JFrame
                 // statsAgent.setPokerObserver(client.getPokerObserver());
                 // client.attach(statsAgent);
                 
-                pokerAgent = new PokerAISVM(statsAgent, m_playerName);
+                pokerAgent = new PokerAISVM(client, noSeat, statsAgent, m_playerName);
             }
             else
             {
-                pokerAgent = FactoryPokerAI.create(m_agentType);
+                pokerAgent = FactoryPokerAI.create(m_agentType, client, noSeat);
             }
-            
-            pokerAgent.init(client, noSeat, client.getGameObserver());
             
             if (m_viewer)
             {

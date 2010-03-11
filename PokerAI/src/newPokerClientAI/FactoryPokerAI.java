@@ -1,19 +1,23 @@
 package newPokerClientAI;
 
+import newPokerLogic.IPokerGame;
+
 public class FactoryPokerAI
 {
-    public static AbstractPokerAI create(TypePokerAI ai)
+    public static AbstractPokerAI create(TypePokerAI ai, IPokerGame game, int seatViewed)
     {
         switch (ai)
         {
             case BASIC:
-                return new PokerAIBasic();
+                return new PokerAIBasic(game, seatViewed);
             case SVM:
-                return new PokerAISVM();
+                return new PokerAISVM(game, seatViewed);
             case GENETIC:
-                return new PokerAIGeneticBasic();
+                return new PokerAIGenetic(game, seatViewed);
+            case GENETIC_BASIC:
+                return new PokerAIGeneticBasic(game, seatViewed);
             case RANDOM:
-                return new PokerAIRandom();
+                return new PokerAIRandom(game, seatViewed);
         }
         
         return null;

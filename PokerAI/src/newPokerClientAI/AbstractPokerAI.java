@@ -12,15 +12,11 @@ public abstract class AbstractPokerAI
     protected IPokerGame m_game;
     protected int m_currentTablePosition;
     
-    public AbstractPokerAI()
-    {
-    }
-    
-    public void init(IPokerGame game, int seatViewed, PokerGameObserver observer)
+    public AbstractPokerAI(IPokerGame game, int seatViewed)
     {
         m_game = game;
         m_currentTablePosition = seatViewed;
-        m_pokerObserver = observer;
+        m_pokerObserver = m_game.getGameObserver();
         initializePokerObserver();
     }
     

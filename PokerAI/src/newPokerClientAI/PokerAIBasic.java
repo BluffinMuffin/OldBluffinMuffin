@@ -1,6 +1,7 @@
 package newPokerClientAI;
 
 import gameLogic.GameCard;
+import newPokerLogic.IPokerGame;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
 import pokerStats.MonteCarlo;
@@ -17,6 +18,11 @@ import pokerStats.MonteCarlo;
  */
 public class PokerAIBasic extends AbstractPokerAI
 {
+    public PokerAIBasic(IPokerGame game, int seatViewed)
+    {
+        super(game, seatViewed);
+    }
+    
     private final static int NB_SIMULATIONS = 10000;
     
     @Override

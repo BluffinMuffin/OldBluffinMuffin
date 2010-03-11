@@ -17,7 +17,6 @@ import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 import newPokerLogicTools.PokerGameAdapter;
-import newPokerLogicTools.PokerGameObserver;
 import pokerAI.SVM;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
@@ -73,25 +72,6 @@ public class PokerAISVM extends AbstractPokerAI
     // private final static int NB_PLAYER_INFOS = NB_OTHER_OPPONENTS_INFOS +
     // NB_STATS;
     
-    @Override
-    public void init(IPokerGame game, int seatViewed, PokerGameObserver observer)
-    {
-        super.init(game, seatViewed, observer);
-        initializePokerObserver();
-    }
-    
-    private void initializePokerObserver()
-    {
-        m_pokerObserver.subscribe(new PokerGameAdapter()
-        {
-            @Override
-            public void gameEnded()
-            {
-                saveMemory();
-            }
-        });
-    }
-    
     /**
      * Better round algorithm, for better precision.
      * 
@@ -118,8 +98,9 @@ public class PokerAISVM extends AbstractPokerAI
     
     private Integer m_cptID = 1;
     
-    public PokerAISVM()
+    public PokerAISVM(IPokerGame game, int seatViewed)
     {
+        super(game, seatViewed);
     }
     
     /**
@@ -130,9 +111,9 @@ public class PokerAISVM extends AbstractPokerAI
      * @param p_playerName
      *            - Name of the agent used to load the .mem file.
      */
-    public PokerAISVM(StatsAgent p_statsAgent, String p_playerName)
+    public PokerAISVM(IPokerGame game, int seatViewed, StatsAgent p_statsAgent, String p_playerName)
     {
-        this();
+        this(game, seatViewed);
         loadSVMs();
         m_statsAgent = p_statsAgent;
         
@@ -163,6 +144,19 @@ public class PokerAISVM extends AbstractPokerAI
                 e.printStackTrace();
             }
         }
+        initializePokerObserver();
+    }
+    
+    private void initializePokerObserver()
+    {
+        m_pokerObserver.subscribe(new PokerGameAdapter()
+        {
+            @Override
+            public void gameEnded()
+            {
+                saveMemory();
+            }
+        });
     }
     
     @Override

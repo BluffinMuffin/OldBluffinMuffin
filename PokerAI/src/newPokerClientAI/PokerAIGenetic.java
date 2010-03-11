@@ -1,6 +1,7 @@
 package newPokerClientAI;
 
 import gameLogic.GameCard;
+import newPokerLogic.IPokerGame;
 import newPokerLogic.PokerPlayerInfo;
 import newPokerLogic.PokerTableInfo;
 import newPokerLogic.TypePokerGameRound;
@@ -16,13 +17,14 @@ public class PokerAIGenetic extends AbstractPokerAI
     private final double[] sigma = new double[2];
     private final double[] phi = new double[2];
     
-    public PokerAIGenetic()
+    public PokerAIGenetic(IPokerGame game, int seatViewed)
     {
-        this(new double[] { 0.09796216575881056, 0.05873844040051912, 0.11932433543686727, 0.6461736739523037, 0.48315192075952695, 0.2903068543987788, 0.8896891202927723, 0.7165465583082452 });
+        this(game, seatViewed, new double[] { 0.09796216575881056, 0.05873844040051912, 0.11932433543686727, 0.6461736739523037, 0.48315192075952695, 0.2903068543987788, 0.8896891202927723, 0.7165465583082452 });
     }
     
-    public PokerAIGenetic(double[] p_adn)
+    public PokerAIGenetic(IPokerGame game, int seatViewed, double[] p_adn)
     {
+        super(game, seatViewed);
         alpha[0] = p_adn[0];
         alpha[1] = p_adn[1];
         beta[0] = p_adn[2];
