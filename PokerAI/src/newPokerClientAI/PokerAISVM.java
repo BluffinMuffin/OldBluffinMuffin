@@ -479,7 +479,7 @@ public class PokerAISVM extends AbstractPokerAI
         sb.append(format((table.getCurrentHigherBet() - p.getCurrentBetMoneyAmount()) / (double) table.getTotalPotAmount()));// 5
         sb.append(formatPosition(p.getCurrentTablePosition())); // 5-13
         
-        // TODO: SVM WANNA DIE TypeSimplifiedAction
+        // TODO: RICK: SVM WANNA DIE TypeSimplifiedAction
         sb.append(formatEnum(TypePokerGameAction.CALLED, TypePokerGameAction.class)); // 14-20
         sb.append(formatEnum(TypePokerGameAction.CALLED, TypePokerGameAction.class)); // 21-27
         sb.append(formatEnum(TypePokerGameAction.CALLED, TypePokerGameAction.class)); // 28-34
@@ -504,7 +504,7 @@ public class PokerAISVM extends AbstractPokerAI
             sb.append(format(player.getCurrentSafeMoneyAmount() / highMoney)); // 57
             sb.append(format((double) player.getCurrentBetMoneyAmount() / (double) player.getInitialMoneyAmount())); // 58
             
-            // TODO: SVM WANNA DIE TypeSimplifiedAction
+            // TODO: RICK: SVM WANNA DIE TypeSimplifiedAction
             sb.append(formatEnum(TypePokerGameAction.CALLED, TypePokerGameAction.class)); // 59-65
             sb.append(formatEnum(TypePokerGameAction.CALLED, TypePokerGameAction.class)); // 66-72
             sb.append(formatEnum(TypePokerGameAction.CALLED, TypePokerGameAction.class)); // 73-79

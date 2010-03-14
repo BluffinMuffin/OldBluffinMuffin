@@ -187,7 +187,6 @@ public class GameTableJFrame extends GameTableViewerJFrame
         });
     }
     
-    // TODO: Pas pentoute rapport ici: si tout le monde est all-in au preflop ca chie :p
     public void setCallButtonName()
     {
         final PokerTableInfo table = m_game.getPokerTable();

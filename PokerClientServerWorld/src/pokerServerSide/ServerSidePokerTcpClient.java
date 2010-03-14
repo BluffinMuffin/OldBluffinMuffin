@@ -220,7 +220,7 @@ public class ServerSidePokerTcpClient implements Runnable
             public void gameBlindsNeeded()
             {
                 send(new GameStartedCommand(m_game.getPokerTable().getCurrentDealerNoSeat(), m_game.getPokerTable().getCurrentSmallBlindNoSeat(), m_game.getPokerTable().getCurrentBigBlindNoSeat()));
-                // TODO: eventuellement le client devrait par lui meme r�pondre a cette question
+                // TODO: RICK: eventuellement le client devrait par lui meme r�pondre a cette question
                 if (m_player.getCurrentTablePosition() == m_game.getPokerTable().getCurrentSmallBlindNoSeat())
                 {
                     m_game.playMoney(m_player, m_game.getPokerTable().getSmallBlindAmount());

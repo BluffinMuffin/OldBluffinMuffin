@@ -20,9 +20,9 @@ import javax.swing.SwingUtilities;
 
 import pokerGameGUI.GameCardJPanel;
 import pokerGameGUI.PlayerHudJPanel;
+import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.OldPokerTableInfo;
-import pokerLogic.OldPokerPlayerAction;
 import pokerLogic.OldTypePlayerAction;
 import pokerLogic.OldTypePokerRound;
 import utilGUI.ConsoleJPanel;
@@ -606,7 +606,7 @@ public class OldGameTableViewerJFrame extends OldGameTableAbstractJFrame
             @Override
             public void betTurnEnded(ArrayList<Integer> potIndices, OldTypePokerRound round)
             {
-                // TODO: update POTS
+                // TODO: RICK: update POTS
                 
                 for (int i = 0; i < m_table.getPlayers().size(); ++i)
                 {
@@ -682,7 +682,7 @@ public class OldGameTableViewerJFrame extends OldGameTableAbstractJFrame
             private void installPlayer(PlayerHudJPanel php, OldPokerPlayerInfo player)
             {
                 php.setPlayerName(player.getName());
-                php.setPlayerInfo("");// TODO: Human or BOT
+                php.setPlayerInfo("");// TODO: RICK: Human or BOT
                 php.setPlayerAction(OldTypePlayerAction.NOTHING);
                 php.setPlayerCards(GameCard.NO_CARD, GameCard.NO_CARD);
                 php.setPlayerMoney(player.getMoney());

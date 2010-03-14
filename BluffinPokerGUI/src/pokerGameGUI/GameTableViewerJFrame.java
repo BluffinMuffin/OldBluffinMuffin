@@ -619,7 +619,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void gameBettingRoundEnded(TypePokerGameRound r)
             {
-                // TODO: update POTS
+                // TODO: RICK: update POTS
                 final PokerTableInfo table = m_game.getPokerTable();
                 
                 for (int i = 0; i < table.getPlayers().size(); ++i)
@@ -774,7 +774,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             private void installPlayer(PlayerHudJPanel php, PokerPlayerInfo player)
             {
                 php.setPlayerName(player.getPlayerName());
-                php.setPlayerInfo("");// TODO: Human or BOT
+                php.setPlayerInfo("");// TODO: RICK: Human or BOT
                 php.setPlayerAction(OldTypePlayerAction.NOTHING);
                 final GameCard[] cards = player.getCurrentHand(true);
                 php.setPlayerCards(cards[0], cards[1]);

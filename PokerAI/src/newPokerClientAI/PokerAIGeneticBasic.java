@@ -48,7 +48,7 @@ public class PokerAIGeneticBasic extends AbstractPokerAI
         }
         
         // Calculate Monte Carlo score�
-        // TODO: table.getNbPlaying() is really working client side ???!
+        // TODO: RICK: table.getNbPlaying() is really working client side ???!
         final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, table.getNbPlaying(), PokerAIGeneticBasic.NB_SIMULATIONS).m_winRatio;
         
         System.out.println("Analyzing " + score);

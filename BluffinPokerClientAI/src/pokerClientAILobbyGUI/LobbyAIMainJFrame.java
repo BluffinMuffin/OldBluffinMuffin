@@ -780,7 +780,7 @@ public class LobbyAIMainJFrame extends JFrame
             if (m_agentType == TypePokerAI.SVM)
             {
                 final StatsAgent statsAgent = new StatsAgent();
-                // TODO: SVM WANNA DIE
+                // TODO: RICK: SVM WANNA DIE
                 // statsAgent.setPokerObserver(client.getPokerObserver());
                 // client.attach(statsAgent);
                 

@@ -11,7 +11,7 @@ import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PokerTableInfo
-{// TODO: Gestion TypePokerGame
+{// TODO: RICK: Gestion TypePokerGame
     private final int m_nbMaxSeats;
     private int m_nbUsedSeats;
     private final PokerPlayerInfo[] m_currentPlayers;
@@ -502,7 +502,7 @@ public class PokerTableInfo
         }
         m_currentHigherBet = 0;
         
-        // TODO: Get rid of that ! :)
+        // TODO: RICK: Get rid of that ! :)
         for (int i = 0; i <= m_currentPotId; ++i)
         {
             final PokerMoneyPot cPot = m_pots.get(i);
@@ -553,12 +553,12 @@ public class PokerTableInfo
             }
         }
     }
-
+    
     public void setCurrentGameRound(TypePokerGameRound currentGameRound)
     {
         m_currentGameRound = currentGameRound;
     }
-
+    
     public TypePokerGameRound getCurrentGameRound()
     {
         return m_currentGameRound;
