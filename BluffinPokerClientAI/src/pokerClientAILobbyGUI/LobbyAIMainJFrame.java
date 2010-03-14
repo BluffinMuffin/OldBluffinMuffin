@@ -28,7 +28,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import newPokerClientAI.AbstractPokerAI;
 import newPokerClientAI.FactoryPokerAI;
 import newPokerClientAI.PokerAISVM;
 import newPokerClientAI.TypePokerAI;
@@ -778,7 +777,6 @@ public class LobbyAIMainJFrame extends JFrame
             // settings.
             
             final ClientSidePokerTcpServer client = new ClientSidePokerTcpServer(tableSocket, fromTable, noSeat, m_playerName);
-            AbstractPokerAI pokerAgent;
             if (m_agentType == TypePokerAI.SVM)
             {
                 final StatsAgent statsAgent = new StatsAgent();
@@ -786,11 +784,11 @@ public class LobbyAIMainJFrame extends JFrame
                 // statsAgent.setPokerObserver(client.getPokerObserver());
                 // client.attach(statsAgent);
                 
-                pokerAgent = new PokerAISVM(client, noSeat, statsAgent, m_playerName);
+                new PokerAISVM(client, noSeat, statsAgent, m_playerName);
             }
             else
             {
-                pokerAgent = FactoryPokerAI.create(m_agentType, client, noSeat);
+                FactoryPokerAI.create(m_agentType, client, noSeat);
             }
             
             if (m_viewer)

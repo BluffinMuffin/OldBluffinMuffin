@@ -119,6 +119,7 @@ public class GameTableInfoCommand implements IPokerCommand
             seat.m_isCurrentPlayer = info.getCurrentPlayerNoSeat() == i; // isCurrentPlayer
             seat.m_timeRemaining = 0; // timeRemaining
             seat.m_bet = player.getCurrentBetMoneyAmount(); // betAmount
+            seat.m_isPlaying = player.isPlaying();
         }
     }
     

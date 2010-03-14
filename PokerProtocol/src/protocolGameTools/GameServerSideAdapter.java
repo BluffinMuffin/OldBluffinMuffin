@@ -1,8 +1,8 @@
 package protocolGameTools;
 
-import protocolGame.GameSendActionCommand;
+import protocolGame.GamePlayMoneyCommand;
 
-public abstract class GameServerSideAdapter implements GameServerSideListener
+public class GameServerSideAdapter implements GameServerSideListener
 {
     
     @Override
@@ -11,7 +11,12 @@ public abstract class GameServerSideAdapter implements GameServerSideListener
     }
     
     @Override
-    public void sendActionCommandReceived(GameSendActionCommand command)
+    public void playMoneyCommandReceived(GamePlayMoneyCommand command)
+    {
+    }
+    
+    @Override
+    public void disconnectCommandReceived(GamePlayMoneyCommand command)
     {
     }
 }

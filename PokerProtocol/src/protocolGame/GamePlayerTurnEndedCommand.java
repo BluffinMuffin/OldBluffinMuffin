@@ -2,7 +2,7 @@ package protocolGame;
 
 import java.util.StringTokenizer;
 
-import pokerLogic.OldTypePlayerAction;
+import newPokerLogic.TypePokerGameAction;
 import protocolTools.IPokerCommand;
 import utility.Constants;
 
@@ -12,8 +12,9 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
     private final int m_playerBet;
     private final int m_playerMoney;
     private final int m_totalPot;
-    private final OldTypePlayerAction m_actionType;
+    private final TypePokerGameAction m_actionType;
     private final int m_actionAmount;
+    private final boolean m_isPlaying;
     public static String COMMAND_NAME = "gamePLAYER_TURN_ENDED";
     
     public GamePlayerTurnEndedCommand(StringTokenizer argsToken)
@@ -22,11 +23,12 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
         m_playerBet = Integer.parseInt(argsToken.nextToken());
         m_playerMoney = Integer.parseInt(argsToken.nextToken());
         m_totalPot = Integer.parseInt(argsToken.nextToken());
-        m_actionType = OldTypePlayerAction.valueOf(argsToken.nextToken());
+        m_actionType = TypePokerGameAction.valueOf(argsToken.nextToken());
         m_actionAmount = Integer.parseInt(argsToken.nextToken());
+        m_isPlaying = Boolean.parseBoolean(argsToken.nextToken());
     }
     
-    public GamePlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, OldTypePlayerAction actionType, int actionAmount)
+    public GamePlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, TypePokerGameAction actionType, int actionAmount, boolean isPlaying)
     {
         m_playerPos = pos;
         m_playerBet = bet;
@@ -34,6 +36,7 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
         m_totalPot = totalPot;
         m_actionType = actionType;
         m_actionAmount = actionAmount;
+        m_isPlaying = isPlaying;
     }
     
     @Override
@@ -53,6 +56,8 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
         sb.append(m_actionType.name());
         sb.append(Constants.DELIMITER);
         sb.append(m_actionAmount);
+        sb.append(Constants.DELIMITER);
+        sb.append(m_isPlaying);
         return sb.toString();
     }
     
@@ -76,7 +81,7 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
         return m_totalPot;
     }
     
-    public OldTypePlayerAction getActionType()
+    public TypePokerGameAction getActionType()
     {
         return m_actionType;
     }
@@ -84,5 +89,10 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
     public int getActionAmount()
     {
         return m_actionAmount;
+    }
+    
+    public boolean isPlaying()
+    {
+        return m_isPlaying;
     }
 }

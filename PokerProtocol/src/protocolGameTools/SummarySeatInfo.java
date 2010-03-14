@@ -20,6 +20,7 @@ public class SummarySeatInfo
     public boolean m_isCurrentPlayer;
     public int m_timeRemaining;
     public int m_bet;
+    public boolean m_isPlaying;
     
     /**
      * Create a new table
@@ -37,7 +38,7 @@ public class SummarySeatInfo
      * @param p_nbSeats
      *            Number of seat
      */
-    public SummarySeatInfo(int noSeat, boolean isEmpty, String playerName, int money, ArrayList<Integer> hole, boolean isDealer, boolean isSmallBlind, boolean isBigBlind, boolean isCurrentPlayer, int timeRemaining, int bet)
+    public SummarySeatInfo(int noSeat, boolean isEmpty, String playerName, int money, ArrayList<Integer> hole, boolean isDealer, boolean isSmallBlind, boolean isBigBlind, boolean isCurrentPlayer, int timeRemaining, int bet, boolean isPlaying)
     {
         m_noSeat = noSeat;
         m_isEmpty = isEmpty;
@@ -50,6 +51,7 @@ public class SummarySeatInfo
         m_isCurrentPlayer = isCurrentPlayer;
         m_timeRemaining = timeRemaining;
         m_bet = bet;
+        m_isPlaying = isPlaying;
     }
     
     public SummarySeatInfo(int noSeat)
@@ -76,6 +78,7 @@ public class SummarySeatInfo
             m_isCurrentPlayer = Boolean.parseBoolean(argsToken.nextToken());
             m_timeRemaining = Integer.parseInt(argsToken.nextToken());
             m_bet = Integer.parseInt(argsToken.nextToken());
+            m_isPlaying = Boolean.parseBoolean(argsToken.nextToken());
         }
     }
     
@@ -116,6 +119,8 @@ public class SummarySeatInfo
             sb.append(m_timeRemaining);
             sb.append(p_delimiter);
             sb.append(m_bet);
+            sb.append(p_delimiter);
+            sb.append(m_isPlaying);
             sb.append(p_delimiter);
         }
         

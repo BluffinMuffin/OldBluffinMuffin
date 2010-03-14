@@ -2,7 +2,7 @@ package protocolGameTools;
 
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
 import protocolGame.GamePINGCommand;
@@ -24,7 +24,7 @@ public interface GameClientSideListener extends PokerCommandListener
     
     void betTurnEndedCommandReceived(GameBetTurnEndedCommand command);
     
-    void boardChangedCommandReceived(GameBoardChangedCommand command);
+    void betTurnStartedCommandReceived(GameBetTurnStartedCommand command);
     
     void gameEndedCommandReceived(GameEndedCommand command);
     

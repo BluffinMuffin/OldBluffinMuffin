@@ -12,10 +12,10 @@ import pokerLogic.OldPokerPlayerInfo;
 import pokerLogic.OldTypePlayerAction;
 import pokerLogic.OldTypePokerRound;
 import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
+import protocolGame.GamePlayMoneyCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
-import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGameTools.GameClientSideAdapter;
@@ -194,7 +194,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
     
     protected void send(OldPokerPlayerAction p_action)
     {
-        send(new GameSendActionCommand(p_action));
+        send(new GamePlayMoneyCommand(p_action.getAmount()));
     }
     
     protected void sendMessage(String p_msg)
@@ -239,7 +239,22 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
                     player.m_betAmount = 0;
                 }
                 
-                final OldTypePokerRound gameState = command.getRound();
+                OldTypePokerRound gameState = OldTypePokerRound.BEGINNING;
+                switch (command.getRound())
+                {
+                    case PREFLOP:
+                        gameState = OldTypePokerRound.PREFLOP;
+                        break;
+                    case FLOP:
+                        gameState = OldTypePokerRound.FLOP;
+                        break;
+                    case TURN:
+                        gameState = OldTypePokerRound.TURN;
+                        break;
+                    case RIVER:
+                        gameState = OldTypePokerRound.RIVER;
+                        break;
+                }
                 m_table.m_gameState = gameState;
                 
                 m_table.m_currentBet = 0;
@@ -247,7 +262,7 @@ public class PokerClientLocal extends Thread implements IClosingListener<IClient
             }
             
             @Override
-            public void boardChangedCommandReceived(GameBoardChangedCommand command)
+            public void betTurnStartedCommandReceived(GameBetTurnStartedCommand command)
             {
                 final ArrayList<Integer> indices = new ArrayList<Integer>();
                 for (int i = 0; i != m_table.m_boardCards.size(); ++i)

@@ -11,10 +11,10 @@ public class PokerCommandObserver<T extends PokerCommandListener> extends EventO
             return;
         }
         baseReceive(line);
-        onLineReceived(line);
+        commandReceived(line);
     }
     
-    protected void onLineReceived(String line)
+    protected void commandReceived(String line)
     {
         
     }

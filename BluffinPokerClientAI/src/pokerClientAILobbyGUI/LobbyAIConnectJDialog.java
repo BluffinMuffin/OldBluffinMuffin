@@ -397,7 +397,7 @@ public class LobbyAIConnectJDialog extends JDialog
             jAITypeComboBox = new JComboBox();
             jAITypeComboBox.setBounds(new Rectangle(180, 100, 200, 20));
             jAITypeComboBox.setModel(new DefaultComboBoxModel(TypePokerAI.values()));
-            jAITypeComboBox.setSelectedItem(TypePokerAI.BASIC);
+            jAITypeComboBox.setSelectedItem(TypePokerAI.RANDOM);
             jAITypeComboBox.setEnabled(false);
             jAITypeComboBox.setSelectedIndex(-1);
         }

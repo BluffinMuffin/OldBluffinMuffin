@@ -2,7 +2,7 @@ package protocolGameTools;
 
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
 import protocolGame.GamePINGCommand;
@@ -17,7 +17,7 @@ import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
 import protocolGame.GameWaitingCommand;
 
-public abstract class GameClientSideAdapter implements GameClientSideListener
+public class GameClientSideAdapter implements GameClientSideListener
 {
     
     @Override
@@ -31,7 +31,7 @@ public abstract class GameClientSideAdapter implements GameClientSideListener
     }
     
     @Override
-    public void boardChangedCommandReceived(GameBoardChangedCommand command)
+    public void betTurnStartedCommandReceived(GameBetTurnStartedCommand command)
     {
     }
     

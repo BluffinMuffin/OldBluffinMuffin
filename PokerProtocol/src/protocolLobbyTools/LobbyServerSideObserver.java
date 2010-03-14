@@ -13,7 +13,7 @@ import utility.Constants;
 public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSideListener>
 {
     @Override
-    protected void onLineReceived(String line)
+    protected void commandReceived(String line)
     {
         final StringTokenizer token = new StringTokenizer(line, Constants.DELIMITER);
         final String commandName = token.nextToken();
@@ -40,7 +40,7 @@ public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSid
         }
         else
         {
-            super.onLineReceived(line);
+            super.commandReceived(line);
         }
     }
     

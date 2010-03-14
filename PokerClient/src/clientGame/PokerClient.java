@@ -16,17 +16,18 @@ import pokerLogic.OldTypePlayerAction;
 import pokerLogic.OldTypePokerRound;
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameBetTurnStartedCommand;
+import protocolGame.GameDisconnectCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
 import protocolGame.GamePINGCommand;
+import protocolGame.GamePlayMoneyCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
 import protocolGame.GamePlayerTurnBeganCommand;
 import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GamePlayerWonPotCommand;
-import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
@@ -231,25 +232,17 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
         while (isConnected())
         {
             final OldPokerPlayerAction action = m_agent.getAction();
-            send(action);
             
             if (action.getType() == OldTypePlayerAction.DISCONNECT)
             {
+                send(new GameDisconnectCommand());
                 disconnect();
             }
+            else
+            {
+                send(new GamePlayMoneyCommand(m_agent.getAction().getAmount()));
+            }
         }
-    }
-    
-    /**
-     * Send action to the table (server)
-     * 
-     * @param p_action
-     *            - Action to send to the table.
-     */
-    
-    protected void send(OldPokerPlayerAction p_action)
-    {
-        send(new GameSendActionCommand(p_action));
     }
     
     /**
@@ -369,7 +362,22 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                     player.m_betAmount = 0;
                 }
                 
-                final OldTypePokerRound gameState = command.getRound();
+                OldTypePokerRound gameState = OldTypePokerRound.BEGINNING;
+                switch (command.getRound())
+                {
+                    case PREFLOP:
+                        gameState = OldTypePokerRound.PREFLOP;
+                        break;
+                    case FLOP:
+                        gameState = OldTypePokerRound.FLOP;
+                        break;
+                    case TURN:
+                        gameState = OldTypePokerRound.TURN;
+                        break;
+                    case RIVER:
+                        gameState = OldTypePokerRound.RIVER;
+                        break;
+                }
                 m_table.m_gameState = gameState;
                 
                 m_table.m_currentBet = 0;
@@ -377,7 +385,7 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
             }
             
             @Override
-            public void boardChangedCommandReceived(GameBoardChangedCommand command)
+            public void betTurnStartedCommandReceived(GameBetTurnStartedCommand command)
             {
                 final ArrayList<Integer> indices = new ArrayList<Integer>();
                 for (int i = 0; i != m_table.m_boardCards.size(); ++i)
@@ -528,7 +536,25 @@ public class PokerClient extends Thread implements IClosingListener<IClientPoker
                 final int betAmount = command.getPlayerBet();
                 final int moneyAmount = command.getPlayerMoney();
                 final int totalPotAmount = command.getTotalPot();
-                final OldTypePlayerAction action = command.getActionType();
+                OldTypePlayerAction action = OldTypePlayerAction.UNKNOWN;
+                switch (command.getActionType())
+                {
+                    case BIG_BLIND_POSTED:
+                        action = OldTypePlayerAction.BIG_BLIND;
+                        break;
+                    case CALLED:
+                        action = OldTypePlayerAction.CALL;
+                        break;
+                    case FOLDED:
+                        action = OldTypePlayerAction.FOLD;
+                        break;
+                    case RAISED:
+                        action = OldTypePlayerAction.RAISE;
+                        break;
+                    case SMALL_BLIND_POSTED:
+                        action = OldTypePlayerAction.RAISE;
+                        break;
+                }
                 final int actionAmount = command.getActionAmount();
                 
                 final ClientPokerPlayerInfo player = (ClientPokerPlayerInfo) m_table.getPlayer(noSeat);

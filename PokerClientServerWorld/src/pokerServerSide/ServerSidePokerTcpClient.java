@@ -17,20 +17,18 @@ import newPokerLogic.TypePokerGameAction;
 import newPokerLogic.TypePokerGameRound;
 import newPokerLogicTools.PokerGameAdapter;
 import newPokerLogicTools.PokerGameObserver;
-import pokerLogic.OldTypePlayerAction;
-import pokerLogic.OldTypePokerRound;
 import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
+import protocolGame.GamePlayMoneyCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
 import protocolGame.GamePlayerTurnBeganCommand;
 import protocolGame.GamePlayerTurnEndedCommand;
 import protocolGame.GamePlayerWonPotCommand;
-import protocolGame.GameSendActionCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
@@ -165,22 +163,7 @@ public class ServerSidePokerTcpClient implements Runnable
                 {
                     amounts.add(0);
                 }
-                // TODO: eventuellement, GameBetTurnEndedCommand devrait utiliser directement TypePokerGameRound
-                switch (r)
-                {
-                    case PREFLOP:
-                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.PREFLOP));
-                        break;
-                    case FLOP:
-                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.FLOP));
-                        break;
-                    case TURN:
-                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.TURN));
-                        break;
-                    case RIVER:
-                        send(new GameBetTurnEndedCommand(amounts, OldTypePokerRound.RIVER));
-                        break;
-                }
+                send(new GameBetTurnEndedCommand(amounts, r));
             }
             
             @Override
@@ -205,25 +188,7 @@ public class ServerSidePokerTcpClient implements Runnable
             @Override
             public void playerActionTaken(PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
             {
-                // TODO: eventuellement, GamePlayerTurnEndedCommand devrait utiliser directement TypePokerGameAction
-                switch (reason)
-                {
-                    case FOLDED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.FOLD, playedAmount));
-                        break;
-                    case CALLED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.CALL, playedAmount));
-                        break;
-                    case RAISED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.RAISE, playedAmount));
-                        break;
-                    case SMALL_BLIND_POSTED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.SMALL_BLIND, playedAmount));
-                        break;
-                    case BIG_BLIND_POSTED:
-                        send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), OldTypePlayerAction.BIG_BLIND, playedAmount));
-                        break;
-                }
+                send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), reason, playedAmount, p.isPlaying()));
             }
             
             @Override
@@ -278,7 +243,7 @@ public class ServerSidePokerTcpClient implements Runnable
                         cards[i] = GameCard.NO_CARD;
                     }
                 }
-                send(new GameBoardChangedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[4].getId()));
+                send(new GameBetTurnStartedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[4].getId(), m_game.getCurrentGameRound()));
             }
             
             @Override
@@ -300,33 +265,22 @@ public class ServerSidePokerTcpClient implements Runnable
         m_commandObserver.subscribe(new GameServerSideAdapter()
         {
             @Override
+            public void disconnectCommandReceived(GamePlayMoneyCommand command)
+            {
+                m_isConnected = false;
+                m_game.leaveGame(m_player);
+            }
+            
+            @Override
             public void commandReceived(String command)
             {
                 System.out.println("<TcpPokerClient :" + m_player.getPlayerName() + "> RECV [" + command + "]");
             }
             
             @Override
-            public void sendActionCommandReceived(GameSendActionCommand command)
+            public void playMoneyCommandReceived(GamePlayMoneyCommand command)
             {
-                // TODO: en theorie, ca devrait etre pluss cool ! :p
-                switch (command.getAction().getType())
-                {
-                    case DISCONNECT:
-                        m_isConnected = false;
-                        m_game.leaveGame(m_player);
-                        break;
-                    case FOLD:
-                        m_game.playMoney(m_player, -1);
-                        break;
-                    case CALL:
-                        m_game.playMoney(m_player, command.getAction().getAmount() - m_player.getCurrentBetMoneyAmount());
-                        break;
-                    case CHECK:
-                    case BIG_BLIND:
-                    case SMALL_BLIND:
-                    case RAISE:
-                        m_game.playMoney(m_player, command.getAction().getAmount());
-                }
+                m_game.playMoney(m_player, command.getPlayed());
             }
         });
     }

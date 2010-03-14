@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import newPokerLogic.TypePokerGameAction;
+import newPokerLogic.TypePokerGameRound;
 import pokerExtractor.TupleHandHistories.PhaseEvents;
 import pokerExtractor.TupleHandHistories.TuplePlayer;
 import pokerExtractor.TupleHandHistories.Winner;
@@ -15,7 +17,7 @@ import pokerLogic.OldTypePokerRound;
 import pokerStats.MonteCarlo;
 import pokerStats.StatsInfos;
 import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBoardChangedCommand;
+import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
 import protocolGame.GamePlayerTurnEndedCommand;
@@ -31,7 +33,7 @@ import clientStats.StatsAgent;
 
 public class SimulationServer
 {
-    OldTypePokerRound m_state = OldTypePokerRound.PREFLOP;
+    TypePokerGameRound m_state = TypePokerGameRound.PREFLOP;
     PokerClientLocal m_client;
     StatsAgent m_statsAgent = new StatsAgent();
     LinkedBlockingQueue<String> m_fromClient = new LinkedBlockingQueue<String>(1);
@@ -88,7 +90,7 @@ public class SimulationServer
         final GameCard[] holeCards = new GameCard[] { m_hero.m_card1, m_hero.m_card2 };
         final GameCard[] boardCcards = new GameCard[5];
         
-        if (m_state == OldTypePokerRound.PREFLOP)
+        if (m_state == TypePokerGameRound.PREFLOP)
         {
             boardCcards[0] = GameCard.NO_CARD;
             boardCcards[1] = GameCard.NO_CARD;
@@ -96,7 +98,7 @@ public class SimulationServer
             boardCcards[3] = GameCard.NO_CARD;
             boardCcards[4] = GameCard.NO_CARD;
         }
-        else if (m_state == OldTypePokerRound.FLOP)
+        else if (m_state == TypePokerGameRound.FLOP)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -104,7 +106,7 @@ public class SimulationServer
             boardCcards[3] = GameCard.NO_CARD;
             boardCcards[4] = GameCard.NO_CARD;
         }
-        else if (m_state == OldTypePokerRound.TURN)
+        else if (m_state == TypePokerGameRound.TURN)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -112,7 +114,7 @@ public class SimulationServer
             boardCcards[3] = m_currentInfos.m_turn;
             boardCcards[4] = GameCard.NO_CARD;
         }
-        else if (m_state == OldTypePokerRound.RIVER)
+        else if (m_state == TypePokerGameRound.RIVER)
         {
             boardCcards[0] = m_currentInfos.m_flop.get(0);
             boardCcards[1] = m_currentInfos.m_flop.get(1);
@@ -492,7 +494,7 @@ public class SimulationServer
             final ArrayList<Integer> holes = new ArrayList<Integer>();
             holes.add(player.m_card1.getId());
             holes.add(player.m_card2.getId());
-            seats.add(new SummarySeatInfo(player.m_noSeat, false, player.m_name, player.m_money, holes, p_infos.m_noSeatDealer == player.m_noSeat, p_infos.m_noSeatSmallBlind == player.m_noSeat, p_infos.m_noSeatBigBlind == player.m_noSeat, false, 0, 0));
+            seats.add(new SummarySeatInfo(player.m_noSeat, false, player.m_name, player.m_money, holes, p_infos.m_noSeatDealer == player.m_noSeat, p_infos.m_noSeatSmallBlind == player.m_noSeat, p_infos.m_noSeatBigBlind == player.m_noSeat, false, 0, 0, false));
         }
         send(new GameTableInfoCommand(0, p_infos.m_players.size(), amounts, cards, p_infos.m_players.size(), seats));
         
@@ -510,7 +512,7 @@ public class SimulationServer
             smallBlindPlayer.m_betAmount = p_infos.m_smallBlind;
             smallBlindPlayer.m_money -= p_infos.m_smallBlind;
             totalPotAmount += p_infos.m_smallBlind;
-            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, OldTypePlayerAction.SMALL_BLIND, p_infos.m_smallBlind));
+            send(new GamePlayerTurnEndedCommand(smallBlindPlayer.m_noSeat, smallBlindPlayer.m_betAmount, smallBlindPlayer.m_money, totalPotAmount, TypePokerGameAction.SMALL_BLIND_POSTED, p_infos.m_smallBlind, false));
         }
         
         // Big blind posted
@@ -520,10 +522,10 @@ public class SimulationServer
             bigBlindPlayer.m_betAmount = p_infos.m_bigBlind;
             bigBlindPlayer.m_money -= p_infos.m_bigBlind;
             totalPotAmount += p_infos.m_bigBlind;
-            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, OldTypePlayerAction.BIG_BLIND, p_infos.m_bigBlind));
+            send(new GamePlayerTurnEndedCommand(bigBlindPlayer.m_noSeat, bigBlindPlayer.m_betAmount, bigBlindPlayer.m_money, totalPotAmount, TypePokerGameAction.BIG_BLIND_POSTED, p_infos.m_bigBlind, false));
         }
         
-        m_state = OldTypePokerRound.PREFLOP;
+        m_state = TypePokerGameRound.PREFLOP;
         // *** PREFLOP ***//
         totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_preflopEvents, p_infos.m_bigBlind);
         
@@ -531,12 +533,12 @@ public class SimulationServer
         // [BETTING_TURN_ENDED;pot[0-nbSeats]Amount;TypePokerRound]
         send(new GameBetTurnEndedCommand(amounts, m_state));
         
-        m_state = OldTypePokerRound.FLOP;
+        m_state = TypePokerGameRound.FLOP;
         if (p_infos.m_flopEvents.size() > 0)
         {
             // *** FLOP ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), GameCard.NO_CARD_ID, GameCard.NO_CARD_ID));
+            send(new GameBetTurnStartedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), GameCard.NO_CARD_ID, GameCard.NO_CARD_ID, m_state));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_flopEvents);
             
@@ -545,12 +547,12 @@ public class SimulationServer
             send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
-        m_state = OldTypePokerRound.TURN;
+        m_state = TypePokerGameRound.TURN;
         if (p_infos.m_turnEvents.size() > 0)
         {
             // *** TURN ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), GameCard.NO_CARD_ID));
+            send(new GameBetTurnStartedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), GameCard.NO_CARD_ID, m_state));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_turnEvents);
             
@@ -559,12 +561,12 @@ public class SimulationServer
             send(new GameBetTurnEndedCommand(amounts, m_state));
         }
         
-        m_state = OldTypePokerRound.RIVER;
+        m_state = TypePokerGameRound.RIVER;
         if (p_infos.m_riverEvents.size() > 0)
         {
             // *** RIVER ***//
             // [BOARD_CHANGED;idCard1;idCard2;idCard3;idCard4;idCard5;]
-            send(new GameBoardChangedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), p_infos.m_flop.get(4).getId()));
+            send(new GameBetTurnStartedCommand(p_infos.m_flop.get(0).getId(), p_infos.m_flop.get(1).getId(), p_infos.m_flop.get(2).getId(), p_infos.m_flop.get(3).getId(), p_infos.m_flop.get(4).getId(), m_state));
             
             totalPotAmount = simulatePhase(totalPotAmount, p_infos.m_riverEvents);
             
@@ -600,7 +602,7 @@ public class SimulationServer
         for (final TuplePlayer player : m_currentInfos.m_players)
         {
             
-            if ((m_state != OldTypePokerRound.PREFLOP) || ((player.m_noSeat != m_currentInfos.m_noSeatBigBlind) && (player.m_noSeat != m_currentInfos.m_noSeatSmallBlind)))
+            if ((m_state != TypePokerGameRound.PREFLOP) || ((player.m_noSeat != m_currentInfos.m_noSeatBigBlind) && (player.m_noSeat != m_currentInfos.m_noSeatSmallBlind)))
             {
                 player.m_betAmount = 0;
             }
@@ -614,7 +616,7 @@ public class SimulationServer
             {
                 write(event.m_action, totalPotAmount, currentBet);
             }
-            
+            TypePokerGameAction action = TypePokerGameAction.CALLED;
             if (event.m_action == OldTypePlayerAction.RAISE)
             {
                 totalPotAmount -= event.m_player.m_betAmount;
@@ -623,12 +625,14 @@ public class SimulationServer
                 event.m_player.m_money += event.m_player.m_betAmount;
                 event.m_player.m_money -= event.m_actionAmount;
                 event.m_player.m_betAmount = event.m_actionAmount;
+                action = TypePokerGameAction.RAISED;
             }
             else if (event.m_action == OldTypePlayerAction.CALL)
             {
                 totalPotAmount += event.m_actionAmount;
                 event.m_player.m_betAmount += event.m_actionAmount;
                 event.m_player.m_money -= event.m_actionAmount;
+                action = TypePokerGameAction.CALLED;
             }
             else if (event.m_action == OldTypePlayerAction.UNCALLED)
             {
@@ -640,22 +644,23 @@ public class SimulationServer
             {
                 event.m_player.m_isFolded = true;
                 m_nbRemainingPlayers--;
+                action = TypePokerGameAction.FOLDED;
             }
-            send(new GamePlayerTurnEndedCommand(event.m_player.m_noSeat, event.m_player.m_betAmount, event.m_player.m_money, totalPotAmount, event.m_action, event.m_actionAmount));
+            send(new GamePlayerTurnEndedCommand(event.m_player.m_noSeat, event.m_player.m_betAmount, event.m_player.m_money, totalPotAmount, action, event.m_actionAmount, false));
             
-            if (m_state == OldTypePokerRound.PREFLOP)
+            if (m_state == TypePokerGameRound.PREFLOP)
             {
                 manageLastActionsPreflop(event);
             }
-            else if (m_state == OldTypePokerRound.FLOP)
+            else if (m_state == TypePokerGameRound.FLOP)
             {
                 manageLastActionsFlop(event);
             }
-            else if (m_state == OldTypePokerRound.TURN)
+            else if (m_state == TypePokerGameRound.TURN)
             {
                 manageLastActionsTurn(event);
             }
-            else if (m_state == OldTypePokerRound.RIVER)
+            else if (m_state == TypePokerGameRound.RIVER)
             {
                 manageLastActionsRiver(event);
             }
@@ -729,7 +734,7 @@ public class SimulationServer
             }
             else
             {
-                if (m_state == OldTypePokerRound.PREFLOP)
+                if (m_state == TypePokerGameRound.PREFLOP)
                 {
                     // Stats preflop
                     sb.append(format(m_statsAgent.m_overallStats.get(player.m_name).getProbVPIPTotal_PRF())); // 87

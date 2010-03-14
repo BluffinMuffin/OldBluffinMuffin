@@ -1,9 +1,11 @@
 package protocolGameTools;
 
-import protocolGame.GameSendActionCommand;
+import protocolGame.GamePlayMoneyCommand;
 import protocolTools.PokerCommandListener;
 
 public interface GameServerSideListener extends PokerCommandListener
 {
-    void sendActionCommandReceived(GameSendActionCommand command);
+    void playMoneyCommandReceived(GamePlayMoneyCommand command);
+    
+    void disconnectCommandReceived(GamePlayMoneyCommand command);
 }
