@@ -44,7 +44,6 @@ public class PokerAIBasic extends AbstractPokerAI
         }
         
         // Calculate Monte Carlo score�
-        // TODO: RICK: table.getNbPlaying() is really working client side ???!
         final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, table.getNbPlaying(), PokerAIBasic.NB_SIMULATIONS).m_winRatio;
         
         System.out.println("Analyzing " + score);
@@ -54,26 +53,30 @@ public class PokerAIBasic extends AbstractPokerAI
         final double threshold1 = Math.sqrt(3.0 / (5.0 * (x - 3.0 / 4.0))) + 0.02;
         final double threshold2 = Math.sqrt(4.0 / ((x + 3.0))) - 4.0 / 10.0 + 0.02;
         
-        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
+        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentSafeMoneyAmount() + p.getCurrentBetMoneyAmount());
         final boolean canCheck = table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount();
         
         if ((score >= threshold1) && canRaise)
         {
-            final int restant = (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
+            System.out.println("RAISE");
+            final int restant = (p.getCurrentSafeMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
             return Math.min((table.getCurrentHigherBet() + table.getBigBlindAmount()) - p.getCurrentBetMoneyAmount(), restant);
         }
         else if ((score >= threshold2))
         {
+            System.out.println("CALL");
             return table.getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
         }
         else
         {
             if (canCheck)
             {
+                System.out.println("CHECK");
                 return 0;
             }
             else
             {
+                System.out.println("FOLD");
                 return -1;
             }
         }

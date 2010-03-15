@@ -40,7 +40,7 @@ public class PokerAIGenetic extends AbstractPokerAI
     {
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
-        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
+        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentSafeMoneyAmount() + p.getCurrentBetMoneyAmount());
         final boolean canCheck = table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount();
         int finalBet;
         final double mc = calculateHandValues(p, table);
@@ -77,7 +77,7 @@ public class PokerAIGenetic extends AbstractPokerAI
             // Raise
             if (canRaise)
             {
-                final int maxRaise = (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
+                final int maxRaise = (p.getCurrentSafeMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
                 final int minRaise = Math.min((table.getCurrentHigherBet() + table.getBigBlindAmount()) - p.getCurrentBetMoneyAmount(), maxRaise);
                 if (bet < minRaise)
                 {

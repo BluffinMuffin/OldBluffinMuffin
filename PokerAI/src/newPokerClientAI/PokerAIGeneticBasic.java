@@ -48,7 +48,6 @@ public class PokerAIGeneticBasic extends AbstractPokerAI
         }
         
         // Calculate Monte Carlo score�
-        // TODO: RICK: table.getNbPlaying() is really working client side ???!
         final double score = MonteCarlo.CalculateWinRatio(myCards, myBoardCards, table.getNbPlaying(), PokerAIGeneticBasic.NB_SIMULATIONS).m_winRatio;
         
         System.out.println("Analyzing " + score);
@@ -56,12 +55,12 @@ public class PokerAIGeneticBasic extends AbstractPokerAI
         final double threshold1 = Math.sqrt(m_adn[0] * (1.0 / (x - m_adn[1]))) + m_adn[2];
         final double threshold2 = Math.sqrt(1.0 / (m_adn[3] * (x + (1 / m_adn[4])))) - m_adn[5];
         
-        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
+        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount());
         final boolean canCheck = table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount();
         
         if ((score >= threshold1) && canRaise)
         {
-            final int restant = (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
+            final int restant = (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount()) - table.getCurrentHigherBet();
             return Math.min((table.getCurrentHigherBet() + table.getBigBlindAmount()) - p.getCurrentBetMoneyAmount(), restant);
         }
         else if ((score >= threshold2))

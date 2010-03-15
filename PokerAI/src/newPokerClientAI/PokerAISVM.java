@@ -164,9 +164,9 @@ public class PokerAISVM extends AbstractPokerAI
     {
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
-        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
+        final boolean canRaise = table.getCurrentHigherBet() >= (p.getCurrentSafeMoneyAmount() + p.getCurrentBetMoneyAmount());
         final int needed = table.getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
-        final int maxRaise = (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount()) - table.getCurrentHigherBet();
+        final int maxRaise = (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount()) - table.getCurrentHigherBet();
         final int minRaise = Math.min(needed + table.getBigBlindAmount(), maxRaise);
         
         while (!isReady())

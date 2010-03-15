@@ -18,7 +18,7 @@ public class PokerAIRandom extends AbstractPokerAI
         int bet = 0;
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
-        final boolean canRaise = table.getCurrentHigherBet() < (p.getCurrentBetMoneyAmount() + p.getCurrentBetMoneyAmount());
+        final boolean canRaise = table.getCurrentHigherBet() < (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount());
         final boolean canCheck = table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount();
         
         final int rndChx = Hasard.RandomMinMax(1, 3);

@@ -225,7 +225,6 @@ public class PokerGame implements IPokerGame
                     p.setAllIn();
                     m_pokerTable.incNbAllIn();
                     m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
-                    m_pokerTable.decNbPlaying();
                 }
             }
             if (!p.tryBet(amnt))
@@ -281,7 +280,6 @@ public class PokerGame implements IPokerGame
                 p.setAllIn();
                 m_pokerTable.incNbAllIn();
                 m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
-                m_pokerTable.decNbPlaying();
             }
             if (!p.tryBet(amnt))
             {
@@ -435,14 +433,13 @@ public class PokerGame implements IPokerGame
     private void foldPlayer(PokerPlayerInfo p)
     {
         p.setFolded();
-        m_pokerTable.decNbPlaying();
         m_gameObserver.playerActionTaken(p, TypePokerGameAction.FOLDED, -1);
     }
     
     private void TryToBegin()
     {
         System.out.print("Trying to begin ...");
-        m_pokerTable.setNbPlaying(m_pokerTable.getAndSetNbPlayingPlayers());
+        m_pokerTable.getAndSetNbPlayingPlayers();
         if (m_pokerTable.getNbPlaying() > 1)
         {
             System.out.println(" yep ! do it !");
