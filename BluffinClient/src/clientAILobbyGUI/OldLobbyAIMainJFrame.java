@@ -44,14 +44,12 @@ import utility.Constants;
 import utility.IClosingListener;
 import clientAI.OldFactoryAgent;
 import clientAI.OldPokerAI;
-import clientAI.OldPokerSVM;
 import clientAI.OldTypeAgent;
 import clientGame.ClientPokerPlayerInfo;
 import clientGame.ClientPokerTableInfo;
 import clientGame.PokerClient;
 import clientGameGUI.OldGameTableViewerJFrame;
 import clientLobbyGUI.OldLobbyMainJFrame;
-import clientStats.StatsAgent;
 
 public class OldLobbyAIMainJFrame extends JFrame implements IClosingListener<PokerClient>
 {
@@ -826,22 +824,10 @@ public class OldLobbyAIMainJFrame extends JFrame implements IClosingListener<Pok
             table.m_smallBlindAmount = p_bigBlindAmount / 2;
             
             final PokerClient client = new PokerClient(localPlayer, tableSocket, table, fromTable);
-            if (m_agentType == OldTypeAgent.AI_SVM)
-            {
-                final StatsAgent statsAgent = new StatsAgent();
-                statsAgent.setPokerObserver(client.getPokerObserver());
-                client.attach(statsAgent);
-                
-                final OldPokerAI pokerAgent = new OldPokerSVM(statsAgent, m_playerName);
-                pokerAgent.setPokerObserver(client.getPokerObserver());
-                client.setActionner(pokerAgent);
-            }
-            else
-            {
-                final OldPokerAI pokerAgent = OldFactoryAgent.create(m_agentType);
-                pokerAgent.setPokerObserver(client.getPokerObserver());
-                client.setActionner(pokerAgent);
-            }
+            
+            final OldPokerAI pokerAgent = OldFactoryAgent.create(m_agentType);
+            pokerAgent.setPokerObserver(client.getPokerObserver());
+            client.setActionner(pokerAgent);
             
             if (m_viewer)
             {

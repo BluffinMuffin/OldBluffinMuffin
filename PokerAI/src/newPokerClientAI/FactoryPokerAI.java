@@ -10,8 +10,6 @@ public class FactoryPokerAI
         {
             case BASIC:
                 return new PokerAIBasic(game, seatViewed);
-            case SVM:
-                return new PokerAISVM(game, seatViewed);
             case GENETIC:
                 return new PokerAIGenetic(game, seatViewed);
             case GENETIC_BASIC:

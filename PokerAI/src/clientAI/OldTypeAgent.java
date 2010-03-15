@@ -8,7 +8,7 @@ import utility.Bundle;
  */
 public enum OldTypeAgent
 {
-    AI_BASIC, AI_SVM, AI_GENETIC, AI_RANDOM;
+    AI_BASIC, AI_GENETIC, AI_RANDOM;
     
     /**
      * Internationnalized string.

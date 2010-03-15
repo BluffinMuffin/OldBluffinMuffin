@@ -29,7 +29,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import newPokerClientAI.FactoryPokerAI;
-import newPokerClientAI.PokerAISVM;
 import newPokerClientAI.TypePokerAI;
 import pokerClientSide.ClientSidePokerTcpServer;
 import pokerGameGUI.GameTableViewerJFrame;
@@ -44,7 +43,6 @@ import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IPokerCommand;
 import utility.Constants;
-import clientStats.StatsAgent;
 
 public class LobbyAIMainJFrame extends JFrame
 {
@@ -777,20 +775,8 @@ public class LobbyAIMainJFrame extends JFrame
             // settings.
             
             final ClientSidePokerTcpServer client = new ClientSidePokerTcpServer(tableSocket, fromTable, noSeat, m_playerName);
-            if (m_agentType == TypePokerAI.SVM)
-            {
-                final StatsAgent statsAgent = new StatsAgent();
-                // TODO: RICK: SVM WANNA DIE
-                // statsAgent.setPokerObserver(client.getPokerObserver());
-                // client.attach(statsAgent);
-                
-                new PokerAISVM(client, noSeat, statsAgent, m_playerName);
-            }
-            else
-            {
-                FactoryPokerAI.create(m_agentType, client, noSeat);
-            }
             
+            FactoryPokerAI.create(m_agentType, client, noSeat);
             if (m_viewer)
             {
                 final GameTableViewerJFrame viewer = new GameTableViewerJFrame();

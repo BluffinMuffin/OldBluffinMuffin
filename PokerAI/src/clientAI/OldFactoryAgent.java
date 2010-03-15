@@ -20,12 +20,10 @@ public class OldFactoryAgent
         {
             case AI_BASIC:
                 return new OldPokerBasic();
-            case AI_SVM:
-                return new OldPokerSVM();
             case AI_GENETIC:
                 return new OldPokerGeneticBasic();
             case AI_RANDOM:
-            	return new OldPokerRandomAI();
+                return new OldPokerRandomAI();
         }
         
         return null;
