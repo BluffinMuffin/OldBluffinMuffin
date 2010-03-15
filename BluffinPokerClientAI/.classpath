@@ -9,6 +9,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerClient"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PokerProtocol"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/BluffinPokerGUI"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/BluffinPokerGameServer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
