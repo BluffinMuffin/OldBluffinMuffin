@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import newPokerLogic.PokerGame;
-import newPokerLogic.PokerTableInfo;
-import pokerLogic.OldTypePokerGame;
+import pokerGameLogic.PokerGame;
+import pokerGameLogic.PokerTableInfo;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
 import utility.Constants;
@@ -155,7 +154,7 @@ public class ServerLobby extends Thread
             {
                 final PokerTableInfo table = game.getPokerTable();
                 // TODO: RICK: Gestion TypePokerGame
-                tables.add(new SummaryTableInfo(noPort, table.getTableName(), OldTypePokerGame.NO_LIMIT, table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats()));
+                tables.add(new SummaryTableInfo(noPort, table.getTableName(), table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats()));
             }
             else
             {

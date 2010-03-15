@@ -5,7 +5,6 @@ import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
-import protocolGame.GamePINGCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
@@ -15,7 +14,6 @@ import protocolGame.GamePlayerWonPotCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
-import protocolGame.GameWaitingCommand;
 import protocolTools.PokerCommandListener;
 
 public interface GameClientSideListener extends PokerCommandListener
@@ -32,8 +30,6 @@ public interface GameClientSideListener extends PokerCommandListener
     
     void holeCardsChangedCommandReceived(GameHoleCardsChangedCommand command);
     
-    void pingCommandReceived(GamePINGCommand command);
-    
     void playerJoinedCommandReceived(GamePlayerJoinedCommand command);
     
     void playerLeftCommandReceived(GamePlayerLeftCommand command);
@@ -49,6 +45,4 @@ public interface GameClientSideListener extends PokerCommandListener
     void tableClosedCommandReceived(GameTableClosedCommand command);
     
     void tableInfoCommandReceived(GameTableInfoCommand command);
-    
-    void waitingCommandReceived(GameWaitingCommand command);
 }

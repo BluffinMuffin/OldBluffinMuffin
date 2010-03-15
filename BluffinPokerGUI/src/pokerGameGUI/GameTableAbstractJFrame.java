@@ -2,8 +2,9 @@ package pokerGameGUI;
 
 import javax.swing.JFrame;
 
-import newPokerLogic.IPokerGame;
-import newPokerLogicTools.PokerGameObserver;
+import pokerGameLogic.IPokerGame;
+import pokerGameTools.PokerGameObserver;
+
 
 public abstract class GameTableAbstractJFrame extends JFrame
 {

@@ -5,7 +5,6 @@ import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
-import protocolGame.GamePINGCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
@@ -15,7 +14,6 @@ import protocolGame.GamePlayerWonPotCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
-import protocolGame.GameWaitingCommand;
 
 public class GameClientSideAdapter implements GameClientSideListener
 {
@@ -47,11 +45,6 @@ public class GameClientSideAdapter implements GameClientSideListener
     
     @Override
     public void holeCardsChangedCommandReceived(GameHoleCardsChangedCommand command)
-    {
-    }
-    
-    @Override
-    public void pingCommandReceived(GamePINGCommand command)
     {
     }
     
@@ -92,11 +85,6 @@ public class GameClientSideAdapter implements GameClientSideListener
     
     @Override
     public void tableInfoCommandReceived(GameTableInfoCommand command)
-    {
-    }
-    
-    @Override
-    public void waitingCommandReceived(GameWaitingCommand command)
     {
     }
     

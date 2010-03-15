@@ -1,0 +1,57 @@
+package pokerClientAI;
+
+import pokerGameLogic.IPokerGame;
+import pokerGameLogic.PokerPlayerInfo;
+import pokerGameLogic.PokerTableInfo;
+import pokerGameTools.PokerGameAdapter;
+import pokerGameTools.PokerGameObserver;
+
+public abstract class AbstractPokerAI
+{
+    protected PokerGameObserver m_pokerObserver;
+    protected IPokerGame m_game;
+    protected int m_currentTablePosition;
+    
+    public AbstractPokerAI(IPokerGame game, int seatViewed)
+    {
+        m_game = game;
+        m_currentTablePosition = seatViewed;
+        m_pokerObserver = m_game.getGameObserver();
+        initializePokerObserver();
+    }
+    
+    private void initializePokerObserver()
+    {
+        m_pokerObserver.subscribe(new PokerGameAdapter()
+        {
+            @Override
+            public void playerActionNeeded(PokerPlayerInfo p)
+            {
+                if (p.getCurrentTablePosition() == m_currentTablePosition)
+                {
+                    final int played = playMoney();
+                    m_game.playMoney(p, played);
+                }
+            }
+        });
+    }
+    
+    /**
+     * Analyze available informations on the poker table and
+     * chose the action to do.
+     * 
+     * @return
+     *         Money played.
+     */
+    protected int playMoney()
+    {
+        final PokerTableInfo table = m_game.getPokerTable();
+        final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+        if (p.getCurrentBetMoneyAmount() >= table.getCurrentHigherBet())
+        {
+            return 0;
+        }
+        return -1;
+    }
+    
+}

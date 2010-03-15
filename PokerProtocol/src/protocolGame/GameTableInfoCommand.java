@@ -5,9 +5,9 @@ import gameLogic.GameCard;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import newPokerLogic.PokerMoneyPot;
-import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
+import pokerGameLogic.PokerMoneyPot;
+import pokerGameLogic.PokerPlayerInfo;
+import pokerGameLogic.PokerTableInfo;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IPokerCommand;
 import utility.Constants;

@@ -3,7 +3,7 @@ package protocolGame;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import newPokerLogic.TypePokerGameRound;
+import pokerGameLogic.TypePokerGameRound;
 import protocolTools.IPokerCommand;
 import utility.Constants;
 

@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -21,15 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
-import pokerLogic.OldTypePokerGame;
-
 public class LobbyAddTableJDialog extends JDialog
 {
     private final String m_playerName;
     
     private boolean m_OK;
     private String m_tableName;
-    private OldTypePokerGame m_gameType;
     private int m_bigBlind;
     private int m_nbPlayer;
     
@@ -155,8 +151,7 @@ public class LobbyAddTableJDialog extends JDialog
         {
             jGameTypeComboBox = new JComboBox();
             jGameTypeComboBox.setBounds(new Rectangle(10, 75, 200, 20));
-            jGameTypeComboBox.setModel(new DefaultComboBoxModel(OldTypePokerGame.values()));
-            jGameTypeComboBox.setSelectedItem(OldTypePokerGame.NO_LIMIT);
+            jGameTypeComboBox.setEnabled(false);
         }
         return jGameTypeComboBox;
     }
@@ -217,7 +212,6 @@ public class LobbyAddTableJDialog extends JDialog
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     m_tableName = getJTableNameTextField().getText();
-                    m_gameType = (OldTypePokerGame) getJGameTypeComboBox().getSelectedItem();
                     m_bigBlind = (Integer) getJBigBlindSpinner().getValue();
                     m_nbPlayer = getJNbPlayersSlider().getValue();
                     m_OK = true;
@@ -236,11 +230,6 @@ public class LobbyAddTableJDialog extends JDialog
     public String getTableName()
     {
         return m_tableName;
-    }
-    
-    public OldTypePokerGame getGameType()
-    {
-        return m_gameType;
     }
     
     public int getBigBlind()

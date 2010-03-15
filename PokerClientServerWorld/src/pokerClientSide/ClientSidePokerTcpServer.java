@@ -8,12 +8,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-import newPokerLogic.IPokerGame;
-import newPokerLogic.PokerMoneyPot;
-import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
-import newPokerLogic.TypePokerGameAction;
-import newPokerLogicTools.PokerGameObserver;
+import pokerGameLogic.IPokerGame;
+import pokerGameLogic.PokerMoneyPot;
+import pokerGameLogic.PokerPlayerInfo;
+import pokerGameLogic.PokerTableInfo;
+import pokerGameLogic.TypePokerGameAction;
+import pokerGameTools.PokerGameObserver;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameDisconnectCommand;

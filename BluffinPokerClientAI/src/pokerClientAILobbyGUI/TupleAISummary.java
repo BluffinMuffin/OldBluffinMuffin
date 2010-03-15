@@ -1,6 +1,6 @@
 package pokerClientAILobbyGUI;
 
-import newPokerClientAI.TypePokerAI;
+import pokerClientAI.TypePokerAI;
 
 public class TupleAISummary
 {

@@ -7,7 +7,6 @@ import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
 import protocolGame.GameHoleCardsChangedCommand;
-import protocolGame.GamePINGCommand;
 import protocolGame.GamePlayerJoinedCommand;
 import protocolGame.GamePlayerLeftCommand;
 import protocolGame.GamePlayerMoneyChangedCommand;
@@ -17,7 +16,6 @@ import protocolGame.GamePlayerWonPotCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
-import protocolGame.GameWaitingCommand;
 import protocolTools.PokerCommandObserver;
 import utility.Constants;
 
@@ -75,15 +73,6 @@ public class GameClientSideObserver extends PokerCommandObserver<GameClientSideL
         for (final GameClientSideListener listener : getSubscribers())
         {
             listener.holeCardsChangedCommandReceived(command);
-        }
-    }
-    
-    @Override
-    public void pingCommandReceived(GamePINGCommand command)
-    {
-        for (final GameClientSideListener listener : getSubscribers())
-        {
-            listener.pingCommandReceived(command);
         }
     }
     
@@ -160,15 +149,6 @@ public class GameClientSideObserver extends PokerCommandObserver<GameClientSideL
     }
     
     @Override
-    public void waitingCommandReceived(GameWaitingCommand command)
-    {
-        for (final GameClientSideListener listener : getSubscribers())
-        {
-            listener.waitingCommandReceived(command);
-        }
-    }
-    
-    @Override
     public void commandReceived(String line)
     {
         final StringTokenizer token = new StringTokenizer(line, Constants.DELIMITER);
@@ -229,14 +209,6 @@ public class GameClientSideObserver extends PokerCommandObserver<GameClientSideL
         else if (commandName.equals(GameAskActionCommand.COMMAND_NAME))
         {
             askActionCommandReceived(new GameAskActionCommand(token));
-        }
-        else if (commandName.equals(GameWaitingCommand.COMMAND_NAME))
-        {
-            waitingCommandReceived(new GameWaitingCommand(token));
-        }
-        else if (commandName.equals(GamePINGCommand.COMMAND_NAME))
-        {
-            pingCommandReceived(new GamePINGCommand(token));
         }
         else
         {

@@ -17,15 +17,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import newPokerLogic.IPokerGame;
-import newPokerLogic.PokerMoneyPot;
-import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
-import newPokerLogic.TypePokerGameAction;
-import newPokerLogic.TypePokerGameRound;
-import newPokerLogicTools.PokerGameAdapter;
-import newPokerLogicTools.PokerGameObserver;
-import pokerLogic.OldTypePlayerAction;
+import pokerGameLogic.IPokerGame;
+import pokerGameLogic.PokerMoneyPot;
+import pokerGameLogic.PokerPlayerInfo;
+import pokerGameLogic.PokerTableInfo;
+import pokerGameLogic.TypePokerGameAction;
+import pokerGameLogic.TypePokerGameRound;
+import pokerGameTools.PokerGameAdapter;
+import pokerGameTools.PokerGameObserver;
+
 import utilGUI.ConsoleJPanel;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
@@ -683,7 +683,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                         php.setBackground(Color.white);
                         php.setHeaderColor(Color.white);
                     }
-                    php.setPlayerAction(OldTypePlayerAction.NOTHING);
+                    php.setPlayerAction(TypePokerGameAction.NOTHING);
                 }
                 super.gameEnded();
             }
@@ -775,7 +775,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             {
                 php.setPlayerName(player.getPlayerName());
                 php.setPlayerInfo("");// TODO: RICK: Human or BOT
-                php.setPlayerAction(OldTypePlayerAction.NOTHING);
+                php.setPlayerAction(TypePokerGameAction.NOTHING);
                 final GameCard[] cards = player.getCurrentHand(true);
                 php.setPlayerCards(cards[0], cards[1]);
                 php.setPlayerMoney(player.getCurrentSafeMoneyAmount());

@@ -28,7 +28,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import newPokerClientAI.TypePokerAI;
+import pokerClientAI.TypePokerAI;
+
 
 public class LobbyAIConnectJDialog extends JDialog
 {

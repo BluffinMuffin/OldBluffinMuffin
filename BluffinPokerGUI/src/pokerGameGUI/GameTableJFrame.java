@@ -7,10 +7,11 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import newPokerLogic.PokerPlayerInfo;
-import newPokerLogic.PokerTableInfo;
-import newPokerLogicTools.PokerGameAdapter;
-import newPokerLogicTools.PokerGameObserver;
+import pokerGameLogic.PokerPlayerInfo;
+import pokerGameLogic.PokerTableInfo;
+import pokerGameTools.PokerGameAdapter;
+import pokerGameTools.PokerGameObserver;
+
 
 public class GameTableJFrame extends GameTableViewerJFrame
 {

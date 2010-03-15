@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import newPokerLogic.TypePokerGameAction;
-import pokerLogic.OldTypePlayerAction;
+import pokerGameLogic.TypePokerGameAction;
+
 
 public class PlayerHudJPanel extends JPanel
 {
@@ -169,15 +169,14 @@ public class PlayerHudJPanel extends JPanel
         jInfoLabel.setText(info);
     }
     
-    public void setPlayerAction(OldTypePlayerAction action)
+    public void setPlayerAction(TypePokerGameAction action)
     {
         final StringBuilder sb = new StringBuilder("Last Action: ");
         switch (action)
         {
-            case CALL:
-            case CHECK:
-            case FOLD:
-            case RAISE:
+            case CALLED:
+            case FOLDED:
+            case RAISED:
                 sb.append(action.name());
                 break;
         }

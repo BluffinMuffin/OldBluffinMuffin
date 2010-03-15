@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import newPokerLogic.PokerGame;
+import pokerGameLogic.PokerGame;
+
 
 /**
  * @author Hocus
