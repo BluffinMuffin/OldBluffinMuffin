@@ -1,19 +1,15 @@
 package parser;
 
-public class PokerStarsParser extends AbsParser
-{
-    
-    private static final PokerStarsParser INSTANCE = new PokerStarsParser();
-    
-    public static PokerStarsParser getInstance()
-    {
-        return PokerStarsParser.INSTANCE;
-    }
-    
-    @Override
-    void understand(String fileContent)
-    {
-        System.out.println("I am a PokerStar");
-    }
-    
+
+public class PokerStarsParser extends AbsParser {
+
+	public PokerStarsParser(String path) {
+		super(path);
+	}
+
+	@Override
+	protected void parse(String fileContent) {
+		System.out.println("I am a PokerStar");
+	}
+
 }

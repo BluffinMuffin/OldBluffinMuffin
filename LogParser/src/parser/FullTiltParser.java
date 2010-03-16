@@ -1,106 +1,108 @@
 package parser;
 
-import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import parser.data.Bet;
 import parser.data.Game;
 import parser.data.GameSet;
-import db.PokerLogsDBManager;
+import parser.data.PlayerInfo;
+import parser.data.GameSet.GameType;
 
 public class FullTiltParser extends AbsParser {
 
-	// private static final FullTiltParser INSTANCE = new FullTiltParser();
+	public FullTiltParser(String fileContent) {
+		super(fileContent);
+	}
 
-	// public static FullTiltParser getInstance() {
-	// return INSTANCE;
-	//
-	// }
-
-	private PokerLogsDBManager DBManager;
-
-	private HashMap<String, Integer> playerMap = new HashMap<String, Integer>();
-	private GameSet gameSet = new GameSet();
-
-	@Override
-	void understand(String fileContent) {
-
-		DBManager = new PokerLogsDBManager();
-
-		String[] gameLogs = null;
+	protected void parse(String fileContent) {
+		String[] gameList = fileContent.split("[\r\n]{4,}");
 		String[] rounds = null;
+		Game game = null;
+		int fuckedup = 0;
 
-		gameLogs = fileContent.split("\r\n\r\n\r\n");
+		if (readHeader(gameList[0].split("\r\n")[0])) { // If header is valid
+			for (String g : gameList) {
+				rounds = g.split("\r\n\\*\\*\\*.");
+				game = new Game();
+				boolean goodGame = false;
 
-		for (String log : gameLogs) {
+				if (!rounds[0].split("\r\n")[0].endsWith("(partial)")) {
 
-			rounds = log.split("\r\n\\*\\*\\*.");
+					for (int x = 0; x < rounds.length; x++) {
+						if (!rounds[x].equals("\r\n")) {
+							// System.out.println(rounds[x].split("\r\n")[0]);
+							// Game general info
+							if (x == 0) {
+								if (!setPlayers(rounds[x], game)) {
+									// goodGame = false;
+									break;
+								}
 
-			Game game = new Game(); // Instance a new game
+								if (!setDealerID(rounds[x], game)) {
+									// System.out.println("Exitting du to no dealer");
+									// System.out.println(rounds[x]);
+									fuckedup++;
+									// System.out.println(fuckedup);
 
-			for (int x = 0; x < rounds.length; x++) {
+									// goodGame = false;
+									break;
+								}
+								setBlindBettingRound(rounds[x], "big", game);
+								setBlindBettingRound(rounds[x], "small", game);
 
-				if (rounds[x].length() > 0) {
-					if (x == 0) { // Si on est dans la section info générales de la game
+							} else if (x == rounds.length - 1) {
+								// Game Summary
+								setWinner(rounds[x], game);
+								setBoard(rounds[x], game);
+								goodGame = true;
 
-						setPlayers(rounds[x]);
-						readHeader((rounds[x].split("\r\n"))[0]);
-						setDealerID(rounds[x], game);
-						setBlindBettingRound(rounds[x], "big", game); // Set the BIG blinds
-						setBlindBettingRound(rounds[x], "small", game); // Set the SMALL blinds
-
-					} else if (x == rounds.length - 1) {
-						// Game Summary
-
-						// Déterminer le gagnant et le montant amassé
-						setWinner(rounds[x], game);
-						// Remplir la table avec le "Board : "
-						setBoard(rounds[x], game);
-						System.exit(-1);
-
-					} else {
-						// is typical betting round
-
-						insertBettingActions(rounds[x], game);
-
+							} else {
+								// typical betting round
+								setBettingActions(rounds[x], game);
+							}
+						}
 					}
 
+					if (goodGame) {
+						gameSet.add(game);
+					}
 				}
+
 			}
 		}
-
 	}
 
 	private void setWinner(String summary, Game game) {
-
-		Pattern pot = Pattern.compile("Total pot \\$?(\\d+[.]?[0-9]?{2}) \\| Rake \\$?(\\d+[.]?[0-9]?{2})");
-		// Pattern winner = Pattern.compile("Seat \\d: ([\\w+\\s]+) (.+)?collected \\(\\$?(\\d+[.]?[0-9]?{2})\\), (\\w+)");
-		Pattern winner = Pattern.compile("Seat\\s\\d:\\s(\\w+\\s)+(?:\\((\\w+\\s)+\\))?(\\(.*\\)),(.*)");
-		Matcher potMatcher = pot.matcher(summary);
+		Pattern winner = Pattern.compile("Seat \\d: ([\\w+\\-\\s]+?)(?:\\x28(?:small blind|big blind|button)\\x29 )?(?:showed|mucked)? ?(?:\\x5B(..) (..)\\x5D )?(?:and won |collected )?(?:\\x28\\$([\\d{1,3},]*\\d+(?:\\.\\d{1,2})?)\\x29)?(:? with|-|, mucked)");
 		Matcher winMatcher = winner.matcher(summary);
 
-		// TODO: Find a split pot to allow multiple wins
-		if (potMatcher.find()) {
-			System.out.println("Has pot");
-
-		}
-
 		while (winMatcher.find()) {
-			for (int i = 0; i < winMatcher.groupCount(); i++) {
-				System.out.println(i + " : " + winMatcher.group(i));
+
+			if (winMatcher.group(4) != null) {
+				// Warning, ugly code
+
+				PlayerInfo tmpNfo = game.playerMap.get(winMatcher.group(1).trim());
+				tmpNfo.amountWon = Double.valueOf(winMatcher.group(4).replaceAll(",", ""));
+				game.playerMap.put(winMatcher.group(1).trim(), tmpNfo);
 			}
-			// System.out.println(winMatcher.group(0));
-			// System.out.println(winMatcher.group(1));
-			// System.out.println(winMatcher.group(2));
-			// System.out.println(winMatcher.group(3));
+
+			if (winMatcher.group(2) != null && winMatcher.group(3) != null) {
+				// TODO: UGLY!! Find a better way to set the cards in playerInfo
+				// TODO2: probably time to make a function since same code written twice (also in setBoard)
+				PlayerInfo tmpNfo = game.playerMap.get(winMatcher.group(1).trim());
+				tmpNfo.cards = new String[] { winMatcher.group(2), winMatcher.group(3) };
+				game.playerMap.put(winMatcher.group(1).trim(), tmpNfo);
+			}
+
 		}
+		// System.exit(-1);
 
 	}
 
 	private void setBoard(String summary, Game game) {
-		// Can wait until summary when we have Board [.. .. .. .. ..]
-		// Pattern tableCards = Pattern.compile("([\\w+\\s]+)\\*\\*\\* \\x5B(..) ?(..)? ?(..)?\\x5D");
+
 		Pattern board = Pattern.compile("Board: \\[(..) (..) (..) ?(..)? ?(..)?\\]");
 		Matcher tableMatcher = board.matcher(summary);
 
@@ -116,96 +118,74 @@ public class FullTiltParser extends AbsParser {
 
 	}
 
-	private void insertBettingActions(String bettingInfo, Game game) {
-
+	private void setBettingActions(String bettingInfo, Game game) {
 		String[] actions = (bettingInfo.split("\r\n"));
 		String round = getBettingRoundType(actions[0]);
 		Double minBid = gameSet.bigBlindValue;
 
-		// TODO: Replace by megaMatcher of DOOOMM!!
-		/*
-		 * Pattern fold = Pattern.compile("([\\w+\\s]+) folds"); Pattern raise = Pattern.compile("([\\w+\\s]+)raises to \\$?(\\d+[.]?[0-9]?{2})"); Pattern call = Pattern.compile("([\\w+\\s]+) calls \\$?(\\d+[.]?[0-9]?{2})"); Pattern check = Pattern.compile(""); Pattern voluntaryBet = Pattern.compile("([\\w+\\s]+)adds \\$?(\\d+[.]?[0-9]?{2})");
-		 */
+		if (!round.equals("SHOW DOWN")) {
+			Pattern cardsDealt = Pattern.compile("Dealt to ([\\w+\\-\\s]+)\\[(..) (..)\\]");
+			Pattern megaPattern = Pattern.compile("^([\\w+\\-\\s]+) (folds|raises|calls|checks) ?(to )?\\$?([\\d{1,3},]*\\d+(?:\\.\\d{1,2})?)?");
 
-		Pattern cardsDealt = Pattern.compile("Dealt to ([\\w+\\s]+)\\[(..) (..)\\]");
-		Pattern megaPattern = Pattern.compile("([\\w+\\s]+)(folds|raises|calls|adds|checks) ?(to )?\\$?(\\d+[.]?[0-9]?{2})");
+			for (int x = 1; x < actions.length; x++) {
+				Matcher cardsDealtMatcher = cardsDealt.matcher(actions[x]);
+				Matcher megaMatcher = megaPattern.matcher(actions[x]);
 
-		for (int x = 1; x < actions.length; x++) {
-			Matcher cardsDealtMatcher = cardsDealt.matcher(actions[x]);
-			Matcher megaMatcher = megaPattern.matcher(actions[x]);
+				if (cardsDealtMatcher.find()) {
 
-			if (cardsDealtMatcher.find()) {
-				// Traiter la ligne
-				game.playerCards.put(cardsDealtMatcher.group(1), new String[] { cardsDealtMatcher.group(2), cardsDealtMatcher.group(3) });
-			}
-
-			if (megaMatcher.find()) {
-				if (megaMatcher.group(2).equals("raises")) {
-					Bet b = new Bet();
-					b.round = round;
-					b.playerName = megaMatcher.group(1);
-					b.amount = Double.valueOf(megaMatcher.group(4)) - minBid;
-					minBid = Double.valueOf(megaMatcher.group(4));
-					b.action = Bet.ActionType.Raise;
-					game.add(b);
-
-				} else if (megaMatcher.group(2).equals("calls")) {
-					Bet b = new Bet();
-					b.round = round;
-					b.playerName = megaMatcher.group(1);
-					b.amount = Double.valueOf(megaMatcher.group(4));
-					b.action = Bet.ActionType.Call;
-					game.add(b);
-
-				} else if (megaMatcher.group(2).equals("folds")) {
-					Bet b = new Bet();
-					b.round = round;
-					b.playerName = megaMatcher.group(1);
-					b.action = Bet.ActionType.Fold;
-					game.add(b);
-
-					// } else if (megaMatcher.group(2).equals("adds")) { // Not too sure about this one
-					// Bet b = new Bet();
-					// b.round = round;
-					// b.forced = true;
-					// b.forceType = Bet.ForcedBetType.Post;
-					// b.playerName = megaMatcher.group(1);
-					// game.add(b);
-					//
-				} else if (megaMatcher.group(2).equals("checks")) {
-					Bet b = new Bet();
-					b.round = round;
-					b.playerName = megaMatcher.group(1);
-					b.action = Bet.ActionType.Check;
-					game.add(b);
-
+					// TODO: UGLY!! Find a better way to set the cards in playerInfo
+					PlayerInfo tmpNfo = game.playerMap.get(cardsDealtMatcher.group(1).trim());
+					tmpNfo.cards = new String[] { cardsDealtMatcher.group(2), cardsDealtMatcher.group(3) };
+					game.playerMap.put(cardsDealtMatcher.group(1).trim(), tmpNfo);
 				}
 
-			}
+				if (megaMatcher.find()) {
 
+					Bet b = new Bet();
+					b.round = Bet.RoundType.altValueOf(round);
+					b.playerName = megaMatcher.group(1).trim();
+					b.action = Bet.ActionType.altValueOf(megaMatcher.group(2).trim());
+
+					switch (b.action) {
+					case Raise:
+						b.amount = Double.valueOf(megaMatcher.group(4).replaceAll(",", "")) - minBid;
+						minBid = Double.valueOf(megaMatcher.group(4).replaceAll(",", ""));
+						break;
+
+					case Call:
+						b.amount = Double.valueOf(megaMatcher.group(4).replaceAll(",", ""));
+						break;
+
+					default:
+						// System.out.println(b.action.toString());
+						break;
+					}
+
+					game.add(b);
+				}
+			}
 		}
 
 	}
 
-	private void setDealerID(String info, Game game) {
-
-		/*
-		 * TODO: Decide how to correspond seat # to player name
-		 */
-		// ResultSet rs = dbConnector.query("INSERT INTO Game (idDealer) values ("+ );
+	private boolean setDealerID(String info, Game game) {
 
 		Pattern p = Pattern.compile("The button is in seat #(\\d)");
 		Matcher RegexMatcher = p.matcher(info);
+		boolean existingDealer = false;
 
 		if (RegexMatcher.find()) {
-
-			game.dealerName = gameSet.seats[Integer.valueOf(RegexMatcher.group(1)) - 1];
-			System.out.println("Seat # " + RegexMatcher.group(1) + " is the dealer (" + game.dealerName + ")");
+			for (Entry<String, PlayerInfo> e : game.playerMap.entrySet()) {
+				if (Integer.valueOf(RegexMatcher.group(1)).equals(e.getValue().seatNo)) {
+					game.dealerName = e.getKey();
+					existingDealer = true;
+				}
+			}
 		}
-
+		return existingDealer;
 	}
 
-	private void readHeader(String header) {
+	private boolean readHeader(String header) {
 
 		// group(1) : Domain
 		// group(2) : idGame
@@ -220,113 +200,99 @@ public class FullTiltParser extends AbsParser {
 		// group(11): timezone
 		// group(12): date
 
-		String tableInfo = "([\\w+\\s]+)Game.#(\\d+):(..+,)?.Table.(\\w+\\s)+([\\(]\\d max[\\)])? ?- ";
-		String bettype = "([\\w+\\s]+)(Hold'em|Omaha) - ";
+		String TIname = "(.+)";
+		String TIgameNumber = "Game\\s#(\\d+):";
+		String TItblName = "(..+,)?\\sTable\\s" + TIname;
+		String TItblType = "(\\(.+\\))?";
+		String tableInfo = TIname + TIgameNumber + TItblName + TItblType + "\\s*-\\s*";
+
+		String bettype = "\\$?(?:[\\d{1,3},]*\\d+(?:\\.\\d{1,2})?)?(.+)(Hold'em|Omaha hi|Ohama H/L) - ";
 		String timestmp = "([0-9]{0,2}:[0-9]{0,2}:[0-9]{0,2}) (\\w+) - ([0-9]{0,4}\\/[0-9]{0,2}\\/[0-9]{0,2})";
 
-		String sbbb = "\\$?(\\d+[.]?[0-9]?{2})\\/\\$?(\\d+[.]?[0-9]?{2}).-.";
+		String sbbb = "\\$([\\d{1,3},]*\\d+(?:\\.\\d{1,2})?)\\/\\$([\\d{1,3},]*\\d+(?:\\.\\d{1,2})?).-.";
 
 		Pattern p = Pattern.compile(tableInfo + sbbb + bettype + timestmp, Pattern.CASE_INSENSITIVE);
 		Matcher RegexMatcher = p.matcher(header);
 
 		if (RegexMatcher.find()) {
-			System.out.println("FILEHEADER: " + RegexMatcher.group(0));
-			System.out.println("1: " + RegexMatcher.group(1));
-			System.out.println("2: " + RegexMatcher.group(2));
-			System.out.println("3: " + RegexMatcher.group(3));
-			System.out.println("4: " + RegexMatcher.group(4));
-			System.out.println("5: " + RegexMatcher.group(5));
 
-			System.out.println("6: " + RegexMatcher.group(6));
-			gameSet.smallBlindValue = Double.valueOf(RegexMatcher.group(6));
+			gameSet.smallBlindValue = Double.valueOf(RegexMatcher.group(6).replaceAll(",", ""));
+			gameSet.bigBlindValue = Double.valueOf(RegexMatcher.group(7).replaceAll(",", ""));
+			gameSet.betType = GameSet.BetType.altValueOf(RegexMatcher.group(8).trim());
+			gameSet.pokerType = GameSet.PokerType.altValueOf(RegexMatcher.group(9));
+			gameSet.gameType = GameType.Ring;
 
-			System.out.println("7: " + RegexMatcher.group(7));
-			gameSet.bigBlindValue = Double.valueOf(RegexMatcher.group(6));
+			return true;
 
-			System.out.println("8: " + RegexMatcher.group(8));
-			System.out.println("9: " + RegexMatcher.group(9));
-			System.out.println("10: " + RegexMatcher.group(10));
-			System.out.println("11: " + RegexMatcher.group(11));
-			System.out.println("11: " + RegexMatcher.group(12));
-
+		} else {
+			System.out.println("(Tourney) Didn't parse : " + header);
+			return false;
 		}
 
 	}
 
-	private void setPlayers(String seatInfo) {
+	private boolean setPlayers(String seatInfo, Game game) {
 
-		Integer nbPlayers = 0;
-
-		Pattern myregex = Pattern.compile("Seat \\d: ([\\w+\\s]+)[\\(]\\$?(.+)[\\)]");
-
+		Pattern myregex = Pattern.compile("Seat (\\d): ([\\w+\\-\\s]+)\\(\\$([\\d{1,3},]*\\d+(?:\\.\\d{1,2})?)\\)");
 		Matcher matcher = myregex.matcher(seatInfo);
+		boolean sittingPlayers = false; // Because some logs are shitty and have no players
 
 		while (matcher.find()) {
-			nbPlayers++;
-
-			System.out.println("Player: " + matcher.group(1));
-			System.out.println("Monies: " + matcher.group(2));
-
-			// Obtenir les id Player des joueurs et ajouter comme value du hashmap
-			String playerName = matcher.group(1).trim();
-
-			playerMap.put(playerName, DBManager.getPlayerID(playerName));
-			gameSet.seats[nbPlayers - 1] = playerName;
+			PlayerInfo nfo = new PlayerInfo();
+			nfo.seatNo = Integer.valueOf(matcher.group(1));
+			nfo.chips = Double.valueOf(matcher.group(3).replaceAll(",", ""));
+			String playerName = matcher.group(2).trim();
+			game.playerMap.put(playerName, nfo);
+			sittingPlayers = true;
 
 		}
+
+		return sittingPlayers;
 
 	}
 
 	private void setBlindBettingRound(String info, String blindType, Game game) {
 
-		/*
-		 * TODO: Get corresponding ID's from playerMap once bd is up and running
-		 */
-
-		// Pattern p = Pattern.compile("\r\n([\\w+\\s]+)posts the small blind of \\$?(\\d+[.]?[0-9]?{2})");
-
 		// Find the blinds
 		String rexName = "(.+)";
-		String rexStaticString = "\\s+posts the " + blindType + " blind of\\s+";
-		String rexMoney = "\\$(\\d+(\\.\\d{1,2})?)";
+		String rexStaticString = "posts the " + blindType + " blind of\\s+";
+		String rexMoney = "\\$([\\d{1,3},]*\\d+(?:\\.\\d{1,2})?)";
 
 		Pattern p = Pattern.compile(rexName + rexStaticString + rexMoney);
 		Matcher RegexMatcher = p.matcher(info);
 
 		while (RegexMatcher.find()) {
-			System.out.println("id " + blindType + "Blind($" + RegexMatcher.group(2) + "): " + RegexMatcher.group(1));
+			// System.out.println("id " + blindType + "Blind($" + RegexMatcher.group(2) + "): " + RegexMatcher.group(1));
 			Bet b = new Bet();
 			b.forced = true;
-
-			if (blindType.equals("big")) {
-				b.forceType = Bet.ForcedBetType.BigBlind;
-			} else {
-				b.forceType = Bet.ForcedBetType.SmallBlind;
-			}
-
+			b.forceType = Bet.ForcedBetType.altValueOf(blindType);
 			b.playerName = RegexMatcher.group(1);
-			b.amount = Double.valueOf(RegexMatcher.group(2));
+			b.amount = Double.valueOf(RegexMatcher.group(2).replaceAll(",", ""));
 			game.add(b);
 		}
-
-		// INSERT INTO bettingRounds(idGame, idGameSet, idPlayer, round, seq, amountRaised) VALUES (idGame, idGameset, idSmallBlind, 'BLIND', 1, 0)
-		// INSERT INTO bettingRounds(idGame, idGameSet, idPlayer, round, seq, amountRaised) VALUES (idGame, idGameset, idBigBlind, 'BLIND', 1, 0)
-
 	}
 
 	private String getBettingRoundType(String firstLine) {
 		String roundType = null;
 
-		Pattern p = Pattern.compile("([\\w+\\s]+)\\*\\*\\*");
+		Pattern p = Pattern.compile("([\\w+\\-\\s]+)\\*\\*\\*");
 		Matcher RegexMatcher = p.matcher(firstLine);
 
 		if (RegexMatcher.find()) {
-			System.out.println("We are in round " + RegexMatcher.group(1));
 			roundType = RegexMatcher.group(1);
+		}
+		return roundType.trim();
+	}
+
+	private void PrintPlayerMap(Game game) {
+		System.out.println("Printing hashmap ...");
+		for (Entry<String, PlayerInfo> e : game.playerMap.entrySet()) {
+			// players.put(e.getKey(), dba.getPlayerID(e.getKey()));
+
+			System.out.println("Name: " + e.getKey());
+			System.out.println("Seat: " + e.getValue().seatNo);
 
 		}
-
-		return roundType;
 
 	}
 

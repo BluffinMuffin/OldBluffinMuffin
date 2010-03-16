@@ -109,10 +109,18 @@ public class PostgresConnector {
 	}
 
 	protected PreparedStatement getPreparedStatement(String sql) {
+		return getPreparedStatement(sql, true);
+	}
+
+	protected PreparedStatement getPreparedStatement(String sql, boolean returnGenerated) {
 		PreparedStatement s = null;
 
 		try {
-			s = c.prepareStatement(sql);
+			if (returnGenerated) {
+				s = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			} else {
+				s = c.prepareStatement(sql);
+			}
 		} catch (SQLException se) {
 			System.out.println(se.getMessage());
 			System.exit(1);
@@ -120,5 +128,4 @@ public class PostgresConnector {
 
 		return s;
 	}
-
 }
