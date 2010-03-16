@@ -234,19 +234,30 @@ public class PokerTableInfo
         }
     }
     
-    private PokerPlayerInfo nextPlayer(int seat, List<PokerPlayerInfo> players)
-    {
-        return players.get((seat + 1) % players.size());
-    }
-    
     public PokerPlayerInfo nextPlayer(int seat)
     {
-        return nextPlayer(seat, getPlayers());
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            final int j = (seat + 1 + i) % m_nbMaxSeats;
+            if (m_currentPlayers[j] != null)
+            {
+                return m_currentPlayers[j];
+            }
+        }
+        return m_currentPlayers[seat];
     }
     
     public PokerPlayerInfo nextPlayingPlayer(int seat)
     {
-        return nextPlayer(seat, getPlayingPlayers());
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            final int j = (seat + 1 + i) % m_nbMaxSeats;
+            if (m_currentPlayers[j] != null && m_currentPlayers[j].isPlaying())
+            {
+                return m_currentPlayers[j];
+            }
+        }
+        return m_currentPlayers[seat];
     }
     
     public PokerPlayerInfo getPlayer(int seat)
