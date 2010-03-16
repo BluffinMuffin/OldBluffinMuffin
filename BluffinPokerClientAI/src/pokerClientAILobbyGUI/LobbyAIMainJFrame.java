@@ -41,7 +41,7 @@ import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class LobbyAIMainJFrame extends JFrame
 {
@@ -593,7 +593,7 @@ public class LobbyAIMainJFrame extends JFrame
         // Ask the server for all available tables.
         send(new LobbyListTableCommand());
         m_tables.clear();
-        final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
+        final StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
         
         // Parse results.
         while (token.hasMoreTokens())
@@ -712,7 +712,7 @@ public class LobbyAIMainJFrame extends JFrame
         // Send query.
         send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon));
         // Wait for response.
-        final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
+        final StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
         
         return Integer.parseInt(token.nextToken());
     }
@@ -761,7 +761,7 @@ public class LobbyAIMainJFrame extends JFrame
             toTable.println(command.encodeCommand());
             
             // Wait for response.
-            final StringTokenizer token = new StringTokenizer(fromTable.readLine(), Constants.DELIMITER);
+            final StringTokenizer token = new StringTokenizer(fromTable.readLine(), PokerCommand.DELIMITER);
             final int noSeat = Integer.parseInt(token.nextToken());
             
             if (noSeat == -1)

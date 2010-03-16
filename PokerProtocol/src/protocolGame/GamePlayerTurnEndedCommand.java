@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import pokerGameLogic.TypePokerGameAction;
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GamePlayerTurnEndedCommand implements IPokerCommand
 {
@@ -44,19 +44,19 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GamePlayerTurnEndedCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerBet);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerMoney);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_totalPot);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_actionType.name());
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_actionAmount);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_isPlaying);
         return sb.toString();
     }

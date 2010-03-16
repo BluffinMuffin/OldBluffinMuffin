@@ -3,7 +3,7 @@ package protocolGame;
 import java.util.StringTokenizer;
 
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GameStartedCommand implements IPokerCommand
 {
@@ -31,11 +31,11 @@ public class GameStartedCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GameStartedCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_noSeatD);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_noSeatSB);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_noSeatBB);
         return sb.toString();
     }

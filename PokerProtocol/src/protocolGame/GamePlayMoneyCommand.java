@@ -3,7 +3,7 @@ package protocolGame;
 import java.util.StringTokenizer;
 
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GamePlayMoneyCommand implements IPokerCommand
 {
@@ -26,7 +26,7 @@ public class GamePlayMoneyCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GamePlayMoneyCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_played);
         return sb.toString();
     }

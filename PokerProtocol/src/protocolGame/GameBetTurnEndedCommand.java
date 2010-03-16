@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 import pokerGameLogic.TypePokerGameRound;
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GameBetTurnEndedCommand implements IPokerCommand
 {
@@ -35,13 +35,13 @@ public class GameBetTurnEndedCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GameBetTurnEndedCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_potsAmounts.size());
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         for (int i = 0; i < m_potsAmounts.size(); ++i)
         {
             sb.append(m_potsAmounts.get(i));
-            sb.append(Constants.DELIMITER);
+            sb.append(PokerCommand.DELIMITER);
         }
         sb.append(m_round.toString());
         return sb.toString();

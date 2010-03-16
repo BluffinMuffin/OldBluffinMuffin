@@ -10,7 +10,7 @@ import pokerGameLogic.PokerPlayerInfo;
 import pokerGameLogic.PokerTableInfo;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GameTableInfoCommand implements IPokerCommand
 {
@@ -128,26 +128,26 @@ public class GameTableInfoCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GameTableInfoCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_totalPotAmount);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_nbSeats);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         for (int i = 0; i < m_potsAmount.size(); ++i)
         {
             sb.append(m_potsAmount.get(i));
-            sb.append(Constants.DELIMITER);
+            sb.append(PokerCommand.DELIMITER);
         }
         for (int i = 0; i < m_boardCardIDs.size(); ++i)
         {
             sb.append(m_boardCardIDs.get(i));
-            sb.append(Constants.DELIMITER);
+            sb.append(PokerCommand.DELIMITER);
         }
         sb.append(m_nbPlayers);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         for (int i = 0; i < m_seats.size(); ++i)
         {
-            sb.append(m_seats.get(i).toString(Constants.DELIMITER));
+            sb.append(m_seats.get(i).toString(PokerCommand.DELIMITER));
         }
         return sb.toString();
     }

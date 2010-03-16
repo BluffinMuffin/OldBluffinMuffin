@@ -3,7 +3,7 @@ package protocolLobby;
 import java.util.StringTokenizer;
 
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class LobbyDisconnectCommand implements IPokerCommand
 {
@@ -22,7 +22,7 @@ public class LobbyDisconnectCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(LobbyDisconnectCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
 }

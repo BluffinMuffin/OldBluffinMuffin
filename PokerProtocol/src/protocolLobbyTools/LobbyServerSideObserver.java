@@ -7,15 +7,15 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
+import protocolTools.PokerCommand;
 import protocolTools.PokerCommandObserver;
-import utility.Constants;
 
 public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSideListener>
 {
     @Override
     protected void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Constants.DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, PokerCommand.DELIMITER);
         final String commandName = token.nextToken();
         
         if (commandName.equals(LobbyConnectCommand.COMMAND_NAME))

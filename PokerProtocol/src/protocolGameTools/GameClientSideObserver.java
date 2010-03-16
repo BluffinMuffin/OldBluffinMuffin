@@ -16,8 +16,8 @@ import protocolGame.GamePlayerWonPotCommand;
 import protocolGame.GameStartedCommand;
 import protocolGame.GameTableClosedCommand;
 import protocolGame.GameTableInfoCommand;
+import protocolTools.PokerCommand;
 import protocolTools.PokerCommandObserver;
-import utility.Constants;
 
 public class GameClientSideObserver extends PokerCommandObserver<GameClientSideListener> implements GameClientSideListener
 {
@@ -151,7 +151,7 @@ public class GameClientSideObserver extends PokerCommandObserver<GameClientSideL
     @Override
     public void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Constants.DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, PokerCommand.DELIMITER);
         final String commandName = token.nextToken();
         
         if (commandName.equals(GameBetTurnEndedCommand.COMMAND_NAME))

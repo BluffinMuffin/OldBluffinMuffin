@@ -15,8 +15,7 @@ import protocolLobby.LobbyJoinTableCommand;
 import protocolLobbyTools.LobbyServerSideAdapter;
 import protocolLobbyTools.LobbyServerSideObserver;
 import protocolTools.IPokerCommand;
-import utility.Constants;
-import utility.Hasard;
+import protocolTools.PokerCommand;
 
 /**
  * @author Hocus
@@ -57,7 +56,7 @@ public class ServerClientTableManager extends Thread
         initializeCommandObserver();
         try
         {
-            StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
+            StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
             String commandName = token.nextToken();
             
             // Expect client's authentification.
@@ -67,7 +66,7 @@ public class ServerClientTableManager extends Thread
                 return;
             }
             
-            token = new StringTokenizer(receive(), Constants.DELIMITER);
+            token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
             commandName = token.nextToken();
             
             // Expect join message from the client.
@@ -136,7 +135,7 @@ public class ServerClientTableManager extends Thread
                     }
                     
                     // Create new NetworkPlayer.
-                    final ServerSidePokerTcpClient client = new ServerSidePokerTcpClient(m_manager.m_game, m_name, Hasard.RandomMinMax(Constants.STARTING_MONEY, Constants.STARTING_MONEY /*   * 5 */), m_socket);
+                    final ServerSidePokerTcpClient client = new ServerSidePokerTcpClient(m_manager.m_game, m_name, 1500, m_socket);
                     final PokerGame game = m_manager.m_game;
                     final PokerTableInfo table = game.getPokerTable();
                     // final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);

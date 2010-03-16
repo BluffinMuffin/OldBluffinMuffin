@@ -13,7 +13,6 @@ import pokerGameLogic.PokerGame;
 import pokerGameLogic.PokerTableInfo;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
-import utility.Constants;
 
 /**
  * @author Hocus
@@ -62,7 +61,7 @@ public class ServerLobby extends Thread
     {
         try
         {
-            final ServerLobby server = new ServerLobby(Constants.DEFAULT_NO_PORT);
+            final ServerLobby server = new ServerLobby(4242);
             server.start();
             System.out.println("Server started");
         }
@@ -97,7 +96,7 @@ public class ServerLobby extends Thread
     {
         listTables();
         
-        if (m_games.size() >= Constants.NB_MAX_TABLES)
+        if (m_games.size() >= 10)
         {
             return -1;
         }
@@ -107,7 +106,7 @@ public class ServerLobby extends Thread
             // Find an available port for the new table.
             // Only a certain number of port can be used at the same time.
             int noPort = NO_PORT + 1;
-            final int endPortRange = NO_PORT + Constants.NB_MAX_TABLES + 1;
+            final int endPortRange = NO_PORT + 11;
             while ((noPort != endPortRange) && m_games.containsKey(noPort))
             {
                 noPort++;

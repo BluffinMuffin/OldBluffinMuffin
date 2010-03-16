@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class LobbyListTableCommand implements IPokerCommand
 {
@@ -25,7 +25,7 @@ public class LobbyListTableCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(LobbyListTableCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     
@@ -36,7 +36,7 @@ public class LobbyListTableCommand implements IPokerCommand
         
         for (final SummaryTableInfo table : tables)
         {
-            sb.append(table.toString(Constants.DELIMITER));
+            sb.append(table.toString(PokerCommand.DELIMITER));
         }
         
         return sb.toString();

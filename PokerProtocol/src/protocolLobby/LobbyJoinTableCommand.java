@@ -3,7 +3,7 @@ package protocolLobby;
 import java.util.StringTokenizer;
 
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class LobbyJoinTableCommand implements IPokerCommand
 {
@@ -28,11 +28,11 @@ public class LobbyJoinTableCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(LobbyJoinTableCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerName);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_tableName);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     
@@ -40,7 +40,7 @@ public class LobbyJoinTableCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(noSeat);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     
@@ -48,7 +48,7 @@ public class LobbyJoinTableCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append("-1");
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     

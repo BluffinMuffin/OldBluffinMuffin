@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GameHoleCardsChangedCommand implements IPokerCommand
 {
@@ -33,13 +33,13 @@ public class GameHoleCardsChangedCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GameHoleCardsChangedCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         for (int i = 0; i < 2; ++i)
         {
             sb.append(m_cardsID.get(i));
-            sb.append(Constants.DELIMITER);
+            sb.append(PokerCommand.DELIMITER);
         }
         return sb.toString();
     }

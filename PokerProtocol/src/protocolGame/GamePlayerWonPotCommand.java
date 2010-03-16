@@ -3,7 +3,7 @@ package protocolGame;
 import java.util.StringTokenizer;
 
 import protocolTools.IPokerCommand;
-import utility.Constants;
+import protocolTools.PokerCommand;
 
 public class GamePlayerWonPotCommand implements IPokerCommand
 {
@@ -34,13 +34,13 @@ public class GamePlayerWonPotCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GamePlayerWonPotCommand.COMMAND_NAME);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_potID);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_shared);
-        sb.append(Constants.DELIMITER);
+        sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerMoney);
         return sb.toString();
     }
