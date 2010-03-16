@@ -1,6 +1,6 @@
 package protocolGameTools;
 
-import protocolGame.GamePlayMoneyCommand;
+import protocolGameCommands.GamePlayMoneyCommand;
 
 public class GameServerSideAdapter implements GameServerSideListener
 {

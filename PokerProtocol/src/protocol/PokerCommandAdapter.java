@@ -1,4 +1,4 @@
-package protocolTools;
+package protocol;
 
 public abstract class PokerCommandAdapter implements PokerCommandListener
 {

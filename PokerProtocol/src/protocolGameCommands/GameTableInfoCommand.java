@@ -1,4 +1,4 @@
-package protocolGame;
+package protocolGameCommands;
 
 import gameLogic.GameCard;
 
@@ -9,9 +9,9 @@ import pokerGameLogic.PokerMoneyPot;
 import pokerGameLogic.PokerPlayerInfo;
 import pokerGameLogic.PokerTableInfo;
 import pokerGameLogic.TypePokerGameLimit;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 import protocolGameTools.SummarySeatInfo;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
 
 public class GameTableInfoCommand implements IPokerCommand
 {

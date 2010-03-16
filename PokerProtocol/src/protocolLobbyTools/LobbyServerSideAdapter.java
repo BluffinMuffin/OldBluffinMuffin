@@ -1,10 +1,10 @@
 package protocolLobbyTools;
 
-import protocolLobby.LobbyConnectCommand;
-import protocolLobby.LobbyCreateTableCommand;
-import protocolLobby.LobbyDisconnectCommand;
-import protocolLobby.LobbyJoinTableCommand;
-import protocolLobby.LobbyListTableCommand;
+import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocolLobbyCommands.LobbyDisconnectCommand;
+import protocolLobbyCommands.LobbyJoinTableCommand;
+import protocolLobbyCommands.LobbyListTableCommand;
 
 public abstract class LobbyServerSideAdapter implements LobbyServerSideListener
 {

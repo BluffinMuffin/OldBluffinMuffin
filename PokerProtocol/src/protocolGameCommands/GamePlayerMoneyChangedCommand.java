@@ -1,9 +1,9 @@
-package protocolGame;
+package protocolGameCommands;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 
 public class GamePlayerMoneyChangedCommand implements IPokerCommand
 {

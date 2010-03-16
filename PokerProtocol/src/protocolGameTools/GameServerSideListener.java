@@ -1,7 +1,7 @@
 package protocolGameTools;
 
-import protocolGame.GamePlayMoneyCommand;
-import protocolTools.PokerCommandListener;
+import protocol.PokerCommandListener;
+import protocolGameCommands.GamePlayMoneyCommand;
 
 public interface GameServerSideListener extends PokerCommandListener
 {

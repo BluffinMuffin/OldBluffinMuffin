@@ -1,11 +1,11 @@
 package protocolLobbyTools;
 
-import protocolLobby.LobbyConnectCommand;
-import protocolLobby.LobbyCreateTableCommand;
-import protocolLobby.LobbyDisconnectCommand;
-import protocolLobby.LobbyJoinTableCommand;
-import protocolLobby.LobbyListTableCommand;
-import protocolTools.PokerCommandListener;
+import protocol.PokerCommandListener;
+import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocolLobbyCommands.LobbyDisconnectCommand;
+import protocolLobbyCommands.LobbyJoinTableCommand;
+import protocolLobbyCommands.LobbyListTableCommand;
 
 public interface LobbyServerSideListener extends PokerCommandListener
 {

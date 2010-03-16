@@ -1,11 +1,11 @@
-package protocolGame;
+package protocolGameCommands;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import pokerGameLogic.TypePokerGameRound;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 
 public class GameBetTurnStartedCommand implements IPokerCommand
 {

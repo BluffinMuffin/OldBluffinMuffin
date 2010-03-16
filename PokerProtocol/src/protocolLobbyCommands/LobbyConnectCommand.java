@@ -1,9 +1,9 @@
-package protocolLobby;
+package protocolLobbyCommands;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 
 public class LobbyConnectCommand implements IPokerCommand
 {

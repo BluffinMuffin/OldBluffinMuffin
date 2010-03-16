@@ -1,18 +1,18 @@
 package protocolGameTools;
 
-import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBetTurnStartedCommand;
-import protocolGame.GameEndedCommand;
-import protocolGame.GameHoleCardsChangedCommand;
-import protocolGame.GamePlayerJoinedCommand;
-import protocolGame.GamePlayerLeftCommand;
-import protocolGame.GamePlayerMoneyChangedCommand;
-import protocolGame.GamePlayerTurnBeganCommand;
-import protocolGame.GamePlayerTurnEndedCommand;
-import protocolGame.GamePlayerWonPotCommand;
-import protocolGame.GameStartedCommand;
-import protocolGame.GameTableClosedCommand;
-import protocolGame.GameTableInfoCommand;
+import protocolGameCommands.GameBetTurnEndedCommand;
+import protocolGameCommands.GameBetTurnStartedCommand;
+import protocolGameCommands.GameEndedCommand;
+import protocolGameCommands.GameHoleCardsChangedCommand;
+import protocolGameCommands.GamePlayerJoinedCommand;
+import protocolGameCommands.GamePlayerLeftCommand;
+import protocolGameCommands.GamePlayerMoneyChangedCommand;
+import protocolGameCommands.GamePlayerTurnBeganCommand;
+import protocolGameCommands.GamePlayerTurnEndedCommand;
+import protocolGameCommands.GamePlayerWonPotCommand;
+import protocolGameCommands.GameStartedCommand;
+import protocolGameCommands.GameTableClosedCommand;
+import protocolGameCommands.GameTableInfoCommand;
 
 public class GameClientSideAdapter implements GameClientSideListener
 {

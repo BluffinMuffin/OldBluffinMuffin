@@ -2,9 +2,9 @@ package protocolGameTools;
 
 import java.util.StringTokenizer;
 
-import protocolGame.GamePlayMoneyCommand;
-import protocolTools.PokerCommand;
-import protocolTools.PokerCommandObserver;
+import protocol.PokerCommand;
+import protocol.PokerCommandObserver;
+import protocolGameCommands.GamePlayMoneyCommand;
 
 public class GameServerSideObserver extends PokerCommandObserver<GameServerSideListener> implements GameServerSideListener
 {

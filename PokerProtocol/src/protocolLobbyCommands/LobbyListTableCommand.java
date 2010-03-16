@@ -1,12 +1,12 @@
-package protocolLobby;
+package protocolLobbyCommands;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.StringTokenizer;
 
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 import protocolLobbyTools.SummaryTableInfo;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
 
 public class LobbyListTableCommand implements IPokerCommand
 {

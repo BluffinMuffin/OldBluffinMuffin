@@ -2,8 +2,8 @@ package protocolLobbyTools;
 
 import java.util.StringTokenizer;
 
-import protocolTools.PokerCommand;
-import protocolTools.PokerCommandObserver;
+import protocol.PokerCommand;
+import protocol.PokerCommandObserver;
 
 public class LobbyClientSideObserver extends PokerCommandObserver<LobbyClientSideListener>
 {

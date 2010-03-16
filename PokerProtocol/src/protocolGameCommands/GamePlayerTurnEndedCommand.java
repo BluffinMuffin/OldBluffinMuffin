@@ -1,10 +1,10 @@
-package protocolGame;
+package protocolGameCommands;
 
 import java.util.StringTokenizer;
 
 import pokerGameLogic.TypePokerGameAction;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 
 public class GamePlayerTurnEndedCommand implements IPokerCommand
 {

@@ -17,23 +17,23 @@ import pokerGameLogic.TypePokerGameAction;
 import pokerGameLogic.TypePokerGameRound;
 import pokerGameTools.PokerGameAdapter;
 import pokerGameTools.PokerGameObserver;
-import protocolGame.GameBetTurnEndedCommand;
-import protocolGame.GameBetTurnStartedCommand;
-import protocolGame.GameEndedCommand;
-import protocolGame.GameHoleCardsChangedCommand;
-import protocolGame.GamePlayMoneyCommand;
-import protocolGame.GamePlayerJoinedCommand;
-import protocolGame.GamePlayerLeftCommand;
-import protocolGame.GamePlayerMoneyChangedCommand;
-import protocolGame.GamePlayerTurnBeganCommand;
-import protocolGame.GamePlayerTurnEndedCommand;
-import protocolGame.GamePlayerWonPotCommand;
-import protocolGame.GameStartedCommand;
-import protocolGame.GameTableClosedCommand;
-import protocolGame.GameTableInfoCommand;
+import protocol.IPokerCommand;
+import protocolGameCommands.GameBetTurnEndedCommand;
+import protocolGameCommands.GameBetTurnStartedCommand;
+import protocolGameCommands.GameEndedCommand;
+import protocolGameCommands.GameHoleCardsChangedCommand;
+import protocolGameCommands.GamePlayMoneyCommand;
+import protocolGameCommands.GamePlayerJoinedCommand;
+import protocolGameCommands.GamePlayerLeftCommand;
+import protocolGameCommands.GamePlayerMoneyChangedCommand;
+import protocolGameCommands.GamePlayerTurnBeganCommand;
+import protocolGameCommands.GamePlayerTurnEndedCommand;
+import protocolGameCommands.GamePlayerWonPotCommand;
+import protocolGameCommands.GameStartedCommand;
+import protocolGameCommands.GameTableClosedCommand;
+import protocolGameCommands.GameTableInfoCommand;
 import protocolGameTools.GameServerSideAdapter;
 import protocolGameTools.GameServerSideObserver;
-import protocolTools.IPokerCommand;
 
 public class ServerSidePokerTcpClient implements Runnable
 {

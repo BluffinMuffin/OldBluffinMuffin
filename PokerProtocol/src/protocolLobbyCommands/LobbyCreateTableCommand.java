@@ -1,10 +1,10 @@
-package protocolLobby;
+package protocolLobbyCommands;
 
 import java.util.StringTokenizer;
 
 import pokerGameLogic.TypePokerGameLimit;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
 
 public class LobbyCreateTableCommand implements IPokerCommand
 {

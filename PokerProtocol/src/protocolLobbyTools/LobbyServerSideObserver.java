@@ -2,13 +2,13 @@ package protocolLobbyTools;
 
 import java.util.StringTokenizer;
 
-import protocolLobby.LobbyConnectCommand;
-import protocolLobby.LobbyCreateTableCommand;
-import protocolLobby.LobbyDisconnectCommand;
-import protocolLobby.LobbyJoinTableCommand;
-import protocolLobby.LobbyListTableCommand;
-import protocolTools.PokerCommand;
-import protocolTools.PokerCommandObserver;
+import protocol.PokerCommand;
+import protocol.PokerCommandObserver;
+import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocolLobbyCommands.LobbyDisconnectCommand;
+import protocolLobbyCommands.LobbyJoinTableCommand;
+import protocolLobbyCommands.LobbyListTableCommand;
 
 public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSideListener>
 {

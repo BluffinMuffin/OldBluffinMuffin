@@ -1,8 +1,8 @@
-package protocolGame;
+package protocolGameCommands;
 
 import java.util.StringTokenizer;
 
-import protocolTools.IPokerCommand;
+import protocol.IPokerCommand;
 
 public class GameEndedCommand implements IPokerCommand
 {

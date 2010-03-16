@@ -1,6 +1,6 @@
 package protocolLobbyTools;
 
-import protocolTools.PokerCommandListener;
+import protocol.PokerCommandListener;
 
 public interface LobbyClientSideListener extends PokerCommandListener
 {
