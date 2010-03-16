@@ -177,7 +177,7 @@ public class LobbyMainJFrame extends JFrame
         form.setVisible(true);
         if (form.isOK())
         {
-            final int noPort = createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer());
+            final int noPort = createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer(), form.getWaitingTimeAfterPlayerAction(), form.getWaitingTimeAfterBoardDealed(), form.getWaitingTimeAfterPotWon());
             
             if (noPort != -1)
             {
@@ -622,10 +622,10 @@ public class LobbyMainJFrame extends JFrame
      *         <b>false</b> if no seat is free, someone with the same name
      *         has already joined this table, or the table does not exist.
      */
-    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers)
+    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
         // Send query.
-        send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName));
+        send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon));
         // Wait for response.
         final StringTokenizer token = new StringTokenizer(receive(), Constants.DELIMITER);
         

@@ -4,13 +4,15 @@ import java.util.List;
 
 import pokerGameTools.PokerGameObserver;
 
-
 public class PokerGame implements IPokerGame
 {
     private final PokerGameObserver m_gameObserver;
     private final PokerTableInfo m_pokerTable;
     private TypePokerGameState m_currentGameState;
     private TypePokerGameRoundState m_currentGameRoundState;
+    private final int m_WaitingTimeAfterPlayerAction;
+    private final int m_WaitingTimeAfterBoardDealed;
+    private final int m_WaitingTimeAfterPotWon;
     
     private final AbstractPokerDealer m_pokerDealer;
     
@@ -19,22 +21,25 @@ public class PokerGame implements IPokerGame
         this(new RandomPokerDealer());
     }
     
-    public PokerGame(PokerTableInfo info)
+    public PokerGame(PokerTableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
-        this(new RandomPokerDealer(), info);
+        this(new RandomPokerDealer(), info, wtaPlayerAction, wtaBoardDealed, wtaPotWon);
     }
     
     public PokerGame(AbstractPokerDealer dealer)
     {
-        this(new RandomPokerDealer(), new PokerTableInfo());
+        this(new RandomPokerDealer(), new PokerTableInfo(), 0, 0, 0);
     }
     
-    public PokerGame(AbstractPokerDealer dealer, PokerTableInfo info)
+    public PokerGame(AbstractPokerDealer dealer, PokerTableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
         m_pokerDealer = dealer;
         m_gameObserver = new PokerGameObserver();
         m_pokerTable = info;
         m_currentGameState = TypePokerGameState.INIT;
+        m_WaitingTimeAfterPlayerAction = wtaPlayerAction;
+        m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
+        m_WaitingTimeAfterPotWon = wtaPotWon;
     }
     
     public void start()
@@ -377,6 +382,7 @@ public class PokerGame implements IPokerGame
     {
         m_gameObserver.gameBettingRoundStarted();
         m_pokerTable.setNbPlayed(0);
+        waitALittle(m_WaitingTimeAfterBoardDealed);
         continueBettingRound();
     }
     
@@ -473,6 +479,7 @@ public class PokerGame implements IPokerGame
     
     private void continueBettingRound()
     {
+        waitALittle(m_WaitingTimeAfterPlayerAction);
         if (m_pokerTable.getNbPlaying() == 1 || m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
         {
             endBettingRound();
@@ -480,6 +487,18 @@ public class PokerGame implements IPokerGame
         else
         {
             playNext();
+        }
+    }
+    
+    private void waitALittle(int waitingTime)
+    {
+        try
+        {
+            Thread.sleep(waitingTime);
+        }
+        catch (final InterruptedException e)
+        {
+            e.printStackTrace();
         }
     }
     
@@ -508,6 +527,8 @@ public class PokerGame implements IPokerGame
                     p.incCurrentSafeMoneyAmount(wonAmount);
                     m_gameObserver.playerMoneyChanged(p);
                     m_gameObserver.playerWonPot(p, pot, wonAmount);
+                    
+                    waitALittle(m_WaitingTimeAfterPotWon);
                 }
             }
             else

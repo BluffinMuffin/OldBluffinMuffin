@@ -28,6 +28,9 @@ public class LobbyAddTableJDialog extends JDialog
     private String m_tableName;
     private int m_bigBlind;
     private int m_nbPlayer;
+    private int m_WaitingTimeAfterPlayerAction;
+    private int m_WaitingTimeAfterBoardDealed;
+    private int m_WaitingTimeAfterPotWon;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -40,6 +43,15 @@ public class LobbyAddTableJDialog extends JDialog
     private JLabel jNbPlayersLabel = null;
     private JSlider jNbPlayersSlider = null;
     private JButton jAddButton = null;
+    
+    private JLabel jWTAPlayerActionLabel = null;
+    private JSpinner jWTAPlayerActionSpinner = null;
+    
+    private JLabel jWTABoardDealedLabel = null;
+    private JSpinner jWTABoardDealedSpinner = null;
+    
+    private JLabel jWTAPotWonLabel = null;
+    private JSpinner jWTAPotWonSpinner = null;
     
     /**
      * @param owner
@@ -64,7 +76,7 @@ public class LobbyAddTableJDialog extends JDialog
      */
     private void initialize()
     {
-        this.setSize(244, 301);
+        this.setSize(254, 436);
         this.setModal(true);
         this.setTitle("Add Table");
         this.setContentPane(getJContentPane());
@@ -96,6 +108,15 @@ public class LobbyAddTableJDialog extends JDialog
     {
         if (jContentPane == null)
         {
+            jWTAPotWonLabel = new JLabel();
+            jWTAPotWonLabel.setBounds(new Rectangle(10, 305, 210, 16));
+            jWTAPotWonLabel.setText("Waiting time after pot won: (ms)");
+            jWTABoardDealedLabel = new JLabel();
+            jWTABoardDealedLabel.setBounds(new Rectangle(10, 260, 227, 16));
+            jWTABoardDealedLabel.setText("Waiting time after board dealed: (ms)");
+            jWTAPlayerActionLabel = new JLabel();
+            jWTAPlayerActionLabel.setBounds(new Rectangle(10, 215, 227, 16));
+            jWTAPlayerActionLabel.setText("Waiting time after player action: (ms)");
             jNbPlayersLabel = new JLabel();
             jNbPlayersLabel.setBounds(new Rectangle(10, 145, 100, 16));
             jNbPlayersLabel.setText("Nb of players:");
@@ -110,7 +131,7 @@ public class LobbyAddTableJDialog extends JDialog
             jTableNameLabel.setText("Table Name:");
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
-            jContentPane.setPreferredSize(new Dimension(224, 261));
+            jContentPane.setPreferredSize(new Dimension(244, 396));
             jContentPane.add(jTableNameLabel, null);
             jContentPane.add(getJTableNameTextField(), null);
             jContentPane.add(jGameTypeLabel, null);
@@ -120,6 +141,12 @@ public class LobbyAddTableJDialog extends JDialog
             jContentPane.add(jNbPlayersLabel, null);
             jContentPane.add(getJNbPlayersSlider(), null);
             jContentPane.add(getJAddButton(), null);
+            jContentPane.add(jWTAPlayerActionLabel, null);
+            jContentPane.add(jWTABoardDealedLabel, null);
+            jContentPane.add(jWTAPotWonLabel, null);
+            jContentPane.add(getJWTAPlayerActionSpinner(), null);
+            jContentPane.add(getJWTABoardDealedSpinner(), null);
+            jContentPane.add(getJWTAPotWonSpinner(), null);
         }
         return jContentPane;
     }
@@ -173,6 +200,42 @@ public class LobbyAddTableJDialog extends JDialog
         return jBigBlindSpinner;
     }
     
+    private JSpinner getJWTAPlayerActionSpinner()
+    {
+        if (jWTAPlayerActionSpinner == null)
+        {
+            jWTAPlayerActionSpinner = new JSpinner();
+            jWTAPlayerActionSpinner.setModel(new SpinnerNumberModel(0, 0, 60000, 500));
+            jWTAPlayerActionSpinner.setBounds(new Rectangle(10, 235, 75, 20));
+            jWTAPlayerActionSpinner.setEditor(new JSpinner.NumberEditor(jWTAPlayerActionSpinner, "#"));
+        }
+        return jWTAPlayerActionSpinner;
+    }
+    
+    private JSpinner getJWTABoardDealedSpinner()
+    {
+        if (jWTABoardDealedSpinner == null)
+        {
+            jWTABoardDealedSpinner = new JSpinner();
+            jWTABoardDealedSpinner.setModel(new SpinnerNumberModel(0, 0, 60000, 500));
+            jWTABoardDealedSpinner.setBounds(new Rectangle(10, 280, 75, 20));
+            jWTABoardDealedSpinner.setEditor(new JSpinner.NumberEditor(jWTABoardDealedSpinner, "#"));
+        }
+        return jWTABoardDealedSpinner;
+    }
+    
+    private JSpinner getJWTAPotWonSpinner()
+    {
+        if (jWTAPotWonSpinner == null)
+        {
+            jWTAPotWonSpinner = new JSpinner();
+            jWTAPotWonSpinner.setModel(new SpinnerNumberModel(0, 0, 60000, 500));
+            jWTAPotWonSpinner.setBounds(new Rectangle(10, 325, 75, 20));
+            jWTAPotWonSpinner.setEditor(new JSpinner.NumberEditor(jWTAPotWonSpinner, "#"));
+        }
+        return jWTAPotWonSpinner;
+    }
+    
     /**
      * This method initializes jNbPlayersSlider
      * 
@@ -205,7 +268,7 @@ public class LobbyAddTableJDialog extends JDialog
         if (jAddButton == null)
         {
             jAddButton = new JButton();
-            jAddButton.setBounds(new Rectangle(79, 224, 56, 26));
+            jAddButton.setBounds(new Rectangle(79, 359, 56, 26));
             jAddButton.setText("Add");
             jAddButton.addActionListener(new java.awt.event.ActionListener()
             {
@@ -214,6 +277,9 @@ public class LobbyAddTableJDialog extends JDialog
                     m_tableName = getJTableNameTextField().getText();
                     m_bigBlind = (Integer) getJBigBlindSpinner().getValue();
                     m_nbPlayer = getJNbPlayersSlider().getValue();
+                    m_WaitingTimeAfterPlayerAction = (Integer) getJWTAPlayerActionSpinner().getValue();
+                    m_WaitingTimeAfterBoardDealed = (Integer) getJWTABoardDealedSpinner().getValue();
+                    m_WaitingTimeAfterPotWon = (Integer) getJWTAPotWonSpinner().getValue();
                     m_OK = true;
                     setVisible(false);
                 }
@@ -240,5 +306,20 @@ public class LobbyAddTableJDialog extends JDialog
     public int getNbPlayer()
     {
         return m_nbPlayer;
+    }
+    
+    public int getWaitingTimeAfterPlayerAction()
+    {
+        return m_WaitingTimeAfterPlayerAction;
+    }
+    
+    public int getWaitingTimeAfterBoardDealed()
+    {
+        return m_WaitingTimeAfterBoardDealed;
+    }
+    
+    public int getWaitingTimeAfterPotWon()
+    {
+        return m_WaitingTimeAfterPotWon;
     }
 } // @jve:decl-index=0:visual-constraint="10,10"
