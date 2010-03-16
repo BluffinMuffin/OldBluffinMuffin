@@ -1,4 +1,4 @@
-package protocolLobbyTools;
+package protocolLobby;
 
 public abstract class LobbyClientSideAdapter implements LobbyClientSideListener
 {

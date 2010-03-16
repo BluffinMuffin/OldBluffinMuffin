@@ -15,6 +15,9 @@ import pokerGameLogic.PokerTableInfo;
 import pokerGameLogic.TypePokerGameAction;
 import pokerGameTools.PokerGameObserver;
 import protocol.IPokerCommand;
+import protocolGame.GameClientSideAdapter;
+import protocolGame.GameClientSideObserver;
+import protocolGame.SummarySeatInfo;
 import protocolGameCommands.GameBetTurnEndedCommand;
 import protocolGameCommands.GameBetTurnStartedCommand;
 import protocolGameCommands.GameDisconnectCommand;
@@ -30,9 +33,6 @@ import protocolGameCommands.GamePlayerWonPotCommand;
 import protocolGameCommands.GameStartedCommand;
 import protocolGameCommands.GameTableClosedCommand;
 import protocolGameCommands.GameTableInfoCommand;
-import protocolGameTools.GameClientSideAdapter;
-import protocolGameTools.GameClientSideObserver;
-import protocolGameTools.SummarySeatInfo;
 
 public class ClientSidePokerTcpServer implements IPokerGame
 {

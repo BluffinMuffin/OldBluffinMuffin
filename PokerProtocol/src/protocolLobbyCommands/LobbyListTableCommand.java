@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
-import protocolLobbyTools.SummaryTableInfo;
+import protocolLobby.SummaryTableInfo;
 
 public class LobbyListTableCommand implements IPokerCommand
 {

@@ -18,6 +18,8 @@ import pokerGameLogic.TypePokerGameRound;
 import pokerGameTools.PokerGameAdapter;
 import pokerGameTools.PokerGameObserver;
 import protocol.IPokerCommand;
+import protocolGame.GameServerSideAdapter;
+import protocolGame.GameServerSideObserver;
 import protocolGameCommands.GameBetTurnEndedCommand;
 import protocolGameCommands.GameBetTurnStartedCommand;
 import protocolGameCommands.GameEndedCommand;
@@ -32,8 +34,6 @@ import protocolGameCommands.GamePlayerWonPotCommand;
 import protocolGameCommands.GameStartedCommand;
 import protocolGameCommands.GameTableClosedCommand;
 import protocolGameCommands.GameTableInfoCommand;
-import protocolGameTools.GameServerSideAdapter;
-import protocolGameTools.GameServerSideObserver;
 
 public class ServerSidePokerTcpClient implements Runnable
 {

@@ -1,4 +1,4 @@
-package protocolLobbyTools;
+package protocolLobby;
 
 import protocolLobbyCommands.LobbyConnectCommand;
 import protocolLobbyCommands.LobbyCreateTableCommand;

@@ -1,4 +1,4 @@
-package protocolGameTools;
+package protocolGame;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

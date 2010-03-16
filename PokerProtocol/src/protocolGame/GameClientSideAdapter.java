@@ -1,4 +1,4 @@
-package protocolGameTools;
+package protocolGame;
 
 import protocolGameCommands.GameBetTurnEndedCommand;
 import protocolGameCommands.GameBetTurnStartedCommand;

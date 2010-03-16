@@ -11,7 +11,7 @@ import pokerGameLogic.PokerTableInfo;
 import pokerGameLogic.TypePokerGameLimit;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
-import protocolGameTools.SummarySeatInfo;
+import protocolGame.SummarySeatInfo;
 
 public class GameTableInfoCommand implements IPokerCommand
 {

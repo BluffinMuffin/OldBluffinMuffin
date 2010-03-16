@@ -1,4 +1,4 @@
-package protocolGameTools;
+package protocolGame;
 
 import protocol.PokerCommandListener;
 import protocolGameCommands.GameBetTurnEndedCommand;

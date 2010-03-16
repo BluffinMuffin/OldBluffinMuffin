@@ -1,4 +1,4 @@
-package protocolGameTools;
+package protocolGame;
 
 import protocolGameCommands.GamePlayMoneyCommand;
 
