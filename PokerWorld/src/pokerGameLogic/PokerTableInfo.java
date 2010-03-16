@@ -440,6 +440,7 @@ public class PokerTableInfo
     
     public void managePotsRoundEnd()
     {
+        // TODO: RICK: De l'argent disparait parfois lors de la distribution des POT !!!
         System.out.println("# managePotsRoundEnd ... nb caps: " + m_allInCaps.size());
         int currentTaken = 0;
         while (m_allInCaps.size() > 0)

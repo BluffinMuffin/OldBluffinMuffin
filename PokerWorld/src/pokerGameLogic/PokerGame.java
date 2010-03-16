@@ -479,6 +479,7 @@ public class PokerGame implements IPokerGame
     
     private void continueBettingRound()
     {
+        // TODO: RICK: Semble que 2/2 all-in du meme montant au preflop chie: continue a jouer
         waitALittle(m_WaitingTimeAfterPlayerAction);
         if (m_pokerTable.getNbPlaying() == 1 || m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
         {
