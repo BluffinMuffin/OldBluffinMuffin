@@ -2,6 +2,8 @@ package protocolLobbyTools;
 
 import java.util.StringTokenizer;
 
+import pokerGameLogic.TypePokerGameLimit;
+
 /**
  * @author Hocus
  *         This class represents a network table.
@@ -13,6 +15,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
     public int m_bigBlind;
     public int m_nbPlayers;
     public int m_nbSeats;
+    public TypePokerGameLimit m_limit;
     
     /**
      * Create a new table
@@ -30,13 +33,14 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
      * @param p_nbSeats
      *            Number of seat
      */
-    public SummaryTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats)
+    public SummaryTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypePokerGameLimit limit)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
         m_bigBlind = p_bigBlind;
         m_nbPlayers = p_nbPlayers;
         m_nbSeats = p_nbSeats;
+        m_limit = limit;
     }
     
     public SummaryTableInfo(StringTokenizer argsToken)
@@ -46,6 +50,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());
+        m_limit = TypePokerGameLimit.valueOf(argsToken.nextToken());
     }
     
     public int compareTo(SummaryTableInfo p_table)
@@ -75,6 +80,8 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
         sb.append(m_nbPlayers);
         sb.append(p_delimiter);
         sb.append(m_nbSeats);
+        sb.append(p_delimiter);
+        sb.append(m_limit.name());
         sb.append(p_delimiter);
         
         return sb.toString();

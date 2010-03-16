@@ -329,7 +329,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             public void tableInfoCommandReceived(GameTableInfoCommand command)
             {
                 m_pokerTable.setTotalPotAmount(command.getTotalPotAmount());
-                
+                m_pokerTable.setBetLimit(command.getLimit());
                 final List<Integer> amounts = command.getPotsAmount();
                 m_pokerTable.getPots().clear();
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)

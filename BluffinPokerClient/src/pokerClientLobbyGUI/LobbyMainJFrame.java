@@ -28,7 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import pokerGameGUI.GameTableJFrame;
-import pokerGameLogic.TypePokerGameLimits;
+import pokerGameLogic.TypePokerGameLimit;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
 import protocolComm.ClientSidePokerTcpServer;
@@ -37,6 +37,7 @@ import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;
 import protocolLobby.LobbyJoinTableCommand;
 import protocolLobby.LobbyListTableCommand;
+import protocolLobbyTools.SummaryTableInfo;
 import protocolTools.IPokerCommand;
 import protocolTools.PokerCommand;
 
@@ -510,18 +511,13 @@ public class LobbyMainJFrame extends JFrame
         // Parse results.
         while (token.hasMoreTokens())
         {
-            final Integer noPort = Integer.parseInt(token.nextToken());
-            final String tableName = token.nextToken();
-            final int bigBlind = Integer.parseInt(token.nextToken());
-            final int nbPlayers = Integer.parseInt(token.nextToken());
-            final int nbSeats = Integer.parseInt(token.nextToken());
-            
+            final SummaryTableInfo info = new SummaryTableInfo(token);
             final Object[] row = new Object[5];
-            row[0] = noPort;
-            row[1] = tableName;
-            row[2] = "";
-            row[3] = bigBlind;
-            row[4] = nbPlayers + "/" + nbSeats;
+            row[0] = info.m_noPort;
+            row[1] = info.m_tableName;
+            row[2] = info.m_limit.name();
+            row[3] = info.m_bigBlind;
+            row[4] = info.m_nbPlayers + "/" + info.m_nbSeats;
             // Add the table infos to the JTable of available tables.
             model.addRow(row);
         }
@@ -623,7 +619,7 @@ public class LobbyMainJFrame extends JFrame
      *         <b>false</b> if no seat is free, someone with the same name
      *         has already joined this table, or the table does not exist.
      */
-    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimits limit)
+    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimit limit)
     {
         // Send query.
         send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));

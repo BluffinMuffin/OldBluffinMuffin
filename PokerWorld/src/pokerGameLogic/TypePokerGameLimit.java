@@ -1,6 +1,6 @@
 package pokerGameLogic;
 
-public enum TypePokerGameLimits
+public enum TypePokerGameLimit
 {
     NO_LIMIT
 }

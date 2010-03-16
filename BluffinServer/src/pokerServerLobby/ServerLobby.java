@@ -153,7 +153,7 @@ public class ServerLobby extends Thread
             {
                 final PokerTableInfo table = game.getPokerTable();
                 // TODO: RICK: Gestion TypePokerGame
-                tables.add(new SummaryTableInfo(noPort, table.getTableName(), table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats()));
+                tables.add(new SummaryTableInfo(noPort, table.getTableName(), table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
             }
             else
             {

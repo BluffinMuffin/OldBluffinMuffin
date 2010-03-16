@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import pokerGameLogic.PokerMoneyPot;
 import pokerGameLogic.PokerPlayerInfo;
 import pokerGameLogic.PokerTableInfo;
+import pokerGameLogic.TypePokerGameLimit;
 import protocolGameTools.SummarySeatInfo;
 import protocolTools.IPokerCommand;
 import protocolTools.PokerCommand;
@@ -20,6 +21,7 @@ public class GameTableInfoCommand implements IPokerCommand
     private final ArrayList<Integer> m_boardCardIDs;
     private final int m_nbPlayers;
     private final ArrayList<SummarySeatInfo> m_seats;
+    private final TypePokerGameLimit m_limit;
     
     public static String COMMAND_NAME = "gameTABLE_INFO";
     
@@ -44,9 +46,10 @@ public class GameTableInfoCommand implements IPokerCommand
         {
             m_seats.add(new SummarySeatInfo(argsToken));
         }
+        m_limit = TypePokerGameLimit.valueOf(argsToken.nextToken());
     }
     
-    public GameTableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<SummarySeatInfo> seats)
+    public GameTableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<SummarySeatInfo> seats, TypePokerGameLimit limit)
     {
         m_totalPotAmount = totalPotAmount;
         m_nbSeats = nbSeats;
@@ -54,6 +57,7 @@ public class GameTableInfoCommand implements IPokerCommand
         m_boardCardIDs = boardCardIDs;
         m_nbPlayers = nbPlayers;
         m_seats = seats;
+        m_limit = limit;
     }
     
     public GameTableInfoCommand(PokerTableInfo info, PokerPlayerInfo pPlayer)
@@ -121,6 +125,7 @@ public class GameTableInfoCommand implements IPokerCommand
             seat.m_bet = player.getCurrentBetMoneyAmount(); // betAmount
             seat.m_isPlaying = player.isPlaying();
         }
+        m_limit = info.getBetLimit();
     }
     
     @Override
@@ -149,6 +154,8 @@ public class GameTableInfoCommand implements IPokerCommand
         {
             sb.append(m_seats.get(i).toString(PokerCommand.DELIMITER));
         }
+        sb.append(m_limit.name());
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     
@@ -180,5 +187,10 @@ public class GameTableInfoCommand implements IPokerCommand
     public ArrayList<SummarySeatInfo> getSeats()
     {
         return m_seats;
+    }
+    
+    public TypePokerGameLimit getLimit()
+    {
+        return m_limit;
     }
 }
