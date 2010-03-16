@@ -1,10 +1,17 @@
-create type BettingRoundType as ENUM ('Blind', 'Pre-Flop', 'Pre-Turn', 'Pre-River', 'Pre-Showdown');
+create type BettingRoundType as ENUM ('PreFlop', 'Flop', 'Turn', 'River');
+create type ActionType as ENUM ('Fold', 'Check', 'Call', 'Raise');
 
 -- TODO: Add more types
-create type BetType as ENUM ('No limit');
+create type BetType as ENUM ('NoLimit', 'PotLimit', 'CapNoLimit', 'FixedLimit');
 
 -- TODO: Add more types
-create type GameType as ENUM ('Sit and Go');
+create type GameType as ENUM ('Ring', 'Tournament');
+
+create type TournamentType as ENUM ('Sit and Go', 'Single Table', 'MultiTable', 'Deep Stacks');
+
+create type ForcedBetType as ENUM ('SmallBlind', 'BigBlind', 'Post', 'Ante');
+
+create type PokerType as ENUM ('Holdem', 'OmahaHI', 'OmahaNL');
 
 create type WinType as ENUM ('High Card', 'Pair', 'Two Pair', 'Three of a Kind', 'Straight', 'Flush', 'Full House', 'Four of a Kind', 'Straight Flush');
 
@@ -13,7 +20,7 @@ create type WinType as ENUM ('High Card', 'Pair', 'Two Pair', 'Three of a Kind',
 create table Player(
 	idPlayer SERIAL PRIMARY KEY,
 	playerName VARCHAR(100) NOT NULL,
-	idDomain INTEGER REFERENCES DOMAIN(idDomain)
+	idDomain INTEGER
 );
 
 -- drop table Domain
@@ -32,29 +39,28 @@ insert into Domain (domainName, domainURL) values ('HOCUS', null);
 -- drop table GameSet
 create table GameSet(
 	idGameSet SERIAL PRIMARY KEY,
-	nbPlayers INTEGER NOT NULL,
+	nbPlayers INTEGER,
 	BBValue NUMERIC,
 	SBValue NUMERIC,
 	betType BetType,
 	gameType GameType,
-	source VARCHAR(100) -- TODO: Determine the adequate length for the source path
+	pokerType PokerType,
+	tournamentType TournamentType,--null if not a tournament
+	source VARCHAR(300), -- TODO: Determine the adequate length for the source path
+	realMoney BOOLEAN DEFAULT false
 );
 
 -- drop table Game
 create table Game(
-	-- idGame SERIAL PRIMARY KEY, -- TODO: no need, do a ++seq ?
-	idGame INTEGER, 
+	idGame BIGSERIAL PRIMARY KEY,
 	idGameSet INTEGER references GameSet(idGameSet),
 	startTime TIMESTAMP, 
 	idDealer INTEGER references Player(idPlayer),
-	idSB INTEGER references Player(idPlayer),
-	idBB INTEGER references Player(idPlayer),
-	flop1 CHAR(2), -- TODO: Make a seperate table? No known advantages 1 ro 1 link
+	flop1 CHAR(2), -- TODO: Make a seperate table? Can get gameID before knowing all cards on table
 	flop2 CHAR(2),
 	flop3 CHAR(2),
 	turn CHAR(2),
-	river CHAR(2),
-	PRIMARY KEY (idGame, idGameSet)
+	river CHAR(2)
 );
 
 -- drop table DealtCards
@@ -74,11 +80,28 @@ create table BettingRound(
 	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
 	round BettingRoundType,
-	seq INTEGER, -- equence of events within a given betting round type
-	chipsLeft NUMERIC,
-	amoundRaised NUMERIC, -- TODO: Can i only raise in integers?
-	hasFolded BOOLEAN -- to avoid going into next round to see if a player has folded in this round
+	seq INTEGER, -- sequence of events within a given betting round type
+	action ACTIONTYPE,
+	amount NUMERIC
 	
+);
+
+create table ForcedBets(
+	idGame INTEGER references Game(idGame),
+	idGameSet INTEGER references GameSet(idGameSet),
+	idPlayer INTEGER references Player(idPlayer),
+	forcedBetType ForcedBetType,
+	seq INTEGER, -- TODO; needs to follow the betting round's sequence
+	amount NUMERIC
+);
+
+create table Seats(
+	idGame INTEGER references Game(idGame),
+	idGameSet INTEGER references GameSet(idGameSet),
+	idPlayer INTEGER references Player(idPlayer),
+	seatNo INTEGER,
+	sittingIn BOOLEAN,
+	chips NUMERIC
 );
 
 -- drop table Showdown
@@ -90,3 +113,4 @@ create table Showdown( -- Winner / Summary
 	winningHand WinType, -- TODO: Is the hand necessarily a winning one?
 	potAmountWon NUMERIC
 );
+
