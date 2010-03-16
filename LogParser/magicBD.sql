@@ -66,56 +66,49 @@ create table Game(
 -- drop table DealtCards
 -- Removes the necessity of a perspective and integrates the possibility for multiple perspectives for a given game
 create table DealtCards (
-	id BIGSERIAL PRIMARY KEY, 
 	idGame INTEGER references Game(idGame),
-	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
 	pocket1 CHAR(2),
-	pocket2 CHAR(2)
+	pocket2 CHAR(2),
+	PRIMARY KEY (idGame, idPlayer)
 );
 
 -- drop table BettingRound
 -- An amountRaised of 0$ results in either a call or a fold, hence the hasFolded flag
 create table BettingRound(
-	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
-	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
 	round BettingRoundType,
 	seq INTEGER, -- sequence of events within a given betting round type
 	action ACTIONTYPE,
-	amount NUMERIC
-	
+	amount NUMERIC,
+  PRIMARY KEY (idGame, idPlayer)
 );
 
 create table ForcedBets(
-	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
-	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
 	forcedBetType ForcedBetType,
 	seq INTEGER, -- TODO; needs to follow the betting round's sequence
-	amount NUMERIC
+	amount NUMERIC,
+  PRIMARY KEY (idGame, idPlayer)
 );
 
 create table Seats(
-	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
-	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
 	seatNo INTEGER,
 	sittingIn BOOLEAN,
-	chips NUMERIC
+	chips NUMERIC,
+  PRIMARY KEY (idGame, idPlayer)
 );
 
 -- drop table Showdown
 -- TODO: Find a better name
 create table Showdown( -- Winner / Summary
-	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
-	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
 	winningHand WinType, -- TODO: Is the hand necessarily a winning one?
-	potAmountWon NUMERIC
+	potAmountWon NUMERIC,
+  PRIMARY KEY (idGame, idPlayer)
 );
-
