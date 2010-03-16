@@ -66,6 +66,7 @@ create table Game(
 -- drop table DealtCards
 -- Removes the necessity of a perspective and integrates the possibility for multiple perspectives for a given game
 create table DealtCards (
+	id BIGSERIAL PRIMARY KEY, 
 	idGame INTEGER references Game(idGame),
 	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
@@ -76,6 +77,7 @@ create table DealtCards (
 -- drop table BettingRound
 -- An amountRaised of 0$ results in either a call or a fold, hence the hasFolded flag
 create table BettingRound(
+	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
 	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
@@ -87,6 +89,7 @@ create table BettingRound(
 );
 
 create table ForcedBets(
+	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
 	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
@@ -96,6 +99,7 @@ create table ForcedBets(
 );
 
 create table Seats(
+	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
 	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
@@ -107,6 +111,7 @@ create table Seats(
 -- drop table Showdown
 -- TODO: Find a better name
 create table Showdown( -- Winner / Summary
+	id BIGSERIAL PRIMARY KEY,
 	idGame INTEGER references Game(idGame),
 	idGameSet INTEGER references GameSet(idGameSet),
 	idPlayer INTEGER references Player(idPlayer),
