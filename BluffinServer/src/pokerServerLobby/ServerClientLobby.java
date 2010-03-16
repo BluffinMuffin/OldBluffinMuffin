@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-import protocolLobby.LobbyConnectCommand;
-import protocolLobby.LobbyCreateTableCommand;
-import protocolLobby.LobbyDisconnectCommand;
-import protocolLobby.LobbyListTableCommand;
-import protocolLobbyTools.LobbyServerSideAdapter;
-import protocolLobbyTools.LobbyServerSideObserver;
-import protocolTools.IPokerCommand;
+import protocol.IPokerCommand;
+import protocolLobby.LobbyServerSideAdapter;
+import protocolLobby.LobbyServerSideObserver;
+import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocolLobbyCommands.LobbyDisconnectCommand;
+import protocolLobbyCommands.LobbyListTableCommand;
 
 /**
  * This class represents a client for ServerLobby.

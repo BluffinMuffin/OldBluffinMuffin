@@ -31,15 +31,15 @@ import pokerGameGUI.GameTableJFrame;
 import pokerGameLogic.TypePokerGameLimit;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
-import protocolComm.ClientSidePokerTcpServer;
-import protocolLobby.LobbyConnectCommand;
-import protocolLobby.LobbyCreateTableCommand;
-import protocolLobby.LobbyDisconnectCommand;
-import protocolLobby.LobbyJoinTableCommand;
-import protocolLobby.LobbyListTableCommand;
-import protocolLobbyTools.SummaryTableInfo;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
+import protocolGame.ClientSidePokerTcpServer;
+import protocolLobby.SummaryTableInfo;
+import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocolLobbyCommands.LobbyDisconnectCommand;
+import protocolLobbyCommands.LobbyJoinTableCommand;
+import protocolLobbyCommands.LobbyListTableCommand;
 
 public class LobbyMainJFrame extends JFrame
 {

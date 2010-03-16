@@ -9,13 +9,13 @@ import java.util.StringTokenizer;
 
 import pokerGameLogic.PokerGame;
 import pokerGameLogic.PokerTableInfo;
-import protocolComm.ServerSidePokerTcpClient;
-import protocolLobby.LobbyConnectCommand;
-import protocolLobby.LobbyJoinTableCommand;
-import protocolLobbyTools.LobbyServerSideAdapter;
-import protocolLobbyTools.LobbyServerSideObserver;
-import protocolTools.IPokerCommand;
-import protocolTools.PokerCommand;
+import protocol.IPokerCommand;
+import protocol.PokerCommand;
+import protocolGame.ServerSidePokerTcpClient;
+import protocolLobby.LobbyServerSideAdapter;
+import protocolLobby.LobbyServerSideObserver;
+import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyJoinTableCommand;
 
 /**
  * @author Hocus

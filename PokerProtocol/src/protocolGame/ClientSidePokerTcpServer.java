@@ -1,4 +1,4 @@
-package protocolComm;
+package protocolGame;
 
 import gameLogic.GameCard;
 
@@ -15,9 +15,6 @@ import pokerGameLogic.PokerTableInfo;
 import pokerGameLogic.TypePokerGameAction;
 import pokerGameTools.PokerGameObserver;
 import protocol.IPokerCommand;
-import protocolGame.GameClientSideAdapter;
-import protocolGame.GameClientSideObserver;
-import protocolGame.SummarySeatInfo;
 import protocolGameCommands.GameBetTurnEndedCommand;
 import protocolGameCommands.GameBetTurnStartedCommand;
 import protocolGameCommands.GameDisconnectCommand;
