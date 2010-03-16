@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -20,6 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
+import pokerGameLogic.TypePokerGameLimits;
+
 public class LobbyAddTableJDialog extends JDialog
 {
     private final String m_playerName;
@@ -31,13 +34,14 @@ public class LobbyAddTableJDialog extends JDialog
     private int m_WaitingTimeAfterPlayerAction;
     private int m_WaitingTimeAfterBoardDealed;
     private int m_WaitingTimeAfterPotWon;
+    private TypePokerGameLimits m_Limit;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
     private JLabel jTableNameLabel = null;
     private JTextField jTableNameTextField = null;
-    private JLabel jGameTypeLabel = null;
-    private JComboBox jGameTypeComboBox = null;
+    private JLabel jGameLimitLabel = null;
+    private JComboBox jGameLimitComboBox = null;
     private JLabel jBigBlindLabel = null;
     private JSpinner jBigBlindSpinner = null;
     private JLabel jNbPlayersLabel = null;
@@ -123,9 +127,9 @@ public class LobbyAddTableJDialog extends JDialog
             jBigBlindLabel = new JLabel();
             jBigBlindLabel.setBounds(new Rectangle(10, 100, 100, 16));
             jBigBlindLabel.setText("Big Blind:");
-            jGameTypeLabel = new JLabel();
-            jGameTypeLabel.setBounds(new Rectangle(10, 55, 100, 16));
-            jGameTypeLabel.setText("Game Type:");
+            jGameLimitLabel = new JLabel();
+            jGameLimitLabel.setBounds(new Rectangle(10, 55, 100, 16));
+            jGameLimitLabel.setText("Game Limit:");
             jTableNameLabel = new JLabel();
             jTableNameLabel.setBounds(new Rectangle(10, 10, 100, 16));
             jTableNameLabel.setText("Table Name:");
@@ -134,8 +138,8 @@ public class LobbyAddTableJDialog extends JDialog
             jContentPane.setPreferredSize(new Dimension(244, 396));
             jContentPane.add(jTableNameLabel, null);
             jContentPane.add(getJTableNameTextField(), null);
-            jContentPane.add(jGameTypeLabel, null);
-            jContentPane.add(getJGameTypeComboBox(), null);
+            jContentPane.add(jGameLimitLabel, null);
+            jContentPane.add(getJGameLimitComboBox(), null);
             jContentPane.add(jBigBlindLabel, null);
             jContentPane.add(getJBigBlindSpinner(), null);
             jContentPane.add(jNbPlayersLabel, null);
@@ -172,15 +176,16 @@ public class LobbyAddTableJDialog extends JDialog
      * 
      * @return javax.swing.JComboBox
      */
-    private JComboBox getJGameTypeComboBox()
+    private JComboBox getJGameLimitComboBox()
     {
-        if (jGameTypeComboBox == null)
+        if (jGameLimitComboBox == null)
         {
-            jGameTypeComboBox = new JComboBox();
-            jGameTypeComboBox.setBounds(new Rectangle(10, 75, 200, 20));
-            jGameTypeComboBox.setEnabled(false);
+            jGameLimitComboBox = new JComboBox();
+            jGameLimitComboBox.setBounds(new Rectangle(10, 75, 200, 20));
+            jGameLimitComboBox.setModel(new DefaultComboBoxModel(TypePokerGameLimits.values()));
+            jGameLimitComboBox.setSelectedItem(TypePokerGameLimits.NO_LIMIT);
         }
-        return jGameTypeComboBox;
+        return jGameLimitComboBox;
     }
     
     /**
@@ -280,6 +285,7 @@ public class LobbyAddTableJDialog extends JDialog
                     m_WaitingTimeAfterPlayerAction = (Integer) getJWTAPlayerActionSpinner().getValue();
                     m_WaitingTimeAfterBoardDealed = (Integer) getJWTABoardDealedSpinner().getValue();
                     m_WaitingTimeAfterPotWon = (Integer) getJWTAPotWonSpinner().getValue();
+                    m_Limit = (TypePokerGameLimits) getJGameLimitComboBox().getSelectedItem();
                     m_OK = true;
                     setVisible(false);
                 }
@@ -321,5 +327,10 @@ public class LobbyAddTableJDialog extends JDialog
     public int getWaitingTimeAfterPotWon()
     {
         return m_WaitingTimeAfterPotWon;
+    }
+    
+    public TypePokerGameLimits getLimit()
+    {
+        return m_Limit;
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

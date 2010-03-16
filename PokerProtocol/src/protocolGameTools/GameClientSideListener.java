@@ -1,6 +1,5 @@
 package protocolGameTools;
 
-import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
@@ -18,7 +17,6 @@ import protocolTools.PokerCommandListener;
 
 public interface GameClientSideListener extends PokerCommandListener
 {
-    void askActionCommandReceived(GameAskActionCommand command);
     
     void betTurnEndedCommandReceived(GameBetTurnEndedCommand command);
     

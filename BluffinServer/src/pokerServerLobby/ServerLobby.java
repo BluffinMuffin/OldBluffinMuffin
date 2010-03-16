@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import pokerGameLogic.PokerGame;
 import pokerGameLogic.PokerTableInfo;
+import pokerGameLogic.TypePokerGameLimits;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobbyTools.SummaryTableInfo;
 
@@ -113,8 +114,8 @@ public class ServerLobby extends Thread
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            // TODO: RICK: Gestion TypePokerGame
-            final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+            // TODO: RICK: Gestion TypePokerGameLimit
+            final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), TypePokerGameLimits.NO_LIMIT), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
             game.start();
             // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
             final ServerTableManager manager = new ServerTableManager(game, noPort);

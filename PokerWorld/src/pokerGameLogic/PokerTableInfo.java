@@ -42,6 +42,7 @@ public class PokerTableInfo
     private int m_currentHigherBet;
     
     private TypePokerGameRound m_currentGameRound;
+    private final TypePokerGameLimits m_betLimit;
     
     public PokerTableInfo()
     {
@@ -50,10 +51,10 @@ public class PokerTableInfo
     
     public PokerTableInfo(int nbSeats)
     {
-        this("Anonymous Table", 10, nbSeats);
+        this("Anonymous Table", 10, nbSeats, TypePokerGameLimits.NO_LIMIT);
     }
     
-    public PokerTableInfo(String pName, int pBigBlind, int nbSeats)
+    public PokerTableInfo(String pName, int pBigBlind, int nbSeats, TypePokerGameLimits limit)
     {
         m_nbMaxSeats = nbSeats;
         m_nbUsedSeats = 0;
@@ -64,6 +65,7 @@ public class PokerTableInfo
         m_currentDealerNoSeat = -1;
         m_currentSmallBlindNoSeat = -1;
         m_currentBigBlindNoSeat = -1;
+        m_betLimit = limit;
         for (int i = 1; i <= m_nbMaxSeats; ++i)
         {
             m_RemainingSeats.push(m_nbMaxSeats - i);
@@ -554,5 +556,10 @@ public class PokerTableInfo
     public TypePokerGameRound getCurrentGameRound()
     {
         return m_currentGameRound;
+    }
+    
+    public TypePokerGameLimits getBetLimit()
+    {
+        return m_betLimit;
     }
 }

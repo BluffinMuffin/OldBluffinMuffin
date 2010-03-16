@@ -2,6 +2,7 @@ package protocolLobby;
 
 import java.util.StringTokenizer;
 
+import pokerGameLogic.TypePokerGameLimits;
 import protocolTools.IPokerCommand;
 import protocolTools.PokerCommand;
 
@@ -16,6 +17,7 @@ public class LobbyCreateTableCommand implements IPokerCommand
     private final int m_WaitingTimeAfterPlayerAction;
     private final int m_WaitingTimeAfterBoardDealed;
     private final int m_WaitingTimeAfterPotWon;
+    private final TypePokerGameLimits m_limit;
     
     public LobbyCreateTableCommand(StringTokenizer argsToken)
     {
@@ -26,9 +28,10 @@ public class LobbyCreateTableCommand implements IPokerCommand
         m_WaitingTimeAfterPlayerAction = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
+        m_limit = TypePokerGameLimits.valueOf(argsToken.nextToken());
     }
     
-    public LobbyCreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
+    public LobbyCreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimits limit)
     {
         m_tableName = p_tableName;
         m_bigBlind = p_bigBlind;
@@ -37,6 +40,7 @@ public class LobbyCreateTableCommand implements IPokerCommand
         m_WaitingTimeAfterPlayerAction = wtaPlayerAction;
         m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
         m_WaitingTimeAfterPotWon = wtaPotWon;
+        m_limit = limit;
     }
     
     @Override

@@ -2,7 +2,6 @@ package protocolGameTools;
 
 import java.util.StringTokenizer;
 
-import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
@@ -21,15 +20,6 @@ import protocolTools.PokerCommandObserver;
 
 public class GameClientSideObserver extends PokerCommandObserver<GameClientSideListener> implements GameClientSideListener
 {
-    
-    @Override
-    public void askActionCommandReceived(GameAskActionCommand command)
-    {
-        for (final GameClientSideListener listener : getSubscribers())
-        {
-            listener.askActionCommandReceived(command);
-        }
-    }
     
     @Override
     public void betTurnEndedCommandReceived(GameBetTurnEndedCommand command)
@@ -205,10 +195,6 @@ public class GameClientSideObserver extends PokerCommandObserver<GameClientSideL
         else if (commandName.equals(GameTableInfoCommand.COMMAND_NAME))
         {
             tableInfoCommandReceived(new GameTableInfoCommand(token));
-        }
-        else if (commandName.equals(GameAskActionCommand.COMMAND_NAME))
-        {
-            askActionCommandReceived(new GameAskActionCommand(token));
         }
         else
         {

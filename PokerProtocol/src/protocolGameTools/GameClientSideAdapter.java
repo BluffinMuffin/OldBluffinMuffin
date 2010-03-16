@@ -1,6 +1,5 @@
 package protocolGameTools;
 
-import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
@@ -17,11 +16,6 @@ import protocolGame.GameTableInfoCommand;
 
 public class GameClientSideAdapter implements GameClientSideListener
 {
-    
-    @Override
-    public void askActionCommandReceived(GameAskActionCommand command)
-    {
-    }
     
     @Override
     public void betTurnEndedCommandReceived(GameBetTurnEndedCommand command)

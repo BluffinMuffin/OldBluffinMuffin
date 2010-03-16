@@ -17,7 +17,6 @@ import pokerGameLogic.TypePokerGameAction;
 import pokerGameLogic.TypePokerGameRound;
 import pokerGameTools.PokerGameAdapter;
 import pokerGameTools.PokerGameObserver;
-import protocolGame.GameAskActionCommand;
 import protocolGame.GameBetTurnEndedCommand;
 import protocolGame.GameBetTurnStartedCommand;
 import protocolGame.GameEndedCommand;
@@ -207,13 +206,6 @@ public class ServerSidePokerTcpClient implements Runnable
             public void playerActionNeeded(PokerPlayerInfo p)
             {
                 send(new GamePlayerTurnBeganCommand(p.getCurrentTablePosition()));
-                if (p.getCurrentTablePosition() == m_player.getCurrentTablePosition())
-                {
-                    final int minRaise = m_game.getPokerTable().getCurrentHigherBet() + m_game.getPokerTable().getBigBlindAmount();
-                    final int maxRaise = p.getCurrentSafeMoneyAmount();
-                    
-                    send(new GameAskActionCommand(m_game.getPokerTable().getCurrentHigherBet() == p.getCurrentBetMoneyAmount(), m_game.getPokerTable().getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), m_game.getPokerTable().getCurrentHigherBet() > p.getCurrentBetMoneyAmount(), m_game.getPokerTable().getCurrentHigherBet(), minRaise < maxRaise, minRaise, maxRaise));
-                }
             }
             
             @Override
