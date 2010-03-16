@@ -27,11 +27,11 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import pokerClientSide.ClientSidePokerTcpServer;
 import pokerGameGUI.GameTableJFrame;
 import pokerGameLogic.TypePokerGameLimits;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
+import protocolComm.ClientSidePokerTcpServer;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;

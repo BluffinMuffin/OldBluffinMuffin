@@ -1,4 +1,4 @@
-package pokerClientSide;
+package protocolComm;
 
 import gameLogic.GameCard;
 

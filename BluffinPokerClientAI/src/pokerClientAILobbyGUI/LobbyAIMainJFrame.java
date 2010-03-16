@@ -30,11 +30,11 @@ import javax.swing.table.DefaultTableModel;
 
 import pokerClientAI.FactoryPokerAI;
 import pokerClientAI.TypePokerAI;
-import pokerClientSide.ClientSidePokerTcpServer;
 import pokerGameGUI.GameTableViewerJFrame;
 import pokerGameLogic.TypePokerGameLimits;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
+import protocolComm.ClientSidePokerTcpServer;
 import protocolLobby.LobbyConnectCommand;
 import protocolLobby.LobbyCreateTableCommand;
 import protocolLobby.LobbyDisconnectCommand;

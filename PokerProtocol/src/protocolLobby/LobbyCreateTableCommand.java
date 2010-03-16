@@ -63,6 +63,8 @@ public class LobbyCreateTableCommand implements IPokerCommand
         sb.append(PokerCommand.DELIMITER);
         sb.append(m_WaitingTimeAfterPotWon);
         sb.append(PokerCommand.DELIMITER);
+        sb.append(m_limit.name());
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     
@@ -104,6 +106,11 @@ public class LobbyCreateTableCommand implements IPokerCommand
     public int getWaitingTimeAfterPotWon()
     {
         return m_WaitingTimeAfterPotWon;
+    }
+    
+    public TypePokerGameLimits getLimit()
+    {
+        return m_limit;
     }
     
 }
