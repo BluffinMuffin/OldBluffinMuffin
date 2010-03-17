@@ -20,6 +20,7 @@ import protocolLobbyCommands.LobbyDisconnectCommand;
 import protocolLobbyCommands.LobbyIdentifyCommand;
 import protocolLobbyCommands.LobbyIdentifyResponseCommand;
 import protocolLobbyCommands.LobbyJoinTableCommand;
+import protocolLobbyCommands.LobbyJoinTableResponseCommand;
 import protocolLobbyCommands.LobbyListTableCommand;
 import protocolLobbyCommands.LobbyListTableResponseCommand;
 
@@ -61,14 +62,19 @@ public class ClientSideLobbyTcpServer
     
     private StringTokenizer receiveCommand(String expected)
     {
-        String s = receive();
+        return receiveCommand(m_fromServer, expected);
+    }
+    
+    private StringTokenizer receiveCommand(BufferedReader reader, String expected)
+    {
+        String s = receive(reader);
         StringTokenizer token = new StringTokenizer(s, PokerCommand.DELIMITER);
-        final String commandName = token.nextToken();
-        while (commandName != expected)
+        String commandName = token.nextToken();
+        while (!commandName.equals(expected))
         {
             s = receive();
             token = new StringTokenizer(s, PokerCommand.DELIMITER);
-            token.nextToken();
+            commandName = token.nextToken();
         }
         return token;
     }
@@ -138,12 +144,12 @@ public class ClientSideLobbyTcpServer
         sendMessage(p_msg.encodeCommand());
     }
     
-    private String receive()
+    private String receive(BufferedReader reader)
     {
         final String line;
         try
         {
-            line = m_fromServer.readLine();
+            line = reader.readLine();
             System.out.println(m_playerName + " RECV [" + line + "]");
             // m_commandObserver.receiveSomething(line);
         }
@@ -152,6 +158,11 @@ public class ClientSideLobbyTcpServer
             return null;
         }
         return line;
+    }
+    
+    private String receive()
+    {
+        return receive(m_fromServer);
     }
     
     public String getPlayerName()
@@ -201,7 +212,10 @@ public class ClientSideLobbyTcpServer
             
             // Authenticate the user.
             toTable.println(new LobbyIdentifyCommand(m_playerName).encodeCommand());
-            if (!Boolean.parseBoolean(fromTable.readLine()))
+            
+            final StringTokenizer token = receiveCommand(fromTable, LobbyIdentifyResponseCommand.COMMAND_NAME);
+            final LobbyIdentifyResponseCommand response = new LobbyIdentifyResponseCommand(token);
+            if (!response.isOK())
             {
                 System.out.println("Authentification failed on the table: " + p_tableName);
                 return null;
@@ -214,8 +228,9 @@ public class ClientSideLobbyTcpServer
             toTable.println(command.encodeCommand());
             
             // Wait for response.
-            final StringTokenizer token = new StringTokenizer(fromTable.readLine(), PokerCommand.DELIMITER);
-            final int noSeat = Integer.parseInt(token.nextToken());
+            final StringTokenizer token2 = receiveCommand(fromTable, LobbyJoinTableResponseCommand.COMMAND_NAME);
+            final LobbyJoinTableResponseCommand response2 = new LobbyJoinTableResponseCommand(token2);
+            final int noSeat = response2.getNoSeat();
             
             if (noSeat == -1)
             {

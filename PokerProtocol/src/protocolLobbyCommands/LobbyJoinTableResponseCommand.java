@@ -5,45 +5,40 @@ import java.util.StringTokenizer;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 
-public class LobbyJoinTableCommand implements IPokerCommand
+public class LobbyJoinTableResponseCommand implements IPokerCommand
 {
     private final String m_tableName;
     private final String m_playerName;
-    public static String COMMAND_NAME = "lobbyJOIN_TABLE";
+    private final int m_noSeat;
+    public static String COMMAND_NAME = "lobbyJOIN_TABLE_RESPONSE";
     
-    public LobbyJoinTableCommand(StringTokenizer argsToken)
+    public LobbyJoinTableResponseCommand(StringTokenizer argsToken)
     {
         m_playerName = argsToken.nextToken();
         m_tableName = argsToken.nextToken();
+        m_noSeat = Integer.parseInt(argsToken.nextToken());
     }
     
-    public LobbyJoinTableCommand(String pName, String tName)
+    public LobbyJoinTableResponseCommand(String pName, String tName, int seat)
     {
         m_playerName = pName;
         m_tableName = tName;
+        m_noSeat = seat;
     }
     
     @Override
     public String encodeCommand()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(LobbyJoinTableCommand.COMMAND_NAME);
+        sb.append(LobbyJoinTableResponseCommand.COMMAND_NAME);
         sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerName);
         sb.append(PokerCommand.DELIMITER);
         sb.append(m_tableName);
         sb.append(PokerCommand.DELIMITER);
+        sb.append(m_noSeat);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
-    }
-    
-    public String encodeResponse(int noSeat)
-    {
-        return new LobbyJoinTableResponseCommand(m_playerName, m_tableName, noSeat).encodeCommand();
-    }
-    
-    public String encodeErrorResponse()
-    {
-        return new LobbyJoinTableResponseCommand(m_playerName, m_tableName, -1).encodeCommand();
     }
     
     public String getPlayerName()
@@ -54,5 +49,10 @@ public class LobbyJoinTableCommand implements IPokerCommand
     public String getTableName()
     {
         return m_tableName;
+    }
+    
+    public int getNoSeat()
+    {
+        return m_noSeat;
     }
 }
