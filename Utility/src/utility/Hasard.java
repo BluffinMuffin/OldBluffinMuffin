@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class Hasard
 {
-    // Objet utilisé pour le random
+    // Objet utilisï¿½ pour le random !
     private static Random m_Random = new Random();
     
     /**
-     * Calcul un nombre aléatoire entre 0 et Max
+     * Calcul un nombre alï¿½atoire entre 0 et Max
      * 
      * @param max
      *            doit etre > 0
@@ -19,7 +19,7 @@ public class Hasard
     }
     
     /**
-     * Calcul un nombre aléatoire entre Min et 0
+     * Calcul un nombre alï¿½atoire entre Min et 0
      * 
      * @param min
      *            doit etre < 0
@@ -30,12 +30,12 @@ public class Hasard
     }
     
     /**
-     * Calcul un nombre aléatoire entre StartVal et StartVal+etendue
+     * Calcul un nombre alï¿½atoire entre StartVal et StartVal+etendue
      * 
      * @param startVal
-     *            Valeur de départ, l'une des bornes du random
+     *            Valeur de dï¿½part, l'une des bornes du random
      * @param etendue
-     *            Écart positif ou négatif entre les 2 bornes du random
+     *            ï¿½cart positif ou nï¿½gatif entre les 2 bornes du random
      */
     public static int randomWithLength(int startVal, int etendue)
     {
@@ -50,12 +50,12 @@ public class Hasard
     }
     
     /**
-     * Calcul un nombre aléatoire entre Min et Max
+     * Calcul un nombre alï¿½atoire entre Min et Max
      * 
      * @param min
-     *            Borne inférieure du random
+     *            Borne infï¿½rieure du random
      * @param max
-     *            Borne supérieure du random
+     *            Borne supï¿½rieure du random
      */
     public static int RandomMinMax(int min, int max)
     {
@@ -69,7 +69,7 @@ public class Hasard
     }
     
     /**
-     * Calcul une valeur aléatoire entre true et false
+     * Calcul une valeur alï¿½atoire entre true et false
      * 
      */
     public static boolean RandomBool()
