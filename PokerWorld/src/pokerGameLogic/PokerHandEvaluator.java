@@ -166,6 +166,32 @@ public final class PokerHandEvaluator
         PokerHandEvaluator.setStraight(PokerHandEvaluator.WHEEL); /* A,5..2 */
     }
     
+    
+    public static long eval(GameCardSet cs){
+    	long enc = encode(cs);
+		int val = 0;
+		
+    	switch (cs.size()) {
+		case 2:
+//			val = hand2Eval(enc);
+			break;
+
+		case 5:
+			 val = hand5Eval(enc);
+			break;
+			
+		case 6:
+			val = hand6Eval(enc);
+			break;
+			
+		case 7:
+			val = hand7Eval(enc);
+			break;
+		}
+    	
+    	return val;
+    }
+    
     /**
      * Returns a value which can be used in building a parameter to one of the HandEval evaluation methods.
      * 
