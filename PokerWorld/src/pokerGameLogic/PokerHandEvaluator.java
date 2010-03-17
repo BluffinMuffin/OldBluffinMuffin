@@ -3,7 +3,6 @@ package pokerGameLogic;
 import gameLogic.GameCard;
 import gameLogic.GameCardSet;
 
-
 /**
  * Original class from Steve Brecher, version 2006Dec11.0
  * Adapted by Bluffin Muffin
@@ -166,30 +165,39 @@ public final class PokerHandEvaluator
         PokerHandEvaluator.setStraight(PokerHandEvaluator.WHEEL); /* A,5..2 */
     }
     
-    
-    public static long eval(GameCardSet cs){
-    	long enc = encode(cs);
-		int val = 0;
-		
-    	switch (cs.size()) {
-		case 2:
-//			val = hand2Eval(enc);
-			break;
-
-		case 5:
-			 val = hand5Eval(enc);
-			break;
-			
-		case 6:
-			val = hand6Eval(enc);
-			break;
-			
-		case 7:
-			val = hand7Eval(enc);
-			break;
-		}
-    	
-    	return val;
+    public static long eval(GameCardSet cs)
+    {
+        final long enc = PokerHandEvaluator.encode(cs);
+        int val = 0;
+        
+        switch (cs.size())
+        {
+            case 2:
+                final GameCard[] cards = new GameCard[2];
+                cs.toArray(cards);
+                final int r0 = cards[0].getRank().ordinal();
+                final int r1 = cards[1].getRank().ordinal();
+                if (r0 == r1)
+                {
+                    val = 100;
+                }
+                val += Math.max(r0, r1);
+                break;
+            
+            case 5:
+                val = PokerHandEvaluator.hand5Eval(enc);
+                break;
+            
+            case 6:
+                val = PokerHandEvaluator.hand6Eval(enc);
+                break;
+            
+            case 7:
+                val = PokerHandEvaluator.hand7Eval(enc);
+                break;
+        }
+        
+        return val;
     }
     
     /**
