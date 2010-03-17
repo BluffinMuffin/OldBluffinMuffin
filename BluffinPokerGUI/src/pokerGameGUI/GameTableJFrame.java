@@ -12,7 +12,6 @@ import pokerGameLogic.PokerTableInfo;
 import pokerGameTools.PokerGameAdapter;
 import pokerGameTools.PokerGameObserver;
 
-
 public class GameTableJFrame extends GameTableViewerJFrame
 {
     /**
@@ -111,7 +110,7 @@ public class GameTableJFrame extends GameTableViewerJFrame
                     disableButtons();
                     final PokerTableInfo table = m_game.getPokerTable();
                     final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
-                    m_game.playMoney(p, table.getCurrentHigherBet() - p.getCurrentBetMoneyAmount());
+                    m_game.playMoney(p, table.getCallAmount(p));
                 }
             });
         }
@@ -174,13 +173,12 @@ public class GameTableJFrame extends GameTableViewerJFrame
                     setCallButtonName();
                     getJCallButton().setEnabled(true);
                     final PokerTableInfo table = m_game.getPokerTable();
-                    final int totalAmnt = p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount();
-                    if (table.getCurrentHigherBet() < totalAmnt)
+                    if (table.getCurrentHigherBet() < p.getCurrentTotalMoneyAmount())
                     {
-                        final int min = table.getCurrentHigherBet() + table.getBigBlindAmount();
+                        final int min = table.getMinRaiseAmount(p) + p.getCurrentBetMoneyAmount();
                         getJRaiseButton().setEnabled(true);
                         getJRaiseSpinner().setEnabled(true);
-                        getJRaiseSpinner().setModel(new SpinnerNumberModel(min, min, totalAmnt, min));
+                        getJRaiseSpinner().setModel(new SpinnerNumberModel(min, min, p.getCurrentTotalMoneyAmount(), min));
                     }
                 }
             }
@@ -193,11 +191,11 @@ public class GameTableJFrame extends GameTableViewerJFrame
         final PokerTableInfo table = m_game.getPokerTable();
         final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
         String s;
-        if (table.getCurrentHigherBet() == p.getCurrentBetMoneyAmount())
+        if (table.canCheck(p))
         {
             s = "CHECK";
         }
-        else if (table.getCurrentHigherBet() >= (p.getCurrentBetMoneyAmount() + p.getCurrentSafeMoneyAmount()))
+        else if (table.getCurrentHigherBet() >= p.getCurrentTotalMoneyAmount())
         {
             s = "ALL-IN";
         }

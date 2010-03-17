@@ -259,7 +259,7 @@ public class PokerGame implements IPokerGame
         
         else if (m_currentGameState == TypePokerGameState.PLAYING && m_currentGameRoundState == TypePokerGameRoundState.BETTING)
         {
-            System.out.println("Currently, we need " + amountNeeded(p) + " minimum money from this player");
+            System.out.println("Currently, we need " + m_pokerTable.getCallAmount(p) + " minimum money from this player");
             if (p.getCurrentTablePosition() != m_pokerTable.getCurrentPlayerNoSeat())
             {
                 System.err.println("BUT SCREW YOU, IT'S NOT YOUR TURN !!!!!");
@@ -273,7 +273,7 @@ public class PokerGame implements IPokerGame
                 continueBettingRound();
                 return true;
             }
-            int amntNeeded = amountNeeded(p);
+            int amntNeeded = m_pokerTable.getCallAmount(p);
             if (amnt < amntNeeded)
             {
                 if (p.canBet(amnt + 1))
@@ -430,11 +430,6 @@ public class PokerGame implements IPokerGame
             p.setHand(m_pokerDealer.dealHoles(p));
             m_gameObserver.playerHoleCardsChanged(p);
         }
-    }
-    
-    private int amountNeeded(PokerPlayerInfo p)
-    {
-        return m_pokerTable.getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
     }
     
     private void foldPlayer(PokerPlayerInfo p)
