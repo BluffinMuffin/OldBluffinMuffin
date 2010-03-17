@@ -6,9 +6,9 @@ import pokerGameLogic.TypePokerGameLimit;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 
-public class LobbyCreateTableCommand implements IPokerCommand
+public class LobbyCreateTableResponseCommand implements IPokerCommand
 {
-    public static String COMMAND_NAME = "lobbyCREATE_TABLE";
+    public static String COMMAND_NAME = "lobbyCREATE_TABLE_RESPONSE";
     
     private final String m_tableName;
     private final int m_bigBlind;
@@ -18,8 +18,9 @@ public class LobbyCreateTableCommand implements IPokerCommand
     private final int m_WaitingTimeAfterBoardDealed;
     private final int m_WaitingTimeAfterPotWon;
     private final TypePokerGameLimit m_limit;
+    private final int m_ResponsePort;
     
-    public LobbyCreateTableCommand(StringTokenizer argsToken)
+    public LobbyCreateTableResponseCommand(StringTokenizer argsToken)
     {
         m_tableName = argsToken.nextToken();
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
@@ -29,9 +30,10 @@ public class LobbyCreateTableCommand implements IPokerCommand
         m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
         m_limit = TypePokerGameLimit.valueOf(argsToken.nextToken());
+        m_ResponsePort = Integer.parseInt(argsToken.nextToken());
     }
     
-    public LobbyCreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimit limit)
+    public LobbyCreateTableResponseCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimit limit, int responsePort)
     {
         m_tableName = p_tableName;
         m_bigBlind = p_bigBlind;
@@ -41,13 +43,14 @@ public class LobbyCreateTableCommand implements IPokerCommand
         m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
         m_WaitingTimeAfterPotWon = wtaPotWon;
         m_limit = limit;
+        m_ResponsePort = responsePort;
     }
     
     @Override
     public String encodeCommand()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(LobbyCreateTableCommand.COMMAND_NAME);
+        sb.append(LobbyCreateTableResponseCommand.COMMAND_NAME);
         sb.append(PokerCommand.DELIMITER);
         sb.append(m_tableName);
         sb.append(PokerCommand.DELIMITER);
@@ -65,12 +68,9 @@ public class LobbyCreateTableCommand implements IPokerCommand
         sb.append(PokerCommand.DELIMITER);
         sb.append(m_limit.name());
         sb.append(PokerCommand.DELIMITER);
+        sb.append(m_ResponsePort);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
-    }
-    
-    public String encodeResponse(Integer noPort)
-    {
-        return new LobbyCreateTableResponseCommand(m_tableName, m_bigBlind, m_maxPlayers, m_playerName, m_WaitingTimeAfterPlayerAction, m_WaitingTimeAfterBoardDealed, m_WaitingTimeAfterPotWon, m_limit, noPort).encodeCommand();
     }
     
     public String getTableName()
@@ -111,6 +111,11 @@ public class LobbyCreateTableCommand implements IPokerCommand
     public TypePokerGameLimit getLimit()
     {
         return m_limit;
+    }
+    
+    public int getResponsePort()
+    {
+        return m_ResponsePort;
     }
     
 }

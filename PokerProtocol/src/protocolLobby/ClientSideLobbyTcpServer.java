@@ -14,11 +14,14 @@ import pokerGameLogic.TypePokerGameLimit;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 import protocolGame.ClientSidePokerTcpServer;
-import protocolLobbyCommands.LobbyConnectCommand;
 import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocolLobbyCommands.LobbyCreateTableResponseCommand;
 import protocolLobbyCommands.LobbyDisconnectCommand;
+import protocolLobbyCommands.LobbyIdentifyCommand;
+import protocolLobbyCommands.LobbyIdentifyResponseCommand;
 import protocolLobbyCommands.LobbyJoinTableCommand;
 import protocolLobbyCommands.LobbyListTableCommand;
+import protocolLobbyCommands.LobbyListTableResponseCommand;
 
 public class ClientSideLobbyTcpServer
 {
@@ -56,11 +59,27 @@ public class ClientSideLobbyTcpServer
         return true;
     }
     
+    private StringTokenizer receiveCommand(String expected)
+    {
+        String s = receive();
+        StringTokenizer token = new StringTokenizer(s, PokerCommand.DELIMITER);
+        final String commandName = token.nextToken();
+        while (commandName != expected)
+        {
+            s = receive();
+            token = new StringTokenizer(s, PokerCommand.DELIMITER);
+            token.nextToken();
+        }
+        return token;
+    }
+    
     public boolean identify(String name)
     {
         m_playerName = name;
-        send(new LobbyConnectCommand(m_playerName));
-        return Boolean.valueOf(receive());
+        send(new LobbyIdentifyCommand(m_playerName));
+        final StringTokenizer token = receiveCommand(LobbyIdentifyResponseCommand.COMMAND_NAME);
+        final LobbyIdentifyResponseCommand response = new LobbyIdentifyResponseCommand(token);
+        return response.isOK();
     }
     
     public boolean isConnected()
@@ -181,7 +200,7 @@ public class ClientSideLobbyTcpServer
             fromTable = new BufferedReader(new InputStreamReader(tableSocket.getInputStream()));
             
             // Authenticate the user.
-            toTable.println(new LobbyConnectCommand(m_playerName).encodeCommand());
+            toTable.println(new LobbyIdentifyCommand(m_playerName).encodeCommand());
             if (!Boolean.parseBoolean(fromTable.readLine()))
             {
                 System.out.println("Authentification failed on the table: " + p_tableName);
@@ -229,24 +248,19 @@ public class ClientSideLobbyTcpServer
         // Send query.
         send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
         // Wait for response.
-        final StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
         
-        return Integer.parseInt(token.nextToken());
+        final StringTokenizer token = receiveCommand(LobbyCreateTableResponseCommand.COMMAND_NAME);
+        final LobbyCreateTableResponseCommand response = new LobbyCreateTableResponseCommand(token);
+        return response.getResponsePort();
     }
     
     public List<SummaryTableInfo> getListTables()
     {
-        final List<SummaryTableInfo> list = new ArrayList<SummaryTableInfo>();
         // Ask the server for all available tables.
         send(new LobbyListTableCommand());
         
-        final StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
-        
-        // Parse results.
-        while (token.hasMoreTokens())
-        {
-            list.add(new SummaryTableInfo(token));
-        }
-        return list;
+        final StringTokenizer token = receiveCommand(LobbyListTableResponseCommand.COMMAND_NAME);
+        final LobbyListTableResponseCommand response = new LobbyListTableResponseCommand(token);
+        return response.getTables();
     }
 }

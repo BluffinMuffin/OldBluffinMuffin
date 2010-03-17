@@ -10,7 +10,7 @@ import java.net.SocketException;
 import protocol.IPokerCommand;
 import protocolLobby.LobbyServerSideAdapter;
 import protocolLobby.LobbyServerSideObserver;
-import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyIdentifyCommand;
 import protocolLobbyCommands.LobbyCreateTableCommand;
 import protocolLobbyCommands.LobbyDisconnectCommand;
 import protocolLobbyCommands.LobbyListTableCommand;
@@ -108,7 +108,7 @@ public class ServerClientLobby extends Thread
             }
             
             @Override
-            public void connectCommandReceived(LobbyConnectCommand command)
+            public void connectCommandReceived(LobbyIdentifyCommand command)
             {
                 m_playerName = command.getPlayerName();
                 final boolean ok = !m_lobby.isNameUsed(m_playerName);

@@ -5,18 +5,18 @@ import java.util.StringTokenizer;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 
-public class LobbyConnectCommand implements IPokerCommand
+public class LobbyIdentifyCommand implements IPokerCommand
 {
-    public static String COMMAND_NAME = "lobbyCONNECT";
+    public static String COMMAND_NAME = "lobbyIDENTIFY";
     
     private final String m_playerName;
     
-    public LobbyConnectCommand(StringTokenizer argsToken)
+    public LobbyIdentifyCommand(StringTokenizer argsToken)
     {
         m_playerName = argsToken.nextToken();
     }
     
-    public LobbyConnectCommand(String name)
+    public LobbyIdentifyCommand(String name)
     {
         m_playerName = name;
     }
@@ -25,7 +25,7 @@ public class LobbyConnectCommand implements IPokerCommand
     public String encodeCommand()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(LobbyConnectCommand.COMMAND_NAME);
+        sb.append(LobbyIdentifyCommand.COMMAND_NAME);
         sb.append(PokerCommand.DELIMITER);
         sb.append(m_playerName);
         sb.append(PokerCommand.DELIMITER);
@@ -34,7 +34,7 @@ public class LobbyConnectCommand implements IPokerCommand
     
     public String encodeResponse(Boolean success)
     {
-        return success.toString();
+        return new LobbyIdentifyResponseCommand(m_playerName, success).encodeCommand();
     }
     
     public String getPlayerName()

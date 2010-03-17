@@ -1,7 +1,6 @@
 package protocolLobbyCommands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.StringTokenizer;
 
 import protocol.IPokerCommand;
@@ -31,14 +30,6 @@ public class LobbyListTableCommand implements IPokerCommand
     
     public String encodeResponse(ArrayList<SummaryTableInfo> tables)
     {
-        final StringBuilder sb = new StringBuilder();
-        Collections.sort(tables);
-        
-        for (final SummaryTableInfo table : tables)
-        {
-            sb.append(table.toString(PokerCommand.DELIMITER));
-        }
-        
-        return sb.toString();
+        return new LobbyListTableResponseCommand(tables).encodeCommand();
     }
 }

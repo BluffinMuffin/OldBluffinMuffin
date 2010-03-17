@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import protocol.PokerCommand;
 import protocol.PokerCommandObserver;
-import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyIdentifyCommand;
 import protocolLobbyCommands.LobbyCreateTableCommand;
 import protocolLobbyCommands.LobbyDisconnectCommand;
 import protocolLobbyCommands.LobbyJoinTableCommand;
@@ -18,9 +18,9 @@ public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSid
         final StringTokenizer token = new StringTokenizer(line, PokerCommand.DELIMITER);
         final String commandName = token.nextToken();
         
-        if (commandName.equals(LobbyConnectCommand.COMMAND_NAME))
+        if (commandName.equals(LobbyIdentifyCommand.COMMAND_NAME))
         {
-            authentification(new LobbyConnectCommand(token));
+            authentification(new LobbyIdentifyCommand(token));
         }
         else if (commandName.equals(LobbyDisconnectCommand.COMMAND_NAME))
         {
@@ -76,7 +76,7 @@ public class LobbyServerSideObserver extends PokerCommandObserver<LobbyServerSid
         }
     }
     
-    private void authentification(LobbyConnectCommand lobbyConnectCommand)
+    private void authentification(LobbyIdentifyCommand lobbyConnectCommand)
     {
         for (final LobbyServerSideListener listener : getSubscribers())
         {

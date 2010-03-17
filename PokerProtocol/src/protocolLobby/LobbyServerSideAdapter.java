@@ -1,6 +1,6 @@
 package protocolLobby;
 
-import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyIdentifyCommand;
 import protocolLobbyCommands.LobbyCreateTableCommand;
 import protocolLobbyCommands.LobbyDisconnectCommand;
 import protocolLobbyCommands.LobbyJoinTableCommand;
@@ -15,7 +15,7 @@ public abstract class LobbyServerSideAdapter implements LobbyServerSideListener
     }
     
     @Override
-    public void connectCommandReceived(LobbyConnectCommand command)
+    public void connectCommandReceived(LobbyIdentifyCommand command)
     {
     }
     

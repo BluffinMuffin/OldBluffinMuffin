@@ -1,7 +1,7 @@
 package protocolLobby;
 
 import protocol.PokerCommandListener;
-import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyIdentifyCommand;
 import protocolLobbyCommands.LobbyCreateTableCommand;
 import protocolLobbyCommands.LobbyDisconnectCommand;
 import protocolLobbyCommands.LobbyJoinTableCommand;
@@ -9,7 +9,7 @@ import protocolLobbyCommands.LobbyListTableCommand;
 
 public interface LobbyServerSideListener extends PokerCommandListener
 {
-    void connectCommandReceived(LobbyConnectCommand command);
+    void connectCommandReceived(LobbyIdentifyCommand command);
     
     void createTableCommandReceived(LobbyCreateTableCommand command);
     

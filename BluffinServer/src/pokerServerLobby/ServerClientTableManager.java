@@ -14,7 +14,7 @@ import protocol.PokerCommand;
 import protocolGame.ServerSidePokerTcpClient;
 import protocolLobby.LobbyServerSideAdapter;
 import protocolLobby.LobbyServerSideObserver;
-import protocolLobbyCommands.LobbyConnectCommand;
+import protocolLobbyCommands.LobbyIdentifyCommand;
 import protocolLobbyCommands.LobbyJoinTableCommand;
 
 /**
@@ -60,7 +60,7 @@ public class ServerClientTableManager extends Thread
             String commandName = token.nextToken();
             
             // Expect client's authentification.
-            if (!commandName.equals(LobbyConnectCommand.COMMAND_NAME))
+            if (!commandName.equals(LobbyIdentifyCommand.COMMAND_NAME))
             {
                 System.out.println("Authentification expected!!!");
                 return;
@@ -117,7 +117,7 @@ public class ServerClientTableManager extends Thread
             }
             
             @Override
-            public void connectCommandReceived(LobbyConnectCommand command)
+            public void connectCommandReceived(LobbyIdentifyCommand command)
             {
                 m_name = command.getPlayerName();
                 sendMessage(command.encodeResponse(true));
