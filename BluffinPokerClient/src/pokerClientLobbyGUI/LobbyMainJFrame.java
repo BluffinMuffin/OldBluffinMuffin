@@ -478,17 +478,9 @@ public class LobbyMainJFrame extends JFrame
      */
     public boolean joinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
     {
-        final ClientSidePokerTcpServer client = m_server.joinTable(p_noPort, p_tableName);
-        if (client != null)
-        {
-            GameTableJFrame gui = null;
-            gui = new GameTableJFrame();
-            gui.setPokerObserver(client.getGameObserver());
-            gui.setGame(client, client.getNoSeat());
-            gui.start();
-            return true;
-        }
-        return false;
+        GameTableJFrame gui = null;
+        gui = new GameTableJFrame();
+        return m_server.joinTable(p_noPort, p_tableName, gui) != null;
     }
     
     private ClientSidePokerTcpServer findClient()

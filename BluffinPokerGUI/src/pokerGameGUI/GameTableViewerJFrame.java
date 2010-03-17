@@ -25,7 +25,6 @@ import pokerGameLogic.TypePokerGameAction;
 import pokerGameLogic.TypePokerGameRound;
 import pokerGameTools.PokerGameAdapter;
 import pokerGameTools.PokerGameObserver;
-
 import utilGUI.ConsoleJPanel;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame

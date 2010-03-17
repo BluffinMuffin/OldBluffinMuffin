@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import pokerGameLogic.IPokerViewer;
 import pokerGameLogic.TypePokerGameLimit;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
@@ -165,7 +166,7 @@ public class ClientSideLobbyTcpServer
         return m_clients.get(i);
     }
     
-    public ClientSidePokerTcpServer joinTable(int p_noPort, String p_tableName)
+    public ClientSidePokerTcpServer joinTable(int p_noPort, String p_tableName, IPokerViewer gui)
     {
         Socket tableSocket = null;
         PrintWriter toTable = null;
@@ -204,6 +205,12 @@ public class ClientSideLobbyTcpServer
             }
             
             final ClientSidePokerTcpServer client = new ClientSidePokerTcpServer(tableSocket, fromTable, noSeat, m_playerName);
+            if (gui != null)
+            {
+                gui.setPokerObserver(client.getGameObserver());
+                gui.setGame(client, client.getNoSeat());
+                gui.start();
+            }
             client.start();
             m_clients.add(client);
             return client;

@@ -3,16 +3,17 @@ package pokerGameGUI;
 import javax.swing.JFrame;
 
 import pokerGameLogic.IPokerGame;
+import pokerGameLogic.IPokerViewer;
 import pokerGameTools.PokerGameObserver;
 
-
-public abstract class GameTableAbstractJFrame extends JFrame
+public abstract class GameTableAbstractJFrame extends JFrame implements IPokerViewer
 {
     private static final long serialVersionUID = 1L;
     protected PokerGameObserver m_pokerObserver;
     protected IPokerGame m_game;
     protected int m_currentTablePosition;
     
+    @Override
     public void setGame(IPokerGame game, int seatViewed)
     {
         m_game = game;
