@@ -70,6 +70,11 @@ public class PokerPlayerInfo
         return m_currentSafeMoneyAmount;
     }
     
+    public int getCurrentTotalMoneyAmount()
+    {
+        return getCurrentBetMoneyAmount() + getCurrentSafeMoneyAmount();
+    }
+    
     public int getCurrentTablePosition()
     {
         return m_currentTablePosition;

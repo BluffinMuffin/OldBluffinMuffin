@@ -568,4 +568,29 @@ public class PokerTableInfo
     {
         m_betLimit = limit;
     }
+    
+    public boolean canRaise(PokerPlayerInfo p)
+    {
+        return getCurrentHigherBet() < p.getCurrentTotalMoneyAmount();
+    }
+    
+    public boolean canCheck(PokerPlayerInfo p)
+    {
+        return getCurrentHigherBet() <= p.getCurrentBetMoneyAmount();
+    }
+    
+    public int getMinRaiseAmount(PokerPlayerInfo p)
+    {
+        return Math.min(getCallAmount(p) + getBigBlindAmount(), getMaxRaiseAmount(p));
+    }
+    
+    public int getMaxRaiseAmount(PokerPlayerInfo p)
+    {
+        return p.getCurrentTotalMoneyAmount() - getCurrentHigherBet();
+    }
+    
+    public int getCallAmount(PokerPlayerInfo p)
+    {
+        return p.getCurrentBetMoneyAmount() - getCurrentHigherBet();
+    }
 }
