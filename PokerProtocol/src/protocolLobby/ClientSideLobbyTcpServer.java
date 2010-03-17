@@ -58,9 +58,7 @@ public class ClientSideLobbyTcpServer
     public boolean identify(String name)
     {
         m_playerName = name;
-        System.out.println("A");
         send(new LobbyConnectCommand(m_playerName));
-        System.out.println("B");
         return Boolean.valueOf(receive());
     }
     

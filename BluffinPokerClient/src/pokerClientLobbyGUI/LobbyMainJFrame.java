@@ -325,23 +325,16 @@ public class LobbyMainJFrame extends JFrame
         {
             m_server = new ClientSideLobbyTcpServer(form.getServerAddress(), form.getServerPort());
             
-            System.out.println("1");
             if (m_server.connect())
             {
-                System.out.println("2");
                 // Authentify the user.
                 boolean isOk = m_server.identify(form.getPlayerName());
-                System.out.println("3");
                 while (!isOk)
                 {
-                    System.out.println("4");
                     final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyMainJFrame.this, m_server.getPlayerName());
                     form2.setVisible(true);
-                    System.out.println("5");
                     isOk = m_server.identify(form2.getPlayerName());
-                    System.out.println("6");
                 }
-                System.out.println("7");
                 
                 jStatusLabel.setText("Connected as " + m_server.getPlayerName() + " to " + m_server.getServerAddress() + ":" + m_server.getServerPort());
                 getJRefreshButton().setEnabled(true);
