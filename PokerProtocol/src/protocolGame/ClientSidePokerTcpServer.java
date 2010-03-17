@@ -125,9 +125,9 @@ public class ClientSidePokerTcpServer implements IPokerGame
         return line;
     }
     
-    public PokerPlayerInfo getCurrentPlayer()
+    public int getNoSeat()
     {
-        return m_pokerTable.getPlayer(m_tablePosition);
+        return m_tablePosition;
     }
     
     public GameClientSideObserver getCommandObserver()

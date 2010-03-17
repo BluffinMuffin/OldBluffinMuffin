@@ -11,7 +11,7 @@ import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PokerTableInfo
-{// TODO: RICK: Gestion TypePokerGame
+{
     private final int m_nbMaxSeats;
     private int m_nbUsedSeats;
     private final PokerPlayerInfo[] m_currentPlayers;

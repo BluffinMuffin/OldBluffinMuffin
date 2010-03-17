@@ -5,14 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
@@ -28,32 +20,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import pokerGameGUI.GameTableJFrame;
-import pokerGameLogic.TypePokerGameLimit;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
-import protocol.IPokerCommand;
-import protocol.PokerCommand;
 import protocolGame.ClientSidePokerTcpServer;
+import protocolLobby.ClientSideLobbyTcpServer;
 import protocolLobby.SummaryTableInfo;
-import protocolLobbyCommands.LobbyConnectCommand;
-import protocolLobbyCommands.LobbyCreateTableCommand;
-import protocolLobbyCommands.LobbyDisconnectCommand;
-import protocolLobbyCommands.LobbyJoinTableCommand;
-import protocolLobbyCommands.LobbyListTableCommand;
 
 public class LobbyMainJFrame extends JFrame
 {
-    private Socket m_connection = null; // @jve:decl-index=0:
-    private PrintWriter m_toServer = null;
-    private BufferedReader m_fromServer = null;
-    
-    private String m_playerName;
-    private String m_serverAddress;
-    private int m_serverPort;
-    // private boolean m_advisor;
-    
-    // List of PokerClient (one for each table the player joined)
-    private final List<ClientSidePokerTcpServer> m_clients = new ArrayList<ClientSidePokerTcpServer>();
+    private ClientSideLobbyTcpServer m_server;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -175,11 +150,11 @@ public class LobbyMainJFrame extends JFrame
     
     private void eventAddTable()
     {
-        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_playerName, 1);
+        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_server.getPlayerName(), 1);
         form.setVisible(true);
         if (form.isOK())
         {
-            final int noPort = createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer(), form.getWaitingTimeAfterPlayerAction(), form.getWaitingTimeAfterBoardDealed(), form.getWaitingTimeAfterPotWon(), form.getLimit());
+            final int noPort = m_server.createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer(), form.getWaitingTimeAfterPlayerAction(), form.getWaitingTimeAfterBoardDealed(), form.getWaitingTimeAfterPotWon(), form.getLimit());
             
             if (noPort != -1)
             {
@@ -348,29 +323,31 @@ public class LobbyMainJFrame extends JFrame
         form.setVisible(true);
         if (form.isOK())
         {
-            m_playerName = form.getPlayerName();
-            m_serverAddress = form.getServerAddress();
-            m_serverPort = form.getServerPort();
-            // m_advisor = form.isAdvisor();
-            if (connect(m_serverAddress, m_serverPort))
+            m_server = new ClientSideLobbyTcpServer(form.getServerAddress(), form.getServerPort());
+            
+            System.out.println("1");
+            if (m_server.connect())
             {
-                send(new LobbyConnectCommand(m_playerName));
-                boolean isOk = Boolean.valueOf(receive());
+                System.out.println("2");
+                // Authentify the user.
+                boolean isOk = m_server.identify(form.getPlayerName());
+                System.out.println("3");
                 while (!isOk)
                 {
-                    final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyMainJFrame.this, m_playerName);
+                    System.out.println("4");
+                    final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyMainJFrame.this, m_server.getPlayerName());
                     form2.setVisible(true);
-                    m_playerName = form2.getPlayerName();
-                    send(new LobbyConnectCommand(m_playerName));
-                    isOk = Boolean.valueOf(receive());
+                    System.out.println("5");
+                    isOk = m_server.identify(form2.getPlayerName());
+                    System.out.println("6");
                 }
-                // Authentify the user.
+                System.out.println("7");
                 
-                jStatusLabel.setText("Connected as " + m_playerName + " to " + m_playerName + ":" + m_playerName);
+                jStatusLabel.setText("Connected as " + m_server.getPlayerName() + " to " + m_server.getServerAddress() + ":" + m_server.getServerPort());
                 getJRefreshButton().setEnabled(true);
                 getJAddTableButton().setEnabled(true);
                 getJConnectButton().setText("Disconnect");
-                setTitle(m_playerName + " - " + jTitleLabel.getText());
+                setTitle(m_server.getPlayerName() + " - " + jTitleLabel.getText());
                 refreshTables();
                 if (getJMainTable().getModel().getRowCount() == 0)
                 {
@@ -400,34 +377,18 @@ public class LobbyMainJFrame extends JFrame
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    if (isConnected())
+                    if (m_server != null && m_server.isConnected())
                     {
-                        // Alors on disconnect
-                        send(new LobbyDisconnectCommand());
                         
                         // Close the socket
-                        if (m_connection != null)
+                        if (m_server != null)
                         {
-                            try
-                            {
-                                m_connection.close();
-                            }
-                            catch (final IOException e1)
-                            {
-                                e1.printStackTrace();
-                            }
+                            m_server.disconnect();
                         }
-                        m_connection = null;
-                        m_toServer = null;
-                        m_fromServer = null;
+                        m_server = null;
                         
                         final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
                         model.setRowCount(0);
-                        // Disconnect all clients (PokerClient).
-                        while (m_clients.size() != 0)
-                        {
-                            m_clients.get(0).disconnect();
-                        }
                         jStatusLabel.setText("Not Connected");
                         setTitle(jTitleLabel.getText());
                         getJRefreshButton().setEnabled(false);
@@ -444,30 +405,6 @@ public class LobbyMainJFrame extends JFrame
             });
         }
         return jConnectButton;
-    }
-    
-    /**
-     * Connect the user to a ServerLobby.
-     * 
-     * @param p_host
-     *            - Hostname where the ServerLobby is listening.
-     * @param p_noPort
-     *            - Port number the ServerLobby is listening to.
-     */
-    public boolean connect(String p_host, int p_noPort)
-    {
-        try
-        {
-            m_connection = new Socket(p_host, p_noPort);
-            m_toServer = new PrintWriter(m_connection.getOutputStream(), true); // Auto-flush
-            m_fromServer = new BufferedReader(new InputStreamReader(m_connection.getInputStream()));
-        }
-        catch (final Exception e)
-        {
-            System.err.println("Error on connect: " + e.getMessage());
-            return false;
-        }
-        return true;
     }
     
     /**
@@ -503,15 +440,8 @@ public class LobbyMainJFrame extends JFrame
         final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
         model.setRowCount(0);
         
-        // Ask the server for all available tables.
-        send(new LobbyListTableCommand());
-        
-        final StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
-        
-        // Parse results.
-        while (token.hasMoreTokens())
+        for (final SummaryTableInfo info : m_server.getListTables())
         {
-            final SummaryTableInfo info = new SummaryTableInfo(token);
             final Object[] row = new Object[5];
             row[0] = info.m_noPort;
             row[1] = info.m_tableName;
@@ -539,97 +469,6 @@ public class LobbyMainJFrame extends JFrame
     }
     
     /**
-     * Send a message to a ServerLobby.
-     * 
-     * @param p_msg
-     *            - Message to send to the ServerLobby.
-     */
-    public boolean sendMessage(String p_msg)
-    {
-        if (!isConnected())
-        {
-            return false;
-        }
-        
-        // Output the message to the console. (Logs)
-        System.out.println(m_playerName + " SENT [" + p_msg + "]");
-        m_toServer.println(p_msg);
-        
-        return true;
-    }
-    
-    public boolean send(IPokerCommand p_msg)
-    {
-        return sendMessage(p_msg.encodeCommand());
-    }
-    
-    /**
-     * Tell if the user is connected to a ServerLobby.
-     * 
-     * @return
-     *         If the user is connected to a ServerLobby..
-     */
-    public boolean isConnected()
-    {
-        return (m_connection != null) && m_connection.isConnected() && !m_connection.isClosed();
-    }
-    
-    /**
-     * Receive a message from a ServerLobby.
-     * 
-     * @return
-     *         The message received from the server.
-     */
-    public String receive()
-    {
-        if (!isConnected())
-        {
-            return null;
-        }
-        
-        String msg = null;
-        try
-        {
-            msg = m_fromServer.readLine();
-            // Output the message to the console. (Logs)
-            System.out.println(m_playerName + " RECV [" + msg + "]");
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
-        
-        return msg;
-    }
-    
-    /**
-     * Create a new table.
-     * 
-     * @param p_tableName
-     *            - Name of the new table.
-     * @param p_gameType
-     *            - Game type of the new table.
-     * @param p_bigBlind
-     *            - Amount of the big blind for the new table.
-     * @param p_maxPlayers
-     *            - Maximum number of players that the new table can contain.
-     * 
-     * @return
-     *         <b>true</b> if the user correctly joined the table. <br>
-     *         <b>false</b> if no seat is free, someone with the same name
-     *         has already joined this table, or the table does not exist.
-     */
-    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimit limit)
-    {
-        // Send query.
-        send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
-        // Wait for response.
-        final StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
-        
-        return Integer.parseInt(token.nextToken());
-    }
-    
-    /**
      * Join the table specified by is port number.
      * 
      * @param p_noPort
@@ -646,101 +485,17 @@ public class LobbyMainJFrame extends JFrame
      */
     public boolean joinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
     {
-        Socket tableSocket = null;
-        PrintWriter toTable = null;
-        BufferedReader fromTable = null;
-        try
+        final ClientSidePokerTcpServer client = m_server.joinTable(p_noPort, p_tableName);
+        if (client != null)
         {
-            // Connect with the TableManager on the specified port number.
-            System.out.println("Trying connection with the table manager...");
-            tableSocket = new Socket(m_connection.getInetAddress(), p_noPort);
-            toTable = new PrintWriter(tableSocket.getOutputStream(), true); // Auto-flush
-            // enabled.
-            fromTable = new BufferedReader(new InputStreamReader(tableSocket.getInputStream()));
-            
-            // Authenticate the user.
-            toTable.println(new LobbyConnectCommand(m_playerName).encodeCommand());
-            if (!Boolean.parseBoolean(fromTable.readLine()))
-            {
-                System.out.println("Authentification failed on the table: " + p_tableName);
-                return false;
-            }
-            
-            // Build query.
-            final LobbyJoinTableCommand command = new LobbyJoinTableCommand(m_playerName, p_tableName);
-            
-            // Send query.
-            toTable.println(command.encodeCommand());
-            
-            // Wait for response.
-            final StringTokenizer token = new StringTokenizer(fromTable.readLine(), PokerCommand.DELIMITER);
-            final int noSeat = Integer.parseInt(token.nextToken());
-            
-            if (noSeat == -1)
-            {
-                System.out.println("Cannot sit at this table: " + p_tableName);
-                return false;
-            }
-            
-            // Add a tab associated to the newly created table in advanced
-            // settings.
-            // final ClientPokerPlayerInfo localPlayer = new ClientPokerPlayerInfo(noSeat, m_playerName, 0);
-            // final ClientPokerTableInfo table = new ClientPokerTableInfo();
-            // table.m_name = p_tableName;
-            // table.m_bigBlindAmount = p_bigBlindAmount;
-            // table.m_smallBlindAmount = p_bigBlindAmount / 2;
-            
-            final ClientSidePokerTcpServer client = new ClientSidePokerTcpServer(tableSocket, fromTable, noSeat, m_playerName);
-            // final PokerClientTcp client = new PokerClientTcp(localPlayer, tableSocket, table, fromTable);
             GameTableJFrame gui = null;
-            
-            // if (m_advisor)
-            // {
-            // final StatsAgent statsAgent = new StatsAgent();
-            // statsAgent.setPokerObserver(client.getPokerObserver());
-            // client.attach(statsAgent);
-            // final PokerSVM pokerSVM = new PokerSVM(statsAgent, m_playerName);
-            // gui = new TableGUIAdvisor(statsAgent, pokerSVM);
-            // }
-            // else
-            // {
             gui = new GameTableJFrame();
-            // }
-            
-            // Start a the new PokerClient.
             gui.setPokerObserver(client.getGameObserver());
-            gui.setGame(client, noSeat);
-            // client.setActionner(gui);
-            // client.addClosingListener(this);
-            client.start();
+            gui.setGame(client, client.getNoSeat());
             gui.start();
-            m_clients.add(client);
-            
             return true;
-            
         }
-        catch (final IOException e)
-        {
-            System.out.println(p_noPort + " not open.");
-        }
-        
         return false;
-    }
-    
-    public ClientSidePokerTcpServer findClient(int noPort)
-    {
-        int i = 0;
-        while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))
-        {
-            ++i;
-        }
-        
-        if (i == m_clients.size())
-        {
-            return null;
-        }
-        
-        return m_clients.get(i);
     }
     
     private ClientSidePokerTcpServer findClient()
@@ -752,7 +507,7 @@ public class LobbyMainJFrame extends JFrame
         
         final int index = getJMainTable().getSelectedRow();
         final int noPort = (Integer) getJMainTable().getModel().getValueAt(index, 0);
-        return findClient(noPort);
+        return m_server.findClient(noPort);
     }
     
     private void eventJoinTable()

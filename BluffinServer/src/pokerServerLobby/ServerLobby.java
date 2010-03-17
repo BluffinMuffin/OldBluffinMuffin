@@ -113,7 +113,6 @@ public class ServerLobby extends Thread
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            // TODO: RICK: Gestion TypePokerGameLimit
             final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
             game.start();
             // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
@@ -152,7 +151,6 @@ public class ServerLobby extends Thread
             if (game.isRunning())
             {
                 final PokerTableInfo table = game.getPokerTable();
-                // TODO: RICK: Gestion TypePokerGame
                 tables.add(new SummaryTableInfo(noPort, table.getTableName(), table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
             }
             else
