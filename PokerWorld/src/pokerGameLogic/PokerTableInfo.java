@@ -438,75 +438,42 @@ public class PokerTableInfo
         }
     }
     
+    public void AddBet(PokerPlayerInfo p, PokerMoneyPot pot, int bet)
+    {
+        p.setCurrentBetMoneyAmount(p.getCurrentBetMoneyAmount() - bet);
+        pot.addAmount(bet);
+        if (bet >= 0 && (p.isPlaying() || p.isAllIn()))
+        {
+            pot.attachPlayer(p);
+        }
+    }
+    
     public void managePotsRoundEnd()
     {
-        // TODO: RICK: De l'argent disparait parfois lors de la distribution des POT !!!
-        System.out.println("# managePotsRoundEnd ... nb caps: " + m_allInCaps.size());
         int currentTaken = 0;
         while (m_allInCaps.size() > 0)
         {
             final PokerMoneyPot pot = m_pots.get(m_currentPotId);
             pot.detachAll();
             final int cap = m_allInCaps.poll() - currentTaken;
-            System.out.println("## cap:  " + cap + " on pot: " + pot.getId());
             
             for (final PokerPlayerInfo p : getPlayers())
             {
-                System.out.println("### player:  " + p.getPlayerName());
-                if (p.isPlaying() || p.isAllIn())
-                {
-                    final int bet = p.getCurrentBetMoneyAmount() - cap;
-                    System.out.println("#### participating ? :  0 < " + bet);
-                    if (bet >= 0)
-                    {
-                        System.out.println("#### yep !!");
-                        p.setCurrentBetMoneyAmount(bet);
-                        pot.addAmount(cap);
-                        pot.attachPlayer(p);
-                    }
-                }
+                AddBet(p, pot, Math.min(p.getCurrentBetMoneyAmount(), cap));
             }
             currentTaken += cap;
             m_currentPotId++;
             m_pots.add(new PokerMoneyPot(m_currentPotId));
         }
-        final int restant = m_currentHigherBet - currentTaken;
+        
         final PokerMoneyPot curPot = m_pots.get(m_currentPotId);
         curPot.detachAll();
-        System.out.println("## restant:  " + restant + " on pot: " + curPot.getId());
         for (final PokerPlayerInfo p : getPlayers())
         {
-            System.out.println("### player:  " + p.getPlayerName());
-            if (p.isPlaying())
-            {
-                final int bet = p.getCurrentBetMoneyAmount() - restant;
-                System.out.println("#### participating ? :  0 < " + bet);
-                if (bet >= 0)
-                {
-                    System.out.println("#### yep !!");
-                    p.setCurrentBetMoneyAmount(bet);
-                    curPot.addAmount(restant);
-                    curPot.attachPlayer(p);
-                }
-            }
-            else
-            {
-                curPot.addAmount(p.getCurrentBetMoneyAmount());
-                p.setCurrentBetMoneyAmount(0);
-            }
+            AddBet(p, curPot, p.getCurrentBetMoneyAmount());
+            
         }
         m_currentHigherBet = 0;
-        
-        // TODO: RICK: Get rid of that ! :)
-        for (int i = 0; i <= m_currentPotId; ++i)
-        {
-            final PokerMoneyPot cPot = m_pots.get(i);
-            System.out.println(">> Pot #" + cPot.getId() + " $" + cPot.getAmount() + " :: " + cPot.getAttachedPlayers().size());
-            for (final PokerPlayerInfo p : cPot.getAttachedPlayers())
-            {
-                System.out.println(">>> Attached: " + p.getPlayerName());
-            }
-        }
     }
     
     public void setNbAllIn(int nbAllIn)
