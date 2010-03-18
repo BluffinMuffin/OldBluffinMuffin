@@ -179,9 +179,14 @@ public final class PokerHandEvaluator
                 final int r1 = cards[1].getRank().ordinal();
                 if (r0 == r1)
                 {
-                    val = 100;
+                    val = 100000;
                 }
-                val += Math.max(r0, r1);
+                val += Math.max(r0, r1) * 1000;
+                val += Math.min(r0, r1) * 10;
+                if (cards[0].getSuit() == cards[1].getSuit())
+                {
+                    val++;
+                }
                 break;
             
             case 5:
