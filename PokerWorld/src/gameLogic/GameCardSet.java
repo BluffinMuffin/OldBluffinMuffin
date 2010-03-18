@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * Original class from Steve Brecher, version 2006Dec11.0
  * Adapted by Bluffin Muffin
@@ -122,6 +121,15 @@ public class GameCardSet implements Set<GameCard>
         return cards.contains(o);
     }
     
+    public GameCard get(int i)
+    {
+        if (i < 0 || i >= cards.size())
+        {
+            return null;
+        }
+        return cards.get(i);
+    }
+    
     public boolean containsAll(Collection<?> coll)
     {
         return cards.containsAll(coll);
@@ -196,7 +204,7 @@ public class GameCardSet implements Set<GameCard>
         return cards.size();
     }
     
-    public Object[] toArray()
+    public GameCard[] toArray()
     {
         return cards.toArray(new GameCard[cards.size()]);
     }

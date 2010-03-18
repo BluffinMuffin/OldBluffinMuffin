@@ -553,11 +553,16 @@ public class PokerTableInfo
     
     public int getMaxRaiseAmount(PokerPlayerInfo p)
     {
-        return p.getCurrentTotalMoneyAmount() - getCurrentHigherBet();
+        return getFreeMoneyAmount(p);
     }
     
     public int getCallAmount(PokerPlayerInfo p)
     {
-        return p.getCurrentBetMoneyAmount() - getCurrentHigherBet();
+        return getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
+    }
+    
+    public int getFreeMoneyAmount(PokerPlayerInfo p)
+    {
+        return p.getCurrentTotalMoneyAmount() - getCurrentHigherBet();
     }
 }

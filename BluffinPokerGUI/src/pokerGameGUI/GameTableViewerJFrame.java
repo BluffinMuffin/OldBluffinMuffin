@@ -632,12 +632,9 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             public void gameBettingRoundStarted()
             {
                 int i = 0;
-                final GameCard[] cards = new GameCard[5];
-                m_game.getPokerTable().getCurrentBoardCards().toArray(cards);
-                
-                for (; i < 5 && cards[i].getId() != GameCard.NO_CARD_ID; ++i)
+                for (; i < 5 && m_game.getPokerTable().getCurrentBoardCards().get(i).getId() != GameCard.NO_CARD_ID; ++i)
                 {
-                    board[i].setCard(cards[i]);
+                    board[i].setCard(m_game.getPokerTable().getCurrentBoardCards().get(i));
                 }
                 for (; i < 5; ++i)
                 {
@@ -811,11 +808,9 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 if (r != TypePokerGameRound.PREFLOP)
                 {
                     write("==> Current board cards:");
-                    final GameCard[] cards = new GameCard[5];
-                    table.getCurrentBoardCards().toArray(cards);
-                    for (int i = 0; i < 5 && cards[i].getId() != GameCard.NO_CARD_ID; ++i)
+                    for (int i = 0; i < 5 && table.getCurrentBoardCards().get(i).getId() != GameCard.NO_CARD_ID; ++i)
                     {
-                        write(" " + cards[i].toString());
+                        write(" " + table.getCurrentBoardCards().get(i).toString());
                     }
                 }
                 writeLine("");

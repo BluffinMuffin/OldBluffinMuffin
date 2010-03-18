@@ -173,19 +173,19 @@ public final class PokerHandEvaluator
         switch (cs.size())
         {
             case 2:
-                final GameCard[] cards = new GameCard[2];
-                cs.toArray(cards);
-                final int r0 = cards[0].getRank().ordinal();
-                final int r1 = cards[1].getRank().ordinal();
+                final int r0 = cs.get(0).getRank().ordinal();
+                final int r1 = cs.get(1).getRank().ordinal();
+                final int s0 = cs.get(0).getSuit().ordinal();
+                final int s1 = cs.get(1).getSuit().ordinal();
                 if (r0 == r1)
                 {
-                    val = 100000;
+                    val = 1 << 9;
                 }
-                val += Math.max(r0, r1) * 1000;
-                val += Math.min(r0, r1) * 10;
-                if (cards[0].getSuit() == cards[1].getSuit())
+                val |= Math.max(r0, r1) << 5;
+                val |= Math.min(r0, r1) << 1;
+                if (s0 == s1)
                 {
-                    val++;
+                    val |= 1;
                 }
                 break;
             
