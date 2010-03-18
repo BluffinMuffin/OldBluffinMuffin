@@ -553,7 +553,7 @@ public class PokerTableInfo
     
     public int getMaxRaiseAmount(PokerPlayerInfo p)
     {
-        return getFreeMoneyAmount(p);
+        return getFreeMoneyAmount(p) + getCallAmount(p);
     }
     
     public int getCallAmount(PokerPlayerInfo p)

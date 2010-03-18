@@ -322,7 +322,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 if (p != null)
                 {
                     p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
-                    m_gameObserver.playerWonPot(p, m_pokerTable.getPots().get(command.getPotID()), command.getShared());
+                    m_gameObserver.playerWonPot(p, new PokerMoneyPot(command.getPotID(), command.getShared()), command.getShared());
                 }
             }
             
