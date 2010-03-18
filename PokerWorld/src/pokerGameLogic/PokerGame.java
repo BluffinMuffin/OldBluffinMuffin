@@ -87,6 +87,7 @@ public class PokerGame implements IPokerGame
                 TryToBegin();
                 break;
             case BLIND_WAITING:
+                m_pokerTable.setCurrentHigherBet(0);
                 break;
             case PLAYING:
                 m_pokerTable.setCurrentGameRound(TypePokerGameRound.PREFLOP);
@@ -254,6 +255,10 @@ public class PokerGame implements IPokerGame
             {
                 setCurrentGameState(TypePokerGameState.PLAYING);
             }
+            if (amnt > m_pokerTable.getCurrentHigherBet())
+            {
+                m_pokerTable.setCurrentHigherBet(amnt);
+            }
             return true;
         }
         
@@ -393,7 +398,6 @@ public class PokerGame implements IPokerGame
             case PREFLOP:
                 m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentBigBlindNoSeat());
                 dealHole();
-                m_pokerTable.setCurrentHigherBet(m_pokerTable.getBigBlindAmount());
                 break;
             case FLOP:
                 dealFlop();
