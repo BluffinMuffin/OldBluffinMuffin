@@ -10,6 +10,7 @@ public class GameHoleCardsChangedCommand implements IPokerCommand
 {
     private final ArrayList<Integer> m_cardsID = new ArrayList<Integer>();
     private final int m_playerPos;
+    private final boolean m_isPlaying;
     public static String COMMAND_NAME = "gameHOLE_CARDS_CHANGED";
     
     public GameHoleCardsChangedCommand(StringTokenizer argsToken)
@@ -19,13 +20,15 @@ public class GameHoleCardsChangedCommand implements IPokerCommand
         {
             m_cardsID.add(Integer.parseInt(argsToken.nextToken()));
         }
+        m_isPlaying = Boolean.parseBoolean(argsToken.nextToken());
     }
     
-    public GameHoleCardsChangedCommand(Integer pos, Integer card1, Integer card2)
+    public GameHoleCardsChangedCommand(Integer pos, Integer card1, Integer card2, boolean playing)
     {
         m_playerPos = pos;
         m_cardsID.add(card1);
         m_cardsID.add(card2);
+        m_isPlaying = playing;
     }
     
     @Override
@@ -41,6 +44,8 @@ public class GameHoleCardsChangedCommand implements IPokerCommand
             sb.append(m_cardsID.get(i));
             sb.append(PokerCommand.DELIMITER);
         }
+        sb.append(m_isPlaying);
+        sb.append(PokerCommand.DELIMITER);
         return sb.toString();
     }
     
@@ -52,5 +57,10 @@ public class GameHoleCardsChangedCommand implements IPokerCommand
     public int getPlayerPos()
     {
         return m_playerPos;
+    }
+    
+    public boolean isPlaying()
+    {
+        return m_isPlaying;
     }
 }

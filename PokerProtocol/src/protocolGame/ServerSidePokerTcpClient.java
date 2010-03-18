@@ -167,7 +167,7 @@ public class ServerSidePokerTcpClient implements Runnable
             public void playerHoleCardsChanged(PokerPlayerInfo p)
             {
                 final GameCard[] holeCards = p.getCurrentHand(p.getCurrentTablePosition() == m_player.getCurrentTablePosition());
-                send(new GameHoleCardsChangedCommand(p.getCurrentTablePosition(), holeCards[0].getId(), holeCards[1].getId()));
+                send(new GameHoleCardsChangedCommand(p.getCurrentTablePosition(), holeCards[0].getId(), holeCards[1].getId(), p.isPlaying()));
             }
             
             @Override

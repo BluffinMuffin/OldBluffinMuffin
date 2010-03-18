@@ -225,8 +225,18 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
+                    if (command.isPlaying())
+                    {
+                        p.setPlaying();
+                    }
+                    else
+                    {
+                        p.setFolded();
+                    }
                     final List<Integer> ids = command.getCardsId();
-                    p.setHand(GameCard.getInstance(ids.get(0)), GameCard.getInstance(ids.get(1)));
+                    final GameCard gc0 = GameCard.getInstance(ids.get(0));
+                    final GameCard gc1 = GameCard.getInstance(ids.get(1));
+                    p.setHand(gc0, gc1);
                     m_gameObserver.playerHoleCardsChanged(p);
                 }
             }

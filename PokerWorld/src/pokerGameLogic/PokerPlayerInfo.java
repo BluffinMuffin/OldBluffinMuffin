@@ -61,7 +61,8 @@ public class PokerPlayerInfo
         m_currentHand.clear();
         while (!set.isEmpty())
         {
-            m_currentHand.add(set.pop());
+            final GameCard gc = set.pop();
+            m_currentHand.add(gc);
         }
     }
     
