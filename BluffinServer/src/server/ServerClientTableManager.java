@@ -9,13 +9,13 @@ import java.util.StringTokenizer;
 
 import poker.game.PokerGame;
 import poker.game.TableInfo;
-import protocol.IPokerCommand;
-import protocol.PokerCommand;
-import protocol.game.ServerSidePokerTcpClient;
-import protocol.lobby.LobbyServerSideAdapter;
-import protocol.lobby.LobbyServerSideObserver;
-import protocol.lobby.commands.LobbyIdentifyCommand;
-import protocol.lobby.commands.LobbyJoinTableCommand;
+import protocol.ICommand;
+import protocol.Command;
+import protocol.game.GameTCPServer;
+import protocol.lobby.commands.IdentifyCommand;
+import protocol.lobby.commands.JoinTableCommand;
+import protocol.lobby.observer.LobbyServerAdapter;
+import protocol.lobby.observer.LobbyServerObserver;
 
 /**
  * @author Hocus
@@ -25,7 +25,7 @@ public class ServerClientTableManager extends Thread
 {
     String m_name = "?";
     ServerTableManager m_manager;
-    private final LobbyServerSideObserver m_commandObserver = new LobbyServerSideObserver();
+    private final LobbyServerObserver m_commandObserver = new LobbyServerObserver();
     
     // Communications with the client
     Socket m_socket = null;
@@ -56,21 +56,21 @@ public class ServerClientTableManager extends Thread
         initializeCommandObserver();
         try
         {
-            StringTokenizer token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
+            StringTokenizer token = new StringTokenizer(receive(), Command.DELIMITER);
             String commandName = token.nextToken();
             
             // Expect client's authentification.
-            if (!commandName.equals(LobbyIdentifyCommand.COMMAND_NAME))
+            if (!commandName.equals(IdentifyCommand.COMMAND_NAME))
             {
                 System.out.println("Authentification expected!!!");
                 return;
             }
             
-            token = new StringTokenizer(receive(), PokerCommand.DELIMITER);
+            token = new StringTokenizer(receive(), Command.DELIMITER);
             commandName = token.nextToken();
             
             // Expect join message from the client.
-            if (!commandName.equals(LobbyJoinTableCommand.COMMAND_NAME))
+            if (!commandName.equals(JoinTableCommand.COMMAND_NAME))
             {
                 System.out.println("Join table expected!!!");
                 return;
@@ -94,7 +94,7 @@ public class ServerClientTableManager extends Thread
         m_toClient.println(p_msg);
     }
     
-    protected void send(IPokerCommand p_msg)
+    protected void send(ICommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
     }
@@ -108,7 +108,7 @@ public class ServerClientTableManager extends Thread
     
     private void initializeCommandObserver()
     {
-        m_commandObserver.subscribe(new LobbyServerSideAdapter()
+        m_commandObserver.subscribe(new LobbyServerAdapter()
         {
             @Override
             public void commandReceived(String command)
@@ -117,14 +117,14 @@ public class ServerClientTableManager extends Thread
             }
             
             @Override
-            public void connectCommandReceived(LobbyIdentifyCommand command)
+            public void connectCommandReceived(IdentifyCommand command)
             {
                 m_name = command.getPlayerName();
                 sendMessage(command.encodeResponse(true));
             }
             
             @Override
-            public void joinTableCommandReceived(LobbyJoinTableCommand command)
+            public void joinTableCommandReceived(JoinTableCommand command)
             {
                 try
                 {
@@ -135,7 +135,7 @@ public class ServerClientTableManager extends Thread
                     }
                     
                     // Create new NetworkPlayer.
-                    final ServerSidePokerTcpClient client = new ServerSidePokerTcpClient(m_manager.m_game, m_name, 1500, m_socket);
+                    final GameTCPServer client = new GameTCPServer(m_manager.m_game, m_name, 1500, m_socket);
                     final PokerGame game = m_manager.m_game;
                     final TableInfo table = game.getPokerTable();
                     // final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);

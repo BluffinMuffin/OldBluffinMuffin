@@ -22,13 +22,13 @@ import javax.swing.table.DefaultTableModel;
 import pokerGUI.game.GameTableJFrame;
 import pokerGUI.lobby.LobbyAddTableJDialog;
 import pokerGUI.lobby.LobbyNameUsedJDialog;
-import protocol.game.ClientSidePokerTcpServer;
-import protocol.lobby.ClientSideLobbyTcpServer;
+import protocol.game.GameTCPClient;
+import protocol.lobby.LobbyTCPClient;
 import protocol.lobby.SummaryTableInfo;
 
 public class LobbyMainJFrame extends JFrame
 {
-    private ClientSideLobbyTcpServer m_server;
+    private LobbyTCPClient m_server;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -60,7 +60,7 @@ public class LobbyMainJFrame extends JFrame
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final ClientSidePokerTcpServer client = findClient();
+                    final GameTCPClient client = findClient();
                     if (client != null)
                     {
                         client.disconnect();
@@ -255,7 +255,7 @@ public class LobbyMainJFrame extends JFrame
     
     public void allowJoinOrLeave()
     {
-        final ClientSidePokerTcpServer client = findClient();
+        final GameTCPClient client = findClient();
         if (client != null)
         {
             getJJoinTableButton().setEnabled(false);
@@ -323,7 +323,7 @@ public class LobbyMainJFrame extends JFrame
         form.setVisible(true);
         if (form.isOK())
         {
-            m_server = new ClientSideLobbyTcpServer(form.getServerAddress(), form.getServerPort());
+            m_server = new LobbyTCPClient(form.getServerAddress(), form.getServerPort());
             
             if (m_server.connect())
             {
@@ -483,7 +483,7 @@ public class LobbyMainJFrame extends JFrame
         return m_server.joinTable(p_noPort, p_tableName, gui) != null;
     }
     
-    private ClientSidePokerTcpServer findClient()
+    private GameTCPClient findClient()
     {
         if (getJMainTable().getSelectionModel().isSelectionEmpty())
         {

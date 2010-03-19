@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-import protocol.IPokerCommand;
-import protocol.lobby.LobbyServerSideAdapter;
-import protocol.lobby.LobbyServerSideObserver;
-import protocol.lobby.commands.LobbyCreateTableCommand;
-import protocol.lobby.commands.LobbyDisconnectCommand;
-import protocol.lobby.commands.LobbyIdentifyCommand;
-import protocol.lobby.commands.LobbyListTableCommand;
+import protocol.ICommand;
+import protocol.commands.DisconnectCommand;
+import protocol.lobby.commands.CreateTableCommand;
+import protocol.lobby.commands.IdentifyCommand;
+import protocol.lobby.commands.ListTableCommand;
+import protocol.lobby.observer.LobbyServerAdapter;
+import protocol.lobby.observer.LobbyServerObserver;
 
 /**
  * This class represents a client for ServerLobby.
@@ -22,7 +22,7 @@ public class ServerClientLobby extends Thread
 {
     private String m_playerName = "?";
     private final ServerLobby m_lobby;
-    private final LobbyServerSideObserver m_commandObserver = new LobbyServerSideObserver();
+    private final LobbyServerObserver m_commandObserver = new LobbyServerObserver();
     
     // Communications with the client
     private Socket m_socket = null;
@@ -68,7 +68,7 @@ public class ServerClientLobby extends Thread
         return line;
     }
     
-    protected void send(IPokerCommand p_msg)
+    protected void send(ICommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
     }
@@ -99,7 +99,7 @@ public class ServerClientLobby extends Thread
     
     private void initializeCommandObserver()
     {
-        m_commandObserver.subscribe(new LobbyServerSideAdapter()
+        m_commandObserver.subscribe(new LobbyServerAdapter()
         {
             @Override
             public void commandReceived(String command)
@@ -108,7 +108,7 @@ public class ServerClientLobby extends Thread
             }
             
             @Override
-            public void connectCommandReceived(LobbyIdentifyCommand command)
+            public void connectCommandReceived(IdentifyCommand command)
             {
                 m_playerName = command.getPlayerName();
                 final boolean ok = !m_lobby.isNameUsed(m_playerName);
@@ -120,7 +120,7 @@ public class ServerClientLobby extends Thread
             }
             
             @Override
-            public void disconnectCommandReceived(LobbyDisconnectCommand command)
+            public void disconnectCommandReceived(DisconnectCommand command)
             {
                 m_lobby.removeName(m_playerName);
                 try
@@ -134,13 +134,13 @@ public class ServerClientLobby extends Thread
             }
             
             @Override
-            public void createTableCommandReceived(LobbyCreateTableCommand command)
+            public void createTableCommandReceived(CreateTableCommand command)
             {
                 sendMessage(command.encodeResponse(m_lobby.createTable(command)));
             }
             
             @Override
-            public void listTableCommandReceived(LobbyListTableCommand command)
+            public void listTableCommandReceived(ListTableCommand command)
             {
                 sendMessage(command.encodeResponse(m_lobby.listTables()));
             }

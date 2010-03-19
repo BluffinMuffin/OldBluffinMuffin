@@ -4,15 +4,15 @@ import java.util.StringTokenizer;
 
 import protocol.ICommand;
 
-public class GameEndedCommand implements ICommand
+public class TableClosedCommand implements ICommand
 {
-    public static String COMMAND_NAME = "gameENDED";
+    public static String COMMAND_NAME = "gameTABLE_CLOSED";
     
-    public GameEndedCommand(StringTokenizer argsToken)
+    public TableClosedCommand(StringTokenizer argsToken)
     {
     }
     
-    public GameEndedCommand()
+    public TableClosedCommand()
     {
     }
     
@@ -20,7 +20,7 @@ public class GameEndedCommand implements ICommand
     public String encodeCommand()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(GameEndedCommand.COMMAND_NAME);
+        sb.append(TableClosedCommand.COMMAND_NAME);
         return sb.toString();
     }
 }

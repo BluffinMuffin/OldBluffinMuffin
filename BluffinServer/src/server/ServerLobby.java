@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import poker.game.PokerGame;
 import poker.game.TableInfo;
 import protocol.lobby.SummaryTableInfo;
-import protocol.lobby.commands.LobbyCreateTableCommand;
+import protocol.lobby.commands.CreateTableCommand;
 
 /**
  * @author Hocus
@@ -92,7 +92,7 @@ public class ServerLobby extends Thread
         }
     }
     
-    public int createTable(LobbyCreateTableCommand command)
+    public int createTable(CreateTableCommand command)
     {
         listTables();
         

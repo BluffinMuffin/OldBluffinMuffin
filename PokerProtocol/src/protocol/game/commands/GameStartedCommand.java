@@ -2,10 +2,10 @@ package protocol.game.commands;
 
 import java.util.StringTokenizer;
 
-import protocol.IPokerCommand;
-import protocol.PokerCommand;
+import protocol.ICommand;
+import protocol.Command;
 
-public class GameStartedCommand implements IPokerCommand
+public class GameStartedCommand implements ICommand
 {
     private final int m_noSeatD;
     private final int m_noSeatSB;
@@ -31,11 +31,11 @@ public class GameStartedCommand implements IPokerCommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(GameStartedCommand.COMMAND_NAME);
-        sb.append(PokerCommand.DELIMITER);
+        sb.append(Command.DELIMITER);
         sb.append(m_noSeatD);
-        sb.append(PokerCommand.DELIMITER);
+        sb.append(Command.DELIMITER);
         sb.append(m_noSeatSB);
-        sb.append(PokerCommand.DELIMITER);
+        sb.append(Command.DELIMITER);
         sb.append(m_noSeatBB);
         return sb.toString();
     }
