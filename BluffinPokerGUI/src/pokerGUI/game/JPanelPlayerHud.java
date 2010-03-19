@@ -19,7 +19,7 @@ import javax.swing.border.BevelBorder;
 import poker.game.TypeAction;
 
 
-public class PlayerHudJPanel extends JPanel
+public class JPanelPlayerHud extends JPanel
 {
     private static final long serialVersionUID = 1L;
     private JPanel jTopPanel = null;
@@ -28,15 +28,15 @@ public class PlayerHudJPanel extends JPanel
     private JLabel jStatusLabel = null;
     private JLabel jActionLabel = null;
     private JPanel jCenterPanel = null;
-    private GameCardJPanel cardPanel1 = null;
-    private GameCardJPanel cardPanel2 = null;
+    private JPanelCard cardPanel1 = null;
+    private JPanelCard cardPanel2 = null;
     private JLabel jDealerLabel = null;
     private JLabel jBlindLabel = null;
     
     /**
      * This is the default constructor
      */
-    public PlayerHudJPanel()
+    public JPanelPlayerHud()
     {
         super();
         initialize();
@@ -134,11 +134,11 @@ public class PlayerHudJPanel extends JPanel
      * 
      * @return clientGameGUI.CardPanel
      */
-    private GameCardJPanel getCardPanel1()
+    private JPanelCard getCardPanel1()
     {
         if (cardPanel1 == null)
         {
-            cardPanel1 = new GameCardJPanel();
+            cardPanel1 = new JPanelCard();
             cardPanel1.setBounds(new Rectangle(5, 3, 40, 56));
         }
         return cardPanel1;
@@ -149,11 +149,11 @@ public class PlayerHudJPanel extends JPanel
      * 
      * @return clientGameGUI.CardPanel
      */
-    private GameCardJPanel getCardPanel2()
+    private JPanelCard getCardPanel2()
     {
         if (cardPanel2 == null)
         {
-            cardPanel2 = new GameCardJPanel();
+            cardPanel2 = new JPanelCard();
             cardPanel2.setBounds(new Rectangle(50, 3, 40, 56));
         }
         return cardPanel2;

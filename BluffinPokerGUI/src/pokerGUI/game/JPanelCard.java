@@ -8,26 +8,26 @@ import java.util.TreeMap;
 import javax.swing.JPanel;
 
 
-public class GameCardJPanel extends JPanel
+public class JPanelCard extends JPanel
 {
     private static final String PATH_IMAGE_CARD = "images/cards/";
     private static final String DEFAULT_CARD = "default.png";
     
     private String m_current = null;
-    private final TreeMap<String, GameCardJLabel> m_labels = new TreeMap<String, GameCardJLabel>();
+    private final TreeMap<String, JLabelCard> m_labels = new TreeMap<String, JLabelCard>();
     
     private static final long serialVersionUID = 1L;
     
-    public GameCardJPanel()
+    public JPanelCard()
     {
         super(true);
-        GameCardJLabel label = new GameCardJLabel(GameCardJPanel.PATH_IMAGE_CARD + GameCardJPanel.DEFAULT_CARD);
+        JLabelCard label = new JLabelCard(JPanelCard.PATH_IMAGE_CARD + JPanelCard.DEFAULT_CARD);
         m_labels.put("-2", label);
         this.add(label);
         for (int i = 0; i < 52; ++i)
         {
             final String code = Card.getInstance(i).toString();
-            label = new GameCardJLabel(GameCardJPanel.PATH_IMAGE_CARD + code + ".png");
+            label = new JLabelCard(JPanelCard.PATH_IMAGE_CARD + code + ".png");
             m_labels.put(code, label);
             this.add(label);
         }

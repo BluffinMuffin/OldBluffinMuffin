@@ -6,7 +6,7 @@ import poker.IPokerViewer;
 import poker.game.IPokerGame;
 import poker.game.observer.PokerGameObserver;
 
-public abstract class GameTableAbstractJFrame extends JFrame implements IPokerViewer
+public abstract class AbstractJFrameTable extends JFrame implements IPokerViewer
 {
     private static final long serialVersionUID = 1L;
     protected PokerGameObserver m_pokerObserver;

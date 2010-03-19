@@ -25,13 +25,13 @@ import poker.game.TypeAction;
 import poker.game.TypeRound;
 import poker.game.observer.PokerGameAdapter;
 import poker.game.observer.PokerGameObserver;
-import pokerGUI.ConsoleJPanel;
+import pokerGUI.JPanelConsole;
 
-public class GameTableViewerJFrame extends GameTableAbstractJFrame
+public class JFrameTableViewer extends AbstractJFrameTable
 {
-    private final PlayerHudJPanel[] huds = new PlayerHudJPanel[10];
+    private final JPanelPlayerHud[] huds = new JPanelPlayerHud[10];
     private final JLabel[] bets = new JLabel[10];
-    private final GameCardJPanel[] board = new GameCardJPanel[5];
+    private final JPanelCard[] board = new JPanelCard[5];
     
     /**
      * @param args
@@ -42,7 +42,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
         {
             public void run()
             {
-                final GameTableViewerJFrame thisClass = new GameTableViewerJFrame();
+                final JFrameTableViewer thisClass = new JFrameTableViewer();
                 thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 thisClass.setVisible(true);
             }
@@ -53,25 +53,25 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     private JPanel jContentPane = null;
     private JPanel jTopPanel = null;
     private JPanel jRightPanel = null;
-    private ConsoleJPanel jBottomConsolePanel = null;
+    private JPanelConsole jBottomConsolePanel = null;
     private JLabel jTitleLabel = null;
     private JLabel jBackgroundTableLabel = null;
     private JPanel jTablePanel = null;
-    private PlayerHudJPanel jHudPanel = null;
-    private PlayerHudJPanel jHudPanel11 = null;
-    private PlayerHudJPanel jHudPanel12 = null;
-    private PlayerHudJPanel jHudPanel13 = null;
-    private PlayerHudJPanel jHudPanel14 = null;
-    private PlayerHudJPanel jHudPanel15 = null;
-    private PlayerHudJPanel jHudPanel16 = null;
-    private PlayerHudJPanel jHudPanel17 = null;
-    private PlayerHudJPanel jHudPanel18 = null;
-    private PlayerHudJPanel jHudPanel19 = null;
-    private GameCardJPanel gameCardJPanel1 = null;
-    private GameCardJPanel gameCardJPanel2 = null;
-    private GameCardJPanel gameCardJPanel3 = null;
-    private GameCardJPanel gameCardJPanel4 = null;
-    private GameCardJPanel gameCardJPanel5 = null;
+    private JPanelPlayerHud jHudPanel = null;
+    private JPanelPlayerHud jHudPanel11 = null;
+    private JPanelPlayerHud jHudPanel12 = null;
+    private JPanelPlayerHud jHudPanel13 = null;
+    private JPanelPlayerHud jHudPanel14 = null;
+    private JPanelPlayerHud jHudPanel15 = null;
+    private JPanelPlayerHud jHudPanel16 = null;
+    private JPanelPlayerHud jHudPanel17 = null;
+    private JPanelPlayerHud jHudPanel18 = null;
+    private JPanelPlayerHud jHudPanel19 = null;
+    private JPanelCard gameCardJPanel1 = null;
+    private JPanelCard gameCardJPanel2 = null;
+    private JPanelCard gameCardJPanel3 = null;
+    private JPanelCard gameCardJPanel4 = null;
+    private JPanelCard gameCardJPanel5 = null;
     private JLabel jTotalPotTitleLabel = null;
     private JLabel jTotalPotLabel = null;
     private JLabel jBetLabel1 = null;
@@ -88,7 +88,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
     /**
      * This is the default constructor
      */
-    public GameTableViewerJFrame()
+    public JFrameTableViewer()
     {
         super();
         initialize();
@@ -164,11 +164,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return clientGameGUI.GameCardJPanel
      */
-    private GameCardJPanel getGameCardJPanel1()
+    private JPanelCard getGameCardJPanel1()
     {
         if (gameCardJPanel1 == null)
         {
-            gameCardJPanel1 = new GameCardJPanel();
+            gameCardJPanel1 = new JPanelCard();
             gameCardJPanel1.setBounds(new Rectangle(269, 240, 40, 56));
         }
         return gameCardJPanel1;
@@ -179,11 +179,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return clientGameGUI.GameCardJPanel
      */
-    private GameCardJPanel getGameCardJPanel2()
+    private JPanelCard getGameCardJPanel2()
     {
         if (gameCardJPanel2 == null)
         {
-            gameCardJPanel2 = new GameCardJPanel();
+            gameCardJPanel2 = new JPanelCard();
             gameCardJPanel2.setBounds(new Rectangle(329, 240, 40, 56));
         }
         return gameCardJPanel2;
@@ -194,11 +194,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return clientGameGUI.GameCardJPanel
      */
-    private GameCardJPanel getGameCardJPanel3()
+    private JPanelCard getGameCardJPanel3()
     {
         if (gameCardJPanel3 == null)
         {
-            gameCardJPanel3 = new GameCardJPanel();
+            gameCardJPanel3 = new JPanelCard();
             gameCardJPanel3.setBounds(new Rectangle(389, 240, 40, 56));
         }
         return gameCardJPanel3;
@@ -209,11 +209,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return clientGameGUI.GameCardJPanel
      */
-    private GameCardJPanel getGameCardJPanel4()
+    private JPanelCard getGameCardJPanel4()
     {
         if (gameCardJPanel4 == null)
         {
-            gameCardJPanel4 = new GameCardJPanel();
+            gameCardJPanel4 = new JPanelCard();
             gameCardJPanel4.setBounds(new Rectangle(469, 240, 40, 56));
         }
         return gameCardJPanel4;
@@ -224,11 +224,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return clientGameGUI.GameCardJPanel
      */
-    private GameCardJPanel getGameCardJPanel5()
+    private JPanelCard getGameCardJPanel5()
     {
         if (gameCardJPanel5 == null)
         {
-            gameCardJPanel5 = new GameCardJPanel();
+            gameCardJPanel5 = new JPanelCard();
             gameCardJPanel5.setBounds(new Rectangle(549, 240, 40, 56));
         }
         return gameCardJPanel5;
@@ -285,11 +285,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private ConsoleJPanel getJBottomConsolePanel()
+    private JPanelConsole getJBottomConsolePanel()
     {
         if (jBottomConsolePanel == null)
         {
-            jBottomConsolePanel = new ConsoleJPanel();
+            jBottomConsolePanel = new JPanelConsole();
             jBottomConsolePanel.setSize(new Dimension(1017, 132));
             jBottomConsolePanel.setMaximumSize(new Dimension(1017, 132));
             jBottomConsolePanel.setMinimumSize(new Dimension(1017, 132));
@@ -410,11 +410,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel()
+    private JPanelPlayerHud getJHudPanel()
     {
         if (jHudPanel == null)
         {
-            jHudPanel = new PlayerHudJPanel();
+            jHudPanel = new JPanelPlayerHud();
             jHudPanel.setLayout(null);
             jHudPanel.setBounds(new Rectangle(75, 275, 125, 125));
             jHudPanel.setVisible(false);
@@ -427,11 +427,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel11()
+    private JPanelPlayerHud getJHudPanel11()
     {
         if (jHudPanel11 == null)
         {
-            jHudPanel11 = new PlayerHudJPanel();
+            jHudPanel11 = new JPanelPlayerHud();
             jHudPanel11.setLayout(null);
             jHudPanel11.setBounds(new Rectangle(75, 130, 125, 125));
             jHudPanel11.setVisible(false);
@@ -444,11 +444,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel12()
+    private JPanelPlayerHud getJHudPanel12()
     {
         if (jHudPanel12 == null)
         {
-            jHudPanel12 = new PlayerHudJPanel();
+            jHudPanel12 = new JPanelPlayerHud();
             jHudPanel12.setLayout(null);
             jHudPanel12.setBounds(new Rectangle(225, 10, 125, 125));
             jHudPanel12.setVisible(false);
@@ -461,11 +461,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel13()
+    private JPanelPlayerHud getJHudPanel13()
     {
         if (jHudPanel13 == null)
         {
-            jHudPanel13 = new PlayerHudJPanel();
+            jHudPanel13 = new JPanelPlayerHud();
             jHudPanel13.setLayout(null);
             jHudPanel13.setBounds(new Rectangle(370, 10, 125, 125));
             jHudPanel13.setVisible(false);
@@ -478,11 +478,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel14()
+    private JPanelPlayerHud getJHudPanel14()
     {
         if (jHudPanel14 == null)
         {
-            jHudPanel14 = new PlayerHudJPanel();
+            jHudPanel14 = new JPanelPlayerHud();
             jHudPanel14.setLayout(null);
             jHudPanel14.setBounds(new Rectangle(515, 10, 125, 125));
             jHudPanel14.setVisible(false);
@@ -495,11 +495,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel15()
+    private JPanelPlayerHud getJHudPanel15()
     {
         if (jHudPanel15 == null)
         {
-            jHudPanel15 = new PlayerHudJPanel();
+            jHudPanel15 = new JPanelPlayerHud();
             jHudPanel15.setLayout(null);
             jHudPanel15.setBounds(new Rectangle(665, 130, 125, 125));
             jHudPanel15.setVisible(false);
@@ -512,11 +512,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel16()
+    private JPanelPlayerHud getJHudPanel16()
     {
         if (jHudPanel16 == null)
         {
-            jHudPanel16 = new PlayerHudJPanel();
+            jHudPanel16 = new JPanelPlayerHud();
             jHudPanel16.setLayout(null);
             jHudPanel16.setBounds(new Rectangle(665, 275, 125, 125));
             jHudPanel16.setVisible(false);
@@ -529,11 +529,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel17()
+    private JPanelPlayerHud getJHudPanel17()
     {
         if (jHudPanel17 == null)
         {
-            jHudPanel17 = new PlayerHudJPanel();
+            jHudPanel17 = new JPanelPlayerHud();
             jHudPanel17.setLayout(null);
             jHudPanel17.setBounds(new Rectangle(225, 400, 125, 125));
             jHudPanel17.setVisible(false);
@@ -546,11 +546,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel18()
+    private JPanelPlayerHud getJHudPanel18()
     {
         if (jHudPanel18 == null)
         {
-            jHudPanel18 = new PlayerHudJPanel();
+            jHudPanel18 = new JPanelPlayerHud();
             jHudPanel18.setLayout(null);
             jHudPanel18.setBounds(new Rectangle(370, 400, 125, 125));
             jHudPanel18.setVisible(false);
@@ -563,11 +563,11 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
      * 
      * @return javax.swing.JPanel
      */
-    private PlayerHudJPanel getJHudPanel19()
+    private JPanelPlayerHud getJHudPanel19()
     {
         if (jHudPanel19 == null)
         {
-            jHudPanel19 = new PlayerHudJPanel();
+            jHudPanel19 = new JPanelPlayerHud();
             jHudPanel19.setLayout(null);
             jHudPanel19.setBounds(new Rectangle(515, 400, 125, 125));
             jHudPanel19.setVisible(false);
@@ -662,7 +662,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 final TableInfo table = m_game.getPokerTable();
                 for (int i = 0; i < table.getPlayers().size(); ++i)
                 {
-                    final PlayerHudJPanel php = huds[i];
+                    final JPanelPlayerHud php = huds[i];
                     final JLabel bet = bets[i];
                     bet.setText("");
                     php.setPlayerMoney(table.getPlayer(i).getCurrentSafeMoneyAmount());
@@ -690,7 +690,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
                 final TableInfo table = m_game.getPokerTable();
                 for (final PlayerInfo p : table.getPlayers())
                 {
-                    final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                    final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                     installPlayer(php, p);
                 }
             }
@@ -698,7 +698,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerActionNeeded(PlayerInfo p)
             {
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 if (p.getCurrentTablePosition() == m_currentTablePosition)
                 {
                     php.setHeaderColor(Color.green);
@@ -713,7 +713,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
                 final TableInfo table = m_game.getPokerTable();
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
                 php.setPlayerAction(reason, playedAmount);
                 changePotAmount(table.getTotalPotAmount());
@@ -733,7 +733,7 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerHoleCardsChanged(PlayerInfo p)
             {
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 final Card[] cards = p.getCurrentHand(true);
                 php.setPlayerCards(cards[0], cards[1]);
             }
@@ -741,33 +741,33 @@ public class GameTableViewerJFrame extends GameTableAbstractJFrame
             @Override
             public void playerJoined(PlayerInfo p)
             {
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 installPlayer(php, p);
             }
             
             @Override
             public void playerLeaved(PlayerInfo p)
             {
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 php.setVisible(false);
             }
             
             @Override
             public void playerMoneyChanged(PlayerInfo p)
             {
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
             }
             
             @Override
             public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
             {
-                final PlayerHudJPanel php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
                 php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
                 php.setHeaderColor(Color.cyan);
             }
             
-            private void installPlayer(PlayerHudJPanel php, PlayerInfo player)
+            private void installPlayer(JPanelPlayerHud php, PlayerInfo player)
             {
                 php.setPlayerName(player.getPlayerName());
                 php.setPlayerInfo("");// TODO: RICK: Human or BOT

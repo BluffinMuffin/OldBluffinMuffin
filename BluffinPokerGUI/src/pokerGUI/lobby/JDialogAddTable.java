@@ -23,7 +23,7 @@ import javax.swing.SpinnerNumberModel;
 
 import poker.game.TypeBet;
 
-public class LobbyAddTableJDialog extends JDialog
+public class JDialogAddTable extends JDialog
 {
     private final String m_playerName;
     
@@ -60,7 +60,7 @@ public class LobbyAddTableJDialog extends JDialog
     /**
      * @param owner
      */
-    public LobbyAddTableJDialog(Frame owner, String playerName, int nbPlayers)
+    public JDialogAddTable(Frame owner, String playerName, int nbPlayers)
     {
         super(owner);
         m_playerName = playerName;

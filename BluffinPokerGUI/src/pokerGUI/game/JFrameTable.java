@@ -12,7 +12,7 @@ import poker.game.TableInfo;
 import poker.game.observer.PokerGameAdapter;
 import poker.game.observer.PokerGameObserver;
 
-public class GameTableJFrame extends GameTableViewerJFrame
+public class JFrameTable extends JFrameTableViewer
 {
     /**
      * 
@@ -27,7 +27,7 @@ public class GameTableJFrame extends GameTableViewerJFrame
      * This method initializes
      * 
      */
-    public GameTableJFrame()
+    public JFrameTable()
     {
         super();
         initialize();

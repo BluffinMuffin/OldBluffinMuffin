@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-public class ConsoleJPanel extends JPanel
+public class JPanelConsole extends JPanel
 {
     private boolean m_gotoCaret = true;
     
@@ -26,7 +26,7 @@ public class ConsoleJPanel extends JPanel
     /**
      * This is the default constructor
      */
-    public ConsoleJPanel()
+    public JPanelConsole()
     {
         super();
         initialize();

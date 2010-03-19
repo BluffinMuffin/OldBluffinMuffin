@@ -3,14 +3,14 @@ package pokerGUI.game;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class GameCardJLabel extends JLabel
+public class JLabelCard extends JLabel
 {
     public int m_height;
     public int m_width;
     public ImageIcon m_img;
     private static final long serialVersionUID = 1L;
     
-    public GameCardJLabel(String url)
+    public JLabelCard(String url)
     {
         super();
         m_img = new ImageIcon(url);

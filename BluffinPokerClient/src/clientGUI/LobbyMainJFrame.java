@@ -19,9 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import pokerGUI.game.GameTableJFrame;
-import pokerGUI.lobby.LobbyAddTableJDialog;
-import pokerGUI.lobby.LobbyNameUsedJDialog;
+import pokerGUI.game.JFrameTable;
+import pokerGUI.lobby.JDialogAddTable;
+import pokerGUI.lobby.JDialogNameUsed;
 import protocol.game.GameTCPClient;
 import protocol.lobby.LobbyTCPClient;
 import protocol.lobby.SummaryTableInfo;
@@ -150,7 +150,7 @@ public class LobbyMainJFrame extends JFrame
     
     private void eventAddTable()
     {
-        final LobbyAddTableJDialog form = new LobbyAddTableJDialog(LobbyMainJFrame.this, m_server.getPlayerName(), 1);
+        final JDialogAddTable form = new JDialogAddTable(LobbyMainJFrame.this, m_server.getPlayerName(), 1);
         form.setVisible(true);
         if (form.isOK())
         {
@@ -331,7 +331,7 @@ public class LobbyMainJFrame extends JFrame
                 boolean isOk = m_server.identify(form.getPlayerName());
                 while (!isOk)
                 {
-                    final LobbyNameUsedJDialog form2 = new LobbyNameUsedJDialog(LobbyMainJFrame.this, m_server.getPlayerName());
+                    final JDialogNameUsed form2 = new JDialogNameUsed(LobbyMainJFrame.this, m_server.getPlayerName());
                     form2.setVisible(true);
                     isOk = m_server.identify(form2.getPlayerName());
                 }
@@ -478,8 +478,8 @@ public class LobbyMainJFrame extends JFrame
      */
     public boolean joinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
     {
-        GameTableJFrame gui = null;
-        gui = new GameTableJFrame();
+        JFrameTable gui = null;
+        gui = new JFrameTable();
         return m_server.joinTable(p_noPort, p_tableName, gui) != null;
     }
     

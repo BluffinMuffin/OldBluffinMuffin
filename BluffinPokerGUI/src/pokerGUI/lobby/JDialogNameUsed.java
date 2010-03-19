@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
-public class LobbyNameUsedJDialog extends JDialog
+public class JDialogNameUsed extends JDialog
 {
     private String m_playerName;
     
@@ -30,7 +30,7 @@ public class LobbyNameUsedJDialog extends JDialog
     /**
      * @param owner
      */
-    public LobbyNameUsedJDialog(Frame owner, String name)
+    public JDialogNameUsed(Frame owner, String name)
     {
         
         super(owner);
@@ -111,7 +111,7 @@ public class LobbyNameUsedJDialog extends JDialog
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     m_playerName = getJPlayerNameTextField().getText();
-                    LobbyNameUsedJDialog.this.setVisible(false);
+                    JDialogNameUsed.this.setVisible(false);
                 }
             });
         }
