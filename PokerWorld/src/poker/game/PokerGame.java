@@ -1,37 +1,49 @@
-package poker;
+package poker.game;
 
 import java.util.List;
 
-import poker.observer.PokerGameObserver;
+import poker.game.dealer.AbstractDealer;
+import poker.game.dealer.RandomDealer;
+import poker.game.observer.PokerGameObserver;
 
 public class PokerGame implements IPokerGame
 {
+    public enum TypePokerGameState
+    {
+        INIT, PLAYERS_WAITING, BLIND_WAITING, PLAYING, SHOWDOWN, DECIDE_WINNERS, MONEY_DISTRIBUTION, END
+    }
+    
+    public enum TypePokerGameRoundState
+    {
+        CARDS, BETTING, CUMUL
+    }
+    
     private final PokerGameObserver m_gameObserver;
-    private final PokerTableInfo m_pokerTable;
+    private final TableInfo m_pokerTable;
     private TypePokerGameState m_currentGameState;
     private TypePokerGameRoundState m_currentGameRoundState;
     private final int m_WaitingTimeAfterPlayerAction;
     private final int m_WaitingTimeAfterBoardDealed;
     private final int m_WaitingTimeAfterPotWon;
     
-    private final AbstractPokerDealer m_pokerDealer;
+    private final AbstractDealer m_pokerDealer;
     
     public PokerGame()
     {
-        this(new RandomPokerDealer());
+        this(new RandomDealer());
     }
     
-    public PokerGame(PokerTableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
+    public PokerGame(TableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
-        this(new RandomPokerDealer(), info, wtaPlayerAction, wtaBoardDealed, wtaPotWon);
+        this(new RandomDealer(), info, wtaPlayerAction, wtaBoardDealed, wtaPotWon);
     }
     
-    public PokerGame(AbstractPokerDealer dealer)
+    public PokerGame(AbstractDealer dealer)
     {
-        this(new RandomPokerDealer(), new PokerTableInfo(), 0, 0, 0);
+        this(new RandomDealer(), new TableInfo(), 0, 0, 0);
     }
     
-    public PokerGame(AbstractPokerDealer dealer, PokerTableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
+    public PokerGame(AbstractDealer dealer, TableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
         m_pokerDealer = dealer;
         m_gameObserver = new PokerGameObserver();
@@ -52,7 +64,7 @@ public class PokerGame implements IPokerGame
         return m_currentGameState;
     }
     
-    public TypePokerGameRound getCurrentGameRound()
+    public TypeRound getCurrentGameRound()
     {
         return m_pokerTable.getCurrentGameRound();
     }
@@ -90,7 +102,7 @@ public class PokerGame implements IPokerGame
                 m_pokerTable.setCurrentHigherBet(0);
                 break;
             case PLAYING:
-                m_pokerTable.setCurrentGameRound(TypePokerGameRound.PREFLOP);
+                m_pokerTable.setCurrentGameRound(TypeRound.PREFLOP);
                 m_currentGameRoundState = TypePokerGameRoundState.CARDS;
                 startRound();
                 break;
@@ -110,10 +122,10 @@ public class PokerGame implements IPokerGame
         }
     }
     
-    private void setCurrentGameRound(TypePokerGameRound newGR)
+    private void setCurrentGameRound(TypeRound newGR)
     {
         
-        final TypePokerGameRound oldGR = m_pokerTable.getCurrentGameRound();
+        final TypeRound oldGR = m_pokerTable.getCurrentGameRound();
         
         if (m_currentGameState != TypePokerGameState.PLAYING)
         {
@@ -155,7 +167,7 @@ public class PokerGame implements IPokerGame
         return m_gameObserver;
     }
     
-    public PokerTableInfo getPokerTable()
+    public TableInfo getPokerTable()
     {
         return m_pokerTable;
     }
@@ -180,7 +192,7 @@ public class PokerGame implements IPokerGame
     // /////////////////////////////////
     // ///////////////// COMMUNICATION ///////////////////////////
     // /////////////////////////////////
-    public boolean joinGame(PokerPlayerInfo p)
+    public boolean joinGame(PlayerInfo p)
     {
         if (m_currentGameState == TypePokerGameState.INIT || m_currentGameState == TypePokerGameState.END)
         {
@@ -191,7 +203,7 @@ public class PokerGame implements IPokerGame
         return m_pokerTable.joinTable(p);
     }
     
-    public void sitInGame(PokerPlayerInfo p)
+    public void sitInGame(PlayerInfo p)
     {
         m_gameObserver.playerJoined(p);
         if (m_currentGameState == TypePokerGameState.PLAYERS_WAITING)
@@ -200,7 +212,7 @@ public class PokerGame implements IPokerGame
         }
     }
     
-    public boolean leaveGame(PokerPlayerInfo p)
+    public boolean leaveGame(PlayerInfo p)
     {
         if (m_pokerTable.leaveTable(p))
         {
@@ -210,7 +222,7 @@ public class PokerGame implements IPokerGame
         return false;
     }
     
-    public boolean playMoney(PokerPlayerInfo p, int amount)
+    public boolean playMoney(PlayerInfo p, int amount)
     {
         final int amnt = Math.min(amount, p.getCurrentSafeMoneyAmount());
         System.out.println(p.getPlayerName() + " is playing " + amnt + " money on state: " + m_currentGameState);
@@ -244,11 +256,11 @@ public class PokerGame implements IPokerGame
             m_pokerTable.setBlindNeeded(p, 0);
             if (amnt == m_pokerTable.getSmallBlindAmount())
             {
-                m_gameObserver.playerActionTaken(p, TypePokerGameAction.SMALL_BLIND_POSTED, amnt);
+                m_gameObserver.playerActionTaken(p, TypeAction.SMALL_BLIND_POSTED, amnt);
             }
             else
             {
-                m_gameObserver.playerActionTaken(p, TypePokerGameAction.BIG_BLIND_POSTED, amnt);
+                m_gameObserver.playerActionTaken(p, TypeAction.BIG_BLIND_POSTED, amnt);
             }
             m_pokerTable.setTotalBlindNeeded(m_pokerTable.getTotalBlindNeeded() - needed);
             if (m_pokerTable.getTotalBlindNeeded() == 0)
@@ -344,7 +356,7 @@ public class PokerGame implements IPokerGame
     
     private void showAllCards()
     {
-        for (final PokerPlayerInfo p : m_pokerTable.getPlayers())
+        for (final PlayerInfo p : m_pokerTable.getPlayers())
         {
             if (p.isPlaying() || p.isAllIn())
             {
@@ -368,13 +380,13 @@ public class PokerGame implements IPokerGame
             switch (m_pokerTable.getCurrentGameRound())
             {
                 case PREFLOP:
-                    setCurrentGameRound(TypePokerGameRound.FLOP);
+                    setCurrentGameRound(TypeRound.FLOP);
                     break;
                 case FLOP:
-                    setCurrentGameRound(TypePokerGameRound.TURN);
+                    setCurrentGameRound(TypeRound.TURN);
                     break;
                 case TURN:
-                    setCurrentGameRound(TypePokerGameRound.RIVER);
+                    setCurrentGameRound(TypeRound.RIVER);
                     break;
                 case RIVER:
                     setCurrentGameState(TypePokerGameState.SHOWDOWN);
@@ -429,17 +441,17 @@ public class PokerGame implements IPokerGame
     
     private void dealHole()
     {
-        for (final PokerPlayerInfo p : m_pokerTable.getPlayingPlayers())
+        for (final PlayerInfo p : m_pokerTable.getPlayingPlayers())
         {
             p.setHand(m_pokerDealer.dealHoles(p));
             m_gameObserver.playerHoleCardsChanged(p);
         }
     }
     
-    private void foldPlayer(PokerPlayerInfo p)
+    private void foldPlayer(PlayerInfo p)
     {
         p.setFolded();
-        m_gameObserver.playerActionTaken(p, TypePokerGameAction.FOLDED, -1);
+        m_gameObserver.playerActionTaken(p, TypeAction.FOLDED, -1);
     }
     
     private void TryToBegin()
@@ -463,17 +475,17 @@ public class PokerGame implements IPokerGame
         }
     }
     
-    private void callPlayer(PokerPlayerInfo p, int played)
+    private void callPlayer(PlayerInfo p, int played)
     {
         m_pokerTable.incNbPlayed();
-        m_gameObserver.playerActionTaken(p, TypePokerGameAction.CALLED, played);
+        m_gameObserver.playerActionTaken(p, TypeAction.CALLED, played);
     }
     
-    private void raisePlayer(PokerPlayerInfo p, int played)
+    private void raisePlayer(PlayerInfo p, int played)
     {
         m_pokerTable.setNbPlayed(1);
         m_pokerTable.setCurrentHigherBet(p.getCurrentBetMoneyAmount());
-        m_gameObserver.playerActionTaken(p, TypePokerGameAction.RAISED, played);
+        m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);
     }
     
     private void continueBettingRound()
@@ -509,20 +521,20 @@ public class PokerGame implements IPokerGame
     
     private void playNext()
     {
-        final PokerPlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
+        final PlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
         m_pokerTable.setCurrentPlayerNoSeat(player.getCurrentTablePosition());
         m_gameObserver.playerActionNeeded(player);
     }
     
     private void distributeMoney()
     {
-        for (final PokerMoneyPot pot : m_pokerTable.getPots())
+        for (final MoneyPot pot : m_pokerTable.getPots())
         {
-            final List<PokerPlayerInfo> players = pot.getAttachedPlayers();
+            final List<PlayerInfo> players = pot.getAttachedPlayers();
             if (players.size() > 0)
             {
                 final int wonAmount = pot.getAmount() / players.size();
-                for (final PokerPlayerInfo p : players)
+                for (final PlayerInfo p : players)
                 {
                     p.incCurrentSafeMoneyAmount(wonAmount);
                     m_gameObserver.playerMoneyChanged(p);

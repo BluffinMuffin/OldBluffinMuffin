@@ -1,6 +1,7 @@
 package poker;
 
-import poker.observer.PokerGameObserver;
+import poker.game.IPokerGame;
+import poker.game.observer.PokerGameObserver;
 
 public interface IPokerViewer
 {

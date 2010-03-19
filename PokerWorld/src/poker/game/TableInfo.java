@@ -1,7 +1,7 @@
-package poker;
+package poker.game;
 
-import game.GameCard;
-import game.GameCardSet;
+import game.Card;
+import game.CardSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,21 +10,21 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class PokerTableInfo
+public class TableInfo
 {
     private final int m_nbMaxSeats;
     private int m_nbUsedSeats;
-    private final PokerPlayerInfo[] m_currentPlayers;
+    private final PlayerInfo[] m_currentPlayers;
     
     private final int m_smallBlindAmount;
     private final int m_bigBlindAmount;
     
-    private final GameCardSet m_currentBoardCards = new GameCardSet(5);
+    private final CardSet m_currentBoardCards = new CardSet(5);
     
     private final String m_tableName;
     private final Stack<Integer> m_RemainingSeats = new Stack<Integer>();
     
-    private final List<PokerMoneyPot> m_pots = new ArrayList<PokerMoneyPot>();
+    private final List<MoneyPot> m_pots = new ArrayList<MoneyPot>();
     private int m_totalPotAmount;
     private int m_currentPotId;
     private final LinkedBlockingQueue<Integer> m_allInCaps = new LinkedBlockingQueue<Integer>();
@@ -34,31 +34,31 @@ public class PokerTableInfo
     private int m_currentBigBlindNoSeat;
     private int m_currentPlayerNoSeat;
     
-    private final Map<PokerPlayerInfo, Integer> m_blindNeeded = new HashMap<PokerPlayerInfo, Integer>();
+    private final Map<PlayerInfo, Integer> m_blindNeeded = new HashMap<PlayerInfo, Integer>();
     private int m_totalBlindNeeded;
     
     private int m_nbPlayed;
     private int m_nbAllIn;
     private int m_currentHigherBet;
     
-    private TypePokerGameRound m_currentGameRound;
-    private TypePokerGameLimit m_betLimit;
+    private TypeRound m_currentGameRound;
+    private TypeBet m_betLimit;
     
-    public PokerTableInfo()
+    public TableInfo()
     {
         this(10);
     }
     
-    public PokerTableInfo(int nbSeats)
+    public TableInfo(int nbSeats)
     {
-        this("Anonymous Table", 10, nbSeats, TypePokerGameLimit.NO_LIMIT);
+        this("Anonymous Table", 10, nbSeats, TypeBet.NO_LIMIT);
     }
     
-    public PokerTableInfo(String pName, int pBigBlind, int nbSeats, TypePokerGameLimit limit)
+    public TableInfo(String pName, int pBigBlind, int nbSeats, TypeBet limit)
     {
         m_nbMaxSeats = nbSeats;
         m_nbUsedSeats = 0;
-        m_currentPlayers = new PokerPlayerInfo[m_nbMaxSeats];
+        m_currentPlayers = new PlayerInfo[m_nbMaxSeats];
         m_tableName = pName;
         m_bigBlindAmount = pBigBlind;
         m_smallBlindAmount = pBigBlind / 2;
@@ -80,7 +80,7 @@ public class PokerTableInfo
         initPots();
     }
     
-    public void setBoardCards(GameCard c1, GameCard c2, GameCard c3, GameCard c4, GameCard c5)
+    public void setBoardCards(Card c1, Card c2, Card c3, Card c4, Card c5)
     {
         m_currentBoardCards.clear();
         addBoardCard(c1);
@@ -90,13 +90,13 @@ public class PokerTableInfo
         addBoardCard(c5);
     }
     
-    public void setBoardCards(GameCardSet set)
+    public void setBoardCards(CardSet set)
     {
         m_currentBoardCards.clear();
         addBoardCards(set);
     }
     
-    public void addBoardCards(GameCardSet set)
+    public void addBoardCards(CardSet set)
     {
         while (!set.isEmpty())
         {
@@ -104,7 +104,7 @@ public class PokerTableInfo
         }
     }
     
-    public void addBoardCard(GameCard c)
+    public void addBoardCard(Card c)
     {
         m_currentBoardCards.add(c);
     }
@@ -124,7 +124,7 @@ public class PokerTableInfo
         return m_nbMaxSeats;
     }
     
-    public PokerPlayerInfo[] getCurrentPlayers()
+    public PlayerInfo[] getCurrentPlayers()
     {
         return m_currentPlayers;
     }
@@ -139,7 +139,7 @@ public class PokerTableInfo
         return m_bigBlindAmount;
     }
     
-    public GameCardSet getCurrentBoardCards()
+    public CardSet getCurrentBoardCards()
     {
         return m_currentBoardCards;
     }
@@ -149,7 +149,7 @@ public class PokerTableInfo
         return m_tableName;
     }
     
-    public boolean forceJoinTable(PokerPlayerInfo p, int seat)
+    public boolean forceJoinTable(PlayerInfo p, int seat)
     {
         p.setFolded();
         p.setCurrentTablePosition(seat);
@@ -157,7 +157,7 @@ public class PokerTableInfo
         return true;
     }
     
-    public boolean joinTable(PokerPlayerInfo p)
+    public boolean joinTable(PlayerInfo p)
     {
         if (m_RemainingSeats.size() == 0)
         {
@@ -178,7 +178,7 @@ public class PokerTableInfo
         return true;
     }
     
-    public boolean leaveTable(PokerPlayerInfo p)
+    public boolean leaveTable(PlayerInfo p)
     {
         
         if (!containsPlayer(p))
@@ -194,9 +194,9 @@ public class PokerTableInfo
         return true;
     }
     
-    public List<PokerPlayerInfo> getPlayers()
+    public List<PlayerInfo> getPlayers()
     {
-        final List<PokerPlayerInfo> list = new ArrayList<PokerPlayerInfo>();
+        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
         for (int i = 0; i < m_nbMaxSeats; ++i)
         {
             if (m_currentPlayers[i] != null)
@@ -207,9 +207,9 @@ public class PokerTableInfo
         return list;
     }
     
-    public List<PokerPlayerInfo> getPlayingPlayers()
+    public List<PlayerInfo> getPlayingPlayers()
     {
-        final List<PokerPlayerInfo> list = new ArrayList<PokerPlayerInfo>();
+        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
         for (int i = 0; i < m_nbMaxSeats; ++i)
         {
             if (m_currentPlayers[i] != null && m_currentPlayers[i].isPlaying())
@@ -220,14 +220,14 @@ public class PokerTableInfo
         return list;
     }
     
-    private boolean containsPlayer(PokerPlayerInfo p)
+    private boolean containsPlayer(PlayerInfo p)
     {
         return getPlayers().contains(p);
     }
     
     public void getAndSetNbPlayingPlayers()
     {
-        for (final PokerPlayerInfo p : getPlayers())
+        for (final PlayerInfo p : getPlayers())
         {
             if (p.canPlay())
             {
@@ -236,7 +236,7 @@ public class PokerTableInfo
         }
     }
     
-    public PokerPlayerInfo nextPlayer(int seat)
+    public PlayerInfo nextPlayer(int seat)
     {
         for (int i = 0; i < m_nbMaxSeats; ++i)
         {
@@ -249,7 +249,7 @@ public class PokerTableInfo
         return m_currentPlayers[seat];
     }
     
-    public PokerPlayerInfo nextPlayingPlayer(int seat)
+    public PlayerInfo nextPlayingPlayer(int seat)
     {
         for (int i = 0; i < m_nbMaxSeats; ++i)
         {
@@ -262,12 +262,12 @@ public class PokerTableInfo
         return m_currentPlayers[seat];
     }
     
-    public PokerPlayerInfo getPlayer(int seat)
+    public PlayerInfo getPlayer(int seat)
     {
         return m_currentPlayers[seat];
     }
     
-    public List<PokerMoneyPot> getPots()
+    public List<MoneyPot> getPots()
     {
         return m_pots;
     }
@@ -277,7 +277,7 @@ public class PokerTableInfo
         setTotalPotAmount(0);
         m_pots.clear();
         m_allInCaps.clear();
-        m_pots.add(new PokerMoneyPot(0));
+        m_pots.add(new MoneyPot(0));
         m_currentPotId = 0;
         setNbAllIn(0);
     }
@@ -293,7 +293,7 @@ public class PokerTableInfo
         m_totalBlindNeeded = getSmallBlindAmount() + getBigBlindAmount();
     }
     
-    public int blindNeeded(PokerPlayerInfo p)
+    public int blindNeeded(PlayerInfo p)
     {
         if (m_blindNeeded.containsKey(p))
         {
@@ -359,7 +359,7 @@ public class PokerTableInfo
         return m_currentPlayerNoSeat;
     }
     
-    public void setBlindNeeded(PokerPlayerInfo p, int needed)
+    public void setBlindNeeded(PlayerInfo p, int needed)
     {
         m_blindNeeded.put(p, needed);
     }
@@ -411,7 +411,7 @@ public class PokerTableInfo
     
     public boolean containsPlayer(String name)
     {
-        for (final PokerPlayerInfo p : getPlayers())
+        for (final PlayerInfo p : getPlayers())
         {
             if (p.getPlayerName().equalsIgnoreCase(name))
             {
@@ -438,7 +438,7 @@ public class PokerTableInfo
         }
     }
     
-    public void AddBet(PokerPlayerInfo p, PokerMoneyPot pot, int bet)
+    public void AddBet(PlayerInfo p, MoneyPot pot, int bet)
     {
         p.setCurrentBetMoneyAmount(p.getCurrentBetMoneyAmount() - bet);
         pot.addAmount(bet);
@@ -453,22 +453,22 @@ public class PokerTableInfo
         int currentTaken = 0;
         while (m_allInCaps.size() > 0)
         {
-            final PokerMoneyPot pot = m_pots.get(m_currentPotId);
+            final MoneyPot pot = m_pots.get(m_currentPotId);
             pot.detachAll();
             final int cap = m_allInCaps.poll() - currentTaken;
             
-            for (final PokerPlayerInfo p : getPlayers())
+            for (final PlayerInfo p : getPlayers())
             {
                 AddBet(p, pot, Math.min(p.getCurrentBetMoneyAmount(), cap));
             }
             currentTaken += cap;
             m_currentPotId++;
-            m_pots.add(new PokerMoneyPot(m_currentPotId));
+            m_pots.add(new MoneyPot(m_currentPotId));
         }
         
-        final PokerMoneyPot curPot = m_pots.get(m_currentPotId);
+        final MoneyPot curPot = m_pots.get(m_currentPotId);
         curPot.detachAll();
-        for (final PokerPlayerInfo p : getPlayers())
+        for (final PlayerInfo p : getPlayers())
         {
             AddBet(p, curPot, p.getCurrentBetMoneyAmount());
             
@@ -495,11 +495,11 @@ public class PokerTableInfo
     {
         for (int i = 0; i <= m_currentPotId; ++i)
         {
-            final PokerMoneyPot pot = m_pots.get(i);
+            final MoneyPot pot = m_pots.get(i);
             long bestHand = 0;
-            final List<PokerPlayerInfo> info = new ArrayList<PokerPlayerInfo>(pot.getAttachedPlayers());
+            final List<PlayerInfo> info = new ArrayList<PlayerInfo>(pot.getAttachedPlayers());
             pot.detachAll();
-            for (final PokerPlayerInfo p : info)
+            for (final PlayerInfo p : info)
             {
                 final long handValue = p.handValue(m_currentBoardCards);
                 if (handValue > bestHand)
@@ -516,52 +516,52 @@ public class PokerTableInfo
         }
     }
     
-    public void setCurrentGameRound(TypePokerGameRound currentGameRound)
+    public void setCurrentGameRound(TypeRound currentGameRound)
     {
         m_currentGameRound = currentGameRound;
     }
     
-    public TypePokerGameRound getCurrentGameRound()
+    public TypeRound getCurrentGameRound()
     {
         return m_currentGameRound;
     }
     
-    public TypePokerGameLimit getBetLimit()
+    public TypeBet getBetLimit()
     {
         return m_betLimit;
     }
     
-    public void setBetLimit(TypePokerGameLimit limit)
+    public void setBetLimit(TypeBet limit)
     {
         m_betLimit = limit;
     }
     
-    public boolean canRaise(PokerPlayerInfo p)
+    public boolean canRaise(PlayerInfo p)
     {
         return getCurrentHigherBet() < p.getCurrentTotalMoneyAmount();
     }
     
-    public boolean canCheck(PokerPlayerInfo p)
+    public boolean canCheck(PlayerInfo p)
     {
         return getCurrentHigherBet() <= p.getCurrentBetMoneyAmount();
     }
     
-    public int getMinRaiseAmount(PokerPlayerInfo p)
+    public int getMinRaiseAmount(PlayerInfo p)
     {
         return Math.min(getCallAmount(p) + getBigBlindAmount(), getMaxRaiseAmount(p));
     }
     
-    public int getMaxRaiseAmount(PokerPlayerInfo p)
+    public int getMaxRaiseAmount(PlayerInfo p)
     {
         return getFreeMoneyAmount(p) + getCallAmount(p);
     }
     
-    public int getCallAmount(PokerPlayerInfo p)
+    public int getCallAmount(PlayerInfo p)
     {
         return getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
     }
     
-    public int getFreeMoneyAmount(PokerPlayerInfo p)
+    public int getFreeMoneyAmount(PlayerInfo p)
     {
         return p.getCurrentTotalMoneyAmount() - getCurrentHigherBet();
     }

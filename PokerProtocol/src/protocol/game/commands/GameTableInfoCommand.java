@@ -1,14 +1,14 @@
 package protocol.game.commands;
 
-import game.GameCard;
+import game.Card;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import poker.PokerMoneyPot;
-import poker.PokerPlayerInfo;
-import poker.PokerTableInfo;
-import poker.TypePokerGameLimit;
+import poker.game.MoneyPot;
+import poker.game.PlayerInfo;
+import poker.game.TableInfo;
+import poker.game.TypeBet;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 import protocol.game.SummarySeatInfo;
@@ -21,7 +21,7 @@ public class GameTableInfoCommand implements IPokerCommand
     private final ArrayList<Integer> m_boardCardIDs;
     private final int m_nbPlayers;
     private final ArrayList<SummarySeatInfo> m_seats;
-    private final TypePokerGameLimit m_limit;
+    private final TypeBet m_limit;
     
     public static String COMMAND_NAME = "gameTABLE_INFO";
     
@@ -46,10 +46,10 @@ public class GameTableInfoCommand implements IPokerCommand
         {
             m_seats.add(new SummarySeatInfo(argsToken));
         }
-        m_limit = TypePokerGameLimit.valueOf(argsToken.nextToken());
+        m_limit = TypeBet.valueOf(argsToken.nextToken());
     }
     
-    public GameTableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<SummarySeatInfo> seats, TypePokerGameLimit limit)
+    public GameTableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<SummarySeatInfo> seats, TypeBet limit)
     {
         m_totalPotAmount = totalPotAmount;
         m_nbSeats = nbSeats;
@@ -60,7 +60,7 @@ public class GameTableInfoCommand implements IPokerCommand
         m_limit = limit;
     }
     
-    public GameTableInfoCommand(PokerTableInfo info, PokerPlayerInfo pPlayer)
+    public GameTableInfoCommand(TableInfo info, PlayerInfo pPlayer)
     {
         m_potsAmount = new ArrayList<Integer>();
         m_boardCardIDs = new ArrayList<Integer>();
@@ -70,7 +70,7 @@ public class GameTableInfoCommand implements IPokerCommand
         m_nbSeats = info.getNbMaxSeats();
         m_nbPlayers = info.getNbMaxSeats();
         
-        for (final PokerMoneyPot pot : info.getPots())
+        for (final MoneyPot pot : info.getPots())
         {
             m_potsAmount.add(pot.getAmount());
         }
@@ -79,13 +79,13 @@ public class GameTableInfoCommand implements IPokerCommand
         {
             m_potsAmount.add(0);
         }
-        final GameCard[] boardCards = new GameCard[5];
+        final Card[] boardCards = new Card[5];
         info.getCurrentBoardCards().toArray(boardCards);
         for (int i = 0; i < 5; ++i)
         {
             if (boardCards[i] == null)
             {
-                m_boardCardIDs.add(GameCard.NO_CARD_ID);
+                m_boardCardIDs.add(Card.NO_CARD_ID);
             }
             else
             {
@@ -97,7 +97,7 @@ public class GameTableInfoCommand implements IPokerCommand
         {
             final SummarySeatInfo seat = new SummarySeatInfo(i);
             m_seats.add(seat);
-            final PokerPlayerInfo player = info.getPlayer(i);
+            final PlayerInfo player = info.getPlayer(i);
             seat.m_isEmpty = (player == null);
             
             if (seat.m_isEmpty)
@@ -111,7 +111,7 @@ public class GameTableInfoCommand implements IPokerCommand
             final boolean showCard = (i == pPlayer.getCurrentTablePosition());
             
             // Player cards
-            final GameCard[] holeCards = player.getCurrentHand(showCard);
+            final Card[] holeCards = player.getCurrentHand(showCard);
             for (int j = 0; j < 2; ++j)
             {
                 seat.m_holeCardIDs.add(holeCards[j].getId());
@@ -189,7 +189,7 @@ public class GameTableInfoCommand implements IPokerCommand
         return m_seats;
     }
     
-    public TypePokerGameLimit getLimit()
+    public TypeBet getLimit()
     {
         return m_limit;
     }

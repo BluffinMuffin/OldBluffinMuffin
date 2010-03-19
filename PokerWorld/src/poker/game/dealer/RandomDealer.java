@@ -1,19 +1,20 @@
-package poker;
+package poker.game.dealer;
 
-import game.GameCard;
-import game.GameCardSet;
+import poker.game.PlayerInfo;
+import game.Card;
+import game.CardSet;
 
-public class RandomPokerDealer extends AbstractPokerDealer
+public class RandomDealer extends AbstractDealer
 {
-    public RandomPokerDealer()
+    public RandomDealer()
     {
         super();
     }
     
     @Override
-    public GameCardSet dealFlop()
+    public CardSet dealFlop()
     {
-        final GameCardSet set = new GameCardSet(3);
+        final CardSet set = new CardSet(3);
         set.add(m_deck.pop());
         set.add(m_deck.pop());
         set.add(m_deck.pop());
@@ -21,22 +22,22 @@ public class RandomPokerDealer extends AbstractPokerDealer
     }
     
     @Override
-    public GameCardSet dealHoles(PokerPlayerInfo p)
+    public CardSet dealHoles(PlayerInfo p)
     {
-        final GameCardSet set = new GameCardSet(2);
+        final CardSet set = new CardSet(2);
         set.add(m_deck.pop());
         set.add(m_deck.pop());
         return set;
     }
     
     @Override
-    public GameCard dealRiver()
+    public Card dealRiver()
     {
         return m_deck.pop();
     }
     
     @Override
-    public GameCard dealTurn()
+    public Card dealTurn()
     {
         return m_deck.pop();
     }
@@ -44,7 +45,7 @@ public class RandomPokerDealer extends AbstractPokerDealer
     @Override
     public void freshDeck()
     {
-        m_deck = GameCardSet.shuffledDeck();
+        m_deck = CardSet.shuffledDeck();
     }
     
 }

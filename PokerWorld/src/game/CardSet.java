@@ -20,19 +20,19 @@ import java.util.Set;
  * Methods not otherwise documented forward to {@link ArrayList}<{@link HandEvalCard}> or perform as specified by the {@link Set} interface.
  * 
  */
-public class GameCardSet implements Set<GameCard>
+public class CardSet implements Set<Card>
 {
     
-    private final List<GameCard> cards;
+    private final List<Card> cards;
     
-    private static final GameCardSet madeDeck = new GameCardSet(52);
+    private static final CardSet madeDeck = new CardSet(52);
     static
     {
-        for (final TypeGameCardSuit suit : TypeGameCardSuit.values())
+        for (final TypeCardSuit suit : TypeCardSuit.values())
         {
-            for (final TypeGameCardRank rank : TypeGameCardRank.values())
+            for (final TypeCardRank rank : TypeCardRank.values())
             {
-                GameCardSet.madeDeck.add(GameCard.getInstance(rank, suit));
+                CardSet.madeDeck.add(Card.getInstance(rank, suit));
             }
         }
     }
@@ -42,9 +42,9 @@ public class GameCardSet implements Set<GameCard>
      * 
      * @return a 52-card deck in order from clubs to spades and within each suit from deuce to Ace.
      */
-    public static GameCardSet freshDeck()
+    public static CardSet freshDeck()
     {
-        return new GameCardSet(GameCardSet.madeDeck);
+        return new CardSet(CardSet.madeDeck);
     }
     
     /**
@@ -52,34 +52,34 @@ public class GameCardSet implements Set<GameCard>
      * 
      * @return a shuffled 52-card deck.
      */
-    public static GameCardSet shuffledDeck()
+    public static CardSet shuffledDeck()
     {
-        final GameCardSet result = new GameCardSet(GameCardSet.madeDeck);
+        final CardSet result = new CardSet(CardSet.madeDeck);
         Collections.shuffle(result.cards);
         return result;
     }
     
-    public GameCardSet()
+    public CardSet()
     {
-        cards = new ArrayList<GameCard>();
+        cards = new ArrayList<Card>();
     }
     
     /**
      * Copy constructor
      */
-    public GameCardSet(GameCardSet source)
+    public CardSet(CardSet source)
     {
-        cards = new ArrayList<GameCard>(source.cards);
+        cards = new ArrayList<Card>(source.cards);
     }
     
-    public GameCardSet(List<GameCard> source)
+    public CardSet(List<Card> source)
     {
         cards = source;
     }
     
-    public GameCardSet(int initialCapacity)
+    public CardSet(int initialCapacity)
     {
-        cards = new ArrayList<GameCard>(initialCapacity);
+        cards = new ArrayList<Card>(initialCapacity);
     }
     
     /**
@@ -87,7 +87,7 @@ public class GameCardSet implements Set<GameCard>
      * 
      * @return <code>true</code> if this CardSet did not already contain the specified Card.
      */
-    public boolean add(GameCard c)
+    public boolean add(Card c)
     {
         if (cards.contains(c))
         {
@@ -101,10 +101,10 @@ public class GameCardSet implements Set<GameCard>
      * 
      * @return <code>true</code> if this CardSet changed as a result of the call; <code>false</code> if all of the Cards in the specified Collection were already present in this CardSet.
      */
-    public boolean addAll(Collection<? extends GameCard> coll)
+    public boolean addAll(Collection<? extends Card> coll)
     {
         boolean result = false;
-        for (final GameCard c : coll)
+        for (final Card c : coll)
         {
             result |= add(c);
         }
@@ -121,7 +121,7 @@ public class GameCardSet implements Set<GameCard>
         return cards.contains(o);
     }
     
-    public GameCard get(int i)
+    public Card get(int i)
     {
         if (i < 0 || i >= cards.size())
         {
@@ -143,7 +143,7 @@ public class GameCardSet implements Set<GameCard>
         {
             return false;
         }
-        for (final GameCard c : cards)
+        for (final Card c : cards)
         {
             if (!((Set) that).contains(c))
             {
@@ -157,7 +157,7 @@ public class GameCardSet implements Set<GameCard>
     public int hashCode()
     {
         int result = 0;
-        for (final GameCard c : cards)
+        for (final Card c : cards)
         {
             result += c.hashCode();
         }
@@ -169,7 +169,7 @@ public class GameCardSet implements Set<GameCard>
         return cards.isEmpty();
     }
     
-    public Iterator<GameCard> iterator()
+    public Iterator<Card> iterator()
     {
         return cards.iterator();
     }
@@ -179,7 +179,7 @@ public class GameCardSet implements Set<GameCard>
         return cards.remove(o);
     }
     
-    public GameCard pop()
+    public Card pop()
     {
         return cards.remove(0);
     }
@@ -204,9 +204,9 @@ public class GameCardSet implements Set<GameCard>
         return cards.size();
     }
     
-    public GameCard[] toArray()
+    public Card[] toArray()
     {
-        return cards.toArray(new GameCard[cards.size()]);
+        return cards.toArray(new Card[cards.size()]);
     }
     
     public <T> T[] toArray(T[] a)

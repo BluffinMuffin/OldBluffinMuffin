@@ -1,6 +1,6 @@
 package protocol.game;
 
-import game.GameCard;
+import game.Card;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,12 +8,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-import poker.IPokerGame;
-import poker.PokerMoneyPot;
-import poker.PokerPlayerInfo;
-import poker.PokerTableInfo;
-import poker.TypePokerGameAction;
-import poker.observer.PokerGameObserver;
+import poker.game.IPokerGame;
+import poker.game.MoneyPot;
+import poker.game.PlayerInfo;
+import poker.game.TableInfo;
+import poker.game.TypeAction;
+import poker.game.observer.PokerGameObserver;
 import protocol.IPokerCommand;
 import protocol.game.commands.GameBetTurnEndedCommand;
 import protocol.game.commands.GameBetTurnStartedCommand;
@@ -34,7 +34,7 @@ import protocol.game.commands.GameTableInfoCommand;
 public class ClientSidePokerTcpServer implements IPokerGame
 {
     private final PokerGameObserver m_gameObserver = new PokerGameObserver();
-    private final PokerTableInfo m_pokerTable = new PokerTableInfo();
+    private final TableInfo m_pokerTable = new TableInfo();
     private final GameClientSideObserver m_commandObserver = new GameClientSideObserver();
     private final int m_tablePosition;
     private final String m_playerName;
@@ -136,7 +136,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
     }
     
     @Override
-    public PokerTableInfo getPokerTable()
+    public TableInfo getPokerTable()
     {
         return m_pokerTable;
     }
@@ -148,14 +148,14 @@ public class ClientSidePokerTcpServer implements IPokerGame
     }
     
     @Override
-    public boolean leaveGame(PokerPlayerInfo player)
+    public boolean leaveGame(PlayerInfo player)
     {
         send(new GameDisconnectCommand());
         return true;
     }
     
     @Override
-    public boolean playMoney(PokerPlayerInfo player, int amount)
+    public boolean playMoney(PlayerInfo player, int amount)
     {
         send(new GamePlayMoneyCommand(amount));
         return true;
@@ -181,10 +181,10 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 m_pokerTable.setCurrentHigherBet(0);
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)
                 {
-                    m_pokerTable.getPots().add(new PokerMoneyPot(i, amounts.get(i)));
+                    m_pokerTable.getPots().add(new MoneyPot(i, amounts.get(i)));
                     m_pokerTable.incTotalPotAmount(amounts.get(i));
                 }
-                for (final PokerPlayerInfo p : m_pokerTable.getPlayers())
+                for (final PlayerInfo p : m_pokerTable.getPlayers())
                 {
                     p.setCurrentBetMoneyAmount(0);
                 }
@@ -194,10 +194,10 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void betTurnStartedCommandReceived(GameBetTurnStartedCommand command)
             {
-                final GameCard[] cards = new GameCard[5];
+                final Card[] cards = new Card[5];
                 for (int i = 0; i < 5; ++i)
                 {
-                    cards[i] = GameCard.getInstance(command.getCardsId().get(i));
+                    cards[i] = Card.getInstance(command.getCardsId().get(i));
                 }
                 m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 m_pokerTable.setCurrentGameRound(command.getRound());
@@ -222,7 +222,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void holeCardsChangedCommandReceived(GameHoleCardsChangedCommand command)
             {
-                final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
+                final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
                     if (command.isPlaying())
@@ -234,8 +234,8 @@ public class ClientSidePokerTcpServer implements IPokerGame
                         p.setFolded();
                     }
                     final List<Integer> ids = command.getCardsId();
-                    final GameCard gc0 = GameCard.getInstance(ids.get(0));
-                    final GameCard gc1 = GameCard.getInstance(ids.get(1));
+                    final Card gc0 = Card.getInstance(ids.get(0));
+                    final Card gc1 = Card.getInstance(ids.get(1));
                     p.setHand(gc0, gc1);
                     m_gameObserver.playerHoleCardsChanged(p);
                 }
@@ -244,7 +244,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void playerJoinedCommandReceived(GamePlayerJoinedCommand command)
             {
-                final PokerPlayerInfo p = new PokerPlayerInfo(command.getPlayerPos(), command.getPlayerName(), command.getPlayerMoney());
+                final PlayerInfo p = new PlayerInfo(command.getPlayerPos(), command.getPlayerName(), command.getPlayerMoney());
                 if (p != null)
                 {
                     m_pokerTable.forceJoinTable(p, command.getPlayerPos());
@@ -255,7 +255,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void playerLeftCommandReceived(GamePlayerLeftCommand command)
             {
-                final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
+                final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
                     m_pokerTable.leaveTable(p);
@@ -266,7 +266,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void playerMoneyChangedCommandReceived(GamePlayerMoneyChangedCommand command)
             {
-                final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
+                final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
                     p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
@@ -277,7 +277,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void playerTurnBeganCommandReceived(GamePlayerTurnBeganCommand command)
             {
-                final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
+                final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
                     m_pokerTable.setCurrentPlayerNoSeat(command.getPlayerPos());
@@ -292,7 +292,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 {
                     m_pokerTable.setCurrentHigherBet(command.getPlayerBet());
                 }
-                final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
+                final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
                     final int a = command.getActionAmount();
@@ -307,7 +307,7 @@ public class ClientSidePokerTcpServer implements IPokerGame
                         p.setFolded();
                     }
                     
-                    if (command.getActionType() != TypePokerGameAction.FOLDED)
+                    if (command.getActionType() != TypeAction.FOLDED)
                     {
                         m_pokerTable.incTotalPotAmount(a);
                     }
@@ -318,11 +318,11 @@ public class ClientSidePokerTcpServer implements IPokerGame
             @Override
             public void playerWonPotCommandReceived(GamePlayerWonPotCommand command)
             {
-                final PokerPlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
+                final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
                     p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
-                    m_gameObserver.playerWonPot(p, new PokerMoneyPot(command.getPotID(), command.getShared()), command.getShared());
+                    m_gameObserver.playerWonPot(p, new MoneyPot(command.getPotID(), command.getShared()), command.getShared());
                 }
             }
             
@@ -341,17 +341,17 @@ public class ClientSidePokerTcpServer implements IPokerGame
                 m_pokerTable.getPots().clear();
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)
                 {
-                    m_pokerTable.getPots().add(new PokerMoneyPot(i, amounts.get(i)));
+                    m_pokerTable.getPots().add(new MoneyPot(i, amounts.get(i)));
                 }
                 
-                final GameCard[] cards = new GameCard[5];
+                final Card[] cards = new Card[5];
                 for (int i = 0; i < 5; ++i)
                 {
-                    cards[i] = GameCard.getInstance(command.getBoardCardIDs().get(i));
+                    cards[i] = Card.getInstance(command.getBoardCardIDs().get(i));
                 }
                 m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 
-                for (final PokerPlayerInfo p : m_pokerTable.getPlayers())
+                for (final PlayerInfo p : m_pokerTable.getPlayers())
                 {
                     m_pokerTable.leaveTable(p);
                 }
@@ -363,10 +363,10 @@ public class ClientSidePokerTcpServer implements IPokerGame
                         continue;
                     }
                     final int noSeat = seat.m_noSeat;
-                    final PokerPlayerInfo p = new PokerPlayerInfo(noSeat, seat.m_playerName, seat.m_money);
+                    final PlayerInfo p = new PlayerInfo(noSeat, seat.m_playerName, seat.m_money);
                     m_pokerTable.forceJoinTable(p, noSeat);
                     final List<Integer> ids = seat.m_holeCardIDs;
-                    p.setHand(GameCard.getInstance(ids.get(0)), GameCard.getInstance(ids.get(1)));
+                    p.setHand(Card.getInstance(ids.get(0)), Card.getInstance(ids.get(1)));
                     if (seat.m_isPlaying)
                     {
                         p.setPlaying();

@@ -1,6 +1,6 @@
 package game;
 
-public enum TypeGameCardSuit
+public enum TypeCardSuit
 {
     CLUB, DIAMOND, HEART, SPADE;
     
@@ -13,22 +13,22 @@ public enum TypeGameCardSuit
      * @throws IllegalArgumentException
      *             if c not in {@link #SUIT_CHARS}
      */
-    public static TypeGameCardSuit fromChar(char c)
+    public static TypeCardSuit fromChar(char c)
     {
         
-        final int i = TypeGameCardSuit.SUIT_CHARS.indexOf(Character.toLowerCase(c));
+        final int i = TypeCardSuit.SUIT_CHARS.indexOf(Character.toLowerCase(c));
         if (i >= 0)
         {
-            return TypeGameCardSuit.values()[i];
+            return TypeCardSuit.values()[i];
         }
         throw new IllegalArgumentException("'" + c + "'");
     }
     
-    public static TypeGameCardSuit fromInt(int i)
+    public static TypeCardSuit fromInt(int i)
     {
         if (i >= 0)
         {
-            return TypeGameCardSuit.values()[i];
+            return TypeCardSuit.values()[i];
         }
         throw new IllegalArgumentException("'" + i + "'");
     }
@@ -38,6 +38,6 @@ public enum TypeGameCardSuit
      */
     public char toChar()
     {
-        return TypeGameCardSuit.SUIT_CHARS.charAt(this.ordinal());
+        return TypeCardSuit.SUIT_CHARS.charAt(this.ordinal());
     }
 }

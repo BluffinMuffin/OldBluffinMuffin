@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import poker.PokerPlayerInfo;
-import poker.PokerTableInfo;
-import poker.observer.PokerGameAdapter;
-import poker.observer.PokerGameObserver;
+import poker.game.PlayerInfo;
+import poker.game.TableInfo;
+import poker.game.observer.PokerGameAdapter;
+import poker.game.observer.PokerGameObserver;
 
 public class GameTableJFrame extends GameTableViewerJFrame
 {
@@ -81,8 +81,8 @@ public class GameTableJFrame extends GameTableViewerJFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    final PokerTableInfo table = m_game.getPokerTable();
-                    final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+                    final TableInfo table = m_game.getPokerTable();
+                    final PlayerInfo p = table.getPlayer(m_currentTablePosition);
                     m_game.playMoney(p, -1);
                 }
             });
@@ -108,8 +108,8 @@ public class GameTableJFrame extends GameTableViewerJFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    final PokerTableInfo table = m_game.getPokerTable();
-                    final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+                    final TableInfo table = m_game.getPokerTable();
+                    final PlayerInfo p = table.getPlayer(m_currentTablePosition);
                     m_game.playMoney(p, table.getCallAmount(p));
                 }
             });
@@ -135,8 +135,8 @@ public class GameTableJFrame extends GameTableViewerJFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    final PokerTableInfo table = m_game.getPokerTable();
-                    final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+                    final TableInfo table = m_game.getPokerTable();
+                    final PlayerInfo p = table.getPlayer(m_currentTablePosition);
                     m_game.playMoney(p, (Integer) getJRaiseSpinner().getValue() - p.getCurrentBetMoneyAmount());
                 }
             });
@@ -165,14 +165,14 @@ public class GameTableJFrame extends GameTableViewerJFrame
         {
             
             @Override
-            public void playerActionNeeded(PokerPlayerInfo p)
+            public void playerActionNeeded(PlayerInfo p)
             {
                 if (p.getCurrentTablePosition() == m_currentTablePosition)
                 {
                     getJFoldButton().setEnabled(true);
                     setCallButtonName();
                     getJCallButton().setEnabled(true);
-                    final PokerTableInfo table = m_game.getPokerTable();
+                    final TableInfo table = m_game.getPokerTable();
                     if (table.getCurrentHigherBet() < p.getCurrentTotalMoneyAmount())
                     {
                         final int min = table.getMinRaiseAmount(p) + p.getCurrentBetMoneyAmount();
@@ -188,8 +188,8 @@ public class GameTableJFrame extends GameTableViewerJFrame
     
     public void setCallButtonName()
     {
-        final PokerTableInfo table = m_game.getPokerTable();
-        final PokerPlayerInfo p = table.getPlayer(m_currentTablePosition);
+        final TableInfo table = m_game.getPokerTable();
+        final PlayerInfo p = table.getPlayer(m_currentTablePosition);
         String s;
         if (table.canCheck(p))
         {

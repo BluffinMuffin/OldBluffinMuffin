@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
-import poker.TypePokerGameLimit;
+import poker.game.TypeBet;
 
 public class LobbyAddTableJDialog extends JDialog
 {
@@ -34,7 +34,7 @@ public class LobbyAddTableJDialog extends JDialog
     private int m_WaitingTimeAfterPlayerAction;
     private int m_WaitingTimeAfterBoardDealed;
     private int m_WaitingTimeAfterPotWon;
-    private TypePokerGameLimit m_Limit;
+    private TypeBet m_Limit;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -182,8 +182,8 @@ public class LobbyAddTableJDialog extends JDialog
         {
             jGameLimitComboBox = new JComboBox();
             jGameLimitComboBox.setBounds(new Rectangle(10, 75, 200, 20));
-            jGameLimitComboBox.setModel(new DefaultComboBoxModel(TypePokerGameLimit.values()));
-            jGameLimitComboBox.setSelectedItem(TypePokerGameLimit.NO_LIMIT);
+            jGameLimitComboBox.setModel(new DefaultComboBoxModel(TypeBet.values()));
+            jGameLimitComboBox.setSelectedItem(TypeBet.NO_LIMIT);
         }
         return jGameLimitComboBox;
     }
@@ -285,7 +285,7 @@ public class LobbyAddTableJDialog extends JDialog
                     m_WaitingTimeAfterPlayerAction = (Integer) getJWTAPlayerActionSpinner().getValue();
                     m_WaitingTimeAfterBoardDealed = (Integer) getJWTABoardDealedSpinner().getValue();
                     m_WaitingTimeAfterPotWon = (Integer) getJWTAPotWonSpinner().getValue();
-                    m_Limit = (TypePokerGameLimit) getJGameLimitComboBox().getSelectedItem();
+                    m_Limit = (TypeBet) getJGameLimitComboBox().getSelectedItem();
                     m_OK = true;
                     setVisible(false);
                 }
@@ -329,7 +329,7 @@ public class LobbyAddTableJDialog extends JDialog
         return m_WaitingTimeAfterPotWon;
     }
     
-    public TypePokerGameLimit getLimit()
+    public TypeBet getLimit()
     {
         return m_Limit;
     }

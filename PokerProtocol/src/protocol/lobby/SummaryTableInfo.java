@@ -2,7 +2,7 @@ package protocol.lobby;
 
 import java.util.StringTokenizer;
 
-import poker.TypePokerGameLimit;
+import poker.game.TypeBet;
 
 /**
  * @author Hocus
@@ -15,7 +15,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
     public int m_bigBlind;
     public int m_nbPlayers;
     public int m_nbSeats;
-    public TypePokerGameLimit m_limit;
+    public TypeBet m_limit;
     
     /**
      * Create a new table
@@ -33,7 +33,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
      * @param p_nbSeats
      *            Number of seat
      */
-    public SummaryTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypePokerGameLimit limit)
+    public SummaryTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
@@ -50,7 +50,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());
-        m_limit = TypePokerGameLimit.valueOf(argsToken.nextToken());
+        m_limit = TypeBet.valueOf(argsToken.nextToken());
     }
     
     public int compareTo(SummaryTableInfo p_table)

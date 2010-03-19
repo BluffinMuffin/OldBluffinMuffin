@@ -1,6 +1,6 @@
 package protocol.game;
 
-import game.GameCard;
+import game.Card;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import poker.PokerGame;
-import poker.PokerMoneyPot;
-import poker.PokerPlayerInfo;
-import poker.TypePokerGameAction;
-import poker.TypePokerGameRound;
-import poker.observer.PokerGameAdapter;
-import poker.observer.PokerGameObserver;
+import poker.game.PokerGame;
+import poker.game.MoneyPot;
+import poker.game.PlayerInfo;
+import poker.game.TypeAction;
+import poker.game.TypeRound;
+import poker.game.observer.PokerGameAdapter;
+import poker.game.observer.PokerGameObserver;
 import protocol.IPokerCommand;
 import protocol.game.commands.GameBetTurnEndedCommand;
 import protocol.game.commands.GameBetTurnStartedCommand;
@@ -43,7 +43,7 @@ public class ServerSidePokerTcpClient implements Runnable
     private boolean m_isConnected;
     
     // POKER Things
-    private final PokerPlayerInfo m_player;
+    private final PlayerInfo m_player;
     private final PokerGame m_game;
     private final GameServerSideObserver m_commandObserver = new GameServerSideObserver();
     private PokerGameObserver m_pokerObserver;
@@ -63,7 +63,7 @@ public class ServerSidePokerTcpClient implements Runnable
     public ServerSidePokerTcpClient(PokerGame game, String name, int money, Socket socket) throws IOException
     {
         m_game = game;
-        m_player = new PokerPlayerInfo(name, money);
+        m_player = new PlayerInfo(name, money);
         m_socket = socket;
         m_output = new PrintWriter(m_socket.getOutputStream(), true);
         m_input = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
@@ -103,7 +103,7 @@ public class ServerSidePokerTcpClient implements Runnable
         m_isConnected = true;
     }
     
-    public PokerPlayerInfo getPlayer()
+    public PlayerInfo getPlayer()
     {
         return m_player;
     }
@@ -147,11 +147,11 @@ public class ServerSidePokerTcpClient implements Runnable
         m_pokerObserver.subscribe(new PokerGameAdapter()
         {
             @Override
-            public void gameBettingRoundEnded(TypePokerGameRound r)
+            public void gameBettingRoundEnded(TypeRound r)
             {
-                final List<PokerMoneyPot> pots = m_game.getPokerTable().getPots();
+                final List<MoneyPot> pots = m_game.getPokerTable().getPots();
                 final ArrayList<Integer> amounts = new ArrayList<Integer>();
-                for (final PokerMoneyPot pot : pots)
+                for (final MoneyPot pot : pots)
                 {
                     amounts.add(pot.getAmount());
                 }
@@ -164,9 +164,9 @@ public class ServerSidePokerTcpClient implements Runnable
             }
             
             @Override
-            public void playerHoleCardsChanged(PokerPlayerInfo p)
+            public void playerHoleCardsChanged(PlayerInfo p)
             {
-                final GameCard[] holeCards = p.getCurrentHand(p.getCurrentTablePosition() == m_player.getCurrentTablePosition());
+                final Card[] holeCards = p.getCurrentHand(p.getCurrentTablePosition() == m_player.getCurrentTablePosition());
                 send(new GameHoleCardsChangedCommand(p.getCurrentTablePosition(), holeCards[0].getId(), holeCards[1].getId(), p.isPlaying()));
             }
             
@@ -177,19 +177,19 @@ public class ServerSidePokerTcpClient implements Runnable
             }
             
             @Override
-            public void playerWonPot(PokerPlayerInfo p, PokerMoneyPot pot, int wonAmount)
+            public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
             {
                 send(new GamePlayerWonPotCommand(p.getCurrentTablePosition(), pot.getId(), wonAmount, p.getCurrentSafeMoneyAmount()));
             }
             
             @Override
-            public void playerActionTaken(PokerPlayerInfo p, TypePokerGameAction reason, int playedAmount)
+            public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
                 send(new GamePlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), reason, playedAmount, p.isPlaying()));
             }
             
             @Override
-            public void playerMoneyChanged(PokerPlayerInfo p)
+            public void playerMoneyChanged(PlayerInfo p)
             {
                 send(new GamePlayerMoneyChangedCommand(p.getCurrentTablePosition(), p.getCurrentSafeMoneyAmount()));
             }
@@ -201,7 +201,7 @@ public class ServerSidePokerTcpClient implements Runnable
             }
             
             @Override
-            public void playerActionNeeded(PokerPlayerInfo p)
+            public void playerActionNeeded(PlayerInfo p)
             {
                 send(new GamePlayerTurnBeganCommand(p.getCurrentTablePosition()));
             }
@@ -224,26 +224,26 @@ public class ServerSidePokerTcpClient implements Runnable
             @Override
             public void gameBettingRoundStarted()
             {
-                final GameCard[] cards = new GameCard[5];
+                final Card[] cards = new Card[5];
                 m_game.getPokerTable().getCurrentBoardCards().toArray(cards);
                 for (int i = 0; i < 5; ++i)
                 {
                     if (cards[i] == null)
                     {
-                        cards[i] = GameCard.NO_CARD;
+                        cards[i] = Card.NO_CARD;
                     }
                 }
                 send(new GameBetTurnStartedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[4].getId(), m_game.getCurrentGameRound()));
             }
             
             @Override
-            public void playerJoined(PokerPlayerInfo p)
+            public void playerJoined(PlayerInfo p)
             {
                 send(new GamePlayerJoinedCommand(p.getCurrentTablePosition(), p.getPlayerName(), p.getCurrentSafeMoneyAmount()));
             }
             
             @Override
-            public void playerLeaved(PokerPlayerInfo p)
+            public void playerLeaved(PlayerInfo p)
             {
                 send(new GamePlayerLeftCommand(p.getCurrentTablePosition()));
             }

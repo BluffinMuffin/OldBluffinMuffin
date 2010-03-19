@@ -1,6 +1,6 @@
 package game;
 
-public enum TypeGameCardRank
+public enum TypeCardRank
 {
     TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE;
     
@@ -13,22 +13,22 @@ public enum TypeGameCardRank
      * @throws IllegalArgumentException
      *             if c not in {@link #RANK_CHARS}
      */
-    public static TypeGameCardRank fromChar(char c)
+    public static TypeCardRank fromChar(char c)
     {
         
-        final int i = TypeGameCardRank.RANK_CHARS.indexOf(Character.toUpperCase(c));
+        final int i = TypeCardRank.RANK_CHARS.indexOf(Character.toUpperCase(c));
         if (i >= 0)
         {
-            return TypeGameCardRank.values()[i];
+            return TypeCardRank.values()[i];
         }
         throw new IllegalArgumentException("'" + c + "'");
     }
     
-    public static TypeGameCardRank fromInt(int i)
+    public static TypeCardRank fromInt(int i)
     {
         if (i >= 0)
         {
-            return TypeGameCardRank.values()[i];
+            return TypeCardRank.values()[i];
         }
         throw new IllegalArgumentException("'" + i + "'");
     }
@@ -47,6 +47,6 @@ public enum TypeGameCardRank
      */
     public char toChar()
     {
-        return TypeGameCardRank.RANK_CHARS.charAt(this.ordinal());
+        return TypeCardRank.RANK_CHARS.charAt(this.ordinal());
     }
 }

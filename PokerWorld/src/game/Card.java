@@ -3,12 +3,12 @@ package game;
 import java.util.ArrayList;
 
 
-public class GameCard implements Comparable<GameCard>
+public class Card implements Comparable<Card>
 {
     
-    private final TypeGameCardRank m_rank;
+    private final TypeCardRank m_rank;
     
-    private final TypeGameCardSuit m_suit;
+    private final TypeCardSuit m_suit;
     private final int m_ID;
     
     /**
@@ -20,14 +20,14 @@ public class GameCard implements Comparable<GameCard>
      *            a {@link Suit}
      * @see #getInstance(handEvaluation.HandEvalCard.poker.Card.Rank, handEvaluation.HandEvalCard.poker.Card.Suit)
      */
-    private GameCard(TypeGameCardRank rank, TypeGameCardSuit suit)
+    private Card(TypeCardRank rank, TypeCardSuit suit)
     {
         m_rank = rank;
         m_suit = suit;
         m_ID = suit.ordinal() * 13 + rank.ordinal();
     }
     
-    private GameCard(int ID)
+    private Card(int ID)
     {
         if (ID < 0)
         {
@@ -36,8 +36,8 @@ public class GameCard implements Comparable<GameCard>
         }
         else
         {
-            m_rank = TypeGameCardRank.fromInt(ID % 13);
-            m_suit = TypeGameCardSuit.fromInt(ID / 13);
+            m_rank = TypeCardRank.fromInt(ID % 13);
+            m_suit = TypeCardSuit.fromInt(ID / 13);
         }
         m_ID = ID;
     }
@@ -52,7 +52,7 @@ public class GameCard implements Comparable<GameCard>
      *             on the first character in rs which is not found in the respective string.
      * @see #getInstance(String)
      */
-    private GameCard(String rs)
+    private Card(String rs)
     {
         
         if (rs.length() != 2)
@@ -61,8 +61,8 @@ public class GameCard implements Comparable<GameCard>
         }
         try
         {
-            this.m_rank = TypeGameCardRank.fromChar(rs.charAt(0));
-            this.m_suit = TypeGameCardSuit.fromChar(rs.charAt(1));
+            this.m_rank = TypeCardRank.fromChar(rs.charAt(0));
+            this.m_suit = TypeCardSuit.fromChar(rs.charAt(1));
             m_ID = m_suit.ordinal() * 13 + m_rank.ordinal();
         }
         catch (final IllegalArgumentException e)
@@ -73,17 +73,17 @@ public class GameCard implements Comparable<GameCard>
     
     public final static int NO_CARD_ID = -1;
     public final static int HIDDEN_CARD_ID = -2;
-    public final static GameCard NO_CARD = new GameCard(GameCard.NO_CARD_ID);
-    public final static GameCard HIDDEN_CARD = new GameCard(GameCard.HIDDEN_CARD_ID);
-    private final static GameCard[] theCards = new GameCard[52];
+    public final static Card NO_CARD = new Card(Card.NO_CARD_ID);
+    public final static Card HIDDEN_CARD = new Card(Card.HIDDEN_CARD_ID);
+    private final static Card[] theCards = new Card[52];
     static
     {
         int i = 0;
-        for (final TypeGameCardSuit s : TypeGameCardSuit.values())
+        for (final TypeCardSuit s : TypeCardSuit.values())
         {
-            for (final TypeGameCardRank r : TypeGameCardRank.values())
+            for (final TypeCardRank r : TypeCardRank.values())
             {
-                GameCard.theCards[i++] = new GameCard(r, s);
+                Card.theCards[i++] = new Card(r, s);
             }
         }
     }
@@ -97,17 +97,17 @@ public class GameCard implements Comparable<GameCard>
      *            a {@link Suit}
      * @return an instance of {@link HandEvalCard} of the specified rank and suit.
      */
-    public static GameCard getInstance(int id)
+    public static Card getInstance(int id)
     {
-        if (id == GameCard.NO_CARD_ID)
+        if (id == Card.NO_CARD_ID)
         {
-            return GameCard.NO_CARD;
+            return Card.NO_CARD;
         }
-        if (id == GameCard.HIDDEN_CARD_ID)
+        if (id == Card.HIDDEN_CARD_ID)
         {
-            return GameCard.HIDDEN_CARD;
+            return Card.HIDDEN_CARD;
         }
-        return GameCard.theCards[id];
+        return Card.theCards[id];
     }
     
     /**
@@ -119,9 +119,9 @@ public class GameCard implements Comparable<GameCard>
      *            a {@link Suit}
      * @return an instance of {@link HandEvalCard} of the specified rank and suit.
      */
-    public static GameCard getInstance(TypeGameCardRank rank, TypeGameCardSuit suit)
+    public static Card getInstance(TypeCardRank rank, TypeCardSuit suit)
     {
-        return GameCard.getInstance(suit.ordinal() * 13 + rank.ordinal());
+        return Card.getInstance(suit.ordinal() * 13 + rank.ordinal());
     }
     
     /**
@@ -134,7 +134,7 @@ public class GameCard implements Comparable<GameCard>
      * @throws IllegalArgumentException
      *             on the first character in rs which is not found in the respective string.
      */
-    public static GameCard getInstance(String rs)
+    public static Card getInstance(String rs)
     {
         if (rs.length() != 2)
         {
@@ -142,9 +142,9 @@ public class GameCard implements Comparable<GameCard>
         }
         try
         {
-            final TypeGameCardRank rank = TypeGameCardRank.fromChar(rs.charAt(0));
-            final TypeGameCardSuit suit = TypeGameCardSuit.fromChar(rs.charAt(1));
-            return GameCard.getInstance(rank, suit);
+            final TypeCardRank rank = TypeCardRank.fromChar(rs.charAt(0));
+            final TypeCardSuit suit = TypeCardSuit.fromChar(rs.charAt(1));
+            return Card.getInstance(rank, suit);
         }
         catch (final IllegalArgumentException e)
         {
@@ -153,7 +153,7 @@ public class GameCard implements Comparable<GameCard>
     }
     
     @Override
-    public int compareTo(GameCard that)
+    public int compareTo(Card that)
     {
         return ((Integer) m_ID).compareTo(that.m_ID);
     }
@@ -167,11 +167,11 @@ public class GameCard implements Comparable<GameCard>
     @Override
     public boolean equals(Object that)
     {
-        if (!(that instanceof GameCard))
+        if (!(that instanceof Card))
         {
             return false;
         }
-        final GameCard c = (GameCard) that;
+        final Card c = (Card) that;
         return ((Integer) m_ID).equals(c.m_ID);
     }
     
@@ -187,7 +187,7 @@ public class GameCard implements Comparable<GameCard>
      * 
      * @return the {@link Rank} of this card.
      */
-    public TypeGameCardRank getRank()
+    public TypeCardRank getRank()
     {
         return m_rank;
     }
@@ -197,7 +197,7 @@ public class GameCard implements Comparable<GameCard>
      * 
      * @return the {@link Suit} of this card.
      */
-    public TypeGameCardSuit getSuit()
+    public TypeCardSuit getSuit()
     {
         return m_suit;
     }
@@ -209,12 +209,12 @@ public class GameCard implements Comparable<GameCard>
     
     public boolean isNoCard()
     {
-        return m_ID == GameCard.NO_CARD_ID;
+        return m_ID == Card.NO_CARD_ID;
     }
     
     public boolean isHiddenCard()
     {
-        return m_ID == GameCard.HIDDEN_CARD_ID;
+        return m_ID == Card.HIDDEN_CARD_ID;
     }
     
     /**
@@ -224,7 +224,7 @@ public class GameCard implements Comparable<GameCard>
      *            card array
      * @return string of code
      */
-    public static String CardArrayListToCode(ArrayList<GameCard> p_card)
+    public static String CardArrayListToCode(ArrayList<Card> p_card)
     {
         String result = "";
         for (int i = 0; i < p_card.size(); i++)
@@ -241,10 +241,10 @@ public class GameCard implements Comparable<GameCard>
      *            card array
      * @return string of code
      */
-    public static String CardArrayToCode(GameCard[] p_card)
+    public static String CardArrayToCode(Card[] p_card)
     {
         String result = "";
-        for (final GameCard element : p_card)
+        for (final Card element : p_card)
         {
             if (element != null)
             {

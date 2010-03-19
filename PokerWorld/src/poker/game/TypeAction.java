@@ -1,6 +1,6 @@
-package poker;
+package poker.game;
 
-public enum TypePokerGameAction
+public enum TypeAction
 {
     FOLDED, CALLED, RAISED, SMALL_BLIND_POSTED, BIG_BLIND_POSTED, NOTHING
 }

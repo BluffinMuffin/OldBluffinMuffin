@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import poker.PokerGame;
-import poker.PokerTableInfo;
+import poker.game.PokerGame;
+import poker.game.TableInfo;
 import protocol.lobby.SummaryTableInfo;
 import protocol.lobby.commands.LobbyCreateTableCommand;
 
@@ -113,7 +113,7 @@ public class ServerLobby extends Thread
             }
             
             // Create a new HoldEmTable and a new TableManager.
-            final PokerGame game = new PokerGame(new PokerTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+            final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
             game.start();
             // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
             final ServerTableManager manager = new ServerTableManager(game, noPort);
@@ -150,7 +150,7 @@ public class ServerLobby extends Thread
             // Check if the table is still running.
             if (game.isRunning())
             {
-                final PokerTableInfo table = game.getPokerTable();
+                final TableInfo table = game.getPokerTable();
                 tables.add(new SummaryTableInfo(noPort, table.getTableName(), table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
             }
             else

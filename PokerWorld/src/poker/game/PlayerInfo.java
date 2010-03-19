@@ -1,22 +1,23 @@
-package poker;
+package poker.game;
 
-import game.GameCard;
-import game.GameCardSet;
+import poker.HandEvaluator;
+import game.Card;
+import game.CardSet;
 
-public class PokerPlayerInfo
+public class PlayerInfo
 {
     private int m_currentSafeMoneyAmount;
     private int m_currentBetMoneyAmount;
     private int m_currentTablePosition;
     private int m_initialMoneyAmount;
     
-    private final GameCardSet m_currentHand = new GameCardSet(2);
+    private final CardSet m_currentHand = new CardSet(2);
     private String m_playerName;
     private boolean m_playing;
     private boolean m_allIn;
     private boolean m_showingCards;
     
-    public PokerPlayerInfo()
+    public PlayerInfo()
     {
         m_playerName = "Anonymous Player";
         m_currentTablePosition = -1;
@@ -24,44 +25,44 @@ public class PokerPlayerInfo
         m_initialMoneyAmount = 0;
     }
     
-    public PokerPlayerInfo(String p_name)
+    public PlayerInfo(String p_name)
     {
         this();
         m_playerName = p_name;
     }
     
-    public PokerPlayerInfo(String p_name, int p_money)
+    public PlayerInfo(String p_name, int p_money)
     {
         this(p_name);
         m_currentSafeMoneyAmount = p_money;
         m_initialMoneyAmount = p_money;
     }
     
-    public PokerPlayerInfo(int p_noSeat, String p_name, int p_money)
+    public PlayerInfo(int p_noSeat, String p_name, int p_money)
     {
         this(p_name, p_money);
         m_currentTablePosition = p_noSeat;
     }
     
-    public PokerPlayerInfo(int p_noSeat)
+    public PlayerInfo(int p_noSeat)
     {
         this();
         m_currentTablePosition = p_noSeat;
     }
     
-    public void setHand(GameCard card1, GameCard card2)
+    public void setHand(Card card1, Card card2)
     {
         m_currentHand.clear();
         m_currentHand.add(card1);
         m_currentHand.add(card2);
     }
     
-    public void setHand(GameCardSet set)
+    public void setHand(CardSet set)
     {
         m_currentHand.clear();
         while (!set.isEmpty())
         {
-            final GameCard gc = set.pop();
+            final Card gc = set.pop();
             m_currentHand.add(gc);
         }
     }
@@ -81,16 +82,16 @@ public class PokerPlayerInfo
         return m_currentTablePosition;
     }
     
-    public long handValue(GameCardSet p_board)
+    public long handValue(CardSet p_board)
     {
-        final GameCardSet hand = new GameCardSet(p_board);
+        final CardSet hand = new CardSet(p_board);
         hand.addAll(m_currentHand);
-        return PokerHandEvaluator.hand7Eval(PokerHandEvaluator.encode(hand));
+        return HandEvaluator.hand7Eval(HandEvaluator.encode(hand));
     }
     
-    public GameCard[] getCurrentHand(boolean canSeeCards)
+    public Card[] getCurrentHand(boolean canSeeCards)
     {
-        final GameCard[] holeCards = new GameCard[2];
+        final Card[] holeCards = new Card[2];
         m_currentHand.toArray(holeCards);
         if (holeCards[0] != null && holeCards[1] == null && holeCards[0].getId() < 0)
         {
@@ -100,15 +101,15 @@ public class PokerPlayerInfo
         {
             if (holeCards[j] == null)
             {
-                holeCards[j] = GameCard.NO_CARD;
+                holeCards[j] = Card.NO_CARD;
             }
             else if (!m_playing && !m_allIn)
             {
-                holeCards[j] = GameCard.NO_CARD;
+                holeCards[j] = Card.NO_CARD;
             }
             else if (!canSeeCards && !m_showingCards)
             {
-                holeCards[j] = GameCard.HIDDEN_CARD;
+                holeCards[j] = Card.HIDDEN_CARD;
             }
         }
         

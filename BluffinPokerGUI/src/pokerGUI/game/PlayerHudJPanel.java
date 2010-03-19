@@ -1,6 +1,6 @@
 package pokerGUI.game;
 
-import game.GameCard;
+import game.Card;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import poker.TypePokerGameAction;
+import poker.game.TypeAction;
 
 
 public class PlayerHudJPanel extends JPanel
@@ -169,7 +169,7 @@ public class PlayerHudJPanel extends JPanel
         jInfoLabel.setText(info);
     }
     
-    public void setPlayerAction(TypePokerGameAction action)
+    public void setPlayerAction(TypeAction action)
     {
         final StringBuilder sb = new StringBuilder("Last Action: ");
         switch (action)
@@ -184,7 +184,7 @@ public class PlayerHudJPanel extends JPanel
         jActionLabel.setText(sb.toString());
     }
     
-    public void setPlayerAction(TypePokerGameAction action, int amnt)
+    public void setPlayerAction(TypeAction action, int amnt)
     {
         final StringBuilder sb = new StringBuilder("Last Action: ");
         switch (action)
@@ -210,7 +210,7 @@ public class PlayerHudJPanel extends JPanel
         jActionLabel.setText(sb.toString());
     }
     
-    public void setPlayerCards(GameCard c1, GameCard c2)
+    public void setPlayerCards(Card c1, Card c2)
     {
         getCardPanel1().setCard(c1);
         getCardPanel2().setCard(c2);

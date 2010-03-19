@@ -1,20 +1,20 @@
-package poker;
+package poker.game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PokerMoneyPot
+public class MoneyPot
 {
     private final int m_id;
     private int m_amount;
-    private final List<PokerPlayerInfo> m_attachedPlayers = new ArrayList<PokerPlayerInfo>();
+    private final List<PlayerInfo> m_attachedPlayers = new ArrayList<PlayerInfo>();
     
-    public PokerMoneyPot(int id)
+    public MoneyPot(int id)
     {
         m_id = id;
     }
     
-    public PokerMoneyPot(int id, int amount)
+    public MoneyPot(int id, int amount)
     {
         m_id = id;
         m_amount = amount;
@@ -35,19 +35,19 @@ public class PokerMoneyPot
         return m_id;
     }
     
-    public List<PokerPlayerInfo> getAttachedPlayers()
+    public List<PlayerInfo> getAttachedPlayers()
     {
         return m_attachedPlayers;
     }
     
     // ////////////////////////////////////
     
-    public boolean attachPlayer(PokerPlayerInfo p)
+    public boolean attachPlayer(PlayerInfo p)
     {
         return m_attachedPlayers.add(p);
     }
     
-    public boolean detachPlayer(PokerPlayerInfo p)
+    public boolean detachPlayer(PlayerInfo p)
     {
         return m_attachedPlayers.remove(p);
     }

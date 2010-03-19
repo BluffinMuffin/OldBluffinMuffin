@@ -1,6 +1,6 @@
 package pokerGUI.game;
 
-import game.GameCard;
+import game.Card;
 
 import java.awt.FlowLayout;
 import java.util.TreeMap;
@@ -26,7 +26,7 @@ public class GameCardJPanel extends JPanel
         this.add(label);
         for (int i = 0; i < 52; ++i)
         {
-            final String code = GameCard.getInstance(i).toString();
+            final String code = Card.getInstance(i).toString();
             label = new GameCardJLabel(GameCardJPanel.PATH_IMAGE_CARD + code + ".png");
             m_labels.put(code, label);
             this.add(label);
@@ -44,7 +44,7 @@ public class GameCardJPanel extends JPanel
         hideCurrent();
     }
     
-    public void setCard(GameCard c)
+    public void setCard(Card c)
     {
         hideCurrent();
         if (!c.isNoCard())

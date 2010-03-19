@@ -2,7 +2,7 @@ package protocol.game.commands;
 
 import java.util.StringTokenizer;
 
-import poker.TypePokerGameAction;
+import poker.game.TypeAction;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 
@@ -12,7 +12,7 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
     private final int m_playerBet;
     private final int m_playerMoney;
     private final int m_totalPot;
-    private final TypePokerGameAction m_actionType;
+    private final TypeAction m_actionType;
     private final int m_actionAmount;
     private final boolean m_isPlaying;
     public static String COMMAND_NAME = "gamePLAYER_TURN_ENDED";
@@ -23,12 +23,12 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
         m_playerBet = Integer.parseInt(argsToken.nextToken());
         m_playerMoney = Integer.parseInt(argsToken.nextToken());
         m_totalPot = Integer.parseInt(argsToken.nextToken());
-        m_actionType = TypePokerGameAction.valueOf(argsToken.nextToken());
+        m_actionType = TypeAction.valueOf(argsToken.nextToken());
         m_actionAmount = Integer.parseInt(argsToken.nextToken());
         m_isPlaying = Boolean.parseBoolean(argsToken.nextToken());
     }
     
-    public GamePlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, TypePokerGameAction actionType, int actionAmount, boolean isPlaying)
+    public GamePlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, TypeAction actionType, int actionAmount, boolean isPlaying)
     {
         m_playerPos = pos;
         m_playerBet = bet;
@@ -81,7 +81,7 @@ public class GamePlayerTurnEndedCommand implements IPokerCommand
         return m_totalPot;
     }
     
-    public TypePokerGameAction getActionType()
+    public TypeAction getActionType()
     {
         return m_actionType;
     }

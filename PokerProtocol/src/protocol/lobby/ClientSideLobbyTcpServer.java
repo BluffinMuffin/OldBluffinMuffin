@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import poker.IPokerViewer;
-import poker.TypePokerGameLimit;
+import poker.game.TypeBet;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 import protocol.game.ClientSidePokerTcpServer;
@@ -258,7 +258,7 @@ public class ClientSideLobbyTcpServer
         return null;
     }
     
-    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypePokerGameLimit limit)
+    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
     {
         // Send query.
         send(new LobbyCreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
