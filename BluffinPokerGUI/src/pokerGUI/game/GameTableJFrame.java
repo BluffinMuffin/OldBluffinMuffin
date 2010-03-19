@@ -1,4 +1,4 @@
-package pokerGameGUI;
+package pokerGUI.game;
 
 import java.awt.Dimension;
 

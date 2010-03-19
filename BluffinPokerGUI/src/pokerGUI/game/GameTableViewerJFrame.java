@@ -1,4 +1,4 @@
-package pokerGameGUI;
+package pokerGUI.game;
 
 import game.GameCard;
 
@@ -25,7 +25,7 @@ import poker.TypePokerGameAction;
 import poker.TypePokerGameRound;
 import poker.observer.PokerGameAdapter;
 import poker.observer.PokerGameObserver;
-import utilGUI.ConsoleJPanel;
+import pokerGUI.ConsoleJPanel;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame
 {

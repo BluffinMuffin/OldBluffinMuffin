@@ -1,4 +1,4 @@
-package pokerClientLobbyGUI;
+package clientGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,9 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import pokerGameGUI.GameTableJFrame;
-import pokerLobbyGUI.LobbyAddTableJDialog;
-import pokerLobbyGUI.LobbyNameUsedJDialog;
+import pokerGUI.game.GameTableJFrame;
+import pokerGUI.lobby.LobbyAddTableJDialog;
+import pokerGUI.lobby.LobbyNameUsedJDialog;
 import protocol.game.ClientSidePokerTcpServer;
 import protocol.lobby.ClientSideLobbyTcpServer;
 import protocol.lobby.SummaryTableInfo;

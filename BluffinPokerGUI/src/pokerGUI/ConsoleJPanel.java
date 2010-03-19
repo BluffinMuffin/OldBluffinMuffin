@@ -1,4 +1,4 @@
-package utilGUI;
+package pokerGUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
