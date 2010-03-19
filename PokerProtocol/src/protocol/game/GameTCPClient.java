@@ -188,7 +188,7 @@ public class GameTCPClient implements IPokerGame
                 }
                 for (final PlayerInfo p : m_pokerTable.getPlayers())
                 {
-                    p.setCurrentBetMoneyAmount(0);
+                    p.setMoneyBetAmnt(0);
                 }
                 m_gameObserver.gameBettingRoundEnded(command.getRound());
             }
@@ -238,7 +238,7 @@ public class GameTCPClient implements IPokerGame
                     final List<Integer> ids = command.getCardsId();
                     final Card gc0 = Card.getInstance(ids.get(0));
                     final Card gc1 = Card.getInstance(ids.get(1));
-                    p.setHand(gc0, gc1);
+                    p.setCards(gc0, gc1);
                     m_gameObserver.playerHoleCardsChanged(p);
                 }
             }
@@ -271,7 +271,7 @@ public class GameTCPClient implements IPokerGame
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
-                    p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
+                    p.setMoneySafeAmnt(command.getPlayerMoney());
                     m_gameObserver.playerMoneyChanged(p);
                 }
             }
@@ -298,8 +298,8 @@ public class GameTCPClient implements IPokerGame
                 if (p != null)
                 {
                     final int a = command.getActionAmount();
-                    p.setCurrentBetMoneyAmount(command.getPlayerBet());
-                    p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
+                    p.setMoneyBetAmnt(command.getPlayerBet());
+                    p.setMoneySafeAmnt(command.getPlayerMoney());
                     if (command.isPlaying())
                     {
                         p.setPlaying();
@@ -323,7 +323,7 @@ public class GameTCPClient implements IPokerGame
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
-                    p.setCurrentSafeMoneyAmount(command.getPlayerMoney());
+                    p.setMoneySafeAmnt(command.getPlayerMoney());
                     m_gameObserver.playerWonPot(p, new MoneyPot(command.getPotID(), command.getShared()), command.getShared());
                 }
             }
@@ -368,7 +368,7 @@ public class GameTCPClient implements IPokerGame
                     final PlayerInfo p = new PlayerInfo(noSeat, seat.m_playerName, seat.m_money);
                     m_pokerTable.forceJoinTable(p, noSeat);
                     final List<Integer> ids = seat.m_holeCardIDs;
-                    p.setHand(Card.getInstance(ids.get(0)), Card.getInstance(ids.get(1)));
+                    p.setCards(Card.getInstance(ids.get(0)), Card.getInstance(ids.get(1)));
                     if (seat.m_isPlaying)
                     {
                         p.setPlaying();
@@ -391,7 +391,7 @@ public class GameTCPClient implements IPokerGame
                         m_pokerTable.setCurrentPlayerNoSeat(noSeat);
                     }
                     
-                    p.setCurrentBetMoneyAmount(seat.m_bet);
+                    p.setMoneyBetAmnt(seat.m_bet);
                     
                     m_gameObserver.playerHoleCardsChanged(p);
                     

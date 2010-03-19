@@ -623,7 +623,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 
                 for (int i = 0; i < table.getPlayers().size(); ++i)
                 {
-                    final JLabel bet = bets[table.getPlayer(i).getCurrentTablePosition()];
+                    final JLabel bet = bets[table.getPlayer(i).getNoSeat()];
                     bet.setText("");
                 }
             }
@@ -665,10 +665,10 @@ public class JFrameTableViewer extends AbstractJFrameTable
                     final JPanelPlayerHud php = huds[i];
                     final JLabel bet = bets[i];
                     bet.setText("");
-                    php.setPlayerMoney(table.getPlayer(i).getCurrentSafeMoneyAmount());
+                    php.setPlayerMoney(table.getPlayer(i).getMoneySafeAmnt());
                     php.setNotDealer();
                     php.setNoBlind();
-                    if (table.getPlayer(i).getCurrentSafeMoneyAmount() == 0)
+                    if (table.getPlayer(i).getMoneySafeAmnt() == 0)
                     {
                         php.setBackground(Color.gray);
                         php.setHeaderColor(Color.gray);
@@ -690,7 +690,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 final TableInfo table = m_game.getPokerTable();
                 for (final PlayerInfo p : table.getPlayers())
                 {
-                    final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
+                    final JPanelPlayerHud php = huds[p.getNoSeat()];
                     installPlayer(php, p);
                 }
             }
@@ -698,8 +698,8 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void playerActionNeeded(PlayerInfo p)
             {
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
-                if (p.getCurrentTablePosition() == m_currentTablePosition)
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
+                if (p.getNoSeat() == m_currentTablePosition)
                 {
                     php.setHeaderColor(Color.green);
                 }
@@ -713,8 +713,8 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
                 final TableInfo table = m_game.getPokerTable();
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
-                php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
+                php.setPlayerMoney(p.getMoneySafeAmnt());
                 php.setPlayerAction(reason, playedAmount);
                 changePotAmount(table.getTotalPotAmount());
                 
@@ -723,58 +723,58 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 {
                     php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
                 }
-                if (p.getCurrentBetMoneyAmount() > 0)
+                if (p.getMoneyBetAmnt() > 0)
                 {
-                    final JLabel bet = bets[p.getCurrentTablePosition()];
-                    bet.setText("$" + p.getCurrentBetMoneyAmount());
+                    final JLabel bet = bets[p.getNoSeat()];
+                    bet.setText("$" + p.getMoneyBetAmnt());
                 }
             }
             
             @Override
             public void playerHoleCardsChanged(PlayerInfo p)
             {
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
-                final Card[] cards = p.getCurrentHand(true);
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
+                final Card[] cards = p.getCards(true);
                 php.setPlayerCards(cards[0], cards[1]);
             }
             
             @Override
             public void playerJoined(PlayerInfo p)
             {
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
                 installPlayer(php, p);
             }
             
             @Override
             public void playerLeaved(PlayerInfo p)
             {
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
                 php.setVisible(false);
             }
             
             @Override
             public void playerMoneyChanged(PlayerInfo p)
             {
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
-                php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
+                php.setPlayerMoney(p.getMoneySafeAmnt());
             }
             
             @Override
             public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
             {
-                final JPanelPlayerHud php = huds[p.getCurrentTablePosition()];
-                php.setPlayerMoney(p.getCurrentSafeMoneyAmount());
+                final JPanelPlayerHud php = huds[p.getNoSeat()];
+                php.setPlayerMoney(p.getMoneySafeAmnt());
                 php.setHeaderColor(Color.cyan);
             }
             
             private void installPlayer(JPanelPlayerHud php, PlayerInfo player)
             {
-                php.setPlayerName(player.getPlayerName());
+                php.setPlayerName(player.getName());
                 php.setPlayerInfo("");// TODO: RICK: Human or BOT
                 php.setPlayerAction(TypeAction.NOTHING);
-                final Card[] cards = player.getCurrentHand(true);
+                final Card[] cards = player.getCards(true);
                 php.setPlayerCards(cards[0], cards[1]);
-                php.setPlayerMoney(player.getCurrentSafeMoneyAmount());
+                php.setPlayerMoney(player.getMoneySafeAmnt());
                 php.setBackground(Color.white);
                 php.setHeaderColor(Color.white);
                 php.setVisible(true);
@@ -824,9 +824,9 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 final PlayerInfo d = table.getPlayer(table.getCurrentDealerNoSeat());
                 final PlayerInfo sb = table.getPlayer(table.getCurrentSmallBlindNoSeat());
                 final PlayerInfo bb = table.getPlayer(table.getCurrentBigBlindNoSeat());
-                writeLine("==> " + d.getPlayerName() + " is the Dealer");
-                writeLine("==> " + sb.getPlayerName() + " is the SmallBlind");
-                writeLine("==> " + bb.getPlayerName() + " is the BigBlind");
+                writeLine("==> " + d.getName() + " is the Dealer");
+                writeLine("==> " + sb.getName() + " is the SmallBlind");
+                writeLine("==> " + bb.getName() + " is the BigBlind");
             }
             
             @Override
@@ -844,44 +844,44 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void playerActionNeeded(PlayerInfo p)
             {
-                writeLine("Player turn began (" + p.getPlayerName() + ")");
+                writeLine("Player turn began (" + p.getName() + ")");
             }
             
             @Override
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
-                writeLine(p.getPlayerName() + " did [" + reason.name() + "]");
+                writeLine(p.getName() + " did [" + reason.name() + "]");
             }
             
             @Override
             public void playerHoleCardsChanged(PlayerInfo p)
             {
-                final Card[] cards = p.getCurrentHand(true);
-                writeLine("==> Hole Card changed for " + p.getPlayerName() + ": " + cards[0].toString() + " " + cards[1].toString());
+                final Card[] cards = p.getCards(true);
+                writeLine("==> Hole Card changed for " + p.getName() + ": " + cards[0].toString() + " " + cards[1].toString());
             }
             
             @Override
             public void playerJoined(PlayerInfo p)
             {
-                writeLine(p.getPlayerName() + " joined the table");
+                writeLine(p.getName() + " joined the table");
             }
             
             @Override
             public void playerLeaved(PlayerInfo p)
             {
-                writeLine(p.getPlayerName() + " left the table");
+                writeLine(p.getName() + " left the table");
             }
             
             @Override
             public void playerMoneyChanged(PlayerInfo p)
             {
-                writeLine(p.getPlayerName() + " money changed to " + p.getCurrentSafeMoneyAmount());
+                writeLine(p.getName() + " money changed to " + p.getMoneySafeAmnt());
             }
             
             @Override
             public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
             {
-                writeLine(p.getPlayerName() + " won pot ($" + wonAmount + ")");
+                writeLine(p.getName() + " won pot ($" + wonAmount + ")");
             }
         });
     }

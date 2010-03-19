@@ -152,7 +152,7 @@ public class ServerClientTableManager extends Thread
                         {
                             client.setIsConnected();
                             client.start();
-                            sendMessage(command.encodeResponse(client.getPlayer().getCurrentTablePosition()));
+                            sendMessage(command.encodeResponse(client.getPlayer().getNoSeat()));
                             client.sitIn();
                         }
                     }

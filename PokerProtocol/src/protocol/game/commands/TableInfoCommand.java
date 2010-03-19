@@ -105,13 +105,13 @@ public class TableInfoCommand implements ICommand
                 continue;
             }
             
-            seat.m_playerName = player.getPlayerName(); // playerName
-            seat.m_money = player.getCurrentSafeMoneyAmount(); // playerMoney
+            seat.m_playerName = player.getName(); // playerName
+            seat.m_money = player.getMoneySafeAmnt(); // playerMoney
             
-            final boolean showCard = (i == pPlayer.getCurrentTablePosition());
+            final boolean showCard = (i == pPlayer.getNoSeat());
             
             // Player cards
-            final Card[] holeCards = player.getCurrentHand(showCard);
+            final Card[] holeCards = player.getCards(showCard);
             for (int j = 0; j < 2; ++j)
             {
                 seat.m_holeCardIDs.add(holeCards[j].getId());
@@ -122,7 +122,7 @@ public class TableInfoCommand implements ICommand
             seat.m_isBigBlind = info.getCurrentBigBlindNoSeat() == i; // isBigBlind
             seat.m_isCurrentPlayer = info.getCurrentPlayerNoSeat() == i; // isCurrentPlayer
             seat.m_timeRemaining = 0; // timeRemaining
-            seat.m_bet = player.getCurrentBetMoneyAmount(); // betAmount
+            seat.m_bet = player.getMoneyBetAmnt(); // betAmount
             seat.m_isPlaying = player.isPlaying();
         }
         m_limit = info.getBetLimit();

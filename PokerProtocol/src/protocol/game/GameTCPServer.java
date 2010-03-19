@@ -168,8 +168,8 @@ public class GameTCPServer implements Runnable
             @Override
             public void playerHoleCardsChanged(PlayerInfo p)
             {
-                final Card[] holeCards = p.getCurrentHand(p.getCurrentTablePosition() == m_player.getCurrentTablePosition());
-                send(new PlayerHoleCardsChangedCommand(p.getCurrentTablePosition(), holeCards[0].getId(), holeCards[1].getId(), p.isPlaying()));
+                final Card[] holeCards = p.getCards(p.getNoSeat() == m_player.getNoSeat());
+                send(new PlayerHoleCardsChangedCommand(p.getNoSeat(), holeCards[0].getId(), holeCards[1].getId(), p.isPlaying()));
             }
             
             @Override
@@ -181,19 +181,19 @@ public class GameTCPServer implements Runnable
             @Override
             public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
             {
-                send(new PlayerWonPotCommand(p.getCurrentTablePosition(), pot.getId(), wonAmount, p.getCurrentSafeMoneyAmount()));
+                send(new PlayerWonPotCommand(p.getNoSeat(), pot.getId(), wonAmount, p.getMoneySafeAmnt()));
             }
             
             @Override
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
-                send(new PlayerTurnEndedCommand(p.getCurrentTablePosition(), p.getCurrentBetMoneyAmount(), p.getCurrentSafeMoneyAmount(), m_game.getPokerTable().getTotalPotAmount(), reason, playedAmount, p.isPlaying()));
+                send(new PlayerTurnEndedCommand(p.getNoSeat(), p.getMoneyBetAmnt(), p.getMoneySafeAmnt(), m_game.getPokerTable().getTotalPotAmount(), reason, playedAmount, p.isPlaying()));
             }
             
             @Override
             public void playerMoneyChanged(PlayerInfo p)
             {
-                send(new PlayerMoneyChangedCommand(p.getCurrentTablePosition(), p.getCurrentSafeMoneyAmount()));
+                send(new PlayerMoneyChangedCommand(p.getNoSeat(), p.getMoneySafeAmnt()));
             }
             
             @Override
@@ -205,7 +205,7 @@ public class GameTCPServer implements Runnable
             @Override
             public void playerActionNeeded(PlayerInfo p)
             {
-                send(new PlayerTurnBeganCommand(p.getCurrentTablePosition()));
+                send(new PlayerTurnBeganCommand(p.getNoSeat()));
             }
             
             @Override
@@ -213,11 +213,11 @@ public class GameTCPServer implements Runnable
             {
                 send(new GameStartedCommand(m_game.getPokerTable().getCurrentDealerNoSeat(), m_game.getPokerTable().getCurrentSmallBlindNoSeat(), m_game.getPokerTable().getCurrentBigBlindNoSeat()));
                 // TODO: RICK: eventuellement le client devrait par lui meme r�pondre a cette question
-                if (m_player.getCurrentTablePosition() == m_game.getPokerTable().getCurrentSmallBlindNoSeat())
+                if (m_player.getNoSeat() == m_game.getPokerTable().getCurrentSmallBlindNoSeat())
                 {
                     m_game.playMoney(m_player, m_game.getPokerTable().getSmallBlindAmount());
                 }
-                else if (m_player.getCurrentTablePosition() == m_game.getPokerTable().getCurrentBigBlindNoSeat())
+                else if (m_player.getNoSeat() == m_game.getPokerTable().getCurrentBigBlindNoSeat())
                 {
                     m_game.playMoney(m_player, m_game.getPokerTable().getBigBlindAmount());
                 }
@@ -241,13 +241,13 @@ public class GameTCPServer implements Runnable
             @Override
             public void playerJoined(PlayerInfo p)
             {
-                send(new PlayerJoinedCommand(p.getCurrentTablePosition(), p.getPlayerName(), p.getCurrentSafeMoneyAmount()));
+                send(new PlayerJoinedCommand(p.getNoSeat(), p.getName(), p.getMoneySafeAmnt()));
             }
             
             @Override
             public void playerLeaved(PlayerInfo p)
             {
-                send(new PlayerLeftCommand(p.getCurrentTablePosition()));
+                send(new PlayerLeftCommand(p.getNoSeat()));
             }
         });
     }
@@ -266,7 +266,7 @@ public class GameTCPServer implements Runnable
             @Override
             public void commandReceived(String command)
             {
-                System.out.println("<TcpPokerClient :" + m_player.getPlayerName() + "> RECV [" + command + "]");
+                System.out.println("<TcpPokerClient :" + m_player.getName() + "> RECV [" + command + "]");
             }
             
             @Override

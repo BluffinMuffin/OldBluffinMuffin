@@ -1,98 +1,110 @@
 package poker.game;
 
-import poker.HandEvaluator;
 import game.Card;
 import game.CardSet;
+import poker.HandEvaluator;
 
 public class PlayerInfo
 {
-    private int m_currentSafeMoneyAmount;
-    private int m_currentBetMoneyAmount;
-    private int m_currentTablePosition;
-    private int m_initialMoneyAmount;
+    // INFO
+    private String m_name; // Nom du joueur
+    private int m_noSeat; // Position du joueur autour de la table
     
-    private final CardSet m_currentHand = new CardSet(2);
-    private String m_playerName;
-    private boolean m_playing;
-    private boolean m_allIn;
-    private boolean m_showingCards;
+    // CARDS
+    private final CardSet m_cards = new CardSet(2); // Cartes du joueur
+    
+    // MONEY
+    private int m_initMoneyAmnt; // Argent du joueur au moment ou il s'installe a la table
+    private int m_moneySafeAmnt; // Argent du joueur qu'il a en sa pocession, non-jouee
+    private int m_moneyBetAmnt; // Argent du joueur qu'il a jouee depuis le debut de la round
+    
+    // STATES
+    private boolean m_playing; // Est-il en train de jouer ? Faux si Folded, AllIn or NotPlaying
+    private boolean m_allIn; // Est-il All-in ? Vrai si All-in
+    private boolean m_showingCards; // Montre-il ses cartes ? Vrai si showdown
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // CONSTRUCTOR // // // // // // //
+    // // // // // // // // // // // // // // // // // //
     
     public PlayerInfo()
     {
-        m_playerName = "Anonymous Player";
-        m_currentTablePosition = -1;
-        m_currentSafeMoneyAmount = 0;
-        m_initialMoneyAmount = 0;
+        m_name = "Anonymous Player";
+        m_noSeat = -1;
+        m_moneySafeAmnt = 0;
+        m_initMoneyAmnt = 0;
     }
     
     public PlayerInfo(String p_name)
     {
         this();
-        m_playerName = p_name;
+        m_name = p_name;
     }
     
     public PlayerInfo(String p_name, int p_money)
     {
         this(p_name);
-        m_currentSafeMoneyAmount = p_money;
-        m_initialMoneyAmount = p_money;
+        m_moneySafeAmnt = p_money;
+        m_initMoneyAmnt = p_money;
     }
     
     public PlayerInfo(int p_noSeat, String p_name, int p_money)
     {
         this(p_name, p_money);
-        m_currentTablePosition = p_noSeat;
+        m_noSeat = p_noSeat;
     }
     
     public PlayerInfo(int p_noSeat)
     {
         this();
-        m_currentTablePosition = p_noSeat;
+        m_noSeat = p_noSeat;
     }
     
-    public void setHand(Card card1, Card card2)
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // CARDS // // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Defini de maniere arbitraire les cartes du joueur
+     * 
+     * @param card1
+     * @param card2
+     */
+    public void setCards(Card card1, Card card2)
     {
-        m_currentHand.clear();
-        m_currentHand.add(card1);
-        m_currentHand.add(card2);
+        m_cards.clear();
+        m_cards.add(card1);
+        m_cards.add(card2);
     }
     
-    public void setHand(CardSet set)
+    /**
+     * Defini de maniere arbitraire les cartes du joueur
+     * 
+     * @param set
+     *            CardSet contenant la main complete (2 cartes)
+     */
+    public void setCards(CardSet set)
     {
-        m_currentHand.clear();
+        m_cards.clear();
         while (!set.isEmpty())
         {
             final Card gc = set.pop();
-            m_currentHand.add(gc);
+            m_cards.add(gc);
         }
     }
     
-    public int getCurrentSafeMoneyAmount()
-    {
-        return m_currentSafeMoneyAmount;
-    }
-    
-    public int getCurrentTotalMoneyAmount()
-    {
-        return getCurrentBetMoneyAmount() + getCurrentSafeMoneyAmount();
-    }
-    
-    public int getCurrentTablePosition()
-    {
-        return m_currentTablePosition;
-    }
-    
-    public long handValue(CardSet p_board)
-    {
-        final CardSet hand = new CardSet(p_board);
-        hand.addAll(m_currentHand);
-        return HandEvaluator.hand7Eval(HandEvaluator.encode(hand));
-    }
-    
-    public Card[] getCurrentHand(boolean canSeeCards)
+    /**
+     * Retourne les cartes du joueur dans un tableau
+     * 
+     * @param canSeeCards
+     *            Indique si l'on doit cacher les cartes ou non.
+     *            Mettre a true sur le client est une bonne idee car on les recoit deja cachee si necessaire
+     * @return
+     */
+    public Card[] getCards(boolean canSeeCards)
     {
         final Card[] holeCards = new Card[2];
-        m_currentHand.toArray(holeCards);
+        m_cards.toArray(holeCards);
         if (holeCards[0] != null && holeCards[1] == null && holeCards[0].getId() < 0)
         {
             holeCards[1] = holeCards[0];
@@ -116,79 +128,134 @@ public class PlayerInfo
         return holeCards;
     }
     
-    public String getPlayerName()
+    /**
+     * Evalue la valeur de la main du joueur en fonction de ses cartes et de celles sur la table
+     * 
+     * @param p_board
+     *            Les cartes sur la table
+     * @return Un long produit par le hand evaluator
+     */
+    public long evaluateCards(CardSet p_board)
     {
-        return m_playerName;
+        final CardSet hand = new CardSet(p_board);
+        hand.addAll(m_cards);
+        return HandEvaluator.hand7Eval(HandEvaluator.encode(hand));
     }
     
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // MONEY // // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * @return Argent du joueur au moment ou il s'installe a la table
+     */
+    public int getInitMoneyAmnt()
+    {
+        return m_initMoneyAmnt;
+    }
+    
+    /**
+     * @return Argent du joueur qu'il a en sa pocession, non-jouee
+     */
+    public int getMoneySafeAmnt()
+    {
+        return m_moneySafeAmnt;
+    }
+    
+    /**
+     * @return Argent du joueur qu'il a jouee depuis le debut de la round
+     */
+    public int getMoneyBetAmnt()
+    {
+        return m_moneyBetAmnt;
+    }
+    
+    /**
+     * @return Argent du joueur qu'il a en sa pocession + celle jouee depuis le debut du round
+     */
+    public int getMoneyAmtn()
+    {
+        return getMoneyBetAmnt() + getMoneySafeAmnt();
+    }
+    
+    /**
+     * Argent du joueur qu'il a en sa pocession, non-jouee
+     * 
+     * @param amnt
+     */
+    public void setMoneySafeAmnt(int amnt)
+    {
+        m_moneySafeAmnt = amnt;
+    }
+    
+    /**
+     * Augmenter l'argent du joueur qu'il a en sa pocession, non-jouee
+     * 
+     * @param amnt
+     */
+    public void incMoneySafeAmnt(int amnt)
+    {
+        m_moneySafeAmnt += amnt;
+    }
+    
+    /**
+     * Argent du joueur qu'il a jouee depuis le debut de la round
+     * 
+     * @param amnt
+     */
+    public void setMoneyBetAmnt(int amnt)
+    {
+        m_moneyBetAmnt = amnt;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // INFO /// // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * @return Position du joueur autour de la table
+     */
+    public int getNoSeat()
+    {
+        return m_noSeat;
+    }
+    
+    /**
+     * @return Nom du joueur
+     */
+    public String getName()
+    {
+        return m_name;
+    }
+    
+    /**
+     * Position du joueur autour de la table
+     * 
+     * @param noSeat
+     */
+    public void setNoSeat(int noSeat)
+    {
+        m_noSeat = noSeat;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // STATES / // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * @return
+     */
     public boolean isPlaying()
     {
         return m_playing;
     }
     
+    /**
+     * @return
+     */
     public boolean isAllIn()
     {
         return m_allIn;
-    }
-    
-    public boolean canPlay()
-    {
-        return m_currentTablePosition >= 0 && m_currentSafeMoneyAmount > 0;
-    }
-    
-    public void setAllIn()
-    {
-        m_allIn = true;
-        m_playing = false;
-    }
-    
-    public void setFolded()
-    {
-        m_allIn = false;
-        m_playing = false;
-    }
-    
-    public void setPlaying()
-    {
-        m_showingCards = false;
-        m_allIn = true;
-        m_playing = true;
-    }
-    
-    public void setCurrentTablePosition(int currentTablePosition)
-    {
-        m_currentTablePosition = currentTablePosition;
-    }
-    
-    public boolean canBet(int money)
-    {
-        return (money <= m_currentSafeMoneyAmount);
-    }
-    
-    public boolean tryBet(int money)
-    {
-        if (!canBet(money))
-        {
-            return false;
-        }
-        m_currentSafeMoneyAmount -= money;
-        m_currentBetMoneyAmount += money;
-        return true;
-    }
-    
-    public int getCurrentBetMoneyAmount()
-    {
-        return m_currentBetMoneyAmount;
-    }
-    
-    public void setCurrentBetMoneyAmount(int currentBetMoneyAmount)
-    {
-        m_currentBetMoneyAmount = currentBetMoneyAmount;
-    }
-    
-    public void setShowingCards(boolean showingCards)
-    {
-        m_showingCards = showingCards;
     }
     
     public boolean isShowingCards()
@@ -196,18 +263,81 @@ public class PlayerInfo
         return m_showingCards;
     }
     
-    public void setCurrentSafeMoneyAmount(int currentSafeMoneyAmount)
+    /**
+     * 
+     */
+    public void setAllIn()
     {
-        m_currentSafeMoneyAmount = currentSafeMoneyAmount;
+        m_allIn = true;
+        m_playing = false;
     }
     
-    public void incCurrentSafeMoneyAmount(int inc)
+    /**
+     * 
+     */
+    public void setFolded()
     {
-        m_currentSafeMoneyAmount += inc;
+        m_allIn = false;
+        m_playing = false;
     }
     
-    public int getInitialMoneyAmount()
+    /**
+     * 
+     */
+    public void setPlaying()
     {
-        return m_initialMoneyAmount;
+        m_showingCards = false;
+        m_allIn = true;
+        m_playing = true;
+    }
+    
+    /**
+     * @param showingCards
+     */
+    public void setShowingCards(boolean showingCards)
+    {
+        m_showingCards = showingCards;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // METHODES // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Verifie si le joueur est en position de jouer
+     * 
+     * @return True si il est assis et a de l'argent
+     */
+    public boolean canPlay()
+    {
+        return m_noSeat >= 0 && m_moneySafeAmnt > 0;
+    }
+    
+    /**
+     * Verifie si peux better un certain montant
+     * 
+     * @param amnt
+     * @return True si il le peux
+     */
+    public boolean canBet(int amnt)
+    {
+        return (amnt <= m_moneySafeAmnt);
+    }
+    
+    /**
+     * Essai de better, si reussite decremente MoneyBetAmnt et incremente MoneySafeAmnt
+     * 
+     * @param amnt
+     * @return True si c'est une reussite
+     */
+    public boolean tryBet(int amnt)
+    {
+        if (!canBet(amnt))
+        {
+            return false;
+        }
+        m_moneySafeAmnt -= amnt;
+        m_moneyBetAmnt += amnt;
+        return true;
     }
 }

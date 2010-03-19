@@ -224,18 +224,18 @@ public class PokerGame implements IPokerGame
     
     public boolean playMoney(PlayerInfo p, int amount)
     {
-        final int amnt = Math.min(amount, p.getCurrentSafeMoneyAmount());
-        System.out.println(p.getPlayerName() + " is playing " + amnt + " money on state: " + m_currentGameState);
+        final int amnt = Math.min(amount, p.getMoneySafeAmnt());
+        System.out.println(p.getName() + " is playing " + amnt + " money on state: " + m_currentGameState);
         if (m_currentGameState == TypePokerGameState.BLIND_WAITING)
         {
-            System.out.println(p.getPlayerName() + " is putting blind of " + amnt);
+            System.out.println(p.getName() + " is putting blind of " + amnt);
             System.out.println("Total still needed is " + m_pokerTable.getTotalBlindNeeded());
             final int needed = m_pokerTable.blindNeeded(p);
             if (amnt != needed)
             {
                 if (p.canBet(amnt + 1))
                 {
-                    System.err.println(p.getPlayerName() + " needed to put " + needed);
+                    System.err.println(p.getName() + " needed to put " + needed);
                     return false;
                 }
                 else
@@ -243,12 +243,12 @@ public class PokerGame implements IPokerGame
                     System.out.println("So ... All-In !");
                     p.setAllIn();
                     m_pokerTable.incNbAllIn();
-                    m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
+                    m_pokerTable.addAllInCap(p.getMoneyBetAmnt() + amnt);
                 }
             }
             if (!p.tryBet(amnt))
             {
-                System.err.println(p.getPlayerName() + " just .. can't !! ");
+                System.err.println(p.getName() + " just .. can't !! ");
                 return false;
             }
             m_pokerTable.incTotalPotAmount(amnt);
@@ -277,7 +277,7 @@ public class PokerGame implements IPokerGame
         else if (m_currentGameState == TypePokerGameState.PLAYING && m_currentGameRoundState == TypePokerGameRoundState.BETTING)
         {
             System.out.println("Currently, we need " + m_pokerTable.getCallAmount(p) + " minimum money from this player");
-            if (p.getCurrentTablePosition() != m_pokerTable.getCurrentPlayerNoSeat())
+            if (p.getNoSeat() != m_pokerTable.getCurrentPlayerNoSeat())
             {
                 System.err.println("BUT SCREW YOU, IT'S NOT YOUR TURN !!!!!");
                 return false;
@@ -298,11 +298,11 @@ public class PokerGame implements IPokerGame
                     System.err.println("BUT SCREW YOU, IT'S NOT ENOUGH !!!!!");
                     return false;
                 }
-                System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getCurrentBetMoneyAmount());
+                System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getMoneyBetAmnt());
                 amntNeeded = amnt;
                 p.setAllIn();
                 m_pokerTable.incNbAllIn();
-                m_pokerTable.addAllInCap(p.getCurrentBetMoneyAmount() + amnt);
+                m_pokerTable.addAllInCap(p.getMoneyBetAmnt() + amnt);
             }
             if (!p.tryBet(amnt))
             {
@@ -443,7 +443,7 @@ public class PokerGame implements IPokerGame
     {
         for (final PlayerInfo p : m_pokerTable.getPlayingPlayers())
         {
-            p.setHand(m_pokerDealer.dealHoles(p));
+            p.setCards(m_pokerDealer.dealHoles(p));
             m_gameObserver.playerHoleCardsChanged(p);
         }
     }
@@ -484,7 +484,7 @@ public class PokerGame implements IPokerGame
     private void raisePlayer(PlayerInfo p, int played)
     {
         m_pokerTable.setNbPlayed(1);
-        m_pokerTable.setCurrentHigherBet(p.getCurrentBetMoneyAmount());
+        m_pokerTable.setCurrentHigherBet(p.getMoneyBetAmnt());
         m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);
     }
     
@@ -522,7 +522,7 @@ public class PokerGame implements IPokerGame
     private void playNext()
     {
         final PlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
-        m_pokerTable.setCurrentPlayerNoSeat(player.getCurrentTablePosition());
+        m_pokerTable.setCurrentPlayerNoSeat(player.getNoSeat());
         m_gameObserver.playerActionNeeded(player);
     }
     
@@ -536,7 +536,7 @@ public class PokerGame implements IPokerGame
                 final int wonAmount = pot.getAmount() / players.size();
                 for (final PlayerInfo p : players)
                 {
-                    p.incCurrentSafeMoneyAmount(wonAmount);
+                    p.incMoneySafeAmnt(wonAmount);
                     m_gameObserver.playerMoneyChanged(p);
                     m_gameObserver.playerWonPot(p, pot, wonAmount);
                     

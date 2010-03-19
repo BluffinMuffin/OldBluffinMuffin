@@ -152,7 +152,7 @@ public class TableInfo
     public boolean forceJoinTable(PlayerInfo p, int seat)
     {
         p.setFolded();
-        p.setCurrentTablePosition(seat);
+        p.setNoSeat(seat);
         m_currentPlayers[seat] = p;
         return true;
     }
@@ -173,7 +173,7 @@ public class TableInfo
         
         final int seat = m_RemainingSeats.pop();
         p.setFolded();
-        p.setCurrentTablePosition(seat);
+        p.setNoSeat(seat);
         m_currentPlayers[seat] = p;
         return true;
     }
@@ -186,9 +186,9 @@ public class TableInfo
             return false;
         }
         
-        final int seat = p.getCurrentTablePosition();
+        final int seat = p.getNoSeat();
         p.setFolded();
-        p.setCurrentTablePosition(-1);
+        p.setNoSeat(-1);
         m_currentPlayers[seat] = null;
         
         return true;
@@ -284,9 +284,9 @@ public class TableInfo
     
     public void placeButtons()
     {
-        m_currentDealerNoSeat = nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
-        m_currentSmallBlindNoSeat = getNbPlaying() == 2 ? m_currentDealerNoSeat : nextPlayingPlayer(m_currentDealerNoSeat).getCurrentTablePosition();
-        m_currentBigBlindNoSeat = nextPlayingPlayer(m_currentSmallBlindNoSeat).getCurrentTablePosition();
+        m_currentDealerNoSeat = nextPlayingPlayer(m_currentDealerNoSeat).getNoSeat();
+        m_currentSmallBlindNoSeat = getNbPlaying() == 2 ? m_currentDealerNoSeat : nextPlayingPlayer(m_currentDealerNoSeat).getNoSeat();
+        m_currentBigBlindNoSeat = nextPlayingPlayer(m_currentSmallBlindNoSeat).getNoSeat();
         m_blindNeeded.clear();
         m_blindNeeded.put(getPlayer(m_currentSmallBlindNoSeat), getSmallBlindAmount());
         m_blindNeeded.put(getPlayer(m_currentBigBlindNoSeat), getBigBlindAmount());
@@ -413,7 +413,7 @@ public class TableInfo
     {
         for (final PlayerInfo p : getPlayers())
         {
-            if (p.getPlayerName().equalsIgnoreCase(name))
+            if (p.getName().equalsIgnoreCase(name))
             {
                 return true;
             }
@@ -440,7 +440,7 @@ public class TableInfo
     
     public void AddBet(PlayerInfo p, MoneyPot pot, int bet)
     {
-        p.setCurrentBetMoneyAmount(p.getCurrentBetMoneyAmount() - bet);
+        p.setMoneyBetAmnt(p.getMoneyBetAmnt() - bet);
         pot.addAmount(bet);
         if (bet >= 0 && (p.isPlaying() || p.isAllIn()))
         {
@@ -459,7 +459,7 @@ public class TableInfo
             
             for (final PlayerInfo p : getPlayers())
             {
-                AddBet(p, pot, Math.min(p.getCurrentBetMoneyAmount(), cap));
+                AddBet(p, pot, Math.min(p.getMoneyBetAmnt(), cap));
             }
             currentTaken += cap;
             m_currentPotId++;
@@ -470,7 +470,7 @@ public class TableInfo
         curPot.detachAll();
         for (final PlayerInfo p : getPlayers())
         {
-            AddBet(p, curPot, p.getCurrentBetMoneyAmount());
+            AddBet(p, curPot, p.getMoneyBetAmnt());
             
         }
         m_currentHigherBet = 0;
@@ -501,7 +501,7 @@ public class TableInfo
             pot.detachAll();
             for (final PlayerInfo p : info)
             {
-                final long handValue = p.handValue(m_currentBoardCards);
+                final long handValue = p.evaluateCards(m_currentBoardCards);
                 if (handValue > bestHand)
                 {
                     pot.detachAll();
@@ -538,12 +538,12 @@ public class TableInfo
     
     public boolean canRaise(PlayerInfo p)
     {
-        return getCurrentHigherBet() < p.getCurrentTotalMoneyAmount();
+        return getCurrentHigherBet() < p.getMoneyAmtn();
     }
     
     public boolean canCheck(PlayerInfo p)
     {
-        return getCurrentHigherBet() <= p.getCurrentBetMoneyAmount();
+        return getCurrentHigherBet() <= p.getMoneyBetAmnt();
     }
     
     public int getMinRaiseAmount(PlayerInfo p)
@@ -558,11 +558,11 @@ public class TableInfo
     
     public int getCallAmount(PlayerInfo p)
     {
-        return getCurrentHigherBet() - p.getCurrentBetMoneyAmount();
+        return getCurrentHigherBet() - p.getMoneyBetAmnt();
     }
     
     public int getFreeMoneyAmount(PlayerInfo p)
     {
-        return p.getCurrentTotalMoneyAmount() - getCurrentHigherBet();
+        return p.getMoneyAmtn() - getCurrentHigherBet();
     }
 }
