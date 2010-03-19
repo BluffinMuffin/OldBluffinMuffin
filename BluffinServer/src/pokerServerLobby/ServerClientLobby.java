@@ -8,12 +8,12 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import protocol.IPokerCommand;
-import protocolLobby.LobbyServerSideAdapter;
-import protocolLobby.LobbyServerSideObserver;
-import protocolLobbyCommands.LobbyIdentifyCommand;
-import protocolLobbyCommands.LobbyCreateTableCommand;
-import protocolLobbyCommands.LobbyDisconnectCommand;
-import protocolLobbyCommands.LobbyListTableCommand;
+import protocol.lobby.LobbyServerSideAdapter;
+import protocol.lobby.LobbyServerSideObserver;
+import protocol.lobby.commands.LobbyCreateTableCommand;
+import protocol.lobby.commands.LobbyDisconnectCommand;
+import protocol.lobby.commands.LobbyIdentifyCommand;
+import protocol.lobby.commands.LobbyListTableCommand;
 
 /**
  * This class represents a client for ServerLobby.

@@ -22,9 +22,9 @@ import javax.swing.table.DefaultTableModel;
 import pokerGameGUI.GameTableJFrame;
 import pokerLobbyGUI.LobbyAddTableJDialog;
 import pokerLobbyGUI.LobbyNameUsedJDialog;
-import protocolGame.ClientSidePokerTcpServer;
-import protocolLobby.ClientSideLobbyTcpServer;
-import protocolLobby.SummaryTableInfo;
+import protocol.game.ClientSidePokerTcpServer;
+import protocol.lobby.ClientSideLobbyTcpServer;
+import protocol.lobby.SummaryTableInfo;
 
 public class LobbyMainJFrame extends JFrame
 {

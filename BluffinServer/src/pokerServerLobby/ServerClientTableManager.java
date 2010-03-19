@@ -11,11 +11,11 @@ import poker.PokerGame;
 import poker.PokerTableInfo;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
-import protocolGame.ServerSidePokerTcpClient;
-import protocolLobby.LobbyServerSideAdapter;
-import protocolLobby.LobbyServerSideObserver;
-import protocolLobbyCommands.LobbyIdentifyCommand;
-import protocolLobbyCommands.LobbyJoinTableCommand;
+import protocol.game.ServerSidePokerTcpClient;
+import protocol.lobby.LobbyServerSideAdapter;
+import protocol.lobby.LobbyServerSideObserver;
+import protocol.lobby.commands.LobbyIdentifyCommand;
+import protocol.lobby.commands.LobbyJoinTableCommand;
 
 /**
  * @author Hocus

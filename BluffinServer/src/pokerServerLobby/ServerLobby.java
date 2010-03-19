@@ -11,8 +11,8 @@ import java.util.TreeMap;
 
 import poker.PokerGame;
 import poker.PokerTableInfo;
-import protocolLobby.SummaryTableInfo;
-import protocolLobbyCommands.LobbyCreateTableCommand;
+import protocol.lobby.SummaryTableInfo;
+import protocol.lobby.commands.LobbyCreateTableCommand;
 
 /**
  * @author Hocus
