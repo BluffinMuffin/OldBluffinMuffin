@@ -1,4 +1,4 @@
-package pokerGUI.lobby;
+package gui.lobby;
 
 import java.awt.Dimension;
 import java.awt.Frame;

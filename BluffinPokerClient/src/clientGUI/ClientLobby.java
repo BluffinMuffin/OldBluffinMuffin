@@ -1,5 +1,9 @@
 package clientGUI;
 
+import gui.game.JFrameTable;
+import gui.lobby.JDialogAddTable;
+import gui.lobby.JDialogNameUsed;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -19,9 +23,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import pokerGUI.game.JFrameTable;
-import pokerGUI.lobby.JDialogAddTable;
-import pokerGUI.lobby.JDialogNameUsed;
 import protocol.game.GameTCPClient;
 import protocol.lobby.LobbyTCPClient;
 import protocol.lobby.SummaryTableInfo;

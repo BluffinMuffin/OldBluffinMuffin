@@ -1,6 +1,7 @@
-package pokerGUI.game;
+package gui.game;
 
 import game.Card;
+import gui.JPanelConsole;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,7 +26,6 @@ import poker.game.TypeAction;
 import poker.game.TypeRound;
 import poker.game.observer.PokerGameAdapter;
 import poker.game.observer.PokerGameObserver;
-import pokerGUI.JPanelConsole;
 
 public class JFrameTableViewer extends AbstractJFrameTable
 {

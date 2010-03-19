@@ -1,4 +1,4 @@
-package pokerGUI.game;
+package gui.game;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
