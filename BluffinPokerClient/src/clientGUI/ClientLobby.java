@@ -26,7 +26,7 @@ import protocol.game.GameTCPClient;
 import protocol.lobby.LobbyTCPClient;
 import protocol.lobby.SummaryTableInfo;
 
-public class LobbyMainJFrame extends JFrame
+public class ClientLobby extends JFrame
 {
     private LobbyTCPClient m_server;
     
@@ -80,7 +80,7 @@ public class LobbyMainJFrame extends JFrame
         {
             public void run()
             {
-                final LobbyMainJFrame thisClass = new LobbyMainJFrame();
+                final ClientLobby thisClass = new ClientLobby();
                 thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 thisClass.setVisible(true);
             }
@@ -90,7 +90,7 @@ public class LobbyMainJFrame extends JFrame
     /**
      * This is the default constructor
      */
-    public LobbyMainJFrame()
+    public ClientLobby()
     {
         super();
         initialize();
@@ -150,7 +150,7 @@ public class LobbyMainJFrame extends JFrame
     
     private void eventAddTable()
     {
-        final JDialogAddTable form = new JDialogAddTable(LobbyMainJFrame.this, m_server.getPlayerName(), 1);
+        final JDialogAddTable form = new JDialogAddTable(ClientLobby.this, m_server.getPlayerName(), 1);
         form.setVisible(true);
         if (form.isOK())
         {
@@ -319,7 +319,7 @@ public class LobbyMainJFrame extends JFrame
     
     private void eventConnect()
     {
-        final LobbyConnectJDialog form = new LobbyConnectJDialog(LobbyMainJFrame.this);
+        final JDialogConnect form = new JDialogConnect(ClientLobby.this);
         form.setVisible(true);
         if (form.isOK())
         {
@@ -331,7 +331,7 @@ public class LobbyMainJFrame extends JFrame
                 boolean isOk = m_server.identify(form.getPlayerName());
                 while (!isOk)
                 {
-                    final JDialogNameUsed form2 = new JDialogNameUsed(LobbyMainJFrame.this, m_server.getPlayerName());
+                    final JDialogNameUsed form2 = new JDialogNameUsed(ClientLobby.this, m_server.getPlayerName());
                     form2.setVisible(true);
                     isOk = m_server.identify(form2.getPlayerName());
                 }

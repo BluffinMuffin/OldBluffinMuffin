@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
-public class LobbyConnectJDialog extends JDialog
+public class JDialogConnect extends JDialog
 {
     private String m_playerName;
     private String m_serverAddress;
@@ -43,7 +43,7 @@ public class LobbyConnectJDialog extends JDialog
     /**
      * @param owner
      */
-    public LobbyConnectJDialog(Frame owner)
+    public JDialogConnect(Frame owner)
     {
         
         super(owner);
@@ -139,7 +139,7 @@ public class LobbyConnectJDialog extends JDialog
                     m_serverPort = (Integer) getJPortSpinner().getValue();
                     m_Advisor = getJAdvisorCheckBox().isSelected();
                     m_OK = true;
-                    LobbyConnectJDialog.this.setVisible(false);
+                    JDialogConnect.this.setVisible(false);
                 }
             });
         }
