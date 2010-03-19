@@ -1,6 +1,6 @@
 package pokerGameGUI;
 
-import gameLogic.GameCard;
+import game.GameCard;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import pokerGameLogic.TypePokerGameAction;
+import poker.TypePokerGameAction;
 
 
 public class PlayerHudJPanel extends JPanel

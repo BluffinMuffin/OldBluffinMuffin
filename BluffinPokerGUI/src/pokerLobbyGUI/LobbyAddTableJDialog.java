@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
-import pokerGameLogic.TypePokerGameLimit;
+import poker.TypePokerGameLimit;
 
 public class LobbyAddTableJDialog extends JDialog
 {

@@ -1,6 +1,6 @@
-package pokerGameStats;
+package poker.stats;
 
-import gameLogic.GameCard;
+import game.GameCard;
 
 import java.util.ArrayList;
 import java.util.Collections;

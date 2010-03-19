@@ -1,14 +1,14 @@
 package protocolGameCommands;
 
-import gameLogic.GameCard;
+import game.GameCard;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import pokerGameLogic.PokerMoneyPot;
-import pokerGameLogic.PokerPlayerInfo;
-import pokerGameLogic.PokerTableInfo;
-import pokerGameLogic.TypePokerGameLimit;
+import poker.PokerMoneyPot;
+import poker.PokerPlayerInfo;
+import poker.PokerTableInfo;
+import poker.TypePokerGameLimit;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 import protocolGame.SummarySeatInfo;

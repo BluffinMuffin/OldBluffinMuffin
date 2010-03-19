@@ -1,4 +1,4 @@
-package gameLogic;
+package game;
 
 public enum TypeGameCardRank
 {

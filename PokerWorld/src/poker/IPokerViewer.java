@@ -1,6 +1,6 @@
-package pokerGameLogic;
+package poker;
 
-import pokerGameTools.PokerGameObserver;
+import poker.observer.PokerGameObserver;
 
 public interface IPokerViewer
 {

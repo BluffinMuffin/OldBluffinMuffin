@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import pokerGameLogic.IPokerViewer;
-import pokerGameLogic.TypePokerGameLimit;
+import poker.IPokerViewer;
+import poker.TypePokerGameLimit;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 import protocolGame.ClientSidePokerTcpServer;

@@ -2,7 +2,7 @@ package protocolGameCommands;
 
 import java.util.StringTokenizer;
 
-import pokerGameLogic.TypePokerGameAction;
+import poker.TypePokerGameAction;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 

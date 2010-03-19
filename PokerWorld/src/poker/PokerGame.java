@@ -1,8 +1,8 @@
-package pokerGameLogic;
+package poker;
 
 import java.util.List;
 
-import pokerGameTools.PokerGameObserver;
+import poker.observer.PokerGameObserver;
 
 public class PokerGame implements IPokerGame
 {

@@ -1,9 +1,9 @@
-package pokerGameTools;
+package poker.observer;
 
-import pokerGameLogic.PokerMoneyPot;
-import pokerGameLogic.PokerPlayerInfo;
-import pokerGameLogic.TypePokerGameAction;
-import pokerGameLogic.TypePokerGameRound;
+import poker.PokerMoneyPot;
+import poker.PokerPlayerInfo;
+import poker.TypePokerGameAction;
+import poker.TypePokerGameRound;
 import utility.EventObserver;
 
 public class PokerGameObserver extends EventObserver<PokerGameListener> implements PokerGameListener

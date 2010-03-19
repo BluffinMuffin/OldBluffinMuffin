@@ -1,11 +1,11 @@
-package pokerGameTools;
+package poker.observer;
 
 import java.util.EventListener;
 
-import pokerGameLogic.PokerMoneyPot;
-import pokerGameLogic.PokerPlayerInfo;
-import pokerGameLogic.TypePokerGameAction;
-import pokerGameLogic.TypePokerGameRound;
+import poker.PokerMoneyPot;
+import poker.PokerPlayerInfo;
+import poker.TypePokerGameAction;
+import poker.TypePokerGameRound;
 
 
 public interface PokerGameListener extends EventListener

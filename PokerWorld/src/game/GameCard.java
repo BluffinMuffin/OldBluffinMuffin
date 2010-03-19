@@ -1,4 +1,4 @@
-package gameLogic;
+package game;
 
 import java.util.ArrayList;
 

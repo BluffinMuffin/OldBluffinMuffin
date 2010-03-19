@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import pokerGameLogic.PokerGame;
-import pokerGameLogic.PokerTableInfo;
+import poker.PokerGame;
+import poker.PokerTableInfo;
 import protocolLobby.SummaryTableInfo;
 import protocolLobbyCommands.LobbyCreateTableCommand;
 

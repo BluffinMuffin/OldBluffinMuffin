@@ -1,6 +1,6 @@
 package protocolGame;
 
-import gameLogic.GameCard;
+import game.GameCard;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import pokerGameLogic.PokerGame;
-import pokerGameLogic.PokerMoneyPot;
-import pokerGameLogic.PokerPlayerInfo;
-import pokerGameLogic.TypePokerGameAction;
-import pokerGameLogic.TypePokerGameRound;
-import pokerGameTools.PokerGameAdapter;
-import pokerGameTools.PokerGameObserver;
+import poker.PokerGame;
+import poker.PokerMoneyPot;
+import poker.PokerPlayerInfo;
+import poker.TypePokerGameAction;
+import poker.TypePokerGameRound;
+import poker.observer.PokerGameAdapter;
+import poker.observer.PokerGameObserver;
 import protocol.IPokerCommand;
 import protocolGameCommands.GameBetTurnEndedCommand;
 import protocolGameCommands.GameBetTurnStartedCommand;

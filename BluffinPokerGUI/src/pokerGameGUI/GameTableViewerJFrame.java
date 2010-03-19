@@ -1,6 +1,6 @@
 package pokerGameGUI;
 
-import gameLogic.GameCard;
+import game.GameCard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,14 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import pokerGameLogic.IPokerGame;
-import pokerGameLogic.PokerMoneyPot;
-import pokerGameLogic.PokerPlayerInfo;
-import pokerGameLogic.PokerTableInfo;
-import pokerGameLogic.TypePokerGameAction;
-import pokerGameLogic.TypePokerGameRound;
-import pokerGameTools.PokerGameAdapter;
-import pokerGameTools.PokerGameObserver;
+import poker.IPokerGame;
+import poker.PokerMoneyPot;
+import poker.PokerPlayerInfo;
+import poker.PokerTableInfo;
+import poker.TypePokerGameAction;
+import poker.TypePokerGameRound;
+import poker.observer.PokerGameAdapter;
+import poker.observer.PokerGameObserver;
 import utilGUI.ConsoleJPanel;
 
 public class GameTableViewerJFrame extends GameTableAbstractJFrame

@@ -1,4 +1,4 @@
-package pokerGameStats;
+package poker.stats;
 
 /**
  * @author Hocus

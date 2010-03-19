@@ -1,4 +1,4 @@
-package pokerGameLogic;
+package poker;
 
 public enum TypePokerGameState 
 {

@@ -1,6 +1,6 @@
 package pokerGameGUI;
 
-import gameLogic.GameCard;
+import game.GameCard;
 
 import java.awt.FlowLayout;
 import java.util.TreeMap;

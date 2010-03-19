@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import pokerGameLogic.PokerGame;
-import pokerGameLogic.PokerTableInfo;
+import poker.PokerGame;
+import poker.PokerTableInfo;
 import protocol.IPokerCommand;
 import protocol.PokerCommand;
 import protocolGame.ServerSidePokerTcpClient;

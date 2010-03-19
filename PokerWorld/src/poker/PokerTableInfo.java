@@ -1,7 +1,7 @@
-package pokerGameLogic;
+package poker;
 
-import gameLogic.GameCard;
-import gameLogic.GameCardSet;
+import game.GameCard;
+import game.GameCardSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;

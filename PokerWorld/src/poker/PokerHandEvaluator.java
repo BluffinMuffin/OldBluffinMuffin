@@ -1,7 +1,7 @@
-package pokerGameLogic;
+package poker;
 
-import gameLogic.GameCard;
-import gameLogic.GameCardSet;
+import game.GameCard;
+import game.GameCardSet;
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0
