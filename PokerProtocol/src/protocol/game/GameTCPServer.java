@@ -187,7 +187,7 @@ public class GameTCPServer implements Runnable
             @Override
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
-                send(new PlayerTurnEndedCommand(p.getNoSeat(), p.getMoneyBetAmnt(), p.getMoneySafeAmnt(), m_game.getPokerTable().getTotalPotAmount(), reason, playedAmount, p.isPlaying()));
+                send(new PlayerTurnEndedCommand(p.getNoSeat(), p.getMoneyBetAmnt(), p.getMoneySafeAmnt(), m_game.getPokerTable().getTotalPotAmnt(), reason, playedAmount, p.isPlaying()));
             }
             
             @Override
@@ -211,15 +211,15 @@ public class GameTCPServer implements Runnable
             @Override
             public void gameBlindsNeeded()
             {
-                send(new GameStartedCommand(m_game.getPokerTable().getCurrentDealerNoSeat(), m_game.getPokerTable().getCurrentSmallBlindNoSeat(), m_game.getPokerTable().getCurrentBigBlindNoSeat()));
+                send(new GameStartedCommand(m_game.getPokerTable().getNoSeatDealer(), m_game.getPokerTable().getNoSeatSmallBlind(), m_game.getPokerTable().getNoSeatBigBlind()));
                 // TODO: RICK: eventuellement le client devrait par lui meme r�pondre a cette question
-                if (m_player.getNoSeat() == m_game.getPokerTable().getCurrentSmallBlindNoSeat())
+                if (m_player.getNoSeat() == m_game.getPokerTable().getNoSeatSmallBlind())
                 {
-                    m_game.playMoney(m_player, m_game.getPokerTable().getSmallBlindAmount());
+                    m_game.playMoney(m_player, m_game.getPokerTable().getSmallBlindAmnt());
                 }
-                else if (m_player.getNoSeat() == m_game.getPokerTable().getCurrentBigBlindNoSeat())
+                else if (m_player.getNoSeat() == m_game.getPokerTable().getNoSeatBigBlind())
                 {
-                    m_game.playMoney(m_player, m_game.getPokerTable().getBigBlindAmount());
+                    m_game.playMoney(m_player, m_game.getPokerTable().getBigBlindAmnt());
                 }
             }
             
@@ -227,7 +227,7 @@ public class GameTCPServer implements Runnable
             public void gameBettingRoundStarted()
             {
                 final Card[] cards = new Card[5];
-                m_game.getPokerTable().getCurrentBoardCards().toArray(cards);
+                m_game.getPokerTable().getCards().toArray(cards);
                 for (int i = 0; i < 5; ++i)
                 {
                     if (cards[i] == null)

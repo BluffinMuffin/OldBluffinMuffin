@@ -151,7 +151,7 @@ public class ServerLobby extends Thread
             if (game.isRunning())
             {
                 final TableInfo table = game.getPokerTable();
-                tables.add(new SummaryTableInfo(noPort, table.getTableName(), table.getBigBlindAmount(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
+                tables.add(new SummaryTableInfo(noPort, table.getName(), table.getBigBlindAmnt(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
             }
             else
             {

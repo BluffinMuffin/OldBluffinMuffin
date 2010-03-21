@@ -66,7 +66,7 @@ public class PokerGame implements IPokerGame
     
     public TypeRound getCurrentGameRound()
     {
-        return m_pokerTable.getCurrentGameRound();
+        return m_pokerTable.getRound();
     }
     
     public TypePokerGameRoundState getCurrentGameRoundState()
@@ -99,10 +99,10 @@ public class PokerGame implements IPokerGame
                 TryToBegin();
                 break;
             case BLIND_WAITING:
-                m_pokerTable.setCurrentHigherBet(0);
+                m_pokerTable.setHigherBet(0);
                 break;
             case PLAYING:
-                m_pokerTable.setCurrentGameRound(TypeRound.PREFLOP);
+                m_pokerTable.setRound(TypeRound.PREFLOP);
                 m_currentGameRoundState = TypePokerGameRoundState.CARDS;
                 startRound();
                 break;
@@ -125,7 +125,7 @@ public class PokerGame implements IPokerGame
     private void setCurrentGameRound(TypeRound newGR)
     {
         
-        final TypeRound oldGR = m_pokerTable.getCurrentGameRound();
+        final TypeRound oldGR = m_pokerTable.getRound();
         
         if (m_currentGameState != TypePokerGameState.PLAYING)
         {
@@ -138,8 +138,8 @@ public class PokerGame implements IPokerGame
         }
         
         m_currentGameRoundState = TypePokerGameRoundState.CARDS;
-        m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentDealerNoSeat());
-        m_pokerTable.setCurrentGameRound(newGR);
+        m_pokerTable.setNoSeatCurrPlayer(m_pokerTable.getNoSeatDealer());
+        m_pokerTable.setRound(newGR);
         startRound();
     }
     
@@ -230,7 +230,7 @@ public class PokerGame implements IPokerGame
         {
             System.out.println(p.getName() + " is putting blind of " + amnt);
             System.out.println("Total still needed is " + m_pokerTable.getTotalBlindNeeded());
-            final int needed = m_pokerTable.blindNeeded(p);
+            final int needed = m_pokerTable.getBlindNeeded(p);
             if (amnt != needed)
             {
                 if (p.canBet(amnt + 1))
@@ -251,10 +251,10 @@ public class PokerGame implements IPokerGame
                 System.err.println(p.getName() + " just .. can't !! ");
                 return false;
             }
-            m_pokerTable.incTotalPotAmount(amnt);
+            m_pokerTable.incTotalPotAmnt(amnt);
             m_gameObserver.playerMoneyChanged(p);
             m_pokerTable.setBlindNeeded(p, 0);
-            if (amnt == m_pokerTable.getSmallBlindAmount())
+            if (amnt == m_pokerTable.getSmallBlindAmnt())
             {
                 m_gameObserver.playerActionTaken(p, TypeAction.SMALL_BLIND_POSTED, amnt);
             }
@@ -267,17 +267,17 @@ public class PokerGame implements IPokerGame
             {
                 setCurrentGameState(TypePokerGameState.PLAYING);
             }
-            if (amnt > m_pokerTable.getCurrentHigherBet())
+            if (amnt > m_pokerTable.getHigherBet())
             {
-                m_pokerTable.setCurrentHigherBet(amnt);
+                m_pokerTable.setHigherBet(amnt);
             }
             return true;
         }
         
         else if (m_currentGameState == TypePokerGameState.PLAYING && m_currentGameRoundState == TypePokerGameRoundState.BETTING)
         {
-            System.out.println("Currently, we need " + m_pokerTable.getCallAmount(p) + " minimum money from this player");
-            if (p.getNoSeat() != m_pokerTable.getCurrentPlayerNoSeat())
+            System.out.println("Currently, we need " + m_pokerTable.getCallAmnt(p) + " minimum money from this player");
+            if (p.getNoSeat() != m_pokerTable.getNoSeatCurrPlayer())
             {
                 System.err.println("BUT SCREW YOU, IT'S NOT YOUR TURN !!!!!");
                 return false;
@@ -290,7 +290,7 @@ public class PokerGame implements IPokerGame
                 continueBettingRound();
                 return true;
             }
-            int amntNeeded = m_pokerTable.getCallAmount(p);
+            int amntNeeded = m_pokerTable.getCallAmnt(p);
             if (amnt < amntNeeded)
             {
                 if (p.canBet(amnt + 1))
@@ -313,15 +313,15 @@ public class PokerGame implements IPokerGame
             if (amnt == amntNeeded)
             {
                 System.out.println("Will call with $" + amnt);
-                m_pokerTable.incTotalPotAmount(amnt);
+                m_pokerTable.incTotalPotAmnt(amnt);
                 callPlayer(p, amnt);
                 continueBettingRound();
                 return true;
             }
             System.out.println("Will raise with $" + amnt);
-            m_pokerTable.incTotalPotAmount(amnt);
+            m_pokerTable.incTotalPotAmnt(amnt);
             raisePlayer(p, amnt);
-            playNext();
+            continueBettingRound();
             return true;
         }
         System.err.println("BUT WE DON'T CARE !!!!!");
@@ -370,14 +370,14 @@ public class PokerGame implements IPokerGame
     private void startCumulRound()
     {
         m_pokerTable.managePotsRoundEnd();
-        m_gameObserver.gameBettingRoundEnded(m_pokerTable.getCurrentGameRound());
+        m_gameObserver.gameBettingRoundEnded(m_pokerTable.getRound());
         if (m_pokerTable.getNbPlaying() == 1 && m_pokerTable.getNbAllIn() == 0)
         {
             setCurrentGameState(TypePokerGameState.SHOWDOWN);
         }
         else
         {
-            switch (m_pokerTable.getCurrentGameRound())
+            switch (m_pokerTable.getRound())
             {
                 case PREFLOP:
                     setCurrentGameRound(TypeRound.FLOP);
@@ -405,10 +405,10 @@ public class PokerGame implements IPokerGame
     
     private void startCardRound()
     {
-        switch (m_pokerTable.getCurrentGameRound())
+        switch (m_pokerTable.getRound())
         {
             case PREFLOP:
-                m_pokerTable.setCurrentPlayerNoSeat(m_pokerTable.getCurrentBigBlindNoSeat());
+                m_pokerTable.setNoSeatCurrPlayer(m_pokerTable.getNoSeatBigBlind());
                 dealHole();
                 break;
             case FLOP:
@@ -426,17 +426,17 @@ public class PokerGame implements IPokerGame
     
     private void dealRiver()
     {
-        m_pokerTable.addBoardCard(m_pokerDealer.dealRiver());
+        m_pokerTable.addCard(m_pokerDealer.dealRiver());
     }
     
     private void dealTurn()
     {
-        m_pokerTable.addBoardCard(m_pokerDealer.dealTurn());
+        m_pokerTable.addCard(m_pokerDealer.dealTurn());
     }
     
     private void dealFlop()
     {
-        m_pokerTable.addBoardCards(m_pokerDealer.dealFlop());
+        m_pokerTable.addCards(m_pokerDealer.dealFlop());
     }
     
     private void dealHole()
@@ -450,14 +450,14 @@ public class PokerGame implements IPokerGame
     
     private void foldPlayer(PlayerInfo p)
     {
-        p.setFolded();
+        p.setNotPlaying();
         m_gameObserver.playerActionTaken(p, TypeAction.FOLDED, -1);
     }
     
     private void TryToBegin()
     {
         System.out.print("Trying to begin ...");
-        m_pokerTable.getAndSetNbPlayingPlayers();
+        m_pokerTable.decidePlayingPlayers();
         if (m_pokerTable.getNbPlaying() > 1)
         {
             System.out.println(" yep ! do it !");
@@ -469,9 +469,9 @@ public class PokerGame implements IPokerGame
         else
         {
             System.out.println(" just too bad :(");
-            m_pokerTable.setCurrentDealerNoSeat(-1);
-            m_pokerTable.setCurrentSmallBlindNoSeat(-1);
-            m_pokerTable.setCurrentSmallBlindNoSeat(-1);
+            m_pokerTable.setNoSeatDealer(-1);
+            m_pokerTable.setNoSeatSmallBlind(-1);
+            m_pokerTable.setNoSeatSmallBlind(-1);
         }
     }
     
@@ -484,13 +484,12 @@ public class PokerGame implements IPokerGame
     private void raisePlayer(PlayerInfo p, int played)
     {
         m_pokerTable.setNbPlayed(1);
-        m_pokerTable.setCurrentHigherBet(p.getMoneyBetAmnt());
+        m_pokerTable.setHigherBet(p.getMoneyBetAmnt());
         m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);
     }
     
     private void continueBettingRound()
     {
-        // TODO: RICK: Semble que 2/2 all-in du meme montant au preflop chie: continue a jouer
         waitALittle(m_WaitingTimeAfterPlayerAction);
         if (m_pokerTable.getNbPlaying() == 1 || m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
         {
@@ -521,8 +520,8 @@ public class PokerGame implements IPokerGame
     
     private void playNext()
     {
-        final PlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getCurrentPlayerNoSeat());
-        m_pokerTable.setCurrentPlayerNoSeat(player.getNoSeat());
+        final PlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatCurrPlayer());
+        m_pokerTable.setNoSeatCurrPlayer(player.getNoSeat());
         m_gameObserver.playerActionNeeded(player);
     }
     

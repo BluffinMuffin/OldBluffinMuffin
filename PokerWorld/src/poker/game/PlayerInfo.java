@@ -27,6 +27,10 @@ public class PlayerInfo
     // // // // // // // CONSTRUCTOR // // // // // // //
     // // // // // // // // // // // // // // // // // //
     
+    /**
+     * Tuple Player d'un jeu de poker
+     * 
+     */
     public PlayerInfo()
     {
         m_name = "Anonymous Player";
@@ -35,12 +39,26 @@ public class PlayerInfo
         m_initMoneyAmnt = 0;
     }
     
+    /**
+     * Tuple Player d'un jeu de poker
+     * 
+     * @param p_name
+     *            Nom du player
+     */
     public PlayerInfo(String p_name)
     {
         this();
         m_name = p_name;
     }
     
+    /**
+     * Tuple Player d'un jeu de poker
+     * 
+     * @param p_name
+     *            Nom du player
+     * @param p_money
+     *            Argent initial du player
+     */
     public PlayerInfo(String p_name, int p_money)
     {
         this(p_name);
@@ -48,16 +66,62 @@ public class PlayerInfo
         m_initMoneyAmnt = p_money;
     }
     
+    /**
+     * Tuple Player d'un jeu de poker
+     * 
+     * @param p_noSeat
+     *            Position du player
+     * @param p_name
+     *            Nom du player
+     * @param p_money
+     *            Argent initial du player
+     */
     public PlayerInfo(int p_noSeat, String p_name, int p_money)
     {
         this(p_name, p_money);
         m_noSeat = p_noSeat;
     }
     
+    /**
+     * Tuple Player d'un jeu de poker
+     * 
+     * @param p_noSeat
+     *            Position du player
+     */
     public PlayerInfo(int p_noSeat)
     {
         this();
         m_noSeat = p_noSeat;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // INFO /// // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * @return Position du joueur autour de la table
+     */
+    public int getNoSeat()
+    {
+        return m_noSeat;
+    }
+    
+    /**
+     * @return Nom du joueur
+     */
+    public String getName()
+    {
+        return m_name;
+    }
+    
+    /**
+     * Position du joueur autour de la table
+     * 
+     * @param noSeat
+     */
+    public void setNoSeat(int noSeat)
+    {
+        m_noSeat = noSeat;
     }
     
     // // // // // // // // // // // // // // // // // //
@@ -173,7 +237,7 @@ public class PlayerInfo
     /**
      * @return Argent du joueur qu'il a en sa pocession + celle jouee depuis le debut du round
      */
-    public int getMoneyAmtn()
+    public int getMoneyAmnt()
     {
         return getMoneyBetAmnt() + getMoneySafeAmnt();
     }
@@ -209,41 +273,13 @@ public class PlayerInfo
     }
     
     // // // // // // // // // // // // // // // // // //
-    // // // // // // // INFO /// // // // // // // // //
-    // // // // // // // // // // // // // // // // // //
-    
-    /**
-     * @return Position du joueur autour de la table
-     */
-    public int getNoSeat()
-    {
-        return m_noSeat;
-    }
-    
-    /**
-     * @return Nom du joueur
-     */
-    public String getName()
-    {
-        return m_name;
-    }
-    
-    /**
-     * Position du joueur autour de la table
-     * 
-     * @param noSeat
-     */
-    public void setNoSeat(int noSeat)
-    {
-        m_noSeat = noSeat;
-    }
-    
-    // // // // // // // // // // // // // // // // // //
     // // // // // // // STATES / // // // // // // // //
     // // // // // // // // // // // // // // // // // //
     
     /**
-     * @return
+     * Est-il en train de jouer ?
+     * 
+     * @return Faux si All-in ou Folded ou NotPlaying, Vrai sinon
      */
     public boolean isPlaying()
     {
@@ -251,19 +287,27 @@ public class PlayerInfo
     }
     
     /**
-     * @return
+     * Est-il All-in
+     * 
+     * @return Vrai si All-in, faux sinon
      */
     public boolean isAllIn()
     {
         return m_allIn;
     }
     
-    public boolean isShowingCards()
+    /**
+     * Sommes nous au showdown et le player montre ses cartes
+     * 
+     * @return Vrai si les autres peuvent voir ses cartes, faux sinon
+     */
+    public boolean isShowingCJards()
     {
         return m_showingCards;
     }
     
     /**
+     * Défini que le joueur est All-In
      * 
      */
     public void setAllIn()
@@ -273,16 +317,17 @@ public class PlayerInfo
     }
     
     /**
+     * Défini que le joueur est Folded
      * 
      */
-    public void setFolded()
+    public void setNotPlaying()
     {
         m_allIn = false;
         m_playing = false;
     }
     
     /**
-     * 
+     * Défini que le joueur est Playing
      */
     public void setPlaying()
     {
@@ -292,7 +337,10 @@ public class PlayerInfo
     }
     
     /**
+     * Défini si oui ou non le joueur montre ses cartes
+     * 
      * @param showingCards
+     *            Est-ce que le joueur montre ses cartes
      */
     public void setShowingCards(boolean showingCards)
     {

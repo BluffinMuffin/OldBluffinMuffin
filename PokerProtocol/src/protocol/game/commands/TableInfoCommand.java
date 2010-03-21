@@ -66,7 +66,7 @@ public class TableInfoCommand implements ICommand
         m_boardCardIDs = new ArrayList<Integer>();
         m_seats = new ArrayList<SummarySeatInfo>();
         
-        m_totalPotAmount = info.getTotalPotAmount();
+        m_totalPotAmount = info.getTotalPotAmnt();
         m_nbSeats = info.getNbMaxSeats();
         m_nbPlayers = info.getNbMaxSeats();
         
@@ -80,7 +80,7 @@ public class TableInfoCommand implements ICommand
             m_potsAmount.add(0);
         }
         final Card[] boardCards = new Card[5];
-        info.getCurrentBoardCards().toArray(boardCards);
+        info.getCards().toArray(boardCards);
         for (int i = 0; i < 5; ++i)
         {
             if (boardCards[i] == null)
@@ -117,10 +117,10 @@ public class TableInfoCommand implements ICommand
                 seat.m_holeCardIDs.add(holeCards[j].getId());
             }
             
-            seat.m_isDealer = info.getCurrentDealerNoSeat() == i; // isDealer
-            seat.m_isSmallBlind = info.getCurrentSmallBlindNoSeat() == i; // isSmallBlind
-            seat.m_isBigBlind = info.getCurrentBigBlindNoSeat() == i; // isBigBlind
-            seat.m_isCurrentPlayer = info.getCurrentPlayerNoSeat() == i; // isCurrentPlayer
+            seat.m_isDealer = info.getNoSeatDealer() == i; // isDealer
+            seat.m_isSmallBlind = info.getNoSeatSmallBlind() == i; // isSmallBlind
+            seat.m_isBigBlind = info.getNoSeatBigBlind() == i; // isBigBlind
+            seat.m_isCurrentPlayer = info.getNoSeatCurrPlayer() == i; // isCurrentPlayer
             seat.m_timeRemaining = 0; // timeRemaining
             seat.m_bet = player.getMoneyBetAmnt(); // betAmount
             seat.m_isPlaying = player.isPlaying();

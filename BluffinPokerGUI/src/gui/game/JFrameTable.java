@@ -110,7 +110,7 @@ public class JFrameTable extends JFrameTableViewer
                     disableButtons();
                     final TableInfo table = m_game.getPokerTable();
                     final PlayerInfo p = table.getPlayer(m_currentTablePosition);
-                    m_game.playMoney(p, table.getCallAmount(p));
+                    m_game.playMoney(p, table.getCallAmnt(p));
                 }
             });
         }
@@ -173,12 +173,12 @@ public class JFrameTable extends JFrameTableViewer
                     setCallButtonName();
                     getJCallButton().setEnabled(true);
                     final TableInfo table = m_game.getPokerTable();
-                    if (table.getCurrentHigherBet() < p.getMoneyAmtn())
+                    if (table.getHigherBet() < p.getMoneyAmnt())
                     {
-                        final int min = table.getMinRaiseAmount(p) + p.getMoneyBetAmnt();
+                        final int min = table.getMinRaiseAmnt(p) + p.getMoneyBetAmnt();
                         getJRaiseButton().setEnabled(true);
                         getJRaiseSpinner().setEnabled(true);
-                        getJRaiseSpinner().setModel(new SpinnerNumberModel(min, min, p.getMoneyAmtn(), min));
+                        getJRaiseSpinner().setModel(new SpinnerNumberModel(min, min, p.getMoneyAmnt(), min));
                     }
                 }
             }
@@ -195,7 +195,7 @@ public class JFrameTable extends JFrameTableViewer
         {
             s = "CHECK";
         }
-        else if (table.getCurrentHigherBet() >= p.getMoneyAmtn())
+        else if (table.getHigherBet() >= p.getMoneyAmnt())
         {
             s = "ALL-IN";
         }

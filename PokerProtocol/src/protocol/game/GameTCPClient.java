@@ -179,12 +179,12 @@ public class GameTCPClient implements IPokerGame
             {
                 final List<Integer> amounts = command.getPotsAmounts();
                 m_pokerTable.getPots().clear();
-                m_pokerTable.setTotalPotAmount(0);
-                m_pokerTable.setCurrentHigherBet(0);
+                m_pokerTable.setTotalPotAmnt(0);
+                m_pokerTable.setHigherBet(0);
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)
                 {
                     m_pokerTable.getPots().add(new MoneyPot(i, amounts.get(i)));
-                    m_pokerTable.incTotalPotAmount(amounts.get(i));
+                    m_pokerTable.incTotalPotAmnt(amounts.get(i));
                 }
                 for (final PlayerInfo p : m_pokerTable.getPlayers())
                 {
@@ -201,8 +201,8 @@ public class GameTCPClient implements IPokerGame
                 {
                     cards[i] = Card.getInstance(command.getCardsId().get(i));
                 }
-                m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
-                m_pokerTable.setCurrentGameRound(command.getRound());
+                m_pokerTable.setCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
+                m_pokerTable.setRound(command.getRound());
                 m_gameObserver.gameBettingRoundStarted();
             }
             
@@ -215,9 +215,9 @@ public class GameTCPClient implements IPokerGame
             @Override
             public void gameStartedCommandReceived(GameStartedCommand command)
             {
-                m_pokerTable.setCurrentDealerNoSeat(command.GetNoSeatD());
-                m_pokerTable.setCurrentSmallBlindNoSeat(command.GetNoSeatSB());
-                m_pokerTable.setCurrentBigBlindNoSeat(command.GetNoSeatBB());
+                m_pokerTable.setNoSeatDealer(command.GetNoSeatD());
+                m_pokerTable.setNoSeatSmallBlind(command.GetNoSeatSB());
+                m_pokerTable.setNoSeatBigBlind(command.GetNoSeatBB());
                 m_gameObserver.gameBlindsNeeded();
             }
             
@@ -233,7 +233,7 @@ public class GameTCPClient implements IPokerGame
                     }
                     else
                     {
-                        p.setFolded();
+                        p.setNotPlaying();
                     }
                     final List<Integer> ids = command.getCardsId();
                     final Card gc0 = Card.getInstance(ids.get(0));
@@ -282,7 +282,7 @@ public class GameTCPClient implements IPokerGame
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
-                    m_pokerTable.setCurrentPlayerNoSeat(command.getPlayerPos());
+                    m_pokerTable.setNoSeatCurrPlayer(command.getPlayerPos());
                     m_gameObserver.playerActionNeeded(p);
                 }
             }
@@ -290,9 +290,9 @@ public class GameTCPClient implements IPokerGame
             @Override
             public void playerTurnEndedCommandReceived(PlayerTurnEndedCommand command)
             {
-                if (m_pokerTable.getCurrentHigherBet() < command.getPlayerBet())
+                if (m_pokerTable.getHigherBet() < command.getPlayerBet())
                 {
-                    m_pokerTable.setCurrentHigherBet(command.getPlayerBet());
+                    m_pokerTable.setHigherBet(command.getPlayerBet());
                 }
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
@@ -306,12 +306,12 @@ public class GameTCPClient implements IPokerGame
                     }
                     else
                     {
-                        p.setFolded();
+                        p.setNotPlaying();
                     }
                     
                     if (command.getActionType() != TypeAction.FOLDED)
                     {
-                        m_pokerTable.incTotalPotAmount(a);
+                        m_pokerTable.incTotalPotAmnt(a);
                     }
                     m_gameObserver.playerActionTaken(p, command.getActionType(), a);
                 }
@@ -337,7 +337,7 @@ public class GameTCPClient implements IPokerGame
             @Override
             public void tableInfoCommandReceived(TableInfoCommand command)
             {
-                m_pokerTable.setTotalPotAmount(command.getTotalPotAmount());
+                m_pokerTable.setTotalPotAmnt(command.getTotalPotAmount());
                 m_pokerTable.setBetLimit(command.getLimit());
                 final List<Integer> amounts = command.getPotsAmount();
                 m_pokerTable.getPots().clear();
@@ -351,7 +351,7 @@ public class GameTCPClient implements IPokerGame
                 {
                     cards[i] = Card.getInstance(command.getBoardCardIDs().get(i));
                 }
-                m_pokerTable.setBoardCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
+                m_pokerTable.setCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 
                 for (final PlayerInfo p : m_pokerTable.getPlayers())
                 {
@@ -376,19 +376,19 @@ public class GameTCPClient implements IPokerGame
                     
                     if (seat.m_isDealer)
                     {
-                        m_pokerTable.setCurrentDealerNoSeat(noSeat);
+                        m_pokerTable.setNoSeatDealer(noSeat);
                     }
                     if (seat.m_isSmallBlind)
                     {
-                        m_pokerTable.setCurrentSmallBlindNoSeat(noSeat);
+                        m_pokerTable.setNoSeatSmallBlind(noSeat);
                     }
                     if (seat.m_isBigBlind)
                     {
-                        m_pokerTable.setCurrentBigBlindNoSeat(noSeat);
+                        m_pokerTable.setNoSeatBigBlind(noSeat);
                     }
                     if (seat.m_isCurrentPlayer)
                     {
-                        m_pokerTable.setCurrentPlayerNoSeat(noSeat);
+                        m_pokerTable.setNoSeatCurrPlayer(noSeat);
                     }
                     
                     p.setMoneyBetAmnt(seat.m_bet);

@@ -10,61 +10,96 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author Eric
+ * 
+ */
 public class TableInfo
 {
-    private final int m_nbMaxSeats;
-    private int m_nbUsedSeats;
-    private final PlayerInfo[] m_currentPlayers;
+    // INFO
+    private final String m_name; // Nom de la table
+    private TypeBet m_betLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
     
-    private final int m_smallBlindAmount;
-    private final int m_bigBlindAmount;
+    // CARDS
+    private final CardSet m_cards = new CardSet(5); // Cartes du board
     
-    private final CardSet m_currentBoardCards = new CardSet(5);
+    // SEATS
+    private final int m_nbMaxSeats; // Nombe de siege total autour de la table
+    private int m_nbUsedSeats; // Nombre de siege utilises autour de la table
+    private final Stack<Integer> m_RemainingSeats = new Stack<Integer>(); // LIFO contenant les sieges non utilises
     
-    private final String m_tableName;
-    private final Stack<Integer> m_RemainingSeats = new Stack<Integer>();
+    // PLAYERS
+    private final PlayerInfo[] m_players; // Joueurs autour de la table
     
-    private final List<MoneyPot> m_pots = new ArrayList<MoneyPot>();
-    private int m_totalPotAmount;
-    private int m_currentPotId;
-    private final LinkedBlockingQueue<Integer> m_allInCaps = new LinkedBlockingQueue<Integer>();
+    // POTS
+    private final List<MoneyPot> m_pots = new ArrayList<MoneyPot>(); // La liste des POTS
+    private int m_totalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
+    private final LinkedBlockingQueue<Integer> m_allInCaps = new LinkedBlockingQueue<Integer>(); // Les differents CAPS ALL_IN de la ROUND
     
-    private int m_currentDealerNoSeat;
-    private int m_currentSmallBlindNoSeat;
-    private int m_currentBigBlindNoSeat;
-    private int m_currentPlayerNoSeat;
+    // BLINDS
+    private final int m_smallBlindAmnt; // Montant a donner lorsqu'on est small blind
+    private final int m_bigBlindAmnt; // Montant a donner lorsqu'on est big blind
+    private final Map<PlayerInfo, Integer> m_blindNeeded = new HashMap<PlayerInfo, Integer>(); // Hashmap contenant les blinds necessaire pour chaque player
+    private int m_totalBlindNeeded; // Montant total necessaire pour les blinds
     
-    private final Map<PlayerInfo, Integer> m_blindNeeded = new HashMap<PlayerInfo, Integer>();
-    private int m_totalBlindNeeded;
+    // STATES
+    private int m_nbPlayed; // Nombre de joueur ayant joues de cette ROUND
+    private int m_nbAllIn; // Nombre de joueurs ALL-IN
+    private int m_higherBet; // Le bet actuel qu'il faut egaler
+    private TypeRound m_round; // La round actuelle
+    private int m_noSeatDealer; // La position actuelle du Dealer
+    private int m_noSeatSmallBlind; // La position actuelle du SmallBlind
+    private int m_noSeatBigBlind; // La position actuelle du BigBlind
+    private int m_noSeatCurrPlayer; // La position du joueur actuel
+    private int m_currPotId; // L'id du pot qu'on travail actuellement avec
     
-    private int m_nbPlayed;
-    private int m_nbAllIn;
-    private int m_currentHigherBet;
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // CONSTRUCTOR // // // // // // //
+    // // // // // // // // // // // // // // // // // //
     
-    private TypeRound m_currentGameRound;
-    private TypeBet m_betLimit;
-    
+    /**
+     * Tuple Table d'un jeu de poker
+     * 
+     */
     public TableInfo()
     {
         this(10);
     }
     
+    /**
+     * Tuple Table d'un jeu de poker
+     * 
+     * @param nbSeats
+     *            Nombre de sieges total
+     */
     public TableInfo(int nbSeats)
     {
         this("Anonymous Table", 10, nbSeats, TypeBet.NO_LIMIT);
     }
     
+    /**
+     * Tuple Table d'un jeu de poker
+     * 
+     * @param pName
+     *            Nom de la table
+     * @param pBigBlind
+     *            Amount du big blind
+     * @param nbSeats
+     *            Nombre total de sieges
+     * @param limit
+     *            Type de Bet Limit
+     */
     public TableInfo(String pName, int pBigBlind, int nbSeats, TypeBet limit)
     {
         m_nbMaxSeats = nbSeats;
         m_nbUsedSeats = 0;
-        m_currentPlayers = new PlayerInfo[m_nbMaxSeats];
-        m_tableName = pName;
-        m_bigBlindAmount = pBigBlind;
-        m_smallBlindAmount = pBigBlind / 2;
-        m_currentDealerNoSeat = -1;
-        m_currentSmallBlindNoSeat = -1;
-        m_currentBigBlindNoSeat = -1;
+        m_players = new PlayerInfo[m_nbMaxSeats];
+        m_name = pName;
+        m_bigBlindAmnt = pBigBlind;
+        m_smallBlindAmnt = pBigBlind / 2;
+        m_noSeatDealer = -1;
+        m_noSeatSmallBlind = -1;
+        m_noSeatBigBlind = -1;
         m_betLimit = limit;
         for (int i = 1; i <= m_nbMaxSeats; ++i)
         {
@@ -72,91 +107,624 @@ public class TableInfo
         }
     }
     
-    public void initTable()
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // INFO /// // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Nom de la table
+     * 
+     * @return
+     */
+    public String getName()
     {
-        m_currentBoardCards.clear();
-        setNbPlayed(0);
-        placeButtons();
-        initPots();
+        return m_name;
     }
     
-    public void setBoardCards(Card c1, Card c2, Card c3, Card c4, Card c5)
+    /**
+     * Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
+     * 
+     * @return
+     */
+    public TypeBet getBetLimit()
     {
-        m_currentBoardCards.clear();
-        addBoardCard(c1);
-        addBoardCard(c2);
-        addBoardCard(c3);
-        addBoardCard(c4);
-        addBoardCard(c5);
+        return m_betLimit;
     }
     
-    public void setBoardCards(CardSet set)
+    /**
+     * Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
+     * 
+     * @param limit
+     */
+    public void setBetLimit(TypeBet limit)
     {
-        m_currentBoardCards.clear();
-        addBoardCards(set);
+        m_betLimit = limit;
     }
     
-    public void addBoardCards(CardSet set)
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // CARDS // // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Cartes du board
+     * 
+     * @return
+     */
+    public CardSet getCards()
+    {
+        return m_cards;
+    }
+    
+    /**
+     * Defini les cartes du board
+     * 
+     * @param c1
+     * @param c2
+     * @param c3
+     * @param c4
+     * @param c5
+     */
+    public void setCards(Card c1, Card c2, Card c3, Card c4, Card c5)
+    {
+        m_cards.clear();
+        addCard(c1);
+        addCard(c2);
+        addCard(c3);
+        addCard(c4);
+        addCard(c5);
+    }
+    
+    /**
+     * Defini les cartes du board
+     * 
+     * @param set
+     */
+    public void setCards(CardSet set)
+    {
+        m_cards.clear();
+        addCards(set);
+    }
+    
+    /**
+     * Ajoute un set de cartes au board
+     * 
+     * @param set
+     */
+    public void addCards(CardSet set)
     {
         while (!set.isEmpty())
         {
-            addBoardCard(set.pop());
+            addCard(set.pop());
         }
     }
     
-    public void addBoardCard(Card c)
+    /**
+     * Ajoute une seule carte au board
+     * 
+     * @param c
+     */
+    public void addCard(Card c)
     {
-        m_currentBoardCards.add(c);
+        m_cards.add(c);
     }
     
-    public int getNbUsedSeats()
-    {
-        return m_nbUsedSeats;
-    }
-    
-    public void setNbUsedSeats(int nbUsedSeats)
-    {
-        m_nbUsedSeats = nbUsedSeats;
-    }
-    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // SEATS // // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    /**
+     * Nombe de siege total autour de la table
+     * 
+     * @return
+     */
     public int getNbMaxSeats()
     {
         return m_nbMaxSeats;
     }
     
-    public PlayerInfo[] getCurrentPlayers()
+    /**
+     * Nombre de siege utilises autour de la table
+     * 
+     * @return
+     */
+    public int getNbUsedSeats()
     {
-        return m_currentPlayers;
+        return m_nbUsedSeats;
     }
     
-    public int getSmallBlindAmount()
+    /**
+     * Nombre de siege utilises autour de la table
+     * 
+     * @param nb
+     */
+    public void setNbUsedSeats(int nb)
     {
-        return m_smallBlindAmount;
+        m_nbUsedSeats = nb;
     }
     
-    public int getBigBlindAmount()
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // PLAYERS /// // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * La liste des joueurs autout de la table
+     * 
+     * @return
+     */
+    public List<PlayerInfo> getPlayers()
     {
-        return m_bigBlindAmount;
+        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            if (m_players[i] != null)
+            {
+                list.add(m_players[i]);
+            }
+        }
+        return list;
     }
     
-    public CardSet getCurrentBoardCards()
+    /**
+     * La liste des joeurs qui sont en train de jouer dans l'etat PLAYING
+     * 
+     * @return
+     */
+    public List<PlayerInfo> getPlayingPlayers()
     {
-        return m_currentBoardCards;
+        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            if (m_players[i] != null && m_players[i].isPlaying())
+            {
+                list.add(m_players[i]);
+            }
+        }
+        return list;
     }
     
-    public String getTableName()
+    /**
+     * Le joueur a une position precise de la table
+     * 
+     * @param seat
+     * @return
+     */
+    public PlayerInfo getPlayer(int seat)
     {
-        return m_tableName;
+        return m_players[seat];
     }
     
+    /**
+     * Le joueur NextTo une position donnee
+     * 
+     * @param seat
+     *            Position sur laquelle on se base
+     * @return
+     */
+    public PlayerInfo nextPlayer(int seat)
+    {
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            final int j = (seat + 1 + i) % m_nbMaxSeats;
+            if (m_players[j] != null)
+            {
+                return m_players[j];
+            }
+        }
+        return m_players[seat];
+    }
+    
+    /**
+     * Le joueur en train de jouer NextTo une position donnee
+     * 
+     * @param seat
+     *            position sur laquelle on se base
+     * @return
+     */
+    public PlayerInfo nextPlayingPlayer(int seat)
+    {
+        for (int i = 0; i < m_nbMaxSeats; ++i)
+        {
+            final int j = (seat + 1 + i) % m_nbMaxSeats;
+            if (m_players[j] != null && m_players[j].isPlaying())
+            {
+                return m_players[j];
+            }
+        }
+        return m_players[seat];
+    }
+    
+    /**
+     * Vrai si le joueur est assis a la table
+     * 
+     * @param p
+     *            Objet player
+     * @return
+     */
+    private boolean containsPlayer(PlayerInfo p)
+    {
+        return getPlayers().contains(p);
+    }
+    
+    /**
+     * Vrai si le joueur est assis a la table
+     * 
+     * @param name
+     *            Nom du player
+     * @return
+     */
+    public boolean containsPlayer(String name)
+    {
+        for (final PlayerInfo p : getPlayers())
+        {
+            if (p.getName().equalsIgnoreCase(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // POTS /// // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Liste des POTS
+     * 
+     * @return
+     */
+    public List<MoneyPot> getPots()
+    {
+        return m_pots;
+    }
+    
+    /**
+     * Argent total en jeux (Pots + argent de la round en cours)
+     * 
+     * @return
+     */
+    public int getTotalPotAmnt()
+    {
+        return m_totalPotAmnt;
+    }
+    
+    /**
+     * Argent total en jeux (Pots + argent de la round en cours)
+     * 
+     * @param amnt
+     */
+    public void setTotalPotAmnt(int amnt)
+    {
+        m_totalPotAmnt = amnt;
+    }
+    
+    /**
+     * Incrementer l'argent total en jeux (Pots + argent de la round en cours)
+     * 
+     * @param amnt
+     */
+    public void incTotalPotAmnt(int amnt)
+    {
+        m_totalPotAmnt += amnt;
+    }
+    
+    /**
+     * Ajoute un cap pour les AllIns de la round actuelle, afin de bien diviser les POTS
+     * 
+     * @param val
+     */
+    public void addAllInCap(Integer val)
+    {
+        if (!m_allInCaps.contains(val))
+        {
+            try
+            {
+                m_allInCaps.put(val);
+            }
+            catch (final InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // BLINDS / // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Montant a donner lorsqu'on est small blind
+     * 
+     * @return
+     */
+    public int getSmallBlindAmnt()
+    {
+        return m_smallBlindAmnt;
+    }
+    
+    /**
+     * Montant a donner lorsqu'on est big blind
+     * 
+     * @return
+     */
+    public int getBigBlindAmnt()
+    {
+        return m_bigBlindAmnt;
+    }
+    
+    /**
+     * Montant total necessaire pour les blinds
+     * 
+     * @return
+     */
+    public int getTotalBlindNeeded()
+    {
+        return m_totalBlindNeeded;
+    }
+    
+    /**
+     * Montant necessaire pour les blinds d'un player precis
+     * 
+     * @param p
+     * @return
+     */
+    public int getBlindNeeded(PlayerInfo p)
+    {
+        if (m_blindNeeded.containsKey(p))
+        {
+            return m_blindNeeded.get(p);
+        }
+        return 0;
+    }
+    
+    /**
+     * Montant necessaire pour les blinds d'un player precis
+     * 
+     * @param p
+     * @param amnt
+     */
+    public void setBlindNeeded(PlayerInfo p, int amnt)
+    {
+        m_blindNeeded.put(p, amnt);
+    }
+    
+    /**
+     * Montant total necessaire pour les blinds
+     * 
+     * @param totalBlindNeeded
+     */
+    public void setTotalBlindNeeded(int totalBlindNeeded)
+    {
+        m_totalBlindNeeded = totalBlindNeeded;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // STATES / // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Position du Dealer
+     * 
+     * @return
+     */
+    public int getNoSeatDealer()
+    {
+        return m_noSeatDealer;
+    }
+    
+    /**
+     * Position du Small Blind
+     * 
+     * @return
+     */
+    public int getNoSeatSmallBlind()
+    {
+        return m_noSeatSmallBlind;
+    }
+    
+    /**
+     * Position du Big Blind
+     * 
+     * @return
+     */
+    public int getNoSeatBigBlind()
+    {
+        return m_noSeatBigBlind;
+    }
+    
+    /**
+     * Position du player en train de jouer
+     * 
+     * @return
+     */
+    public int getNoSeatCurrPlayer()
+    {
+        return m_noSeatCurrPlayer;
+    }
+    
+    /**
+     * Nombre de player ayant jouees au tour de table actuel
+     * 
+     * @return
+     */
+    public int getNbPlayed()
+    {
+        return m_nbPlayed;
+    }
+    
+    /**
+     * Nombre de joueur en train de jouer
+     * 
+     * @return
+     */
+    public int getNbPlaying()
+    {
+        return getPlayingPlayers().size();
+    }
+    
+    /**
+     * Montant actuel a accoter pour continuer a jouer
+     * 
+     * @return
+     */
+    public int getHigherBet()
+    {
+        return m_higherBet;
+    }
+    
+    /**
+     * Nombre de joueur AllIn
+     * 
+     * @return
+     */
+    public int getNbAllIn()
+    {
+        return m_nbAllIn;
+    }
+    
+    /**
+     * Round actuelle
+     * 
+     * @return
+     */
+    public TypeRound getRound()
+    {
+        return m_round;
+    }
+    
+    /**
+     * Position actuelle du Dealer
+     * 
+     * @param seat
+     */
+    public void setNoSeatDealer(int seat)
+    {
+        m_noSeatDealer = seat;
+    }
+    
+    /**
+     * Position actuelle du SmallBlind
+     * 
+     * @param seat
+     */
+    public void setNoSeatSmallBlind(int seat)
+    {
+        m_noSeatSmallBlind = seat;
+    }
+    
+    /**
+     * Position actuelle du Big Blind
+     * 
+     * @param seat
+     */
+    public void setNoSeatBigBlind(int seat)
+    {
+        m_noSeatBigBlind = seat;
+    }
+    
+    /**
+     * Position du joueur en train de jouer
+     * 
+     * @param seat
+     */
+    public void setNoSeatCurrPlayer(int seat)
+    {
+        m_noSeatCurrPlayer = seat;
+    }
+    
+    /**
+     * Nombre de joueurs ayant jouer au tour de table en cours
+     * 
+     * @param nb
+     */
+    public void setNbPlayed(int nb)
+    {
+        m_nbPlayed = nb;
+    }
+    
+    /**
+     * Increment de 1 au nombre de joueurs ayant jouer au tour de table en cours
+     * 
+     */
+    public void incNbPlayed()
+    {
+        m_nbPlayed++;
+    }
+    
+    /**
+     * Montant a accoter pour continuer a jouer
+     * 
+     * @param amnt
+     */
+    public void setHigherBet(int amnt)
+    {
+        m_higherBet = amnt;
+    }
+    
+    /**
+     * Nombre de joueurs AllIn
+     * 
+     * @param nb
+     */
+    public void setNbAllIn(int nb)
+    {
+        m_nbAllIn = nb;
+    }
+    
+    /**
+     * Increment de 1 au nombre de joueur AllIn
+     * 
+     */
+    public void incNbAllIn()
+    {
+        m_nbAllIn++;
+    }
+    
+    /**
+     * Round Actuelle
+     * 
+     * @param round
+     */
+    public void setRound(TypeRound round)
+    {
+        m_round = round;
+    }
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // METHODS /// // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    /**
+     * Initialise la table pour une nouvelle partie
+     * 
+     */
+    public void initTable()
+    {
+        m_cards.clear();
+        setNbPlayed(0);
+        placeButtons();
+        initPots();
+    }
+    
+    /**
+     * Ajoute le joueur a la table a une position precise peu importe si il y avais quelqu'un
+     * 
+     * @param p
+     * @param seat
+     * @return
+     */
     public boolean forceJoinTable(PlayerInfo p, int seat)
     {
-        p.setFolded();
+        p.setNotPlaying();
         p.setNoSeat(seat);
-        m_currentPlayers[seat] = p;
+        m_players[seat] = p;
         return true;
     }
     
+    /**
+     * Ajoute le joueur a la table au premier siege disponible
+     * 
+     * @param p
+     * @return
+     */
     public boolean joinTable(PlayerInfo p)
     {
         if (m_RemainingSeats.size() == 0)
@@ -172,12 +740,18 @@ public class TableInfo
         }
         
         final int seat = m_RemainingSeats.pop();
-        p.setFolded();
+        p.setNotPlaying();
         p.setNoSeat(seat);
-        m_currentPlayers[seat] = p;
+        m_players[seat] = p;
         return true;
     }
     
+    /**
+     * Enleve le joueur de la table
+     * 
+     * @param p
+     * @return
+     */
     public boolean leaveTable(PlayerInfo p)
     {
         
@@ -187,45 +761,18 @@ public class TableInfo
         }
         
         final int seat = p.getNoSeat();
-        p.setFolded();
+        p.setNotPlaying();
         p.setNoSeat(-1);
-        m_currentPlayers[seat] = null;
+        m_players[seat] = null;
         
         return true;
     }
     
-    public List<PlayerInfo> getPlayers()
-    {
-        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
-        for (int i = 0; i < m_nbMaxSeats; ++i)
-        {
-            if (m_currentPlayers[i] != null)
-            {
-                list.add(m_currentPlayers[i]);
-            }
-        }
-        return list;
-    }
-    
-    public List<PlayerInfo> getPlayingPlayers()
-    {
-        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
-        for (int i = 0; i < m_nbMaxSeats; ++i)
-        {
-            if (m_currentPlayers[i] != null && m_currentPlayers[i].isPlaying())
-            {
-                list.add(m_currentPlayers[i]);
-            }
-        }
-        return list;
-    }
-    
-    private boolean containsPlayer(PlayerInfo p)
-    {
-        return getPlayers().contains(p);
-    }
-    
-    public void getAndSetNbPlayingPlayers()
+    /**
+     * Initialise les joueurs et determine lesquels joueront la prochaine partie
+     * 
+     */
+    public void decidePlayingPlayers()
     {
         for (final PlayerInfo p : getPlayers())
         {
@@ -236,209 +783,43 @@ public class TableInfo
         }
     }
     
-    public PlayerInfo nextPlayer(int seat)
-    {
-        for (int i = 0; i < m_nbMaxSeats; ++i)
-        {
-            final int j = (seat + 1 + i) % m_nbMaxSeats;
-            if (m_currentPlayers[j] != null)
-            {
-                return m_currentPlayers[j];
-            }
-        }
-        return m_currentPlayers[seat];
-    }
-    
-    public PlayerInfo nextPlayingPlayer(int seat)
-    {
-        for (int i = 0; i < m_nbMaxSeats; ++i)
-        {
-            final int j = (seat + 1 + i) % m_nbMaxSeats;
-            if (m_currentPlayers[j] != null && m_currentPlayers[j].isPlaying())
-            {
-                return m_currentPlayers[j];
-            }
-        }
-        return m_currentPlayers[seat];
-    }
-    
-    public PlayerInfo getPlayer(int seat)
-    {
-        return m_currentPlayers[seat];
-    }
-    
-    public List<MoneyPot> getPots()
-    {
-        return m_pots;
-    }
-    
+    /**
+     * Initialise les Pots pour une nouvelle partie
+     * 
+     */
     public void initPots()
     {
-        setTotalPotAmount(0);
+        setTotalPotAmnt(0);
         m_pots.clear();
         m_allInCaps.clear();
         m_pots.add(new MoneyPot(0));
-        m_currentPotId = 0;
+        m_currPotId = 0;
         setNbAllIn(0);
     }
     
+    /**
+     * Decide les positions des Dealer, smallBlind et BigBlind et note les blinds requis
+     * 
+     */
     public void placeButtons()
     {
-        m_currentDealerNoSeat = nextPlayingPlayer(m_currentDealerNoSeat).getNoSeat();
-        m_currentSmallBlindNoSeat = getNbPlaying() == 2 ? m_currentDealerNoSeat : nextPlayingPlayer(m_currentDealerNoSeat).getNoSeat();
-        m_currentBigBlindNoSeat = nextPlayingPlayer(m_currentSmallBlindNoSeat).getNoSeat();
+        m_noSeatDealer = nextPlayingPlayer(m_noSeatDealer).getNoSeat();
+        m_noSeatSmallBlind = getNbPlaying() == 2 ? m_noSeatDealer : nextPlayingPlayer(m_noSeatDealer).getNoSeat();
+        m_noSeatBigBlind = nextPlayingPlayer(m_noSeatSmallBlind).getNoSeat();
         m_blindNeeded.clear();
-        m_blindNeeded.put(getPlayer(m_currentSmallBlindNoSeat), getSmallBlindAmount());
-        m_blindNeeded.put(getPlayer(m_currentBigBlindNoSeat), getBigBlindAmount());
-        m_totalBlindNeeded = getSmallBlindAmount() + getBigBlindAmount();
+        m_blindNeeded.put(getPlayer(m_noSeatSmallBlind), getSmallBlindAmnt());
+        m_blindNeeded.put(getPlayer(m_noSeatBigBlind), getBigBlindAmnt());
+        m_totalBlindNeeded = getSmallBlindAmnt() + getBigBlindAmnt();
     }
     
-    public int blindNeeded(PlayerInfo p)
-    {
-        if (m_blindNeeded.containsKey(p))
-        {
-            return m_blindNeeded.get(p);
-        }
-        return 0;
-    }
-    
-    public void setTotalPotAmount(int totalPotAmount)
-    {
-        m_totalPotAmount = totalPotAmount;
-    }
-    
-    public void incTotalPotAmount(int inc)
-    {
-        System.out.print("incTotalPotAmount from $" + m_totalPotAmount);
-        m_totalPotAmount += inc;
-        System.out.println(" to $" + m_totalPotAmount);
-    }
-    
-    public int getTotalPotAmount()
-    {
-        return m_totalPotAmount;
-    }
-    
-    public void setCurrentDealerNoSeat(int currentDealerNoSeat)
-    {
-        m_currentDealerNoSeat = currentDealerNoSeat;
-    }
-    
-    public int getCurrentDealerNoSeat()
-    {
-        return m_currentDealerNoSeat;
-    }
-    
-    public void setCurrentSmallBlindNoSeat(int currentSmallBlindNoSeat)
-    {
-        m_currentSmallBlindNoSeat = currentSmallBlindNoSeat;
-    }
-    
-    public int getCurrentSmallBlindNoSeat()
-    {
-        return m_currentSmallBlindNoSeat;
-    }
-    
-    public void setCurrentBigBlindNoSeat(int currentBigBlindNoSeat)
-    {
-        m_currentBigBlindNoSeat = currentBigBlindNoSeat;
-    }
-    
-    public int getCurrentBigBlindNoSeat()
-    {
-        return m_currentBigBlindNoSeat;
-    }
-    
-    public void setCurrentPlayerNoSeat(int currentPlayerNoSeat)
-    {
-        m_currentPlayerNoSeat = currentPlayerNoSeat;
-    }
-    
-    public int getCurrentPlayerNoSeat()
-    {
-        return m_currentPlayerNoSeat;
-    }
-    
-    public void setBlindNeeded(PlayerInfo p, int needed)
-    {
-        m_blindNeeded.put(p, needed);
-    }
-    
-    public void setTotalBlindNeeded(int totalBlindNeeded)
-    {
-        m_totalBlindNeeded = totalBlindNeeded;
-    }
-    
-    public int getTotalBlindNeeded()
-    {
-        return m_totalBlindNeeded;
-    }
-    
-    public void setNbPlayed(int nbPlayed)
-    {
-        m_nbPlayed = nbPlayed;
-    }
-    
-    public void incNbPlayed()
-    {
-        m_nbPlayed++;
-    }
-    
-    public void decNbPlayed()
-    {
-        m_nbPlayed--;
-    }
-    
-    public int getNbPlayed()
-    {
-        return m_nbPlayed;
-    }
-    
-    public int getNbPlaying()
-    {
-        return getPlayingPlayers().size();
-    }
-    
-    public void setCurrentHigherBet(int currentHigherBet)
-    {
-        m_currentHigherBet = currentHigherBet;
-    }
-    
-    public int getCurrentHigherBet()
-    {
-        return m_currentHigherBet;
-    }
-    
-    public boolean containsPlayer(String name)
-    {
-        for (final PlayerInfo p : getPlayers())
-        {
-            if (p.getName().equalsIgnoreCase(name))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public void addAllInCap(Integer cap)
-    {
-        final int tot = cap;
-        System.out.println("Adding cap of: " + cap);
-        if (!m_allInCaps.contains(tot))
-        {
-            try
-            {
-                m_allInCaps.put(tot);
-            }
-            catch (final InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    public void AddBet(PlayerInfo p, MoneyPot pot, int bet)
+    /**
+     * Ajoute un certain montant d'un joueur au pot et attache le joueur au pot si necessaire
+     * 
+     * @param p
+     * @param pot
+     * @param bet
+     */
+    private void AddBet(PlayerInfo p, MoneyPot pot, int bet)
     {
         p.setMoneyBetAmnt(p.getMoneyBetAmnt() - bet);
         pot.addAmount(bet);
@@ -448,12 +829,15 @@ public class TableInfo
         }
     }
     
+    /**
+     * Une fois la round terminé, prend tous l'argent en jeu et bati les POTS
+     */
     public void managePotsRoundEnd()
     {
         int currentTaken = 0;
         while (m_allInCaps.size() > 0)
         {
-            final MoneyPot pot = m_pots.get(m_currentPotId);
+            final MoneyPot pot = m_pots.get(m_currPotId);
             pot.detachAll();
             final int cap = m_allInCaps.poll() - currentTaken;
             
@@ -462,46 +846,34 @@ public class TableInfo
                 AddBet(p, pot, Math.min(p.getMoneyBetAmnt(), cap));
             }
             currentTaken += cap;
-            m_currentPotId++;
-            m_pots.add(new MoneyPot(m_currentPotId));
+            m_currPotId++;
+            m_pots.add(new MoneyPot(m_currPotId));
         }
         
-        final MoneyPot curPot = m_pots.get(m_currentPotId);
+        final MoneyPot curPot = m_pots.get(m_currPotId);
         curPot.detachAll();
         for (final PlayerInfo p : getPlayers())
         {
             AddBet(p, curPot, p.getMoneyBetAmnt());
             
         }
-        m_currentHigherBet = 0;
+        m_higherBet = 0;
     }
     
-    public void setNbAllIn(int nbAllIn)
-    {
-        m_nbAllIn = nbAllIn;
-    }
-    
-    public void incNbAllIn()
-    {
-        m_nbAllIn++;
-    }
-    
-    public int getNbAllIn()
-    {
-        return m_nbAllIn;
-    }
-    
+    /**
+     * Ne garde que les gagnants sur chacuns des POTS
+     * 
+     */
     public void cleanPotsForWinning()
     {
-        for (int i = 0; i <= m_currentPotId; ++i)
+        for (int i = 0; i <= m_currPotId; ++i)
         {
             final MoneyPot pot = m_pots.get(i);
             long bestHand = 0;
             final List<PlayerInfo> info = new ArrayList<PlayerInfo>(pot.getAttachedPlayers());
-            pot.detachAll();
             for (final PlayerInfo p : info)
             {
-                final long handValue = p.evaluateCards(m_currentBoardCards);
+                final long handValue = p.evaluateCards(m_cards);
                 if (handValue > bestHand)
                 {
                     pot.detachAll();
@@ -516,53 +888,63 @@ public class TableInfo
         }
     }
     
-    public void setCurrentGameRound(TypeRound currentGameRound)
-    {
-        m_currentGameRound = currentGameRound;
-    }
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // UTILITY /// // // // // // // //
+    // // // // // // // // // // // // // // // // // //
     
-    public TypeRound getCurrentGameRound()
-    {
-        return m_currentGameRound;
-    }
-    
-    public TypeBet getBetLimit()
-    {
-        return m_betLimit;
-    }
-    
-    public void setBetLimit(TypeBet limit)
-    {
-        m_betLimit = limit;
-    }
-    
+    /**
+     * Le player a-t-il assez d'argent pour RAISER ?
+     * 
+     * @param p
+     * @return
+     */
     public boolean canRaise(PlayerInfo p)
     {
-        return getCurrentHigherBet() < p.getMoneyAmtn();
+        return getHigherBet() < p.getMoneyAmnt();
     }
     
+    /**
+     * Le player peux-t-il continuer sans mettre d'avantage d'argent en jeu ?
+     * 
+     * @param p
+     * @return
+     */
     public boolean canCheck(PlayerInfo p)
     {
-        return getCurrentHigherBet() <= p.getMoneyBetAmnt();
+        return getHigherBet() <= p.getMoneyBetAmnt();
     }
     
-    public int getMinRaiseAmount(PlayerInfo p)
+    /**
+     * Si le player veut RAISE, voici le minimum requis
+     * 
+     * @param p
+     * @return
+     */
+    public int getMinRaiseAmnt(PlayerInfo p)
     {
-        return Math.min(getCallAmount(p) + getBigBlindAmount(), getMaxRaiseAmount(p));
+        return Math.min(getCallAmnt(p) + getBigBlindAmnt(), getMaxRaiseAmnt(p));
     }
     
-    public int getMaxRaiseAmount(PlayerInfo p)
+    /**
+     * Si le player veut RAISE, voici le maximum possible
+     * 
+     * @param p
+     * @return
+     */
+    public int getMaxRaiseAmnt(PlayerInfo p)
     {
-        return getFreeMoneyAmount(p) + getCallAmount(p);
+        return p.getMoneySafeAmnt();
     }
     
-    public int getCallAmount(PlayerInfo p)
+    /**
+     * Si le player veut continuer a jouer, voici le minimum requis
+     * 
+     * @param p
+     * @return
+     */
+    public int getCallAmnt(PlayerInfo p)
     {
-        return getCurrentHigherBet() - p.getMoneyBetAmnt();
+        return getHigherBet() - p.getMoneyBetAmnt();
     }
     
-    public int getFreeMoneyAmount(PlayerInfo p)
-    {
-        return p.getMoneyAmtn() - getCurrentHigherBet();
-    }
 }

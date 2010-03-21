@@ -632,9 +632,9 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBettingRoundStarted()
             {
                 int i = 0;
-                for (; i < 5 && m_game.getPokerTable().getCurrentBoardCards().get(i).getId() != Card.NO_CARD_ID; ++i)
+                for (; i < 5 && m_game.getPokerTable().getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
                 {
-                    board[i].setCard(m_game.getPokerTable().getCurrentBoardCards().get(i));
+                    board[i].setCard(m_game.getPokerTable().getCards().get(i));
                 }
                 for (; i < 5; ++i)
                 {
@@ -647,9 +647,9 @@ public class JFrameTableViewer extends AbstractJFrameTable
             {
                 changePotAmount(0);
                 final TableInfo table = m_game.getPokerTable();
-                huds[table.getCurrentDealerNoSeat()].setDealer();
-                huds[table.getCurrentSmallBlindNoSeat()].setSmallBlind();
-                huds[table.getCurrentBigBlindNoSeat()].setBigBlind();
+                huds[table.getNoSeatDealer()].setDealer();
+                huds[table.getNoSeatSmallBlind()].setSmallBlind();
+                huds[table.getNoSeatBigBlind()].setBigBlind();
                 for (int i = 0; i < 5; ++i)
                 {
                     board[i].setCard(Card.HIDDEN_CARD);
@@ -716,7 +716,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
                 php.setPlayerMoney(p.getMoneySafeAmnt());
                 php.setPlayerAction(reason, playedAmount);
-                changePotAmount(table.getTotalPotAmount());
+                changePotAmount(table.getTotalPotAmnt());
                 
                 php.setHeaderColor(Color.white);
                 if (reason == TypeAction.FOLDED)
@@ -803,14 +803,14 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBettingRoundStarted()
             {
                 final TableInfo table = m_game.getPokerTable();
-                final TypeRound r = table.getCurrentGameRound();
+                final TypeRound r = table.getRound();
                 writeLine("==> Beginning of " + r.name());
                 if (r != TypeRound.PREFLOP)
                 {
                     write("==> Current board cards:");
-                    for (int i = 0; i < 5 && table.getCurrentBoardCards().get(i).getId() != Card.NO_CARD_ID; ++i)
+                    for (int i = 0; i < 5 && table.getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
                     {
-                        write(" " + table.getCurrentBoardCards().get(i).toString());
+                        write(" " + table.getCards().get(i).toString());
                     }
                 }
                 writeLine("");
@@ -821,9 +821,9 @@ public class JFrameTableViewer extends AbstractJFrameTable
             {
                 writeLine("==> Game started");
                 final TableInfo table = m_game.getPokerTable();
-                final PlayerInfo d = table.getPlayer(table.getCurrentDealerNoSeat());
-                final PlayerInfo sb = table.getPlayer(table.getCurrentSmallBlindNoSeat());
-                final PlayerInfo bb = table.getPlayer(table.getCurrentBigBlindNoSeat());
+                final PlayerInfo d = table.getPlayer(table.getNoSeatDealer());
+                final PlayerInfo sb = table.getPlayer(table.getNoSeatSmallBlind());
+                final PlayerInfo bb = table.getPlayer(table.getNoSeatBigBlind());
                 writeLine("==> " + d.getName() + " is the Dealer");
                 writeLine("==> " + sb.getName() + " is the SmallBlind");
                 writeLine("==> " + bb.getName() + " is the BigBlind");
