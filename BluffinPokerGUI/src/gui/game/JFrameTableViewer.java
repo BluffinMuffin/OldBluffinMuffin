@@ -25,7 +25,6 @@ import poker.game.TableInfo;
 import poker.game.TypeAction;
 import poker.game.TypeRound;
 import poker.game.observer.PokerGameAdapter;
-import poker.game.observer.PokerGameObserver;
 
 public class JFrameTableViewer extends AbstractJFrameTable
 {
@@ -589,7 +588,8 @@ public class JFrameTableViewer extends AbstractJFrameTable
     public void setGame(IPokerGame game, int seatViewed)
     {
         super.setGame(game, seatViewed);
-        // writeLine("******** LOGGED AS " + m_table.m_localPlayer.getName() + " ********");
+        initializePokerObserverForConsole();
+        initializePokerObserverForGUI();
     }
     
     protected void changeSubTitle(String title)
@@ -602,24 +602,16 @@ public class JFrameTableViewer extends AbstractJFrameTable
         jTotalPotLabel.setText("$" + amount);
     }
     
-    @Override
-    public void setPokerObserver(PokerGameObserver observer)
-    {
-        super.setPokerObserver(observer);
-        initializePokerObserverForConsole();
-        initializePokerObserverForGUI();
-    }
-    
     private void initializePokerObserverForGUI()
     {
-        m_pokerObserver.subscribe(new PokerGameAdapter()
+        m_game.attach(new PokerGameAdapter()
         {
             
             @Override
             public void gameBettingRoundEnded(TypeRound r)
             {
                 // TODO: RICK: update POTS
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 
                 for (int i = 0; i < table.getPlayers().size(); ++i)
                 {
@@ -632,9 +624,9 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBettingRoundStarted()
             {
                 int i = 0;
-                for (; i < 5 && m_game.getPokerTable().getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
+                for (; i < 5 && m_game.getTable().getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
                 {
-                    board[i].setCard(m_game.getPokerTable().getCards().get(i));
+                    board[i].setCard(m_game.getTable().getCards().get(i));
                 }
                 for (; i < 5; ++i)
                 {
@@ -646,7 +638,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBlindsNeeded()
             {
                 changePotAmount(0);
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 huds[table.getNoSeatDealer()].setDealer();
                 huds[table.getNoSeatSmallBlind()].setSmallBlind();
                 huds[table.getNoSeatBigBlind()].setBigBlind();
@@ -659,7 +651,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameEnded()
             {
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 for (int i = 0; i < table.getPlayers().size(); ++i)
                 {
                     final JPanelPlayerHud php = huds[i];
@@ -687,7 +679,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameGenerallyUpdated()
             {
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 for (final PlayerInfo p : table.getPlayers())
                 {
                     final JPanelPlayerHud php = huds[p.getNoSeat()];
@@ -712,7 +704,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
                 php.setPlayerMoney(p.getMoneySafeAmnt());
                 php.setPlayerAction(reason, playedAmount);
@@ -784,7 +776,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
     
     private void initializePokerObserverForConsole()
     {
-        m_pokerObserver.subscribe(new PokerGameAdapter()
+        m_game.attach(new PokerGameAdapter()
         {
             
             @Override
@@ -802,7 +794,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameBettingRoundStarted()
             {
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 final TypeRound r = table.getRound();
                 writeLine("==> Beginning of " + r.name());
                 if (r != TypeRound.PREFLOP)
@@ -820,7 +812,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBlindsNeeded()
             {
                 writeLine("==> Game started");
-                final TableInfo table = m_game.getPokerTable();
+                final TableInfo table = m_game.getTable();
                 final PlayerInfo d = table.getPlayer(table.getNoSeatDealer());
                 final PlayerInfo sb = table.getPlayer(table.getNoSeatSmallBlind());
                 final PlayerInfo bb = table.getPlayer(table.getNoSeatBigBlind());

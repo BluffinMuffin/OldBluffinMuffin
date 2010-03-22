@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
 
 import poker.IPokerViewer;
 import poker.game.TypeBet;
-import protocol.ICommand;
 import protocol.Command;
+import protocol.ICommand;
 import protocol.commands.DisconnectCommand;
 import protocol.game.GameTCPClient;
 import protocol.lobby.commands.CreateTableCommand;
@@ -241,7 +241,6 @@ public class LobbyTCPClient
             final GameTCPClient client = new GameTCPClient(tableSocket, fromTable, noSeat, m_playerName);
             if (gui != null)
             {
-                gui.setPokerObserver(client.getGameObserver());
                 gui.setGame(client, client.getNoSeat());
                 gui.start();
             }

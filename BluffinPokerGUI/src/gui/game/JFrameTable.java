@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import poker.game.IPokerGame;
 import poker.game.PlayerInfo;
 import poker.game.TableInfo;
 import poker.game.observer.PokerGameAdapter;
-import poker.game.observer.PokerGameObserver;
 
 public class JFrameTable extends JFrameTableViewer
 {
@@ -81,7 +81,7 @@ public class JFrameTable extends JFrameTableViewer
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    final TableInfo table = m_game.getPokerTable();
+                    final TableInfo table = m_game.getTable();
                     final PlayerInfo p = table.getPlayer(m_currentTablePosition);
                     m_game.playMoney(p, -1);
                 }
@@ -108,7 +108,7 @@ public class JFrameTable extends JFrameTableViewer
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    final TableInfo table = m_game.getPokerTable();
+                    final TableInfo table = m_game.getTable();
                     final PlayerInfo p = table.getPlayer(m_currentTablePosition);
                     m_game.playMoney(p, table.getCallAmnt(p));
                 }
@@ -135,7 +135,7 @@ public class JFrameTable extends JFrameTableViewer
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     disableButtons();
-                    final TableInfo table = m_game.getPokerTable();
+                    final TableInfo table = m_game.getTable();
                     final PlayerInfo p = table.getPlayer(m_currentTablePosition);
                     m_game.playMoney(p, (Integer) getJRaiseSpinner().getValue() - p.getMoneyBetAmnt());
                 }
@@ -153,15 +153,15 @@ public class JFrameTable extends JFrameTableViewer
     }
     
     @Override
-    public void setPokerObserver(PokerGameObserver observer)
+    public void setGame(IPokerGame game, int seatViewed)
     {
-        super.setPokerObserver(observer);
+        super.setGame(game, seatViewed);
         initializePokerObserver();
     }
     
     private void initializePokerObserver()
     {
-        m_pokerObserver.subscribe(new PokerGameAdapter()
+        m_game.attach(new PokerGameAdapter()
         {
             
             @Override
@@ -172,7 +172,7 @@ public class JFrameTable extends JFrameTableViewer
                     getJFoldButton().setEnabled(true);
                     setCallButtonName();
                     getJCallButton().setEnabled(true);
-                    final TableInfo table = m_game.getPokerTable();
+                    final TableInfo table = m_game.getTable();
                     if (table.getHigherBet() < p.getMoneyAmnt())
                     {
                         final int min = table.getMinRaiseAmnt(p) + p.getMoneyBetAmnt();
@@ -188,7 +188,7 @@ public class JFrameTable extends JFrameTableViewer
     
     public void setCallButtonName()
     {
-        final TableInfo table = m_game.getPokerTable();
+        final TableInfo table = m_game.getTable();
         final PlayerInfo p = table.getPlayer(m_currentTablePosition);
         String s;
         if (table.canCheck(p))

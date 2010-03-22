@@ -13,21 +13,22 @@ import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
 import poker.game.TableInfo;
 import poker.game.TypeAction;
+import poker.game.observer.IPokerGameListener;
 import poker.game.observer.PokerGameObserver;
 import protocol.ICommand;
 import protocol.commands.DisconnectCommand;
 import protocol.game.commands.BetTurnEndedCommand;
 import protocol.game.commands.BetTurnStartedCommand;
 import protocol.game.commands.GameEndedCommand;
+import protocol.game.commands.GameStartedCommand;
 import protocol.game.commands.PlayerHoleCardsChangedCommand;
-import protocol.game.commands.PlayerPlayMoneyCommand;
 import protocol.game.commands.PlayerJoinedCommand;
 import protocol.game.commands.PlayerLeftCommand;
 import protocol.game.commands.PlayerMoneyChangedCommand;
+import protocol.game.commands.PlayerPlayMoneyCommand;
 import protocol.game.commands.PlayerTurnBeganCommand;
 import protocol.game.commands.PlayerTurnEndedCommand;
 import protocol.game.commands.PlayerWonPotCommand;
-import protocol.game.commands.GameStartedCommand;
 import protocol.game.commands.TableClosedCommand;
 import protocol.game.commands.TableInfoCommand;
 import protocol.game.observer.GameClientAdapter;
@@ -138,15 +139,9 @@ public class GameTCPClient implements IPokerGame
     }
     
     @Override
-    public TableInfo getPokerTable()
+    public TableInfo getTable()
     {
         return m_pokerTable;
-    }
-    
-    @Override
-    public PokerGameObserver getGameObserver()
-    {
-        return m_gameObserver;
     }
     
     @Override
@@ -405,5 +400,17 @@ public class GameTCPClient implements IPokerGame
     public int getNoPort()
     {
         return m_socket.getPort();
+    }
+    
+    @Override
+    public void attach(IPokerGameListener listener)
+    {
+        m_gameObserver.subscribe(listener);
+    }
+    
+    @Override
+    public void detach(IPokerGameListener listener)
+    {
+        m_gameObserver.unsubscribe(listener);
     }
 }

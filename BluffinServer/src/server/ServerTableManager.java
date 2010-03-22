@@ -42,7 +42,7 @@ public class ServerTableManager extends Thread
             {
                 if (!m_game.isRunning())
                 {
-                    System.out.println("Table manager close for: " + m_game.getPokerTable().getName());
+                    System.out.println("Table manager close for: " + m_game.getTable().getName());
                 }
             }
         }

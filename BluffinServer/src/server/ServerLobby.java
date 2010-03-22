@@ -150,7 +150,7 @@ public class ServerLobby extends Thread
             // Check if the table is still running.
             if (game.isRunning())
             {
-                final TableInfo table = game.getPokerTable();
+                final TableInfo table = game.getTable();
                 tables.add(new SummaryTableInfo(noPort, table.getName(), table.getBigBlindAmnt(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
             }
             else

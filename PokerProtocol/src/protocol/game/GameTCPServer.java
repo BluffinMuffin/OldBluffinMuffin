@@ -10,26 +10,25 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import poker.game.PokerGame;
 import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
+import poker.game.PokerGame;
 import poker.game.TypeAction;
 import poker.game.TypeRound;
 import poker.game.observer.PokerGameAdapter;
-import poker.game.observer.PokerGameObserver;
 import protocol.ICommand;
 import protocol.game.commands.BetTurnEndedCommand;
 import protocol.game.commands.BetTurnStartedCommand;
 import protocol.game.commands.GameEndedCommand;
+import protocol.game.commands.GameStartedCommand;
 import protocol.game.commands.PlayerHoleCardsChangedCommand;
-import protocol.game.commands.PlayerPlayMoneyCommand;
 import protocol.game.commands.PlayerJoinedCommand;
 import protocol.game.commands.PlayerLeftCommand;
 import protocol.game.commands.PlayerMoneyChangedCommand;
+import protocol.game.commands.PlayerPlayMoneyCommand;
 import protocol.game.commands.PlayerTurnBeganCommand;
 import protocol.game.commands.PlayerTurnEndedCommand;
 import protocol.game.commands.PlayerWonPotCommand;
-import protocol.game.commands.GameStartedCommand;
 import protocol.game.commands.TableClosedCommand;
 import protocol.game.commands.TableInfoCommand;
 import protocol.game.observer.GameServerAdapter;
@@ -48,7 +47,6 @@ public class GameTCPServer implements Runnable
     private final PlayerInfo m_player;
     private final PokerGame m_game;
     private final GameServerObserver m_commandObserver = new GameServerObserver();
-    private PokerGameObserver m_pokerObserver;
     
     /**
      * Create a new player
@@ -112,14 +110,13 @@ public class GameTCPServer implements Runnable
     
     public boolean joinGame()
     {
-        m_pokerObserver = m_game.getGameObserver();
         initializePokerObserver();
         return m_game.joinGame(m_player);
     }
     
     public void sitIn()
     {
-        send(new TableInfoCommand(m_game.getPokerTable(), m_player));
+        send(new TableInfoCommand(m_game.getTable(), m_player));
         m_game.sitInGame(m_player);
     }
     
@@ -146,19 +143,19 @@ public class GameTCPServer implements Runnable
     
     private void initializePokerObserver()
     {
-        m_pokerObserver.subscribe(new PokerGameAdapter()
+        m_game.attach(new PokerGameAdapter()
         {
             @Override
             public void gameBettingRoundEnded(TypeRound r)
             {
-                final List<MoneyPot> pots = m_game.getPokerTable().getPots();
+                final List<MoneyPot> pots = m_game.getTable().getPots();
                 final ArrayList<Integer> amounts = new ArrayList<Integer>();
                 for (final MoneyPot pot : pots)
                 {
                     amounts.add(pot.getAmount());
                 }
                 
-                for (int i = pots.size(); i < m_game.getPokerTable().getNbMaxSeats(); i++)
+                for (int i = pots.size(); i < m_game.getTable().getNbMaxSeats(); i++)
                 {
                     amounts.add(0);
                 }
@@ -187,7 +184,7 @@ public class GameTCPServer implements Runnable
             @Override
             public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
             {
-                send(new PlayerTurnEndedCommand(p.getNoSeat(), p.getMoneyBetAmnt(), p.getMoneySafeAmnt(), m_game.getPokerTable().getTotalPotAmnt(), reason, playedAmount, p.isPlaying()));
+                send(new PlayerTurnEndedCommand(p.getNoSeat(), p.getMoneyBetAmnt(), p.getMoneySafeAmnt(), m_game.getTable().getTotalPotAmnt(), reason, playedAmount, p.isPlaying()));
             }
             
             @Override
@@ -211,15 +208,15 @@ public class GameTCPServer implements Runnable
             @Override
             public void gameBlindsNeeded()
             {
-                send(new GameStartedCommand(m_game.getPokerTable().getNoSeatDealer(), m_game.getPokerTable().getNoSeatSmallBlind(), m_game.getPokerTable().getNoSeatBigBlind()));
-                // TODO: RICK: eventuellement le client devrait par lui meme r�pondre a cette question
-                if (m_player.getNoSeat() == m_game.getPokerTable().getNoSeatSmallBlind())
+                send(new GameStartedCommand(m_game.getTable().getNoSeatDealer(), m_game.getTable().getNoSeatSmallBlind(), m_game.getTable().getNoSeatBigBlind()));
+                // TODO: RICK: eventuellement le client devrait par lui meme repondre a cette question
+                if (m_player.getNoSeat() == m_game.getTable().getNoSeatSmallBlind())
                 {
-                    m_game.playMoney(m_player, m_game.getPokerTable().getSmallBlindAmnt());
+                    m_game.playMoney(m_player, m_game.getTable().getSmallBlindAmnt());
                 }
-                else if (m_player.getNoSeat() == m_game.getPokerTable().getNoSeatBigBlind())
+                else if (m_player.getNoSeat() == m_game.getTable().getNoSeatBigBlind())
                 {
-                    m_game.playMoney(m_player, m_game.getPokerTable().getBigBlindAmnt());
+                    m_game.playMoney(m_player, m_game.getTable().getBigBlindAmnt());
                 }
             }
             
@@ -227,7 +224,7 @@ public class GameTCPServer implements Runnable
             public void gameBettingRoundStarted()
             {
                 final Card[] cards = new Card[5];
-                m_game.getPokerTable().getCards().toArray(cards);
+                m_game.getTable().getCards().toArray(cards);
                 for (int i = 0; i < 5; ++i)
                 {
                     if (cards[i] == null)

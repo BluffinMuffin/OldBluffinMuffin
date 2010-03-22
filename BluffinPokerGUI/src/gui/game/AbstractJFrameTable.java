@@ -4,12 +4,10 @@ import javax.swing.JFrame;
 
 import poker.IPokerViewer;
 import poker.game.IPokerGame;
-import poker.game.observer.PokerGameObserver;
 
 public abstract class AbstractJFrameTable extends JFrame implements IPokerViewer
 {
     private static final long serialVersionUID = 1L;
-    protected PokerGameObserver m_pokerObserver;
     protected IPokerGame m_game;
     protected int m_currentTablePosition;
     
@@ -20,6 +18,7 @@ public abstract class AbstractJFrameTable extends JFrame implements IPokerViewer
         m_currentTablePosition = seatViewed;
     }
     
+    @Override
     public void start()
     {
         setTitle(getTitle());
@@ -27,10 +26,5 @@ public abstract class AbstractJFrameTable extends JFrame implements IPokerViewer
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-    
-    public void setPokerObserver(PokerGameObserver observer)
-    {
-        m_pokerObserver = observer;
     }
 }

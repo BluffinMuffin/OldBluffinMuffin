@@ -4,6 +4,7 @@ import java.util.List;
 
 import poker.game.dealer.AbstractDealer;
 import poker.game.dealer.RandomDealer;
+import poker.game.observer.IPokerGameListener;
 import poker.game.observer.PokerGameObserver;
 
 public class PokerGame implements IPokerGame
@@ -162,12 +163,7 @@ public class PokerGame implements IPokerGame
         startRound();
     }
     
-    public PokerGameObserver getGameObserver()
-    {
-        return m_gameObserver;
-    }
-    
-    public TableInfo getPokerTable()
+    public TableInfo getTable()
     {
         return m_pokerTable;
     }
@@ -556,5 +552,15 @@ public class PokerGame implements IPokerGame
     {
         m_pokerTable.cleanPotsForWinning();
         setCurrentGameState(TypePokerGameState.MONEY_DISTRIBUTION);
+    }
+    
+    public void attach(IPokerGameListener listener)
+    {
+        m_gameObserver.subscribe(listener);
+    }
+    
+    public void detach(IPokerGameListener listener)
+    {
+        m_gameObserver.unsubscribe(listener);
     }
 }

@@ -1,12 +1,15 @@
 package poker.game;
 
-import poker.game.observer.PokerGameObserver;
+import poker.game.observer.IPokerGameListener;
 
 public interface IPokerGame
 {
-    PokerGameObserver getGameObserver();
     
-    TableInfo getPokerTable();
+    void attach(IPokerGameListener listener);
+    
+    void detach(IPokerGameListener listener);
+    
+    TableInfo getTable();
     
     boolean playMoney(PlayerInfo player, int amount);
     
