@@ -9,90 +9,193 @@ import poker.game.observer.PokerGameObserver;
 
 public class PokerGame implements IPokerGame
 {
-    public enum TypePokerGameState
+    // Global States of the Game
+    public enum TypeState
     {
         INIT, PLAYERS_WAITING, BLIND_WAITING, PLAYING, SHOWDOWN, DECIDE_WINNERS, MONEY_DISTRIBUTION, END
     }
     
-    public enum TypePokerGameRoundState
+    // States of the Game in each Round
+    public enum TypeRoundState
     {
         CARDS, BETTING, CUMUL
     }
     
-    private final PokerGameObserver m_gameObserver;
-    private final TableInfo m_pokerTable;
-    private TypePokerGameState m_currentGameState;
-    private TypePokerGameRoundState m_currentGameRoundState;
-    private final int m_WaitingTimeAfterPlayerAction;
-    private final int m_WaitingTimeAfterBoardDealed;
-    private final int m_WaitingTimeAfterPotWon;
+    // INFO
+    private final PokerGameObserver m_gameObserver; // L'observer qu'on notify
+    private final TableInfo m_table; // La table
     
-    private final AbstractDealer m_pokerDealer;
+    // WAITING TIME
+    private final int m_WaitingTimeAfterPlayerAction; // Attente apres chaque player action (ms)
+    private final int m_WaitingTimeAfterBoardDealed; // Attente apres chaque board dealed (ms)
+    private final int m_WaitingTimeAfterPotWon; // Attente apres chaque pot won ! (ms)
     
+    // STATES
+    private TypeState m_state; // L'etat global de la game
+    private TypeRoundState m_roundState; // L'etat de la game pour chaque round
+    
+    private final AbstractDealer m_dealer; // Dealer
+    
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // CONSTRUCTOR // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Automate representant un jeu de poker
+     */
     public PokerGame()
     {
         this(new RandomDealer());
     }
     
-    public PokerGame(TableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
+    /**
+     * Automate representant un jeu de poker
+     * 
+     * @param table
+     *            La table associee
+     * @param wtaPlayerAction
+     *            Attente apres chaque player action (ms)
+     * @param wtaBoardDealed
+     *            Attente apres chaque board dealed (ms)
+     * @param wtaPotWon
+     *            Attente apres chaque pot won ! (ms)
+     */
+    public PokerGame(TableInfo table, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
-        this(new RandomDealer(), info, wtaPlayerAction, wtaBoardDealed, wtaPotWon);
+        this(new RandomDealer(), table, wtaPlayerAction, wtaBoardDealed, wtaPotWon);
     }
     
+    /**
+     * Automate representant un jeu de poker
+     * 
+     * @param dealer
+     *            Le dealer
+     */
     public PokerGame(AbstractDealer dealer)
     {
         this(new RandomDealer(), new TableInfo(), 0, 0, 0);
     }
     
-    public PokerGame(AbstractDealer dealer, TableInfo info, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
+    /**
+     * Automate representant un jeu de poker
+     * 
+     * @param dealer
+     *            Le dealer
+     * @param table
+     *            La table associee
+     * @param wtaPlayerAction
+     *            Attente apres chaque player action (ms)
+     * @param wtaBoardDealed
+     *            Attente apres chaque board dealed (ms)
+     * @param wtaPotWon
+     *            Attente apres chaque pot won ! (ms)
+     */
+    public PokerGame(AbstractDealer dealer, TableInfo table, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
     {
-        m_pokerDealer = dealer;
+        m_dealer = dealer;
         m_gameObserver = new PokerGameObserver();
-        m_pokerTable = info;
-        m_currentGameState = TypePokerGameState.INIT;
+        m_table = table;
+        m_state = TypeState.INIT;
         m_WaitingTimeAfterPlayerAction = wtaPlayerAction;
         m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
         m_WaitingTimeAfterPotWon = wtaPotWon;
     }
     
-    public void start()
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // INFO /// // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see poker.game.IPokerGame#getTable()
+     */
+    @Override
+    public TableInfo getTable()
     {
-        setCurrentGameState(TypePokerGameState.PLAYERS_WAITING);
+        return m_table;
     }
     
-    public TypePokerGameState getCurrentGameState()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see poker.game.IPokerGame#attach(poker.game.observer.IPokerGameListener)
+     */
+    @Override
+    public void attach(IPokerGameListener listener)
     {
-        return m_currentGameState;
+        m_gameObserver.subscribe(listener);
     }
     
-    public TypeRound getCurrentGameRound()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see poker.game.IPokerGame#detach(poker.game.observer.IPokerGameListener)
+     */
+    @Override
+    public void detach(IPokerGameListener listener)
     {
-        return m_pokerTable.getRound();
+        m_gameObserver.unsubscribe(listener);
     }
     
-    public TypePokerGameRoundState getCurrentGameRoundState()
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // // STATES / // // // // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * L'etat global actuel de la Game
+     * 
+     * @return
+     */
+    public TypeState getState()
     {
-        return m_currentGameRoundState;
+        return m_state;
     }
     
-    private void setCurrentGameState(TypePokerGameState newGS)
+    /**
+     * La round actuelle. Utile lorsque l'etat global est a PLAYING
+     * 
+     * @return
+     */
+    public TypeRound getRound()
     {
+        return m_table.getRound();
+    }
+    
+    /**
+     * L'etat de la round. Utile lorsque l'etat global est a PLAYING
+     * 
+     * @return
+     */
+    public TypeRoundState getRoundState()
+    {
+        return m_roundState;
+    }
+    
+    /**
+     * Change l'etat de la Game pour le prochain.
+     * Ne peux prendre en parametre que le prochain etat consecutif
+     * 
+     * @param state
+     *            le prochain etat consecutif
+     */
+    private void nextState(TypeState state)
+    {
+        final TypeState oldState = m_state;
         
-        final TypePokerGameState oldGS = m_currentGameState;
-        
-        if (m_currentGameState == TypePokerGameState.END)
+        if (m_state == TypeState.END)
         {
             return;
         }
         
-        if (newGS.ordinal() - oldGS.ordinal() != 1)
+        if (state.ordinal() - oldState.ordinal() != 1)
         {
             return;
         }
         
-        m_currentGameState = newGS;
+        m_state = state;
         
-        switch (m_currentGameState)
+        switch (m_state)
         {
             case INIT:
                 break;
@@ -100,11 +203,11 @@ public class PokerGame implements IPokerGame
                 TryToBegin();
                 break;
             case BLIND_WAITING:
-                m_pokerTable.setHigherBet(0);
+                m_table.setHigherBet(0);
                 break;
             case PLAYING:
-                m_pokerTable.setRound(TypeRound.PREFLOP);
-                m_currentGameRoundState = TypePokerGameRoundState.CARDS;
+                m_table.setRound(TypeRound.PREFLOP);
+                m_roundState = TypeRoundState.CARDS;
                 startRound();
                 break;
             case SHOWDOWN:
@@ -123,94 +226,123 @@ public class PokerGame implements IPokerGame
         }
     }
     
-    private void setCurrentGameRound(TypeRound newGR)
+    /**
+     * Change la round pour la prochaine.
+     * Ne peux prendre en parametre que la prochaine round consecutive
+     * 
+     * @param round
+     *            La prochaine round consecutive
+     */
+    private void nextRound(TypeRound round)
     {
         
-        final TypeRound oldGR = m_pokerTable.getRound();
+        final TypeRound oldRound = m_table.getRound();
         
-        if (m_currentGameState != TypePokerGameState.PLAYING)
+        if (m_state != TypeState.PLAYING)
         {
             return;
         }
         
-        if (newGR.ordinal() - oldGR.ordinal() != 1)
+        if (round.ordinal() - oldRound.ordinal() != 1)
         {
             return;
         }
         
-        m_currentGameRoundState = TypePokerGameRoundState.CARDS;
-        m_pokerTable.setNoSeatCurrPlayer(m_pokerTable.getNoSeatDealer());
-        m_pokerTable.setRound(newGR);
+        m_roundState = TypeRoundState.CARDS;
+        m_table.setNoSeatCurrPlayer(m_table.getNoSeatDealer());
+        m_table.setRound(round);
         startRound();
     }
     
-    private void setCurrentGameRoundState(TypePokerGameRoundState newGRS)
+    /**
+     * Change l'etat de la round pour le prochain.
+     * Ne peux prendre en parametre que le prochain etat consecutif
+     * 
+     * @param roundState
+     *            le prochain etat consecutif
+     */
+    private void setRoundState(TypeRoundState roundState)
     {
         
-        final TypePokerGameRoundState oldGRS = m_currentGameRoundState;
+        final TypeRoundState oldRoundState = m_roundState;
         
-        if (m_currentGameState != TypePokerGameState.PLAYING)
+        if (m_state != TypeState.PLAYING)
         {
             return;
         }
         
-        if (newGRS.ordinal() - oldGRS.ordinal() != 1)
+        if (roundState.ordinal() - oldRoundState.ordinal() != 1)
         {
             return;
         }
         
-        m_currentGameRoundState = newGRS;
+        m_roundState = roundState;
         startRound();
     }
     
-    public TableInfo getTable()
+    // // // // // // // // // // // // // // // // // //
+    // // // // // PUBLIC COMMUNICATIONS / // // // // //
+    // // // // // // // // // // // // // // // // // //
+    
+    /**
+     * Demarre la nouvelle partie
+     * 
+     */
+    public void start()
     {
-        return m_pokerTable;
+        nextState(TypeState.PLAYERS_WAITING);
     }
     
+    /**
+     * La game est-elle en cours ?
+     * 
+     * @return Vrai si l'etat est different de END
+     */
     public boolean isRunning()
     {
-        return m_currentGameState != TypePokerGameState.END;
+        return m_state != TypeState.END;
     }
     
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // ///////////////// COMMUNICATION ///////////////////////////
-    // /////////////////////////////////
+    /**
+     * Un player precis tente de joindre la game
+     * 
+     * @param p
+     * @return Faux si la game n'est pas en cours
+     */
     public boolean joinGame(PlayerInfo p)
     {
-        if (m_currentGameState == TypePokerGameState.INIT || m_currentGameState == TypePokerGameState.END)
+        if (m_state == TypeState.INIT || m_state == TypeState.END)
         {
-            System.err.println("Bad timing:" + m_currentGameState);
+            System.err.println("Bad timing:" + m_state);
             return false;
         }
         
-        return m_pokerTable.joinTable(p);
+        return m_table.joinTable(p);
     }
     
+    /**
+     * Assois un joueur a la table
+     * 
+     * @param p
+     */
     public void sitInGame(PlayerInfo p)
     {
         m_gameObserver.playerJoined(p);
-        if (m_currentGameState == TypePokerGameState.PLAYERS_WAITING)
+        if (m_state == TypeState.PLAYERS_WAITING)
         {
             TryToBegin();
         }
     }
     
+    /*
+     * (non-Javadoc)
+     * 
+     * @see poker.game.IPokerGame#leaveGame(poker.game.PlayerInfo)
+     */
+    @Override
     public boolean leaveGame(PlayerInfo p)
     {
-        if (m_pokerTable.leaveTable(p))
+        if (m_table.leaveTable(p))
         {
             m_gameObserver.playerLeaved(p);
             return true;
@@ -218,15 +350,21 @@ public class PokerGame implements IPokerGame
         return false;
     }
     
+    /*
+     * (non-Javadoc)
+     * 
+     * @see poker.game.IPokerGame#playMoney(poker.game.PlayerInfo, int)
+     */
+    @Override
     public boolean playMoney(PlayerInfo p, int amount)
     {
         final int amnt = Math.min(amount, p.getMoneySafeAmnt());
-        System.out.println(p.getName() + " is playing " + amnt + " money on state: " + m_currentGameState);
-        if (m_currentGameState == TypePokerGameState.BLIND_WAITING)
+        System.out.println(p.getName() + " is playing " + amnt + " money on state: " + m_state);
+        if (m_state == TypeState.BLIND_WAITING)
         {
+            System.out.println("Total blinds needed is " + m_table.getTotalBlindNeeded());
             System.out.println(p.getName() + " is putting blind of " + amnt);
-            System.out.println("Total still needed is " + m_pokerTable.getTotalBlindNeeded());
-            final int needed = m_pokerTable.getBlindNeeded(p);
+            final int needed = m_table.getBlindNeeded(p);
             if (amnt != needed)
             {
                 if (p.canBet(amnt + 1))
@@ -238,8 +376,8 @@ public class PokerGame implements IPokerGame
                 {
                     System.out.println("So ... All-In !");
                     p.setAllIn();
-                    m_pokerTable.incNbAllIn();
-                    m_pokerTable.addAllInCap(p.getMoneyBetAmnt() + amnt);
+                    m_table.incNbAllIn();
+                    m_table.addAllInCap(p.getMoneyBetAmnt() + amnt);
                 }
             }
             if (!p.tryBet(amnt))
@@ -247,10 +385,10 @@ public class PokerGame implements IPokerGame
                 System.err.println(p.getName() + " just .. can't !! ");
                 return false;
             }
-            m_pokerTable.incTotalPotAmnt(amnt);
+            m_table.incTotalPotAmnt(amnt);
             m_gameObserver.playerMoneyChanged(p);
-            m_pokerTable.setBlindNeeded(p, 0);
-            if (amnt == m_pokerTable.getSmallBlindAmnt())
+            m_table.setBlindNeeded(p, 0);
+            if (amnt == m_table.getSmallBlindAmnt())
             {
                 m_gameObserver.playerActionTaken(p, TypeAction.SMALL_BLIND_POSTED, amnt);
             }
@@ -258,22 +396,23 @@ public class PokerGame implements IPokerGame
             {
                 m_gameObserver.playerActionTaken(p, TypeAction.BIG_BLIND_POSTED, amnt);
             }
-            m_pokerTable.setTotalBlindNeeded(m_pokerTable.getTotalBlindNeeded() - needed);
-            if (m_pokerTable.getTotalBlindNeeded() == 0)
+            m_table.setTotalBlindNeeded(m_table.getTotalBlindNeeded() - needed);
+            if (m_table.getTotalBlindNeeded() == 0)
             {
-                setCurrentGameState(TypePokerGameState.PLAYING);
+                nextState(TypeState.PLAYING);
             }
-            if (amnt > m_pokerTable.getHigherBet())
+            if (amnt > m_table.getHigherBet())
             {
-                m_pokerTable.setHigherBet(amnt);
+                m_table.setHigherBet(amnt);
             }
+            System.out.println("Total blinds still needed is " + m_table.getTotalBlindNeeded());
             return true;
         }
         
-        else if (m_currentGameState == TypePokerGameState.PLAYING && m_currentGameRoundState == TypePokerGameRoundState.BETTING)
+        else if (m_state == TypeState.PLAYING && m_roundState == TypeRoundState.BETTING)
         {
-            System.out.println("Currently, we need " + m_pokerTable.getCallAmnt(p) + " minimum money from this player");
-            if (p.getNoSeat() != m_pokerTable.getNoSeatCurrPlayer())
+            System.out.println("Currently, we need " + m_table.getCallAmnt(p) + " minimum money from this player");
+            if (p.getNoSeat() != m_table.getNoSeatCurrPlayer())
             {
                 System.err.println("BUT SCREW YOU, IT'S NOT YOUR TURN !!!!!");
                 return false;
@@ -286,7 +425,7 @@ public class PokerGame implements IPokerGame
                 continueBettingRound();
                 return true;
             }
-            int amntNeeded = m_pokerTable.getCallAmnt(p);
+            int amntNeeded = m_table.getCallAmnt(p);
             if (amnt < amntNeeded)
             {
                 if (p.canBet(amnt + 1))
@@ -297,8 +436,8 @@ public class PokerGame implements IPokerGame
                 System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getMoneyBetAmnt());
                 amntNeeded = amnt;
                 p.setAllIn();
-                m_pokerTable.incNbAllIn();
-                m_pokerTable.addAllInCap(p.getMoneyBetAmnt() + amnt);
+                m_table.incNbAllIn();
+                m_table.addAllInCap(p.getMoneyBetAmnt() + amnt);
             }
             if (!p.tryBet(amnt))
             {
@@ -309,13 +448,13 @@ public class PokerGame implements IPokerGame
             if (amnt == amntNeeded)
             {
                 System.out.println("Will call with $" + amnt);
-                m_pokerTable.incTotalPotAmnt(amnt);
+                m_table.incTotalPotAmnt(amnt);
                 callPlayer(p, amnt);
                 continueBettingRound();
                 return true;
             }
             System.out.println("Will raise with $" + amnt);
-            m_pokerTable.incTotalPotAmnt(amnt);
+            m_table.incTotalPotAmnt(amnt);
             raisePlayer(p, amnt);
             continueBettingRound();
             return true;
@@ -324,19 +463,16 @@ public class PokerGame implements IPokerGame
         return false;
     }
     
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // /////////////////////////////////
-    // ////// PRIV /////////////////////
-    // /////////////////////////////////
+    // // // // // // // // // // // // // // // // // //
+    // // // // // // PRIVATE METHODS / // // // // // //
+    // // // // // // // // // // // // // // // // // //
     
+    /**
+     * Demarre une round dependant de son etat
+     */
     private void startRound()
     {
-        switch (m_currentGameRoundState)
+        switch (m_roundState)
         {
             case CARDS:
                 startCardRound();
@@ -350,61 +486,57 @@ public class PokerGame implements IPokerGame
         }
     }
     
-    private void showAllCards()
-    {
-        for (final PlayerInfo p : m_pokerTable.getPlayers())
-        {
-            if (p.isPlaying() || p.isAllIn())
-            {
-                p.setShowingCards(true);
-                m_gameObserver.playerHoleCardsChanged(p);
-            }
-        }
-        setCurrentGameState(TypePokerGameState.DECIDE_WINNERS);
-    }
-    
+    /**
+     * C'est le moment de cumuler tout l'argent de la round
+     */
     private void startCumulRound()
     {
-        m_pokerTable.managePotsRoundEnd();
-        m_gameObserver.gameBettingRoundEnded(m_pokerTable.getRound());
-        if (m_pokerTable.getNbPlaying() == 1 && m_pokerTable.getNbAllIn() == 0)
+        m_table.managePotsRoundEnd();
+        m_gameObserver.gameBettingRoundEnded(m_table.getRound());
+        if (m_table.getNbPlaying() == 1 && m_table.getNbAllIn() == 0)
         {
-            setCurrentGameState(TypePokerGameState.SHOWDOWN);
+            nextState(TypeState.SHOWDOWN);
         }
         else
         {
-            switch (m_pokerTable.getRound())
+            switch (m_table.getRound())
             {
                 case PREFLOP:
-                    setCurrentGameRound(TypeRound.FLOP);
+                    nextRound(TypeRound.FLOP);
                     break;
                 case FLOP:
-                    setCurrentGameRound(TypeRound.TURN);
+                    nextRound(TypeRound.TURN);
                     break;
                 case TURN:
-                    setCurrentGameRound(TypeRound.RIVER);
+                    nextRound(TypeRound.RIVER);
                     break;
                 case RIVER:
-                    setCurrentGameState(TypePokerGameState.SHOWDOWN);
+                    nextState(TypeState.SHOWDOWN);
                     break;
             }
         }
     }
     
+    /**
+     * C'est le moment ou chaque joueur Bet dans la round
+     */
     private void startBettingRound()
     {
         m_gameObserver.gameBettingRoundStarted();
-        m_pokerTable.setNbPlayed(0);
+        m_table.setNbPlayed(0);
         waitALittle(m_WaitingTimeAfterBoardDealed);
         continueBettingRound();
     }
     
+    /**
+     * C'est le moment ou les cartes de la round sont decouvertes
+     */
     private void startCardRound()
     {
-        switch (m_pokerTable.getRound())
+        switch (m_table.getRound())
         {
             case PREFLOP:
-                m_pokerTable.setNoSeatCurrPlayer(m_pokerTable.getNoSeatBigBlind());
+                m_table.setNoSeatCurrPlayer(m_table.getNoSeatBigBlind());
                 dealHole();
                 break;
             case FLOP:
@@ -417,77 +549,104 @@ public class PokerGame implements IPokerGame
                 dealRiver();
                 break;
         }
-        setCurrentGameRoundState(TypePokerGameRoundState.BETTING);
+        setRoundState(TypeRoundState.BETTING);
     }
     
+    /**
+     * On tourne la River: ccc c C
+     */
     private void dealRiver()
     {
-        m_pokerTable.addCard(m_pokerDealer.dealRiver());
+        m_table.addCard(m_dealer.dealRiver());
     }
     
+    /**
+     * On tourne la Turn: ccc C c
+     */
     private void dealTurn()
     {
-        m_pokerTable.addCard(m_pokerDealer.dealTurn());
+        m_table.addCard(m_dealer.dealTurn());
     }
     
+    /**
+     * On tourne le flop: CCC c c
+     */
     private void dealFlop()
     {
-        m_pokerTable.addCards(m_pokerDealer.dealFlop());
+        m_table.addCards(m_dealer.dealFlop());
     }
     
+    /**
+     * On donne 2 cartes a chaque joueur
+     */
     private void dealHole()
     {
-        for (final PlayerInfo p : m_pokerTable.getPlayingPlayers())
+        for (final PlayerInfo p : m_table.getPlayingPlayers())
         {
-            p.setCards(m_pokerDealer.dealHoles(p));
+            p.setCards(m_dealer.dealHoles(p));
             m_gameObserver.playerHoleCardsChanged(p);
         }
     }
     
+    /**
+     * C'est le moment ou les joueurs restants montrent leurs cartes
+     */
+    private void showAllCards()
+    {
+        for (final PlayerInfo p : m_table.getPlayers())
+        {
+            if (p.isPlaying() || p.isAllIn())
+            {
+                p.setShowingCards(true);
+                m_gameObserver.playerHoleCardsChanged(p);
+            }
+        }
+        nextState(TypeState.DECIDE_WINNERS);
+    }
+    
+    /**
+     * Ce joueur fold !
+     * 
+     * @param p
+     */
     private void foldPlayer(PlayerInfo p)
     {
         p.setNotPlaying();
         m_gameObserver.playerActionTaken(p, TypeAction.FOLDED, -1);
     }
     
-    private void TryToBegin()
-    {
-        System.out.print("Trying to begin ...");
-        m_pokerTable.decidePlayingPlayers();
-        if (m_pokerTable.getNbPlaying() > 1)
-        {
-            System.out.println(" yep ! do it !");
-            m_pokerTable.initTable();
-            m_pokerDealer.freshDeck();
-            setCurrentGameState(TypePokerGameState.BLIND_WAITING);
-            m_gameObserver.gameBlindsNeeded();
-        }
-        else
-        {
-            System.out.println(" just too bad :(");
-            m_pokerTable.setNoSeatDealer(-1);
-            m_pokerTable.setNoSeatSmallBlind(-1);
-            m_pokerTable.setNoSeatSmallBlind(-1);
-        }
-    }
-    
+    /**
+     * Ce joueur call !
+     * 
+     * @param p
+     * @param played
+     */
     private void callPlayer(PlayerInfo p, int played)
     {
-        m_pokerTable.incNbPlayed();
+        m_table.incNbPlayed();
         m_gameObserver.playerActionTaken(p, TypeAction.CALLED, played);
     }
     
+    /**
+     * Ce joueur raise !
+     * 
+     * @param p
+     * @param played
+     */
     private void raisePlayer(PlayerInfo p, int played)
     {
-        m_pokerTable.setNbPlayed(1);
-        m_pokerTable.setHigherBet(p.getMoneyBetAmnt());
+        m_table.setNbPlayed(1);
+        m_table.setHigherBet(p.getMoneyBetAmnt());
         m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);
     }
     
+    /**
+     * C'est le moment de continuer la BettingRound
+     */
     private void continueBettingRound()
     {
         waitALittle(m_WaitingTimeAfterPlayerAction);
-        if (m_pokerTable.getNbPlaying() == 1 || m_pokerTable.getNbPlayed() >= m_pokerTable.getNbPlaying())
+        if (m_table.getNbPlaying() == 1 || m_table.getNbPlayed() >= m_table.getNbPlaying())
         {
             endBettingRound();
         }
@@ -497,33 +656,30 @@ public class PokerGame implements IPokerGame
         }
     }
     
-    private void waitALittle(int waitingTime)
-    {
-        try
-        {
-            Thread.sleep(waitingTime);
-        }
-        catch (final InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
+    /**
+     * Tout le monde a eu la chance de Better
+     */
     private void endBettingRound()
     {
-        setCurrentGameRoundState(TypePokerGameRoundState.CUMUL);
+        setRoundState(TypeRoundState.CUMUL);
     }
     
+    /**
+     * Choisi le prochain joueur a Better
+     */
     private void playNext()
     {
-        final PlayerInfo player = m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatCurrPlayer());
-        m_pokerTable.setNoSeatCurrPlayer(player.getNoSeat());
+        final PlayerInfo player = m_table.nextPlayingPlayer(m_table.getNoSeatCurrPlayer());
+        m_table.setNoSeatCurrPlayer(player.getNoSeat());
         m_gameObserver.playerActionNeeded(player);
     }
     
+    /**
+     * Distribue l'argent aux gagnants
+     */
     private void distributeMoney()
     {
-        for (final MoneyPot pot : m_pokerTable.getPots())
+        for (final MoneyPot pot : m_table.getPots())
         {
             final List<PlayerInfo> players = pot.getAttachedPlayers();
             if (players.size() > 0)
@@ -544,23 +700,59 @@ public class PokerGame implements IPokerGame
             }
         }
         m_gameObserver.gameEnded();
-        m_currentGameState = TypePokerGameState.PLAYERS_WAITING;
+        m_state = TypeState.PLAYERS_WAITING;
         TryToBegin();
     }
     
+    /**
+     * Decide des gagnants
+     */
     private void decideWinners()
     {
-        m_pokerTable.cleanPotsForWinning();
-        setCurrentGameState(TypePokerGameState.MONEY_DISTRIBUTION);
+        m_table.cleanPotsForWinning();
+        nextState(TypeState.MONEY_DISTRIBUTION);
     }
     
-    public void attach(IPokerGameListener listener)
+    /**
+     * Fait une pause d'un temps determine
+     * 
+     * @param waitingTime
+     *            Temps de la pause (ms)
+     */
+    private void waitALittle(int waitingTime)
     {
-        m_gameObserver.subscribe(listener);
+        try
+        {
+            Thread.sleep(waitingTime);
+        }
+        catch (final InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
     
-    public void detach(IPokerGameListener listener)
+    /**
+     * Essai de commencer la partie
+     */
+    private void TryToBegin()
     {
-        m_gameObserver.unsubscribe(listener);
+        System.out.print("Trying to begin ...");
+        m_table.decidePlayingPlayers();
+        if (m_table.getNbPlaying() > 1)
+        {
+            System.out.println(" yep ! do it !");
+            m_table.initTable();
+            m_dealer.freshDeck();
+            nextState(TypeState.BLIND_WAITING);
+            m_gameObserver.gameBlindsNeeded();
+        }
+        else
+        {
+            System.out.println(" just too bad :(");
+            m_table.setNoSeatDealer(-1);
+            m_table.setNoSeatSmallBlind(-1);
+            m_table.setNoSeatSmallBlind(-1);
+        }
     }
+    
 }

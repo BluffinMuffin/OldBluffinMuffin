@@ -232,7 +232,7 @@ public class GameTCPServer implements Runnable
                         cards[i] = Card.NO_CARD;
                     }
                 }
-                send(new BetTurnStartedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[4].getId(), m_game.getCurrentGameRound()));
+                send(new BetTurnStartedCommand(cards[0].getId(), cards[1].getId(), cards[2].getId(), cards[3].getId(), cards[4].getId(), m_game.getRound()));
             }
             
             @Override
