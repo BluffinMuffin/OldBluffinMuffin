@@ -446,7 +446,7 @@ public class PokerGame implements IPokerGame
                 System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getMoneyBetAmnt());
                 p.setAllIn();
                 m_table.incNbAllIn();
-                m_table.addAllInCap(p.getMoneyBetAmnt() + amnt);
+                m_table.addAllInCap(p.getMoneyBetAmnt());
             }
             if (amnt == amntNeeded)
             {
@@ -496,7 +496,7 @@ public class PokerGame implements IPokerGame
     {
         m_table.managePotsRoundEnd();
         m_gameObserver.gameBettingRoundEnded(m_table.getRound());
-        if (m_table.getNbPlaying() == 1 && m_table.getNbAllIn() == 0)
+        if (m_table.getNbPlaying() <= 1)
         {
             nextState(TypeState.SHOWDOWN);
         }
@@ -638,7 +638,12 @@ public class PokerGame implements IPokerGame
      */
     private void raisePlayer(PlayerInfo p, int played)
     {
-        m_table.setNbPlayed(1);
+        int count = m_table.getNbAllIn();
+        if (!p.isAllIn())
+        {
+            count++;
+        }
+        m_table.setNbPlayed(count);
         m_table.setHigherBet(p.getMoneyBetAmnt());
         m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);
     }
@@ -648,8 +653,9 @@ public class PokerGame implements IPokerGame
      */
     private void continueBettingRound()
     {
+        System.out.println("Le minimum pour jouer pour le prochain player: $" + m_table.getHigherBet());
         waitALittle(m_WaitingTimeAfterPlayerAction);
-        if (m_table.getNbPlaying() == 1 || m_table.getNbPlayed() >= m_table.getNbPlaying())
+        if (m_table.getNbPlayed() >= m_table.getNbPlayingAndAllIn())
         {
             endBettingRound();
         }
@@ -688,18 +694,17 @@ public class PokerGame implements IPokerGame
             if (players.size() > 0)
             {
                 final int wonAmount = pot.getAmount() / players.size();
-                for (final PlayerInfo p : players)
+                if (wonAmount > 0)
                 {
-                    p.incMoneySafeAmnt(wonAmount);
-                    m_gameObserver.playerMoneyChanged(p);
-                    m_gameObserver.playerWonPot(p, pot, wonAmount);
-                    
-                    waitALittle(m_WaitingTimeAfterPotWon);
+                    for (final PlayerInfo p : players)
+                    {
+                        p.incMoneySafeAmnt(wonAmount);
+                        m_gameObserver.playerMoneyChanged(p);
+                        m_gameObserver.playerWonPot(p, pot, wonAmount);
+                        
+                        waitALittle(m_WaitingTimeAfterPotWon);
+                    }
                 }
-            }
-            else
-            {
-                System.err.println(">> POT SANS PLAYER: ANORMAL !!");
             }
         }
         m_gameObserver.gameEnded();

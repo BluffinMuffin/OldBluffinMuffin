@@ -562,6 +562,16 @@ public class TableInfo
     }
     
     /**
+     * Nombre de joueur en train de jouer
+     * 
+     * @return
+     */
+    public int getNbPlayingAndAllIn()
+    {
+        return getNbPlaying() + getNbAllIn();
+    }
+    
+    /**
      * Montant actuel a accoter pour continuer a jouer
      * 
      * @return

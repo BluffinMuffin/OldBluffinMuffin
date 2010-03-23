@@ -12,7 +12,6 @@ import poker.game.IPokerGame;
 import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
 import poker.game.TableInfo;
-import poker.game.TypeAction;
 import poker.game.observer.IPokerGameListener;
 import poker.game.observer.PokerGameObserver;
 import protocol.ICommand;
@@ -206,6 +205,7 @@ public class GameTCPClient implements IPokerGame
             @Override
             public void gameEndedCommandReceived(GameEndedCommand command)
             {
+                m_pokerTable.setTotalPotAmnt(0);
                 m_gameObserver.gameEnded();
             }
             
@@ -291,6 +291,7 @@ public class GameTCPClient implements IPokerGame
                 {
                     m_pokerTable.setHigherBet(command.getPlayerBet());
                 }
+                m_pokerTable.setTotalPotAmnt(command.getTotalPot());
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
@@ -304,11 +305,6 @@ public class GameTCPClient implements IPokerGame
                     else
                     {
                         p.setNotPlaying();
-                    }
-                    
-                    if (command.getActionType() != TypeAction.FOLDED)
-                    {
-                        m_pokerTable.incTotalPotAmnt(a);
                     }
                     m_gameObserver.playerActionTaken(p, command.getActionType(), a);
                 }

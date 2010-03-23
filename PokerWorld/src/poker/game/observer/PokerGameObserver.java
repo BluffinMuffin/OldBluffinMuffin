@@ -94,7 +94,7 @@ public class PokerGameObserver extends EventObserver<IPokerGameListener> impleme
     {
         for (final IPokerGameListener listener : getSubscribers())
         {
-            listener.playerWonPot(p, pot, 0);
+            listener.playerWonPot(p, pot, wonAmount);
         }
     }
     
