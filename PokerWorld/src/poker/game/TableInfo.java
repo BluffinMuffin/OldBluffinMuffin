@@ -790,6 +790,10 @@ public class TableInfo
             {
                 p.setPlaying();
             }
+            else
+            {
+                p.setNotPlaying();
+            }
         }
     }
     
