@@ -441,7 +441,7 @@ public class PokerGame implements IPokerGame
                 return false;
             }
             m_gameObserver.playerMoneyChanged(p);
-            if (amnt == p.getMoneySafeAmnt())
+            if (p.getMoneySafeAmnt() == 0)
             {
                 System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getMoneyBetAmnt());
                 p.setAllIn();
