@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.Stack;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.TreeSet;
 
 /**
  * @author Eric
@@ -34,7 +35,7 @@ public class TableInfo
     // POTS
     private final List<MoneyPot> m_pots = new ArrayList<MoneyPot>(); // La liste des POTS
     private int m_totalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
-    private final LinkedBlockingQueue<Integer> m_allInCaps = new LinkedBlockingQueue<Integer>(); // Les differents CAPS ALL_IN de la ROUND
+    private final SortedSet<Integer> m_allInCaps = new TreeSet<Integer>(); // Les differents CAPS ALL_IN de la ROUND
     
     // BLINDS
     private final int m_smallBlindAmnt; // Montant a donner lorsqu'on est small blind
@@ -414,17 +415,7 @@ public class TableInfo
      */
     public void addAllInCap(Integer val)
     {
-        if (!m_allInCaps.contains(val))
-        {
-            try
-            {
-                m_allInCaps.put(val);
-            }
-            catch (final InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-        }
+        m_allInCaps.add(val);
     }
     
     // // // // // // // // // // // // // // // // // //
@@ -853,8 +844,9 @@ public class TableInfo
         {
             final MoneyPot pot = m_pots.get(m_currPotId);
             pot.detachAll();
-            final int cap = m_allInCaps.poll() - currentTaken;
-            
+            final int aicf = m_allInCaps.first();
+            m_allInCaps.remove(aicf);
+            final int cap = aicf - currentTaken;
             for (final PlayerInfo p : getPlayers())
             {
                 AddBet(p, pot, Math.min(p.getMoneyBetAmnt(), cap));
