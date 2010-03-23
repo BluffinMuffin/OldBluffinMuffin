@@ -1,6 +1,7 @@
 package gui.game;
 
 import game.Card;
+import gui.JDialogHandStrength;
 import gui.JPanelConsole;
 
 import java.awt.BorderLayout;
@@ -12,6 +13,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,6 +33,29 @@ public class JFrameTableViewer extends AbstractJFrameTable
     private final JPanelPlayerHud[] huds = new JPanelPlayerHud[10];
     private final JLabel[] bets = new JLabel[10];
     private final JPanelCard[] board = new JPanelCard[5];
+    
+    /**
+     * This method initializes jHelpButton
+     * 
+     * @return javax.swing.JButton
+     */
+    private JButton getJHelpButton()
+    {
+        if (jHelpButton == null)
+        {
+            jHelpButton = new JButton();
+            jHelpButton.setText("HELP");
+            jHelpButton.addActionListener(new java.awt.event.ActionListener()
+            {
+                public void actionPerformed(java.awt.event.ActionEvent e)
+                {
+                    final JDialogHandStrength dialog = new JDialogHandStrength(JFrameTableViewer.this);
+                    dialog.setVisible(true);
+                }
+            });
+        }
+        return jHelpButton;
+    }
     
     /**
      * @param args
@@ -83,6 +108,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
     private JLabel jBetLabel8 = null;
     private JLabel jBetLabel9 = null;
     private JLabel jBetLabel10 = null;
+    private JButton jHelpButton = null;
     
     /**
      * This is the default constructor
@@ -257,6 +283,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             jTopPanel.setForeground(Color.white);
             jTopPanel.setLocation(new Point(0, 0));
             jTopPanel.add(jTitleLabel, BorderLayout.CENTER);
+            jTopPanel.add(getJHelpButton(), BorderLayout.EAST);
         }
         return jTopPanel;
     }
