@@ -3,9 +3,9 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import poker.game.PokerGame;
-
 
 /**
  * @author Hocus
@@ -35,6 +35,17 @@ public class ServerTableManager extends Thread
             try
             {
                 final Socket socketClient = m_socketServer.accept();
+                try
+                {
+                    socketClient.setReuseAddress(true);
+                    socketClient.setSoLinger(false, 0);
+                    socketClient.setSoTimeout(0);
+                }
+                catch (final SocketException e1)
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 final ServerClientTableManager client = new ServerClientTableManager(socketClient, this);
                 client.start();
             }
@@ -45,6 +56,19 @@ public class ServerTableManager extends Thread
                     System.out.println("Table manager close for: " + m_game.getTable().getName());
                 }
             }
+        }
+        if (m_socketServer != null)
+        {
+            try
+            {
+                m_socketServer.close();
+            }
+            catch (final IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            m_socketServer = null;
         }
     }
 }

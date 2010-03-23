@@ -38,9 +38,9 @@ public class GameTCPServer implements Runnable
 {
     // TCP Things
     public static final int PING_INTERVAL = 10000;
-    private final Socket m_socket;
-    private final PrintWriter m_output;
-    private final BufferedReader m_input;
+    private Socket m_socket;
+    private PrintWriter m_output;
+    private BufferedReader m_input;
     private boolean m_isConnected;
     
     // POKER Things
@@ -120,12 +120,17 @@ public class GameTCPServer implements Runnable
         m_game.sitInGame(m_player);
     }
     
+    public boolean isConnected()
+    {
+        return (m_socket != null) && m_socket.isConnected() && !m_socket.isClosed();
+    }
+    
     @Override
     public void run()
     {
         try
         {
-            while (true)
+            while (isConnected())
             {
                 receive();
             }
@@ -197,6 +202,19 @@ public class GameTCPServer implements Runnable
             public void everythingEnded()
             {
                 send(new TableClosedCommand());
+                try
+                {
+                    m_output.close();
+                    m_input.close();
+                    m_socket.close();
+                }
+                catch (final IOException e)
+                {
+                    e.printStackTrace();
+                }
+                m_output = null;
+                m_input = null;
+                m_socket = null;
             }
             
             @Override

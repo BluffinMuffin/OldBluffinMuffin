@@ -79,7 +79,10 @@ public class GameTCPClient implements IPokerGame
                 {
                     while (isConnected())
                     {
-                        receive();
+                        if (receive() == null)
+                        {
+                            break;
+                        }
                     }
                 }
                 catch (final IOException e)

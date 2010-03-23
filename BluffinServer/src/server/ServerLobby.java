@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -82,6 +83,17 @@ public class ServerLobby extends Thread
             try
             {
                 final Socket socketClient = m_socketServer.accept();
+                try
+                {
+                    socketClient.setReuseAddress(true);
+                    socketClient.setSoLinger(false, 0);
+                    socketClient.setSoTimeout(0);
+                }
+                catch (final SocketException e1)
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 final ServerClientLobby client = new ServerClientLobby(socketClient, this);
                 client.start();
             }
@@ -115,17 +127,8 @@ public class ServerLobby extends Thread
             // Create a new HoldEmTable and a new TableManager.
             final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
             game.start();
-            // final TempServerTableCommunicator table = new TempServerTableCommunicator(command);
             final ServerTableManager manager = new ServerTableManager(game, noPort);
-            
-            // Start the TableManager.
-            // table.addClosingListener(manager);
-            // TODO: RICK: Logger!
-            // new TempServerPokerLogger(System.out, table.getPokerObserver());
-            // table.start();
             manager.start();
-            
-            // Associate the port number to the table.
             m_games.put(noPort, game);
             
             return noPort;

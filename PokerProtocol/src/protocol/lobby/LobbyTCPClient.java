@@ -144,11 +144,6 @@ public class LobbyTCPClient
         return line;
     }
     
-    private String receive()
-    {
-        return receive(m_fromServer);
-    }
-    
     public String getPlayerName()
     {
         return m_playerName;

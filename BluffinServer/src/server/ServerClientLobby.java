@@ -125,12 +125,17 @@ public class ServerClientLobby extends Thread
                 m_lobby.removeName(m_playerName);
                 try
                 {
+                    m_toClient.close();
+                    m_fromClient.close();
                     m_socket.close();
                 }
                 catch (final IOException e)
                 {
                     e.printStackTrace();
                 }
+                m_toClient = null;
+                m_fromClient = null;
+                m_socket = null;
             }
             
             @Override

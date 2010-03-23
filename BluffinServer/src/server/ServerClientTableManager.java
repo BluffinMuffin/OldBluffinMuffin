@@ -9,8 +9,8 @@ import java.util.StringTokenizer;
 
 import poker.game.PokerGame;
 import poker.game.TableInfo;
-import protocol.ICommand;
 import protocol.Command;
+import protocol.ICommand;
 import protocol.game.GameTCPServer;
 import protocol.lobby.commands.IdentifyCommand;
 import protocol.lobby.commands.JoinTableCommand;
@@ -138,7 +138,6 @@ public class ServerClientTableManager extends Thread
                     final GameTCPServer client = new GameTCPServer(m_manager.m_game, m_name, 1500, m_socket);
                     final PokerGame game = m_manager.m_game;
                     final TableInfo table = game.getTable();
-                    // final TempServerNetworkPokerPlayerInfo player = new TempServerNetworkPokerPlayerInfo(m_name, Constants.STARTING_MONEY, m_socket);
                     
                     // Verify the player does not already playing on that table.
                     if (!table.containsPlayer(m_name))

@@ -744,19 +744,21 @@ public class PokerGame implements IPokerGame
      */
     private void TryToBegin()
     {
-        System.out.print("Trying to begin ...");
         m_table.decidePlayingPlayers();
         if (m_table.getNbPlaying() > 1)
         {
-            System.out.println(" yep ! do it !");
             m_table.initTable();
             m_dealer.freshDeck();
             nextState(TypeState.BLIND_WAITING);
             m_gameObserver.gameBlindsNeeded();
         }
+        else if (m_table.getPlayers().size() > 1)
+        {
+            m_state = TypeState.END;
+            m_gameObserver.everythingEnded();
+        }
         else
         {
-            System.out.println(" just too bad :(");
             m_table.setNoSeatDealer(-1);
             m_table.setNoSeatSmallBlind(-1);
             m_table.setNoSeatSmallBlind(-1);
