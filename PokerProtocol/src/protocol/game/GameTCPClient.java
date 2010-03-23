@@ -99,6 +99,8 @@ public class GameTCPClient implements IPokerGame
         {
             if (isConnected())
             {
+                // Alors on disconnect
+                send(new DisconnectCommand());
                 m_socket.close();
                 m_socket = null;
             }

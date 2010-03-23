@@ -93,38 +93,22 @@ public class LobbyTCPClient
         return (m_socket != null) && m_socket.isConnected() && !m_socket.isClosed();
     }
     
-    public void start()
-    {
-        new Thread()
-        {
-            @Override
-            public void run()
-            {
-                while (isConnected())
-                {
-                    receive();
-                }
-                
-                disconnect();
-            }
-        }.start();
-    }
-    
     public void disconnect()
     {
         try
         {
+            // Disconnect all clients (PokerClient).
+            while (m_clients.size() != 0)
+            {
+                m_clients.get(0).disconnect();
+                m_clients.remove(0);
+            }
             if (isConnected())
             {
                 // Alors on disconnect
                 send(new DisconnectCommand());
                 m_socket.close();
                 m_socket = null;
-            }
-            // Disconnect all clients (PokerClient).
-            while (m_clients.size() != 0)
-            {
-                m_clients.get(0).disconnect();
             }
         }
         catch (final IOException e)
