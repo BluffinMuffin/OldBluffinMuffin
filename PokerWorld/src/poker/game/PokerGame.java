@@ -433,11 +433,7 @@ public class PokerGame implements IPokerGame
                     System.err.println("BUT SCREW YOU, IT'S NOT ENOUGH !!!!!");
                     return false;
                 }
-                System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getMoneyBetAmnt());
                 amntNeeded = amnt;
-                p.setAllIn();
-                m_table.incNbAllIn();
-                m_table.addAllInCap(p.getMoneyBetAmnt() + amnt);
             }
             if (!p.tryBet(amnt))
             {
@@ -445,6 +441,13 @@ public class PokerGame implements IPokerGame
                 return false;
             }
             m_gameObserver.playerMoneyChanged(p);
+            if (amnt == p.getMoneySafeAmnt())
+            {
+                System.out.println("So ... All-In ! getCurrentBetMoneyAmount: " + p.getMoneyBetAmnt());
+                p.setAllIn();
+                m_table.incNbAllIn();
+                m_table.addAllInCap(p.getMoneyBetAmnt() + amnt);
+            }
             if (amnt == amntNeeded)
             {
                 System.out.println("Will call with $" + amnt);

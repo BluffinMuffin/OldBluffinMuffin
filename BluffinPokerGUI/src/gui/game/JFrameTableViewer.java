@@ -831,8 +831,8 @@ public class JFrameTableViewer extends AbstractJFrameTable
                     {
                         write(" " + table.getCards().get(i).toString());
                     }
+                    writeLine("");
                 }
-                writeLine("");
             }
             
             @Override
