@@ -124,7 +124,6 @@ public class GameTCPClient implements IPokerGame
     protected String receive() throws IOException
     {
         final String line = m_fromServer.readLine();
-        System.out.println(m_playerName + " RECV something");
         m_commandObserver.receiveSomething(line);
         return line;
     }

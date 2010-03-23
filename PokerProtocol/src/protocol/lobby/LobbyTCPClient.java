@@ -72,7 +72,7 @@ public class LobbyTCPClient
         String commandName = token.nextToken();
         while (!commandName.equals(expected))
         {
-            s = receive();
+            s = receive(reader);
             token = new StringTokenizer(s, Command.DELIMITER);
             commandName = token.nextToken();
         }
