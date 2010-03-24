@@ -639,10 +639,12 @@ public class PokerGame implements IPokerGame
     private void raisePlayer(PlayerInfo p, int played)
     {
         int count = m_table.getNbAllIn();
+        System.out.println(">>> Count1 = " + count);
         if (!p.isAllIn())
         {
             count++;
         }
+        System.out.println(">>> Count2 = " + count);
         m_table.setNbPlayed(count);
         m_table.setHigherBet(p.getMoneyBetAmnt());
         m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);

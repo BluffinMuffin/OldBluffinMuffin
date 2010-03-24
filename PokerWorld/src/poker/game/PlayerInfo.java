@@ -307,7 +307,7 @@ public class PlayerInfo
     }
     
     /**
-     * Défini que le joueur est All-In
+     * Dï¿½fini que le joueur est All-In
      * 
      */
     public void setAllIn()
@@ -317,7 +317,7 @@ public class PlayerInfo
     }
     
     /**
-     * Défini que le joueur est Folded
+     * Dï¿½fini que le joueur est Folded
      * 
      */
     public void setNotPlaying()
@@ -327,17 +327,17 @@ public class PlayerInfo
     }
     
     /**
-     * Défini que le joueur est Playing
+     * Dï¿½fini que le joueur est Playing
      */
     public void setPlaying()
     {
         m_showingCards = false;
-        m_allIn = true;
+        m_allIn = false;
         m_playing = true;
     }
     
     /**
-     * Défini si oui ou non le joueur montre ses cartes
+     * Dï¿½fini si oui ou non le joueur montre ses cartes
      * 
      * @param showingCards
      *            Est-ce que le joueur montre ses cartes
