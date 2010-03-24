@@ -403,6 +403,10 @@ public class GameTCPClient implements IPokerGame
     
     public int getNoPort()
     {
+        if (m_socket == null)
+        {
+            return -1;
+        }
         return m_socket.getPort();
     }
     

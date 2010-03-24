@@ -1,4 +1,4 @@
-package clientGUI;
+package gui;
 
 import java.awt.Dimension;
 import java.awt.Frame;

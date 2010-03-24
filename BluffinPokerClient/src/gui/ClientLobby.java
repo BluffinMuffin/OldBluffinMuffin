@@ -1,4 +1,4 @@
-package clientGUI;
+package gui;
 
 import gui.game.JFrameTable;
 import gui.lobby.JDialogAddTable;
