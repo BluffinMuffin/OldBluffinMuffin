@@ -112,30 +112,33 @@ public class ServerLobby extends Thread
         {
             return -1;
         }
-        
-        try
+        int noPort = NO_PORT + 1;
+        final int endPortRange = NO_PORT + 11;
+        while (noPort != endPortRange)
         {
-            // Find an available port for the new table.
-            // Only a certain number of port can be used at the same time.
-            int noPort = NO_PORT + 1;
-            final int endPortRange = NO_PORT + 11;
-            while ((noPort != endPortRange) && m_games.containsKey(noPort))
+            try
+            {
+                // Find an available port for the new table.
+                // Only a certain number of port can be used at the same time.
+                while ((noPort != endPortRange) && m_games.containsKey(noPort))
+                {
+                    noPort++;
+                }
+                
+                // Create a new HoldEmTable and a new TableManager.
+                final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+                game.start();
+                final ServerTableManager manager = new ServerTableManager(game, noPort);
+                manager.start();
+                m_games.put(noPort, game);
+                
+                return noPort;
+            }
+            catch (final IOException e)
             {
                 noPort++;
+                // e.printStackTrace();
             }
-            
-            // Create a new HoldEmTable and a new TableManager.
-            final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
-            game.start();
-            final ServerTableManager manager = new ServerTableManager(game, noPort);
-            manager.start();
-            m_games.put(noPort, game);
-            
-            return noPort;
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
         }
         
         return -1;

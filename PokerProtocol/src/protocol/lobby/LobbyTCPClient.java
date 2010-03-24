@@ -107,8 +107,12 @@ public class LobbyTCPClient
             {
                 // Alors on disconnect
                 send(new DisconnectCommand());
+                m_fromServer.close();
+                m_toServer.close();
                 m_socket.close();
                 m_socket = null;
+                m_fromServer = null;
+                m_toServer = null;
             }
         }
         catch (final IOException e)
