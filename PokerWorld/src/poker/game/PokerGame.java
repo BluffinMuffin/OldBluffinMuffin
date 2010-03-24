@@ -657,7 +657,7 @@ public class PokerGame implements IPokerGame
     {
         System.out.println("Le minimum pour jouer pour le prochain player: $" + m_table.getHigherBet());
         waitALittle(m_WaitingTimeAfterPlayerAction);
-        if (m_table.getNbPlayed() >= m_table.getNbPlayingAndAllIn())
+        if (m_table.getNbPlayingAndAllIn() == 1 || m_table.getNbPlayed() >= m_table.getNbPlayingAndAllIn())
         {
             endBettingRound();
         }
