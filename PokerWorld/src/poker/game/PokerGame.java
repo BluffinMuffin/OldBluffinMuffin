@@ -496,7 +496,7 @@ public class PokerGame implements IPokerGame
     {
         m_table.managePotsRoundEnd();
         m_gameObserver.gameBettingRoundEnded(m_table.getRound());
-        if (m_table.getNbPlaying() <= 1)
+        if (m_table.getNbPlayingAndAllIn() <= 1)
         {
             nextState(TypeState.SHOWDOWN);
         }
@@ -528,7 +528,15 @@ public class PokerGame implements IPokerGame
         m_gameObserver.gameBettingRoundStarted();
         m_table.setNbPlayed(0);
         waitALittle(m_WaitingTimeAfterBoardDealed);
-        continueBettingRound();
+        
+        if (m_table.getNbPlaying() <= 1)
+        {
+            endBettingRound();
+        }
+        else
+        {
+            continueBettingRound();
+        }
     }
     
     /**
