@@ -272,10 +272,18 @@ public class GameTCPServer implements Runnable
         m_commandObserver.subscribe(new GameServerAdapter()
         {
             @Override
-            public void disconnectCommandReceived(PlayerPlayMoneyCommand command)
+            public void disconnectCommandReceived()
             {
                 m_isConnected = false;
                 m_game.leaveGame(m_player);
+                
+                try {
+                	m_output.close();
+					m_input.close();
+					m_socket.close();  
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
             }
             
             @Override

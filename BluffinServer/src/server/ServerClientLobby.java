@@ -133,9 +133,9 @@ public class ServerClientLobby extends Thread
                 {
                     e.printStackTrace();
                 }
-                m_toClient = null;
-                m_fromClient = null;
-                m_socket = null;
+//                m_toClient = null;
+//                m_fromClient = null;
+//                m_socket = null;
             }
             
             @Override

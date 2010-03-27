@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
@@ -62,15 +63,14 @@ public class ClientLobby extends JFrame
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
                     final GameTCPClient client = findClient();
-                    if (client != null)
-                    {
-                        client.disconnect();
-                    }
+                    eventLeaveTable(client);
                 }
             });
         }
         return jLeaveTableButton;
     }
+    
+    
     
     /**
      * @param args
@@ -481,7 +481,15 @@ public class ClientLobby extends JFrame
     {
         JFrameTable gui = null;
         gui = new JFrameTable();
-        return m_server.joinTable(p_noPort, p_tableName, gui) != null;
+        final GameTCPClient tcpGame = m_server.joinTable(p_noPort, p_tableName, gui);
+        
+        gui.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(WindowEvent winEvt) {
+            	eventLeaveTable(tcpGame);
+            }
+        });
+        
+        return tcpGame != null;
     }
     
     private GameTCPClient findClient()
@@ -517,10 +525,18 @@ public class ClientLobby extends JFrame
             if (!joinTable(noPort, tableName, bigBlind))
             {
                 System.out.println("Table '" + tableName + "' does not exist anymore.");
-                refreshTables();
+//                refreshTables();
             }
         }
         refreshTables();
+    }
+    
+    private void eventLeaveTable(GameTCPClient client){
+        if (client != null)
+        {
+            client.disconnect();
+            refreshTables();
+        }
     }
     
 } // @jve:decl-index=0:visual-constraint="10,10"

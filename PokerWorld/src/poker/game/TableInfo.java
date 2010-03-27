@@ -763,7 +763,8 @@ public class TableInfo
         
         final int seat = p.getNoSeat();
         p.setNotPlaying();
-        p.setNoSeat(-1);
+        //TODO WTF IL FAIT CA!!!!!!!!!!!!!!
+//        p.setNoSeat(-1);
         m_players[seat] = null;
         
         return true;

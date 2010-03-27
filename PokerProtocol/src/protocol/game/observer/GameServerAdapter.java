@@ -16,7 +16,7 @@ public class GameServerAdapter implements IGameServerListener
     }
     
     @Override
-    public void disconnectCommandReceived(PlayerPlayMoneyCommand command)
+    public void disconnectCommandReceived()
     {
     }
 }

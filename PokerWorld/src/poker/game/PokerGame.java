@@ -345,6 +345,9 @@ public class PokerGame implements IPokerGame
         if (m_table.leaveTable(p))
         {
             m_gameObserver.playerLeaved(p);
+            if(m_table.getNbUsedSeats() == 0){
+            	m_state = TypeState.END;
+            }
             return true;
         }
         return false;

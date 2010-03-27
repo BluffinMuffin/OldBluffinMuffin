@@ -3,6 +3,7 @@ package protocol.game.observer;
 import java.util.StringTokenizer;
 
 import protocol.Command;
+import protocol.commands.DisconnectCommand;
 import protocol.game.commands.PlayerPlayMoneyCommand;
 import protocol.observer.CommandObserver;
 
@@ -17,11 +18,11 @@ public class GameServerObserver extends CommandObserver<IGameServerListener> imp
     }
     
     @Override
-    public void disconnectCommandReceived(PlayerPlayMoneyCommand command)
+    public void disconnectCommandReceived()
     {
         for (final IGameServerListener listener : getSubscribers())
         {
-            listener.disconnectCommandReceived(command);
+            listener.disconnectCommandReceived();
         }
     }
     
@@ -35,8 +36,13 @@ public class GameServerObserver extends CommandObserver<IGameServerListener> imp
         {
             playMoneyCommandReceived(new PlayerPlayMoneyCommand(token));
         }
+        else if (commandName.equals(DisconnectCommand.COMMAND_NAME))
+        {
+        	disconnectCommandReceived();
+        }
         else
         {
+        	System.out.println("WTF##################: GameServerObserver: should not happen!!! ");
             super.commandReceived(line);
         }
     }

@@ -7,5 +7,5 @@ public interface IGameServerListener extends ICommandListener
 {
     void playMoneyCommandReceived(PlayerPlayMoneyCommand command);
     
-    void disconnectCommandReceived(PlayerPlayMoneyCommand command);
+    void disconnectCommandReceived();
 }
