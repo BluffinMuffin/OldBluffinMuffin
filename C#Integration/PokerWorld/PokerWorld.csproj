@@ -45,11 +45,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\AbstractDealer.cs" />
+    <Compile Include="Game\EventArgs.cs" />
+    <Compile Include="Game\IPokerGame.cs" />
+    <Compile Include="Game\MoneyPot.cs" />
+    <Compile Include="Game\PlayerInfo.cs" />
+    <Compile Include="Game\PokerGame.cs" />
+    <Compile Include="Game\RandomDealer.cs" />
+    <Compile Include="Game\TableInfo.cs" />
+    <Compile Include="Game\TypeAction.cs" />
+    <Compile Include="Game\TypeBet.cs" />
+    <Compile Include="Game\TypeRound.cs" />
     <Compile Include="HandEvaluator\PocketHands.cs" />
     <Compile Include="HandEvaluator\HandAnalysis.cs" />
     <Compile Include="HandEvaluator\HandEvaluator.cs" />
     <Compile Include="HandEvaluator\HandIterator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EricUtilityGames\EricUtilityGames.csproj">
+      <Project>{91A93AAB-B4F4-411D-8C0F-E27A10B872D1}</Project>
+      <Name>EricUtilityGames</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtility\EricUtility.csproj">
+      <Project>{0F0C8756-B68E-4526-A3BC-7FBD28506933}</Project>
+      <Name>EricUtility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
