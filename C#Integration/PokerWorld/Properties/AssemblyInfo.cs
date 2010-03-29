@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("BluffinMuffin")]
+[assembly: AssemblyTitle("PokerWorld")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BluffinMuffin")]
+[assembly: AssemblyProduct("PokerWorld")]
 [assembly: AssemblyCopyright("Copyright ©  2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("93f331e5-b272-4286-81aa-7e59676d45ad")]
+[assembly: Guid("568cae0a-f930-4372-8788-57f987795f5f")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //
