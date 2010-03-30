@@ -31,17 +31,17 @@ namespace PokerWorld.Game
         {
             get { return m_Name; }
         }
-        public string NoSeat
+        public int NoSeat
         {
-            get { return m_Name; }
+            get { return m_NoSeat; }
             set { m_NoSeat = value; }
         }
         public GameCard[] Cards
         {
             get
             {
-                GameCard cards = new GameCard[2]{ m_Cards[0], m_Cards[1] };
-                for (int i = 0; i < 2; ++j)
+                GameCard[] cards = new GameCard[2] { m_Cards[0], m_Cards[1] };
+                for (int i = 0; i < 2; ++i)
                 {
                     if (cards[i] == null || !(m_IsPlaying || m_IsAllIn))
                     {
@@ -121,7 +121,7 @@ namespace PokerWorld.Game
             m_NoSeat = -1;
             m_MoneySafeAmnt = 0;
             m_MoneyBetAmnt = 0;
-            m_InitMoneyAmnt = 0;
+            m_MoneyInitAmnt = 0;
         }
         public PlayerInfo(String name)
             : this()
@@ -137,18 +137,18 @@ namespace PokerWorld.Game
             : this(name)
         {
             m_MoneySafeAmnt = money;
-            m_InitMoneyAmnt = money;
+            m_MoneyInitAmnt = money;
         }
-        public PlayerInfo(int seat, String name, int money)
+        public PlayerInfo(int seat, String name, int money):
+            this(name, money)
         {
-            this(name, money);
             m_NoSeat = seat;
         }
 
         public uint EvaluateCards(GameCard[] boardCards)
         {
             if (boardCards == null || boardCards.Length != 5 || m_Cards == null || m_Cards.Length != 2)
-                return null;
+                return 0;
             string pocket = String.Format("{0} {1}",m_Cards[0],m_Cards[1]);
             string board = String.Format("{0} {1} {2} {3} {4}", boardCards[0], boardCards[1], boardCards[2], boardCards[3], boardCards[4]);
 
