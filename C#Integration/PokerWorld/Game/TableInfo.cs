@@ -6,7 +6,6 @@ using EricUtility.Games;
 
 namespace PokerWorld.Game
 {
-    //TODO!!!
     public class TableInfo
     {
         // INFO
@@ -80,6 +79,134 @@ namespace PokerWorld.Game
                 }
             }
         }
+        public int NbMaxSeats
+        {
+            get { return m_NbMaxSeats; }
+        }
+
+        public int NbUsedSeats
+        {
+            get { return m_NbUsedSeats; }
+            set { m_NbUsedSeats = value; }
+        }
+
+        public List<PlayerInfo> Players
+        {
+            get
+            {
+                List<PlayerInfo> list = new List<PlayerInfo>();
+                for (int i = 0; i < m_NbMaxSeats; ++i)
+                {
+                    if (m_Players[i] != null)
+                    {
+                        list.Add(m_Players[i]);
+                    }
+                }
+                return list;
+            }
+        }
+
+        public List<PlayerInfo> PlayingPlayers
+        {
+            get
+            {
+                List<PlayerInfo> list = new List<PlayerInfo>();
+                for (int i = 0; i < m_NbMaxSeats; ++i)
+                {
+                    if (m_Players[i] != null && m_Players[i].IsPlaying)
+                    {
+                        list.Add(m_Players[i]);
+                    }
+                }
+                return list;
+            }
+        }
+
+        public MoneyPot[] Pots
+        {
+            get
+            {
+                return m_Pots.ToArray();
+            }
+        }
+
+        public int TotalPotAmnt
+        {
+            get { return m_TotalPotAmnt; }
+            set { m_TotalPotAmnt = value; }
+        }
+
+        public int SmallBlindAmnt
+        {
+            get { return m_SmallBlindAmnt; }
+        }
+
+        public int BigBlindAmnt
+        {
+            get { return m_BigBlindAmnt; }
+        }
+
+        public int TotalBlindNeeded
+        {
+            get { return m_TotalBlindNeeded; }
+            set { m_TotalBlindNeeded = value; }
+        }
+
+        public int NoSeatDealer
+        {
+            get { return m_NoSeatDealer; }
+            set { m_NoSeatDealer = value; }
+        }
+
+        public int NoSeatSmallBlind
+        {
+            get { return m_NoSeatSmallBlind; }
+            set { m_NoSeatSmallBlind = value; }
+        }
+
+        public int NoSeatBigBlind
+        {
+            get { return m_NoSeatBigBlind; }
+            set { m_NoSeatBigBlind = value; }
+        }
+
+        public int NoSeatCurrPlayer
+        {
+            get { return m_NoSeatCurrPlayer; }
+            set { m_NoSeatCurrPlayer = value; }
+        }
+
+        public int NbPlayed
+        {
+            get { return m_NbPlayed; }
+            set { m_NbPlayed = value; }
+        }
+
+        public int NbAllIn
+        {
+            get { return m_NbAllIn; }
+            set { m_NbAllIn = value; }
+        }
+
+        public int NbPlaying
+        {
+            get { return PlayingPlayers.Count; }
+        }
+
+        public int NbPlayingAndAllIn
+        {
+            get { return NbPlaying + NbAllIn; }
+        }
+        public int HigherBet
+        {
+            get { return m_HigherBet; }
+            set { m_HigherBet = value; }
+        }
+        public TypeRound Round
+        {
+            get { return m_Round; }
+            set { m_Round = value; }
+        }
 
         public TableInfo()
             : this(10)
@@ -122,6 +249,220 @@ namespace PokerWorld.Game
             for (; m_Cards[i] != null && m_Cards[i].ToString() != GameCard.NO_CARD_STRING; ++i) ;
             for (int j = i; j < Math.Min(5, c.Length + i); ++j)
                 m_Cards[j] = c[j - i];
+        }
+        public PlayerInfo GetPlayer(int seat)
+        {
+            return m_Players[seat];
+        }
+        public PlayerInfo GetPlayerNextTo(int seat)
+        {
+            for (int i = 0; i < m_NbMaxSeats; ++i)
+            {
+                int j = (seat + 1 + i) % m_NbMaxSeats;
+                if (m_Players[j] != null)
+                {
+                    return m_Players[j];
+                }
+            }
+            return m_Players[seat];
+        }
+        public PlayerInfo GetPlayingPlayerNextTo(int seat)
+        {
+            for (int i = 0; i < m_NbMaxSeats; ++i)
+            {
+                int j = (seat + 1 + i) % m_NbMaxSeats;
+                if (m_Players[j] != null && m_Players[j].IsPlaying)
+                {
+                    return m_Players[j];
+                }
+            }
+            return m_Players[seat];
+        }
+        private bool ContainsPlayer(PlayerInfo p)
+        {
+            return Players.Contains(p);
+        }
+        public bool ContainsPlayer(String name)
+        {
+            foreach (PlayerInfo p in Players)
+                if (p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    return true;
+            return false;
+        }
+        public void AddAllInCap(int val)
+        {
+            if (!m_AllInCaps.Contains(val))
+                m_AllInCaps.Add(val);
+        }
+        public void AddBlindNeeded(PlayerInfo p, int amnt)
+        {
+            if (m_BlindNeeded.ContainsKey(p))
+                m_BlindNeeded[p] = amnt;
+            else
+                m_BlindNeeded.Add(p, amnt);
+        }
+        public int GetBlindNeeded(PlayerInfo p)
+        {
+            if (m_BlindNeeded.ContainsKey(p))
+                return m_BlindNeeded[p];
+            else
+                return 0;
+        }
+
+        public void InitTable()
+        {
+            Cards = new GameCard[5];
+            NbPlayed = 0;
+            PlaceButtons();
+            InitPots();
+        }
+        public bool ForceJoinTable(PlayerInfo p, int seat)
+        {
+            p.IsPlaying = false;
+            p.NoSeat = seat;
+            m_Players[seat] = p;
+            return true;
+        }
+        public bool JoinTable(PlayerInfo p)
+        {
+            if (m_RemainingSeats.Count == 0)
+            {
+                Console.WriteLine("Too bad: m_RemainingSeats.size() == 0");
+                return false;
+            }
+
+            if (ContainsPlayer(p))
+            {
+                Console.WriteLine("Too bad: containsPlayer(p)");
+                return false;
+            }
+
+            int seat = m_RemainingSeats.Pop();
+            p.IsPlaying = false;
+            p.NoSeat = seat;
+            m_Players[seat] = p;
+            return true;
+        }
+        public bool LeaveTable(PlayerInfo p)
+        {
+            if (!ContainsPlayer(p))
+                return false;
+
+            int seat = p.NoSeat;
+            p.IsPlaying = false;
+            m_Players[seat] = null;
+
+            return true;
+        }
+        public void DecidePlayingPlayers()
+        {
+            foreach (PlayerInfo p in Players)
+                if (p.CanPlay)
+                {
+                    p.IsPlaying = true;
+                    p.IsShowingCards = false;
+                }
+                else
+                    p.IsPlaying = false;
+        }
+        public void InitPots()
+        {
+            TotalPotAmnt = 0;
+            m_Pots.Clear();
+            m_AllInCaps.Clear();
+            m_Pots.Add(new MoneyPot(0));
+            m_CurrPotId = 0;
+            NbAllIn = 0;
+        }
+        public void PlaceButtons()
+        {
+            m_NoSeatDealer = GetPlayingPlayerNextTo(m_NoSeatDealer).NoSeat;
+            m_NoSeatSmallBlind = NbPlaying == 2 ? m_NoSeatDealer : GetPlayingPlayerNextTo(m_NoSeatDealer).NoSeat;
+            m_NoSeatBigBlind = GetPlayingPlayerNextTo(m_NoSeatSmallBlind).NoSeat;
+            m_BlindNeeded.Clear();
+            m_BlindNeeded.Add(GetPlayer(m_NoSeatSmallBlind), SmallBlindAmnt);
+            m_BlindNeeded.Add(GetPlayer(m_NoSeatBigBlind), BigBlindAmnt);
+            m_TotalBlindNeeded = SmallBlindAmnt + BigBlindAmnt;
+        }
+        private void AddBet(PlayerInfo p, MoneyPot pot, int bet)
+        {
+            p.MoneyBetAmnt -= bet;
+            pot.AddAmount(bet);
+            if (bet >= 0 && (p.IsPlaying || p.IsAllIn))
+            {
+                pot.AttachPlayer(p);
+            }
+        }
+        public void ManagePotsRoundEnd()
+        {
+            int currentTaken = 0;
+            m_AllInCaps.Sort();
+            while (m_AllInCaps.Count > 0)
+            {
+                MoneyPot pot = m_Pots[m_CurrPotId];
+                pot.DetachAllPlayers();
+                int aicf = m_AllInCaps[0];
+                m_AllInCaps.RemoveAt(0);
+                int cap = aicf - currentTaken;
+                foreach (PlayerInfo p in Players)
+                {
+                    AddBet(p, pot, Math.Min(p.MoneyBetAmnt, cap));
+                }
+                currentTaken += cap;
+                m_CurrPotId++;
+                m_Pots.Add(new MoneyPot(m_CurrPotId));
+            }
+            
+            MoneyPot curPot = m_Pots[m_CurrPotId];
+            curPot.DetachAllPlayers();
+            foreach (PlayerInfo p in Players)
+            {
+                AddBet(p, curPot, p.MoneyBetAmnt);
+            }
+            m_HigherBet = 0;
+        }
+        public void CleanPotsForWinning()
+        {
+            for (int i = 0; i <= m_CurrPotId; ++i)
+            {
+                MoneyPot pot = m_Pots[i];
+                uint bestHand = 0;
+                List<PlayerInfo> infos = new List<PlayerInfo>(pot.AttachedPlayers);
+                foreach (PlayerInfo p in infos)
+                {
+                    uint handValue = p.EvaluateCards(Cards);
+                    if (handValue > bestHand)
+                    {
+                        pot.DetachAllPlayers();
+                        pot.AttachPlayer(p);
+                        bestHand = handValue;
+                    }
+                    else if (handValue == bestHand)
+                    {
+                        pot.AttachPlayer(p);
+                    }
+                }
+            }
+        }
+        public bool CanRaise(PlayerInfo p)
+        {
+            return HigherBet < p.MoneyAmnt;
+        }
+        public bool CanCheck(PlayerInfo p)
+        {
+            return HigherBet <= p.MoneyBetAmnt;
+        }
+        public int MinRaiseAmnt(PlayerInfo p)
+        {
+            return Math.Min(CallAmnt(p) + BigBlindAmnt, MaxRaiseAmnt(p));
+        }
+        public int MaxRaiseAmnt(PlayerInfo p)
+        {
+            return p.MoneySafeAmnt;
+        }
+        public int CallAmnt(PlayerInfo p)
+        {
+            return HigherBet - p.MoneyBetAmnt;
         }
     }
 }
