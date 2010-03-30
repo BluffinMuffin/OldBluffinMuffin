@@ -18,11 +18,11 @@ public class GameServerObserver extends CommandObserver<IGameServerListener> imp
     }
     
     @Override
-    public void disconnectCommandReceived()
+    public void disconnectCommandReceived(DisconnectCommand command)
     {
         for (final IGameServerListener listener : getSubscribers())
         {
-            listener.disconnectCommandReceived();
+            listener.disconnectCommandReceived(command);
         }
     }
     
@@ -38,11 +38,11 @@ public class GameServerObserver extends CommandObserver<IGameServerListener> imp
         }
         else if (commandName.equals(DisconnectCommand.COMMAND_NAME))
         {
-        	disconnectCommandReceived();
+            disconnectCommandReceived(new DisconnectCommand(token));
         }
         else
         {
-        	System.out.println("WTF##################: GameServerObserver: should not happen!!! ");
+            System.out.println("WTF##################: GameServerObserver: should not happen!!! ");
             super.commandReceived(line);
         }
     }

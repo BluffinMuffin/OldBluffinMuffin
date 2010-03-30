@@ -1,5 +1,6 @@
 package protocol.game.observer;
 
+import protocol.commands.DisconnectCommand;
 import protocol.game.commands.PlayerPlayMoneyCommand;
 
 public class GameServerAdapter implements IGameServerListener
@@ -16,7 +17,7 @@ public class GameServerAdapter implements IGameServerListener
     }
     
     @Override
-    public void disconnectCommandReceived()
+    public void disconnectCommandReceived(DisconnectCommand command)
     {
     }
 }

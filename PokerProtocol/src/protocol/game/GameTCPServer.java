@@ -17,6 +17,7 @@ import poker.game.TypeAction;
 import poker.game.TypeRound;
 import poker.game.observer.PokerGameAdapter;
 import protocol.ICommand;
+import protocol.commands.DisconnectCommand;
 import protocol.game.commands.BetTurnEndedCommand;
 import protocol.game.commands.BetTurnStartedCommand;
 import protocol.game.commands.GameEndedCommand;
@@ -272,18 +273,21 @@ public class GameTCPServer implements Runnable
         m_commandObserver.subscribe(new GameServerAdapter()
         {
             @Override
-            public void disconnectCommandReceived()
+            public void disconnectCommandReceived(DisconnectCommand command)
             {
                 m_isConnected = false;
                 m_game.leaveGame(m_player);
                 
-                try {
-                	m_output.close();
-					m_input.close();
-					m_socket.close();  
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
+                try
+                {
+                    m_output.close();
+                    m_input.close();
+                    m_socket.close();
+                }
+                catch (final IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
             
             @Override
