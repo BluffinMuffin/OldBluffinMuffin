@@ -2,8 +2,6 @@ package protocol.commands;
 
 import java.util.StringTokenizer;
 
-import protocol.Command;
-import protocol.ICommand;
 
 public class DisconnectCommand implements ICommand
 {
