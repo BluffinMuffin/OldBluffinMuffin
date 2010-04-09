@@ -7,7 +7,6 @@ import poker.game.PlayerInfo;
 import poker.game.TypeAction;
 import poker.game.TypeRound;
 
-
 public interface IPokerGameListener extends EventListener
 {
     
@@ -35,7 +34,7 @@ public interface IPokerGameListener extends EventListener
     
     void playerMoneyChanged(PlayerInfo p);
     
-    void playerActionNeeded(PlayerInfo p);
+    void playerActionNeeded(PlayerInfo p, PlayerInfo lastPlayer);
     
     void playerHoleCardsChanged(PlayerInfo p);
     

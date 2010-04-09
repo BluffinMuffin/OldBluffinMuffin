@@ -36,11 +36,11 @@ public class PokerGameObserver extends EventObserver<IPokerGameListener> impleme
     }
     
     @Override
-    public void playerActionNeeded(PlayerInfo p)
+    public void playerActionNeeded(PlayerInfo p, PlayerInfo lastPlayer)
     {
         for (final IPokerGameListener listener : getSubscribers())
         {
-            listener.playerActionNeeded(p);
+            listener.playerActionNeeded(p, lastPlayer);
         }
     }
     

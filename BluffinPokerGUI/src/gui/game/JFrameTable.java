@@ -165,7 +165,7 @@ public class JFrameTable extends JFrameTableViewer
         {
             
             @Override
-            public void playerActionNeeded(PlayerInfo p)
+            public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
                 if (p.getNoSeat() == m_currentTablePosition)
                 {

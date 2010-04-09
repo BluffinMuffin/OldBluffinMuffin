@@ -715,9 +715,11 @@ public class JFrameTableViewer extends AbstractJFrameTable
             }
             
             @Override
-            public void playerActionNeeded(PlayerInfo p)
+            public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
+                final JPanelPlayerHud lastphp = huds[last.getNoSeat()];
+                lastphp.setHeaderColor(Color.white);
                 if (p.getNoSeat() == m_currentTablePosition)
                 {
                     php.setHeaderColor(Color.green);
@@ -737,7 +739,6 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 php.setPlayerAction(reason, playedAmount);
                 changePotAmount(table.getTotalPotAmnt());
                 
-                php.setHeaderColor(Color.white);
                 if (reason == TypeAction.FOLDED)
                 {
                     php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
@@ -861,7 +862,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             }
             
             @Override
-            public void playerActionNeeded(PlayerInfo p)
+            public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
                 writeLine("Player turn began (" + p.getName() + ")");
             }

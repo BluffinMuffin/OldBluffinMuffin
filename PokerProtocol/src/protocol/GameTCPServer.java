@@ -222,9 +222,9 @@ public class GameTCPServer implements Runnable
             }
             
             @Override
-            public void playerActionNeeded(PlayerInfo p)
+            public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
-                send(new PlayerTurnBeganCommand(p.getNoSeat()));
+                send(new PlayerTurnBeganCommand(p.getNoSeat(), last.getNoSeat()));
             }
             
             @Override

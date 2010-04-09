@@ -24,7 +24,7 @@ public class PokerGameAdapter implements IPokerGameListener
     }
     
     @Override
-    public void playerActionNeeded(PlayerInfo p)
+    public void playerActionNeeded(PlayerInfo p, PlayerInfo lastPlayer)
     {
     }
     
