@@ -6,7 +6,6 @@ using System.Threading;
 
 namespace PokerWorld.Game
 {
-    //TODO!
     public class PokerGame : IPokerGame
     {
         // Global States of the Game
@@ -68,6 +67,19 @@ namespace PokerWorld.Game
         public bool IsRunning
         {
             get { return m_State != TypeState.End; }
+        }
+
+        public string Encode
+        {
+            get
+            {
+                // 0 : Assume que les game sont en real money (1)
+                // 1 : Assume que c'est tlt du Texas Hold'em (0)
+                // 2 : Assume que c'Est tlt des Ring game (0)
+                // 3 : Assume que c'Est tlt du NoLimit (0)
+                // 4 : GameRound (0,1,2,3)
+                return string.Format("{0}{1}{2}{3}{4}",1,0,0,0,(int)m_Table.Round);
+            }
         }
 
         public PokerGame()

@@ -29,5 +29,7 @@ namespace PokerWorld.Game
 
         bool PlayMoney(PlayerInfo p, int amnt);
         bool LeaveGame(PlayerInfo p);
+
+        string Encode { get; }
     }
 }
