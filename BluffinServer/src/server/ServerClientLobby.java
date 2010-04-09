@@ -7,13 +7,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-import protocol.ICommand;
 import protocol.commands.DisconnectCommand;
-import protocol.lobby.commands.CreateTableCommand;
-import protocol.lobby.commands.IdentifyCommand;
-import protocol.lobby.commands.ListTableCommand;
-import protocol.lobby.observer.LobbyServerAdapter;
-import protocol.lobby.observer.LobbyServerObserver;
+import protocol.commands.ICommand;
+import protocol.commands.lobby.CreateTableCommand;
+import protocol.commands.lobby.IdentifyCommand;
+import protocol.commands.lobby.ListTableCommand;
+import protocol.observer.lobby.LobbyServerAdapter;
+import protocol.observer.lobby.LobbyServerObserver;
 
 /**
  * This class represents a client for ServerLobby.

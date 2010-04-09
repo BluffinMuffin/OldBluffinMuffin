@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
  * @author Hocus
  *         This class represents a network table.
  */
-public class SummarySeatInfo
+public class TuplePlayerInfo
 {
     public int m_noSeat;
     public boolean m_isEmpty;
@@ -38,7 +38,7 @@ public class SummarySeatInfo
      * @param p_nbSeats
      *            Number of seat
      */
-    public SummarySeatInfo(int noSeat, boolean isEmpty, String playerName, int money, ArrayList<Integer> hole, boolean isDealer, boolean isSmallBlind, boolean isBigBlind, boolean isCurrentPlayer, int timeRemaining, int bet, boolean isPlaying)
+    public TuplePlayerInfo(int noSeat, boolean isEmpty, String playerName, int money, ArrayList<Integer> hole, boolean isDealer, boolean isSmallBlind, boolean isBigBlind, boolean isCurrentPlayer, int timeRemaining, int bet, boolean isPlaying)
     {
         m_noSeat = noSeat;
         m_isEmpty = isEmpty;
@@ -54,14 +54,14 @@ public class SummarySeatInfo
         m_isPlaying = isPlaying;
     }
     
-    public SummarySeatInfo(int noSeat)
+    public TuplePlayerInfo(int noSeat)
     {
         m_holeCardIDs = new ArrayList<Integer>();
         m_noSeat = noSeat;
         m_isEmpty = true;
     }
     
-    public SummarySeatInfo(StringTokenizer argsToken)
+    public TuplePlayerInfo(StringTokenizer argsToken)
     {
         m_holeCardIDs = new ArrayList<Integer>();
         m_noSeat = Integer.parseInt(argsToken.nextToken());

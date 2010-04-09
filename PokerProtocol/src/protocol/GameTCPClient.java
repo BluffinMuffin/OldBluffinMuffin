@@ -330,7 +330,7 @@ public class GameTCPClient implements IPokerGame {
                 }
                 for (int i = 0; i < command.getNbPlayers(); ++i)
                 {
-                    final SummarySeatInfo seat = command.getSeats().get(i);
+                    final TuplePlayerInfo seat = command.getSeats().get(i);
                     if (seat.m_isEmpty)
                     {
                         continue;

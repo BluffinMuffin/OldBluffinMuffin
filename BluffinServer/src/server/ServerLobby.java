@@ -12,8 +12,8 @@ import java.util.TreeMap;
 
 import poker.game.PokerGame;
 import poker.game.TableInfo;
-import protocol.lobby.SummaryTableInfo;
-import protocol.lobby.commands.CreateTableCommand;
+import protocol.TupleTableInfo;
+import protocol.commands.lobby.CreateTableCommand;
 
 /**
  * @author Hocus
@@ -144,9 +144,9 @@ public class ServerLobby extends Thread
         return -1;
     }
     
-    public synchronized ArrayList<SummaryTableInfo> listTables()
+    public synchronized ArrayList<TupleTableInfo> listTables()
     {
-        final ArrayList<SummaryTableInfo> tables = new ArrayList<SummaryTableInfo>();
+        final ArrayList<TupleTableInfo> tables = new ArrayList<TupleTableInfo>();
         final ArrayList<Integer> tablesToRemove = new ArrayList<Integer>();
         
         for (final Integer noPort : m_games.keySet())
@@ -157,7 +157,7 @@ public class ServerLobby extends Thread
             if (game.isRunning())
             {
                 final TableInfo table = game.getTable();
-                tables.add(new SummaryTableInfo(noPort, table.getName(), table.getBigBlindAmnt(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
+                tables.add(new TupleTableInfo(noPort, table.getName(), table.getBigBlindAmnt(), table.getNbUsedSeats(), table.getNbMaxSeats(), table.getBetLimit()));
             }
             else
             {

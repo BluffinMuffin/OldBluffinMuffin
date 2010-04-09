@@ -9,7 +9,7 @@ import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
 import poker.game.TableInfo;
 import poker.game.TypeBet;
-import protocol.SummarySeatInfo;
+import protocol.TuplePlayerInfo;
 import protocol.commands.Command;
 import protocol.commands.ICommand;
 
@@ -20,7 +20,7 @@ public class TableInfoCommand implements ICommand
     private final ArrayList<Integer> m_potsAmount;
     private final ArrayList<Integer> m_boardCardIDs;
     private final int m_nbPlayers;
-    private final ArrayList<SummarySeatInfo> m_seats;
+    private final ArrayList<TuplePlayerInfo> m_seats;
     private final TypeBet m_limit;
     
     public static String COMMAND_NAME = "gameTABLE_INFO";
@@ -29,7 +29,7 @@ public class TableInfoCommand implements ICommand
     {
         m_potsAmount = new ArrayList<Integer>();
         m_boardCardIDs = new ArrayList<Integer>();
-        m_seats = new ArrayList<SummarySeatInfo>();
+        m_seats = new ArrayList<TuplePlayerInfo>();
         
         m_totalPotAmount = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());
@@ -44,12 +44,12 @@ public class TableInfoCommand implements ICommand
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         for (int i = 0; i < m_nbPlayers; ++i)
         {
-            m_seats.add(new SummarySeatInfo(argsToken));
+            m_seats.add(new TuplePlayerInfo(argsToken));
         }
         m_limit = TypeBet.valueOf(argsToken.nextToken());
     }
     
-    public TableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<SummarySeatInfo> seats, TypeBet limit)
+    public TableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<TuplePlayerInfo> seats, TypeBet limit)
     {
         m_totalPotAmount = totalPotAmount;
         m_nbSeats = nbSeats;
@@ -64,7 +64,7 @@ public class TableInfoCommand implements ICommand
     {
         m_potsAmount = new ArrayList<Integer>();
         m_boardCardIDs = new ArrayList<Integer>();
-        m_seats = new ArrayList<SummarySeatInfo>();
+        m_seats = new ArrayList<TuplePlayerInfo>();
         
         m_totalPotAmount = info.getTotalPotAmnt();
         m_nbSeats = info.getNbMaxSeats();
@@ -95,7 +95,7 @@ public class TableInfoCommand implements ICommand
         
         for (int i = 0; i < info.getNbMaxSeats(); ++i)
         {
-            final SummarySeatInfo seat = new SummarySeatInfo(i);
+            final TuplePlayerInfo seat = new TuplePlayerInfo(i);
             m_seats.add(seat);
             final PlayerInfo player = info.getPlayer(i);
             seat.m_isEmpty = (player == null);
@@ -184,7 +184,7 @@ public class TableInfoCommand implements ICommand
         return m_nbPlayers;
     }
     
-    public ArrayList<SummarySeatInfo> getSeats()
+    public ArrayList<TuplePlayerInfo> getSeats()
     {
         return m_seats;
     }

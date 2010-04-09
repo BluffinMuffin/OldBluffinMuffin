@@ -8,7 +8,7 @@ import poker.game.TypeBet;
  * @author Hocus
  *         This class represents a network table.
  */
-public class SummaryTableInfo implements Comparable<SummaryTableInfo>
+public class TupleTableInfo implements Comparable<TupleTableInfo>
 {
     public int m_noPort;
     public String m_tableName;
@@ -33,7 +33,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
      * @param p_nbSeats
      *            Number of seat
      */
-    public SummaryTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit)
+    public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
@@ -43,7 +43,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
         m_limit = limit;
     }
     
-    public SummaryTableInfo(StringTokenizer argsToken)
+    public TupleTableInfo(StringTokenizer argsToken)
     {
         m_noPort = Integer.parseInt(argsToken.nextToken());
         m_tableName = argsToken.nextToken();
@@ -53,7 +53,7 @@ public class SummaryTableInfo implements Comparable<SummaryTableInfo>
         m_limit = TypeBet.valueOf(argsToken.nextToken());
     }
     
-    public int compareTo(SummaryTableInfo p_table)
+    public int compareTo(TupleTableInfo p_table)
     {
         return ((Integer) m_noPort).compareTo(p_table.m_noPort);
     }

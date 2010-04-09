@@ -250,7 +250,7 @@ public class LobbyTCPClient
         return response.getResponsePort();
     }
     
-    public List<SummaryTableInfo> getListTables()
+    public List<TupleTableInfo> getListTables()
     {
         // Ask the server for all available tables.
         send(new ListTableCommand());

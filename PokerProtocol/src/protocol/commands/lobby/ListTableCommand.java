@@ -3,7 +3,7 @@ package protocol.commands.lobby;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import protocol.SummaryTableInfo;
+import protocol.TupleTableInfo;
 import protocol.commands.Command;
 import protocol.commands.ICommand;
 import protocol.commands.lobby.response.ListTableResponse;
@@ -29,7 +29,7 @@ public class ListTableCommand implements ICommand
         return sb.toString();
     }
     
-    public String encodeResponse(ArrayList<SummaryTableInfo> tables)
+    public String encodeResponse(ArrayList<TupleTableInfo> tables)
     {
         return new ListTableResponse(tables).encodeCommand();
     }

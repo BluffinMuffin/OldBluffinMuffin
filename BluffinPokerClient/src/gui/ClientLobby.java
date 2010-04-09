@@ -24,9 +24,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import protocol.game.GameTCPClient;
-import protocol.lobby.LobbyTCPClient;
-import protocol.lobby.SummaryTableInfo;
+import protocol.GameTCPClient;
+import protocol.LobbyTCPClient;
+import protocol.TupleTableInfo;
 
 public class ClientLobby extends JFrame
 {
@@ -434,7 +434,7 @@ public class ClientLobby extends JFrame
         final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
         model.setRowCount(0);
         
-        for (final SummaryTableInfo info : m_server.getListTables())
+        for (final TupleTableInfo info : m_server.getListTables())
         {
             final Object[] row = new Object[5];
             row[0] = info.m_noPort;
