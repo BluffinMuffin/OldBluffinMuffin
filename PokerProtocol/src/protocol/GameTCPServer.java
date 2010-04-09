@@ -93,7 +93,10 @@ public class GameTCPServer implements Runnable
     protected void send(ICommand command)
     {
         // System.out.println("Server SEND TO " + this.m_name + " [" + p_msg + "]");
-        m_output.println(command.encodeCommand());
+        if (m_output != null)
+        {
+            m_output.println(command.encodeCommand());
+        }
     }
     
     /**
