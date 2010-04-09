@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EricUtilityNetworking", "Er
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerWorld", "PokerWorld\PokerWorld.csproj", "{14D20F5B-EA62-4DB4-9D03-EC6EF04BAF36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerProtocol", "PokerProtocol\PokerProtocol.csproj", "{85FD2190-B801-4614-97CF-BAB956DAF4E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{14D20F5B-EA62-4DB4-9D03-EC6EF04BAF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14D20F5B-EA62-4DB4-9D03-EC6EF04BAF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14D20F5B-EA62-4DB4-9D03-EC6EF04BAF36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
