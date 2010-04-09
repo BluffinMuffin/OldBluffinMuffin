@@ -637,11 +637,12 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameBettingRoundEnded(TypeRound r)
             {
-                // TODO: RICK: update POTS
                 final TableInfo table = m_game.getTable();
+                // TODO: RICK: update POTS
                 
                 for (int i = 0; i < table.getPlayers().size(); ++i)
                 {
+                    huds[i].setPlayerAction(TypeAction.NOTHING, 0);
                     final JLabel bet = bets[table.getPlayer(i).getNoSeat()];
                     bet.setText("");
                 }
@@ -650,6 +651,12 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameBettingRoundStarted()
             {
+                final TableInfo table = m_game.getTable();
+                
+                for (int i = 0; i < table.getPlayingPlayers().size(); ++i)
+                {
+                    huds[i].setAlive();
+                }
                 int i = 0;
                 for (; i < 5 && m_game.getTable().getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
                 {
@@ -687,16 +694,11 @@ public class JFrameTableViewer extends AbstractJFrameTable
                     php.setPlayerMoney(table.getPlayer(i).getMoneySafeAmnt());
                     php.setNotDealer();
                     php.setNoBlind();
+                    php.isDoingNothing();
                     if (table.getPlayer(i).getMoneySafeAmnt() == 0)
                     {
-                        php.setBackground(Color.gray);
-                        php.setHeaderColor(Color.gray);
+                        php.setDead();
                         php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
-                    }
-                    else
-                    {
-                        php.setBackground(Color.white);
-                        php.setHeaderColor(Color.white);
                     }
                     php.setPlayerAction(TypeAction.NOTHING);
                 }
@@ -718,16 +720,8 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
-                final JPanelPlayerHud lastphp = huds[last.getNoSeat()];
-                lastphp.setHeaderColor(Color.white);
-                if (p.getNoSeat() == m_currentTablePosition)
-                {
-                    php.setHeaderColor(Color.green);
-                }
-                else
-                {
-                    php.setHeaderColor(new Color(175, 200, 75));
-                }
+                php.isPlaying();
+                php.setPlayerAction(TypeAction.NOTHING, 0);
             }
             
             @Override
@@ -736,6 +730,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 final TableInfo table = m_game.getTable();
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
                 php.setPlayerMoney(p.getMoneySafeAmnt());
+                php.isDoingNothing();
                 php.setPlayerAction(reason, playedAmount);
                 changePotAmount(table.getTotalPotAmnt());
                 
@@ -784,19 +779,19 @@ public class JFrameTableViewer extends AbstractJFrameTable
             {
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
                 php.setPlayerMoney(p.getMoneySafeAmnt());
-                php.setHeaderColor(Color.cyan);
+                php.isWinning();
             }
             
             private void installPlayer(JPanelPlayerHud php, PlayerInfo player)
             {
                 php.setPlayerName(player.getName());
-                php.setPlayerInfo("");// TODO: RICK: Human or BOT
                 php.setPlayerAction(TypeAction.NOTHING);
                 final Card[] cards = player.getCards(true);
                 php.setPlayerCards(cards[0], cards[1]);
                 php.setPlayerMoney(player.getMoneySafeAmnt());
-                php.setBackground(Color.white);
-                php.setHeaderColor(Color.white);
+                php.isDoingNothing();
+                php.isMainPlayer(player.getNoSeat() == m_currentTablePosition);
+                php.setDead();
                 php.setVisible(true);
             }
         });
@@ -816,7 +811,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameBettingRoundEnded(TypeRound r)
             {
-                writeLine("==> End of " + r.name());
+                // writeLine("==> End of " + r.name());
             }
             
             @Override
@@ -864,7 +859,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
-                writeLine("Player turn began (" + p.getName() + ")");
+                // writeLine("Player turn began (" + p.getName() + ")");
             }
             
             @Override
@@ -895,7 +890,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void playerMoneyChanged(PlayerInfo p)
             {
-                writeLine(p.getName() + " money changed to " + p.getMoneySafeAmnt());
+                // writeLine(p.getName() + " money changed to " + p.getMoneySafeAmnt());
             }
             
             @Override

@@ -627,6 +627,7 @@ public class PokerGame implements IPokerGame
     private void foldPlayer(PlayerInfo p)
     {
         p.setNotPlaying();
+        waitALittle(m_WaitingTimeAfterPlayerAction);
         m_gameObserver.playerActionTaken(p, TypeAction.FOLDED, -1);
     }
     
@@ -639,6 +640,7 @@ public class PokerGame implements IPokerGame
     private void callPlayer(PlayerInfo p, int played)
     {
         m_table.incNbPlayed();
+        waitALittle(m_WaitingTimeAfterPlayerAction);
         m_gameObserver.playerActionTaken(p, TypeAction.CALLED, played);
     }
     
@@ -659,6 +661,7 @@ public class PokerGame implements IPokerGame
         System.out.println(">>> Count2 = " + count);
         m_table.setNbPlayed(count);
         m_table.setHigherBet(p.getMoneyBetAmnt());
+        waitALittle(m_WaitingTimeAfterPlayerAction);
         m_gameObserver.playerActionTaken(p, TypeAction.RAISED, played);
     }
     
@@ -668,7 +671,7 @@ public class PokerGame implements IPokerGame
     private void continueBettingRound()
     {
         System.out.println("Le minimum pour jouer pour le prochain player: $" + m_table.getHigherBet());
-        waitALittle(m_WaitingTimeAfterPlayerAction);
+        
         if (m_table.getNbPlayingAndAllIn() == 1 || m_table.getNbPlayed() >= m_table.getNbPlayingAndAllIn())
         {
             endBettingRound();

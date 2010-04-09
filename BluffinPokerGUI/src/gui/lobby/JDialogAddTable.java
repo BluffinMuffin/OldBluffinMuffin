@@ -210,7 +210,7 @@ public class JDialogAddTable extends JDialog
         if (jWTAPlayerActionSpinner == null)
         {
             jWTAPlayerActionSpinner = new JSpinner();
-            jWTAPlayerActionSpinner.setModel(new SpinnerNumberModel(0, 0, 60000, 500));
+            jWTAPlayerActionSpinner.setModel(new SpinnerNumberModel(500, 0, 60000, 500));
             jWTAPlayerActionSpinner.setBounds(new Rectangle(10, 235, 75, 20));
             jWTAPlayerActionSpinner.setEditor(new JSpinner.NumberEditor(jWTAPlayerActionSpinner, "#"));
         }
@@ -222,7 +222,7 @@ public class JDialogAddTable extends JDialog
         if (jWTABoardDealedSpinner == null)
         {
             jWTABoardDealedSpinner = new JSpinner();
-            jWTABoardDealedSpinner.setModel(new SpinnerNumberModel(0, 0, 60000, 500));
+            jWTABoardDealedSpinner.setModel(new SpinnerNumberModel(500, 0, 60000, 500));
             jWTABoardDealedSpinner.setBounds(new Rectangle(10, 280, 75, 20));
             jWTABoardDealedSpinner.setEditor(new JSpinner.NumberEditor(jWTABoardDealedSpinner, "#"));
         }
@@ -234,7 +234,7 @@ public class JDialogAddTable extends JDialog
         if (jWTAPotWonSpinner == null)
         {
             jWTAPotWonSpinner = new JSpinner();
-            jWTAPotWonSpinner.setModel(new SpinnerNumberModel(0, 0, 60000, 500));
+            jWTAPotWonSpinner.setModel(new SpinnerNumberModel(2500, 0, 60000, 500));
             jWTAPotWonSpinner.setBounds(new Rectangle(10, 325, 75, 20));
             jWTAPotWonSpinner.setEditor(new JSpinner.NumberEditor(jWTAPotWonSpinner, "#"));
         }

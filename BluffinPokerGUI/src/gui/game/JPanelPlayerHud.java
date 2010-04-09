@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Point;
-import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -18,13 +17,12 @@ import javax.swing.border.BevelBorder;
 
 import poker.game.TypeAction;
 
-
 public class JPanelPlayerHud extends JPanel
 {
+    private boolean main = false;
     private static final long serialVersionUID = 1L;
     private JPanel jTopPanel = null;
     private JLabel jNameLabel = null;
-    private JLabel jInfoLabel = null;
     private JLabel jStatusLabel = null;
     private JLabel jActionLabel = null;
     private JPanel jCenterPanel = null;
@@ -51,12 +49,15 @@ public class JPanelPlayerHud extends JPanel
     {
         jStatusLabel = new JLabel();
         jStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        jStatusLabel.setBounds(new Rectangle(0, 109, 125, 14));
+        jStatusLabel.setBackground(Color.white);
+        jStatusLabel.setOpaque(true);
+        jStatusLabel.setSize(new Dimension(117, 12));
+        jStatusLabel.setLocation(new Point(4, 109));
         jStatusLabel.setText("$557");
         this.setLayout(null);
         this.setSize(125, 125);
         this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED), BorderFactory.createBevelBorder(BevelBorder.LOWERED)));
-        this.setBackground(Color.white);
+        this.setBackground(new Color(82, 98, 114));
         this.add(jStatusLabel, null);
         this.add(getJTopPanel(), null);
         this.add(getJCenterPanel(), null);
@@ -72,31 +73,31 @@ public class JPanelPlayerHud extends JPanel
         if (jTopPanel == null)
         {
             jActionLabel = new JLabel();
-            jActionLabel.setFont(new Font("Dialog", Font.BOLD, 10));
-            jActionLabel.setHorizontalAlignment(SwingConstants.LEFT);
-            jActionLabel.setText("Last Action: CHECK");
-            jActionLabel.setPreferredSize(new Dimension(115, 14));
-            jInfoLabel = new JLabel();
-            jInfoLabel.setPreferredSize(new Dimension(115, 14));
-            jInfoLabel.setText("Player Info");
-            jInfoLabel.setFont(new Font("Dialog", Font.ITALIC, 12));
-            jInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            jActionLabel.setFont(new Font("Dialog", Font.ITALIC, 12));
+            jActionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            jActionLabel.setText("CHECK");
+            jActionLabel.setOpaque(true);
+            jActionLabel.setBackground(Color.white);
+            jActionLabel.setPreferredSize(new Dimension(117, 20));
             jNameLabel = new JLabel();
-            jNameLabel.setPreferredSize(new Dimension(115, 14));
+            jNameLabel.setPreferredSize(new Dimension(117, 26));
             jNameLabel.setText("Player Name");
+            jNameLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+            jNameLabel.setOpaque(true);
+            jNameLabel.setBackground(new Color(162, 178, 194));
+            jNameLabel.setForeground(Color.black);
             jNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
             final FlowLayout flowLayout = new FlowLayout();
             flowLayout.setHgap(0);
             flowLayout.setVgap(1);
             jTopPanel = new JPanel();
-            jTopPanel.setSize(new Dimension(118, 48));
-            jTopPanel.setBackground(Color.white);
-            jTopPanel.setOpaque(true);
-            jTopPanel.setLocation(new Point(4, 3));
+            jTopPanel.setBackground(new Color(82, 98, 114));
+            jTopPanel.setOpaque(false);
+            jTopPanel.setLocation(new Point(3, 3));
+            jTopPanel.setSize(new Dimension(120, 48));
             jTopPanel.setLayout(flowLayout);
-            jTopPanel.setPreferredSize(new Dimension(1, 48));
+            jTopPanel.setPreferredSize(new Dimension(1, 33));
             jTopPanel.add(jNameLabel, null);
-            jTopPanel.add(jInfoLabel, null);
             jTopPanel.add(jActionLabel, null);
         }
         return jTopPanel;
@@ -112,15 +113,17 @@ public class JPanelPlayerHud extends JPanel
         if (jCenterPanel == null)
         {
             jBlindLabel = new JLabel();
-            jBlindLabel.setBounds(new Rectangle(93, 33, 30, 30));
+            jBlindLabel.setSize(new Dimension(30, 30));
+            jBlindLabel.setLocation(new Point(87, 33));
             jDealerLabel = new JLabel();
-            jDealerLabel.setBounds(new Rectangle(93, 3, 30, 30));
+            jDealerLabel.setSize(new Dimension(30, 30));
+            jDealerLabel.setLocation(new Point(87, 3));
             jCenterPanel = new JPanel();
             jCenterPanel.setLayout(null);
-            jCenterPanel.setSize(new Dimension(125, 61));
-            jCenterPanel.setLocation(new Point(0, 48));
+            jCenterPanel.setSize(new Dimension(117, 61));
+            jCenterPanel.setLocation(new Point(4, 48));
             jCenterPanel.setBackground(Color.white);
-            jCenterPanel.setOpaque(false);
+            jCenterPanel.setOpaque(true);
             jCenterPanel.add(getCardPanel1(), null);
             jCenterPanel.add(getCardPanel2(), null);
             jCenterPanel.add(jDealerLabel, null);
@@ -139,7 +142,8 @@ public class JPanelPlayerHud extends JPanel
         if (cardPanel1 == null)
         {
             cardPanel1 = new JPanelCard();
-            cardPanel1.setBounds(new Rectangle(5, 3, 40, 56));
+            cardPanel1.setSize(new Dimension(40, 56));
+            cardPanel1.setLocation(new Point(2, 3));
         }
         return cardPanel1;
     }
@@ -154,7 +158,8 @@ public class JPanelPlayerHud extends JPanel
         if (cardPanel2 == null)
         {
             cardPanel2 = new JPanelCard();
-            cardPanel2.setBounds(new Rectangle(50, 3, 40, 56));
+            cardPanel2.setSize(new Dimension(40, 56));
+            cardPanel2.setLocation(new Point(45, 3));
         }
         return cardPanel2;
     }
@@ -164,29 +169,14 @@ public class JPanelPlayerHud extends JPanel
         jNameLabel.setText(name);
     }
     
-    public void setPlayerInfo(String info)
-    {
-        jInfoLabel.setText(info);
-    }
-    
     public void setPlayerAction(TypeAction action)
     {
-        final StringBuilder sb = new StringBuilder("Last Action: ");
-        switch (action)
-        {
-            case CALLED:
-            case FOLDED:
-            case RAISED:
-                sb.append(action.name());
-                break;
-        }
-        
-        jActionLabel.setText(sb.toString());
+        setPlayerAction(action, 0);
     }
     
     public void setPlayerAction(TypeAction action, int amnt)
     {
-        final StringBuilder sb = new StringBuilder("Last Action: ");
+        final StringBuilder sb = new StringBuilder("");
         switch (action)
         {
             case CALLED:
@@ -246,8 +236,49 @@ public class JPanelPlayerHud extends JPanel
         jBlindLabel.setIcon(null);
     }
     
-    public void setHeaderColor(Color c)
+    public void isPlaying()
     {
-        getJTopPanel().setBackground(c);
+        jActionLabel.setBackground(new Color(132, 148, 214));
+    }
+    
+    public void isWinning()
+    {
+        jActionLabel.setBackground(new Color(42, 186, 229));
+        jActionLabel.setText("WIN");
+    }
+    
+    public void isDoingNothing()
+    {
+        jActionLabel.setBackground(Color.white);
+    }
+    
+    public void isMainPlayer(boolean mainPlayer)
+    {
+        main = mainPlayer;
+    }
+    
+    public void setDead()
+    {
+        jNameLabel.setBackground(Color.gray);
+        jActionLabel.setBackground(Color.gray);
+        jStatusLabel.setBackground(Color.gray);
+        getJCenterPanel().setBackground(Color.gray);
+    }
+    
+    public void setAlive()
+    {
+        if (main)
+        {
+            jNameLabel.setBackground(new Color(112, 128, 214));
+            jNameLabel.setForeground(Color.white);
+        }
+        else
+        {
+            jNameLabel.setBackground(new Color(162, 178, 194));
+            jNameLabel.setForeground(Color.black);
+        }
+        jActionLabel.setBackground(Color.white);
+        jStatusLabel.setBackground(Color.white);
+        getJCenterPanel().setBackground(Color.white);
     }
 }
