@@ -15,6 +15,17 @@ namespace PokerWorld.Game
             m_Player = p;
         }
     }
+    public class HistoricPlayerInfoEventArgs : PlayerInfoEventArgs
+    {
+        private readonly PlayerInfo m_Last;
+        public PlayerInfo Last { get { return m_Last; } }
+
+        public HistoricPlayerInfoEventArgs(PlayerInfo p, PlayerInfo l)
+            : base(p)
+        {
+            m_Last = l;
+        }
+    }
     public class RoundEventArgs : EventArgs
     {
         private readonly TypeRound m_Round;
@@ -25,36 +36,32 @@ namespace PokerWorld.Game
             m_Round = r;
         }
     }
-    public class PlayerActionEventArgs : EventArgs
+    public class PlayerActionEventArgs : PlayerInfoEventArgs
     {
-        private readonly PlayerInfo m_Player;
         private readonly TypeAction m_Action;
         private readonly int m_AmountPlayed;
 
-        public PlayerInfo Player { get { return m_Player; } }
         public TypeAction Action { get { return m_Action; } }
         public int AmountPlayed { get { return m_AmountPlayed; } }
 
         public PlayerActionEventArgs(PlayerInfo p, TypeAction action, int amnt)
+            : base(p)
         {
-            m_Player = p;
             m_Action = action;
             m_AmountPlayed = amnt;
         }
     }
-    public class PotWonEventArgs : EventArgs
+    public class PotWonEventArgs : PlayerInfoEventArgs
     {
-        private readonly PlayerInfo m_Player;
         private readonly int m_Id;
         private readonly int m_AmountWon;
 
-        public PlayerInfo Player { get { return m_Player; } }
         public int Id { get { return m_Id; } }
         public int AmountWon { get { return m_AmountWon; } }
 
         public PotWonEventArgs(PlayerInfo p, int id, int amntWon)
+            : base(p)
         {
-            m_Player = p;
             m_Id = id;
             m_AmountWon = amntWon;
         }

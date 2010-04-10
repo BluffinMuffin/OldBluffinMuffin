@@ -70,6 +70,7 @@
     <Compile Include="Commands\Lobby\Response\CreateTableResponse.cs" />
     <Compile Include="Commands\ListTableCommand.cs" />
     <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
+    <Compile Include="GameTCPServer.cs" />
     <Compile Include="Observer\CommandObserver.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="Observer\GameClientCommandObserver.cs" />

@@ -37,7 +37,7 @@ namespace PokerWorld.Game
         public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerActionNeeded = delegate { };
+        public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
         public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
@@ -460,9 +460,10 @@ namespace PokerWorld.Game
         }
         private void PlayNext()
         {
+            PlayerInfo old = m_Table.GetPlayer(m_Table.NoSeatCurrPlayer);
             PlayerInfo player = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer);
             m_Table.NoSeatCurrPlayer = player.NoSeat;
-            PlayerActionNeeded(this, new PlayerInfoEventArgs(player));
+            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(player,old));
         }
         private void DistributeMoney()
         {

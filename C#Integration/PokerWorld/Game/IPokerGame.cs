@@ -17,7 +17,7 @@ namespace PokerWorld.Game
 
         event EventHandler<PlayerInfoEventArgs> PlayerJoined;
         event EventHandler<PlayerInfoEventArgs> PlayerLeaved;
-        event EventHandler<PlayerInfoEventArgs> PlayerActionNeeded;
+        event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded;
         event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged;
         event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged;
 
