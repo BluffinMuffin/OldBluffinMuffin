@@ -53,6 +53,7 @@ public class TableInfo
     private int m_noSeatBigBlind; // La position actuelle du BigBlind
     private int m_noSeatCurrPlayer; // La position du joueur actuel
     private int m_currPotId; // L'id du pot qu'on travail actuellement avec
+    private int m_noSeatFirst; // L'id du dernier player qui a raiser ou du premier a jouer
     
     // // // // // // // // // // // // // // // // // //
     // // // // // // // CONSTRUCTOR // // // // // // //
@@ -271,15 +272,44 @@ public class TableInfo
      */
     public List<PlayerInfo> getPlayingPlayers()
     {
-        final List<PlayerInfo> list = new ArrayList<PlayerInfo>();
+        return getPlayingPlayersFromFirst();
+    }
+    
+    public List<PlayerInfo> getPlayingPlayers(int seat)
+    {
+        final List<PlayerInfo> head = new ArrayList<PlayerInfo>();
+        final List<PlayerInfo> tail = new ArrayList<PlayerInfo>();
         for (int i = 0; i < m_nbMaxSeats; ++i)
         {
             if (m_players[i] != null && m_players[i].isPlaying())
             {
-                list.add(m_players[i]);
+                if (i < seat)
+                {
+                    tail.add(m_players[i]);
+                }
+                else
+                {
+                    head.add(m_players[i]);
+                }
             }
         }
-        return list;
+        head.addAll(tail);
+        return head;
+    }
+    
+    public List<PlayerInfo> getPlayingPlayersFromCurrent()
+    {
+        return getPlayingPlayers(m_noSeatCurrPlayer);
+    }
+    
+    public List<PlayerInfo> getPlayingPlayersFromFirst()
+    {
+        return getPlayingPlayers(m_noSeatFirst);
+    }
+    
+    public List<PlayerInfo> getPlayingPlayersFromDealer()
+    {
+        return getPlayingPlayers(m_noSeatDealer);
     }
     
     /**
@@ -593,6 +623,16 @@ public class TableInfo
     }
     
     /**
+     * Round actuelle
+     * 
+     * @return
+     */
+    public int getNoSeatFirst()
+    {
+        return m_noSeatFirst;
+    }
+    
+    /**
      * Position actuelle du Dealer
      * 
      * @param seat
@@ -690,6 +730,11 @@ public class TableInfo
         m_round = round;
     }
     
+    public void setNoSeatFirst(int seat)
+    {
+        m_noSeatFirst = seat;
+    }
+    
     // // // // // // // // // // // // // // // // // //
     // // // // // // // METHODS /// // // // // // // //
     // // // // // // // // // // // // // // // // // //
@@ -763,8 +808,8 @@ public class TableInfo
         
         final int seat = p.getNoSeat();
         p.setNotPlaying();
-        //TODO WTF IL FAIT CA!!!!!!!!!!!!!!
-//        p.setNoSeat(-1);
+        // TODO WTF IL FAIT CA!!!!!!!!!!!!!!
+        // p.setNoSeat(-1);
         m_players[seat] = null;
         
         return true;

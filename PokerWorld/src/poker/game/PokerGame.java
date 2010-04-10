@@ -531,6 +531,7 @@ public class PokerGame implements IPokerGame
     {
         m_gameObserver.gameBettingRoundStarted();
         m_table.setNbPlayed(0);
+        m_table.setNoSeatFirst(m_table.nextPlayingPlayer(m_table.getNoSeatCurrPlayer()).getNoSeat());
         waitALittle(m_WaitingTimeAfterBoardDealed);
         
         if (m_table.getNbPlaying() <= 1)
@@ -653,12 +654,11 @@ public class PokerGame implements IPokerGame
     private void raisePlayer(PlayerInfo p, int played)
     {
         int count = m_table.getNbAllIn();
-        System.out.println(">>> Count1 = " + count);
         if (!p.isAllIn())
         {
             count++;
         }
-        System.out.println(">>> Count2 = " + count);
+        m_table.setNoSeatFirst(p.getNoSeat());
         m_table.setNbPlayed(count);
         m_table.setHigherBet(p.getMoneyBetAmnt());
         waitALittle(m_WaitingTimeAfterPlayerAction);
@@ -695,7 +695,6 @@ public class PokerGame implements IPokerGame
      */
     private void playNext()
     {
-        
         final PlayerInfo player = m_table.nextPlayingPlayer(m_table.getNoSeatCurrPlayer());
         final PlayerInfo old = m_table.getPlayer(m_table.getNoSeatCurrPlayer());
         m_table.setNoSeatCurrPlayer(player.getNoSeat());

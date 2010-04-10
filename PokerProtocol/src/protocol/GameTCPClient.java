@@ -12,6 +12,8 @@ import poker.game.IPokerGame;
 import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
 import poker.game.TableInfo;
+import poker.game.TypeAction;
+import poker.game.TypeRound;
 import poker.game.observer.IPokerGameListener;
 import poker.game.observer.PokerGameObserver;
 import protocol.commands.DisconnectCommand;
@@ -205,6 +207,14 @@ public class GameTCPClient implements IPokerGame
                 }
                 m_pokerTable.setCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 m_pokerTable.setRound(command.getRound());
+                if (m_pokerTable.getRound() == TypeRound.PREFLOP)
+                {
+                    m_pokerTable.setNoSeatFirst(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatBigBlind()).getNoSeat());
+                }
+                else
+                {
+                    m_pokerTable.setNoSeatFirst(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatDealer()).getNoSeat());
+                }
                 m_gameObserver.gameBettingRoundStarted();
             }
             
@@ -302,6 +312,10 @@ public class GameTCPClient implements IPokerGame
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
+                    if (command.getActionType() == TypeAction.RAISED)
+                    {
+                        m_pokerTable.setNoSeatFirst(p.getNoSeat());
+                    }
                     final int a = command.getActionAmount();
                     p.setMoneyBetAmnt(command.getPlayerBet());
                     p.setMoneySafeAmnt(command.getPlayerMoney());
