@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EricUtility.Games;
+using EricUtility.Games.CardGame;
 using PokerWorld.HandEvaluator;
 
 namespace PokerWorld.Game

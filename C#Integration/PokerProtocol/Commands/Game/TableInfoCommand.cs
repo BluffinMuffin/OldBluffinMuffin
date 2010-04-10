@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EricUtility;
-using EricUtility.Games;
+using EricUtility.Games.CardGame;
 using PokerProtocol.Commands.Lobby.Response;
 using PokerWorld.Game;
 

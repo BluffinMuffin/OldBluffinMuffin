@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EricUtility.Games;
+using EricUtility.Games.CardGame;
 
 namespace PokerWorld.Game
 {
@@ -266,7 +266,7 @@ namespace PokerWorld.Game
         public void AddCards(params GameCard[] c)
         {
             int i = 0;
-            for (; m_Cards[i] != null && m_Cards[i].ToString() != GameCard.NO_CARD_STRING; ++i) ;
+            for (; m_Cards[i] != null && m_Cards[i].ToString() != GameCard.NO_CARD.ToString(); ++i) ;
             for (int j = i; j < Math.Min(5, c.Length + i); ++j)
                 m_Cards[j] = c[j - i];
         }

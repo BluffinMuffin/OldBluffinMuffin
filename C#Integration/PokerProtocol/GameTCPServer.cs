@@ -10,7 +10,7 @@ using PokerWorld.Game;
 using PokerProtocol.Observer;
 using PokerProtocol.Commands;
 using PokerProtocol.Commands.Game;
-using EricUtility.Games;
+using EricUtility.Games.CardGame;
 
 namespace PokerProtocol
 {
