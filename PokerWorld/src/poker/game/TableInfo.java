@@ -297,6 +297,11 @@ public class TableInfo
         return head;
     }
     
+    public List<PlayerInfo> getPlayingPlayersFromNext()
+    {
+        return getPlayingPlayers(nextPlayingPlayer(m_noSeatCurrPlayer).getNoSeat());
+    }
+    
     public List<PlayerInfo> getPlayingPlayersFromCurrent()
     {
         return getPlayingPlayers(m_noSeatCurrPlayer);
