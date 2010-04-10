@@ -5,6 +5,7 @@ using System.Text;
 using EricUtility;
 using PokerProtocol.Commands;
 using PokerProtocol.Commands.Game;
+using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Observer
 {

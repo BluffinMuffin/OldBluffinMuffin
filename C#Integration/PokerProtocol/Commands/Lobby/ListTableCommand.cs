@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using PokerProtocol.Commands.Lobby.Response;
 using EricUtility;
+using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby
 {

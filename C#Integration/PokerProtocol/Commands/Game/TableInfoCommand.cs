@@ -6,6 +6,7 @@ using EricUtility;
 using EricUtility.Games.CardGame;
 using PokerProtocol.Commands.Lobby.Response;
 using PokerWorld.Game;
+using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {

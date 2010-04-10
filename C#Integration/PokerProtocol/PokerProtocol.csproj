@@ -45,9 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\AbstractCommand.cs" />
-    <Compile Include="Commands\DisconnectCommand.cs" />
-    <Compile Include="Commands\AbstractCommandResponse.cs" />
     <Compile Include="Commands\Game\BetTurnEndedCommand.cs" />
     <Compile Include="Commands\Game\BetTurnStartedCommand.cs" />
     <Compile Include="Commands\Game\TableInfoCommand.cs" />
@@ -68,11 +65,9 @@
     <Compile Include="Commands\Lobby\Response\JoinTableResponse.cs" />
     <Compile Include="Commands\Lobby\Response\ListTableResponse.cs" />
     <Compile Include="Commands\Lobby\Response\CreateTableResponse.cs" />
-    <Compile Include="Commands\ListTableCommand.cs" />
+    <Compile Include="Commands\Lobby\ListTableCommand.cs" />
     <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
     <Compile Include="GameTCPServer.cs" />
-    <Compile Include="Observer\CommandObserver.cs" />
-    <Compile Include="EventArgs.cs" />
     <Compile Include="Observer\GameClientCommandObserver.cs" />
     <Compile Include="Observer\GameServerCommandObserver.cs" />
     <Compile Include="Observer\LobbyServerCommandObserver.cs" />
@@ -84,6 +79,10 @@
     <ProjectReference Include="..\EricUtilityGames\EricUtilityGames.csproj">
       <Project>{91A93AAB-B4F4-411D-8C0F-E27A10B872D1}</Project>
       <Name>EricUtilityGames</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking.csproj">
+      <Project>{BDB14B11-08A7-4732-AA74-BFF6C23BFB8C}</Project>
+      <Name>EricUtilityNetworking</Name>
     </ProjectReference>
     <ProjectReference Include="..\EricUtility\EricUtility.csproj">
       <Project>{0F0C8756-B68E-4526-A3BC-7FBD28506933}</Project>

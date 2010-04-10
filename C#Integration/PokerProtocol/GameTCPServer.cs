@@ -11,34 +11,24 @@ using PokerProtocol.Observer;
 using PokerProtocol.Commands;
 using PokerProtocol.Commands.Game;
 using EricUtility.Games.CardGame;
+using EricUtility.Networking.Commands;
 
 namespace PokerProtocol
 {
-    public class GameTCPServer
+    public class GameTCPServer : CommandTCPCommunicator<GameServerCommandObserver>
     {
-        private StreamWriter m_Output;
-        private StreamReader m_Input;
-        private TcpClient m_Socket;
-        private bool m_IsConnected;
-
         private readonly PlayerInfo m_Player;
         private readonly PokerGame m_Game;
-        private readonly GameServerCommandObserver m_CommandObserver = new GameServerCommandObserver();
 
         public PlayerInfo Player
         {
             get { return m_Player; }
         } 
 
-        public GameTCPServer(PokerGame game, string name, int money, TcpClient socket)
+        public GameTCPServer(PokerGame game, string name, int money, TcpClient socket): base(socket)
         {
             m_Game = game;
             m_Player = new PlayerInfo(name, money);
-            m_Socket = socket;
-            m_Output = new StreamWriter(m_Socket.GetStream());
-            m_Input = new StreamReader(m_Socket.GetStream());
-            m_IsConnected = false;
-            InitializeCommandObserver();
         }
 
         public bool CanStartGame
@@ -47,52 +37,6 @@ namespace PokerProtocol
             {
                 return m_IsConnected && m_Player.CanPlay;
             }
-        }
-
-        public bool IsConnected
-        {
-            get
-            {
-                return m_Socket != null && m_Socket.Connected;
-            }
-        }
-        public void SetIsConnected()
-        {
-            m_IsConnected = true;
-        }
-
-        private string Receive()
-        {
-            string line = m_Input.ReadLine();
-            m_CommandObserver.messageReceived(line);
-            return line;
-        }
-
-        private void Send(AbstractCommand command)
-        {
-            if (m_Output != null)
-            {
-                m_Output.WriteLine(command.Encode());
-                m_Output.Flush();
-            }
-        }
-        private void Run()
-        {
-            try
-            {
-                while (IsConnected)
-                {
-                    Receive();
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        public void Start()
-        {
-            new Thread(new ThreadStart(Run)).Start();
         }
 
         public void SitIn()
@@ -176,12 +120,7 @@ namespace PokerProtocol
         void m_Game_EverythingEnded(object sender, EventArgs e)
         {
             Send(new TableClosedCommand());
-            m_Output.Close();
-            m_Input.Close();
-            m_Socket.Close();
-            m_Output = null;
-            m_Input = null;
-            m_Socket = null;
+            Close();
         }
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
@@ -224,7 +163,7 @@ namespace PokerProtocol
         }
 
 
-        private void InitializeCommandObserver()
+        protected override void InitializeCommandObserver()
         {
             m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
             m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
@@ -241,15 +180,7 @@ namespace PokerProtocol
             m_IsConnected = false;
             m_Game.LeaveGame(m_Player);
 
-            try
-            {
-                m_Output.Close();
-                m_Input.Close();
-                m_Socket.Close();
-            }
-            catch
-            {
-            }
+            Close();
         }
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
