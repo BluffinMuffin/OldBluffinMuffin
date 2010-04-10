@@ -53,7 +53,7 @@ public class TableInfo
     private int m_noSeatBigBlind; // La position actuelle du BigBlind
     private int m_noSeatCurrPlayer; // La position du joueur actuel
     private int m_currPotId; // L'id du pot qu'on travail actuellement avec
-    private int m_noSeatFirst; // L'id du dernier player qui a raiser ou du premier a jouer
+    private int m_noSeatLastRaise; // L'id du dernier player qui a raiser ou du premier a jouer
     
     // // // // // // // // // // // // // // // // // //
     // // // // // // // CONSTRUCTOR // // // // // // //
@@ -302,14 +302,18 @@ public class TableInfo
         return getPlayingPlayers(m_noSeatCurrPlayer);
     }
     
-    public List<PlayerInfo> getPlayingPlayersFromFirst()
+    public List<PlayerInfo> getPlayingPlayersFromLastRaise()
     {
-        return getPlayingPlayers(m_noSeatFirst);
+        return getPlayingPlayers(m_noSeatLastRaise);
     }
     
-    public List<PlayerInfo> getPlayingPlayersFromDealer()
+    public List<PlayerInfo> getPlayingPlayersFromFirst()
     {
-        return getPlayingPlayers(m_noSeatDealer);
+        if (m_round == TypeRound.PREFLOP)
+        {
+            return getPlayingPlayers(nextPlayingPlayer(m_noSeatBigBlind).getNoSeat());
+        }
+        return getPlayingPlayers(nextPlayingPlayer(m_noSeatDealer).getNoSeat());
     }
     
     /**
@@ -627,9 +631,9 @@ public class TableInfo
      * 
      * @return
      */
-    public int getNoSeatFirst()
+    public int getNoSeatLastRaise()
     {
-        return m_noSeatFirst;
+        return m_noSeatLastRaise;
     }
     
     /**
@@ -730,9 +734,9 @@ public class TableInfo
         m_round = round;
     }
     
-    public void setNoSeatFirst(int seat)
+    public void setNoSeatLastRaise(int seat)
     {
-        m_noSeatFirst = seat;
+        m_noSeatLastRaise = seat;
     }
     
     // // // // // // // // // // // // // // // // // //

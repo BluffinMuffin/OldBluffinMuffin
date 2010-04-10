@@ -209,11 +209,11 @@ public class GameTCPClient implements IPokerGame
                 m_pokerTable.setRound(command.getRound());
                 if (m_pokerTable.getRound() == TypeRound.PREFLOP)
                 {
-                    m_pokerTable.setNoSeatFirst(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatBigBlind()).getNoSeat());
+                    m_pokerTable.setNoSeatLastRaise(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatBigBlind()).getNoSeat());
                 }
                 else
                 {
-                    m_pokerTable.setNoSeatFirst(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatDealer()).getNoSeat());
+                    m_pokerTable.setNoSeatLastRaise(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatDealer()).getNoSeat());
                 }
                 m_gameObserver.gameBettingRoundStarted();
             }
@@ -314,7 +314,7 @@ public class GameTCPClient implements IPokerGame
                 {
                     if (command.getActionType() == TypeAction.RAISED)
                     {
-                        m_pokerTable.setNoSeatFirst(p.getNoSeat());
+                        m_pokerTable.setNoSeatLastRaise(p.getNoSeat());
                     }
                     final int a = command.getActionAmount();
                     p.setMoneyBetAmnt(command.getPlayerBet());
