@@ -24,61 +24,73 @@ namespace PokerProtocol
         public int NoSeat
         {
             get { return m_NoSeat; }
+            set { m_NoSeat = value; }
         }
 
         public bool IsEmpty
         {
             get { return m_IsEmpty; }
+            set { m_IsEmpty = value; }
         }
 
         public String PlayerName
         {
             get { return m_PlayerName; }
+            set { m_PlayerName = value; }
         }
 
         public int Money
         {
             get { return m_Money; }
+            set { m_Money = value; }
         }
 
         public List<int> HoleCardIDs
         {
             get { return m_HoleCardIDs; }
+            set { m_HoleCardIDs = value; }
         }
 
         public bool IsDealer
         {
             get { return m_IsDealer; }
+            set { m_IsDealer = value; }
         }
 
         public bool IsSmallBlind
         {
             get { return m_IsSmallBlind; }
+            set { m_IsSmallBlind = value; }
         }
 
         public bool IsBigBlind
         {
             get { return m_IsBigBlind; }
+            set { m_IsBigBlind = value; }
         }
 
         public bool IsCurrentPlayer
         {
             get { return m_IsCurrentPlayer; }
+            set { m_IsCurrentPlayer = value; }
         }
 
         public int TimeRemaining
         {
             get { return m_TimeRemaining; }
+            set { m_TimeRemaining = value; }
         }
 
         public int Bet
         {
             get { return m_Bet; }
+            set { m_Bet = value; }
         }
 
         public bool IsPlaying
         {
             get { return m_IsPlaying; }
+            set { m_IsPlaying = value; }
         }
         public TuplePlayerInfo(int noSeat, bool isEmpty, string playerName, int money, List<int> hole, bool isDealer, bool isSmallBlind, bool isBigBlind, bool isCurrentPlayer, int timeRemaining, int bet, bool isPlaying)
         {

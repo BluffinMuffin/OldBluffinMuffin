@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PokerProtocol.Commands;
 
 namespace PokerProtocol
 {
@@ -16,7 +17,7 @@ namespace PokerProtocol
         }
     }
     public class CommandEventArgs<T> : EventArgs
-        where T : EventArgs
+        where T : AbstractCommand
     {
         private readonly T m_Command;
         public T Command { get { return m_Command; } }

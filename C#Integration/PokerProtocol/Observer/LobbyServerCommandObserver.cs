@@ -20,14 +20,16 @@ namespace PokerProtocol.Observer
         {
             StringTokenizer token = new StringTokenizer(line, AbstractCommand.Delimitter);
             string commandName = token.NextToken();
-            switch (commandName)
-            {
-                case IdentifyCommand.COMMAND_NAME: IdentifyCommandReceived(this, new CommandEventArgs<IdentifyCommand>(new IdentifyCommand(token))); break;
-                case DisconnectCommand.COMMAND_NAME: IdentifyCommandReceived(this, new CommandEventArgs<DisconnectCommand>(new DisconnectCommand(token))); break;
-                case CreateTableCommand.COMMAND_NAME: IdentifyCommandReceived(this, new CommandEventArgs<CreateTableCommand>(new CreateTableCommand(token))); break;
-                case ListTableCommand.COMMAND_NAME: IdentifyCommandReceived(this, new CommandEventArgs<ListTableCommand>(new ListTableCommand(token))); break;
-                case JoinTableCommand.COMMAND_NAME: IdentifyCommandReceived(this, new CommandEventArgs<JoinTableCommand>(new JoinTableCommand(token))); break;
-            }
+            if( commandName == IdentifyCommand.COMMAND_NAME )
+                IdentifyCommandReceived(this, new CommandEventArgs<IdentifyCommand>(new IdentifyCommand(token)));
+            else if (commandName == DisconnectCommand.COMMAND_NAME)
+                DisconnectCommandReceived(this, new CommandEventArgs<DisconnectCommand>(new DisconnectCommand(token)));
+            else if (commandName == CreateTableCommand.COMMAND_NAME)
+                CreateTableCommandReceived(this, new CommandEventArgs<CreateTableCommand>(new CreateTableCommand(token)));
+            else if (commandName == ListTableCommand.COMMAND_NAME)
+                ListTableCommandReceived(this, new CommandEventArgs<ListTableCommand>(new ListTableCommand(token)));
+            else if (commandName == JoinTableCommand.COMMAND_NAME)
+                JoinTableCommandReceived(this, new CommandEventArgs<JoinTableCommand>(new JoinTableCommand(token)));
         }
     }
 }

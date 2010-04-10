@@ -48,6 +48,20 @@
     <Compile Include="Commands\AbstractCommand.cs" />
     <Compile Include="Commands\DisconnectCommand.cs" />
     <Compile Include="Commands\AbstractCommandResponse.cs" />
+    <Compile Include="Commands\Game\BetTurnEndedCommand.cs" />
+    <Compile Include="Commands\Game\BetTurnStartedCommand.cs" />
+    <Compile Include="Commands\Game\TableInfoCommand.cs" />
+    <Compile Include="Commands\Game\TableClosedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerWonPotCommand.cs" />
+    <Compile Include="Commands\Game\PlayerTurnEndedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerTurnBeganCommand.cs" />
+    <Compile Include="Commands\Game\PlayerPlayMoneyCommand.cs" />
+    <Compile Include="Commands\Game\PlayerMoneyChangedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerLeftCommand.cs" />
+    <Compile Include="Commands\Game\PlayerJoinedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerHoleCardsChangedCommand.cs" />
+    <Compile Include="Commands\Game\GameStartedCommand.cs" />
+    <Compile Include="Commands\Game\GameEndedCommand.cs" />
     <Compile Include="Commands\Lobby\JoinTableCommand.cs" />
     <Compile Include="Commands\Lobby\CreateTableCommand.cs" />
     <Compile Include="Commands\Lobby\IdentifyCommand.cs" />
@@ -58,12 +72,18 @@
     <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
     <Compile Include="Observer\CommandObserver.cs" />
     <Compile Include="EventArgs.cs" />
+    <Compile Include="Observer\GameClientCommandObserver.cs" />
+    <Compile Include="Observer\GameServerCommandObserver.cs" />
     <Compile Include="Observer\LobbyServerCommandObserver.cs" />
     <Compile Include="TuplePlayerInfo.cs" />
     <Compile Include="TupleTableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EricUtilityGames\EricUtilityGames.csproj">
+      <Project>{91A93AAB-B4F4-411D-8C0F-E27A10B872D1}</Project>
+      <Name>EricUtilityGames</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EricUtility\EricUtility.csproj">
       <Project>{0F0C8756-B68E-4526-A3BC-7FBD28506933}</Project>
       <Name>EricUtility</Name>
@@ -72,9 +92,6 @@
       <Project>{14D20F5B-EA62-4DB4-9D03-EC6EF04BAF36}</Project>
       <Name>PokerWorld</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\Game\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
