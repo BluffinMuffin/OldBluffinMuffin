@@ -45,6 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AbstractCommand.cs" />
+    <Compile Include="Commands\DisconnectCommand.cs" />
+    <Compile Include="Commands\AbstractCommandResponse.cs" />
+    <Compile Include="Commands\Lobby\JoinTableCommand.cs" />
+    <Compile Include="Commands\Lobby\CreateTableCommand.cs" />
+    <Compile Include="Commands\Lobby\IdentifyCommand.cs" />
+    <Compile Include="Commands\Lobby\Response\JoinTableResponse.cs" />
+    <Compile Include="Commands\Lobby\Response\ListTableResponse.cs" />
+    <Compile Include="Commands\Lobby\Response\CreateTableResponse.cs" />
+    <Compile Include="Commands\ListTableCommand.cs" />
+    <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
+    <Compile Include="Observer\CommandObserver.cs" />
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="Observer\LobbyServerCommandObserver.cs" />
     <Compile Include="TuplePlayerInfo.cs" />
     <Compile Include="TupleTableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +72,9 @@
       <Project>{14D20F5B-EA62-4DB4-9D03-EC6EF04BAF36}</Project>
       <Name>PokerWorld</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\Game\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

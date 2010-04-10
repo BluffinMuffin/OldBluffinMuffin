@@ -44,6 +44,7 @@ namespace PokerWorld.Game
         private int m_NoSeatBigBlind; // La position actuelle du BigBlind
         private int m_NoSeatCurrPlayer; // La position du joueur actuel
         private int m_CurrPotId; // L'id du pot qu'on travail actuellement avec
+        private int m_NoSeatLastRaise; // L'id du dernier player qui a raiser ou du premier a jouer
 
         public string Name
         {
@@ -108,26 +109,39 @@ namespace PokerWorld.Game
 
         public List<PlayerInfo> PlayingPlayers
         {
+            get { return PlayingPlayersFromFirst; }
+        }
+
+        public List<PlayerInfo> PlayingPlayersFromNext
+        {
+            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(m_NoSeatCurrPlayer).NoSeat); }
+        }
+
+        public List<PlayerInfo> PlayingPlayersFromCurrent
+        {
+            get { return PlayingPlayersFrom(m_NoSeatCurrPlayer); }
+        }
+
+        public List<PlayerInfo> PlayingPlayersFromLastRaise
+        {
+            get { return PlayingPlayersFrom(m_NoSeatLastRaise); }
+        }
+
+        public List<PlayerInfo> PlayingPlayersFromFirst
+        {
             get
             {
-                List<PlayerInfo> list = new List<PlayerInfo>();
-                for (int i = 0; i < m_NbMaxSeats; ++i)
+                if (m_Round == TypeRound.Preflop)
                 {
-                    if (m_Players[i] != null && m_Players[i].IsPlaying)
-                    {
-                        list.Add(m_Players[i]);
-                    }
+                    return PlayingPlayersFrom(GetPlayingPlayerNextTo(m_NoSeatBigBlind).NoSeat);
                 }
-                return list;
+                return PlayingPlayersFrom(GetPlayingPlayerNextTo(m_NoSeatDealer).NoSeat);
             }
         }
 
         public MoneyPot[] Pots
         {
-            get
-            {
-                return m_Pots.ToArray();
-            }
+            get { return m_Pots.ToArray(); }
         }
 
         public int TotalPotAmnt
@@ -174,6 +188,12 @@ namespace PokerWorld.Game
         {
             get { return m_NoSeatCurrPlayer; }
             set { m_NoSeatCurrPlayer = value; }
+        }
+
+        public int NoSeatLastRaise
+        {
+            get { return m_NoSeatLastRaise; }
+            set { m_NoSeatLastRaise = value; }
         }
 
         public int NbPlayed
@@ -412,7 +432,7 @@ namespace PokerWorld.Game
                 m_CurrPotId++;
                 m_Pots.Add(new MoneyPot(m_CurrPotId));
             }
-            
+
             MoneyPot curPot = m_Pots[m_CurrPotId];
             curPot.DetachAllPlayers();
             foreach (PlayerInfo p in Players)
@@ -463,6 +483,18 @@ namespace PokerWorld.Game
         public int CallAmnt(PlayerInfo p)
         {
             return HigherBet - p.MoneyBetAmnt;
+        }
+        public List<PlayerInfo> PlayingPlayersFrom(int seat)
+        {
+            List<PlayerInfo> list = new List<PlayerInfo>();
+            for (int i = 0; i < m_NbMaxSeats; ++i)
+            {
+                if (m_Players[i] != null && m_Players[i].IsPlaying)
+                {
+                    list.Add(m_Players[i]);
+                }
+            }
+            return list;
         }
     }
 }

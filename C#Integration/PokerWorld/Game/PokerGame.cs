@@ -366,6 +366,7 @@ namespace PokerWorld.Game
         {
             GameBettingRoundStarted(this, new RoundEventArgs(m_Table.Round));
             m_Table.NbPlayed = 0;
+            m_Table.NoSeatLastRaise = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer).NoSeat;
             WaitALittle(m_WaitingTimeAfterBoardDealed);
 
             if (m_Table.NbPlaying <= 1)
@@ -426,11 +427,13 @@ namespace PokerWorld.Game
         private void FoldPlayer(PlayerInfo p)
         {
             p.IsPlaying = false;
+            WaitALittle(m_WaitingTimeAfterPlayerAction);
             PlayerActionTaken(this, new PlayerActionEventArgs(p, TypeAction.Fold, -1));
         }
         private void CallPlayer(PlayerInfo p, int played)
         {
             m_Table.NbPlayed++;
+            WaitALittle(m_WaitingTimeAfterPlayerAction);
             PlayerActionTaken(this, new PlayerActionEventArgs(p, TypeAction.Call, played));
         }
         private void RaisePlayer(PlayerInfo p, int played)
@@ -438,13 +441,14 @@ namespace PokerWorld.Game
             int count = m_Table.NbAllIn;
             if (!p.IsAllIn)
                 count++;
+            m_Table.NoSeatLastRaise = p.NoSeat;
             m_Table.NbPlayed = count;
             m_Table.HigherBet = p.MoneyBetAmnt;
+            WaitALittle(m_WaitingTimeAfterPlayerAction);
             PlayerActionTaken(this, new PlayerActionEventArgs(p, TypeAction.Raise, played));
         }
         private void ContinueBettingRound()
         {
-            WaitALittle(m_WaitingTimeAfterPlayerAction);
             if (m_Table.NbPlayingAndAllIn == 1 || m_Table.NbPlayed >= m_Table.NbPlayingAndAllIn)
                 EndBettingRound();
             else
