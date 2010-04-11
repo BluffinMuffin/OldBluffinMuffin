@@ -109,7 +109,7 @@ namespace PokerWorld.Game
 
         public List<PlayerInfo> PlayingPlayers
         {
-            get { return PlayingPlayersFromFirst; }
+            get { return PlayingPlayersFrom(0); }
         }
 
         public List<PlayerInfo> PlayingPlayersFromNext
