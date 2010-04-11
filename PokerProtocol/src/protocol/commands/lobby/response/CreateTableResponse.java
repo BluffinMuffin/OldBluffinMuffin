@@ -29,7 +29,7 @@ public class CreateTableResponse implements ICommand
         m_WaitingTimeAfterPlayerAction = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
-        m_limit = TypeBet.valueOf(argsToken.nextToken());
+        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
         m_ResponsePort = Integer.parseInt(argsToken.nextToken());
     }
     
@@ -66,7 +66,7 @@ public class CreateTableResponse implements ICommand
         sb.append(Command.DELIMITER);
         sb.append(m_WaitingTimeAfterPotWon);
         sb.append(Command.DELIMITER);
-        sb.append(m_limit.name());
+        sb.append(m_limit.ordinal());
         sb.append(Command.DELIMITER);
         sb.append(m_ResponsePort);
         sb.append(Command.DELIMITER);

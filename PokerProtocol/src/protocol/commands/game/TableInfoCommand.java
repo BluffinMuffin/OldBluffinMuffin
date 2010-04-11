@@ -46,7 +46,7 @@ public class TableInfoCommand implements ICommand
         {
             m_seats.add(new TuplePlayerInfo(argsToken));
         }
-        m_limit = TypeBet.valueOf(argsToken.nextToken());
+        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public TableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<TuplePlayerInfo> seats, TypeBet limit)
@@ -154,7 +154,7 @@ public class TableInfoCommand implements ICommand
         {
             sb.append(m_seats.get(i).toString(Command.DELIMITER));
         }
-        sb.append(m_limit.name());
+        sb.append(m_limit.ordinal());
         sb.append(Command.DELIMITER);
         return sb.toString();
     }

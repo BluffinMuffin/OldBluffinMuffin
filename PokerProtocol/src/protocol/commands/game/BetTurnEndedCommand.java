@@ -21,7 +21,7 @@ public class BetTurnEndedCommand implements ICommand
         {
             m_potsAmounts.add(Integer.parseInt(argsToken.nextToken()));
         }
-        m_round = TypeRound.valueOf(argsToken.nextToken());
+        m_round = TypeRound.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public BetTurnEndedCommand(ArrayList<Integer> potsAmounts, TypeRound round)
@@ -43,7 +43,7 @@ public class BetTurnEndedCommand implements ICommand
             sb.append(m_potsAmounts.get(i));
             sb.append(Command.DELIMITER);
         }
-        sb.append(m_round.toString());
+        sb.append(m_round.ordinal());
         return sb.toString();
     }
     

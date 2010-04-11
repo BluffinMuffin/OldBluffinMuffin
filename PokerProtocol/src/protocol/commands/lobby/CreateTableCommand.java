@@ -29,7 +29,7 @@ public class CreateTableCommand implements ICommand
         m_WaitingTimeAfterPlayerAction = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
-        m_limit = TypeBet.valueOf(argsToken.nextToken());
+        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public CreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
@@ -64,7 +64,7 @@ public class CreateTableCommand implements ICommand
         sb.append(Command.DELIMITER);
         sb.append(m_WaitingTimeAfterPotWon);
         sb.append(Command.DELIMITER);
-        sb.append(m_limit.name());
+        sb.append(m_limit.ordinal());
         sb.append(Command.DELIMITER);
         return sb.toString();
     }

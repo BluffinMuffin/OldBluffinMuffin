@@ -23,7 +23,7 @@ public class PlayerTurnEndedCommand implements ICommand
         m_playerBet = Integer.parseInt(argsToken.nextToken());
         m_playerMoney = Integer.parseInt(argsToken.nextToken());
         m_totalPot = Integer.parseInt(argsToken.nextToken());
-        m_actionType = TypeAction.valueOf(argsToken.nextToken());
+        m_actionType = TypeAction.values()[Integer.parseInt(argsToken.nextToken())];
         m_actionAmount = Integer.parseInt(argsToken.nextToken());
         m_isPlaying = Boolean.parseBoolean(argsToken.nextToken());
     }
@@ -53,7 +53,7 @@ public class PlayerTurnEndedCommand implements ICommand
         sb.append(Command.DELIMITER);
         sb.append(m_totalPot);
         sb.append(Command.DELIMITER);
-        sb.append(m_actionType.name());
+        sb.append(m_actionType.ordinal());
         sb.append(Command.DELIMITER);
         sb.append(m_actionAmount);
         sb.append(Command.DELIMITER);

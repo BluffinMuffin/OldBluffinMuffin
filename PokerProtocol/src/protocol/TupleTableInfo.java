@@ -50,7 +50,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());
-        m_limit = TypeBet.valueOf(argsToken.nextToken());
+        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public int compareTo(TupleTableInfo p_table)
@@ -74,14 +74,13 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
         sb.append(p_delimiter);
         sb.append(m_tableName);
         sb.append(p_delimiter);
-        sb.append(p_delimiter);
         sb.append(m_bigBlind);
         sb.append(p_delimiter);
         sb.append(m_nbPlayers);
         sb.append(p_delimiter);
         sb.append(m_nbSeats);
         sb.append(p_delimiter);
-        sb.append(m_limit.name());
+        sb.append(m_limit.ordinal());
         sb.append(p_delimiter);
         
         return sb.toString();

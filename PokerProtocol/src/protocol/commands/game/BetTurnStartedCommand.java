@@ -19,7 +19,7 @@ public class BetTurnStartedCommand implements ICommand
         {
             m_cardsID.add(Integer.parseInt(argsToken.nextToken()));
         }
-        m_round = TypeRound.valueOf(argsToken.nextToken());
+        m_round = TypeRound.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public BetTurnStartedCommand(Integer flop1, Integer flop2, Integer flop3, Integer turn, Integer river, TypeRound round)
@@ -44,7 +44,7 @@ public class BetTurnStartedCommand implements ICommand
             sb.append(Command.DELIMITER);
         }
         sb.append(Command.DELIMITER);
-        sb.append(m_round.toString());
+        sb.append(m_round.ordinal());
         sb.append(Command.DELIMITER);
         return sb.toString();
     }
