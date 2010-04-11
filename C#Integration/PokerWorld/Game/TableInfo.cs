@@ -139,9 +139,9 @@ namespace PokerWorld.Game
             }
         }
 
-        public MoneyPot[] Pots
+        public List<MoneyPot> Pots
         {
-            get { return m_Pots.ToArray(); }
+            get { return m_Pots; }
         }
 
         public int TotalPotAmnt

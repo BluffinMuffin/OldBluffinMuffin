@@ -105,7 +105,7 @@ namespace PokerProtocol.Commands.Game
             m_PotsAmount.Add(pot.Amount);
         }
         
-        for (int i = info.Pots.Length; i < m_NbSeats; i++)
+        for (int i = info.Pots.Count; i < m_NbSeats; i++)
         {
             m_PotsAmount.Add(0);
         }

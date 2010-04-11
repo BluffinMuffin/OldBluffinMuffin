@@ -36,7 +36,7 @@ namespace PokerProtocol.Commands.Lobby
             m_PlayerName = argsToken.NextToken();
         }
 
-        public JoinTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+        public JoinTableCommand(string p_tableName, string p_playerName)
         {
             m_TableName = p_tableName;
             m_PlayerName = p_playerName;
