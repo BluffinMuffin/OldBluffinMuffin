@@ -205,6 +205,18 @@ public class GameTCPServer implements Runnable
             @Override
             public void everythingEnded()
             {
+                try
+                {
+                    if (m_input != null)
+                    {
+                        m_input.close();
+                    }
+                }
+                catch (final IOException e)
+                {
+                    // e.printStackTrace();
+                }
+                m_input = null;
                 send(new TableClosedCommand());
                 try
                 {
@@ -217,7 +229,6 @@ public class GameTCPServer implements Runnable
                     e.printStackTrace();
                 }
                 m_output = null;
-                m_input = null;
                 m_socket = null;
             }
             
@@ -283,9 +294,18 @@ public class GameTCPServer implements Runnable
                 
                 try
                 {
-                    m_output.close();
-                    m_input.close();
-                    m_socket.close();
+                    if (m_output != null)
+                    {
+                        m_output.close();
+                    }
+                    if (m_input != null)
+                    {
+                        m_input.close();
+                    }
+                    if (m_socket != null)
+                    {
+                        m_socket.close();
+                    }
                 }
                 catch (final IOException e)
                 {

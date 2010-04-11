@@ -20,6 +20,7 @@ import poker.game.TypeAction;
 public class JPanelPlayerHud extends JPanel
 {
     private boolean main = false;
+    private boolean alive = false;
     private static final long serialVersionUID = 1L;
     private JPanel jTopPanel = null;
     private JLabel jNameLabel = null;
@@ -238,18 +239,27 @@ public class JPanelPlayerHud extends JPanel
     
     public void isPlaying()
     {
-        jActionLabel.setBackground(new Color(132, 148, 214));
+        if (alive)
+        {
+            jActionLabel.setBackground(new Color(132, 148, 214));
+        }
     }
     
     public void isWinning()
     {
-        jActionLabel.setBackground(new Color(42, 186, 229));
-        jActionLabel.setText("WIN");
+        if (alive)
+        {
+            jActionLabel.setBackground(new Color(42, 186, 229));
+            jActionLabel.setText("WIN");
+        }
     }
     
     public void isDoingNothing()
     {
-        jActionLabel.setBackground(Color.white);
+        if (alive)
+        {
+            jActionLabel.setBackground(Color.white);
+        }
     }
     
     public void isMainPlayer(boolean mainPlayer)
@@ -259,6 +269,7 @@ public class JPanelPlayerHud extends JPanel
     
     public void setDead()
     {
+        alive = false;
         jNameLabel.setBackground(Color.gray);
         jActionLabel.setBackground(Color.gray);
         jStatusLabel.setBackground(Color.gray);
@@ -267,6 +278,7 @@ public class JPanelPlayerHud extends JPanel
     
     public void setAlive()
     {
+        alive = true;
         if (main)
         {
             jNameLabel.setBackground(new Color(112, 128, 214));

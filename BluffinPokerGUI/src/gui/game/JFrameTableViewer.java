@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -652,10 +653,10 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBettingRoundStarted()
             {
                 final TableInfo table = m_game.getTable();
-                
+                final List<PlayerInfo> lst = table.getPlayingPlayers();
                 for (int i = 0; i < table.getPlayingPlayers().size(); ++i)
                 {
-                    huds[i].setAlive();
+                    huds[lst.get(i).getNoSeat()].setAlive();
                 }
                 int i = 0;
                 for (; i < 5 && m_game.getTable().getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
@@ -791,7 +792,14 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 php.setPlayerMoney(player.getMoneySafeAmnt());
                 php.isDoingNothing();
                 php.isMainPlayer(player.getNoSeat() == m_currentTablePosition);
-                php.setDead();
+                if (player.isPlaying())
+                {
+                    php.setAlive();
+                }
+                else
+                {
+                    php.setDead();
+                }
                 php.setVisible(true);
             }
         });
@@ -872,7 +880,10 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void playerHoleCardsChanged(PlayerInfo p)
             {
                 final Card[] cards = p.getCards(true);
-                writeLine("==> Hole Card changed for " + p.getName() + ": " + cards[0].toString() + " " + cards[1].toString());
+                if (cards[0].getId() >= 0)
+                {
+                    writeLine("==> Hole Card changed for " + p.getName() + ": " + cards[0].toString() + " " + cards[1].toString());
+                }
             }
             
             @Override
