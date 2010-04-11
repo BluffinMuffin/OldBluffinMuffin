@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerWorld", "PokerWorld\Po
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerProtocol", "PokerProtocol\PokerProtocol.csproj", "{85FD2190-B801-4614-97CF-BAB956DAF4E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinPokerGui", "BluffinPokerGui\BluffinPokerGui.csproj", "{53AAF3B5-28E5-4092-A3A2-CD81CD6D4EBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppTest", "AppTest\AppTest.csproj", "{F1060AB7-B863-48E5-B7E7-4D02269F591F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85FD2190-B801-4614-97CF-BAB956DAF4E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53AAF3B5-28E5-4092-A3A2-CD81CD6D4EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53AAF3B5-28E5-4092-A3A2-CD81CD6D4EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53AAF3B5-28E5-4092-A3A2-CD81CD6D4EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53AAF3B5-28E5-4092-A3A2-CD81CD6D4EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1060AB7-B863-48E5-B7E7-4D02269F591F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1060AB7-B863-48E5-B7E7-4D02269F591F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1060AB7-B863-48E5-B7E7-4D02269F591F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1060AB7-B863-48E5-B7E7-4D02269F591F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
