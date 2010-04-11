@@ -272,7 +272,7 @@ public class TableInfo
      */
     public List<PlayerInfo> getPlayingPlayers()
     {
-        return getPlayingPlayersFromFirst();
+        return getPlayingPlayers(0);
     }
     
     public List<PlayerInfo> getPlayingPlayers(int seat)
