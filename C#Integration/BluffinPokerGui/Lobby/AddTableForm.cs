@@ -70,11 +70,11 @@ namespace BluffinPokerGUI.Lobby
         private void btnAdd_Click(object sender, EventArgs e)
         {
             m_TableName = txtTableName.Text;
-            m_BigBlind = Convert.ToInt32(nudBigBlindAmnt.Value);
-            m_NbPlayer = Convert.ToInt32(nudNbPlayers.Value);
-            m_WaitingTimeAfterPlayerAction = Convert.ToInt32(nudWTAPlayerAction.Value);
-            m_WaitingTimeAfterBoardDealed = Convert.ToInt32(nudWTABoardDealed.Value);
-            m_WaitingTimeAfterPotWon = Convert.ToInt32(nudWTAPotWon.Value);
+            m_BigBlind = (int)nudBigBlindAmnt.Value;
+            m_NbPlayer = (int)nudNbPlayers.Value;
+            m_WaitingTimeAfterPlayerAction = (int)nudWTAPlayerAction.Value;
+            m_WaitingTimeAfterBoardDealed = (int)nudWTABoardDealed.Value;
+            m_WaitingTimeAfterPotWon = (int)nudWTAPotWon.Value;
             m_Limit = (TypeBet)clstGameLimit.SelectedIndex;
             m_OK = true;
             Close();
