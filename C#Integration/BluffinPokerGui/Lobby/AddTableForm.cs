@@ -55,10 +55,9 @@ namespace BluffinPokerGUI.Lobby
         {
             get { return m_OK; }
         }
-        public AddTableForm(Form owner, string playerName, int nbPlayers) : base()
+        public AddTableForm(string playerName, int nbPlayers) : base()
         {
             m_OK = false;
-            Parent = owner;
             m_PlayerName = playerName;
             InitializeComponent();
             txtTableName.Text = m_PlayerName + " Table";

@@ -291,6 +291,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddTableForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Table";
             ((System.ComponentModel.ISupportInitialize)(this.nudBigBlindAmnt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayers)).EndInit();
