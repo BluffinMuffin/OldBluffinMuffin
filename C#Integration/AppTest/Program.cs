@@ -16,7 +16,8 @@ namespace AppTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AddTableForm("Patate",5));
+            Application.Run(new AddTableForm("Patate", 5));
+            Application.Run(new NameUsedForm("Patate"));
         }
     }
 }
