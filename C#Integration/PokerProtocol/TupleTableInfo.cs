@@ -66,12 +66,10 @@ namespace PokerProtocol
         {
             m_NoPort = int.Parse(argsToken.NextToken());
             m_TableName = argsToken.NextToken();
-            argsToken.NextToken();
             m_BigBlind = int.Parse(argsToken.NextToken());
             m_NbPlayers = int.Parse(argsToken.NextToken());
             m_NbSeats = int.Parse(argsToken.NextToken());
-            m_Limit = TypeBet.NoLimit;
-            argsToken.NextToken();// (TypeBet)int.Parse(argsToken.NextToken());
+            m_Limit = (TypeBet)int.Parse(argsToken.NextToken());
         }
         public int CompareTo(TupleTableInfo other)
         {

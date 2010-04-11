@@ -112,13 +112,10 @@ namespace PokerProtocol
 
         public GameTCPClient FindClient(int noPort)
         {
-            int i = 0;
-            for (; (i != m_Clients.Count) && (m_Clients[i].NoPort != noPort); ++i) ;
-
-            if (i == m_Clients.Count)
-                return null;
-
-            return m_Clients[i];
+            for (int i = 0; i < m_Clients.Count; ++i)
+                if (m_Clients[i].NoPort == noPort)
+                    return m_Clients[i];
+            return null;
         }
 
         public GameTCPClient JoinTable(int p_noPort, string p_tableName, IPokerViewer gui)

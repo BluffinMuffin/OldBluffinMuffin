@@ -40,7 +40,7 @@ namespace BluffinPokerClient
                             isOk = m_Server.Identify(name);
                         }
                         lblStatus.Text = "Connected as " + name;
-                        Text =  name + " ~ " + lblTitle.Text;
+                        Text = name + " ~ " + lblTitle.Text;
                         btnConnect.Text = "Disconnect";
                         RefreshTables();
                         if (datTables.RowCount == 0)
@@ -65,7 +65,7 @@ namespace BluffinPokerClient
         {
             datTables.Rows.Clear();
             List<TupleTableInfo> lst = m_Server.getListTables();
-            for( int i = 0; i < lst.Count; ++i)
+            for (int i = 0; i < lst.Count; ++i)
             {
                 TupleTableInfo info = lst[i];
                 datTables.Rows.Add();
@@ -78,6 +78,54 @@ namespace BluffinPokerClient
         }
         private void AddTable()
         {
+            AddTableForm form = new AddTableForm(m_Server.PlayerName, 1);
+            form.ShowDialog();
+            if (form.OK)
+            {
+                int noPort = m_Server.CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit);
+
+                if (noPort != -1)
+                {
+                    JoinTable(noPort, form.TableName, form.BigBlind);
+                    RefreshTables();
+                }
+                else
+                {
+                    Console.WriteLine("Cannot create table: '" + form.TableName + "'");
+                }
+            }
+        }
+
+        private void LeaveTable(GameTCPClient client)
+        {
+            if (client != null)
+            {
+                client.Disconnect();
+                RefreshTables();
+            }
+        }
+        public bool JoinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
+        {
+            GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, null);
+            /*
+            JFrameTable gui = null;
+            gui = new JFrameTable();
+            final GameTCPClient tcpGame = m_server.joinTable(p_noPort, p_tableName, gui);
+        
+            gui.addWindowListener(new java.awt.event.WindowAdapter() {
+                public void windowClosing(WindowEvent winEvt) {
+                    eventLeaveTable(tcpGame);
+                }
+            });
+            */
+            return true;
+        }
+
+        public void AllowJoinOrLeave()
+        {
+            GameTCPClient client = findClient();
+            btnJoinTable.Enabled = (client == null);
+            btnLeaveTable.Enabled = (client != null);
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
@@ -91,12 +139,59 @@ namespace BluffinPokerClient
 
         private void btnJoinTable_Click(object sender, EventArgs e)
         {
+            if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
+            {
+                return;
+            }
+            object o = datTables.SelectedRows[0].Cells[0].Value;
+            if (o == null) 
+                return;
+            int noPort = (int)o;
+            object o2 = datTables.SelectedRows[0].Cells[1].Value;
+            if (o2 == null) 
+                return;
+            string tableName = (string)o2;
+            if (findClient() != null)
+                Console.WriteLine("You are already sitting on the table: " + tableName);
+            else
+            {
+                object o3 = datTables.SelectedRows[0].Cells[3].Value;
+                if (o3 == null) 
+                    return;
+                int bigBlind = (int)o3;
+                if (!JoinTable(noPort, tableName, bigBlind))
+                    Console.WriteLine("Table '" + tableName + "' does not exist anymore.");
+                RefreshTables();
 
+            }
         }
 
         private void btnLeaveTable_Click(object sender, EventArgs e)
         {
+            LeaveTable(findClient());
+        }
 
+        private GameTCPClient findClient()
+        {
+            if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
+            {
+                return null;
+            }
+            object o = datTables.SelectedRows[0].Cells[0].Value;
+            if (o == null) 
+                return null;
+            int noPort = (int)o;
+            return m_Server.FindClient(noPort);
+        }
+
+        private void datTables_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            btnJoinTable_Click(datTables, new EventArgs());
+        }
+
+        private void datTables_SelectionChanged(object sender, EventArgs e)
+        {
+            AllowJoinOrLeave();
         }
     }
 }

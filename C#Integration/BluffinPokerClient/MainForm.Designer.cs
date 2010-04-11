@@ -155,6 +155,8 @@
             this.datTables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.datTables.Size = new System.Drawing.Size(500, 155);
             this.datTables.TabIndex = 3;
+            this.datTables.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datTables_CellDoubleClick);
+            this.datTables.SelectionChanged += new System.EventHandler(this.datTables_SelectionChanged);
             // 
             // ID
             // 
