@@ -75,6 +75,11 @@ namespace BluffinPokerClient
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.NbSeats;
             }
+            if (datTables.SelectedRows.Count > 0)
+            {
+                datTables.Rows[0].Selected = false;
+                datTables.Rows[0].Selected = true;
+            }
         }
         private void AddTable()
         {
@@ -123,22 +128,26 @@ namespace BluffinPokerClient
 
         public void AllowJoinOrLeave()
         {
+            bool selected = datTables.RowCount > 0 && datTables.SelectedRows.Count > 0;
             GameTCPClient client = findClient();
-            btnJoinTable.Enabled = (client == null);
-            btnLeaveTable.Enabled = (client != null);
+            btnJoinTable.Enabled = selected && (client == null);
+            btnLeaveTable.Enabled = selected && (client != null);
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             RefreshTables();
+            AllowJoinOrLeave();
         }
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
             AddTable();
+            RefreshTables();
         }
 
         private void btnJoinTable_Click(object sender, EventArgs e)
         {
+            AllowJoinOrLeave();
             if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
             {
                 return;
@@ -169,6 +178,7 @@ namespace BluffinPokerClient
         private void btnLeaveTable_Click(object sender, EventArgs e)
         {
             LeaveTable(findClient());
+            RefreshTables();
         }
 
         private GameTCPClient findClient()
@@ -190,6 +200,11 @@ namespace BluffinPokerClient
         }
 
         private void datTables_SelectionChanged(object sender, EventArgs e)
+        {
+            AllowJoinOrLeave();
+        }
+
+        private void datTables_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             AllowJoinOrLeave();
         }
