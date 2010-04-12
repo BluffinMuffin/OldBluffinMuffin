@@ -45,13 +45,13 @@ public class JFrameTableViewer extends AbstractJFrameTable
         if (jHelpButton == null)
         {
             jHelpButton = new JButton();
+            jHelpButton.setBounds(new Rectangle(915, 8, 68, 32));
             jHelpButton.setText("HELP");
             jHelpButton.addActionListener(new java.awt.event.ActionListener()
             {
                 public void actionPerformed(java.awt.event.ActionEvent e)
                 {
-                    final JDialogHandStrength dialog = new JDialogHandStrength(JFrameTableViewer.this);
-                    dialog.setVisible(true);
+                    new JDialogHandStrength(JFrameTableViewer.this).setVisible(true);
                 }
             });
         }
@@ -172,6 +172,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             jBackgroundTableLabel.setBounds(new Rectangle(0, 50, 874, 556));
             jBackgroundTableLabel.setIcon(new ImageIcon("images/table.png"));
             jContentPane = new JPanel();
+            jContentPane.setBackground(Color.darkGray);
             jContentPane.setLayout(null);
             jContentPane.setMinimumSize(new Dimension(1024, 768));
             jContentPane.setMaximumSize(new Dimension(1024, 768));
@@ -181,6 +182,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             jContentPane.add(getJBottomConsolePanel(), null);
             jContentPane.add(getJTablePanel(), null);
             jContentPane.add(jBackgroundTableLabel, null);
+            jContentPane.add(getJHelpButton(), null);
         }
         return jContentPane;
     }
@@ -276,15 +278,14 @@ public class JFrameTableViewer extends AbstractJFrameTable
             jTitleLabel.setForeground(Color.white);
             jTopPanel = new JPanel();
             jTopPanel.setLayout(new BorderLayout());
-            jTopPanel.setSize(new Dimension(1017, 50));
-            jTopPanel.setMaximumSize(new Dimension(1024, 50));
-            jTopPanel.setMinimumSize(new Dimension(1024, 50));
-            jTopPanel.setPreferredSize(new Dimension(1024, 50));
+            jTopPanel.setSize(new Dimension(874, 50));
+            jTopPanel.setMaximumSize(new Dimension(1000, 50));
+            jTopPanel.setMinimumSize(new Dimension(1000, 50));
+            jTopPanel.setPreferredSize(new Dimension(1000, 50));
             jTopPanel.setBackground(Color.black);
             jTopPanel.setForeground(Color.white);
             jTopPanel.setLocation(new Point(0, 0));
-            jTopPanel.add(jTitleLabel, BorderLayout.CENTER);
-            jTopPanel.add(getJHelpButton(), BorderLayout.EAST);
+            jTopPanel.add(jTitleLabel, BorderLayout.SOUTH);
         }
         return jTopPanel;
     }
@@ -301,7 +302,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             jRightPanel = new JPanel();
             jRightPanel.setLayout(new FlowLayout());
             jRightPanel.setSize(new Dimension(143, 556));
-            jRightPanel.setBackground(Color.black);
+            jRightPanel.setBackground(Color.darkGray);
             jRightPanel.setLocation(new Point(874, 50));
         }
         return jRightPanel;
@@ -323,6 +324,16 @@ public class JFrameTableViewer extends AbstractJFrameTable
             jBottomConsolePanel.setPreferredSize(new Dimension(1017, 132));
             jBottomConsolePanel.setBackground(Color.black);
             jBottomConsolePanel.setLocation(new Point(0, 606));
+            jBottomConsolePanel.addComponentListener(new java.awt.event.ComponentAdapter()
+            {
+                @Override
+                public void componentResized(java.awt.event.ComponentEvent e)
+                {
+                    final int newW = JFrameTableViewer.this.getWidth();
+                    final int newH = JFrameTableViewer.this.getHeight() + getJBottomConsolePanel().lastSizeChange;
+                    JFrameTableViewer.this.setSize(newW, newH);
+                }
+            });
         }
         return jBottomConsolePanel;
     }
