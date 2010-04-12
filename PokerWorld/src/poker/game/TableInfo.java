@@ -26,7 +26,6 @@ public class TableInfo
     
     // SEATS
     private final int m_nbMaxSeats; // Nombe de siege total autour de la table
-    private int m_nbUsedSeats; // Nombre de siege utilises autour de la table
     private final Stack<Integer> m_RemainingSeats = new Stack<Integer>(); // LIFO contenant les sieges non utilises
     
     // PLAYERS
@@ -94,7 +93,6 @@ public class TableInfo
     public TableInfo(String pName, int pBigBlind, int nbSeats, TypeBet limit)
     {
         m_nbMaxSeats = nbSeats;
-        m_nbUsedSeats = 0;
         m_players = new PlayerInfo[m_nbMaxSeats];
         m_name = pName;
         m_bigBlindAmnt = pBigBlind;
@@ -221,26 +219,6 @@ public class TableInfo
     public int getNbMaxSeats()
     {
         return m_nbMaxSeats;
-    }
-    
-    /**
-     * Nombre de siege utilises autour de la table
-     * 
-     * @return
-     */
-    public int getNbUsedSeats()
-    {
-        return m_nbUsedSeats;
-    }
-    
-    /**
-     * Nombre de siege utilises autour de la table
-     * 
-     * @param nb
-     */
-    public void setNbUsedSeats(int nb)
-    {
-        m_nbUsedSeats = nb;
     }
     
     // // // // // // // // // // // // // // // // // //

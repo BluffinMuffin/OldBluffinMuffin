@@ -70,8 +70,6 @@ public class ClientLobby extends JFrame
         return jLeaveTableButton;
     }
     
-    
-    
     /**
      * @param args
      */
@@ -483,9 +481,12 @@ public class ClientLobby extends JFrame
         gui = new JFrameTable();
         final GameTCPClient tcpGame = m_server.joinTable(p_noPort, p_tableName, gui);
         
-        gui.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(WindowEvent winEvt) {
-            	eventLeaveTable(tcpGame);
+        gui.addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent winEvt)
+            {
+                eventLeaveTable(tcpGame);
             }
         });
         
@@ -525,13 +526,13 @@ public class ClientLobby extends JFrame
             if (!joinTable(noPort, tableName, bigBlind))
             {
                 System.out.println("Table '" + tableName + "' does not exist anymore.");
-//                refreshTables();
             }
         }
         refreshTables();
     }
     
-    private void eventLeaveTable(GameTCPClient client){
+    private void eventLeaveTable(GameTCPClient client)
+    {
         if (client != null)
         {
             client.disconnect();
