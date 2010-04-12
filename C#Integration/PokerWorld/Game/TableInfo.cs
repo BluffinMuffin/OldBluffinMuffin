@@ -17,7 +17,6 @@ namespace PokerWorld.Game
 
         // SEATS
         private readonly int m_NbMaxSeats; // Nombe de siege total autour de la table
-        private int m_NbUsedSeats; // Nombre de siege utilises autour de la table
         private readonly Stack<int> m_RemainingSeats = new Stack<int>(); // LIFO contenant les sieges non utilises
 
         // PLAYERS
@@ -83,12 +82,6 @@ namespace PokerWorld.Game
         public int NbMaxSeats
         {
             get { return m_NbMaxSeats; }
-        }
-
-        public int NbUsedSeats
-        {
-            get { return m_NbUsedSeats; }
-            set { m_NbUsedSeats = value; }
         }
 
         public List<PlayerInfo> Players
@@ -241,7 +234,6 @@ namespace PokerWorld.Game
         public TableInfo(string name, int bigBlind, int nbSeats, TypeBet limit)
         {
             m_NbMaxSeats = nbSeats;
-            m_NbUsedSeats = 0;
             m_Players = new PlayerInfo[nbSeats];
             m_Name = name;
             m_BigBlindAmnt = bigBlind;

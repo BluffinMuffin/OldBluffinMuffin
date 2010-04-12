@@ -207,7 +207,7 @@ namespace PokerWorld.Game
             if (m_Table.LeaveTable(p))
             {
                 PlayerLeaved(this, new PlayerInfoEventArgs(p));
-                if (m_Table.NbUsedSeats == 0)
+                if (m_Table.Players.Count == 0)
                     m_State = TypeState.End;
                 return true;
             }
