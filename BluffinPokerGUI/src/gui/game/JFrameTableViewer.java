@@ -732,8 +732,8 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
-                php.isPlaying();
                 php.setPlayerAction(TypeAction.NOTHING, 0);
+                php.isPlaying();
             }
             
             @Override

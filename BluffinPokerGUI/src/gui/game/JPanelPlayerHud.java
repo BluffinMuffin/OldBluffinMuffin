@@ -241,7 +241,8 @@ public class JPanelPlayerHud extends JPanel
     {
         if (alive)
         {
-            jActionLabel.setBackground(new Color(132, 148, 214));
+            jActionLabel.setBackground(Color.orange);
+            jActionLabel.setText("Thinking ...");
         }
     }
     
