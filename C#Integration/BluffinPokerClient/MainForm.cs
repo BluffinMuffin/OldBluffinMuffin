@@ -75,7 +75,7 @@ namespace BluffinPokerClient
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.NbSeats;
             }
-            if (datTables.SelectedRows.Count > 0)
+            if (datTables.RowCount > 0 && datTables.SelectedRows.Count > 0)
             {
                 datTables.Rows[0].Selected = false;
                 datTables.Rows[0].Selected = true;
