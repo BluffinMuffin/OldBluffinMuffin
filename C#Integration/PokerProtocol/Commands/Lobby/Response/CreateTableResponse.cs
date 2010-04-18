@@ -31,7 +31,7 @@ namespace PokerProtocol.Commands.Lobby.Response
         public CreateTableResponse(CreateTableCommand command, int port)
             : base(command)
         {
-            m_Port = Port;
+            m_Port = port;
         }
 
         public override void Encode(StringBuilder sb)

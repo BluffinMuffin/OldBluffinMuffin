@@ -91,6 +91,15 @@ namespace PokerProtocol
                 holeCards = p.Cards;
             else
                 holeCards = p.RelativeCards;
+            try
+            {
+                Console.WriteLine("Player Cards: {0}[{2},{3},{4}]({1}) & {5}[{7},{8},{9}]({6})", holeCards[0], holeCards[0].Id, holeCards[0].Special, holeCards[0].Kind, holeCards[0].Value, holeCards[1].Id, holeCards[1], holeCards[1].Special, holeCards[1].Kind, holeCards[1].Value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
             Send(new PlayerHoleCardsChangedCommand(p.NoSeat, p.IsPlaying, holeCards[0].Id, holeCards[1].Id));
         }
 

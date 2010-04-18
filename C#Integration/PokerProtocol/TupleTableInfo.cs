@@ -90,7 +90,6 @@ namespace PokerProtocol
             sb.Append(m_NbSeats);
             sb.Append(p_delimiter);
             sb.Append((int)m_Limit);
-            sb.Append(p_delimiter);
 
             return sb.ToString();
         }
