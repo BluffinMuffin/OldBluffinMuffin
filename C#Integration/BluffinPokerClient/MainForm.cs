@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using PokerProtocol;
 using BluffinPokerGUI.Lobby;
+using BluffinPokerGui;
+using PokerWorld.Game;
+using BluffinPokerGui.Game;
 
 namespace BluffinPokerClient
 {
@@ -111,18 +114,12 @@ namespace BluffinPokerClient
         }
         public bool JoinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
         {
-            GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, null);
-            /*
-            JFrameTable gui = null;
-            gui = new JFrameTable();
-            final GameTCPClient tcpGame = m_server.joinTable(p_noPort, p_tableName, gui);
-        
-            gui.addWindowListener(new java.awt.event.WindowAdapter() {
-                public void windowClosing(WindowEvent winEvt) {
-                    eventLeaveTable(tcpGame);
-                }
-            });
-            */
+            AbstractTableForm gui = new TableForm();
+            GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
+            gui.FormClosed += delegate
+            {
+                LeaveTable(tcpGame);
+            };
             return true;
         }
 

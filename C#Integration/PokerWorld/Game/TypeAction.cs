@@ -7,11 +7,11 @@ namespace PokerWorld.Game
 {
     public enum TypeAction
     {
-        DoNothing,
         Fold,
         Call,
         Raise,
         PostSmallBlind,
-        PostBigBlind
+        PostBigBlind,
+        DoNothing
     }
 }

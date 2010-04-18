@@ -47,6 +47,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\AbstractTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\AbstractTableForm.Designer.cs">
+      <DependentUpon>AbstractTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\CardPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Game\ButtonPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Game\PokerPlayerHud.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Game\PokerPlayerHud.Designer.cs">
+      <DependentUpon>PokerPlayerHud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\TableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\TableForm.Designer.cs">
+      <DependentUpon>TableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\TableViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\TableViewerForm.Designer.cs">
+      <DependentUpon>TableViewerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lobby\AddTableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +90,17 @@
       <DependentUpon>NameUsedForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Viewer.Designer.cs">
+      <DependentUpon>Viewer.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EricUtilityGamesWinForms\EricUtilityGamesWinForms.csproj">
@@ -80,6 +121,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Game\AbstractTableForm.resx">
+      <DependentUpon>AbstractTableForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\PokerPlayerHud.resx">
+      <DependentUpon>PokerPlayerHud.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\TableForm.resx">
+      <DependentUpon>TableForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\TableViewerForm.resx">
+      <DependentUpon>TableViewerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Lobby\AddTableForm.resx">
       <DependentUpon>AddTableForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -88,6 +145,30 @@
       <DependentUpon>NameUsedForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Viewer.resx">
+      <DependentUpon>Viewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\big_blind.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dealer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hands_strength.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\small_blind.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

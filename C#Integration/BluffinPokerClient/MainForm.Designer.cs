@@ -40,7 +40,7 @@
             this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
             this.datTables = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BigBlind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NbPlayers = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -144,7 +144,7 @@
             this.datTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.datTables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
-            this.Name,
+            this.TableName,
             this.GameType,
             this.BigBlind,
             this.NbPlayers});
@@ -179,10 +179,10 @@
             // 
             // Name
             // 
-            this.Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Name.HeaderText = "Name";
-            this.Name.Name = "Name";
-            this.Name.ReadOnly = true;
+            this.TableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TableName.HeaderText = "Name";
+            this.TableName.Name = "Name";
+            this.TableName.ReadOnly = true;
             // 
             // GameType
             // 
@@ -235,7 +235,7 @@
         private System.Windows.Forms.ToolStripButton btnJoinTable;
         private System.Windows.Forms.ToolStripButton btnLeaveTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TableName;
         private System.Windows.Forms.DataGridViewTextBoxColumn GameType;
         private System.Windows.Forms.DataGridViewTextBoxColumn BigBlind;
         private System.Windows.Forms.DataGridViewTextBoxColumn NbPlayers;
