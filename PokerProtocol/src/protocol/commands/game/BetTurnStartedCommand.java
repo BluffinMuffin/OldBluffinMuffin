@@ -43,7 +43,6 @@ public class BetTurnStartedCommand implements ICommand
             sb.append(m_cardsID.get(i));
             sb.append(Command.DELIMITER);
         }
-        sb.append(Command.DELIMITER);
         sb.append(m_round.ordinal());
         sb.append(Command.DELIMITER);
         return sb.toString();

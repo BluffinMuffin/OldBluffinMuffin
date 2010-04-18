@@ -194,7 +194,14 @@ public class JPanelPlayerHud extends JPanel
                 sb.append("FOLD");
                 break;
             case RAISED:
-                sb.append("RAISE");
+                if (amnt == -1)
+                {
+                    sb.append("BET");
+                }
+                else
+                {
+                    sb.append("RAISE");
+                }
                 break;
         }
         
