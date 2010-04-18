@@ -13,7 +13,7 @@ namespace PokerProtocol.Commands.Game
     {
         protected override string CommandName
         {
-            get { return PlayerHoleCardsChangedCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "gameHOLE_CARDS_CHANGED";
 

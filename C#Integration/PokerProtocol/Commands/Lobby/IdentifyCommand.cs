@@ -12,7 +12,7 @@ namespace PokerProtocol.Commands.Lobby
     {
         protected override string CommandName
         {
-            get { return IdentifyCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "lobbyIDENTIFY";
 

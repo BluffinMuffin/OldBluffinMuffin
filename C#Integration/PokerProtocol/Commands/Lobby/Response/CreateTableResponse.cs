@@ -12,7 +12,7 @@ namespace PokerProtocol.Commands.Lobby.Response
 
         protected override string CommandName
         {
-            get { return CreateTableCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "lobbyCREATE_TABLE_RESPONSE";
         private readonly int m_Port;

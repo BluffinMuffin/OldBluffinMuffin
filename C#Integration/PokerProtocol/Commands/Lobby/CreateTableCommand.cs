@@ -13,7 +13,7 @@ namespace PokerProtocol.Commands.Lobby
     {
         protected override string CommandName
         {
-            get { return CreateTableCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "lobbyCREATE_TABLE";
 

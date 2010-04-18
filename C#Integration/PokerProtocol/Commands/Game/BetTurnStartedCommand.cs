@@ -13,7 +13,7 @@ namespace PokerProtocol.Commands.Game
     {
         protected override string CommandName
         {
-            get { return BetTurnStartedCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "gameBET_TURN_STARTED";
 

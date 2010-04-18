@@ -14,7 +14,7 @@ namespace PokerProtocol.Commands.Game
     {
         protected override string CommandName
         {
-            get { return TableInfoCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "gameTABLE_INFO";
 

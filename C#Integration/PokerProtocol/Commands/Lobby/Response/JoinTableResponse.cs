@@ -12,7 +12,7 @@ namespace PokerProtocol.Commands.Lobby.Response
 
         protected override string CommandName
         {
-            get { return JoinTableCommand.COMMAND_NAME; }
+            get { return COMMAND_NAME; }
         }
         public static string COMMAND_NAME = "lobbyJOIN_TABLE_RESPONSE";
         private readonly int m_NoSeat;
