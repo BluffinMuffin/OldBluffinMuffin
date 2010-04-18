@@ -39,6 +39,11 @@ namespace PokerProtocol
             }
         }
 
+        protected override void Send(string line)
+        {
+            Console.WriteLine("<Game:{0}> SEND [{1}]", m_Player.Name, line);
+            base.Send(line);
+        }
         public void SitIn()
         {
             Send(new TableInfoCommand(m_Game.Table, m_Player));
@@ -185,7 +190,7 @@ namespace PokerProtocol
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
-            Console.WriteLine("<GameTCPServer :{0}> RECV [{1}]", m_Player.Name, e.Str);
+            Console.WriteLine("<Game:{0}> RECV [{1}]", m_Player.Name, e.Str);
         }
     }
 }

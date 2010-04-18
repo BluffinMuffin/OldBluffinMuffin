@@ -440,18 +440,21 @@ namespace PokerWorld.Game
                 MoneyPot pot = m_Pots[i];
                 uint bestHand = 0;
                 List<PlayerInfo> infos = new List<PlayerInfo>(pot.AttachedPlayers);
-                foreach (PlayerInfo p in infos)
+                if (infos.Count > 1)
                 {
-                    uint handValue = p.EvaluateCards(Cards);
-                    if (handValue > bestHand)
+                    foreach (PlayerInfo p in infos)
                     {
-                        pot.DetachAllPlayers();
-                        pot.AttachPlayer(p);
-                        bestHand = handValue;
-                    }
-                    else if (handValue == bestHand)
-                    {
-                        pot.AttachPlayer(p);
+                        uint handValue = p.EvaluateCards(Cards);
+                        if (handValue > bestHand)
+                        {
+                            pot.DetachAllPlayers();
+                            pot.AttachPlayer(p);
+                            bestHand = handValue;
+                        }
+                        else if (handValue == bestHand)
+                        {
+                            pot.AttachPlayer(p);
+                        }
                     }
                 }
             }
