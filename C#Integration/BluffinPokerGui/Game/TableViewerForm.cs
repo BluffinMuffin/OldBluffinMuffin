@@ -45,17 +45,34 @@ namespace BluffinPokerGui.Game
             board[2] = cardPictureBox3;
             board[3] = cardPictureBox4;
             board[4] = cardPictureBox5;
+            logConsole.RelativeSizeChanged += new EventHandler<IntEventArgs>(logConsole_RelativeSizeChanged);
+        }
+
+        void logConsole_RelativeSizeChanged(object sender, IntEventArgs e)
+        {
+            Height += e.Value;
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
         {
-
+            new HandStrengthForm().Show();
         }
 
         public override void SetGame(PokerWorld.Game.IPokerGame c, int s)
         {
             base.SetGame(c, s);
             InitializePokerObserverForGUI();
+            InitializePokerObserverForConsole();
+        }
+
+        public void WriteLine(string line)
+        {
+            logConsole.WriteLine(line);
+        }
+
+        public void Write(string msg)
+        {
+            logConsole.Write(msg);
         }
 
         private void InitializePokerObserverForGUI()
@@ -72,6 +89,23 @@ namespace BluffinPokerGui.Game
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
             m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged);
             m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot);
+        }
+
+        private void InitializePokerObserverForConsole()
+        {
+            m_Game.EverythingEnded += new EventHandler(m_Game_EverythingEnded_Console);
+            m_Game.GameBettingRoundEnded += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded_Console);
+            m_Game.GameBettingRoundStarted += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted_Console);
+            m_Game.GameBlindNeeded += new EventHandler(m_Game_GameBlindNeeded_Console);
+            m_Game.GameEnded += new EventHandler(m_Game_GameEnded_Console);
+            m_Game.GameGenerallyUpdated += new EventHandler(m_Game_GameGenerallyUpdated_Console);
+            m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded_Console);
+            m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console);
+            m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged_Console);
+            m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console);
+            m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console);
+            m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console);
+            m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console);
         }
 
         void m_Game_GameBettingRoundEnded(object sender, RoundEventArgs e)
@@ -269,6 +303,176 @@ namespace BluffinPokerGui.Game
             PokerPlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
             php.SetWinning();
+        }
+
+
+        void m_Game_EverythingEnded_Console(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<EventArgs>(m_Game_EverythingEnded_Console), new object[] { sender, e });
+                return;
+            }
+            WriteLine("==> Table closed");
+        }
+        void m_Game_GameBettingRoundEnded_Console(object sender, RoundEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded_Console), new object[] { sender, e });
+                return;
+            }
+            //WriteLine("==> End of " + e.Round.ToString());
+        }
+
+        void m_Game_GameBettingRoundStarted_Console(object sender, RoundEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted_Console), new object[] { sender, e });
+                return;
+            }
+            TableInfo table = m_Game.Table;
+            WriteLine("==> Beginning of " + e.Round.ToString());
+            if (e.Round != TypeRound.Preflop)
+            {
+                Write("==> Current board cards:");
+                for (int i = 0; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
+                {
+                    Write(" " + table.Cards[i].ToString());
+                }
+                WriteLine("");
+            }
+        }
+
+        void m_Game_GameBlindNeeded_Console(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameBlindNeeded_Console), new object[] { sender, e });
+                return;
+            }
+            TableInfo table = m_Game.Table;
+            WriteLine("==> Game started");
+            PlayerInfo d = table.Players[table.NoSeatDealer];
+            PlayerInfo sb = table.Players[table.NoSeatSmallBlind];
+            PlayerInfo bb = table.Players[table.NoSeatBigBlind];
+            WriteLine("==> " + d.Name + " is the Dealer");
+            WriteLine("==> " + sb.Name + " is the SmallBlind");
+            WriteLine("==> " + bb.Name + " is the BigBlind");
+        }
+
+        void m_Game_GameEnded_Console(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameEnded_Console), new object[] { sender, e });
+                return;
+            }
+            WriteLine("==> End of the Game");
+        }
+
+        void m_Game_GameGenerallyUpdated_Console(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameGenerallyUpdated_Console), new object[] { sender, e });
+                return;
+            }
+            WriteLine("==> Table info received");
+        }
+
+        void m_Game_PlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            //WriteLine("Player turn began (" + p.Name + ")");
+        }
+
+        void m_Game_PlayerActionTaken_Console(object sender, PlayerActionEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            WriteLine(p.Name + " did [" + e.Action.ToString() + "]");
+        }
+
+        void m_Game_PlayerHoleCardsChanged_Console(object sender, PlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            if (p.Cards[0].Id >= 0)
+            {
+                WriteLine("==> Hole Card changed for " + p.Name + ": " + p.Cards[0].ToString() + " " + p.Cards[1].ToString());
+            }
+        }
+
+        void m_Game_PlayerJoined_Console(object sender, PlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            WriteLine(p.Name + " joined the table");
+        }
+
+        void m_Game_PlayerLeaved_Console(object sender, PlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            WriteLine(p.Name + " left the table");
+        }
+
+        void m_Game_PlayerMoneyChanged_Console(object sender, PlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            //WriteLine(p.Name + " money changed to " + p.MoneySafeAmnt);
+        }
+
+        void m_Game_PlayerWonPot_Console(object sender, PotWonEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console), new object[] { sender, e });
+                return;
+            }
+            PlayerInfo p = e.Player;
+            WriteLine(p.Name + " won pot ($" + e.AmountWon + ")");
         }
 
         private void InstallPlayer(PokerPlayerHud php, PlayerInfo player)

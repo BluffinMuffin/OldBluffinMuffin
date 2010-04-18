@@ -58,6 +58,7 @@
             this.lblTotalPotTitle = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.logConsole = new BluffinPokerGui.LogConsole();
             this.pnlTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox4)).BeginInit();
@@ -432,12 +433,20 @@
             this.panel1.Size = new System.Drawing.Size(874, 54);
             this.panel1.TabIndex = 2;
             // 
+            // logConsole
+            // 
+            this.logConsole.Location = new System.Drawing.Point(0, 605);
+            this.logConsole.Name = "logConsole";
+            this.logConsole.Size = new System.Drawing.Size(1019, 135);
+            this.logConsole.TabIndex = 3;
+            // 
             // TableViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(1018, 740);
+            this.Controls.Add(this.logConsole);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlTable);
@@ -485,5 +494,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Panel panel1;
+        private LogConsole logConsole;
     }
 }
