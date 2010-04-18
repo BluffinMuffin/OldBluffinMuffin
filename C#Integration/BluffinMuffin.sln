@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinPokerGui", "BluffinP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinPokerClient", "BluffinPokerClient\BluffinPokerClient.csproj", "{646AB03E-6AA3-41A2-8072-46DBBB4FF78B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinPokerServer", "BluffinPokerServer\BluffinPokerServer.csproj", "{075DF2E6-BE03-4E56-91D1-C6011EB07218}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{646AB03E-6AA3-41A2-8072-46DBBB4FF78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{646AB03E-6AA3-41A2-8072-46DBBB4FF78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{646AB03E-6AA3-41A2-8072-46DBBB4FF78B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075DF2E6-BE03-4E56-91D1-C6011EB07218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075DF2E6-BE03-4E56-91D1-C6011EB07218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075DF2E6-BE03-4E56-91D1-C6011EB07218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075DF2E6-BE03-4E56-91D1-C6011EB07218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
