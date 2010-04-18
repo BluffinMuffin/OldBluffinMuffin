@@ -95,7 +95,7 @@ namespace PokerWorld.Game
         /// <param name="added"></param>
         public void AddAmount(int added)
         {
-            m_Amount = added;
+            m_Amount += added;
         }
     }
 }
