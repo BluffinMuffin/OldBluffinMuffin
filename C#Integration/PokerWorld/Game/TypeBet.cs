@@ -7,6 +7,6 @@ namespace PokerWorld.Game
 {
     public enum TypeBet
     {
-        NoLimit
+        NoLimit //
     }
 }
