@@ -45,6 +45,8 @@ namespace BluffinPokerClient
                         lblStatus.Text = "Connected as " + name;
                         Text = name + " ~ " + lblTitle.Text;
                         btnConnect.Text = "Disconnect";
+                        btnRefresh.Enabled = true;
+                        btnAddTable.Enabled = true;
                         RefreshTables();
                         if (datTables.RowCount == 0)
                             AddTable();

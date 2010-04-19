@@ -6,6 +6,7 @@ using EricUtility.Networking.Commands;
 using PokerProtocol.Observer;
 using System.Net.Sockets;
 using PokerProtocol.Commands.Lobby;
+using System.IO;
 
 namespace BluffinPokerServer
 {
@@ -27,6 +28,18 @@ namespace BluffinPokerServer
             m_CommandObserver.CreateTableCommandReceived += new EventHandler<CommandEventArgs<CreateTableCommand>>(m_CommandObserver_CreateTableCommandReceived);
             m_CommandObserver.ListTableCommandReceived += new EventHandler<CommandEventArgs<ListTableCommand>>(m_CommandObserver_ListTableCommandReceived);
         }
+        public override void OnReceiveCrashed(Exception e)
+        {
+            if (e is IOException)
+            {
+                Console.WriteLine("Server lost connection with " + m_PlayerName);
+                m_Lobby.RemoveName(m_PlayerName);
+                Close();
+            }
+            else
+                base.OnReceiveCrashed(e);
+        }
+
         protected override void Send(string line)
         {
             Console.WriteLine("Server SEND to " + m_PlayerName + " [" + line + "]");

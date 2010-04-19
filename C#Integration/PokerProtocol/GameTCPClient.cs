@@ -9,6 +9,7 @@ using PokerWorld.Game;
 using System.Net.Sockets;
 using PokerProtocol.Commands.Game;
 using EricUtility.Games.CardGame;
+using System.IO;
 
 namespace PokerProtocol
 {
@@ -88,6 +89,26 @@ namespace PokerProtocol
         {
             Send(new DisconnectCommand());
             return true;
+        }
+        public override void OnReceiveCrashed(Exception e)
+        {
+            if (e is IOException)
+            {
+                Console.WriteLine("Table lost connection with server");
+                Close();
+            }
+            else
+                base.OnReceiveCrashed(e);
+        }
+        public override void OnSendCrashed(Exception e)
+        {
+            if (e is IOException)
+            {
+                Console.WriteLine("Table lost connection with server");
+                Close();
+            }
+            else
+                base.OnSendCrashed(e);
         }
         protected override void InitializeCommandObserver()
         {

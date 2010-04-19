@@ -57,7 +57,7 @@ namespace PokerProtocol
             string s = Receive(reader);
             StringTokenizer token = new StringTokenizer(s, AbstractCommand.Delimitter);
             string commandName = token.NextToken();
-            while (commandName != expected)
+            while (s != null && commandName != expected)
             {
                 s = Receive(reader);
                 token = new StringTokenizer(s, AbstractCommand.Delimitter);
@@ -79,6 +79,26 @@ namespace PokerProtocol
                 return null;
             }
             return line;
+        }
+        public override void OnReceiveCrashed(Exception e)
+        {
+            if (e is IOException)
+            {
+                Console.WriteLine("Lobby lost connection with server");
+                Disconnect();
+            }
+            else
+                base.OnReceiveCrashed(e);
+        }
+        public override void OnSendCrashed(Exception e)
+        {
+            if (e is IOException)
+            {
+                Console.WriteLine("Lobby lost connection with server");
+                Disconnect();
+            }
+            else
+                base.OnSendCrashed(e);
         }
         private void Send(StreamWriter writer, AbstractCommand command)
         {
@@ -106,6 +126,8 @@ namespace PokerProtocol
             m_PlayerName = name;
             Send(new IdentifyCommand(m_PlayerName));
             StringTokenizer token = ReceiveCommand(IdentifyResponse.COMMAND_NAME);
+            if (!token.HasMoreTokens())
+                return false;
             IdentifyResponse response = new IdentifyResponse(token);
             return response.OK;
         }
@@ -135,6 +157,8 @@ namespace PokerProtocol
                 Send(toTable, new IdentifyCommand(m_PlayerName));
 
                 StringTokenizer token = ReceiveCommand(fromTable, IdentifyResponse.COMMAND_NAME);
+                if (!token.HasMoreTokens())
+                    return null;
                 IdentifyResponse response = new IdentifyResponse(token);
                 if (!response.OK)
                 {
@@ -145,6 +169,8 @@ namespace PokerProtocol
                 JoinTableCommand command = new JoinTableCommand(m_PlayerName, p_tableName);
                 Send(toTable, command);
                 StringTokenizer token2 = ReceiveCommand(fromTable, JoinTableResponse.COMMAND_NAME);
+                if (!token2.HasMoreTokens())
+                    return null;
                 JoinTableResponse response2 = new JoinTableResponse(token2);
                 int noSeat = response2.NoSeat;
 
@@ -178,8 +204,13 @@ namespace PokerProtocol
             Send(new CreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
 
             StringTokenizer token = ReceiveCommand(CreateTableResponse.COMMAND_NAME);
-            CreateTableResponse response = new CreateTableResponse(token);
-            return response.Port;
+            if (token.HasMoreTokens())
+            {
+                CreateTableResponse response = new CreateTableResponse(token);
+                return response.Port;
+            }
+            else
+                return -1;
         }
 
         public List<TupleTableInfo> getListTables()
@@ -187,8 +218,13 @@ namespace PokerProtocol
             Send(new ListTableCommand());
 
             StringTokenizer token = ReceiveCommand(ListTableResponse.COMMAND_NAME);
-            ListTableResponse response = new ListTableResponse(token);
-            return response.Tables;
+            if (token.HasMoreTokens())
+            {
+                ListTableResponse response = new ListTableResponse(token);
+                return response.Tables;
+            }
+            else 
+                return new List<TupleTableInfo>();
         }
     }
 }

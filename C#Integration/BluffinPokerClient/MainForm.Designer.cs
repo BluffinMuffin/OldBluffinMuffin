@@ -40,7 +40,7 @@
             this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
             this.datTables = new System.Windows.Forms.DataGridView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PokerTableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.GameType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.BigBlind = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NbPlayers = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -103,6 +103,7 @@
             // btnRefresh
             // 
             this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnRefresh.Enabled = false;
             this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(50, 22);
@@ -112,6 +113,7 @@
             // btnAddTable
             // 
             this.btnAddTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnAddTable.Enabled = false;
             this.btnAddTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAddTable.Name = "btnAddTable";
             this.btnAddTable.Size = new System.Drawing.Size(65, 22);
@@ -121,6 +123,7 @@
             // btnJoinTable
             // 
             this.btnJoinTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnJoinTable.Enabled = false;
             this.btnJoinTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnJoinTable.Name = "btnJoinTable";
             this.btnJoinTable.Size = new System.Drawing.Size(64, 22);
@@ -130,6 +133,7 @@
             // btnLeaveTable
             // 
             this.btnLeaveTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnLeaveTable.Enabled = false;
             this.btnLeaveTable.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnLeaveTable.Name = "btnLeaveTable";
             this.btnLeaveTable.Size = new System.Drawing.Size(73, 22);
@@ -144,7 +148,7 @@
             this.datTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.datTables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
-            this.TableName,
+            this.PokerTableName,
             this.GameType,
             this.BigBlind,
             this.NbPlayers});
@@ -177,12 +181,12 @@
             this.ID.Name = "ID";
             this.ID.ReadOnly = true;
             // 
-            // Name
+            // PokerTableName
             // 
-            this.TableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TableName.HeaderText = "Name";
-            this.TableName.Name = "Name";
-            this.TableName.ReadOnly = true;
+            this.PokerTableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.PokerTableName.HeaderText = "Name";
+            this.PokerTableName.Name = "PokerTableName";
+            this.PokerTableName.ReadOnly = true;
             // 
             // GameType
             // 
@@ -211,6 +215,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.statusStrip1);
+            this.Name = "MainForm";
             this.Text = "Poker Client C# Lobby 1.0";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -234,8 +239,9 @@
         private System.Windows.Forms.ToolStripButton btnAddTable;
         private System.Windows.Forms.ToolStripButton btnJoinTable;
         private System.Windows.Forms.ToolStripButton btnLeaveTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn TableName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PokerTableName;
         private System.Windows.Forms.DataGridViewTextBoxColumn GameType;
         private System.Windows.Forms.DataGridViewTextBoxColumn BigBlind;
         private System.Windows.Forms.DataGridViewTextBoxColumn NbPlayers;
