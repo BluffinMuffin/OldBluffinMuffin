@@ -239,7 +239,6 @@
         private System.Windows.Forms.ToolStripButton btnAddTable;
         private System.Windows.Forms.ToolStripButton btnJoinTable;
         private System.Windows.Forms.ToolStripButton btnLeaveTable;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TableName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn PokerTableName;
         private System.Windows.Forms.DataGridViewTextBoxColumn GameType;
