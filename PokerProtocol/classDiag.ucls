@@ -1,0 +1,414 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.LobbyTCPClient" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/LobbyTCPClient.java" binary="false">    
+    <position x="1124" y="41" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.TuplePlayerInfo" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/TuplePlayerInfo.java" binary="false">    
+    <position x="345" y="532" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.GameTCPClient" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/GameTCPClient.java" binary="false">    
+    <position x="1122" y="107" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.GameTCPServer" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/GameTCPServer.java" binary="false">    
+    <position x="1120" y="180" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.TupleTableInfo" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/TupleTableInfo.java" binary="false">    
+    <position x="85" y="502" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="protocol.commands.ICommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false">    
+    <position x="448" y="256" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.DisconnectCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/DisconnectCommand.java" binary="false">    
+    <position x="272" y="55" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerJoinedCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/PlayerJoinedCommand.java" binary="false">    
+    <position x="462" y="50" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerTurnBeganCommand" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/game/PlayerTurnBeganCommand.java" binary="false">    
+    <position x="655" y="48" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerHoleCardsChangedCommand" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/game/PlayerHoleCardsChangedCommand.java" 
+    binary="false">    
+    <position x="869" y="78" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerPlayMoneyCommand" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/game/PlayerPlayMoneyCommand.java" binary="false">    
+    <position x="894" y="131" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.GameEndedCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/GameEndedCommand.java" binary="false">    
+    <position x="937" y="178" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerLeftCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/PlayerLeftCommand.java" binary="false">    
+    <position x="985" y="283" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.BetTurnStartedCommand" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/game/BetTurnStartedCommand.java" binary="false">    
+    <position x="980" y="337" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.GameStartedCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/GameStartedCommand.java" binary="false">    
+    <position x="934" y="389" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.TableClosedCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/TableClosedCommand.java" binary="false">    
+    <position x="256" y="420" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.TableInfoCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/TableInfoCommand.java" binary="false">    
+    <position x="351" y="471" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.BetTurnEndedCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/BetTurnEndedCommand.java" binary="false">    
+    <position x="508" y="485" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerMoneyChangedCommand" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/game/PlayerMoneyChangedCommand.java" 
+    binary="false">    
+    <position x="709" y="484" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerWonPotCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/game/PlayerWonPotCommand.java" binary="false">    
+    <position x="810" y="435" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.game.PlayerTurnEndedCommand" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/game/PlayerTurnEndedCommand.java" binary="false">    
+    <position x="961" y="231" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.CreateTableCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/lobby/CreateTableCommand.java" binary="false">    
+    <position x="89" y="90" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.JoinTableCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/lobby/JoinTableCommand.java" binary="false">    
+    <position x="91" y="191" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.IdentifyCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/lobby/IdentifyCommand.java" binary="false">    
+    <position x="92" y="289" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.ListTableCommand" project="PokerProtocol" 
+    file="/PokerProtocol/src/protocol/commands/lobby/ListTableCommand.java" binary="false">    
+    <position x="88" y="397" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.response.ListTableResponse" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/lobby/response/ListTableResponse.java" 
+    binary="false">    
+    <position x="86" y="442" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.response.IdentifyResponse" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/lobby/response/IdentifyResponse.java" 
+    binary="false">    
+    <position x="93" y="333" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.response.JoinTableResponse" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/lobby/response/JoinTableResponse.java" 
+    binary="false">    
+    <position x="92" y="235" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="protocol.commands.lobby.response.CreateTableResponse" 
+    project="PokerProtocol" file="/PokerProtocol/src/protocol/commands/lobby/response/CreateTableResponse.java" 
+    binary="false">    
+    <position x="89" y="133" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.BetTurnEndedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/BetTurnEndedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.response.ListTableResponse" 
+      file="/PokerProtocol/src/protocol/commands/lobby/response/ListTableResponse.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerWonPotCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerWonPotCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.CreateTableCommand" 
+      file="/PokerProtocol/src/protocol/commands/lobby/CreateTableCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.GameStartedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/GameStartedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.response.JoinTableResponse" 
+      file="/PokerProtocol/src/protocol/commands/lobby/response/JoinTableResponse.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <association>    
+    <source project="PokerProtocol" name="protocol.commands.game.TableInfoCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/TableInfoCommand.java" binary="false" navigable="false">      
+      <attribute name="m_seats"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerProtocol" name="protocol.TuplePlayerInfo" 
+      file="/PokerProtocol/src/protocol/TuplePlayerInfo.java" binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.JoinTableCommand" 
+      file="/PokerProtocol/src/protocol/commands/lobby/JoinTableCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerMoneyChangedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerMoneyChangedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.DisconnectCommand" 
+      file="/PokerProtocol/src/protocol/commands/DisconnectCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.TableInfoCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/TableInfoCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.response.IdentifyResponse" 
+      file="/PokerProtocol/src/protocol/commands/lobby/response/IdentifyResponse.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.IdentifyCommand" 
+      file="/PokerProtocol/src/protocol/commands/lobby/IdentifyCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.BetTurnStartedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/BetTurnStartedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.GameEndedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/GameEndedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerTurnBeganCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerTurnBeganCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.ListTableCommand" 
+      file="/PokerProtocol/src/protocol/commands/lobby/ListTableCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerLeftCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerLeftCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.response.CreateTableResponse" 
+      file="/PokerProtocol/src/protocol/commands/lobby/response/CreateTableResponse.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerPlayMoneyCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerPlayMoneyCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.TableClosedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/TableClosedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <association>    
+    <source project="PokerProtocol" name="protocol.commands.lobby.response.ListTableResponse" 
+      file="/PokerProtocol/src/protocol/commands/lobby/response/ListTableResponse.java" binary="false" navigable="false">      
+      <attribute name="m_tables"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerProtocol" name="protocol.TupleTableInfo" 
+      file="/PokerProtocol/src/protocol/TupleTableInfo.java" binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerProtocol" name="protocol.LobbyTCPClient" 
+      file="/PokerProtocol/src/protocol/LobbyTCPClient.java" binary="false" navigable="false">      
+      <attribute name="m_clients"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerProtocol" name="protocol.GameTCPClient" file="/PokerProtocol/src/protocol/GameTCPClient.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerHoleCardsChangedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerHoleCardsChangedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerTurnEndedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerTurnEndedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <realization>    
+    <source project="PokerProtocol" name="protocol.commands.game.PlayerJoinedCommand" 
+      file="/PokerProtocol/src/protocol/commands/game/PlayerJoinedCommand.java" binary="false"/>    
+    <target project="PokerProtocol" name="protocol.commands.ICommand" 
+      file="/PokerProtocol/src/protocol/commands/ICommand.java" binary="false"/>  
+  </realization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="false"/>
+</class-diagram>

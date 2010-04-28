@@ -1,0 +1,132 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.game.JPanelPlayerHud" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/game/JPanelPlayerHud.java" binary="false">    
+    <position x="499" y="152" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.game.JPanelCard" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/game/JPanelCard.java" binary="false">    
+    <position x="595" y="304" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.game.JFrameTableViewer" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/game/JFrameTableViewer.java" binary="false">    
+    <position x="766" y="141" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.game.AbstractJFrameTable" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/game/AbstractJFrameTable.java" binary="false">    
+    <position x="765" y="43" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.game.JFrameTable" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/game/JFrameTable.java" binary="false">    
+    <position x="766" y="240" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.lobby.JDialogNameUsed" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/lobby/JDialogNameUsed.java" binary="false">    
+    <position x="420" y="51" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.lobby.JDialogAddTable" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/lobby/JDialogAddTable.java" binary="false">    
+    <position x="288" y="50" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.JPanelConsole" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/JPanelConsole.java" binary="false">    
+    <position x="925" y="138" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="gui.JDialogHandStrength" project="BluffinPokerGUI" 
+    file="/BluffinPokerGUI/src/gui/JDialogHandStrength.java" binary="false">    
+    <position x="573" y="44" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <generalization>    
+    <source project="BluffinPokerGUI" name="gui.game.JFrameTable" file="/BluffinPokerGUI/src/gui/game/JFrameTable.java" 
+      binary="false"/>    
+    <target project="BluffinPokerGUI" name="gui.game.JFrameTableViewer" 
+      file="/BluffinPokerGUI/src/gui/game/JFrameTableViewer.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="BluffinPokerGUI" name="gui.game.JFrameTableViewer" 
+      file="/BluffinPokerGUI/src/gui/game/JFrameTableViewer.java" binary="false" navigable="false">      
+      <attribute name="gameCardJPanel2"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="BluffinPokerGUI" name="gui.game.JPanelCard" file="/BluffinPokerGUI/src/gui/game/JPanelCard.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="BluffinPokerGUI" name="gui.game.JFrameTableViewer" 
+      file="/BluffinPokerGUI/src/gui/game/JFrameTableViewer.java" binary="false" navigable="false">      
+      <attribute name="jBottomConsolePanel"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="BluffinPokerGUI" name="gui.JPanelConsole" file="/BluffinPokerGUI/src/gui/JPanelConsole.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization>    
+    <source project="BluffinPokerGUI" name="gui.game.JFrameTableViewer" 
+      file="/BluffinPokerGUI/src/gui/game/JFrameTableViewer.java" binary="false"/>    
+    <target project="BluffinPokerGUI" name="gui.game.AbstractJFrameTable" 
+      file="/BluffinPokerGUI/src/gui/game/AbstractJFrameTable.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <source project="BluffinPokerGUI" name="gui.game.JFrameTableViewer" 
+      file="/BluffinPokerGUI/src/gui/game/JFrameTableViewer.java" binary="false" navigable="false">      
+      <attribute name="jHudPanel17"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="BluffinPokerGUI" name="gui.game.JPanelPlayerHud" 
+      file="/BluffinPokerGUI/src/gui/game/JPanelPlayerHud.java" binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="BluffinPokerGUI" name="gui.game.JPanelPlayerHud" 
+      file="/BluffinPokerGUI/src/gui/game/JPanelPlayerHud.java" binary="false" navigable="false">      
+      <attribute name="cardPanel2"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="BluffinPokerGUI" name="gui.game.JPanelCard" file="/BluffinPokerGUI/src/gui/game/JPanelCard.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="false"/>
+</class-diagram>

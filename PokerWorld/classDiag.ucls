@@ -1,0 +1,289 @@
+<class-diagram version="0.9.86" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="false">  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="game.TypeCardSuit" project="PokerWorld" 
+    file="/PokerWorld/src/game/TypeCardSuit.java" binary="false">    
+    <position x="41" y="419" width="116" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="game.TypeCardRank" project="PokerWorld" 
+    file="/PokerWorld/src/game/TypeCardRank.java" binary="false">    
+    <position x="197" y="419" width="116" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="game.CardSet" project="PokerWorld" 
+    file="/PokerWorld/src/game/CardSet.java" binary="false">    
+    <position x="119" y="209" width="84" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="game.Card" project="PokerWorld" 
+    file="/PokerWorld/src/game/Card.java" binary="false">    
+    <position x="119" y="304" width="84" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="poker.game.PokerGame.TypeRoundState" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/PokerGame.java" binary="false">    
+    <position x="625" y="81" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="poker.game.PlayerInfo" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/PlayerInfo.java" binary="false">    
+    <position x="514" y="445" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="poker.game.TypeRound" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/TypeRound.java" binary="false">    
+    <position x="531" y="272" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="poker.game.TableInfo" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/TableInfo.java" binary="false">    
+    <position x="409" y="278" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="poker.game.MoneyPot" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/MoneyPot.java" binary="false">    
+    <position x="409" y="363" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <interface corner="BOTTOM_RIGHT" language="java" name="poker.game.IPokerGame" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/IPokerGame.java" binary="false">    
+    <position x="471" y="89" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </interface>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="poker.game.TypeBet" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/TypeBet.java" binary="false">    
+    <position x="570" y="363" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <enumeration corner="BOTTOM_RIGHT" language="java" name="poker.game.PokerGame.TypeState" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/PokerGame.java" binary="false">    
+    <position x="689" y="278" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </enumeration>  
+  <class corner="BOTTOM_RIGHT" language="java" name="poker.game.PokerGame" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/PokerGame.java" binary="false">    
+    <position x="470" y="193" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="poker.game.dealer.AbstractDealer" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/dealer/AbstractDealer.java" binary="false">    
+    <position x="5" y="143" width="111" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <class corner="BOTTOM_RIGHT" language="java" name="poker.game.dealer.RandomDealer" project="PokerWorld" 
+    file="/PokerWorld/src/poker/game/dealer/RandomDealer.java" binary="false">    
+    <position x="5" y="228" width="107" height="45"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false"/>      
+      <operations public="false" package="false" protected="false" private="false"/>    
+    </display>  
+  </class>  
+  <association>    
+    <bendpoint x="406" y="449"/>    
+    <source project="PokerWorld" name="poker.game.PlayerInfo" file="/PokerWorld/src/poker/game/PlayerInfo.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_cards"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="game.CardSet" file="/PokerWorld/src/game/CardSet.java" binary="false" 
+      navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization>    
+    <source project="PokerWorld" name="poker.game.dealer.RandomDealer" 
+      file="/PokerWorld/src/poker/game/dealer/RandomDealer.java" binary="false"/>    
+    <target project="PokerWorld" name="poker.game.dealer.AbstractDealer" 
+      file="/PokerWorld/src/poker/game/dealer/AbstractDealer.java" binary="false"/>  
+  </generalization>  
+  <association>    
+    <bendpoint x="481" y="341"/>    
+    <source project="PokerWorld" name="poker.game.TableInfo" file="/PokerWorld/src/poker/game/TableInfo.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_players"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.PlayerInfo" file="/PokerWorld/src/poker/game/PlayerInfo.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.TableInfo" file="/PokerWorld/src/poker/game/TableInfo.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_pots"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.MoneyPot" file="/PokerWorld/src/poker/game/MoneyPot.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.PokerGame" file="/PokerWorld/src/poker/game/PokerGame.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_table"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.TableInfo" file="/PokerWorld/src/poker/game/TableInfo.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.TableInfo" file="/PokerWorld/src/poker/game/TableInfo.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_round"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.TypeRound" file="/PokerWorld/src/poker/game/TypeRound.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="game.Card" file="/PokerWorld/src/game/Card.java" binary="false" navigable="false">      
+      <attribute name="m_rank"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="game.TypeCardRank" file="/PokerWorld/src/game/TypeCardRank.java" binary="false" 
+      navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <realization>    
+    <source project="PokerWorld" name="poker.game.PokerGame" file="/PokerWorld/src/poker/game/PokerGame.java" 
+      binary="false"/>    
+    <target project="PokerWorld" name="poker.game.IPokerGame" file="/PokerWorld/src/poker/game/IPokerGame.java" 
+      binary="false"/>  
+  </realization>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.PokerGame" file="/PokerWorld/src/poker/game/PokerGame.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_dealer"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.dealer.AbstractDealer" 
+      file="/PokerWorld/src/poker/game/dealer/AbstractDealer.java" binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.dealer.AbstractDealer" 
+      file="/PokerWorld/src/poker/game/dealer/AbstractDealer.java" binary="false" navigable="false">      
+      <attribute name="m_deck"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="game.CardSet" file="/PokerWorld/src/game/CardSet.java" binary="false" 
+      navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.PokerGame" file="/PokerWorld/src/poker/game/PokerGame.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_state"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.PokerGame.TypeState" file="/PokerWorld/src/poker/game/PokerGame.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.TableInfo" file="/PokerWorld/src/poker/game/TableInfo.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_betLimit"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.TypeBet" file="/PokerWorld/src/poker/game/TypeBet.java" binary="false" 
+      navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="game.Card" file="/PokerWorld/src/game/Card.java" binary="false" navigable="false">      
+      <attribute name="m_suit"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="game.TypeCardSuit" file="/PokerWorld/src/game/TypeCardSuit.java" binary="false" 
+      navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.PokerGame" file="/PokerWorld/src/poker/game/PokerGame.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_roundState"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.PokerGame.TypeRoundState" 
+      file="/PokerWorld/src/poker/game/PokerGame.java" binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.MoneyPot" file="/PokerWorld/src/poker/game/MoneyPot.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_attachedPlayers"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerWorld" name="poker.game.PlayerInfo" file="/PokerWorld/src/poker/game/PlayerInfo.java" 
+      binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="game.CardSet" file="/PokerWorld/src/game/CardSet.java" binary="false" 
+      navigable="false">      
+      <attribute name="cards"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </source>    
+    <target project="PokerWorld" name="game.Card" file="/PokerWorld/src/game/Card.java" binary="false" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association>    
+    <source project="PokerWorld" name="poker.game.TableInfo" file="/PokerWorld/src/poker/game/TableInfo.java" 
+      binary="false" navigable="false">      
+      <attribute name="m_cards"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </source>    
+    <target project="PokerWorld" name="game.CardSet" file="/PokerWorld/src/game/CardSet.java" binary="false" 
+      navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="false" visibility="false">    
+    <attributes public="false" package="false" protected="false" private="false"/>    
+    <operations public="false" package="false" protected="false" private="false"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="false"/>
+</class-diagram>
