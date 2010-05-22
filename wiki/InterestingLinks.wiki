@@ -5,3 +5,5 @@
   * http://www.codingthewheel.com/archives/how-i-built-a-working-online-poker-bot-8
   * http://www.pokerstove.com/
   * http://www.safdar.net/shabbir/2009/04/combinatorics-in-texas-holdem-limit-poker.html
+  *
+  * http://pokarena.org/pokarena/app/ AWESOME
