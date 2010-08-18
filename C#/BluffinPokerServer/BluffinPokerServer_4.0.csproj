@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C4AED52C-F09D-487F-8D58-E54087909959}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BluffinPokerServer_4._0</RootNamespace>
+    <AssemblyName>BluffinPokerServer_4.0</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerClientLobby.cs" />
+    <Compile Include="ServerClientTableManager.cs" />
+    <Compile Include="ServerLobby.cs" />
+    <Compile Include="ServerTableManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_4.0.csproj">
+      <Project>{455F649D-B01B-4B20-B648-805461BF3142}</Project>
+      <Name>EricUtilityNetworking_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtility\EricUtility_4.0.csproj">
+      <Project>{31541BBE-B408-4719-BFCE-03947BB7AB0E}</Project>
+      <Name>EricUtility_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerProtocol\PokerProtocol_4.0.csproj">
+      <Project>{D442BF36-E1B5-4F91-975A-B10B1F23E41A}</Project>
+      <Name>PokerProtocol_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerWorld\PokerWorld_4.0.csproj">
+      <Project>{FBAA74EB-22CE-4C30-9D10-0214B605578A}</Project>
+      <Name>PokerWorld_4.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D442BF36-E1B5-4F91-975A-B10B1F23E41A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PokerProtocol_4._0</RootNamespace>
+    <AssemblyName>PokerProtocol_4.0</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\Game\BetTurnEndedCommand.cs" />
+    <Compile Include="Commands\Game\BetTurnStartedCommand.cs" />
+    <Compile Include="Commands\Game\GameEndedCommand.cs" />
+    <Compile Include="Commands\Game\GameStartedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerHoleCardsChangedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerJoinedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerLeftCommand.cs" />
+    <Compile Include="Commands\Game\PlayerMoneyChangedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerPlayMoneyCommand.cs" />
+    <Compile Include="Commands\Game\PlayerTurnBeganCommand.cs" />
+    <Compile Include="Commands\Game\PlayerTurnEndedCommand.cs" />
+    <Compile Include="Commands\Game\PlayerWonPotCommand.cs" />
+    <Compile Include="Commands\Game\TableClosedCommand.cs" />
+    <Compile Include="Commands\Game\TableInfoCommand.cs" />
+    <Compile Include="Commands\Lobby\CreateTableCommand.cs" />
+    <Compile Include="Commands\Lobby\IdentifyCommand.cs" />
+    <Compile Include="Commands\Lobby\JoinTableCommand.cs" />
+    <Compile Include="Commands\Lobby\ListTableCommand.cs" />
+    <Compile Include="Commands\Lobby\Response\CreateTableResponse.cs" />
+    <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
+    <Compile Include="Commands\Lobby\Response\JoinTableResponse.cs" />
+    <Compile Include="Commands\Lobby\Response\ListTableResponse.cs" />
+    <Compile Include="GameTCPClient.cs" />
+    <Compile Include="GameTCPServer.cs" />
+    <Compile Include="LobbyTCPClient.cs" />
+    <Compile Include="Observer\GameClientCommandObserver.cs" />
+    <Compile Include="Observer\GameServerCommandObserver.cs" />
+    <Compile Include="Observer\LobbyServerCommandObserver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TuplePlayerInfo.cs" />
+    <Compile Include="TupleTableInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_4.0.csproj">
+      <Project>{5CE81EA0-A5B0-4877-A37F-33897BD58642}</Project>
+      <Name>EricUtilityGames_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_4.0.csproj">
+      <Project>{455F649D-B01B-4B20-B648-805461BF3142}</Project>
+      <Name>EricUtilityNetworking_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtility\EricUtility_4.0.csproj">
+      <Project>{31541BBE-B408-4719-BFCE-03947BB7AB0E}</Project>
+      <Name>EricUtility_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerWorld\PokerWorld_4.0.csproj">
+      <Project>{FBAA74EB-22CE-4C30-9D10-0214B605578A}</Project>
+      <Name>PokerWorld_4.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
