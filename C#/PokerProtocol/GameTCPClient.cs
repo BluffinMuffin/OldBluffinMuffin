@@ -185,6 +185,13 @@ namespace PokerProtocol
             m_PokerTable.NoSeatDealer = command.NoSeatD;
             m_PokerTable.NoSeatSmallBlind = command.NoSeatSB;
             m_PokerTable.NoSeatBigBlind = command.NoSeatBB;
+
+            // TODO: RICK: This is nice but, si le player passe pas par tcp (direct, hooking, etc) il saura pas quoi faire lors des blinds.
+            if (m_PokerTable.NoSeatSmallBlind == m_TablePosition)
+                Send(new PlayerPlayMoneyCommand(m_PokerTable.SmallBlindAmnt));
+            if (m_PokerTable.NoSeatBigBlind == m_TablePosition)
+                Send(new PlayerPlayMoneyCommand(m_PokerTable.BigBlindAmnt));
+
             GameBlindNeeded(this, new EventArgs());
         }
 

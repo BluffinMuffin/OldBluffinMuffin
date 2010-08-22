@@ -138,15 +138,6 @@ namespace PokerProtocol
         {
             TableInfo t = m_Game.Table;
             Send(new GameStartedCommand(t.NoSeatDealer, t.NoSeatSmallBlind, t.NoSeatBigBlind));
-            // TODO: eventuellement le client devrait par lui meme repondre a cette question
-            if (m_Player.NoSeat == t.NoSeatSmallBlind)
-            {
-                m_Game.PlayMoney(m_Player, t.SmallBlindAmnt);
-            }
-            else if (m_Player.NoSeat == t.NoSeatBigBlind)
-            {
-                m_Game.PlayMoney(m_Player, t.BigBlindAmnt);
-            }
         }
 
         void m_Game_GameBettingRoundStarted(object sender, RoundEventArgs e)
@@ -183,8 +174,17 @@ namespace PokerProtocol
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
             m_IsConnected = false;
-            m_Game.LeaveGame(m_Player);
-
+            m_Player.IsZombie = true;
+            TableInfo t = m_Game.Table;
+            if( m_Game.State == PokerGame.TypeState.WaitForPlayers )
+                m_Game.LeaveGame(m_Player);
+            else if (t.NoSeatCurrPlayer == m_Player.NoSeat)
+            {
+                if( t.CanCheck(m_Player) )
+                    m_Game.PlayMoney(m_Player, 0);
+                else
+                    m_Game.PlayMoney(m_Player, -1);
+            }
             Close();
         }
 

@@ -25,7 +25,7 @@ namespace PokerWorld.Game
         private bool m_IsPlaying; // Est-il en train de jouer ? Faux si Folded, AllIn or NotPlaying
         private bool m_IsAllIn; // Est-il All-in ? Vrai si All-in
         private bool m_IsShowingCards; // Montre-il ses cartes ? Vrai si showdown
-
+        private bool m_Zombie; // Est-ce que le vrai player a quitté la partie ? Vrai si zombie
 
         public string Name
         {
@@ -104,6 +104,11 @@ namespace PokerWorld.Game
                 m_IsPlaying = false;
                 m_IsAllIn = value;
             }
+        }
+        public bool IsZombie
+        {
+            get { return m_Zombie; }
+            set { m_Zombie = value; }
         }
         public bool IsShowingCards
         {

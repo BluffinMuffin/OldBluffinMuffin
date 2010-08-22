@@ -118,10 +118,10 @@ namespace BluffinPokerGui.Game
             }
             TableInfo table = m_Game.Table;
             // TODO: RICK: update POTS
-            foreach (PlayerInfo p in table.Players)
+            for (int i = 0; i < huds.Length; ++i)
             {
-                huds[p.NoSeat].DoAction(TypeAction.DoNothing, 0);
-                bets[p.NoSeat].Text = "";
+                huds[i].DoAction(TypeAction.DoNothing, 0);
+                bets[i].Text = "";
             }
         }
 
@@ -171,19 +171,22 @@ namespace BluffinPokerGui.Game
             TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
             {
-                PokerPlayerHud php = huds[p.NoSeat];
-                Label bet = bets[p.NoSeat];
-                bet.Text = "";
-                php.SetMoney(p.MoneySafeAmnt);
-                php.SetNotDealer();
-                php.SetNoBlind();
-                php.SetSleeping();
-                if (p.MoneySafeAmnt == 0)
+                if (p != null)
                 {
-                    php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
-                    php.Alive = false;
+                    PokerPlayerHud php = huds[p.NoSeat];
+                    Label bet = bets[p.NoSeat];
+                    bet.Text = "";
+                    php.SetMoney(p.MoneySafeAmnt);
+                    php.SetNotDealer();
+                    php.SetNoBlind();
+                    php.SetSleeping();
+                    if (p.MoneySafeAmnt == 0)
+                    {
+                        php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
+                        php.Alive = false;
+                    }
+                    php.DoAction(TypeAction.DoNothing);
                 }
-                php.DoAction(TypeAction.DoNothing);
             }
         }
 
