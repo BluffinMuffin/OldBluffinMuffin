@@ -2,11 +2,9 @@ package protocol;
 
 import game.Card;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import poker.game.IPokerGame;
 import poker.game.MoneyPot;
@@ -32,6 +30,7 @@ import protocol.commands.game.PlayerTurnEndedCommand;
 import protocol.commands.game.PlayerWonPotCommand;
 import protocol.commands.game.TableClosedCommand;
 import protocol.commands.game.TableInfoCommand;
+import protocol.commands.lobby.GameCommand;
 import protocol.observer.game.GameClientAdapter;
 import protocol.observer.game.GameClientObserver;
 
@@ -44,29 +43,22 @@ public class GameTCPClient implements IPokerGame
     private final String m_playerName;
     
     // Communication with the server
-    Socket m_socket = null;
-    BufferedReader m_fromServer = null;
-    PrintWriter m_toServer = null;
+    private boolean m_isConnected = true;
+    private final BlockingQueue<String> m_incoming = new LinkedBlockingQueue<String>();
+    private final int m_tableID;
+    private final LobbyTCPClient m_comm;
     
-    public GameTCPClient(Socket socket, BufferedReader serverReader, int tablePosition, String name)
+    public GameTCPClient(LobbyTCPClient comm, int tableID, int tablePosition, String name)
     {
-        m_socket = socket;
+        m_comm = comm;
+        m_tableID = tableID;
         m_tablePosition = tablePosition;
         m_playerName = name;
-        try
-        {
-            m_fromServer = serverReader;
-            m_toServer = new PrintWriter(m_socket.getOutputStream(), true);
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
     }
     
     public boolean isConnected()
     {
-        return (m_socket != null) && m_socket.isConnected() && !m_socket.isClosed();
+        return m_isConnected;
     }
     
     public void start()
@@ -77,19 +69,19 @@ public class GameTCPClient implements IPokerGame
             public void run()
             {
                 initializeCommandObserver();
-                try
+                while (isConnected())
                 {
-                    while (isConnected())
+                    try
                     {
                         if (receive() == null)
                         {
                             break;
                         }
                     }
-                }
-                catch (final IOException e)
-                {
-                    /* e.printStackTrace(); */
+                    catch (final InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 
                 disconnect();
@@ -99,39 +91,12 @@ public class GameTCPClient implements IPokerGame
     
     public void disconnect()
     {
-        try
-        {
-            if (isConnected())
-            {
-                // Alors on disconnect
-                send(new DisconnectCommand());
-                if (m_fromServer != null)
-                {
-                    m_fromServer.close();
-                }
-                if (m_toServer != null)
-                {
-                    m_toServer.close();
-                }
-                if (m_socket != null)
-                {
-                    m_socket.close();
-                }
-                m_socket = null;
-                m_fromServer = null;
-                m_toServer = null;
-            }
-        }
-        catch (final IOException e)
-        {
-            e.printStackTrace();
-        }
+        m_isConnected = false;
     }
     
     protected void sendMessage(String p_msg)
     {
-        System.out.println(m_playerName + " SEND [" + p_msg + "]");
-        m_toServer.println(p_msg);
+        m_comm.send(new GameCommand(m_tableID, p_msg));
     }
     
     protected void send(ICommand p_msg)
@@ -139,9 +104,14 @@ public class GameTCPClient implements IPokerGame
         sendMessage(p_msg.encodeCommand());
     }
     
-    protected String receive() throws IOException
+    public void incoming(String s) throws InterruptedException
     {
-        final String line = m_fromServer.readLine();
+        m_incoming.put(s);
+    }
+    
+    protected String receive() throws InterruptedException
+    {
+        final String line = m_incoming.take();
         m_commandObserver.receiveSomething(line);
         return line;
     }
@@ -437,11 +407,7 @@ public class GameTCPClient implements IPokerGame
     
     public int getNoPort()
     {
-        if (m_socket == null)
-        {
-            return -1;
-        }
-        return m_socket.getPort();
+        return m_tableID;
     }
     
     @Override

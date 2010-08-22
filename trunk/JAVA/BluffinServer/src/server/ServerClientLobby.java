@@ -6,11 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
+import poker.game.PokerGame;
+import poker.game.TableInfo;
+import protocol.GameTCPServer;
 import protocol.commands.DisconnectCommand;
 import protocol.commands.ICommand;
 import protocol.commands.lobby.CreateTableCommand;
+import protocol.commands.lobby.GameCommand;
 import protocol.commands.lobby.IdentifyCommand;
+import protocol.commands.lobby.JoinTableCommand;
 import protocol.commands.lobby.ListTableCommand;
 import protocol.observer.lobby.LobbyServerAdapter;
 import protocol.observer.lobby.LobbyServerObserver;
@@ -23,6 +31,7 @@ public class ServerClientLobby extends Thread
     private String m_playerName = "?";
     private final ServerLobby m_lobby;
     private final LobbyServerObserver m_commandObserver = new LobbyServerObserver();
+    Map<Integer, GameTCPServer> m_tables = Collections.synchronizedMap(new TreeMap<Integer, GameTCPServer>());
     
     // Communications with the client
     private Socket m_socket = null;
@@ -55,7 +64,7 @@ public class ServerClientLobby extends Thread
      * @param p_msg
      *            - Message to send.
      */
-    protected void sendMessage(String p_msg)
+    public void sendMessage(String p_msg)
     {
         System.out.println("Server SEND to " + m_playerName + " [" + p_msg + "]");
         m_toClient.println(p_msg);
@@ -68,7 +77,7 @@ public class ServerClientLobby extends Thread
         return line;
     }
     
-    protected void send(ICommand p_msg)
+    public void send(ICommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
     }
@@ -133,9 +142,6 @@ public class ServerClientLobby extends Thread
                 {
                     e.printStackTrace();
                 }
-//                m_toClient = null;
-//                m_fromClient = null;
-//                m_socket = null;
             }
             
             @Override
@@ -148,6 +154,54 @@ public class ServerClientLobby extends Thread
             public void listTableCommandReceived(ListTableCommand command)
             {
                 sendMessage(command.encodeResponse(m_lobby.listTables()));
+            }
+            
+            @Override
+            public void joinTableCommandReceived(JoinTableCommand command)
+            {
+                final GameTCPServer client = new GameTCPServer(m_lobby.getGame(command.getTableID()), m_playerName, 1500);
+                final PokerGame game = client.getGame();
+                final TableInfo table = game.getTable();
+                if (!game.isRunning())
+                {
+                    sendMessage(command.encodeErrorResponse());
+                    return;
+                }
+                
+                // Verify the player does not already playing on that table.
+                if (!table.containsPlayer(command.getPlayerName()))
+                {
+                    final boolean ok = client.joinGame();
+                    if (!ok)
+                    {
+                        sendMessage(command.encodeErrorResponse());
+                    }
+                    else
+                    {
+                        m_tables.put(command.getTableID(), client);
+                        client.start();
+                        sendMessage(command.encodeResponse(client.getPlayer().getNoSeat()));
+                        client.sitIn();
+                        new ServerClientSender(command.getTableID(), client, ServerClientLobby.this).start();
+                    }
+                }
+                else
+                {
+                    sendMessage(command.encodeErrorResponse());
+                }
+            }
+            
+            @Override
+            public void gameCommandReceived(GameCommand command)
+            {
+                try
+                {
+                    m_tables.get(command.getTableId()).incoming(command.getCommand());
+                }
+                catch (final InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
         

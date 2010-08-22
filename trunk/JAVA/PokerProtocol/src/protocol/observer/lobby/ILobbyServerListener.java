@@ -2,6 +2,7 @@ package protocol.observer.lobby;
 
 import protocol.commands.DisconnectCommand;
 import protocol.commands.lobby.CreateTableCommand;
+import protocol.commands.lobby.GameCommand;
 import protocol.commands.lobby.IdentifyCommand;
 import protocol.commands.lobby.JoinTableCommand;
 import protocol.commands.lobby.ListTableCommand;
@@ -18,4 +19,6 @@ public interface ILobbyServerListener extends ICommandListener
     void joinTableCommandReceived(JoinTableCommand command);
     
     void listTableCommandReceived(ListTableCommand command);
+    
+    void gameCommandReceived(GameCommand command);
 }

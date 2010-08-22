@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 import protocol.commands.Command;
 import protocol.commands.DisconnectCommand;
 import protocol.commands.lobby.CreateTableCommand;
+import protocol.commands.lobby.GameCommand;
 import protocol.commands.lobby.IdentifyCommand;
 import protocol.commands.lobby.JoinTableCommand;
 import protocol.commands.lobby.ListTableCommand;
@@ -15,7 +16,7 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
     @Override
     protected void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Command.DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, Command.L_DELIMITER);
         final String commandName = token.nextToken();
         
         if (commandName.equals(IdentifyCommand.COMMAND_NAME))
@@ -38,10 +39,23 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         {
             joinTables(new JoinTableCommand(token));
         }
+        else if (commandName.equals(GameCommand.COMMAND_NAME))
+        {
+            gameCommand(new GameCommand(token));
+        }
         else
         {
             super.commandReceived(line);
         }
+    }
+    
+    private void gameCommand(GameCommand gameCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.gameCommandReceived(gameCommand);
+        }
+        
     }
     
     private void joinTables(JoinTableCommand lobbyJoinTableCommand)

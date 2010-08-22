@@ -2,7 +2,6 @@ package protocol.commands;
 
 import java.util.StringTokenizer;
 
-
 public class DisconnectCommand implements ICommand
 {
     public static String COMMAND_NAME = "DISCONNECT";
@@ -20,7 +19,7 @@ public class DisconnectCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(DisconnectCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
     }
 }

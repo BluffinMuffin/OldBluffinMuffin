@@ -27,9 +27,9 @@ public class IdentifyCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(IdentifyCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_playerName);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
     }
     

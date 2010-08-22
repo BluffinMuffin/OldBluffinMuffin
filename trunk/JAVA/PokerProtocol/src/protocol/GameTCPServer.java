@@ -2,21 +2,19 @@ package protocol;
 
 import game.Card;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
 import poker.game.PokerGame;
+import poker.game.PokerGame.TypeState;
 import poker.game.TableInfo;
 import poker.game.TypeAction;
 import poker.game.TypeRound;
-import poker.game.PokerGame.TypeState;
 import poker.game.observer.PokerGameAdapter;
 import protocol.commands.DisconnectCommand;
 import protocol.commands.ICommand;
@@ -39,12 +37,10 @@ import protocol.observer.game.GameServerObserver;
 
 public class GameTCPServer implements Runnable
 {
-    // TCP Things
-    public static final int PING_INTERVAL = 10000;
-    private Socket m_socket;
-    private PrintWriter m_output;
-    private BufferedReader m_input;
-    private boolean m_isConnected;
+    // Communication Things
+    private boolean m_isConnected = true;
+    private final BlockingQueue<String> m_incoming = new LinkedBlockingQueue<String>();
+    private final BlockingQueue<String> m_outcoming = new LinkedBlockingQueue<String>();
     
     // POKER Things
     private final PlayerInfo m_player;
@@ -63,27 +59,33 @@ public class GameTCPServer implements Runnable
      * @throws IOException
      *             Error with the TCP connection
      */
-    public GameTCPServer(PokerGame game, String name, int money, Socket socket) throws IOException
+    public GameTCPServer(PokerGame game, String name, int money)
     {
         m_game = game;
         m_player = new PlayerInfo(name, money);
-        m_socket = socket;
-        m_output = new PrintWriter(m_socket.getOutputStream(), true);
-        m_input = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
-        m_isConnected = false;
         initializeCommandObserver();
     }
     
-    protected String receive() throws IOException
+    public String getOutcoming() throws InterruptedException
     {
-        final String line = m_input.readLine();
+        return m_outcoming.take();
+    }
+    
+    public void incoming(String s) throws InterruptedException
+    {
+        m_incoming.put(s);
+    }
+    
+    protected String receive() throws InterruptedException
+    {
+        final String line = m_incoming.take();
         m_commandObserver.receiveSomething(line);
         return line;
     }
     
     public boolean canStartGame()
     {
-        return m_isConnected && m_player.canPlay();
+        return m_player.canPlay();
     }
     
     /**
@@ -95,23 +97,24 @@ public class GameTCPServer implements Runnable
     protected void send(ICommand command)
     {
         // System.out.println("Server SEND TO " + this.m_name + " [" + p_msg + "]");
-        if (m_output != null)
+        try
         {
-            m_output.println(command.encodeCommand());
+            m_outcoming.put(command.encodeCommand());
         }
-    }
-    
-    /**
-     * Make the player connected
-     */
-    public void setIsConnected()
-    {
-        m_isConnected = true;
+        catch (final InterruptedException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public PlayerInfo getPlayer()
     {
         return m_player;
+    }
+    
+    public PokerGame getGame()
+    {
+        return m_game;
     }
     
     public boolean joinGame()
@@ -128,7 +131,7 @@ public class GameTCPServer implements Runnable
     
     public boolean isConnected()
     {
-        return (m_socket != null) && m_socket.isConnected() && !m_socket.isClosed();
+        return m_isConnected;
     }
     
     @Override
@@ -141,7 +144,7 @@ public class GameTCPServer implements Runnable
                 receive();
             }
         }
-        catch (final IOException e)
+        catch (final InterruptedException e)
         {
             return;
         }
@@ -207,31 +210,8 @@ public class GameTCPServer implements Runnable
             @Override
             public void everythingEnded()
             {
-                try
-                {
-                    if (m_input != null)
-                    {
-                        m_input.close();
-                    }
-                }
-                catch (final IOException e)
-                {
-                    // e.printStackTrace();
-                }
-                m_input = null;
                 send(new TableClosedCommand());
-                try
-                {
-                    m_output.close();
-                    m_input.close();
-                    m_socket.close();
-                }
-                catch (final IOException e)
-                {
-                    e.printStackTrace();
-                }
-                m_output = null;
-                m_socket = null;
+                m_isConnected = false;
             }
             
             @Override
@@ -299,26 +279,6 @@ public class GameTCPServer implements Runnable
                     {
                         m_game.playMoney(m_player, -1);
                     }
-                }
-                
-                try
-                {
-                    if (m_output != null)
-                    {
-                        m_output.close();
-                    }
-                    if (m_input != null)
-                    {
-                        m_input.close();
-                    }
-                    if (m_socket != null)
-                    {
-                        m_socket.close();
-                    }
-                }
-                catch (final IOException e)
-                {
-                    // e.printStackTrace();
                 }
             }
             

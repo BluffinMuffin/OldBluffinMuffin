@@ -27,8 +27,13 @@ public class ServerLobby extends Thread
     private final int NO_PORT;
     private final ServerSocket m_socketServer;
     private final List<String> m_UsedNames = new ArrayList<String>();
-    
+    int m_LastUsedID;
     Map<Integer, PokerGame> m_games = Collections.synchronizedMap(new TreeMap<Integer, PokerGame>());
+    
+    public PokerGame getGame(int id)
+    {
+        return m_games.get(id);
+    }
     
     public ServerLobby(int p_noPort) throws IOException
     {
@@ -106,41 +111,15 @@ public class ServerLobby extends Thread
     public int createTable(CreateTableCommand command)
     {
         listTables();
-        
-        if (m_games.size() >= 10)
+        m_LastUsedID++;
+        while (m_games.containsKey(m_LastUsedID))
         {
-            return -1;
+            m_LastUsedID++;
         }
-        int noPort = NO_PORT + 1;
-        final int endPortRange = NO_PORT + 11;
-        while (noPort != endPortRange)
-        {
-            try
-            {
-                // Find an available port for the new table.
-                // Only a certain number of port can be used at the same time.
-                while ((noPort != endPortRange) && m_games.containsKey(noPort))
-                {
-                    noPort++;
-                }
-                
-                // Create a new HoldEmTable and a new TableManager.
-                final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
-                game.start();
-                final ServerTableManager manager = new ServerTableManager(game, noPort);
-                manager.start();
-                m_games.put(noPort, game);
-                
-                return noPort;
-            }
-            catch (final IOException e)
-            {
-                noPort++;
-                // e.printStackTrace();
-            }
-        }
-        
-        return -1;
+        final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+        game.start();
+        m_games.put(m_LastUsedID, game);
+        return m_LastUsedID;
     }
     
     public synchronized ArrayList<TupleTableInfo> listTables()

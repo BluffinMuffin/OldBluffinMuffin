@@ -25,7 +25,7 @@ public class ListTableCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(ListTableCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
     }
     

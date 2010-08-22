@@ -25,7 +25,7 @@ public class PlayerLeftCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(PlayerLeftCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerPos);
         return sb.toString();
     }

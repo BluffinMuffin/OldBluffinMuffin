@@ -326,6 +326,7 @@ public class ClientLobby extends JFrame
             
             if (m_server.connect())
             {
+                m_server.start();
                 // Authentify the user.
                 boolean isOk = m_server.identify(form.getPlayerName());
                 while (!isOk)
