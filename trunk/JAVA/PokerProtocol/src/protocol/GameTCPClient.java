@@ -105,9 +105,18 @@ public class GameTCPClient implements IPokerGame
             {
                 // Alors on disconnect
                 send(new DisconnectCommand());
-                m_fromServer.close();
-                m_toServer.close();
-                m_socket.close();
+                if (m_fromServer != null)
+                {
+                    m_fromServer.close();
+                }
+                if (m_toServer != null)
+                {
+                    m_toServer.close();
+                }
+                if (m_socket != null)
+                {
+                    m_socket.close();
+                }
                 m_socket = null;
                 m_fromServer = null;
                 m_toServer = null;
@@ -231,6 +240,16 @@ public class GameTCPClient implements IPokerGame
                 m_pokerTable.setNoSeatDealer(command.GetNoSeatD());
                 m_pokerTable.setNoSeatSmallBlind(command.GetNoSeatSB());
                 m_pokerTable.setNoSeatBigBlind(command.GetNoSeatBB());
+                
+                // TODO: RICK: This is nice but, si le player passe pas par tcp (direct, hooking, etc) il saura pas quoi faire lors des blinds.
+                if (m_pokerTable.getNoSeatSmallBlind() == m_tablePosition)
+                {
+                    send(new PlayerPlayMoneyCommand(m_pokerTable.getSmallBlindAmnt()));
+                }
+                if (m_pokerTable.getNoSeatBigBlind() == m_tablePosition)
+                {
+                    send(new PlayerPlayMoneyCommand(m_pokerTable.getBigBlindAmnt()));
+                }
                 m_gameObserver.gameBlindsNeeded();
             }
             

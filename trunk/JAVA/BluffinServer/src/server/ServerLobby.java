@@ -91,7 +91,6 @@ public class ServerLobby extends Thread
                 }
                 catch (final SocketException e1)
                 {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 final ServerClientLobby client = new ServerClientLobby(socketClient, this);

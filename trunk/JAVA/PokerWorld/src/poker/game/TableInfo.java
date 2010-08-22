@@ -795,30 +795,9 @@ public class TableInfo
         
         final int seat = p.getNoSeat();
         p.setNotPlaying();
-        // TODO WTF IL FAIT CA!!!!!!!!!!!!!!
-        // p.setNoSeat(-1);
         m_players[seat] = null;
-        
+        m_RemainingSeats.push(seat);
         return true;
-    }
-    
-    /**
-     * Initialise les joueurs et determine lesquels joueront la prochaine partie
-     * 
-     */
-    public void decidePlayingPlayers()
-    {
-        for (final PlayerInfo p : getPlayers())
-        {
-            if (p.canPlay())
-            {
-                p.setPlaying();
-            }
-            else
-            {
-                p.setNotPlaying();
-            }
-        }
     }
     
     /**
@@ -868,7 +847,7 @@ public class TableInfo
     }
     
     /**
-     * Une fois la round terminé, prend tous l'argent en jeu et bati les POTS
+     * Une fois la round terminï¿½, prend tous l'argent en jeu et bati les POTS
      */
     public void managePotsRoundEnd()
     {
