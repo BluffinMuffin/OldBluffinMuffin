@@ -69,6 +69,11 @@ namespace PokerWorld.Game
             get { return m_State != TypeState.End; }
         }
 
+        public TypeState State
+        {
+            get { return m_State; }
+        }
+
         public string Encode
         {
             get
@@ -464,6 +469,13 @@ namespace PokerWorld.Game
             PlayerInfo player = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer);
             m_Table.NoSeatCurrPlayer = player.NoSeat;
             PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(player,old));
+            if (player.IsZombie)
+            {
+                if (m_Table.CanCheck(player))
+                    PlayMoney(player, 0);
+                else
+                    PlayMoney(player, -1);
+            }
         }
         private void DistributeMoney()
         {
@@ -500,7 +512,18 @@ namespace PokerWorld.Game
         }
         private void TryToBegin()
         {
-            m_Table.DecidePlayingPlayers();
+            foreach (PlayerInfo p in m_Table.Players)
+            {
+                if (p.IsZombie)
+                    LeaveGame(p);
+                else if (p.CanPlay)
+                {
+                    p.IsPlaying = true;
+                    p.IsShowingCards = false;
+                }
+                else
+                    p.IsPlaying = false;
+            }
             if (m_Table.NbPlaying > 1)
             {
                 m_Table.InitTable();
@@ -508,11 +531,12 @@ namespace PokerWorld.Game
                 NextState(TypeState.WaitForBlinds);
                 GameBlindNeeded(this, new EventArgs());
             }
-            else if (m_Table.Players.Count > 1)
-            {
-                m_State = TypeState.End;
-                EverythingEnded(this, new EventArgs());
-            }
+            // Ne termine pas tout lorsque tlm est mort, permet de garder son STACK =)
+            //else if (m_Table.Players.Count > 1)
+            //{
+            //    m_State = TypeState.End;
+            //    EverythingEnded(this, new EventArgs());
+            //}
             else
             {
                 m_Table.NoSeatDealer = -1;

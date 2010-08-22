@@ -363,19 +363,8 @@ namespace PokerWorld.Game
             int seat = p.NoSeat;
             p.IsPlaying = false;
             m_Players[seat] = null;
-
+            m_RemainingSeats.Push(seat);
             return true;
-        }
-        public void DecidePlayingPlayers()
-        {
-            foreach (PlayerInfo p in Players)
-                if (p.CanPlay)
-                {
-                    p.IsPlaying = true;
-                    p.IsShowingCards = false;
-                }
-                else
-                    p.IsPlaying = false;
         }
         public void InitPots()
         {
