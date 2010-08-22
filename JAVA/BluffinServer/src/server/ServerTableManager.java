@@ -43,7 +43,6 @@ public class ServerTableManager extends Thread
                 }
                 catch (final SocketException e1)
                 {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 final ServerClientTableManager client = new ServerClientTableManager(socketClient, this);
@@ -65,7 +64,6 @@ public class ServerTableManager extends Thread
             }
             catch (final IOException e)
             {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             m_socketServer = null;

@@ -22,6 +22,7 @@ public class PlayerInfo
     private boolean m_playing; // Est-il en train de jouer ? Faux si Folded, AllIn or NotPlaying
     private boolean m_allIn; // Est-il All-in ? Vrai si All-in
     private boolean m_showingCards; // Montre-il ses cartes ? Vrai si showdown
+    private boolean m_zombie; // Est-ce que le vrai player a quitté la partie ? Vrai si zombie
     
     // // // // // // // // // // // // // // // // // //
     // // // // // // // CONSTRUCTOR // // // // // // //
@@ -287,6 +288,16 @@ public class PlayerInfo
     }
     
     /**
+     * Est-il en zombie ?
+     * 
+     * @return Vrai si le player a quitté la partie, Faux sinon
+     */
+    public boolean isZombie()
+    {
+        return m_zombie;
+    }
+    
+    /**
      * Est-il All-in
      * 
      * @return Vrai si All-in, faux sinon
@@ -314,6 +325,15 @@ public class PlayerInfo
     {
         m_allIn = true;
         m_playing = false;
+    }
+    
+    /**
+     * D�fini que le joueur est Zombie
+     * 
+     */
+    public void setZombie()
+    {
+        m_zombie = true;
     }
     
     /**

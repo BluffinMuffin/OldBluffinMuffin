@@ -652,10 +652,10 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 final TableInfo table = m_game.getTable();
                 // TODO: RICK: update POTS
                 
-                for (int i = 0; i < table.getPlayers().size(); ++i)
+                for (int i = 0; i < huds.length; ++i)
                 {
                     huds[i].setPlayerAction(TypeAction.NOTHING, 0);
-                    final JLabel bet = bets[table.getPlayer(i).getNoSeat()];
+                    final JLabel bet = bets[i];
                     bet.setText("");
                 }
             }
@@ -700,19 +700,22 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 final TableInfo table = m_game.getTable();
                 for (int i = 0; i < table.getPlayers().size(); ++i)
                 {
-                    final JPanelPlayerHud php = huds[i];
-                    final JLabel bet = bets[i];
-                    bet.setText("");
-                    php.setPlayerMoney(table.getPlayer(i).getMoneySafeAmnt());
-                    php.setNotDealer();
-                    php.setNoBlind();
-                    php.isDoingNothing();
-                    if (table.getPlayer(i).getMoneySafeAmnt() == 0)
+                    if (table.getPlayer(i) != null)
                     {
-                        php.setDead();
-                        php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
+                        final JPanelPlayerHud php = huds[i];
+                        final JLabel bet = bets[i];
+                        bet.setText("");
+                        php.setPlayerMoney(table.getPlayer(i).getMoneySafeAmnt());
+                        php.setNotDealer();
+                        php.setNoBlind();
+                        php.isDoingNothing();
+                        if (table.getPlayer(i).getMoneySafeAmnt() == 0)
+                        {
+                            php.setDead();
+                            php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
+                        }
+                        php.setPlayerAction(TypeAction.NOTHING);
                     }
-                    php.setPlayerAction(TypeAction.NOTHING);
                 }
                 super.gameEnded();
             }

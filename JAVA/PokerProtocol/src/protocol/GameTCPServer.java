@@ -13,8 +13,10 @@ import java.util.List;
 import poker.game.MoneyPot;
 import poker.game.PlayerInfo;
 import poker.game.PokerGame;
+import poker.game.TableInfo;
 import poker.game.TypeAction;
 import poker.game.TypeRound;
+import poker.game.PokerGame.TypeState;
 import poker.game.observer.PokerGameAdapter;
 import protocol.commands.DisconnectCommand;
 import protocol.commands.ICommand;
@@ -242,15 +244,6 @@ public class GameTCPServer implements Runnable
             public void gameBlindsNeeded()
             {
                 send(new GameStartedCommand(m_game.getTable().getNoSeatDealer(), m_game.getTable().getNoSeatSmallBlind(), m_game.getTable().getNoSeatBigBlind()));
-                // TODO: RICK: eventuellement le client devrait par lui meme repondre a cette question
-                if (m_player.getNoSeat() == m_game.getTable().getNoSeatSmallBlind())
-                {
-                    m_game.playMoney(m_player, m_game.getTable().getSmallBlindAmnt());
-                }
-                else if (m_player.getNoSeat() == m_game.getTable().getNoSeatBigBlind())
-                {
-                    m_game.playMoney(m_player, m_game.getTable().getBigBlindAmnt());
-                }
             }
             
             @Override
@@ -290,7 +283,23 @@ public class GameTCPServer implements Runnable
             public void disconnectCommandReceived(DisconnectCommand command)
             {
                 m_isConnected = false;
-                m_game.leaveGame(m_player);
+                m_player.setZombie();
+                final TableInfo t = m_game.getTable();
+                if (m_game.getState() == TypeState.PLAYERS_WAITING)
+                {
+                    m_game.leaveGame(m_player);
+                }
+                else if (t.getNoSeatCurrPlayer() == m_player.getNoSeat())
+                {
+                    if (t.canCheck(m_player))
+                    {
+                        m_game.playMoney(m_player, 0);
+                    }
+                    else
+                    {
+                        m_game.playMoney(m_player, -1);
+                    }
+                }
                 
                 try
                 {

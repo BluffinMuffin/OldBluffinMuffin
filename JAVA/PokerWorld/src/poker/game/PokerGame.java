@@ -699,6 +699,17 @@ public class PokerGame implements IPokerGame
         final PlayerInfo old = m_table.getPlayer(m_table.getNoSeatCurrPlayer());
         m_table.setNoSeatCurrPlayer(player.getNoSeat());
         m_gameObserver.playerActionNeeded(player, old);
+        if (player.isZombie())
+        {
+            if (m_table.canCheck(player))
+            {
+                playMoney(player, 0);
+            }
+            else
+            {
+                playMoney(player, -1);
+            }
+        }
     }
     
     /**
@@ -762,7 +773,21 @@ public class PokerGame implements IPokerGame
      */
     private void TryToBegin()
     {
-        m_table.decidePlayingPlayers();
+        for (final PlayerInfo p : m_table.getPlayers())
+        {
+            if (p.isZombie())
+            {
+                leaveGame(p);
+            }
+            else if (p.canPlay())
+            {
+                p.setPlaying();
+            }
+            else
+            {
+                p.setNotPlaying();
+            }
+        }
         if (m_table.getNbPlaying() > 1)
         {
             m_table.initTable();
@@ -770,11 +795,12 @@ public class PokerGame implements IPokerGame
             nextState(TypeState.BLIND_WAITING);
             m_gameObserver.gameBlindsNeeded();
         }
-        else if (m_table.getPlayers().size() > 1)
-        {
-            m_state = TypeState.END;
-            m_gameObserver.everythingEnded();
-        }
+        // Ne termine pas tout lorsque tlm est mort, permet de garder son STACK =)
+        // else if (m_table.getPlayers().size() > 1)
+        // {
+        // m_state = TypeState.END;
+        // m_gameObserver.everythingEnded();
+        // }
         else
         {
             m_table.setNoSeatDealer(-1);
