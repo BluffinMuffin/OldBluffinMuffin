@@ -44,19 +44,19 @@ public class PlayerTurnEndedCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(PlayerTurnEndedCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerBet);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerMoney);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_totalPot);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_actionType.ordinal());
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_actionAmount);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_isPlaying);
         return sb.toString();
     }

@@ -35,13 +35,13 @@ public class BetTurnEndedCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(BetTurnEndedCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_potsAmounts.size());
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         for (int i = 0; i < m_potsAmounts.size(); ++i)
         {
             sb.append(m_potsAmounts.get(i));
-            sb.append(Command.DELIMITER);
+            sb.append(Command.G_DELIMITER);
         }
         sb.append(m_round.ordinal());
         return sb.toString();

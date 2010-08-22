@@ -133,29 +133,29 @@ public class TableInfoCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(TableInfoCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_totalPotAmount);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_nbSeats);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         for (int i = 0; i < m_potsAmount.size(); ++i)
         {
             sb.append(m_potsAmount.get(i));
-            sb.append(Command.DELIMITER);
+            sb.append(Command.G_DELIMITER);
         }
         for (int i = 0; i < m_boardCardIDs.size(); ++i)
         {
             sb.append(m_boardCardIDs.get(i));
-            sb.append(Command.DELIMITER);
+            sb.append(Command.G_DELIMITER);
         }
         sb.append(m_nbPlayers);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         for (int i = 0; i < m_seats.size(); ++i)
         {
-            sb.append(m_seats.get(i).toString(Command.DELIMITER));
+            sb.append(m_seats.get(i).toString(Command.G_DELIMITER));
         }
         sb.append(m_limit.ordinal());
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         return sb.toString();
     }
     

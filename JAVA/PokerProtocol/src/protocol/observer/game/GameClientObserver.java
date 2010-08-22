@@ -141,7 +141,7 @@ public class GameClientObserver extends CommandObserver<IGameClientListener> imp
     @Override
     public void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Command.DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, Command.G_DELIMITER);
         final String commandName = token.nextToken();
         
         if (commandName.equals(BetTurnEndedCommand.COMMAND_NAME))

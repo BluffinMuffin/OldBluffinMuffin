@@ -31,11 +31,11 @@ public class PlayerJoinedCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(PlayerJoinedCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerName);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerMoney);
         return sb.toString();
     }

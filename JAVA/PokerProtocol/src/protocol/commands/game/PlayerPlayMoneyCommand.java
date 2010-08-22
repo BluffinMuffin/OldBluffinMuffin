@@ -26,7 +26,7 @@ public class PlayerPlayMoneyCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(PlayerPlayMoneyCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_played);
         return sb.toString();
     }

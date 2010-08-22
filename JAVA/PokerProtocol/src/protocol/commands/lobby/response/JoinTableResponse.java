@@ -7,7 +7,7 @@ import protocol.commands.ICommand;
 
 public class JoinTableResponse implements ICommand
 {
-    private final String m_tableName;
+    private final int m_tableID;
     private final String m_playerName;
     private final int m_noSeat;
     public static String COMMAND_NAME = "lobbyJOIN_TABLE_RESPONSE";
@@ -15,14 +15,14 @@ public class JoinTableResponse implements ICommand
     public JoinTableResponse(StringTokenizer argsToken)
     {
         m_playerName = argsToken.nextToken();
-        m_tableName = argsToken.nextToken();
+        m_tableID = Integer.parseInt(argsToken.nextToken());
         m_noSeat = Integer.parseInt(argsToken.nextToken());
     }
     
-    public JoinTableResponse(String pName, String tName, int seat)
+    public JoinTableResponse(String pName, int tName, int seat)
     {
         m_playerName = pName;
-        m_tableName = tName;
+        m_tableID = tName;
         m_noSeat = seat;
     }
     
@@ -31,13 +31,13 @@ public class JoinTableResponse implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(JoinTableResponse.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_playerName);
-        sb.append(Command.DELIMITER);
-        sb.append(m_tableName);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_tableID);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_noSeat);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
     }
     
@@ -46,9 +46,9 @@ public class JoinTableResponse implements ICommand
         return m_playerName;
     }
     
-    public String getTableName()
+    public int getTableID()
     {
-        return m_tableName;
+        return m_tableID;
     }
     
     public int getNoSeat()

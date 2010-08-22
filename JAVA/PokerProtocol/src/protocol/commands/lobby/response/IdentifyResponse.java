@@ -29,11 +29,11 @@ public class IdentifyResponse implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(IdentifyResponse.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_playerName);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_isOK);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
     }
     

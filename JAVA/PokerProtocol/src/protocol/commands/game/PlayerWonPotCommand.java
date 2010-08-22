@@ -34,13 +34,13 @@ public class PlayerWonPotCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(PlayerWonPotCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_potID);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_shared);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerMoney);
         return sb.toString();
     }

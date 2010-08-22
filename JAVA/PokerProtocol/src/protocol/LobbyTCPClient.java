@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import poker.IPokerViewer;
 import poker.game.TypeBet;
@@ -15,6 +18,7 @@ import protocol.commands.Command;
 import protocol.commands.DisconnectCommand;
 import protocol.commands.ICommand;
 import protocol.commands.lobby.CreateTableCommand;
+import protocol.commands.lobby.GameCommand;
 import protocol.commands.lobby.IdentifyCommand;
 import protocol.commands.lobby.JoinTableCommand;
 import protocol.commands.lobby.ListTableCommand;
@@ -23,14 +27,15 @@ import protocol.commands.lobby.response.IdentifyResponse;
 import protocol.commands.lobby.response.JoinTableResponse;
 import protocol.commands.lobby.response.ListTableResponse;
 
-public class LobbyTCPClient
+public class LobbyTCPClient extends Thread
 {
     private String m_playerName;
     private final String m_serverAddress;
     private final int m_serverPort;
     
     // List of ClientSidePokerTcpServer (one for each table the player joined)
-    private final List<GameTCPClient> m_clients = new ArrayList<GameTCPClient>();
+    private final Map<Integer, GameTCPClient> m_clients = new HashMap<Integer, GameTCPClient>();
+    private final BlockingQueue<String> m_incoming = new LinkedBlockingQueue<String>();
     
     // Communication with the server
     Socket m_socket = null;
@@ -61,18 +66,28 @@ public class LobbyTCPClient
     
     private StringTokenizer receiveCommand(String expected)
     {
-        return receiveCommand(m_fromServer, expected);
-    }
-    
-    private StringTokenizer receiveCommand(BufferedReader reader, String expected)
-    {
-        String s = receive(reader);
-        StringTokenizer token = new StringTokenizer(s, Command.DELIMITER);
-        String commandName = token.nextToken();
-        while (!commandName.equals(expected))
+        String s = null;
+        try
         {
-            s = receive(reader);
-            token = new StringTokenizer(s, Command.DELIMITER);
+            s = m_incoming.take();
+        }
+        catch (final InterruptedException e1)
+        {
+            e1.printStackTrace();
+        }
+        StringTokenizer token = new StringTokenizer(s, Command.L_DELIMITER);
+        String commandName = token.nextToken();
+        while (s == null || !commandName.equals(expected))
+        {
+            try
+            {
+                s = m_incoming.take();
+            }
+            catch (final InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            token = new StringTokenizer(s, Command.L_DELIMITER);
             commandName = token.nextToken();
         }
         return token;
@@ -120,31 +135,15 @@ public class LobbyTCPClient
         }
     }
     
-    private void sendMessage(String p_msg)
+    public void sendMessage(String p_msg)
     {
         System.out.println(m_playerName + " SEND [" + p_msg + "]");
         m_toServer.println(p_msg);
     }
     
-    private void send(ICommand p_msg)
+    public void send(ICommand p_msg)
     {
         sendMessage(p_msg.encodeCommand());
-    }
-    
-    private String receive(BufferedReader reader)
-    {
-        final String line;
-        try
-        {
-            line = reader.readLine();
-            System.out.println(m_playerName + " RECV [" + line + "]");
-            // m_commandObserver.receiveSomething(line);
-        }
-        catch (final IOException e)
-        {
-            return null;
-        }
-        return line;
     }
     
     public String getPlayerName()
@@ -164,79 +163,37 @@ public class LobbyTCPClient
     
     public GameTCPClient findClient(int noPort)
     {
-        int i = 0;
-        while ((i != m_clients.size()) && (m_clients.get(i).getNoPort() != noPort))
-        {
-            ++i;
-        }
-        
-        if (i == m_clients.size())
-        {
-            return null;
-        }
-        
-        return m_clients.get(i);
+        return m_clients.get(noPort);
     }
     
     public GameTCPClient joinTable(int p_noPort, String p_tableName, IPokerViewer gui)
     {
-        Socket tableSocket = null;
-        PrintWriter toTable = null;
-        BufferedReader fromTable = null;
-        try
+        // Build query.
+        final JoinTableCommand command = new JoinTableCommand(m_playerName, p_noPort);
+        
+        // Send query.
+        m_toServer.println(command.encodeCommand());
+        
+        // Wait for response.
+        final StringTokenizer token2 = receiveCommand(JoinTableResponse.COMMAND_NAME);
+        final JoinTableResponse response2 = new JoinTableResponse(token2);
+        final int noSeat = response2.getNoSeat();
+        
+        if (noSeat == -1)
         {
-            // Connect with the TableManager on the specified port number.
-            System.out.println("Trying connection with the table manager...");
-            tableSocket = new Socket(m_socket.getInetAddress(), p_noPort);
-            toTable = new PrintWriter(tableSocket.getOutputStream(), true); // Auto-flush
-            // enabled.
-            fromTable = new BufferedReader(new InputStreamReader(tableSocket.getInputStream()));
-            
-            // Authenticate the user.
-            toTable.println(new IdentifyCommand(m_playerName).encodeCommand());
-            
-            final StringTokenizer token = receiveCommand(fromTable, IdentifyResponse.COMMAND_NAME);
-            final IdentifyResponse response = new IdentifyResponse(token);
-            if (!response.isOK())
-            {
-                System.out.println("Authentification failed on the table: " + p_tableName);
-                return null;
-            }
-            
-            // Build query.
-            final JoinTableCommand command = new JoinTableCommand(m_playerName, p_tableName);
-            
-            // Send query.
-            toTable.println(command.encodeCommand());
-            
-            // Wait for response.
-            final StringTokenizer token2 = receiveCommand(fromTable, JoinTableResponse.COMMAND_NAME);
-            final JoinTableResponse response2 = new JoinTableResponse(token2);
-            final int noSeat = response2.getNoSeat();
-            
-            if (noSeat == -1)
-            {
-                System.out.println("Cannot sit at this table: " + p_tableName);
-                return null;
-            }
-            
-            final GameTCPClient client = new GameTCPClient(tableSocket, fromTable, noSeat, m_playerName);
-            if (gui != null)
-            {
-                gui.setGame(client, client.getNoSeat());
-                gui.start();
-            }
-            client.start();
-            m_clients.add(client);
-            return client;
-            
-        }
-        catch (final IOException e)
-        {
-            System.out.println(p_noPort + " not open.");
+            System.out.println("Cannot sit at this table: " + p_tableName);
+            return null;
         }
         
-        return null;
+        final GameTCPClient client = new GameTCPClient(this, p_noPort, noSeat, m_playerName);
+        m_clients.put(p_noPort, client);
+        if (gui != null)
+        {
+            gui.setGame(client, client.getNoSeat());
+            gui.start();
+        }
+        client.start();
+        return client;
     }
     
     public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
@@ -258,5 +215,53 @@ public class LobbyTCPClient
         final StringTokenizer token = receiveCommand(ListTableResponse.COMMAND_NAME);
         final ListTableResponse response = new ListTableResponse(token);
         return response.getTables();
+    }
+    
+    @Override
+    public void run()
+    {
+        try
+        {
+            while (isConnected())
+            {
+                receive();
+            }
+        }
+        catch (final IOException e)
+        {
+            return;
+        }
+        catch (final InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    private void receive() throws IOException, InterruptedException
+    {
+        System.out.println(m_playerName + " IS WAITING");
+        final String line = m_fromServer.readLine();
+        System.out.println(m_playerName + " RECV [" + line + "]");
+        final StringTokenizer token = new StringTokenizer(line, Command.L_DELIMITER);
+        final String commandName = token.nextToken();
+        if (commandName.equals(GameCommand.COMMAND_NAME))
+        {
+            final GameCommand c = new GameCommand(token);
+            while (!m_clients.containsKey(c.getTableId()))
+            {
+                Thread.sleep(100);
+            }
+            System.out.println(c);
+            System.out.println(c.getTableId());
+            System.out.println(c.getCommand());
+            System.out.println(m_clients);
+            System.out.println(m_clients.get(c.getTableId()));
+            
+            m_clients.get(c.getTableId()).incoming(c.getCommand());
+        }
+        else
+        {
+            m_incoming.put(line);
+        }
     }
 }

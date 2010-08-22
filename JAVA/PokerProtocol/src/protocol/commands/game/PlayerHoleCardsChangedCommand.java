@@ -36,16 +36,16 @@ public class PlayerHoleCardsChangedCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(PlayerHoleCardsChangedCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         sb.append(m_playerPos);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         for (int i = 0; i < 2; ++i)
         {
             sb.append(m_cardsID.get(i));
-            sb.append(Command.DELIMITER);
+            sb.append(Command.G_DELIMITER);
         }
         sb.append(m_isPlaying);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         return sb.toString();
     }
     

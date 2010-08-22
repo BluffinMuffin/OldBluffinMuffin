@@ -33,12 +33,12 @@ public class ListTableResponse implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(ListTableResponse.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_tables.size());
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         for (final TupleTableInfo info : m_tables)
         {
-            sb.append(info.toString(Command.DELIMITER));
+            sb.append(info.toString(Command.L_DELIMITER));
         }
         return sb.toString();
     }

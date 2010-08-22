@@ -37,14 +37,14 @@ public class BetTurnStartedCommand implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(BetTurnStartedCommand.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         for (int i = 0; i < 5; ++i)
         {
             sb.append(m_cardsID.get(i));
-            sb.append(Command.DELIMITER);
+            sb.append(Command.G_DELIMITER);
         }
         sb.append(m_round.ordinal());
-        sb.append(Command.DELIMITER);
+        sb.append(Command.G_DELIMITER);
         return sb.toString();
     }
     

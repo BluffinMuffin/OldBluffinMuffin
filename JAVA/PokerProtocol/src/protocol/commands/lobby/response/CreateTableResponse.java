@@ -51,25 +51,25 @@ public class CreateTableResponse implements ICommand
     {
         final StringBuilder sb = new StringBuilder();
         sb.append(CreateTableResponse.COMMAND_NAME);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_tableName);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_bigBlind);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_maxPlayers);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_playerName);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_WaitingTimeAfterPlayerAction);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_WaitingTimeAfterBoardDealed);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_WaitingTimeAfterPotWon);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_limit.ordinal());
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         sb.append(m_ResponsePort);
-        sb.append(Command.DELIMITER);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
     }
     
