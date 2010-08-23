@@ -19,7 +19,7 @@ namespace PokerProtocol.Observer
 
         protected override void receiveSomething(string line)
         {
-            StringTokenizer token = new StringTokenizer(line, AbstractCommand.Delimitter);
+            StringTokenizer token = new StringTokenizer(line, AbstractLobbyCommand.Delimitter);
             string commandName = token.NextToken();
             if( commandName == IdentifyCommand.COMMAND_NAME )
                 IdentifyCommandReceived(this, new CommandEventArgs<IdentifyCommand>(new IdentifyCommand(token)));

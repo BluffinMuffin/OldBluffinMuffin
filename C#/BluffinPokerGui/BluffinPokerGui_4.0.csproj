@@ -8,8 +8,8 @@
     <ProjectGuid>{473CC9C5-13CC-46E7-B3D0-B4AF4B24FD67}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BluffinPokerGUI_4._0</RootNamespace>
-    <AssemblyName>BluffinPokerGUI_4.0</AssemblyName>
+    <RootNamespace>BluffinPokerGUI</RootNamespace>
+    <AssemblyName>BluffinPokerGUI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

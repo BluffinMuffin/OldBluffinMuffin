@@ -7,7 +7,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby.Response
 {
-    public class ListTableResponse : AbstractCommandResponse<ListTableCommand>
+    public class ListTableResponse : AbstractLobbyCommandResponse<ListTableCommand>
     {
 
         protected override string CommandName
@@ -44,7 +44,7 @@ namespace PokerProtocol.Commands.Lobby.Response
             base.Encode(sb);
             Append(sb, m_Tables.Count);
             foreach (TupleTableInfo tti in m_Tables)
-                Append(sb, tti.ToString(AbstractCommand.Delimitter));
+                Append(sb, tti.ToString(AbstractLobbyCommand.Delimitter));
         }
     }
 }

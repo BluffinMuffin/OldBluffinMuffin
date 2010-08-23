@@ -8,8 +8,8 @@
     <ProjectGuid>{D442BF36-E1B5-4F91-975A-B10B1F23E41A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PokerProtocol_4._0</RootNamespace>
-    <AssemblyName>PokerProtocol_4.0</AssemblyName>
+    <RootNamespace>PokerProtocol</RootNamespace>
+    <AssemblyName>PokerProtocol</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,10 +54,12 @@
     <Compile Include="Commands\Game\PlayerWonPotCommand.cs" />
     <Compile Include="Commands\Game\TableClosedCommand.cs" />
     <Compile Include="Commands\Game\TableInfoCommand.cs" />
+    <Compile Include="Commands\Lobby\AbstractLobbyCommand.cs" />
     <Compile Include="Commands\Lobby\CreateTableCommand.cs" />
     <Compile Include="Commands\Lobby\IdentifyCommand.cs" />
     <Compile Include="Commands\Lobby\JoinTableCommand.cs" />
     <Compile Include="Commands\Lobby\ListTableCommand.cs" />
+    <Compile Include="Commands\Lobby\Response\AbstractLobbyCommandResponse.cs" />
     <Compile Include="Commands\Lobby\Response\CreateTableResponse.cs" />
     <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
     <Compile Include="Commands\Lobby\Response\JoinTableResponse.cs" />
