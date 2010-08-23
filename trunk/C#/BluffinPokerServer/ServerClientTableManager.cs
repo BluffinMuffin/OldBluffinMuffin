@@ -26,15 +26,15 @@ namespace BluffinPokerServer
         {
             try
             {
-                StringTokenizer token = new StringTokenizer(Receive(), AbstractCommand.Delimitter);
+                StringTokenizer token = new StringTokenizer(Receive(), AbstractLobbyCommand.Delimitter);
                 String commandName = token.NextToken();
                 // Expect client's authentification.
                 if (!commandName.Equals(IdentifyCommand.COMMAND_NAME, StringComparison.InvariantCultureIgnoreCase))
                 {
                     Console.WriteLine("TableManager ::: Authentification expected!!!");
                     return;
-                } 
-                token = new StringTokenizer(Receive(), AbstractCommand.Delimitter);
+                }
+                token = new StringTokenizer(Receive(), AbstractLobbyCommand.Delimitter);
                 commandName = token.NextToken();
                 // Expect client's authentification.
                 if (!commandName.Equals(JoinTableCommand.COMMAND_NAME, StringComparison.InvariantCultureIgnoreCase))

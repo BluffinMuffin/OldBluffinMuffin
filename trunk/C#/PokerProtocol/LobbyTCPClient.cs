@@ -55,12 +55,12 @@ namespace PokerProtocol
         private StringTokenizer ReceiveCommand(StreamReader reader, string expected)
         {
             string s = Receive(reader);
-            StringTokenizer token = new StringTokenizer(s, AbstractCommand.Delimitter);
+            StringTokenizer token = new StringTokenizer(s, AbstractLobbyCommand.Delimitter);
             string commandName = token.NextToken();
             while (s != null && commandName != expected)
             {
                 s = Receive(reader);
-                token = new StringTokenizer(s, AbstractCommand.Delimitter);
+                token = new StringTokenizer(s, AbstractLobbyCommand.Delimitter);
                 commandName = token.NextToken();
             }
             return token;

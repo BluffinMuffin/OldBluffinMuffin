@@ -8,7 +8,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby
 {
-    public class ListTableCommand : AbstractCommand
+    public class ListTableCommand : AbstractLobbyCommand
     {
         protected override string CommandName
         {

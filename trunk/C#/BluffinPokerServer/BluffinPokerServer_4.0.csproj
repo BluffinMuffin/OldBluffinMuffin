@@ -8,8 +8,8 @@
     <ProjectGuid>{C4AED52C-F09D-487F-8D58-E54087909959}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BluffinPokerServer_4._0</RootNamespace>
-    <AssemblyName>BluffinPokerServer_4.0</AssemblyName>
+    <RootNamespace>BluffinPokerServer</RootNamespace>
+    <AssemblyName>BluffinPokerServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

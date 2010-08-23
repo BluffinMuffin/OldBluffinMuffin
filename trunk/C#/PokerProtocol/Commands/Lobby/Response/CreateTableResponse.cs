@@ -7,7 +7,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby.Response
 {
-    public class CreateTableResponse : AbstractCommandResponse<CreateTableCommand>
+    public class CreateTableResponse : AbstractLobbyCommandResponse<CreateTableCommand>
     {
 
         protected override string CommandName

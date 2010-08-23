@@ -8,8 +8,8 @@
     <ProjectGuid>{FBAA74EB-22CE-4C30-9D10-0214B605578A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PokerWorld_4._0</RootNamespace>
-    <AssemblyName>PokerWorld_4.0</AssemblyName>
+    <RootNamespace>PokerWorld</RootNamespace>
+    <AssemblyName>PokerWorld</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
