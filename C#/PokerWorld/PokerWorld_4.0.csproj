@@ -37,6 +37,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DataManager.cs" />
+    <Compile Include="Data\DummyPersistance.cs" />
+    <Compile Include="Data\IDataPersistance.cs" />
+    <Compile Include="Data\UserInfo.cs" />
     <Compile Include="Game\AbstractDealer.cs" />
     <Compile Include="Game\EventArgs.cs" />
     <Compile Include="Game\IPokerGame.cs" />

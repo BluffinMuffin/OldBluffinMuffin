@@ -8,6 +8,9 @@ using PokerProtocol.Commands.Lobby;
 using System.IO;
 using PokerProtocol;
 using PokerWorld.Game;
+using PokerProtocol.Commands.Lobby.Training;
+using PokerWorld.Data;
+using PokerProtocol.Commands.Lobby.Career;
 
 namespace BluffinPokerServer
 {
@@ -26,12 +29,47 @@ namespace BluffinPokerServer
         protected override void InitializeCommandObserver()
         {
             m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
-            m_CommandObserver.IdentifyCommandReceived += new EventHandler<CommandEventArgs<IdentifyCommand>>(m_CommandObserver_IdentifyCommandReceived);
             m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
             m_CommandObserver.CreateTableCommandReceived += new EventHandler<CommandEventArgs<CreateTableCommand>>(m_CommandObserver_CreateTableCommandReceived);
             m_CommandObserver.ListTableCommandReceived += new EventHandler<CommandEventArgs<ListTableCommand>>(m_CommandObserver_ListTableCommandReceived);
             m_CommandObserver.JoinTableCommandReceived += new EventHandler<CommandEventArgs<JoinTableCommand>>(m_CommandObserver_JoinTableCommandReceived);
             m_CommandObserver.GameCommandReceived += new EventHandler<CommandEventArgs<GameCommand>>(m_CommandObserver_GameCommandReceived);
+
+            //Training
+            m_CommandObserver.IdentifyCommandReceived += new EventHandler<CommandEventArgs<IdentifyCommand>>(m_CommandObserver_IdentifyCommandReceived);
+            
+            //Career
+            m_CommandObserver.CheckDisplayExistCommandReceived += new EventHandler<CommandEventArgs<CheckDisplayExistCommand>>(m_CommandObserver_CheckDisplayExistCommandReceived);
+            m_CommandObserver.CheckUserExistCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CheckUserExistCommand>>(m_CommandObserver_CheckUserExistCommandReceived);
+            m_CommandObserver.CreateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand>>(m_CommandObserver_CreateUserCommandReceived);
+            m_CommandObserver.AuthenticateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand>>(m_CommandObserver_AuthenticateUserCommandReceived);
+        }
+
+        void m_CommandObserver_CheckDisplayExistCommandReceived(object sender, CommandEventArgs<CheckDisplayExistCommand> e)
+        {
+            Send(e.Command.EncodeResponse(m_Lobby.NameUsed(e.Command.DisplayName) || DataManager.Persistance.IsDisplayNameExist(e.Command.DisplayName)));
+        }
+
+        void m_CommandObserver_AuthenticateUserCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand> e)
+        {
+            UserInfo u = DataManager.Persistance.Authenticate(e.Command.Username, e.Command.Password);
+            if (u != null)
+                m_PlayerName = u.DisplayName;
+            Send(e.Command.EncodeResponse(u != null));
+        }
+
+        void m_CommandObserver_CreateUserCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand> e)
+        {
+            CreateUserCommand c = e.Command;
+            bool ok = !DataManager.Persistance.IsUsernameExist(c.Username) && !DataManager.Persistance.IsDisplayNameExist(e.Command.DisplayName);
+            if( ok)
+                DataManager.Persistance.Register(new UserInfo(c.Username,c.Password,c.Email,c.DisplayName,7500));
+            Send(e.Command.EncodeResponse(ok));
+        }
+
+        void m_CommandObserver_CheckUserExistCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CheckUserExistCommand> e)
+        {
+            Send(e.Command.EncodeResponse(DataManager.Persistance.IsUsernameExist(e.Command.Username)));
         }
 
         void m_CommandObserver_GameCommandReceived(object sender, CommandEventArgs<GameCommand> e)
@@ -105,7 +143,7 @@ namespace BluffinPokerServer
         {
             IdentifyCommand c = e.Command;
             m_PlayerName = c.Name;
-            bool ok = !m_Lobby.NameUsed(m_PlayerName);
+            bool ok = !m_Lobby.NameUsed(m_PlayerName) && !DataManager.Persistance.IsDisplayNameExist(m_PlayerName);
             Send(c.EncodeResponse(ok));
             if (ok)
                 m_Lobby.AddName(m_PlayerName);

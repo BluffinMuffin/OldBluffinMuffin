@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using EricUtility;
-using PokerProtocol.Commands.Lobby.Response;
 using EricUtility.Networking.Commands;
 using System.Text;
 
-namespace PokerProtocol.Commands.Lobby
+namespace PokerProtocol.Commands.Lobby.Training
 {
     public class IdentifyCommand : AbstractLobbyCommand
     {
@@ -13,7 +12,7 @@ namespace PokerProtocol.Commands.Lobby
         {
             get { return COMMAND_NAME; }
         }
-        public static string COMMAND_NAME = "lobbyIDENTIFY";
+        public static string COMMAND_NAME = "lobbyTRAINING_IDENTIFY";
 
         private readonly string m_Name;
 

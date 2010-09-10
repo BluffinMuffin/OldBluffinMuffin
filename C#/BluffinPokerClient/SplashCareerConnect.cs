@@ -8,20 +8,22 @@ using System.Windows.Forms;
 using System.Threading;
 using PokerProtocol;
 using BluffinPokerGUI.Lobby;
+using EricUtility.Windows.Forms;
 
 namespace BluffinPokerClient
 {
-    public partial class TrainingConnectForm : Form
+    public partial class SplashCareerConnect : Form
     {
         private delegate void EmptyHandler();
-        private string m_PlayerName;
         private string m_ServerAddress;
         private int m_ServerPort;
+        private string m_Username;
+        private string m_Password;
 
-        private LobbyTCPClient m_Server;
+        private LobbyTCPClientCareer m_Server;
         private bool m_OK = false;
 
-        public LobbyTCPClient Server
+        public LobbyTCPClientCareer Server
         {
             get { return m_Server; }
         }
@@ -30,10 +32,11 @@ namespace BluffinPokerClient
         {
             get { return m_OK; }
         }
-        
-        public TrainingConnectForm(string playerName,string serverAddress,int serverPort)
+
+        public SplashCareerConnect(string serverAddress, int serverPort, string username, string password)
         {
-            m_PlayerName = playerName;
+            m_Password = password;
+            m_Username = username;
             m_ServerAddress = serverAddress;
             m_ServerPort = serverPort;
 
@@ -44,26 +47,27 @@ namespace BluffinPokerClient
 
         private void Connect()
         {
-            m_Server = new LobbyTCPClient(m_ServerAddress, m_ServerPort);
+            m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
             if (m_Server.Connect())
             {
                 spbStep1.Etat = StatePictureBoxStates.Ok;
                 spbStep2.Etat = StatePictureBoxStates.Waiting;
                 m_Server.Start();
-                bool isOk = m_Server.Identify(m_PlayerName);
-                bool retry = true;
-                while (!isOk & retry)
-                {
-                    NameUsedForm form2 = new NameUsedForm(m_PlayerName);
-                    form2.ShowDialog();
-                    m_PlayerName = form2.PlayerName;
-                    isOk = m_Server.Identify(m_PlayerName);
-                }
-                if (isOk)
+                if (!m_Server.CheckUsernameAvailable(m_Username))
                 {
                     spbStep2.Etat = StatePictureBoxStates.Ok;
-                    m_OK = true;
-                    Quit();
+                    spbStep3.Etat = StatePictureBoxStates.Waiting;
+                    if (m_Server.Authenticate(m_Username, m_Password))
+                    {
+                        spbStep3.Etat = StatePictureBoxStates.Ok;
+                        m_OK = true;
+                        Quit();
+                    }
+                    else
+                    {
+                        spbStep3.Etat = StatePictureBoxStates.Bad;
+                        Error();
+                    }
                 }
                 else
                 {
