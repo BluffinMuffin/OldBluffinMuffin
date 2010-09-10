@@ -1,4 +1,4 @@
-package utility;
+package ericutility.misc;
 
 import java.util.Random;
 
