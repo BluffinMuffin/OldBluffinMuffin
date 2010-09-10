@@ -4,11 +4,11 @@ package bluffinmuffin.protocol.commands.game;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TableInfo;
-import bluffinmuffin.poker.game.TypeBet;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.entities.type.GameBetLimitType;
 import bluffinmuffin.protocol.TuplePlayerInfo;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
@@ -22,7 +22,7 @@ public class TableInfoCommand implements ICommand
     private final ArrayList<Integer> m_boardCardIDs;
     private final int m_nbPlayers;
     private final ArrayList<TuplePlayerInfo> m_seats;
-    private final TypeBet m_limit;
+    private final GameBetLimitType m_limit;
     
     public static String COMMAND_NAME = "gameTABLE_INFO";
     
@@ -47,10 +47,10 @@ public class TableInfoCommand implements ICommand
         {
             m_seats.add(new TuplePlayerInfo(argsToken));
         }
-        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
+        m_limit = GameBetLimitType.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
-    public TableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<TuplePlayerInfo> seats, TypeBet limit)
+    public TableInfoCommand(int totalPotAmount, int nbSeats, ArrayList<Integer> potsAmount, ArrayList<Integer> boardCardIDs, int nbPlayers, ArrayList<TuplePlayerInfo> seats, GameBetLimitType limit)
     {
         m_totalPotAmount = totalPotAmount;
         m_nbSeats = nbSeats;
@@ -71,7 +71,7 @@ public class TableInfoCommand implements ICommand
         m_nbSeats = info.getNbMaxSeats();
         m_nbPlayers = info.getNbMaxSeats();
         
-        for (final MoneyPot pot : info.getPots())
+        for (final PotInfo pot : info.getPots())
         {
             m_potsAmount.add(pot.getAmount());
         }
@@ -190,7 +190,7 @@ public class TableInfoCommand implements ICommand
         return m_seats;
     }
     
-    public TypeBet getLimit()
+    public GameBetLimitType getLimit()
     {
         return m_limit;
     }

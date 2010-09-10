@@ -7,15 +7,15 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.PokerGame;
-import bluffinmuffin.poker.game.TableInfo;
-import bluffinmuffin.poker.game.TypeAction;
-import bluffinmuffin.poker.game.TypeRound;
-import bluffinmuffin.poker.game.PokerGame.TypeState;
-import bluffinmuffin.poker.game.observer.PokerGameAdapter;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.poker.PokerGame;
+import bluffinmuffin.poker.PokerGame.TypeState;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
+import bluffinmuffin.poker.observer.PokerGameAdapter;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.ICommand;
 import bluffinmuffin.protocol.commands.game.BetTurnEndedCommand;
@@ -161,11 +161,11 @@ public class GameTCPServer implements Runnable
         m_game.attach(new PokerGameAdapter()
         {
             @Override
-            public void gameBettingRoundEnded(TypeRound r)
+            public void gameBettingRoundEnded(GameRoundType r)
             {
-                final List<MoneyPot> pots = m_game.getTable().getPots();
+                final List<PotInfo> pots = m_game.getTable().getPots();
                 final ArrayList<Integer> amounts = new ArrayList<Integer>();
-                for (final MoneyPot pot : pots)
+                for (final PotInfo pot : pots)
                 {
                     amounts.add(pot.getAmount());
                 }
@@ -191,13 +191,13 @@ public class GameTCPServer implements Runnable
             }
             
             @Override
-            public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
+            public void playerWonPot(PlayerInfo p, PotInfo pot, int wonAmount)
             {
                 send(new PlayerWonPotCommand(p.getNoSeat(), pot.getId(), wonAmount, p.getMoneySafeAmnt()));
             }
             
             @Override
-            public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
+            public void playerActionTaken(PlayerInfo p, PlayerActionType reason, int playedAmount)
             {
                 send(new PlayerTurnEndedCommand(p.getNoSeat(), p.getMoneyBetAmnt(), p.getMoneySafeAmnt(), m_game.getTable().getTotalPotAmnt(), reason, playedAmount, p.isPlaying()));
             }

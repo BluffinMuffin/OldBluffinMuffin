@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.poker.game.TypeAction;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
 
 
 public class JPanelPlayerHud extends JPanel
@@ -171,12 +171,12 @@ public class JPanelPlayerHud extends JPanel
         jNameLabel.setText(name);
     }
     
-    public void setPlayerAction(TypeAction action)
+    public void setPlayerAction(PlayerActionType action)
     {
         setPlayerAction(action, 0);
     }
     
-    public void setPlayerAction(TypeAction action, int amnt)
+    public void setPlayerAction(PlayerActionType action, int amnt)
     {
         final StringBuilder sb = new StringBuilder("");
         switch (action)

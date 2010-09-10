@@ -1,6 +1,6 @@
-package bluffinmuffin.game;
+package bluffinmuffin.game.entities.type;
 
-public enum TypeCardSuit
+public enum CardRankSuit
 {
     CLUB, DIAMOND, HEART, SPADE;
     
@@ -13,22 +13,22 @@ public enum TypeCardSuit
      * @throws IllegalArgumentException
      *             if c not in {@link #SUIT_CHARS}
      */
-    public static TypeCardSuit fromChar(char c)
+    public static CardRankSuit fromChar(char c)
     {
         
-        final int i = TypeCardSuit.SUIT_CHARS.indexOf(Character.toLowerCase(c));
+        final int i = CardRankSuit.SUIT_CHARS.indexOf(Character.toLowerCase(c));
         if (i >= 0)
         {
-            return TypeCardSuit.values()[i];
+            return CardRankSuit.values()[i];
         }
         throw new IllegalArgumentException("'" + c + "'");
     }
     
-    public static TypeCardSuit fromInt(int i)
+    public static CardRankSuit fromInt(int i)
     {
         if (i >= 0)
         {
-            return TypeCardSuit.values()[i];
+            return CardRankSuit.values()[i];
         }
         throw new IllegalArgumentException("'" + i + "'");
     }
@@ -38,6 +38,6 @@ public enum TypeCardSuit
      */
     public char toChar()
     {
-        return TypeCardSuit.SUIT_CHARS.charAt(this.ordinal());
+        return CardRankSuit.SUIT_CHARS.charAt(this.ordinal());
     }
 }

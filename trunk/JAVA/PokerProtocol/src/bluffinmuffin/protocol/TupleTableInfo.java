@@ -2,7 +2,7 @@ package bluffinmuffin.protocol;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.poker.game.TypeBet;
+import bluffinmuffin.poker.entities.type.GameBetLimitType;
 
 
 /**
@@ -16,7 +16,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
     public int m_bigBlind;
     public int m_nbPlayers;
     public int m_nbSeats;
-    public TypeBet m_limit;
+    public GameBetLimitType m_limit;
     
     /**
      * Create a new table
@@ -34,7 +34,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
      * @param p_nbSeats
      *            Number of seat
      */
-    public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit)
+    public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, GameBetLimitType limit)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
@@ -51,7 +51,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());
-        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
+        m_limit = GameBetLimitType.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public int compareTo(TupleTableInfo p_table)

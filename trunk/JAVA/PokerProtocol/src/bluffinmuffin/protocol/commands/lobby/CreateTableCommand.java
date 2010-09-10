@@ -2,7 +2,7 @@ package bluffinmuffin.protocol.commands.lobby;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.poker.game.TypeBet;
+import bluffinmuffin.poker.entities.type.GameBetLimitType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
 import bluffinmuffin.protocol.commands.lobby.response.CreateTableResponse;
@@ -19,7 +19,7 @@ public class CreateTableCommand implements ICommand
     private final int m_WaitingTimeAfterPlayerAction;
     private final int m_WaitingTimeAfterBoardDealed;
     private final int m_WaitingTimeAfterPotWon;
-    private final TypeBet m_limit;
+    private final GameBetLimitType m_limit;
     
     public CreateTableCommand(StringTokenizer argsToken)
     {
@@ -30,10 +30,10 @@ public class CreateTableCommand implements ICommand
         m_WaitingTimeAfterPlayerAction = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
-        m_limit = TypeBet.values()[Integer.parseInt(argsToken.nextToken())];
+        m_limit = GameBetLimitType.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
-    public CreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+    public CreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit)
     {
         m_tableName = p_tableName;
         m_bigBlind = p_bigBlind;
@@ -110,7 +110,7 @@ public class CreateTableCommand implements ICommand
         return m_WaitingTimeAfterPotWon;
     }
     
-    public TypeBet getLimit()
+    public GameBetLimitType getLimit()
     {
         return m_limit;
     }

@@ -18,16 +18,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import bluffinmuffin.game.Card;
+import bluffinmuffin.game.entities.Card;
 import bluffinmuffin.gui.JDialogHandStrength;
 import bluffinmuffin.gui.JPanelConsole;
-import bluffinmuffin.poker.game.IPokerGame;
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TableInfo;
-import bluffinmuffin.poker.game.TypeAction;
-import bluffinmuffin.poker.game.TypeRound;
-import bluffinmuffin.poker.game.observer.PokerGameAdapter;
+import bluffinmuffin.poker.IPokerGame;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
+import bluffinmuffin.poker.observer.PokerGameAdapter;
 
 public class JFrameTableViewer extends AbstractJFrameTable
 {
@@ -647,13 +647,13 @@ public class JFrameTableViewer extends AbstractJFrameTable
         {
             
             @Override
-            public void gameBettingRoundEnded(TypeRound r)
+            public void gameBettingRoundEnded(GameRoundType r)
             {
                 // TODO: RICK: update POTS
                 
                 for (int i = 0; i < huds.length; ++i)
                 {
-                    huds[i].setPlayerAction(TypeAction.NOTHING, 0);
+                    huds[i].setPlayerAction(PlayerActionType.NOTHING, 0);
                     final JLabel bet = bets[i];
                     bet.setText("");
                 }
@@ -713,7 +713,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
                             php.setDead();
                             php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
                         }
-                        php.setPlayerAction(TypeAction.NOTHING);
+                        php.setPlayerAction(PlayerActionType.NOTHING);
                     }
                 }
                 super.gameEnded();
@@ -734,12 +734,12 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void playerActionNeeded(PlayerInfo p, PlayerInfo last)
             {
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
-                php.setPlayerAction(TypeAction.NOTHING, 0);
+                php.setPlayerAction(PlayerActionType.NOTHING, 0);
                 php.isPlaying();
             }
             
             @Override
-            public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
+            public void playerActionTaken(PlayerInfo p, PlayerActionType reason, int playedAmount)
             {
                 final TableInfo table = m_game.getTable();
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
@@ -748,7 +748,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
                 php.setPlayerAction(reason, playedAmount);
                 changePotAmount(table.getTotalPotAmnt());
                 
-                if (reason == TypeAction.FOLDED)
+                if (reason == PlayerActionType.FOLDED)
                 {
                     php.setPlayerCards(Card.NO_CARD, Card.NO_CARD);
                 }
@@ -789,7 +789,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             }
             
             @Override
-            public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
+            public void playerWonPot(PlayerInfo p, PotInfo pot, int wonAmount)
             {
                 final JPanelPlayerHud php = huds[p.getNoSeat()];
                 php.setPlayerMoney(p.getMoneySafeAmnt());
@@ -799,7 +799,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             private void installPlayer(JPanelPlayerHud php, PlayerInfo player)
             {
                 php.setPlayerName(player.getName());
-                php.setPlayerAction(TypeAction.NOTHING);
+                php.setPlayerAction(PlayerActionType.NOTHING);
                 final Card[] cards = player.getCards(true);
                 php.setPlayerCards(cards[0], cards[1]);
                 php.setPlayerMoney(player.getMoneySafeAmnt());
@@ -830,7 +830,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             }
             
             @Override
-            public void gameBettingRoundEnded(TypeRound r)
+            public void gameBettingRoundEnded(GameRoundType r)
             {
                 // writeLine("==> End of " + r.name());
             }
@@ -839,9 +839,9 @@ public class JFrameTableViewer extends AbstractJFrameTable
             public void gameBettingRoundStarted()
             {
                 final TableInfo table = m_game.getTable();
-                final TypeRound r = table.getRound();
+                final GameRoundType r = table.getRound();
                 writeLine("==> Beginning of " + r.name());
-                if (r != TypeRound.PREFLOP)
+                if (r != GameRoundType.PREFLOP)
                 {
                     write("==> Current board cards:");
                     for (int i = 0; i < 5 && table.getCards().get(i).getId() != Card.NO_CARD_ID; ++i)
@@ -884,7 +884,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             }
             
             @Override
-            public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
+            public void playerActionTaken(PlayerInfo p, PlayerActionType reason, int playedAmount)
             {
                 writeLine(p.getName() + " did [" + reason.name() + "]");
             }
@@ -918,7 +918,7 @@ public class JFrameTableViewer extends AbstractJFrameTable
             }
             
             @Override
-            public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
+            public void playerWonPot(PlayerInfo p, PotInfo pot, int wonAmount)
             {
                 writeLine(p.getName() + " won pot ($" + wonAmount + ")");
             }

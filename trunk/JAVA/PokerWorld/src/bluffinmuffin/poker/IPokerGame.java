@@ -1,6 +1,8 @@
-package bluffinmuffin.poker.game;
+package bluffinmuffin.poker;
 
-import bluffinmuffin.poker.game.observer.IPokerGameListener;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.observer.IPokerGameListener;
 
 public interface IPokerGame {
 

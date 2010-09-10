@@ -2,8 +2,8 @@ package bluffinmuffin.gui.game;
 
 import javax.swing.JFrame;
 
+import bluffinmuffin.poker.IPokerGame;
 import bluffinmuffin.poker.IPokerViewer;
-import bluffinmuffin.poker.game.IPokerGame;
 
 
 public abstract class AbstractJFrameTable extends JFrame implements IPokerViewer

@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-import bluffinmuffin.poker.game.PokerGame;
-import bluffinmuffin.poker.game.TableInfo;
+import bluffinmuffin.poker.PokerGame;
+import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.protocol.GameTCPServer;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.ICommand;

@@ -2,7 +2,7 @@ package bluffinmuffin.protocol.commands.game;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.poker.game.TypeAction;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
 
@@ -13,7 +13,7 @@ public class PlayerTurnEndedCommand implements ICommand
     private final int m_playerBet;
     private final int m_playerMoney;
     private final int m_totalPot;
-    private final TypeAction m_actionType;
+    private final PlayerActionType m_actionType;
     private final int m_actionAmount;
     private final boolean m_isPlaying;
     public static String COMMAND_NAME = "gamePLAYER_TURN_ENDED";
@@ -24,12 +24,12 @@ public class PlayerTurnEndedCommand implements ICommand
         m_playerBet = Integer.parseInt(argsToken.nextToken());
         m_playerMoney = Integer.parseInt(argsToken.nextToken());
         m_totalPot = Integer.parseInt(argsToken.nextToken());
-        m_actionType = TypeAction.values()[Integer.parseInt(argsToken.nextToken())];
+        m_actionType = PlayerActionType.values()[Integer.parseInt(argsToken.nextToken())];
         m_actionAmount = Integer.parseInt(argsToken.nextToken());
         m_isPlaying = Boolean.parseBoolean(argsToken.nextToken());
     }
     
-    public PlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, TypeAction actionType, int actionAmount, boolean isPlaying)
+    public PlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, PlayerActionType actionType, int actionAmount, boolean isPlaying)
     {
         m_playerPos = pos;
         m_playerBet = bet;
@@ -82,7 +82,7 @@ public class PlayerTurnEndedCommand implements ICommand
         return m_totalPot;
     }
     
-    public TypeAction getActionType()
+    public PlayerActionType getActionType()
     {
         return m_actionType;
     }

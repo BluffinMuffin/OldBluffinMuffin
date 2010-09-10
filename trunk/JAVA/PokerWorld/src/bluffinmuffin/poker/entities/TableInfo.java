@@ -1,4 +1,4 @@
-package bluffinmuffin.poker.game;
+package bluffinmuffin.poker.entities;
 
 
 import java.util.ArrayList;
@@ -9,8 +9,10 @@ import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.game.CardSet;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.game.entities.CardSet;
+import bluffinmuffin.poker.entities.type.GameBetLimitType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
 
 /**
  * @author Eric
@@ -20,7 +22,7 @@ public class TableInfo
 {
     // INFO
     private final String m_name; // Nom de la table
-    private TypeBet m_betLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
+    private GameBetLimitType m_betLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
     
     // CARDS
     private final CardSet m_cards = new CardSet(5); // Cartes du board
@@ -33,7 +35,7 @@ public class TableInfo
     private final PlayerInfo[] m_players; // Joueurs autour de la table
     
     // POTS
-    private final List<MoneyPot> m_pots = new ArrayList<MoneyPot>(); // La liste des POTS
+    private final List<PotInfo> m_pots = new ArrayList<PotInfo>(); // La liste des POTS
     private int m_totalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
     private final SortedSet<Integer> m_allInCaps = new TreeSet<Integer>(); // Les differents CAPS ALL_IN de la ROUND
     
@@ -47,7 +49,7 @@ public class TableInfo
     private int m_nbPlayed; // Nombre de joueur ayant joues de cette ROUND
     private int m_nbAllIn; // Nombre de joueurs ALL-IN
     private int m_higherBet; // Le bet actuel qu'il faut egaler
-    private TypeRound m_round; // La round actuelle
+    private GameRoundType m_round; // La round actuelle
     private int m_noSeatDealer; // La position actuelle du Dealer
     private int m_noSeatSmallBlind; // La position actuelle du SmallBlind
     private int m_noSeatBigBlind; // La position actuelle du BigBlind
@@ -76,7 +78,7 @@ public class TableInfo
      */
     public TableInfo(int nbSeats)
     {
-        this("Anonymous Table", 10, nbSeats, TypeBet.NO_LIMIT);
+        this("Anonymous Table", 10, nbSeats, GameBetLimitType.NO_LIMIT);
     }
     
     /**
@@ -91,7 +93,7 @@ public class TableInfo
      * @param limit
      *            Type de Bet Limit
      */
-    public TableInfo(String pName, int pBigBlind, int nbSeats, TypeBet limit)
+    public TableInfo(String pName, int pBigBlind, int nbSeats, GameBetLimitType limit)
     {
         m_nbMaxSeats = nbSeats;
         m_players = new PlayerInfo[m_nbMaxSeats];
@@ -127,7 +129,7 @@ public class TableInfo
      * 
      * @return
      */
-    public TypeBet getBetLimit()
+    public GameBetLimitType getBetLimit()
     {
         return m_betLimit;
     }
@@ -137,7 +139,7 @@ public class TableInfo
      * 
      * @param limit
      */
-    public void setBetLimit(TypeBet limit)
+    public void setBetLimit(GameBetLimitType limit)
     {
         m_betLimit = limit;
     }
@@ -293,7 +295,7 @@ public class TableInfo
     
     public List<PlayerInfo> getPlayingPlayersFromFirst()
     {
-        if (m_round == TypeRound.PREFLOP)
+        if (m_round == GameRoundType.PREFLOP)
         {
             return getPlayingPlayers(nextPlayingPlayer(m_noSeatBigBlind).getNoSeat());
         }
@@ -391,7 +393,7 @@ public class TableInfo
      * 
      * @return
      */
-    public List<MoneyPot> getPots()
+    public List<PotInfo> getPots()
     {
         return m_pots;
     }
@@ -605,7 +607,7 @@ public class TableInfo
      * 
      * @return
      */
-    public TypeRound getRound()
+    public GameRoundType getRound()
     {
         return m_round;
     }
@@ -713,7 +715,7 @@ public class TableInfo
      * 
      * @param round
      */
-    public void setRound(TypeRound round)
+    public void setRound(GameRoundType round)
     {
         m_round = round;
     }
@@ -810,7 +812,7 @@ public class TableInfo
         setTotalPotAmnt(0);
         m_pots.clear();
         m_allInCaps.clear();
-        m_pots.add(new MoneyPot(0));
+        m_pots.add(new PotInfo(0));
         m_currPotId = 0;
         setNbAllIn(0);
     }
@@ -837,7 +839,7 @@ public class TableInfo
      * @param pot
      * @param bet
      */
-    private void AddBet(PlayerInfo p, MoneyPot pot, int bet)
+    private void AddBet(PlayerInfo p, PotInfo pot, int bet)
     {
         p.setMoneyBetAmnt(p.getMoneyBetAmnt() - bet);
         pot.addAmount(bet);
@@ -855,7 +857,7 @@ public class TableInfo
         int currentTaken = 0;
         while (m_allInCaps.size() > 0)
         {
-            final MoneyPot pot = m_pots.get(m_currPotId);
+            final PotInfo pot = m_pots.get(m_currPotId);
             pot.detachAll();
             final int aicf = m_allInCaps.first();
             m_allInCaps.remove(aicf);
@@ -866,10 +868,10 @@ public class TableInfo
             }
             currentTaken += cap;
             m_currPotId++;
-            m_pots.add(new MoneyPot(m_currPotId));
+            m_pots.add(new PotInfo(m_currPotId));
         }
         
-        final MoneyPot curPot = m_pots.get(m_currPotId);
+        final PotInfo curPot = m_pots.get(m_currPotId);
         curPot.detachAll();
         for (final PlayerInfo p : getPlayers())
         {
@@ -887,7 +889,7 @@ public class TableInfo
     {
         for (int i = 0; i <= m_currPotId; ++i)
         {
-            final MoneyPot pot = m_pots.get(i);
+            final PotInfo pot = m_pots.get(i);
             long bestHand = 0;
             final List<PlayerInfo> info = new ArrayList<PlayerInfo>(pot.getAttachedPlayers());
             for (final PlayerInfo p : info)

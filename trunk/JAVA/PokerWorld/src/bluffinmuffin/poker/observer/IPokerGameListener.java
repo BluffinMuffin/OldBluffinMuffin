@@ -1,11 +1,11 @@
-package bluffinmuffin.poker.game.observer;
+package bluffinmuffin.poker.observer;
 
 import java.util.EventListener;
 
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TypeAction;
-import bluffinmuffin.poker.game.TypeRound;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
 
 
 public interface IPokerGameListener extends EventListener
@@ -21,7 +21,7 @@ public interface IPokerGameListener extends EventListener
     
     void gameEnded();
     
-    void gameBettingRoundEnded(TypeRound r);
+    void gameBettingRoundEnded(GameRoundType r);
     
     void gameGenerallyUpdated();
     
@@ -31,7 +31,7 @@ public interface IPokerGameListener extends EventListener
     
     void playerLeaved(PlayerInfo p);
     
-    void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount);
+    void playerActionTaken(PlayerInfo p, PlayerActionType reason, int playedAmount);
     
     void playerMoneyChanged(PlayerInfo p);
     
@@ -39,5 +39,5 @@ public interface IPokerGameListener extends EventListener
     
     void playerHoleCardsChanged(PlayerInfo p);
     
-    void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount);
+    void playerWonPot(PlayerInfo p, PotInfo pot, int wonAmount);
 }

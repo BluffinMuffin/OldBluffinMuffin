@@ -3,7 +3,7 @@ package bluffinmuffin.protocol.commands.game;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import bluffinmuffin.poker.game.TypeRound;
+import bluffinmuffin.poker.entities.type.GameRoundType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
 
@@ -11,7 +11,7 @@ import bluffinmuffin.protocol.commands.ICommand;
 public class BetTurnStartedCommand implements ICommand
 {
     private final ArrayList<Integer> m_cardsID = new ArrayList<Integer>();
-    private final TypeRound m_round;
+    private final GameRoundType m_round;
     public static String COMMAND_NAME = "gameBET_TURN_STARTED";
     
     public BetTurnStartedCommand(StringTokenizer argsToken)
@@ -20,10 +20,10 @@ public class BetTurnStartedCommand implements ICommand
         {
             m_cardsID.add(Integer.parseInt(argsToken.nextToken()));
         }
-        m_round = TypeRound.values()[Integer.parseInt(argsToken.nextToken())];
+        m_round = GameRoundType.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
-    public BetTurnStartedCommand(Integer flop1, Integer flop2, Integer flop3, Integer turn, Integer river, TypeRound round)
+    public BetTurnStartedCommand(Integer flop1, Integer flop2, Integer flop3, Integer turn, Integer river, GameRoundType round)
     {
         m_cardsID.add(flop1);
         m_cardsID.add(flop2);
@@ -54,7 +54,7 @@ public class BetTurnStartedCommand implements ICommand
         return m_cardsID;
     }
     
-    public TypeRound getRound()
+    public GameRoundType getRound()
     {
         return m_round;
     }

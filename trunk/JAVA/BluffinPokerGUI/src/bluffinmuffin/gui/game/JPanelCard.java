@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
-import bluffinmuffin.game.Card;
+import bluffinmuffin.game.entities.Card;
 
 
 public class JPanelCard extends JPanel

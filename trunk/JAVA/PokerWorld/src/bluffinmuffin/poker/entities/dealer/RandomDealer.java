@@ -1,8 +1,8 @@
-package bluffinmuffin.poker.game.dealer;
+package bluffinmuffin.poker.entities.dealer;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.game.CardSet;
-import bluffinmuffin.poker.game.PlayerInfo;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.game.entities.CardSet;
+import bluffinmuffin.poker.entities.PlayerInfo;
 
 public class RandomDealer extends AbstractDealer
 {

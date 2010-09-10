@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.poker.game.IPokerGame;
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TableInfo;
-import bluffinmuffin.poker.game.TypeAction;
-import bluffinmuffin.poker.game.TypeRound;
-import bluffinmuffin.poker.game.observer.IPokerGameListener;
-import bluffinmuffin.poker.game.observer.PokerGameObserver;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.poker.IPokerGame;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
+import bluffinmuffin.poker.observer.IPokerGameListener;
+import bluffinmuffin.poker.observer.PokerGameObserver;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.ICommand;
 import bluffinmuffin.protocol.commands.game.BetTurnEndedCommand;
@@ -167,7 +167,7 @@ public class GameTCPClient implements IPokerGame
                 m_pokerTable.setHigherBet(0);
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)
                 {
-                    m_pokerTable.getPots().add(new MoneyPot(i, amounts.get(i)));
+                    m_pokerTable.getPots().add(new PotInfo(i, amounts.get(i)));
                     m_pokerTable.incTotalPotAmnt(amounts.get(i));
                 }
                 for (final PlayerInfo p : m_pokerTable.getPlayers())
@@ -187,7 +187,7 @@ public class GameTCPClient implements IPokerGame
                 }
                 m_pokerTable.setCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
                 m_pokerTable.setRound(command.getRound());
-                if (m_pokerTable.getRound() == TypeRound.PREFLOP)
+                if (m_pokerTable.getRound() == GameRoundType.PREFLOP)
                 {
                     m_pokerTable.setNoSeatLastRaise(m_pokerTable.nextPlayingPlayer(m_pokerTable.getNoSeatBigBlind()).getNoSeat());
                 }
@@ -302,7 +302,7 @@ public class GameTCPClient implements IPokerGame
                 final PlayerInfo p = m_pokerTable.getPlayer(command.getPlayerPos());
                 if (p != null)
                 {
-                    if (command.getActionType() == TypeAction.RAISED)
+                    if (command.getActionType() == PlayerActionType.RAISED)
                     {
                         m_pokerTable.setNoSeatLastRaise(p.getNoSeat());
                     }
@@ -328,7 +328,7 @@ public class GameTCPClient implements IPokerGame
                 if (p != null)
                 {
                     p.setMoneySafeAmnt(command.getPlayerMoney());
-                    m_gameObserver.playerWonPot(p, new MoneyPot(command.getPotID(), command.getShared()), command.getShared());
+                    m_gameObserver.playerWonPot(p, new PotInfo(command.getPotID(), command.getShared()), command.getShared());
                 }
             }
             
@@ -347,7 +347,7 @@ public class GameTCPClient implements IPokerGame
                 m_pokerTable.getPots().clear();
                 for (int i = 0; i < amounts.size() && amounts.get(i) > 0; ++i)
                 {
-                    m_pokerTable.getPots().add(new MoneyPot(i, amounts.get(i)));
+                    m_pokerTable.getPots().add(new PotInfo(i, amounts.get(i)));
                 }
                 
                 final Card[] cards = new Card[5];
