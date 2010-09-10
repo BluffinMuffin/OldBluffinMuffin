@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace BluffinPokerClient
 {
-    public partial class WelcomeForm : Form
+    public partial class MainForm : Form
     {
-        public WelcomeForm()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -21,9 +21,14 @@ namespace BluffinPokerClient
             TrainingConnectForm cf = new TrainingConnectForm(txtPlayerName.Text, clstServerName.Text, (int)nudServerPort.Value);
             cf.ShowDialog();
             if (cf.OK)
-                new LobbyForm(cf.Server).Show();
+                new TrainingLobbyForm(cf.Server).Show();
             else
                 Show();
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

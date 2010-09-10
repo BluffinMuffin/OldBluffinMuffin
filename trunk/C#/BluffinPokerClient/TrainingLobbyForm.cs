@@ -13,10 +13,10 @@ using BluffinPokerGui.Game;
 
 namespace BluffinPokerClient
 {
-    public partial class LobbyForm : Form
+    public partial class TrainingLobbyForm : Form
     {
         private LobbyTCPClient m_Server;
-        public LobbyForm(LobbyTCPClient server)
+        public TrainingLobbyForm(LobbyTCPClient server)
         {
             m_Server = server;
             InitializeComponent();

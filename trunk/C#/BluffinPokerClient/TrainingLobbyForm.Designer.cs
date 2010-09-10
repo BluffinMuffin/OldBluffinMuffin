@@ -1,6 +1,6 @@
 ﻿namespace BluffinPokerClient
 {
-    partial class LobbyForm
+    partial class TrainingLobbyForm
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
