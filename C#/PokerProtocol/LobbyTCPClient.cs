@@ -202,6 +202,8 @@ namespace PokerProtocol
             {
                 Console.WriteLine(m_PlayerName + " IS WAITING");
                 string line = Receive();
+                if (line == null)
+                    return;
                 Console.WriteLine(m_PlayerName + " RECV [" + line + "]");
                 StringTokenizer token = new StringTokenizer(line, AbstractLobbyCommand.Delimitter);
                 String commandName = token.NextToken();

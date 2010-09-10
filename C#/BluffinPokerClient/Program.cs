@@ -4,8 +4,10 @@ using System.Windows.Forms;
 
 namespace BluffinPokerClient
 {
-    static class Program
+    public static class Program
     {
+        private static WelcomeForm m_WForm;
+        public static WelcomeForm WForm { get { return m_WForm; } }
         /// <summary>
         /// Point d'entrée principal de l'application.
         /// </summary>
@@ -14,7 +16,8 @@ namespace BluffinPokerClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            m_WForm = new WelcomeForm();
+            Application.Run(m_WForm);
         }
     }
 }

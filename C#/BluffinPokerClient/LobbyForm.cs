@@ -13,59 +13,20 @@ using BluffinPokerGui.Game;
 
 namespace BluffinPokerClient
 {
-    public partial class MainForm : Form
+    public partial class LobbyForm : Form
     {
         private LobbyTCPClient m_Server;
-        public MainForm()
+        public LobbyForm(LobbyTCPClient server)
         {
+            m_Server = server;
             InitializeComponent();
+            lblStatus.Text = "[Training] Connected as " + server.PlayerName;
+            Text = server.PlayerName + " ~ " + lblTitle.Text;
+            RefreshTables();
+            if (datTables.RowCount == 0)
+                AddTable();
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
-        {
-            if (m_Server == null)
-            {
-                ConnectForm form = new ConnectForm();
-                form.ShowDialog();
-                if (form.OK)
-                {
-                    m_Server = new LobbyTCPClient(form.ServerAddress, form.ServerPort);
-                    if (m_Server.Connect())
-                    {
-                        m_Server.Start();
-                        string name = form.PlayerName;
-                        bool isOk = m_Server.Identify(name);
-                        while (!isOk)
-                        {
-                            NameUsedForm form2 = new NameUsedForm(name);
-                            form2.ShowDialog();
-                            name = form2.PlayerName;
-                            isOk = m_Server.Identify(name);
-                        }
-                        lblStatus.Text = "Connected as " + name;
-                        Text = name + " ~ " + lblTitle.Text;
-                        btnConnect.Text = "Disconnect";
-                        btnRefresh.Enabled = true;
-                        btnAddTable.Enabled = true;
-                        RefreshTables();
-                        if (datTables.RowCount == 0)
-                            AddTable();
-                    }
-                    else
-                    {
-                        lblStatus.Text = "Connection Failed";
-                    }
-                }
-            }
-            else
-            {
-                m_Server.Disconnect();
-                m_Server = null;
-                btnConnect.Text = "Connect";
-                lblStatus.Text = "Not Connected";
-                Text = lblTitle.Text;
-            }
-        }
         private void RefreshTables()
         {
             datTables.Rows.Clear();
@@ -206,6 +167,18 @@ namespace BluffinPokerClient
         private void datTables_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             AllowJoinOrLeave();
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void LobbyForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (m_Server != null)
+                m_Server.Disconnect();
+            Program.WForm.Show();
         }
     }
 }
