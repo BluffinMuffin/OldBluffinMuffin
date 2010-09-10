@@ -6,8 +6,8 @@ namespace BluffinPokerClient
 {
     public static class Program
     {
-        private static WelcomeForm m_WForm;
-        public static WelcomeForm WForm { get { return m_WForm; } }
+        private static MainForm m_WForm;
+        public static MainForm WForm { get { return m_WForm; } }
         /// <summary>
         /// Point d'entrée principal de l'application.
         /// </summary>
@@ -16,7 +16,7 @@ namespace BluffinPokerClient
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            m_WForm = new WelcomeForm();
+            m_WForm = new MainForm();
             Application.Run(m_WForm);
         }
     }
