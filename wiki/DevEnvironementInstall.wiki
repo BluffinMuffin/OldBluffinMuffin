@@ -1,4 +1,4 @@
-#summary Installation de l'environnement
+#summary Development Environment With Eclipse & JAVA
 
 = Requirements =
 
