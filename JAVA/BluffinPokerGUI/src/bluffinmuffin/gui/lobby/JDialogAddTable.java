@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
-import bluffinmuffin.poker.game.TypeBet;
+import bluffinmuffin.poker.entities.type.GameBetLimitType;
 
 
 public class JDialogAddTable extends JDialog
@@ -35,7 +35,7 @@ public class JDialogAddTable extends JDialog
     private int m_WaitingTimeAfterPlayerAction;
     private int m_WaitingTimeAfterBoardDealed;
     private int m_WaitingTimeAfterPotWon;
-    private TypeBet m_Limit;
+    private GameBetLimitType m_Limit;
     
     private static final long serialVersionUID = 1L;
     private JPanel jContentPane = null;
@@ -183,8 +183,8 @@ public class JDialogAddTable extends JDialog
         {
             jGameLimitComboBox = new JComboBox();
             jGameLimitComboBox.setBounds(new Rectangle(10, 75, 200, 20));
-            jGameLimitComboBox.setModel(new DefaultComboBoxModel(TypeBet.values()));
-            jGameLimitComboBox.setSelectedItem(TypeBet.NO_LIMIT);
+            jGameLimitComboBox.setModel(new DefaultComboBoxModel(GameBetLimitType.values()));
+            jGameLimitComboBox.setSelectedItem(GameBetLimitType.NO_LIMIT);
         }
         return jGameLimitComboBox;
     }
@@ -286,7 +286,7 @@ public class JDialogAddTable extends JDialog
                     m_WaitingTimeAfterPlayerAction = (Integer) getJWTAPlayerActionSpinner().getValue();
                     m_WaitingTimeAfterBoardDealed = (Integer) getJWTABoardDealedSpinner().getValue();
                     m_WaitingTimeAfterPotWon = (Integer) getJWTAPotWonSpinner().getValue();
-                    m_Limit = (TypeBet) getJGameLimitComboBox().getSelectedItem();
+                    m_Limit = (GameBetLimitType) getJGameLimitComboBox().getSelectedItem();
                     m_OK = true;
                     setVisible(false);
                 }
@@ -330,7 +330,7 @@ public class JDialogAddTable extends JDialog
         return m_WaitingTimeAfterPotWon;
     }
     
-    public TypeBet getLimit()
+    public GameBetLimitType getLimit()
     {
         return m_Limit;
     }

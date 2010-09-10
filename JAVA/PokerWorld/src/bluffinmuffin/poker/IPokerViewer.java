@@ -1,6 +1,5 @@
 package bluffinmuffin.poker;
 
-import bluffinmuffin.poker.game.IPokerGame;
 
 public interface IPokerViewer
 {

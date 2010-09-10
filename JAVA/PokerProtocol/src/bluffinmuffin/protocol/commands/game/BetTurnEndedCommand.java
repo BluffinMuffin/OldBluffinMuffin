@@ -3,7 +3,7 @@ package bluffinmuffin.protocol.commands.game;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import bluffinmuffin.poker.game.TypeRound;
+import bluffinmuffin.poker.entities.type.GameRoundType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
 
@@ -11,7 +11,7 @@ import bluffinmuffin.protocol.commands.ICommand;
 public class BetTurnEndedCommand implements ICommand
 {
     private final ArrayList<Integer> m_potsAmounts;
-    private final TypeRound m_round;
+    private final GameRoundType m_round;
     public static String COMMAND_NAME = "gameBET_TURN_ENDED";
     
     public BetTurnEndedCommand(StringTokenizer argsToken)
@@ -22,10 +22,10 @@ public class BetTurnEndedCommand implements ICommand
         {
             m_potsAmounts.add(Integer.parseInt(argsToken.nextToken()));
         }
-        m_round = TypeRound.values()[Integer.parseInt(argsToken.nextToken())];
+        m_round = GameRoundType.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
-    public BetTurnEndedCommand(ArrayList<Integer> potsAmounts, TypeRound round)
+    public BetTurnEndedCommand(ArrayList<Integer> potsAmounts, GameRoundType round)
     {
         m_potsAmounts = potsAmounts;
         m_round = round;
@@ -53,7 +53,7 @@ public class BetTurnEndedCommand implements ICommand
         return m_potsAmounts;
     }
     
-    public TypeRound getRound()
+    public GameRoundType getRound()
     {
         return m_round;
     }

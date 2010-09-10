@@ -1,4 +1,4 @@
-package bluffinmuffin.game;
+package bluffinmuffin.game.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import bluffinmuffin.game.entities.type.CardRankType;
+import bluffinmuffin.game.entities.type.CardRankSuit;
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0
@@ -28,9 +31,9 @@ public class CardSet implements Set<Card>
     private static final CardSet madeDeck = new CardSet(52);
     static
     {
-        for (final TypeCardSuit suit : TypeCardSuit.values())
+        for (final CardRankSuit suit : CardRankSuit.values())
         {
-            for (final TypeCardRank rank : TypeCardRank.values())
+            for (final CardRankType rank : CardRankType.values())
             {
                 CardSet.madeDeck.add(Card.getInstance(rank, suit));
             }

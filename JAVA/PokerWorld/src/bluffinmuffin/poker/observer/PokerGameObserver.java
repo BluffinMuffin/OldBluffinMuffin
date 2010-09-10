@@ -1,9 +1,9 @@
-package bluffinmuffin.poker.game.observer;
+package bluffinmuffin.poker.observer;
 
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TypeAction;
-import bluffinmuffin.poker.game.TypeRound;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
 import ericutility.misc.EventObserver;
 
 public class PokerGameObserver extends EventObserver<IPokerGameListener> implements IPokerGameListener
@@ -72,7 +72,7 @@ public class PokerGameObserver extends EventObserver<IPokerGameListener> impleme
     }
     
     @Override
-    public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
+    public void playerActionTaken(PlayerInfo p, PlayerActionType reason, int playedAmount)
     {
         for (final IPokerGameListener listener : getSubscribers())
         {
@@ -90,7 +90,7 @@ public class PokerGameObserver extends EventObserver<IPokerGameListener> impleme
     }
     
     @Override
-    public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
+    public void playerWonPot(PlayerInfo p, PotInfo pot, int wonAmount)
     {
         for (final IPokerGameListener listener : getSubscribers())
         {
@@ -99,7 +99,7 @@ public class PokerGameObserver extends EventObserver<IPokerGameListener> impleme
     }
     
     @Override
-    public void gameBettingRoundEnded(TypeRound r)
+    public void gameBettingRoundEnded(GameRoundType r)
     {
         for (final IPokerGameListener listener : getSubscribers())
         {

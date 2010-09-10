@@ -4,7 +4,7 @@ package bluffinmuffin.poker.stats;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import bluffinmuffin.game.Card;
+import bluffinmuffin.game.entities.Card;
 
 
 /**

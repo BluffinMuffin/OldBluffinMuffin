@@ -1,9 +1,9 @@
-package bluffinmuffin.poker.game.observer;
+package bluffinmuffin.poker.observer;
 
-import bluffinmuffin.poker.game.MoneyPot;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TypeAction;
-import bluffinmuffin.poker.game.TypeRound;
+import bluffinmuffin.poker.entities.PotInfo;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
+import bluffinmuffin.poker.entities.type.GameRoundType;
 
 public class PokerGameAdapter implements IPokerGameListener
 {
@@ -44,7 +44,7 @@ public class PokerGameAdapter implements IPokerGameListener
     }
     
     @Override
-    public void playerActionTaken(PlayerInfo p, TypeAction reason, int playedAmount)
+    public void playerActionTaken(PlayerInfo p, PlayerActionType reason, int playedAmount)
     {
     }
     
@@ -54,7 +54,7 @@ public class PokerGameAdapter implements IPokerGameListener
     }
     
     @Override
-    public void playerWonPot(PlayerInfo p, MoneyPot pot, int wonAmount)
+    public void playerWonPot(PlayerInfo p, PotInfo pot, int wonAmount)
     {
     }
     
@@ -64,7 +64,7 @@ public class PokerGameAdapter implements IPokerGameListener
     }
     
     @Override
-    public void gameBettingRoundEnded(TypeRound r)
+    public void gameBettingRoundEnded(GameRoundType r)
     {
     }
     

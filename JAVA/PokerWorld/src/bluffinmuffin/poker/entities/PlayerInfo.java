@@ -1,7 +1,7 @@
-package bluffinmuffin.poker.game;
+package bluffinmuffin.poker.entities;
 
-import bluffinmuffin.game.Card;
-import bluffinmuffin.game.CardSet;
+import bluffinmuffin.game.entities.Card;
+import bluffinmuffin.game.entities.CardSet;
 import bluffinmuffin.poker.HandEvaluator;
 
 public class PlayerInfo

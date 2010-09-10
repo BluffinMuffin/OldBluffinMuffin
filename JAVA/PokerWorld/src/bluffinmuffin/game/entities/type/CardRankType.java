@@ -1,6 +1,6 @@
-package bluffinmuffin.game;
+package bluffinmuffin.game.entities.type;
 
-public enum TypeCardRank
+public enum CardRankType
 {
     TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE;
     
@@ -13,22 +13,22 @@ public enum TypeCardRank
      * @throws IllegalArgumentException
      *             if c not in {@link #RANK_CHARS}
      */
-    public static TypeCardRank fromChar(char c)
+    public static CardRankType fromChar(char c)
     {
         
-        final int i = TypeCardRank.RANK_CHARS.indexOf(Character.toUpperCase(c));
+        final int i = CardRankType.RANK_CHARS.indexOf(Character.toUpperCase(c));
         if (i >= 0)
         {
-            return TypeCardRank.values()[i];
+            return CardRankType.values()[i];
         }
         throw new IllegalArgumentException("'" + c + "'");
     }
     
-    public static TypeCardRank fromInt(int i)
+    public static CardRankType fromInt(int i)
     {
         if (i >= 0)
         {
-            return TypeCardRank.values()[i];
+            return CardRankType.values()[i];
         }
         throw new IllegalArgumentException("'" + i + "'");
     }
@@ -47,6 +47,6 @@ public enum TypeCardRank
      */
     public char toChar()
     {
-        return TypeCardRank.RANK_CHARS.charAt(this.ordinal());
+        return CardRankType.RANK_CHARS.charAt(this.ordinal());
     }
 }

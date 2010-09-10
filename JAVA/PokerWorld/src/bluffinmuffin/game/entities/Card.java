@@ -1,14 +1,17 @@
-package bluffinmuffin.game;
+package bluffinmuffin.game.entities;
 
 import java.util.ArrayList;
+
+import bluffinmuffin.game.entities.type.CardRankType;
+import bluffinmuffin.game.entities.type.CardRankSuit;
 
 
 public class Card implements Comparable<Card>
 {
     
-    private final TypeCardRank m_rank;
+    private final CardRankType m_rank;
     
-    private final TypeCardSuit m_suit;
+    private final CardRankSuit m_suit;
     private final int m_ID;
     
     /**
@@ -20,7 +23,7 @@ public class Card implements Comparable<Card>
      *            a {@link Suit}
      * @see #getInstance(handEvaluation.HandEvalCard.poker.Card.Rank, handEvaluation.HandEvalCard.poker.Card.Suit)
      */
-    private Card(TypeCardRank rank, TypeCardSuit suit)
+    private Card(CardRankType rank, CardRankSuit suit)
     {
         m_rank = rank;
         m_suit = suit;
@@ -36,8 +39,8 @@ public class Card implements Comparable<Card>
         }
         else
         {
-            m_rank = TypeCardRank.fromInt(ID % 13);
-            m_suit = TypeCardSuit.fromInt(ID / 13);
+            m_rank = CardRankType.fromInt(ID % 13);
+            m_suit = CardRankSuit.fromInt(ID / 13);
         }
         m_ID = ID;
     }
@@ -61,8 +64,8 @@ public class Card implements Comparable<Card>
         }
         try
         {
-            this.m_rank = TypeCardRank.fromChar(rs.charAt(0));
-            this.m_suit = TypeCardSuit.fromChar(rs.charAt(1));
+            this.m_rank = CardRankType.fromChar(rs.charAt(0));
+            this.m_suit = CardRankSuit.fromChar(rs.charAt(1));
             m_ID = m_suit.ordinal() * 13 + m_rank.ordinal();
         }
         catch (final IllegalArgumentException e)
@@ -79,9 +82,9 @@ public class Card implements Comparable<Card>
     static
     {
         int i = 0;
-        for (final TypeCardSuit s : TypeCardSuit.values())
+        for (final CardRankSuit s : CardRankSuit.values())
         {
-            for (final TypeCardRank r : TypeCardRank.values())
+            for (final CardRankType r : CardRankType.values())
             {
                 Card.theCards[i++] = new Card(r, s);
             }
@@ -119,7 +122,7 @@ public class Card implements Comparable<Card>
      *            a {@link Suit}
      * @return an instance of {@link HandEvalCard} of the specified rank and suit.
      */
-    public static Card getInstance(TypeCardRank rank, TypeCardSuit suit)
+    public static Card getInstance(CardRankType rank, CardRankSuit suit)
     {
         return Card.getInstance(suit.ordinal() * 13 + rank.ordinal());
     }
@@ -142,8 +145,8 @@ public class Card implements Comparable<Card>
         }
         try
         {
-            final TypeCardRank rank = TypeCardRank.fromChar(rs.charAt(0));
-            final TypeCardSuit suit = TypeCardSuit.fromChar(rs.charAt(1));
+            final CardRankType rank = CardRankType.fromChar(rs.charAt(0));
+            final CardRankSuit suit = CardRankSuit.fromChar(rs.charAt(1));
             return Card.getInstance(rank, suit);
         }
         catch (final IllegalArgumentException e)
@@ -187,7 +190,7 @@ public class Card implements Comparable<Card>
      * 
      * @return the {@link Rank} of this card.
      */
-    public TypeCardRank getRank()
+    public CardRankType getRank()
     {
         return m_rank;
     }
@@ -197,7 +200,7 @@ public class Card implements Comparable<Card>
      * 
      * @return the {@link Suit} of this card.
      */
-    public TypeCardSuit getSuit()
+    public CardRankSuit getSuit()
     {
         return m_suit;
     }

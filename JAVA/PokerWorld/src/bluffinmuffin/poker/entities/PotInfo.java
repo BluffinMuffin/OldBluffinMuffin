@@ -1,20 +1,20 @@
-package bluffinmuffin.poker.game;
+package bluffinmuffin.poker.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoneyPot
+public class PotInfo
 {
     private final int m_id;
     private int m_amount;
     private final List<PlayerInfo> m_attachedPlayers = new ArrayList<PlayerInfo>();
     
-    public MoneyPot(int id)
+    public PotInfo(int id)
     {
         m_id = id;
     }
     
-    public MoneyPot(int id, int amount)
+    public PotInfo(int id, int amount)
     {
         m_id = id;
         m_amount = amount;

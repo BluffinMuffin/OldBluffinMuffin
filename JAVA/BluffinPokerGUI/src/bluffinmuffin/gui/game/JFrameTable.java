@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import bluffinmuffin.poker.game.IPokerGame;
-import bluffinmuffin.poker.game.PlayerInfo;
-import bluffinmuffin.poker.game.TableInfo;
-import bluffinmuffin.poker.game.observer.PokerGameAdapter;
+import bluffinmuffin.poker.IPokerGame;
+import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.observer.PokerGameAdapter;
 
 
 public class JFrameTable extends JFrameTableViewer
