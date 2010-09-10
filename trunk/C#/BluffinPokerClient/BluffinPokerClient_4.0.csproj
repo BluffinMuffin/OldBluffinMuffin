@@ -61,25 +61,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectForm.cs">
+    <Compile Include="LobbyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectForm.Designer.cs">
-      <DependentUpon>ConnectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="LobbyForm.Designer.cs">
+      <DependentUpon>LobbyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ConnectForm.resx">
-      <DependentUpon>ConnectForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="StatePictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TrainingConnectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrainingConnectForm.Designer.cs">
+      <DependentUpon>TrainingConnectForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WelcomeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WelcomeForm.Designer.cs">
+      <DependentUpon>WelcomeForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="LobbyForm.resx">
+      <DependentUpon>LobbyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -91,6 +97,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TrainingConnectForm.resx">
+      <DependentUpon>TrainingConnectForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WelcomeForm.resx">
+      <DependentUpon>WelcomeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -145,6 +157,39 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting0.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting5.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting6.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\waiting7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bad.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\current.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OK.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
