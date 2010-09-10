@@ -2,7 +2,8 @@ package protocol.commands.lobby.response;
 
 import java.util.StringTokenizer;
 
-import poker.game.TypeBet;
+import bluffinmuffin.poker.game.TypeBet;
+
 import protocol.commands.Command;
 import protocol.commands.ICommand;
 

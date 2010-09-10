@@ -1,19 +1,20 @@
 package protocol;
 
-import game.Card;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import poker.game.IPokerGame;
-import poker.game.MoneyPot;
-import poker.game.PlayerInfo;
-import poker.game.TableInfo;
-import poker.game.TypeAction;
-import poker.game.TypeRound;
-import poker.game.observer.IPokerGameListener;
-import poker.game.observer.PokerGameObserver;
+import bluffinmuffin.game.Card;
+import bluffinmuffin.poker.game.IPokerGame;
+import bluffinmuffin.poker.game.MoneyPot;
+import bluffinmuffin.poker.game.PlayerInfo;
+import bluffinmuffin.poker.game.TableInfo;
+import bluffinmuffin.poker.game.TypeAction;
+import bluffinmuffin.poker.game.TypeRound;
+import bluffinmuffin.poker.game.observer.IPokerGameListener;
+import bluffinmuffin.poker.game.observer.PokerGameObserver;
+
 import protocol.commands.DisconnectCommand;
 import protocol.commands.ICommand;
 import protocol.commands.game.BetTurnEndedCommand;

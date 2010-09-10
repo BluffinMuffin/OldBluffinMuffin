@@ -1,7 +1,7 @@
-package poker;
+package bluffinmuffin.poker;
 
-import game.Card;
-import game.CardSet;
+import bluffinmuffin.game.Card;
+import bluffinmuffin.game.CardSet;
 
 /**
  * Original class from Steve Brecher, version 2006Dec11.0

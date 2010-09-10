@@ -21,7 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 
-import poker.game.TypeBet;
+import bluffinmuffin.poker.game.TypeBet;
+
 
 public class JDialogAddTable extends JDialog
 {

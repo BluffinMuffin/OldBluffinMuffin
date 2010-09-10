@@ -2,8 +2,9 @@ package gui.game;
 
 import javax.swing.JFrame;
 
-import poker.IPokerViewer;
-import poker.game.IPokerGame;
+import bluffinmuffin.poker.IPokerViewer;
+import bluffinmuffin.poker.game.IPokerGame;
+
 
 public abstract class AbstractJFrameTable extends JFrame implements IPokerViewer
 {

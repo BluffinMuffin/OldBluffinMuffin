@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import poker.game.PokerGame;
-import poker.game.TableInfo;
+import bluffinmuffin.poker.game.PokerGame;
+import bluffinmuffin.poker.game.TableInfo;
+
 import protocol.TupleTableInfo;
 import protocol.commands.lobby.CreateTableCommand;
 

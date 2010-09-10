@@ -1,4 +1,4 @@
-package game;
+package bluffinmuffin.game;
 
 public enum TypeCardRank
 {

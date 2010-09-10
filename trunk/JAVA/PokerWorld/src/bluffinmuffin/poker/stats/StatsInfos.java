@@ -1,4 +1,4 @@
-package poker.stats;
+package bluffinmuffin.poker.stats;
 
 /**
  * @author Hocus

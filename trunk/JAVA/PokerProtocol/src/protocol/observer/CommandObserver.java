@@ -1,6 +1,6 @@
 package protocol.observer;
 
-import utility.EventObserver;
+import ericutility.misc.EventObserver;
 
 public class CommandObserver<T extends ICommandListener> extends EventObserver<T>
 {

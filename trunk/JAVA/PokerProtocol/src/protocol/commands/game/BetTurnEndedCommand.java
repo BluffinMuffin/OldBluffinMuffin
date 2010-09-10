@@ -3,7 +3,8 @@ package protocol.commands.game;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import poker.game.TypeRound;
+import bluffinmuffin.poker.game.TypeRound;
+
 import protocol.commands.Command;
 import protocol.commands.ICommand;
 

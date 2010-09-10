@@ -1,11 +1,12 @@
 package gui.game;
 
-import game.Card;
 
 import java.awt.FlowLayout;
 import java.util.TreeMap;
 
 import javax.swing.JPanel;
+
+import bluffinmuffin.game.Card;
 
 
 public class JPanelCard extends JPanel

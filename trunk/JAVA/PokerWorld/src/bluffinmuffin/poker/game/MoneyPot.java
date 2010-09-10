@@ -1,4 +1,4 @@
-package poker.game;
+package bluffinmuffin.poker.game;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package poker.game;
+package bluffinmuffin.poker.game;
 
 public enum TypeBet
 {

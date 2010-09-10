@@ -1,14 +1,14 @@
-package poker.stats;
+package bluffinmuffin.poker.stats;
 
-import poker.HandEvaluator;
-import utility.XORShiftRandom;
+import bluffinmuffin.poker.HandEvaluator;
+import ericutility.misc.XORShiftRandom;
 
 
 /**
  * @author Hocus
- *         This class calculate MonteCarlo using multiple thread to increase the speed of calculation. Also include the variance
+ *         This class calculate MonteCarlo using multiple thread to increase the speed of calculation.
  */
-public class ParallelMonteCarloWithVariance extends Thread
+public class ParallelMonteCarlo extends Thread
 {
     long m_nbSimulations;
     int m_nbMissingTableCards;
@@ -18,9 +18,6 @@ public class ParallelMonteCarloWithVariance extends Thread
     int[] m_playerCards;
     int[] m_dynamicTable;
     long m_gamesWon;
-    
-    long[] m_gameWonPerCard;
-    long[] m_nbSimulationPerCard;
     
     XORShiftRandom m_myRandom = new XORShiftRandom();
     
@@ -42,7 +39,7 @@ public class ParallelMonteCarloWithVariance extends Thread
      * @param p_dynamicTable
      *            Table
      */
-    public ParallelMonteCarloWithVariance(long p_nbSimulations, int p_nbMissingTableCards, int p_nbCardsShowedOnTable, int p_nbCardsToDraw, Integer[] p_deck, int[] p_playerCards, int[] p_dynamicTable)
+    public ParallelMonteCarlo(long p_nbSimulations, int p_nbMissingTableCards, int p_nbCardsShowedOnTable, int p_nbCardsToDraw, Integer[] p_deck, int[] p_playerCards, int[] p_dynamicTable)
     {
         this.setName("MonteCarlo - [" + Thread.currentThread().getName() + "]");
         m_nbSimulations = p_nbSimulations;
@@ -53,8 +50,6 @@ public class ParallelMonteCarloWithVariance extends Thread
         m_deck = p_deck;
         m_playerCards = p_playerCards;
         m_dynamicTable = p_dynamicTable;
-        m_gameWonPerCard = new long[52];
-        m_nbSimulationPerCard = new long[52];
     }
     
     /**
@@ -102,9 +97,7 @@ public class ParallelMonteCarloWithVariance extends Thread
             if (!lost)
             {
                 m_gamesWon++;
-                ++m_gameWonPerCard[m_dynamicTable[m_nbCardsShowedOnTable]];
             }
-            ++m_nbSimulationPerCard[m_dynamicTable[m_nbCardsShowedOnTable]];
             
             for (int k = 0; k != m_nbCardsToDraw; ++k)
             {
