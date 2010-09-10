@@ -29,7 +29,6 @@ import bluffinmuffin.poker.game.TypeAction;
 import bluffinmuffin.poker.game.TypeRound;
 import bluffinmuffin.poker.game.observer.PokerGameAdapter;
 
-
 public class JFrameTableViewer extends AbstractJFrameTable
 {
     private final JPanelPlayerHud[] huds = new JPanelPlayerHud[10];
@@ -650,7 +649,6 @@ public class JFrameTableViewer extends AbstractJFrameTable
             @Override
             public void gameBettingRoundEnded(TypeRound r)
             {
-                final TableInfo table = m_game.getTable();
                 // TODO: RICK: update POTS
                 
                 for (int i = 0; i < huds.length; ++i)

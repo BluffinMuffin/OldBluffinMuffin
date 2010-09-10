@@ -135,7 +135,7 @@ public class CardSet implements Set<Card>
         return cards.containsAll(coll);
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object that)
     {
