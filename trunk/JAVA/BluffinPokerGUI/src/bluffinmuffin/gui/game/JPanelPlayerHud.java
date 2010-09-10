@@ -1,4 +1,4 @@
-package gui.game;
+package bluffinmuffin.gui.game;
 
 
 import java.awt.Color;

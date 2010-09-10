@@ -1,7 +1,5 @@
-package gui.game;
+package bluffinmuffin.gui.game;
 
-import gui.JDialogHandStrength;
-import gui.JPanelConsole;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,6 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import bluffinmuffin.game.Card;
+import bluffinmuffin.gui.JDialogHandStrength;
+import bluffinmuffin.gui.JPanelConsole;
 import bluffinmuffin.poker.game.IPokerGame;
 import bluffinmuffin.poker.game.MoneyPot;
 import bluffinmuffin.poker.game.PlayerInfo;

@@ -1,4 +1,4 @@
-package gui.lobby;
+package bluffinmuffin.gui.lobby;
 
 import java.awt.Dimension;
 import java.awt.Frame;
