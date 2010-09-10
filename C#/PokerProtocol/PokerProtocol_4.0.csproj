@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PokerProtocol</RootNamespace>
     <AssemblyName>PokerProtocol</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,10 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -55,6 +52,7 @@
     <Compile Include="Commands\Game\TableClosedCommand.cs" />
     <Compile Include="Commands\Game\TableInfoCommand.cs" />
     <Compile Include="Commands\Lobby\AbstractLobbyCommand.cs" />
+    <Compile Include="Commands\Lobby\GameCommand.cs" />
     <Compile Include="Commands\Lobby\CreateTableCommand.cs" />
     <Compile Include="Commands\Lobby\IdentifyCommand.cs" />
     <Compile Include="Commands\Lobby\JoinTableCommand.cs" />
@@ -64,8 +62,8 @@
     <Compile Include="Commands\Lobby\Response\IdentifyResponse.cs" />
     <Compile Include="Commands\Lobby\Response\JoinTableResponse.cs" />
     <Compile Include="Commands\Lobby\Response\ListTableResponse.cs" />
-    <Compile Include="GameTCPClient.cs" />
-    <Compile Include="GameTCPServer.cs" />
+    <Compile Include="GameClient.cs" />
+    <Compile Include="GameServer.cs" />
     <Compile Include="LobbyTCPClient.cs" />
     <Compile Include="Observer\GameClientCommandObserver.cs" />
     <Compile Include="Observer\GameServerCommandObserver.cs" />
@@ -75,6 +73,10 @@
     <Compile Include="TupleTableInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EricUtilityCollections\EricUtilityCollections_4.0.csproj">
+      <Project>{B8B8FC45-F16D-4380-91FD-F08B365C74A7}</Project>
+      <Name>EricUtilityCollections_4.0</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_4.0.csproj">
       <Project>{5CE81EA0-A5B0-4877-A37F-33897BD58642}</Project>
       <Name>EricUtilityGames_4.0</Name>

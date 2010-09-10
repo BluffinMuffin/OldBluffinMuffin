@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using PokerWorld.Game;
@@ -17,6 +16,13 @@ namespace BluffinPokerServer
 
         private readonly List<string> m_UsedNames = new List<string>();
         private readonly Dictionary<int, PokerGame> m_Games = new Dictionary<int, PokerGame>();
+
+        private int m_LastUsedID = 0;
+
+        public PokerGame GetGame(int id)
+        {
+            return m_Games[id];
+        }
 
         public ServerLobby(int port)
         {
@@ -68,30 +74,13 @@ namespace BluffinPokerServer
         public int CreateTable(CreateTableCommand c)
         {
             ListTables();
-            if (m_Games.Count >= 10)
-                return -1;
-        int noPort = m_NoPort + 1;
-        int endPortRange = m_NoPort + 10;
-        for (; noPort <= endPortRange; ++noPort)
-        {
-            try
-            {
-                for (; noPort < endPortRange && m_Games.ContainsKey(noPort); ++noPort) ;
-
-                PokerGame game = new PokerGame(new TableInfo(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
-                game.Start();
-                ServerTableManager manager = new ServerTableManager(game,noPort);
-                manager.Start();
-                m_Games.Add(noPort, game);
-
-                return noPort;
-            }
-            catch
-            {
-            }
-        }
-
-            return -1;
+            m_LastUsedID++;
+            while (m_Games.ContainsKey(m_LastUsedID))
+                m_LastUsedID++;
+            PokerGame game = new PokerGame(new TableInfo(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+            m_Games.Add(m_LastUsedID, game);
+            game.Start();
+            return m_LastUsedID;
         }
 
         public List<TupleTableInfo> ListTables()

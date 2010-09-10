@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using EricUtility;
 using PokerProtocol.Commands;
@@ -16,6 +15,7 @@ namespace PokerProtocol.Observer
         public event EventHandler<CommandEventArgs<CreateTableCommand>> CreateTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<GameCommand>> GameCommandReceived = delegate { };
 
         protected override void receiveSomething(string line)
         {
@@ -31,6 +31,8 @@ namespace PokerProtocol.Observer
                 ListTableCommandReceived(this, new CommandEventArgs<ListTableCommand>(new ListTableCommand(token)));
             else if (commandName == JoinTableCommand.COMMAND_NAME)
                 JoinTableCommandReceived(this, new CommandEventArgs<JoinTableCommand>(new JoinTableCommand(token)));
+            else if (commandName == GameCommand.COMMAND_NAME)
+                GameCommandReceived(this, new CommandEventArgs<GameCommand>(new GameCommand(token)));
         }
     }
 }

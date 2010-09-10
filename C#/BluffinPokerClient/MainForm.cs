@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using PokerProtocol;
@@ -33,6 +32,7 @@ namespace BluffinPokerClient
                     m_Server = new LobbyTCPClient(form.ServerAddress, form.ServerPort);
                     if (m_Server.Connect())
                     {
+                        m_Server.Start();
                         string name = form.PlayerName;
                         bool isOk = m_Server.Identify(name);
                         while (!isOk)
@@ -106,7 +106,7 @@ namespace BluffinPokerClient
             }
         }
 
-        private void LeaveTable(GameTCPClient client)
+        private void LeaveTable(GameClient client)
         {
             if (client != null)
             {
@@ -117,7 +117,7 @@ namespace BluffinPokerClient
         public bool JoinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
         {
             AbstractTableForm gui = new TableForm();
-            GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
+            GameClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
             gui.FormClosed += delegate
             {
                 LeaveTable(tcpGame);
@@ -128,7 +128,7 @@ namespace BluffinPokerClient
         public void AllowJoinOrLeave()
         {
             bool selected = datTables.RowCount > 0 && datTables.SelectedRows.Count > 0;
-            GameTCPClient client = findClient();
+            GameClient client = findClient();
             btnJoinTable.Enabled = selected && (client == null);
             btnLeaveTable.Enabled = selected && (client != null);
         }
@@ -180,7 +180,7 @@ namespace BluffinPokerClient
             RefreshTables();
         }
 
-        private GameTCPClient findClient()
+        private GameClient findClient()
         {
             if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
             {

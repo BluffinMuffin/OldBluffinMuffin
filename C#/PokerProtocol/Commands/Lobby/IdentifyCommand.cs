@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using EricUtility;
 using PokerProtocol.Commands.Lobby.Response;
 using EricUtility.Networking.Commands;
+using System.Text;
 
 namespace PokerProtocol.Commands.Lobby
 {
