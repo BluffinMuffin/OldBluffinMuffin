@@ -35,8 +35,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.spbStep2 = new BluffinPokerClient.StatePictureBox();
-            this.spbStep1 = new BluffinPokerClient.StatePictureBox();
+            this.spbStep2 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spbStep1 = new EricUtility.Windows.Forms.StatePictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).BeginInit();
@@ -115,7 +115,7 @@
             // spbStep2
             // 
             this.spbStep2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep2.Etat = BluffinPokerClient.StatePictureBoxStates.None;
+            this.spbStep2.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
             this.spbStep2.Location = new System.Drawing.Point(20, 126);
             this.spbStep2.Name = "spbStep2";
             this.spbStep2.Size = new System.Drawing.Size(20, 23);
@@ -126,7 +126,7 @@
             // 
             this.spbStep1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("spbStep1.BackgroundImage")));
             this.spbStep1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep1.Etat = BluffinPokerClient.StatePictureBoxStates.Waiting;
+            this.spbStep1.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.Waiting;
             this.spbStep1.Location = new System.Drawing.Point(20, 79);
             this.spbStep1.Name = "spbStep1";
             this.spbStep1.Size = new System.Drawing.Size(20, 23);
@@ -156,8 +156,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
-        private StatePictureBox spbStep2;
-        private StatePictureBox spbStep1;
+        private EricUtility.Windows.Forms.StatePictureBox spbStep2;
+        private EricUtility.Windows.Forms.StatePictureBox spbStep1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
