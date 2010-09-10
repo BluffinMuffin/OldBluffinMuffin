@@ -24,9 +24,10 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import protocol.GameTCPClient;
-import protocol.LobbyTCPClient;
-import protocol.TupleTableInfo;
+import bluffinmuffin.protocol.GameTCPClient;
+import bluffinmuffin.protocol.LobbyTCPClient;
+import bluffinmuffin.protocol.TupleTableInfo;
+
 
 public class ClientLobby extends JFrame
 {

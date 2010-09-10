@@ -12,17 +12,17 @@ import java.util.TreeMap;
 
 import bluffinmuffin.poker.game.PokerGame;
 import bluffinmuffin.poker.game.TableInfo;
+import bluffinmuffin.protocol.GameTCPServer;
+import bluffinmuffin.protocol.commands.DisconnectCommand;
+import bluffinmuffin.protocol.commands.ICommand;
+import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
+import bluffinmuffin.protocol.commands.lobby.GameCommand;
+import bluffinmuffin.protocol.commands.lobby.IdentifyCommand;
+import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
+import bluffinmuffin.protocol.observer.lobby.LobbyServerAdapter;
+import bluffinmuffin.protocol.observer.lobby.LobbyServerObserver;
 
-import protocol.GameTCPServer;
-import protocol.commands.DisconnectCommand;
-import protocol.commands.ICommand;
-import protocol.commands.lobby.CreateTableCommand;
-import protocol.commands.lobby.GameCommand;
-import protocol.commands.lobby.IdentifyCommand;
-import protocol.commands.lobby.JoinTableCommand;
-import protocol.commands.lobby.ListTableCommand;
-import protocol.observer.lobby.LobbyServerAdapter;
-import protocol.observer.lobby.LobbyServerObserver;
 
 /**
  * This class represents a client for ServerLobby.
