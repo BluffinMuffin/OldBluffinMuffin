@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using EricUtility;
-using PokerProtocol.Commands.Lobby.Response;
-using PokerWorld.Game;
 using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game

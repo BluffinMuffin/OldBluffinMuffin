@@ -4,9 +4,9 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 
-namespace PokerProtocol.Commands.Lobby.Response
+namespace PokerProtocol.Commands.Lobby
 {
-    public class JoinTableResponse : AbstractLobbyCommandResponse<JoinTableCommand>
+    public class JoinTableResponse : AbstractLobbyResponse<JoinTableCommand>
     {
 
         protected override string CommandName

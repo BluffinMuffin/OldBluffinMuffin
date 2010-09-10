@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using EricUtility.Networking;
-using EricUtility;
 using System.IO;
+using System.Threading;
+using EricUtility;
+using EricUtility.Collections;
+using EricUtility.Networking;
 using EricUtility.Networking.Commands;
 using PokerProtocol.Commands.Lobby;
-using PokerProtocol.Commands.Lobby.Response;
-using System.Net.Sockets;
 using PokerWorld.Game;
-using EricUtility.Collections;
-using System.Threading;
+using PokerProtocol.Commands.Lobby.Training;
 
 namespace PokerProtocol
 {
     public class LobbyTCPClient : TCPCommunicator
     {
-        private string m_PlayerName;
-        private string m_ServerAddress;
-        private int m_ServerPort;
+        protected string m_PlayerName;
+        protected string m_ServerAddress;
+        protected int m_ServerPort;
 
         public string PlayerName
         {
@@ -34,8 +32,8 @@ namespace PokerProtocol
         {
             get { return m_ServerPort; }
         }
-        private Dictionary<int, GameClient> m_Clients = new Dictionary<int, GameClient>();
-        private BlockingQueue<string> m_Incoming = new BlockingQueue<string>();
+        protected Dictionary<int, GameClient> m_Clients = new Dictionary<int, GameClient>();
+        protected BlockingQueue<string> m_Incoming = new BlockingQueue<string>();
 
         public LobbyTCPClient(string serverAddress, int serverPort)
             : base()
@@ -49,7 +47,7 @@ namespace PokerProtocol
             return base.Connect(m_ServerAddress, m_ServerPort);
         }
 
-        private StringTokenizer ReceiveCommand(string expected)
+        protected StringTokenizer ReceiveCommand(string expected)
         {
             string s = m_Incoming.Dequeue();
             StringTokenizer token = new StringTokenizer(s, AbstractLobbyCommand.Delimitter);
@@ -63,7 +61,7 @@ namespace PokerProtocol
             return token;
         }
 
-        private string Receive(StreamReader reader)
+        protected string Receive(StreamReader reader)
         {
             string line;
             try
@@ -116,17 +114,6 @@ namespace PokerProtocol
                 Close();
             }
         }
-        public bool Identify(string name)
-        {
-            m_PlayerName = name;
-            Send(new IdentifyCommand(m_PlayerName));
-            StringTokenizer token = ReceiveCommand(IdentifyResponse.COMMAND_NAME);
-            if (!token.HasMoreTokens())
-                return false;
-            IdentifyResponse response = new IdentifyResponse(token);
-            return response.OK;
-        }
-
         public GameClient FindClient(int noPort)
         {
             if (m_Clients.ContainsKey(noPort))
@@ -163,7 +150,7 @@ namespace PokerProtocol
                 return client;
         }
 
-        void client_SendedSomething(object sender, KeyEventArgs<string> e)
+        protected void client_SendedSomething(object sender, KeyEventArgs<string> e)
         {
             GameClient client = (GameClient)sender;
             Send(new GameCommand(client.NoPort, e.Key));

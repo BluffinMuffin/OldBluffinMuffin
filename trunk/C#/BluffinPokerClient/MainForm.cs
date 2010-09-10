@@ -15,10 +15,15 @@ namespace BluffinPokerClient
             InitializeComponent();
         }
 
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
+
         private void btnStartTraining_Click(object sender, EventArgs e)
         {
             Hide();
-            TrainingConnectForm cf = new TrainingConnectForm(txtPlayerName.Text, clstServerName.Text, (int)nudServerPort.Value);
+            SplashTrainingConnect cf = new SplashTrainingConnect(txtPlayerName.Text, clstServerName.Text, (int)nudServerPort.Value);
             cf.ShowDialog();
             if (cf.OK)
                 new TrainingLobbyForm(cf.Server).Show();
@@ -26,9 +31,29 @@ namespace BluffinPokerClient
                 Show();
         }
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void btnConnect_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+
+            Hide();
+            SplashCareerConnect cf = new SplashCareerConnect(clstServerName.Text, (int)nudServerPort.Value, txtUsername.Text, txtPassword.Text);
+            cf.ShowDialog();
+            if (cf.OK)
+                new TrainingLobbyForm(cf.Server).Show();
+            else
+                Show();
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            //TODO: RICK: Validate Password & Email
+
+            Hide();
+            SplashCareerRegister cf = new SplashCareerRegister(clstServerName.Text, (int)nudServerPort.Value, txtUser.Text, txtPassword1.Text, txtEmail1.Text, txtDisplayName.Text);
+            cf.ShowDialog();
+            if (cf.OK)
+                new TrainingLobbyForm(cf.Server).Show();
+            else
+                Show();
         }
     }
 }

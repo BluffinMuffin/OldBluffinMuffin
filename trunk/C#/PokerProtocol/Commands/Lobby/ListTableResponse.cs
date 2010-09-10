@@ -4,9 +4,9 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 
-namespace PokerProtocol.Commands.Lobby.Response
+namespace PokerProtocol.Commands.Lobby
 {
-    public class ListTableResponse : AbstractLobbyCommandResponse<ListTableCommand>
+    public class ListTableResponse : AbstractLobbyResponse<ListTableCommand>
     {
 
         protected override string CommandName

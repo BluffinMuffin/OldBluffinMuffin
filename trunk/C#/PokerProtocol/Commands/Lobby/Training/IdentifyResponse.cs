@@ -4,16 +4,16 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 
-namespace PokerProtocol.Commands.Lobby.Response
+namespace PokerProtocol.Commands.Lobby.Training
 {
-    public class IdentifyResponse : AbstractLobbyCommandResponse<IdentifyCommand>
+    public class IdentifyResponse : AbstractLobbyResponse<IdentifyCommand>
     {
 
         protected override string CommandName
         {
             get { return COMMAND_NAME; }
         }
-        public static string COMMAND_NAME = "lobbyIDENTIFY_RESPONSE";
+        public static string COMMAND_NAME = "lobbyIDENTIFY_TRAINING_RESPONSE";
         private readonly bool m_OK;
         public bool OK
         {

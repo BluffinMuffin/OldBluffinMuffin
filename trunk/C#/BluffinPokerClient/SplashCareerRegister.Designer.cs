@@ -1,6 +1,6 @@
 ﻿namespace BluffinPokerClient
 {
-    partial class TrainingConnectForm
+    partial class SplashCareerRegister
     {
         /// <summary>
         /// Required designer variable.
@@ -28,17 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainingConnectForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashCareerRegister));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.spbStep5 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spbStep4 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spbStep3 = new EricUtility.Windows.Forms.StatePictureBox();
             this.spbStep2 = new EricUtility.Windows.Forms.StatePictureBox();
             this.spbStep1 = new EricUtility.Windows.Forms.StatePictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).BeginInit();
             this.SuspendLayout();
@@ -51,12 +60,18 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(284, 207);
+            this.panel1.Size = new System.Drawing.Size(284, 325);
             this.panel1.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.spbStep5);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Controls.Add(this.spbStep4);
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.spbStep3);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.btnCancel);
@@ -66,17 +81,47 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(280, 203);
+            this.panel2.Size = new System.Drawing.Size(280, 321);
             this.panel2.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(46, 242);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(208, 23);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Authenticating Player ...";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(46, 201);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(208, 23);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Creating User  ...";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(46, 158);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(208, 23);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Availability of Display Name ...";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(46, 126);
+            this.label3.Location = new System.Drawing.Point(46, 117);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(208, 23);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Identifying the Player ...";
+            this.label3.Text = "Availability of Username ...";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
@@ -93,7 +138,7 @@
             // 
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(0, 178);
+            this.btnCancel.Location = new System.Drawing.Point(0, 296);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(278, 23);
             this.btnCancel.TabIndex = 3;
@@ -109,14 +154,44 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(278, 50);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Connection to Training Server ...";
+            this.label1.Text = "Create Player and Start Playing ...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // spbStep5
+            // 
+            this.spbStep5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spbStep5.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spbStep5.Location = new System.Drawing.Point(20, 242);
+            this.spbStep5.Name = "spbStep5";
+            this.spbStep5.Size = new System.Drawing.Size(20, 23);
+            this.spbStep5.TabIndex = 10;
+            this.spbStep5.TabStop = false;
+            // 
+            // spbStep4
+            // 
+            this.spbStep4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spbStep4.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spbStep4.Location = new System.Drawing.Point(20, 201);
+            this.spbStep4.Name = "spbStep4";
+            this.spbStep4.Size = new System.Drawing.Size(20, 23);
+            this.spbStep4.TabIndex = 8;
+            this.spbStep4.TabStop = false;
+            // 
+            // spbStep3
+            // 
+            this.spbStep3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spbStep3.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spbStep3.Location = new System.Drawing.Point(20, 158);
+            this.spbStep3.Name = "spbStep3";
+            this.spbStep3.Size = new System.Drawing.Size(20, 23);
+            this.spbStep3.TabIndex = 6;
+            this.spbStep3.TabStop = false;
             // 
             // spbStep2
             // 
             this.spbStep2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.spbStep2.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep2.Location = new System.Drawing.Point(20, 126);
+            this.spbStep2.Location = new System.Drawing.Point(20, 117);
             this.spbStep2.Name = "spbStep2";
             this.spbStep2.Size = new System.Drawing.Size(20, 23);
             this.spbStep2.TabIndex = 2;
@@ -133,18 +208,21 @@
             this.spbStep1.TabIndex = 1;
             this.spbStep1.TabStop = false;
             // 
-            // TrainingConnectForm
+            // SplashCareerRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 207);
+            this.ClientSize = new System.Drawing.Size(284, 325);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "TrainingConnectForm";
+            this.Name = "SplashCareerRegister";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrainingConnectForm";
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).EndInit();
             this.ResumeLayout(false);
@@ -161,5 +239,11 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label6;
+        private EricUtility.Windows.Forms.StatePictureBox spbStep5;
+        private System.Windows.Forms.Label label5;
+        private EricUtility.Windows.Forms.StatePictureBox spbStep4;
+        private System.Windows.Forms.Label label4;
+        private EricUtility.Windows.Forms.StatePictureBox spbStep3;
     }
 }

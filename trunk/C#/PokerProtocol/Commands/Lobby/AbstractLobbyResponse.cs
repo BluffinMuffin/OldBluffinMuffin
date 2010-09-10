@@ -4,9 +4,9 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 
-namespace PokerProtocol.Commands.Lobby.Response
+namespace PokerProtocol.Commands.Lobby
 {
-    public abstract class AbstractLobbyCommandResponse<T>: AbstractCommandResponse<T>
+    public abstract class AbstractLobbyResponse<T>: AbstractCommandResponse<T>
         where T : AbstractCommand
     {
 
@@ -26,7 +26,7 @@ namespace PokerProtocol.Commands.Lobby.Response
             sb.Append(AbstractLobbyCommand.Delimitter);
         }
 
-        public AbstractLobbyCommandResponse(T command) : base(command)
+        public AbstractLobbyResponse(T command) : base(command)
         {
         }
 
