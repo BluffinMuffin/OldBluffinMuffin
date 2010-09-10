@@ -1,4 +1,4 @@
-package server;
+package bluffinmuffin.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
