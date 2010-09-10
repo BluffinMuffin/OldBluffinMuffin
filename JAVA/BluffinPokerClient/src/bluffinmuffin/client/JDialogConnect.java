@@ -1,4 +1,4 @@
-package gui;
+package bluffinmuffin.client;
 
 import java.awt.Dimension;
 import java.awt.Frame;

@@ -1,8 +1,5 @@
-package gui;
+package bluffinmuffin.client;
 
-import gui.game.JFrameTable;
-import gui.lobby.JDialogAddTable;
-import gui.lobby.JDialogNameUsed;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,6 +21,9 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import bluffinmuffin.gui.game.JFrameTable;
+import bluffinmuffin.gui.lobby.JDialogAddTable;
+import bluffinmuffin.gui.lobby.JDialogNameUsed;
 import bluffinmuffin.protocol.GameTCPClient;
 import bluffinmuffin.protocol.LobbyTCPClient;
 import bluffinmuffin.protocol.TupleTableInfo;
