@@ -69,9 +69,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatePictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="TrainingConnectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +120,10 @@
       <Project>{455F649D-B01B-4B20-B648-805461BF3142}</Project>
       <Name>EricUtilityNetworking_4.0</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EricUtilityWinForms\EricUtilityWinForms_4.0.csproj">
+      <Project>{13AC29CB-866A-4954-B376-7FCA5412DDF1}</Project>
+      <Name>EricUtilityWinForms_4.0</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EricUtility\EricUtility_4.0.csproj">
       <Project>{31541BBE-B408-4719-BFCE-03947BB7AB0E}</Project>
       <Name>EricUtility_4.0</Name>
@@ -157,39 +158,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting0.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting2.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting3.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting4.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting5.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting6.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\waiting7.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bad.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\current.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\OK.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
