@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using EricUtility;
 using PokerProtocol.Commands.Lobby.Response;
@@ -17,12 +16,12 @@ namespace PokerProtocol.Commands.Lobby
         }
         public static string COMMAND_NAME = "lobbyJOIN_TABLE";
 
-        private readonly string m_TableName;
+        private readonly int m_TableID;
         private readonly string m_PlayerName;
 
-        public string TableName
+        public int TableID
         {
-            get { return m_TableName; }
+            get { return m_TableID; }
         } 
 
         public string PlayerName
@@ -32,25 +31,30 @@ namespace PokerProtocol.Commands.Lobby
 
         public JoinTableCommand(StringTokenizer argsToken)
         {
-            m_TableName = argsToken.NextToken();
             m_PlayerName = argsToken.NextToken();
+            m_TableID = int.Parse(argsToken.NextToken());
         }
 
-        public JoinTableCommand(string p_tableName, string p_playerName)
+        public JoinTableCommand(int p_tableID, string p_playerName)
         {
-            m_TableName = p_tableName;
+            m_TableID = p_tableID;
             m_PlayerName = p_playerName;
         }
 
         public override void Encode(StringBuilder sb)
         {
-            Append(sb, m_TableName);
             Append(sb, m_PlayerName);
+            Append(sb, m_TableID);
         }
 
-        public string EncodeResponse( int seat )
+        public string EncodeResponse(int seat)
         {
             return new JoinTableResponse(this, seat).Encode();
+        }
+
+        public string EncodeErrorResponse()
+        {
+            return new JoinTableResponse(this, -1).Encode();
         }
     }
 }
