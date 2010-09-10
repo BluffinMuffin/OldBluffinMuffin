@@ -12,9 +12,9 @@ import java.util.TreeMap;
 
 import bluffinmuffin.poker.game.PokerGame;
 import bluffinmuffin.poker.game.TableInfo;
+import bluffinmuffin.protocol.TupleTableInfo;
+import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
 
-import protocol.TupleTableInfo;
-import protocol.commands.lobby.CreateTableCommand;
 
 /**
  * @author Hocus

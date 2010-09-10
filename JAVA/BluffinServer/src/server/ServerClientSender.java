@@ -1,7 +1,7 @@
 package server;
 
-import protocol.GameTCPServer;
-import protocol.commands.lobby.GameCommand;
+import bluffinmuffin.protocol.GameTCPServer;
+import bluffinmuffin.protocol.commands.lobby.GameCommand;
 
 /**
  * This class represents a client for ServerLobby.
