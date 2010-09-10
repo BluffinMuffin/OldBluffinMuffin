@@ -14,10 +14,11 @@
 
  # Create a nice workspace with flowers and butterflies
  # Choose "Import" then "SVN" then "Project from SVN"
-  * URL: https://bluffin-muffin.googlecode.com/svn
+  * URL: https://bluffin-muffin.googlecode.com/svn/
   * User: you're google account username
   * Pass: this special pass: http://code.google.com/hosting/settings
  # When the nightmare is over by clicking Next, another nightmare begin: the Finish button is disabled !! Just play with something, to wake him up, but make sure to change nothing ! Then click finish. :)
  # When another window appear, choose choice #2 (Find projects ...) then click Finish
- # Enable "Respect projects hierarchy" then click Finish. This will be a little long because of the SVMs folder, be patient !
+ # Enable "Respect projects hierarchy" while checking all presented project (# Documents is not mandatory)then click Finish. This will be a little long because of the SVMs folder, be patient !
+ # Repeat steps with https://ericutility.googlecode.com/svn/trunk/Java
  # Enjoy !! :)
