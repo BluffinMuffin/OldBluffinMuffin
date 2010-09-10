@@ -1,11 +1,12 @@
-package poker.game.observer;
+package bluffinmuffin.poker.game.observer;
 
 import java.util.EventListener;
 
-import poker.game.MoneyPot;
-import poker.game.PlayerInfo;
-import poker.game.TypeAction;
-import poker.game.TypeRound;
+import bluffinmuffin.poker.game.MoneyPot;
+import bluffinmuffin.poker.game.PlayerInfo;
+import bluffinmuffin.poker.game.TypeAction;
+import bluffinmuffin.poker.game.TypeRound;
+
 
 public interface IPokerGameListener extends EventListener
 {

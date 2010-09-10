@@ -1,11 +1,12 @@
-package poker.game;
+package bluffinmuffin.poker.game;
 
 import java.util.List;
 
-import poker.game.dealer.AbstractDealer;
-import poker.game.dealer.RandomDealer;
-import poker.game.observer.IPokerGameListener;
-import poker.game.observer.PokerGameObserver;
+import bluffinmuffin.poker.game.dealer.AbstractDealer;
+import bluffinmuffin.poker.game.dealer.RandomDealer;
+import bluffinmuffin.poker.game.observer.IPokerGameListener;
+import bluffinmuffin.poker.game.observer.PokerGameObserver;
+
 
 public class PokerGame implements IPokerGame
 {

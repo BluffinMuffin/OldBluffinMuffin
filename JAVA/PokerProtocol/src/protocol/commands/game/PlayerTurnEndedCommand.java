@@ -2,7 +2,8 @@ package protocol.commands.game;
 
 import java.util.StringTokenizer;
 
-import poker.game.TypeAction;
+import bluffinmuffin.poker.game.TypeAction;
+
 import protocol.commands.Command;
 import protocol.commands.ICommand;
 

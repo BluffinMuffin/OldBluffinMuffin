@@ -1,7 +1,5 @@
-package poker.game;
+package bluffinmuffin.poker.game;
 
-import game.Card;
-import game.CardSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +8,9 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
+
+import bluffinmuffin.game.Card;
+import bluffinmuffin.game.CardSet;
 
 /**
  * @author Eric

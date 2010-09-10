@@ -1,8 +1,8 @@
-package poker.game.dealer;
+package bluffinmuffin.poker.game.dealer;
 
-import poker.game.PlayerInfo;
-import game.Card;
-import game.CardSet;
+import bluffinmuffin.game.Card;
+import bluffinmuffin.game.CardSet;
+import bluffinmuffin.poker.game.PlayerInfo;
 
 public abstract class AbstractDealer
 {

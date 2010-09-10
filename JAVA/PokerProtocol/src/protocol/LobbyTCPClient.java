@@ -12,8 +12,9 @@ import java.util.StringTokenizer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import poker.IPokerViewer;
-import poker.game.TypeBet;
+import bluffinmuffin.poker.IPokerViewer;
+import bluffinmuffin.poker.game.TypeBet;
+
 import protocol.commands.Command;
 import protocol.commands.DisconnectCommand;
 import protocol.commands.ICommand;

@@ -1,6 +1,5 @@
 package gui.game;
 
-import game.Card;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,7 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import poker.game.TypeAction;
+import bluffinmuffin.game.Card;
+import bluffinmuffin.poker.game.TypeAction;
+
 
 public class JPanelPlayerHud extends JPanel
 {

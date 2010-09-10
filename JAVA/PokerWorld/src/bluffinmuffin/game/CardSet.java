@@ -1,4 +1,4 @@
-package game;
+package bluffinmuffin.game;
 
 import java.util.ArrayList;
 import java.util.Collection;

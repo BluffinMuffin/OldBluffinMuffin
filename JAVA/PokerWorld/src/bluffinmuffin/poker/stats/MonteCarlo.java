@@ -1,9 +1,10 @@
-package poker.stats;
+package bluffinmuffin.poker.stats;
 
-import game.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import bluffinmuffin.game.Card;
 
 
 /**

@@ -1,14 +1,15 @@
 package protocol.commands.game;
 
-import game.Card;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import poker.game.MoneyPot;
-import poker.game.PlayerInfo;
-import poker.game.TableInfo;
-import poker.game.TypeBet;
+import bluffinmuffin.game.Card;
+import bluffinmuffin.poker.game.MoneyPot;
+import bluffinmuffin.poker.game.PlayerInfo;
+import bluffinmuffin.poker.game.TableInfo;
+import bluffinmuffin.poker.game.TypeBet;
+
 import protocol.TuplePlayerInfo;
 import protocol.commands.Command;
 import protocol.commands.ICommand;

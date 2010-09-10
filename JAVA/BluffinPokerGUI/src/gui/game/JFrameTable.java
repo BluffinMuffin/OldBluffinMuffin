@@ -7,10 +7,11 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import poker.game.IPokerGame;
-import poker.game.PlayerInfo;
-import poker.game.TableInfo;
-import poker.game.observer.PokerGameAdapter;
+import bluffinmuffin.poker.game.IPokerGame;
+import bluffinmuffin.poker.game.PlayerInfo;
+import bluffinmuffin.poker.game.TableInfo;
+import bluffinmuffin.poker.game.observer.PokerGameAdapter;
+
 
 public class JFrameTable extends JFrameTableViewer
 {

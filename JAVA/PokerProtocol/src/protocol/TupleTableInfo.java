@@ -2,7 +2,8 @@ package protocol;
 
 import java.util.StringTokenizer;
 
-import poker.game.TypeBet;
+import bluffinmuffin.poker.game.TypeBet;
+
 
 /**
  * @author Hocus

@@ -1,6 +1,6 @@
-package poker.game;
+package bluffinmuffin.poker.game;
 
-import poker.game.observer.IPokerGameListener;
+import bluffinmuffin.poker.game.observer.IPokerGameListener;
 
 public interface IPokerGame {
 
