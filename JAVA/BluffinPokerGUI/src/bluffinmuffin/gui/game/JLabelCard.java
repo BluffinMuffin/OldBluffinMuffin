@@ -1,4 +1,4 @@
-package gui.game;
+package bluffinmuffin.gui.game;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;

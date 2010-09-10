@@ -1,4 +1,4 @@
-package gui;
+package bluffinmuffin.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
