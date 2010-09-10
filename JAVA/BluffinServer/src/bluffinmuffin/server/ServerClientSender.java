@@ -1,4 +1,4 @@
-package server;
+package bluffinmuffin.server;
 
 import bluffinmuffin.protocol.GameTCPServer;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
