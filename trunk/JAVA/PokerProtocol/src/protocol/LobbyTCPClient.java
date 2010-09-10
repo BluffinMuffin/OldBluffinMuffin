@@ -251,11 +251,6 @@ public class LobbyTCPClient extends Thread
             {
                 Thread.sleep(100);
             }
-            System.out.println(c);
-            System.out.println(c.getTableId());
-            System.out.println(c.getCommand());
-            System.out.println(m_clients);
-            System.out.println(m_clients.get(c.getTableId()));
             
             m_clients.get(c.getTableId()).incoming(c.getCommand());
         }
