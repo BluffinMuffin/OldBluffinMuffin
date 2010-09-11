@@ -1,15 +1,13 @@
-package bluffinmuffin.protocol.commands.lobby;
+package bluffinmuffin.protocol.commands.lobby.training;
 
 import java.util.StringTokenizer;
 
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.response.IdentifyResponse;
-
 
 public class IdentifyCommand implements ICommand
 {
-    public static String COMMAND_NAME = "lobbyIDENTIFY";
+    public static String COMMAND_NAME = "lobbyTRAINING_IDENTIFY";
     
     private final String m_playerName;
     

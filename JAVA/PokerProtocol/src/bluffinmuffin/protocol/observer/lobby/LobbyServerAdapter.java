@@ -3,9 +3,14 @@ package bluffinmuffin.protocol.observer.lobby;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.IdentifyCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
+import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 
 public abstract class LobbyServerAdapter implements ILobbyServerListener
 {
@@ -16,7 +21,7 @@ public abstract class LobbyServerAdapter implements ILobbyServerListener
     }
     
     @Override
-    public void connectCommandReceived(IdentifyCommand command)
+    public void identifyCommandReceived(IdentifyCommand command)
     {
     }
     
@@ -42,6 +47,31 @@ public abstract class LobbyServerAdapter implements ILobbyServerListener
     
     @Override
     public void gameCommandReceived(GameCommand command)
+    {
+    }
+    
+    @Override
+    public void createUserCommandReceived(CreateUserCommand command)
+    {
+    }
+    
+    @Override
+    public void checkUserExistCommandReceived(CheckUserExistCommand command)
+    {
+    }
+    
+    @Override
+    public void checkDisplayExistCommandReceived(CheckDisplayExistCommand command)
+    {
+    }
+    
+    @Override
+    public void authenticateUserCommandReceived(AuthenticateUserCommand command)
+    {
+    }
+    
+    @Override
+    public void getUserCommandReceived(GetUserCommand command)
     {
     }
 }

@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
+import bluffinmuffin.data.DataManager;
+import bluffinmuffin.data.UserInfo;
 import bluffinmuffin.poker.PokerGame;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.protocol.GameTCPServer;
@@ -17,12 +19,16 @@ import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.ICommand;
 import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.IdentifyCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
+import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.observer.lobby.LobbyServerAdapter;
 import bluffinmuffin.protocol.observer.lobby.LobbyServerObserver;
-
 
 /**
  * This class represents a client for ServerLobby.
@@ -118,7 +124,7 @@ public class ServerClientLobby extends Thread
             }
             
             @Override
-            public void connectCommandReceived(IdentifyCommand command)
+            public void identifyCommandReceived(IdentifyCommand command)
             {
                 m_playerName = command.getPlayerName();
                 final boolean ok = !m_lobby.isNameUsed(m_playerName);
@@ -203,6 +209,47 @@ public class ServerClientLobby extends Thread
                 {
                     e.printStackTrace();
                 }
+            }
+            
+            @Override
+            public void createUserCommandReceived(CreateUserCommand c)
+            {
+                final boolean ok = !DataManager.Persistance.isUsernameExist(c.getUsername()) && !DataManager.Persistance.isDisplayNameExist(c.getDisplayName());
+                if (ok)
+                {
+                    DataManager.Persistance.register(new UserInfo(c.getUsername(), c.getPassword(), c.getEmail(), c.getDisplayName(), 7500));
+                }
+                sendMessage(c.encodeResponse(ok));
+            }
+            
+            @Override
+            public void checkUserExistCommandReceived(CheckUserExistCommand command)
+            {
+                sendMessage(command.encodeResponse(DataManager.Persistance.isUsernameExist(command.getUsername())));
+            }
+            
+            @Override
+            public void checkDisplayExistCommandReceived(CheckDisplayExistCommand command)
+            {
+                sendMessage(command.encodeResponse(m_lobby.isNameUsed(command.getDisplayName()) || DataManager.Persistance.isDisplayNameExist(command.getDisplayName())));
+            }
+            
+            @Override
+            public void authenticateUserCommandReceived(AuthenticateUserCommand command)
+            {
+                final UserInfo u = DataManager.Persistance.authenticate(command.getUsername(), command.getPassword());
+                if (u != null)
+                {
+                    m_playerName = u.getDisplayName();
+                }
+                sendMessage(command.encodeResponse(u != null));
+            }
+            
+            @Override
+            public void getUserCommandReceived(GetUserCommand command)
+            {
+                final UserInfo u = DataManager.Persistance.get(command.getUsername());
+                sendMessage(command.encodeResponse(u.getEmail(), u.getDisplayName(), u.getTotalMoney()));
             }
         });
         

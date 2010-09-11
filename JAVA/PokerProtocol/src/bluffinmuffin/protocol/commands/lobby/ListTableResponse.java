@@ -1,4 +1,4 @@
-package bluffinmuffin.protocol.commands.lobby.response;
+package bluffinmuffin.protocol.commands.lobby;
 
 import java.util.ArrayList;
 import java.util.List;

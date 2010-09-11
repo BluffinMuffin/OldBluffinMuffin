@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 import bluffinmuffin.poker.entities.type.GameBetLimitType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.response.CreateTableResponse;
 
 
 public class CreateTableCommand implements ICommand

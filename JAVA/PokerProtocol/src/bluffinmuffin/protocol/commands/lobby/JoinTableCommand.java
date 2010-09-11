@@ -4,7 +4,6 @@ import java.util.StringTokenizer;
 
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.response.JoinTableResponse;
 
 
 public class JoinTableCommand implements ICommand
