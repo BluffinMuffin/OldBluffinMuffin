@@ -49,7 +49,7 @@ namespace BluffinPokerClient
         }
         private void AddTable()
         {
-            AddTableForm form = new AddTableForm(m_Server.PlayerName, 1);
+            AddTableForm form = new AddTableForm(m_Server.PlayerName, 1, true);
             form.ShowDialog();
             if (form.OK)
             {

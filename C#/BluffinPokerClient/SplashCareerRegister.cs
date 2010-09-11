@@ -65,6 +65,7 @@ namespace BluffinPokerClient
                 {
                     NameUsedForm form2 = new NameUsedForm(m_Username);
                     form2.ShowDialog();
+                    step2Retry = form2.OK;
                     m_Username = form2.PlayerName;
                     step2OK = m_Server.CheckUsernameAvailable(m_Username);
                 }
@@ -78,6 +79,7 @@ namespace BluffinPokerClient
                     {
                         NameUsedForm form3 = new NameUsedForm(m_DisplayName);
                         form3.ShowDialog();
+                        step3Retry = form3.OK;
                         m_DisplayName = form3.PlayerName;
                         step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
                     }

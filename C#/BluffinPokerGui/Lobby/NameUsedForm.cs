@@ -12,7 +12,12 @@ namespace BluffinPokerGUI.Lobby
     public partial class NameUsedForm : Form
     {
         private string m_PlayerName;
+        private bool m_OK = false;
 
+        public bool OK
+        {
+            get { return m_OK; }
+        }
         public string PlayerName
         {
             get { return m_PlayerName; }
@@ -28,6 +33,12 @@ namespace BluffinPokerGUI.Lobby
         private void btnModify_Click(object sender, EventArgs e)
         {
             m_PlayerName = txtPlayerName.Text;
+            m_OK = true;
+            Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             Close();
         }
     }
