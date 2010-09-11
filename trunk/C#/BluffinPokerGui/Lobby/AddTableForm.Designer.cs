@@ -44,6 +44,7 @@
             this.nudWTAPlayerAction = new System.Windows.Forms.NumericUpDown();
             this.lblWTAPlayerAction = new System.Windows.Forms.Label();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.chkTraining = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudBigBlindAmnt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayers)).BeginInit();
             this.grpWTA.SuspendLayout();
@@ -263,7 +264,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(15, 167);
+            this.btnAdd.Location = new System.Drawing.Point(15, 192);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(291, 36);
             this.btnAdd.TabIndex = 10;
@@ -271,12 +272,23 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // chkTraining
+            // 
+            this.chkTraining.AutoSize = true;
+            this.chkTraining.Location = new System.Drawing.Point(24, 167);
+            this.chkTraining.Name = "chkTraining";
+            this.chkTraining.Size = new System.Drawing.Size(90, 17);
+            this.chkTraining.TabIndex = 11;
+            this.chkTraining.Text = "Training table";
+            this.chkTraining.UseVisualStyleBackColor = true;
+            // 
             // AddTableForm
             // 
             this.AcceptButton = this.btnAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 215);
+            this.ClientSize = new System.Drawing.Size(318, 240);
+            this.Controls.Add(this.chkTraining);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.grpWTA);
             this.Controls.Add(this.nudNbPlayers);
@@ -323,6 +335,7 @@
         private System.Windows.Forms.NumericUpDown nudWTAPlayerAction;
         private System.Windows.Forms.Label lblWTAPlayerAction;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.CheckBox chkTraining;
     }
 }
 

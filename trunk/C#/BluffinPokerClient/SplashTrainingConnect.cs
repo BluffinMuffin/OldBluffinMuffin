@@ -57,6 +57,7 @@ namespace BluffinPokerClient
                 {
                     NameUsedForm form2 = new NameUsedForm(m_PlayerName);
                     form2.ShowDialog();
+                    retry = form2.OK;
                     m_PlayerName = form2.PlayerName;
                     isOk = m_Server.Identify(m_PlayerName);
                 }

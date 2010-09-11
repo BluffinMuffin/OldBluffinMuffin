@@ -21,7 +21,13 @@ namespace BluffinPokerGUI.Lobby
         private int m_WaitingTimeAfterBoardDealed;
         private int m_WaitingTimeAfterPotWon;
         private TypeBet m_Limit;
+        private bool m_TrainingOnly;
+        private bool m_Training;
 
+        public bool Training
+        {
+            get { return m_Training; }
+        }
         public TypeBet Limit
         {
             get { return m_Limit; }
@@ -54,16 +60,19 @@ namespace BluffinPokerGUI.Lobby
         {
             get { return m_OK; }
         }
-        public AddTableForm(string playerName, int nbPlayers) : base()
+        public AddTableForm(string playerName, int nbPlayers, bool trainingOnly) : base()
         {
             m_OK = false;
             m_PlayerName = playerName;
+            m_TrainingOnly = trainingOnly;
             InitializeComponent();
             txtTableName.Text = m_PlayerName + " Table";
             foreach (string s in Enum.GetNames(typeof(TypeBet)))
                 clstGameLimit.Items.Add(s);
             clstGameLimit.SelectedItem = TypeBet.NoLimit.ToString();
-            nudNbPlayers.Minimum = Math.Max(nbPlayers,2);
+            nudNbPlayers.Minimum = Math.Max(nbPlayers, 2);
+            chkTraining.Checked = trainingOnly;
+            chkTraining.Enabled = !trainingOnly;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -75,6 +84,7 @@ namespace BluffinPokerGUI.Lobby
             m_WaitingTimeAfterBoardDealed = (int)nudWTABoardDealed.Value;
             m_WaitingTimeAfterPotWon = (int)nudWTAPotWon.Value;
             m_Limit = (TypeBet)clstGameLimit.SelectedIndex;
+            m_Training = chkTraining.Checked;
             m_OK = true;
             Close();
         }
