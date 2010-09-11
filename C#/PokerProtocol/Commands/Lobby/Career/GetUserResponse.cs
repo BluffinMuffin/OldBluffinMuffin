@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
+using System.Globalization;
 
 namespace PokerProtocol.Commands.Lobby.Career
 {
@@ -41,7 +42,7 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
             m_Email = argsToken.NextToken();
             m_DisplayName = argsToken.NextToken();
-            m_Money = double.Parse(argsToken.NextToken());
+            m_Money = double.Parse(argsToken.NextToken(), CultureInfo.InvariantCulture);
         }
 
         public GetUserResponse(GetUserCommand command, string mail, string display, double money)
@@ -57,7 +58,7 @@ namespace PokerProtocol.Commands.Lobby.Career
             base.Encode(sb);
             Append(sb, m_Email);
             Append(sb, m_DisplayName);
-            Append(sb, m_Money);
+            Append(sb, m_Money.ToString(CultureInfo.InvariantCulture));
         }
     }
 }
