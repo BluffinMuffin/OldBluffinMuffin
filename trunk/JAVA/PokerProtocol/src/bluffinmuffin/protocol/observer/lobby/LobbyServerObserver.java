@@ -6,11 +6,15 @@ import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.IdentifyCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
+import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.observer.CommandObserver;
-
 
 public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
 {
@@ -42,7 +46,27 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         }
         else if (commandName.equals(GameCommand.COMMAND_NAME))
         {
-            gameCommand(new GameCommand(token));
+            game(new GameCommand(token));
+        }
+        else if (commandName.equals(CreateUserCommand.COMMAND_NAME))
+        {
+            createUser(new CreateUserCommand(token));
+        }
+        else if (commandName.equals(CheckUserExistCommand.COMMAND_NAME))
+        {
+            checkUserExist(new CheckUserExistCommand(token));
+        }
+        else if (commandName.equals(CheckDisplayExistCommand.COMMAND_NAME))
+        {
+            checkDisplayExist(new CheckDisplayExistCommand(token));
+        }
+        else if (commandName.equals(AuthenticateUserCommand.COMMAND_NAME))
+        {
+            authenticateUser(new AuthenticateUserCommand(token));
+        }
+        else if (commandName.equals(GetUserCommand.COMMAND_NAME))
+        {
+            getUser(new GetUserCommand(token));
         }
         else
         {
@@ -50,7 +74,47 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         }
     }
     
-    private void gameCommand(GameCommand gameCommand)
+    private void createUser(CreateUserCommand createUserCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.createUserCommandReceived(createUserCommand);
+        }
+    }
+    
+    private void checkUserExist(CheckUserExistCommand checkUserExistCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.checkUserExistCommandReceived(checkUserExistCommand);
+        }
+    }
+    
+    private void checkDisplayExist(CheckDisplayExistCommand checkDisplayExistCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.checkDisplayExistCommandReceived(checkDisplayExistCommand);
+        }
+    }
+    
+    private void authenticateUser(AuthenticateUserCommand authenticateUserCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.authenticateUserCommandReceived(authenticateUserCommand);
+        }
+    }
+    
+    private void getUser(GetUserCommand getUserCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.getUserCommandReceived(getUserCommand);
+        }
+    }
+    
+    private void game(GameCommand gameCommand)
     {
         for (final ILobbyServerListener listener : getSubscribers())
         {
@@ -95,7 +159,7 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
     {
         for (final ILobbyServerListener listener : getSubscribers())
         {
-            listener.connectCommandReceived(lobbyConnectCommand);
+            listener.identifyCommandReceived(lobbyConnectCommand);
         }
     }
 }

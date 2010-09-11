@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 import bluffinmuffin.protocol.TupleTableInfo;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.response.ListTableResponse;
 
 
 public class ListTableCommand implements ICommand

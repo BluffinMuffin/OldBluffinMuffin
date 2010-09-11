@@ -18,14 +18,14 @@ import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.ICommand;
 import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
+import bluffinmuffin.protocol.commands.lobby.CreateTableResponse;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.IdentifyCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands.lobby.JoinTableResponse;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands.lobby.response.CreateTableResponse;
-import bluffinmuffin.protocol.commands.lobby.response.IdentifyResponse;
-import bluffinmuffin.protocol.commands.lobby.response.JoinTableResponse;
-import bluffinmuffin.protocol.commands.lobby.response.ListTableResponse;
+import bluffinmuffin.protocol.commands.lobby.ListTableResponse;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyResponse;
 
 
 public class LobbyTCPClient extends Thread
