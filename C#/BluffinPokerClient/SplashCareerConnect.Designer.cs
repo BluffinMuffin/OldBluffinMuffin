@@ -39,11 +39,14 @@
             this.spbStep2 = new EricUtility.Windows.Forms.StatePictureBox();
             this.spbStep1 = new EricUtility.Windows.Forms.StatePictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.spbStep4 = new EricUtility.Windows.Forms.StatePictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep4)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -54,12 +57,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(284, 232);
+            this.panel1.Size = new System.Drawing.Size(284, 261);
             this.panel1.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.spbStep4);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.spbStep3);
             this.panel2.Controls.Add(this.label3);
@@ -71,7 +76,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(280, 228);
+            this.panel2.Size = new System.Drawing.Size(280, 257);
             this.panel2.TabIndex = 0;
             // 
             // label6
@@ -118,7 +123,7 @@
             // 
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(0, 203);
+            this.btnCancel.Location = new System.Drawing.Point(0, 232);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(278, 23);
             this.btnCancel.TabIndex = 3;
@@ -158,11 +163,31 @@
             this.label1.Text = "Start Playing ...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(46, 193);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(208, 23);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Retrieving User Info ...";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // spbStep4
+            // 
+            this.spbStep4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spbStep4.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spbStep4.Location = new System.Drawing.Point(20, 193);
+            this.spbStep4.Name = "spbStep4";
+            this.spbStep4.Size = new System.Drawing.Size(20, 23);
+            this.spbStep4.TabIndex = 14;
+            this.spbStep4.TabStop = false;
+            // 
             // SplashCareerConnect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 232);
+            this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SplashCareerConnect";
@@ -173,6 +198,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.spbStep3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spbStep4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -189,5 +215,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
         private EricUtility.Windows.Forms.StatePictureBox spbStep3;
+        private System.Windows.Forms.Label label7;
+        private EricUtility.Windows.Forms.StatePictureBox spbStep4;
     }
 }

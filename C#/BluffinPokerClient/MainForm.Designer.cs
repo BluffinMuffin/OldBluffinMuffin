@@ -179,7 +179,7 @@
             // 
             this.mainHSplit.Panel2.Controls.Add(this.rightVSplit);
             this.mainHSplit.Size = new System.Drawing.Size(624, 412);
-            this.mainHSplit.SplitterDistance = 372;
+            this.mainHSplit.SplitterDistance = 378;
             this.mainHSplit.SplitterWidth = 1;
             this.mainHSplit.TabIndex = 1;
             // 
@@ -311,7 +311,7 @@
             this.lblTitNewPlayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitNewPlayer.Location = new System.Drawing.Point(0, 0);
             this.lblTitNewPlayer.Name = "lblTitNewPlayer";
-            this.lblTitNewPlayer.Size = new System.Drawing.Size(372, 38);
+            this.lblTitNewPlayer.Size = new System.Drawing.Size(378, 38);
             this.lblTitNewPlayer.TabIndex = 0;
             this.lblTitNewPlayer.Text = "New Player";
             this.lblTitNewPlayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -343,8 +343,8 @@
             this.rightVSplit.Panel2.Controls.Add(this.lblPlayerName);
             this.rightVSplit.Panel2.Controls.Add(this.btnStartTraining);
             this.rightVSplit.Panel2.Controls.Add(this.label1);
-            this.rightVSplit.Size = new System.Drawing.Size(251, 412);
-            this.rightVSplit.SplitterDistance = 269;
+            this.rightVSplit.Size = new System.Drawing.Size(245, 412);
+            this.rightVSplit.SplitterDistance = 253;
             this.rightVSplit.SplitterWidth = 1;
             this.rightVSplit.TabIndex = 0;
             // 
@@ -353,7 +353,7 @@
             this.chkRemember.AutoSize = true;
             this.chkRemember.Enabled = false;
             this.chkRemember.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.chkRemember.Location = new System.Drawing.Point(32, 165);
+            this.chkRemember.Location = new System.Drawing.Point(32, 159);
             this.chkRemember.Name = "chkRemember";
             this.chkRemember.Size = new System.Drawing.Size(117, 20);
             this.chkRemember.TabIndex = 14;
@@ -363,7 +363,7 @@
             // btnConnect
             // 
             this.btnConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect.Location = new System.Drawing.Point(32, 210);
+            this.btnConnect.Location = new System.Drawing.Point(32, 202);
             this.btnConnect.Margin = new System.Windows.Forms.Padding(0);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(200, 33);
@@ -375,7 +375,7 @@
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.Location = new System.Drawing.Point(32, 125);
+            this.txtPassword.Location = new System.Drawing.Point(32, 122);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(200, 22);
@@ -385,7 +385,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(29, 106);
+            this.label8.Location = new System.Drawing.Point(29, 103);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(71, 16);
             this.label8.TabIndex = 11;
@@ -394,7 +394,7 @@
             // txtUsername
             // 
             this.txtUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsername.Location = new System.Drawing.Point(32, 69);
+            this.txtUsername.Location = new System.Drawing.Point(32, 70);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(201, 22);
             this.txtUsername.TabIndex = 10;
@@ -403,7 +403,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(29, 50);
+            this.label9.Location = new System.Drawing.Point(29, 51);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(71, 16);
             this.label9.TabIndex = 9;
@@ -415,7 +415,7 @@
             this.lblTitExistPlayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitExistPlayer.Location = new System.Drawing.Point(0, 0);
             this.lblTitExistPlayer.Name = "lblTitExistPlayer";
-            this.lblTitExistPlayer.Size = new System.Drawing.Size(251, 38);
+            this.lblTitExistPlayer.Size = new System.Drawing.Size(245, 38);
             this.lblTitExistPlayer.TabIndex = 1;
             this.lblTitExistPlayer.Text = "Existing Player";
             this.lblTitExistPlayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -423,7 +423,7 @@
             // txtPlayerName
             // 
             this.txtPlayerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPlayerName.Location = new System.Drawing.Point(32, 70);
+            this.txtPlayerName.Location = new System.Drawing.Point(32, 77);
             this.txtPlayerName.Name = "txtPlayerName";
             this.txtPlayerName.Size = new System.Drawing.Size(201, 22);
             this.txtPlayerName.TabIndex = 4;
@@ -433,7 +433,7 @@
             // 
             this.lblPlayerName.AutoSize = true;
             this.lblPlayerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPlayerName.Location = new System.Drawing.Point(29, 51);
+            this.lblPlayerName.Location = new System.Drawing.Point(29, 58);
             this.lblPlayerName.Name = "lblPlayerName";
             this.lblPlayerName.Size = new System.Drawing.Size(90, 16);
             this.lblPlayerName.TabIndex = 3;
@@ -442,7 +442,7 @@
             // btnStartTraining
             // 
             this.btnStartTraining.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartTraining.Location = new System.Drawing.Point(32, 109);
+            this.btnStartTraining.Location = new System.Drawing.Point(32, 116);
             this.btnStartTraining.Margin = new System.Windows.Forms.Padding(0);
             this.btnStartTraining.Name = "btnStartTraining";
             this.btnStartTraining.Size = new System.Drawing.Size(200, 33);
@@ -457,7 +457,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(251, 38);
+            this.label1.Size = new System.Drawing.Size(245, 38);
             this.label1.TabIndex = 2;
             this.label1.Text = "Training";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

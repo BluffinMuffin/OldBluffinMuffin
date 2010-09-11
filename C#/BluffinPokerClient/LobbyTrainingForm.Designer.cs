@@ -1,6 +1,6 @@
 ﻿namespace BluffinPokerClient
 {
-    partial class TrainingLobbyForm
+    partial class LobbyTrainingForm
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -201,10 +201,10 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(500, 45);
             this.lblTitle.TabIndex = 5;
-            this.lblTitle.Text = "Poker Client C# Lobby 1.0";
+            this.lblTitle.Text = "Bluffin Muffin Poker Training Client";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // LobbyForm
+            // TrainingLobbyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -213,9 +213,9 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.lblTitle);
-            this.Name = "LobbyForm";
+            this.Name = "TrainingLobbyForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Bluffin Muffin Client Lobby";
+            this.Text = "Bluffin Muffin Poker Training Client";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LobbyForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.datTables)).EndInit();
             this.statusStrip1.ResumeLayout(false);

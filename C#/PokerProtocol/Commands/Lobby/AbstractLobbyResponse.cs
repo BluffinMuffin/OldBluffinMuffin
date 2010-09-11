@@ -9,20 +9,9 @@ namespace PokerProtocol.Commands.Lobby
     public abstract class AbstractLobbyResponse<T>: AbstractCommandResponse<T>
         where T : AbstractCommand
     {
-
-        protected override void Append(StringBuilder sb, string s)
+        protected override void Append<T2>(StringBuilder sb, T2 thing)
         {
-            sb.Append(s);
-            sb.Append(AbstractLobbyCommand.Delimitter);
-        }
-        protected override void Append(StringBuilder sb, bool b)
-        {
-            sb.Append(b);
-            sb.Append(AbstractLobbyCommand.Delimitter);
-        }
-        protected override void Append(StringBuilder sb, int i)
-        {
-            sb.Append(i);
+            sb.Append(thing);
             sb.Append(AbstractLobbyCommand.Delimitter);
         }
 

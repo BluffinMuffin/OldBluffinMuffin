@@ -16,6 +16,11 @@ namespace PokerProtocol
 {
     public class LobbyTCPClientCareer : LobbyTCPClient
     {
+
+        private UserInfo m_User;
+
+        public UserInfo User { get { return m_User; } }
+
         public LobbyTCPClientCareer(string serverAddress, int serverPort)
             : base(serverAddress, serverPort)
         {
@@ -53,13 +58,23 @@ namespace PokerProtocol
 
         public bool Authenticate(string username, string password)
         {
-            m_PlayerName = username;
             Send(new AuthenticateUserCommand(username, password));
             StringTokenizer token = ReceiveCommand(AuthenticateUserResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return false;
             AuthenticateUserResponse response = new AuthenticateUserResponse(token);
             return response.Success;
+        }
+
+        public void RefreshUserInfo(string username)
+        {
+            Send(new GetUserCommand(username));
+            StringTokenizer token = ReceiveCommand(GetUserResponse.COMMAND_NAME);
+            if (!token.HasMoreTokens())
+                return;
+            GetUserResponse response = new GetUserResponse(token);
+            m_PlayerName = response.DisplayName;
+            m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
         }
     }
 }

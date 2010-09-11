@@ -43,6 +43,13 @@ namespace BluffinPokerServer
             m_CommandObserver.CheckUserExistCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CheckUserExistCommand>>(m_CommandObserver_CheckUserExistCommandReceived);
             m_CommandObserver.CreateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand>>(m_CommandObserver_CreateUserCommandReceived);
             m_CommandObserver.AuthenticateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand>>(m_CommandObserver_AuthenticateUserCommandReceived);
+            m_CommandObserver.GetUserCommandReceived += new EventHandler<CommandEventArgs<GetUserCommand>>(m_CommandObserver_GetUserCommandReceived);
+        }
+
+        void m_CommandObserver_GetUserCommandReceived(object sender, CommandEventArgs<GetUserCommand> e)
+        {
+            UserInfo u = DataManager.Persistance.Get(e.Command.Username);
+            Send(e.Command.EncodeResponse(u.Email,u.DisplayName,u.TotalMoney));
         }
 
         void m_CommandObserver_CheckDisplayExistCommandReceived(object sender, CommandEventArgs<CheckDisplayExistCommand> e)

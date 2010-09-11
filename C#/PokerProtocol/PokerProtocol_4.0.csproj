@@ -58,6 +58,8 @@
     <Compile Include="Commands\Lobby\Career\CheckUserExistResponse.cs" />
     <Compile Include="Commands\Lobby\Career\CheckDisplayExistCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CheckDisplayExistResponse.cs" />
+    <Compile Include="Commands\Lobby\Career\GetUserResponse.cs" />
+    <Compile Include="Commands\Lobby\Career\GetUserCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CreateUserCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CreateUserResponse.cs" />
     <Compile Include="Commands\Lobby\GameCommand.cs" />
