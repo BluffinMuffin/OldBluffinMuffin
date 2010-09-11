@@ -29,7 +29,7 @@ namespace BluffinPokerClient
             SplashTrainingConnect cf = new SplashTrainingConnect(txtPlayerName.Text, clstServerName.Text, (int)nudServerPort.Value);
             cf.ShowDialog();
             if (cf.OK)
-                new TrainingLobbyForm(cf.Server).Show();
+                new LobbyTrainingForm(cf.Server).Show();
             else
                 Show();
         }
@@ -41,7 +41,10 @@ namespace BluffinPokerClient
             SplashCareerConnect cf = new SplashCareerConnect(clstServerName.Text, (int)nudServerPort.Value, txtUsername.Text, txtPassword.Text);
             cf.ShowDialog();
             if (cf.OK)
-                new TrainingLobbyForm(cf.Server).Show();
+            {
+                txtPassword.Text = "";
+                new LobbyCareerForm(cf.Server).Show();
+            }
             else
                 Show();
         }
@@ -54,7 +57,15 @@ namespace BluffinPokerClient
             SplashCareerRegister cf = new SplashCareerRegister(clstServerName.Text, (int)nudServerPort.Value, txtUser.Text, txtPassword1.Text, txtEmail1.Text, txtDisplayName.Text);
             cf.ShowDialog();
             if (cf.OK)
-                new TrainingLobbyForm(cf.Server).Show();
+            {
+                txtUser.Text = "";
+                txtPassword1.Text = "";
+                txtPassword2.Text = "";
+                txtEmail1.Text = "";
+                txtEmail2.Text = "";
+                txtDisplayName.Text = "";
+                new LobbyCareerForm(cf.Server).Show();
+            }
             else
                 Show();
         }

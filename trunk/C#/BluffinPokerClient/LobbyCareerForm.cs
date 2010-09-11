@@ -7,28 +7,28 @@ using System.Text;
 using System.Windows.Forms;
 using PokerProtocol;
 using BluffinPokerGUI.Lobby;
-using BluffinPokerGui;
-using PokerWorld.Game;
 using BluffinPokerGui.Game;
+using PokerWorld.Data;
 
 namespace BluffinPokerClient
 {
-    public partial class TrainingLobbyForm : Form
+    public partial class LobbyCareerForm : Form
     {
-        private LobbyTCPClient m_Server;
-        public TrainingLobbyForm(LobbyTCPClient server)
+        private LobbyTCPClientCareer m_Server;
+        public LobbyCareerForm(LobbyTCPClientCareer server)
         {
             m_Server = server;
             InitializeComponent();
-            lblStatus.Text = "[Training] Connected as " + server.PlayerName;
-            Text = server.PlayerName + " ~ " + lblTitle.Text;
-            RefreshTables();
+            Text = server.User.DisplayName + " ~ " + lblTitle.Text;
+            lblServer.Text = String.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
+            RefreshAll();
             if (datTables.RowCount == 0)
                 AddTable();
         }
 
-        private void RefreshTables()
+        private void RefreshAll()
         {
+            RefreshInfo();
             datTables.Rows.Clear();
             List<TupleTableInfo> lst = m_Server.getListTables();
             for (int i = 0; i < lst.Count; ++i)
@@ -47,6 +47,14 @@ namespace BluffinPokerClient
                 datTables.Rows[0].Selected = true;
             }
         }
+
+        private void RefreshInfo()
+        {
+            UserInfo u = m_Server.User;
+            m_Server.RefreshUserInfo(u.Username);
+            lblAccount.Text = String.Format("{0} ( {1}, {2} )", u.DisplayName, u.Username, u.Email);
+            lblMoney.Text = String.Format("{0}", (int)u.TotalMoney);
+        }
         private void AddTable()
         {
             AddTableForm form = new AddTableForm(m_Server.PlayerName, 1, true);
@@ -58,7 +66,7 @@ namespace BluffinPokerClient
                 if (noPort != -1)
                 {
                     JoinTable(noPort, form.TableName, form.BigBlind);
-                    RefreshTables();
+                    RefreshAll();
                 }
                 else
                 {
@@ -72,7 +80,7 @@ namespace BluffinPokerClient
             if (client != null)
             {
                 client.Disconnect();
-                RefreshTables();
+                RefreshAll();
             }
         }
         public bool JoinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
@@ -89,20 +97,34 @@ namespace BluffinPokerClient
         public void AllowJoinOrLeave()
         {
             bool selected = datTables.RowCount > 0 && datTables.SelectedRows.Count > 0;
-            GameClient client = findClient();
+            GameClient client = FindClient();
             btnJoinTable.Enabled = selected && (client == null);
             btnLeaveTable.Enabled = selected && (client != null);
         }
+
+        private GameClient FindClient()
+        {
+            if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
+            {
+                return null;
+            }
+            object o = datTables.SelectedRows[0].Cells[0].Value;
+            if (o == null)
+                return null;
+            int noPort = (int)o;
+            return m_Server.FindClient(noPort);
+        }
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            RefreshTables();
+            RefreshAll();
             AllowJoinOrLeave();
         }
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
             AddTable();
-            RefreshTables();
+            RefreshAll();
         }
 
         private void btnJoinTable_Click(object sender, EventArgs e)
@@ -113,50 +135,49 @@ namespace BluffinPokerClient
                 return;
             }
             object o = datTables.SelectedRows[0].Cells[0].Value;
-            if (o == null) 
+            if (o == null)
                 return;
             int noPort = (int)o;
             object o2 = datTables.SelectedRows[0].Cells[1].Value;
-            if (o2 == null) 
+            if (o2 == null)
                 return;
             string tableName = (string)o2;
-            if (findClient() != null)
+            if (FindClient() != null)
                 Console.WriteLine("You are already sitting on the table: " + tableName);
             else
             {
                 object o3 = datTables.SelectedRows[0].Cells[3].Value;
-                if (o3 == null) 
+                if (o3 == null)
                     return;
                 int bigBlind = (int)o3;
                 if (!JoinTable(noPort, tableName, bigBlind))
                     Console.WriteLine("Table '" + tableName + "' does not exist anymore.");
-                RefreshTables();
+                RefreshAll();
 
             }
         }
 
         private void btnLeaveTable_Click(object sender, EventArgs e)
         {
-            LeaveTable(findClient());
-            RefreshTables();
+            LeaveTable(FindClient());
+            RefreshAll();
         }
 
-        private GameClient findClient()
+        private void btnLogOut_Click(object sender, EventArgs e)
         {
-            if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
-            {
-                return null;
-            }
-            object o = datTables.SelectedRows[0].Cells[0].Value;
-            if (o == null) 
-                return null;
-            int noPort = (int)o;
-            return m_Server.FindClient(noPort);
+            Close();
         }
 
-        private void datTables_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void CareerLobbyForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            btnJoinTable_Click(datTables, new EventArgs());
+            if (m_Server != null)
+                m_Server.Disconnect();
+            Program.WForm.Show();
+        }
+
+        private void datTables_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            AllowJoinOrLeave();
         }
 
         private void datTables_SelectionChanged(object sender, EventArgs e)
@@ -164,21 +185,9 @@ namespace BluffinPokerClient
             AllowJoinOrLeave();
         }
 
-        private void datTables_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void datTables_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            AllowJoinOrLeave();
-        }
-
-        private void btnDisconnect_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void LobbyForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (m_Server != null)
-                m_Server.Disconnect();
-            Program.WForm.Show();
+            btnJoinTable_Click(datTables, new EventArgs());
         }
     }
 }

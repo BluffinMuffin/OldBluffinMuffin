@@ -61,11 +61,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CareerLobbyForm.cs">
+    <Compile Include="LobbyCareerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CareerLobbyForm.Designer.cs">
-      <DependentUpon>CareerLobbyForm.cs</DependentUpon>
+    <Compile Include="LobbyCareerForm.Designer.cs">
+      <DependentUpon>LobbyCareerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SplashCareerConnect.cs">
       <SubType>Form</SubType>
@@ -79,11 +79,11 @@
     <Compile Include="SplashCareerRegister.Designer.cs">
       <DependentUpon>SplashCareerRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="TrainingLobbyForm.cs">
+    <Compile Include="LobbyTrainingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TrainingLobbyForm.Designer.cs">
-      <DependentUpon>TrainingLobbyForm.cs</DependentUpon>
+    <Compile Include="LobbyTrainingForm.Designer.cs">
+      <DependentUpon>LobbyTrainingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,14 +99,17 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="LobbyCareerForm.resx">
+      <DependentUpon>LobbyCareerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SplashCareerConnect.resx">
       <DependentUpon>SplashCareerConnect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashCareerRegister.resx">
       <DependentUpon>SplashCareerRegister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TrainingLobbyForm.resx">
-      <DependentUpon>TrainingLobbyForm.cs</DependentUpon>
+    <EmbeddedResource Include="LobbyTrainingForm.resx">
+      <DependentUpon>LobbyTrainingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -52,13 +52,14 @@ namespace BluffinPokerClient
         private void Connect()
         {
             m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
+            // Reaching the server ...
             if (m_Server.Connect())
             {
                 spbStep1.Etat = StatePictureBoxStates.Ok;
                 spbStep2.Etat = StatePictureBoxStates.Waiting;
                 m_Server.Start();
 
-
+                // Availability of Username ...
                 bool step2OK = m_Server.CheckUsernameAvailable(m_Username);
                 bool step2Retry = true;
                 while (!step2OK && step2Retry)
@@ -73,6 +74,8 @@ namespace BluffinPokerClient
                 {
                     spbStep2.Etat = StatePictureBoxStates.Ok;
                     spbStep3.Etat = StatePictureBoxStates.Waiting;
+
+                    // Availability of Display Name ...
                     bool step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
                     bool step3Retry = true;
                     while (!step3OK && step3Retry)
@@ -87,13 +90,24 @@ namespace BluffinPokerClient
                     {
                         spbStep3.Etat = StatePictureBoxStates.Ok;
                         spbStep4.Etat = StatePictureBoxStates.Waiting;
+
+                        // Creating User  ...
                         if (m_Server.CreateUser(m_Username, m_Password, m_Email, m_DisplayName))
                         {
                             spbStep4.Etat = StatePictureBoxStates.Ok;
                             spbStep5.Etat = StatePictureBoxStates.Waiting;
+
+                            // Authenticating Player ...
                             if (m_Server.Authenticate(m_Username, m_Password))
                             {
                                 spbStep5.Etat = StatePictureBoxStates.Ok;
+                                spbStep6.Etat = StatePictureBoxStates.Waiting;
+
+                                // Retrieving User Info ...
+                                m_Server.RefreshUserInfo(m_Username);
+                                spbStep6.Etat = StatePictureBoxStates.Ok;
+
+                                // Done !
                                 m_OK = true;
                                 Quit();
                             }

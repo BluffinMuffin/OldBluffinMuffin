@@ -9,19 +9,9 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static new char Delimitter { get { return '|'; } }
 
-        protected override void Append(StringBuilder sb, string s)
+        protected override void Append<T>(StringBuilder sb, T thing)
         {
-            sb.Append(s);
-            sb.Append(AbstractLobbyCommand.Delimitter);
-        }
-        protected override void Append(StringBuilder sb, bool b)
-        {
-            sb.Append(b);
-            sb.Append(AbstractLobbyCommand.Delimitter);
-        }
-        protected override void Append(StringBuilder sb, int i)
-        {
-            sb.Append(i);
+            sb.Append(thing);
             sb.Append(AbstractLobbyCommand.Delimitter);
         }
     }

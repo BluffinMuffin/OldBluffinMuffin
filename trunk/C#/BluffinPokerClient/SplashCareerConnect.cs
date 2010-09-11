@@ -48,18 +48,28 @@ namespace BluffinPokerClient
         private void Connect()
         {
             m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
+            // Reaching the server ...
             if (m_Server.Connect())
             {
                 spbStep1.Etat = StatePictureBoxStates.Ok;
                 spbStep2.Etat = StatePictureBoxStates.Waiting;
                 m_Server.Start();
+                // Existence of Username ...
                 if (!m_Server.CheckUsernameAvailable(m_Username))
                 {
                     spbStep2.Etat = StatePictureBoxStates.Ok;
                     spbStep3.Etat = StatePictureBoxStates.Waiting;
+                    // Authenticating Player ...
                     if (m_Server.Authenticate(m_Username, m_Password))
                     {
                         spbStep3.Etat = StatePictureBoxStates.Ok;
+                        spbStep4.Etat = StatePictureBoxStates.Waiting;
+
+                        // Retrieving User Info ...
+                        m_Server.RefreshUserInfo(m_Username);
+                        spbStep4.Etat = StatePictureBoxStates.Ok;
+
+                        // Done !
                         m_OK = true;
                         Quit();
                     }

@@ -23,6 +23,7 @@ namespace PokerProtocol.Observer
         public event EventHandler<CommandEventArgs<CheckUserExistCommand>> CheckUserExistCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<CheckDisplayExistCommand>> CheckDisplayExistCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<AuthenticateUserCommand>> AuthenticateUserCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<GetUserCommand>> GetUserCommandReceived = delegate { };
         
         protected override void receiveSomething(string line)
         {
@@ -53,6 +54,8 @@ namespace PokerProtocol.Observer
                 CheckDisplayExistCommandReceived(this, new CommandEventArgs<CheckDisplayExistCommand>(new CheckDisplayExistCommand(token)));
             else if (commandName == AuthenticateUserCommand.COMMAND_NAME)
                 AuthenticateUserCommandReceived(this, new CommandEventArgs<AuthenticateUserCommand>(new AuthenticateUserCommand(token)));
+            else if (commandName == GetUserCommand.COMMAND_NAME)
+                GetUserCommandReceived(this, new CommandEventArgs<GetUserCommand>(new GetUserCommand(token)));
             
         }
     }
