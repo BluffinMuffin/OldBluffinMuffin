@@ -23,7 +23,6 @@ import javax.swing.SpinnerNumberModel;
 
 import bluffinmuffin.poker.entities.type.GameBetLimitType;
 
-
 public class JDialogAddTable extends JDialog
 {
     private final String m_playerName;
@@ -255,7 +254,7 @@ public class JDialogAddTable extends JDialog
             jNbPlayersSlider.setBounds(new Rectangle(10, 165, 200, 47));
             jNbPlayersSlider.setPaintTicks(true);
             jNbPlayersSlider.setMinimum(2);
-            jNbPlayersSlider.setMaximum(9);
+            jNbPlayersSlider.setMaximum(10);
             jNbPlayersSlider.setMajorTickSpacing(1);
             jNbPlayersSlider.setMinorTickSpacing(1);
             jNbPlayersSlider.setPaintLabels(true);
