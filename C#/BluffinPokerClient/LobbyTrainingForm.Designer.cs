@@ -28,13 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.datTables = new System.Windows.Forms.DataGridView();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PokerTableName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.GameType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BigBlind = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NbPlayers = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
@@ -44,76 +37,10 @@
             this.btnDisconnect = new System.Windows.Forms.ToolStripButton();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
             this.lblTitle = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.datTables)).BeginInit();
+            this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // datTables
-            // 
-            this.datTables.AllowUserToAddRows = false;
-            this.datTables.AllowUserToDeleteRows = false;
-            this.datTables.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.datTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.datTables.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ID,
-            this.PokerTableName,
-            this.GameType,
-            this.BigBlind,
-            this.NbPlayers});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.datTables.DefaultCellStyle = dataGridViewCellStyle1;
-            this.datTables.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.datTables.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.datTables.Location = new System.Drawing.Point(0, 70);
-            this.datTables.MultiSelect = false;
-            this.datTables.Name = "datTables";
-            this.datTables.ReadOnly = true;
-            this.datTables.RowHeadersVisible = false;
-            this.datTables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.datTables.ShowEditingIcon = false;
-            this.datTables.Size = new System.Drawing.Size(500, 155);
-            this.datTables.TabIndex = 7;
-            this.datTables.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datTables_CellDoubleClick);
-            this.datTables.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.datTables_CellDoubleClick);
-            this.datTables.SelectionChanged += new System.EventHandler(this.datTables_SelectionChanged);
-            // 
-            // ID
-            // 
-            this.ID.HeaderText = "ID";
-            this.ID.Name = "ID";
-            this.ID.ReadOnly = true;
-            // 
-            // PokerTableName
-            // 
-            this.PokerTableName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.PokerTableName.HeaderText = "Name";
-            this.PokerTableName.Name = "PokerTableName";
-            this.PokerTableName.ReadOnly = true;
-            // 
-            // GameType
-            // 
-            this.GameType.HeaderText = "Game Type";
-            this.GameType.Name = "GameType";
-            this.GameType.ReadOnly = true;
-            // 
-            // BigBlind
-            // 
-            this.BigBlind.HeaderText = "Big Blind";
-            this.BigBlind.Name = "BigBlind";
-            this.BigBlind.ReadOnly = true;
-            // 
-            // NbPlayers
-            // 
-            this.NbPlayers.HeaderText = "Nb. Players";
-            this.NbPlayers.Name = "NbPlayers";
-            this.NbPlayers.ReadOnly = true;
             // 
             // statusStrip1
             // 
@@ -204,20 +131,29 @@
             this.lblTitle.Text = "Bluffin Muffin Poker Training Client";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // TrainingLobbyForm
+            // tableList
+            // 
+            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableList.Location = new System.Drawing.Point(0, 70);
+            this.tableList.Name = "tableList";
+            this.tableList.Size = new System.Drawing.Size(500, 155);
+            this.tableList.TabIndex = 7;
+            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
+            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
+            // 
+            // LobbyTrainingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 247);
-            this.Controls.Add(this.datTables);
+            this.Controls.Add(this.tableList);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.lblTitle);
-            this.Name = "TrainingLobbyForm";
+            this.Name = "LobbyTrainingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bluffin Muffin Poker Training Client";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LobbyForm_FormClosed);
-            ((System.ComponentModel.ISupportInitialize)(this.datTables)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -229,12 +165,6 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView datTables;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PokerTableName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn GameType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BigBlind;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NbPlayers;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripButton btnLeaveTable;
@@ -244,6 +174,7 @@
         private System.Windows.Forms.ToolStripButton btnDisconnect;
         private System.Windows.Forms.ToolStripButton btnRefresh;
         private System.Windows.Forms.Label lblTitle;
+        private BluffinPokerGUI.Lobby.PokerTableList tableList;
 
     }
 }
