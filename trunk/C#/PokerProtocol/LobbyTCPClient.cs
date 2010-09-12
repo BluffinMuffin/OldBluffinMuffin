@@ -47,6 +47,19 @@ namespace PokerProtocol
             return base.Connect(m_ServerAddress, m_ServerPort);
         }
 
+        public void LeaveTable(int idGame)
+        {
+            if (m_Clients.ContainsKey(idGame))
+            {
+                GameClient client = m_Clients[idGame];
+                m_Clients.Remove(idGame);
+                if (client != null)
+                {
+                    client.Disconnect();
+                }
+            }
+        }
+
         protected StringTokenizer ReceiveCommand(string expected)
         {
             string s = m_Incoming.Dequeue();

@@ -88,6 +88,12 @@
     <Compile Include="Lobby\NameUsedForm.Designer.cs">
       <DependentUpon>NameUsedForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lobby\PokerTableList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lobby\PokerTableList.Designer.cs">
+      <DependentUpon>PokerTableList.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogConsole.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -124,6 +130,9 @@
     <EmbeddedResource Include="Lobby\NameUsedForm.resx">
       <DependentUpon>NameUsedForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\PokerTableList.resx">
+      <DependentUpon>PokerTableList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogConsole.resx">
       <DependentUpon>LogConsole.cs</DependentUpon>
     </EmbeddedResource>
@@ -148,9 +157,17 @@
       <Project>{5CE81EA0-A5B0-4877-A37F-33897BD58642}</Project>
       <Name>EricUtilityGames_4.0</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_4.0.csproj">
+      <Project>{455F649D-B01B-4B20-B648-805461BF3142}</Project>
+      <Name>EricUtilityNetworking_4.0</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EricUtility\EricUtility_4.0.csproj">
       <Project>{31541BBE-B408-4719-BFCE-03947BB7AB0E}</Project>
       <Name>EricUtility_4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerProtocol\PokerProtocol_4.0.csproj">
+      <Project>{D442BF36-E1B5-4F91-975A-B10B1F23E41A}</Project>
+      <Name>PokerProtocol_4.0</Name>
     </ProjectReference>
     <ProjectReference Include="..\PokerWorld\PokerWorld_4.0.csproj">
       <Project>{FBAA74EB-22CE-4C30-9D10-0214B605578A}</Project>
