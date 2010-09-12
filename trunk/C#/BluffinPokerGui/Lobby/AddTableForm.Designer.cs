@@ -127,7 +127,7 @@
             // 
             this.nudNbPlayers.Location = new System.Drawing.Point(222, 25);
             this.nudNbPlayers.Maximum = new decimal(new int[] {
-            9,
+            10,
             0,
             0,
             0});
@@ -140,7 +140,7 @@
             this.nudNbPlayers.Size = new System.Drawing.Size(84, 20);
             this.nudNbPlayers.TabIndex = 2;
             this.nudNbPlayers.Value = new decimal(new int[] {
-            9,
+            10,
             0,
             0,
             0});

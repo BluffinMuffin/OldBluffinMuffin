@@ -68,7 +68,7 @@
             // txtLog
             // 
             this.txtLog.BackColor = System.Drawing.Color.DimGray;
-            this.txtLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLog.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLog.ForeColor = System.Drawing.Color.White;
             this.txtLog.Location = new System.Drawing.Point(0, 21);
             this.txtLog.Multiline = true;
