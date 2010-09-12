@@ -14,6 +14,8 @@ namespace BluffinPokerGui.Game
     {
         protected readonly PokerPlayerHud[] huds = new PokerPlayerHud[10];
         protected readonly Label[] bets = new Label[10];
+        protected readonly Label[] potTitles = new Label[10];
+        protected readonly Label[] potValues = new Label[10];
         protected readonly CardPictureBox[] board = new CardPictureBox[5];
 
         public TableViewerForm()
@@ -44,6 +46,26 @@ namespace BluffinPokerGui.Game
             board[2] = cardPictureBox3;
             board[3] = cardPictureBox4;
             board[4] = cardPictureBox5;
+            potTitles[0] = lblPot0Title;
+            potTitles[1] = lblPot1Title;
+            potTitles[2] = lblPot2Title;
+            potTitles[3] = lblPot3Title;
+            potTitles[4] = lblPot4Title;
+            potTitles[5] = lblPot5Title;
+            potTitles[6] = lblPot6Title;
+            potTitles[7] = lblPot7Title;
+            potTitles[8] = lblPot8Title;
+            potTitles[9] = lblPot9Title;
+            potValues[0] = lblPot0;
+            potValues[1] = lblPot1;
+            potValues[2] = lblPot2;
+            potValues[3] = lblPot3;
+            potValues[4] = lblPot4;
+            potValues[5] = lblPot5;
+            potValues[6] = lblPot6;
+            potValues[7] = lblPot7;
+            potValues[8] = lblPot8;
+            potValues[9] = lblPot9;
             logConsole.RelativeSizeChanged += new EventHandler<IntEventArgs>(logConsole_RelativeSizeChanged);
         }
 
@@ -116,7 +138,13 @@ namespace BluffinPokerGui.Game
                 return;
             }
             TableInfo table = m_Game.Table;
-            // TODO: RICK: update POTS
+            foreach( MoneyPot p in table.Pots)
+            {
+                int i = p.Id;
+                potTitles[i].Visible = (i == 0 || p.Amount > 0);
+                potValues[i].Visible = (i == 0 || p.Amount > 0);
+                potValues[i].Text = "$" + p.Amount;
+            }
             for (int i = 0; i < huds.Length; ++i)
             {
                 huds[i].DoAction(TypeAction.DoNothing, 0);
@@ -152,6 +180,15 @@ namespace BluffinPokerGui.Game
             }
             TableInfo table = m_Game.Table;
             lblTotalPot.Text = "$0";
+            for(int i = 1; i < 10; ++i)
+            {
+                potTitles[i].Visible = false;
+                potValues[i].Visible = false;
+                potValues[i].Text = "$0";
+            }
+            potTitles[0].Visible = true;
+            potValues[0].Visible = true;
+            potValues[0].Text = "$0";
             huds[table.NoSeatDealer].SetDealer();
             huds[table.NoSeatSmallBlind].SetSmallBlind();
             huds[table.NoSeatBigBlind].SetBigBlind();
@@ -175,6 +212,15 @@ namespace BluffinPokerGui.Game
                     PokerPlayerHud php = huds[p.NoSeat];
                     Label bet = bets[p.NoSeat];
                     bet.Text = "";
+                    for (int i = 1; i < 10; ++i)
+                    {
+                        potTitles[i].Visible = false;
+                        potValues[i].Visible = false;
+                        potValues[i].Text = "$0";
+                    }
+                    potTitles[0].Visible = true;
+                    potValues[0].Visible = true;
+                    potValues[0].Text = "$0";
                     php.SetMoney(p.MoneySafeAmnt);
                     php.SetNotDealer();
                     php.SetNoBlind();
@@ -197,6 +243,16 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameGenerallyUpdated), new object[] { sender, e });
                 return;
             }
+            lblTotalPot.Text = "$0";
+            for (int i = 1; i < 10; ++i)
+            {
+                potTitles[i].Visible = false;
+                potValues[i].Visible = false;
+                potValues[i].Text = "$0";
+            }
+            potTitles[0].Visible = true;
+            potValues[0].Visible = true;
+            potValues[0].Text = "$0";
             TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
             {

@@ -46,7 +46,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(874, 52);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(146, 554);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(146, 501);
             this.flowLayoutPanel1.TabIndex = 3;
             // 
             // btnFold
@@ -94,7 +94,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1018, 740);
+            this.ClientSize = new System.Drawing.Size(1018, 687);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "TableForm";
             this.Text = "C# Poker Table";
