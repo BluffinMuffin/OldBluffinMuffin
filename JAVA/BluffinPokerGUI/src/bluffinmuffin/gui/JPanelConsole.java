@@ -77,7 +77,7 @@ public class JPanelConsole extends JPanel
             jLogTextArea.setEditable(false);
             jLogTextArea.setForeground(Color.white);
             jLogTextArea.setWrapStyleWord(true);
-            jLogTextArea.setFont(new Font("Dialog", Font.BOLD, 12));
+            jLogTextArea.setFont(new Font("Arial", Font.BOLD, 11));
         }
         return jLogTextArea;
     }
