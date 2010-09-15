@@ -24,7 +24,7 @@ namespace BluffinPokerClient
             lblServer.Text = String.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
             tableList.RefreshList();
             if (tableList.NbTables == 0)
-                tableList.AddTable(true);
+                tableList.AddTable(false);
         }
 
         private void RefreshInfo()
@@ -51,7 +51,7 @@ namespace BluffinPokerClient
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
-            tableList.AddTable(true);
+            tableList.AddTable(false);
         }
 
         private void btnJoinTable_Click(object sender, EventArgs e)
