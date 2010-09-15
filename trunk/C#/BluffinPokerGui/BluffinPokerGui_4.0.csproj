@@ -39,6 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lobby\AddTableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lobby\AddTableControl.Designer.cs">
+      <DependentUpon>AddTableControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventArgs.cs" />
     <Compile Include="Game\AbstractTableForm.cs">
       <SubType>Form</SubType>
@@ -109,6 +115,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Lobby\AddTableControl.resx">
+      <DependentUpon>AddTableControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Game\AbstractTableForm.resx">
       <DependentUpon>AbstractTableForm.cs</DependentUpon>
     </EmbeddedResource>

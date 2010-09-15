@@ -66,25 +66,35 @@ namespace BluffinPokerGUI.Lobby
             m_PlayerName = playerName;
             m_TrainingOnly = trainingOnly;
             InitializeComponent();
-            txtTableName.Text = m_PlayerName + " Table";
-            foreach (string s in Enum.GetNames(typeof(TypeBet)))
-                clstGameLimit.Items.Add(s);
-            clstGameLimit.SelectedItem = TypeBet.NoLimit.ToString();
-            nudNbPlayers.Minimum = Math.Max(nbPlayers, 2);
-            chkTraining.Checked = trainingOnly;
-            chkTraining.Enabled = !trainingOnly;
+            atcTraining.InitControl(m_PlayerName, nbPlayers);
+            atcReal.InitControl(m_PlayerName, nbPlayers);
+            if (trainingOnly)
+                tabControl1.TabPages.Remove(tabReal);
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void GatherCommonFields(AddTableControl control)
         {
-            m_TableName = txtTableName.Text;
-            m_BigBlind = (int)nudBigBlindAmnt.Value;
-            m_NbPlayer = (int)nudNbPlayers.Value;
-            m_WaitingTimeAfterPlayerAction = (int)nudWTAPlayerAction.Value;
-            m_WaitingTimeAfterBoardDealed = (int)nudWTABoardDealed.Value;
-            m_WaitingTimeAfterPotWon = (int)nudWTAPotWon.Value;
-            m_Limit = (TypeBet)clstGameLimit.SelectedIndex;
-            m_Training = chkTraining.Checked;
+            m_TableName = control.TableName;
+            m_BigBlind = control.BigBlind;
+            m_NbPlayer = control.NbPlayer;
+            m_WaitingTimeAfterPlayerAction = control.WaitingTimeAfterPlayerAction;
+            m_WaitingTimeAfterBoardDealed = control.WaitingTimeAfterBoardDealed;
+            m_WaitingTimeAfterPotWon = control.WaitingTimeAfterPotWon;
+            m_Limit = control.Limit;
+        }
+
+        private void btnAddTraining_Click(object sender, EventArgs e)
+        {
+            GatherCommonFields(atcTraining);
+            m_Training = true;
+            m_OK = true;
+            Close();
+        }
+
+        private void btnAddReal_Click(object sender, EventArgs e)
+        {
+            GatherCommonFields(atcReal);
+            m_Training = false;
             m_OK = true;
             Close();
         }
