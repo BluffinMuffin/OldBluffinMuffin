@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using EricUtility;
+using PokerWorld.Game;
+using EricUtility.Networking.Commands;
+
+namespace PokerProtocol.Commands.Lobby.Training
+{
+    public class CreateTrainingTableCommand : AbstractCreateTableCommand
+    {
+        protected override string CommandName
+        {
+            get { return COMMAND_NAME; }
+        }
+        public static string COMMAND_NAME = "lobbyTRAINING_CREATE_TABLE";
+
+        private int m_StartingMoney;
+
+        public int StartingMoney { get { return m_StartingMoney; } }
+
+        public CreateTrainingTableCommand(StringTokenizer argsToken) : base(argsToken)
+        {
+            m_StartingMoney = int.Parse(argsToken.NextToken());
+        }
+
+        public CreateTrainingTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit, int startingMoney):base(p_tableName, p_bigBlind, p_maxPlayers, p_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit)
+        {
+            m_StartingMoney = startingMoney;
+        }
+
+        public override void Encode(StringBuilder sb)
+        {
+            base.Encode(sb);
+            Append(sb, m_StartingMoney);
+        }
+
+        public string EncodeResponse( int port )
+        {
+            return new CreateTrainingTableResponse(this, port).Encode();
+        }
+    }
+}

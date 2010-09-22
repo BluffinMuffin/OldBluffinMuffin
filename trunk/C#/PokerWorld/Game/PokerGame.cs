@@ -42,17 +42,17 @@ namespace PokerWorld.Game
         public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
 
-        private readonly TableInfo m_Table; // La table
-        private readonly AbstractDealer m_Dealer; // Dealer
+        protected readonly TableInfo m_Table; // La table
+        protected readonly AbstractDealer m_Dealer; // Dealer
 
         // WAITING TIME
-        private readonly int m_WaitingTimeAfterPlayerAction; // Attente apres chaque player action (ms)
-        private readonly int m_WaitingTimeAfterBoardDealed; // Attente apres chaque board dealed (ms)
-        private readonly int m_WaitingTimeAfterPotWon; // Attente apres chaque pot won ! (ms)
+        protected readonly int m_WaitingTimeAfterPlayerAction; // Attente apres chaque player action (ms)
+        protected readonly int m_WaitingTimeAfterBoardDealed; // Attente apres chaque board dealed (ms)
+        protected readonly int m_WaitingTimeAfterPotWon; // Attente apres chaque pot won ! (ms)
 
         // STATES
-        private TypeState m_State; // L'etat global de la game
-        private TypeRoundState m_RoundState; // L'etat de la game pour chaque round
+        protected TypeState m_State; // L'etat global de la game
+        protected TypeRoundState m_RoundState; // L'etat de la game pour chaque round
 
         public TableInfo Table
         {

@@ -9,6 +9,7 @@ using EricUtility.Networking.Commands;
 using PokerProtocol.Commands.Lobby;
 using PokerWorld.Game;
 using PokerProtocol.Commands.Lobby.Training;
+using PokerProtocol.Commands.Lobby.Career;
 
 namespace PokerProtocol
 {
@@ -169,20 +170,6 @@ namespace PokerProtocol
             Send(new GameCommand(client.NoPort, e.Key));
         }
 
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
-        {
-            Send(new CreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
-
-            StringTokenizer token = ReceiveCommand(CreateTableResponse.COMMAND_NAME);
-            if (token.HasMoreTokens())
-            {
-                CreateTableResponse response = new CreateTableResponse(token);
-                return response.Port;
-            }
-            else
-                return -1;
-        }
-
         public List<TupleTableInfo> getListTables()
         {
             Send(new ListTableCommand());
@@ -217,6 +204,36 @@ namespace PokerProtocol
                 else
                     m_Incoming.Enqueue(line);
             }
+        }
+
+
+        public int CreateCareerTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+        {
+            Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
+
+            StringTokenizer token = ReceiveCommand(CreateCareerTableResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                CreateCareerTableResponse response = new CreateCareerTableResponse(token);
+                return response.Port;
+            }
+            else
+                return -1;
+        }
+
+
+        public int CreateTrainingTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit, int startingMoney)
+        {
+            Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, startingMoney));
+
+            StringTokenizer token = ReceiveCommand(CreateTrainingTableResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                CreateTrainingTableResponse response = new CreateTrainingTableResponse(token);
+                return response.Port;
+            }
+            else
+                return -1;
         }
     }
 }

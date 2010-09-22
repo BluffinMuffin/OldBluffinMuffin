@@ -31,13 +31,16 @@
             this.atcTraining = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabReal = new System.Windows.Forms.TabPage();
-            this.tabTraining = new System.Windows.Forms.TabPage();
-            this.btnAddTraining = new System.Windows.Forms.Button();
             this.btnAddReal = new System.Windows.Forms.Button();
             this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
+            this.tabTraining = new System.Windows.Forms.TabPage();
+            this.btnAddTraining = new System.Windows.Forms.Button();
+            this.nudStartingAmnt = new System.Windows.Forms.NumericUpDown();
+            this.lblBigBlindAmnt = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabReal.SuspendLayout();
             this.tabTraining.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmnt)).BeginInit();
             this.SuspendLayout();
             // 
             // atcTraining
@@ -54,7 +57,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(317, 237);
+            this.tabControl1.Size = new System.Drawing.Size(317, 264);
             this.tabControl1.TabIndex = 13;
             // 
             // tabReal
@@ -64,40 +67,16 @@
             this.tabReal.Location = new System.Drawing.Point(4, 22);
             this.tabReal.Name = "tabReal";
             this.tabReal.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReal.Size = new System.Drawing.Size(309, 211);
+            this.tabReal.Size = new System.Drawing.Size(309, 238);
             this.tabReal.TabIndex = 0;
             this.tabReal.Text = "Real";
             this.tabReal.UseVisualStyleBackColor = true;
-            // 
-            // tabTraining
-            // 
-            this.tabTraining.Controls.Add(this.btnAddTraining);
-            this.tabTraining.Controls.Add(this.atcTraining);
-            this.tabTraining.Location = new System.Drawing.Point(4, 22);
-            this.tabTraining.Name = "tabTraining";
-            this.tabTraining.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTraining.Size = new System.Drawing.Size(309, 211);
-            this.tabTraining.TabIndex = 1;
-            this.tabTraining.Text = "Training";
-            this.tabTraining.UseVisualStyleBackColor = true;
-            // 
-            // btnAddTraining
-            // 
-            this.btnAddTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddTraining.Location = new System.Drawing.Point(6, 164);
-            this.btnAddTraining.Name = "btnAddTraining";
-            this.btnAddTraining.Size = new System.Drawing.Size(296, 41);
-            this.btnAddTraining.TabIndex = 13;
-            this.btnAddTraining.Text = "Create Table";
-            this.btnAddTraining.UseVisualStyleBackColor = true;
-            this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
             // 
             // btnAddReal
             // 
             this.btnAddReal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddReal.Location = new System.Drawing.Point(6, 164);
+            this.btnAddReal.Location = new System.Drawing.Point(6, 191);
             this.btnAddReal.Name = "btnAddReal";
             this.btnAddReal.Size = new System.Drawing.Size(296, 41);
             this.btnAddReal.TabIndex = 15;
@@ -112,11 +91,73 @@
             this.atcReal.Size = new System.Drawing.Size(296, 165);
             this.atcReal.TabIndex = 14;
             // 
+            // tabTraining
+            // 
+            this.tabTraining.Controls.Add(this.nudStartingAmnt);
+            this.tabTraining.Controls.Add(this.lblBigBlindAmnt);
+            this.tabTraining.Controls.Add(this.btnAddTraining);
+            this.tabTraining.Controls.Add(this.atcTraining);
+            this.tabTraining.Location = new System.Drawing.Point(4, 22);
+            this.tabTraining.Name = "tabTraining";
+            this.tabTraining.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTraining.Size = new System.Drawing.Size(309, 238);
+            this.tabTraining.TabIndex = 1;
+            this.tabTraining.Text = "Training";
+            this.tabTraining.UseVisualStyleBackColor = true;
+            // 
+            // btnAddTraining
+            // 
+            this.btnAddTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddTraining.Location = new System.Drawing.Point(6, 191);
+            this.btnAddTraining.Name = "btnAddTraining";
+            this.btnAddTraining.Size = new System.Drawing.Size(296, 41);
+            this.btnAddTraining.TabIndex = 13;
+            this.btnAddTraining.Text = "Create Table";
+            this.btnAddTraining.UseVisualStyleBackColor = true;
+            this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
+            // 
+            // nudStartingAmnt
+            // 
+            this.nudStartingAmnt.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.nudStartingAmnt.Location = new System.Drawing.Point(99, 164);
+            this.nudStartingAmnt.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.nudStartingAmnt.Minimum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.nudStartingAmnt.Name = "nudStartingAmnt";
+            this.nudStartingAmnt.Size = new System.Drawing.Size(84, 20);
+            this.nudStartingAmnt.TabIndex = 16;
+            this.nudStartingAmnt.Value = new decimal(new int[] {
+            1500,
+            0,
+            0,
+            0});
+            // 
+            // lblBigBlindAmnt
+            // 
+            this.lblBigBlindAmnt.AutoSize = true;
+            this.lblBigBlindAmnt.Location = new System.Drawing.Point(8, 166);
+            this.lblBigBlindAmnt.Name = "lblBigBlindAmnt";
+            this.lblBigBlindAmnt.Size = new System.Drawing.Size(85, 13);
+            this.lblBigBlindAmnt.TabIndex = 17;
+            this.lblBigBlindAmnt.Text = "Starting Amount:";
+            // 
             // AddTableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 265);
+            this.ClientSize = new System.Drawing.Size(336, 292);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -127,6 +168,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabReal.ResumeLayout(false);
             this.tabTraining.ResumeLayout(false);
+            this.tabTraining.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmnt)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -140,6 +183,8 @@
         private System.Windows.Forms.Button btnAddTraining;
         private System.Windows.Forms.Button btnAddReal;
         private AddTableControl atcReal;
+        private System.Windows.Forms.NumericUpDown nudStartingAmnt;
+        private System.Windows.Forms.Label lblBigBlindAmnt;
     }
 }
 

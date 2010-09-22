@@ -45,7 +45,6 @@ namespace PokerProtocol
             CheckDisplayExistResponse response = new CheckDisplayExistResponse(token);
             return !response.Exist;
         }
-
         public bool CreateUser(string username, string password, string email, string displayname)
         {
             Send(new CreateUserCommand(username, password, email, displayname));

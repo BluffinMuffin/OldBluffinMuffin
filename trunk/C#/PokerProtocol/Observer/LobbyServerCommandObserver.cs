@@ -10,15 +10,16 @@ namespace PokerProtocol.Observer
     public class LobbyServerCommandObserver : CommandObserver
     {
         public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
-        public event EventHandler<CommandEventArgs<CreateTableCommand>> CreateTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<GameCommand>> GameCommandReceived = delegate { };
 
         //Training
+        public event EventHandler<CommandEventArgs<CreateTrainingTableCommand>> CreateTrainingTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<IdentifyCommand>> IdentifyCommandReceived = delegate { };
 
         //Career
+        public event EventHandler<CommandEventArgs<CreateCareerTableCommand>> CreateCareerTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<CreateUserCommand>> CreateUserCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<CheckUserExistCommand>> CheckUserExistCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<CheckDisplayExistCommand>> CheckDisplayExistCommandReceived = delegate { };
@@ -32,8 +33,6 @@ namespace PokerProtocol.Observer
             
             if (commandName == DisconnectCommand.COMMAND_NAME)
                 DisconnectCommandReceived(this, new CommandEventArgs<DisconnectCommand>(new DisconnectCommand(token)));
-            else if (commandName == CreateTableCommand.COMMAND_NAME)
-                CreateTableCommandReceived(this, new CommandEventArgs<CreateTableCommand>(new CreateTableCommand(token)));
             else if (commandName == ListTableCommand.COMMAND_NAME)
                 ListTableCommandReceived(this, new CommandEventArgs<ListTableCommand>(new ListTableCommand(token)));
             else if (commandName == JoinTableCommand.COMMAND_NAME)
@@ -42,10 +41,14 @@ namespace PokerProtocol.Observer
                 GameCommandReceived(this, new CommandEventArgs<GameCommand>(new GameCommand(token)));
 
             //Training
+            else if (commandName == CreateTrainingTableCommand.COMMAND_NAME)
+                CreateTrainingTableCommandReceived(this, new CommandEventArgs<CreateTrainingTableCommand>(new CreateTrainingTableCommand(token)));
             else if (commandName == IdentifyCommand.COMMAND_NAME)
                 IdentifyCommandReceived(this, new CommandEventArgs<IdentifyCommand>(new IdentifyCommand(token)));
 
             //Career
+            else if (commandName == CreateCareerTableCommand.COMMAND_NAME)
+                CreateCareerTableCommandReceived(this, new CommandEventArgs<CreateCareerTableCommand>(new CreateCareerTableCommand(token)));
             else if (commandName == CreateUserCommand.COMMAND_NAME)
                 CreateUserCommandReceived(this, new CommandEventArgs<CreateUserCommand>(new CreateUserCommand(token)));
             else if (commandName == CheckUserExistCommand.COMMAND_NAME)

@@ -4,9 +4,9 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 
-namespace PokerProtocol.Commands.Lobby
+namespace PokerProtocol.Commands.Lobby.Career
 {
-    public class CreateTableResponse : AbstractLobbyResponse<CreateTableCommand>
+    public class CreateCareerTableResponse : AbstractLobbyResponse<CreateCareerTableCommand>
     {
 
         protected override string CommandName
@@ -21,13 +21,13 @@ namespace PokerProtocol.Commands.Lobby
         } 
 
 
-        public CreateTableResponse(StringTokenizer argsToken)
-            : base(new CreateTableCommand(argsToken))
+        public CreateCareerTableResponse(StringTokenizer argsToken)
+            : base(new CreateCareerTableCommand(argsToken))
         {
             m_Port = int.Parse(argsToken.NextToken());
         }
 
-        public CreateTableResponse(CreateTableCommand command, int port)
+        public CreateCareerTableResponse(CreateCareerTableCommand command, int port)
             : base(command)
         {
             m_Port = port;

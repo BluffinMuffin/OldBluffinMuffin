@@ -6,6 +6,9 @@ using PokerWorld.Game;
 using System.Threading;
 using PokerProtocol.Commands.Lobby;
 using PokerProtocol;
+using PokerProtocol.Commands.Lobby.Training;
+using PokerProtocol.Commands.Lobby.Career;
+using System.Net;
 
 namespace BluffinPokerServer
 {
@@ -27,7 +30,7 @@ namespace BluffinPokerServer
         public ServerLobby(int port)
         {
             m_NoPort = port;
-            m_SocketServer = new TcpListener(port);
+            m_SocketServer = new TcpListener(IPAddress.Any,port);
         }
 
         public bool NameUsed(string name)
@@ -71,7 +74,19 @@ namespace BluffinPokerServer
             }
         }
 
-        public int CreateTable(CreateTableCommand c)
+        public int CreateTrainingTable(CreateTrainingTableCommand c)
+        {
+            ListTables();
+            m_LastUsedID++;
+            while (m_Games.ContainsKey(m_LastUsedID))
+                m_LastUsedID++;
+            TrainingPokerGame game = new TrainingPokerGame(new TrainingTableInfo(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+            m_Games.Add(m_LastUsedID, game);
+            game.Start();
+            return m_LastUsedID;
+        }
+
+        public int CreateCareerTable(CreateCareerTableCommand c)
         {
             ListTables();
             m_LastUsedID++;

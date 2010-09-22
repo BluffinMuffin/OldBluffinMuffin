@@ -23,10 +23,15 @@ namespace BluffinPokerGUI.Lobby
         private TypeBet m_Limit;
         private bool m_TrainingOnly;
         private bool m_Training;
+        private int m_TrainingStartingAmount;
 
         public bool Training
         {
             get { return m_Training; }
+        }
+        public int TrainingStartingAmount
+        {
+            get { return m_TrainingStartingAmount; }
         }
         public TypeBet Limit
         {
@@ -87,6 +92,7 @@ namespace BluffinPokerGUI.Lobby
         {
             GatherCommonFields(atcTraining);
             m_Training = true;
+            m_TrainingStartingAmount = (int)nudStartingAmnt.Value;
             m_OK = true;
             Close();
         }
