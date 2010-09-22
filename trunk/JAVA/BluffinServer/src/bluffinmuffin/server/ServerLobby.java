@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,7 +15,6 @@ import bluffinmuffin.poker.PokerGame;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.protocol.TupleTableInfo;
 import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
-
 
 /**
  * @author Hocus
@@ -66,15 +66,32 @@ public class ServerLobby extends Thread
     
     public static void main(String args[])
     {
-        try
+        if ((args.length % 2) == 0)
         {
-            final ServerLobby server = new ServerLobby(4242);
-            server.start();
-            System.out.println("Server started");
+            try
+            {
+                final Map<String, String> map = new HashMap<String, String>();
+                for (int i = 0; i < args.length; i += 2)
+                {
+                    map.put(args[i].toLowerCase(), args[i + 1]);
+                }
+                int port = 4242;
+                if (map.containsKey("-p"))
+                {
+                    port = Integer.parseInt(map.get("-p"));
+                }
+                final ServerLobby server = new ServerLobby(port);
+                server.start();
+                System.out.println("Server started on port " + port);
+            }
+            catch (final Exception e)
+            {
+                System.err.println("ERROR: Can't start server !!");
+            }
         }
-        catch (final IOException e)
+        else
         {
-            e.printStackTrace();
+            System.err.println("ERROR: incorrect args");
         }
     }
     
