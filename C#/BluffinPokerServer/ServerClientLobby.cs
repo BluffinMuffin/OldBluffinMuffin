@@ -30,20 +30,33 @@ namespace BluffinPokerServer
         {
             m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
             m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
-            m_CommandObserver.CreateTableCommandReceived += new EventHandler<CommandEventArgs<CreateTableCommand>>(m_CommandObserver_CreateTableCommandReceived);
             m_CommandObserver.ListTableCommandReceived += new EventHandler<CommandEventArgs<ListTableCommand>>(m_CommandObserver_ListTableCommandReceived);
             m_CommandObserver.JoinTableCommandReceived += new EventHandler<CommandEventArgs<JoinTableCommand>>(m_CommandObserver_JoinTableCommandReceived);
             m_CommandObserver.GameCommandReceived += new EventHandler<CommandEventArgs<GameCommand>>(m_CommandObserver_GameCommandReceived);
 
             //Training
+            m_CommandObserver.CreateTrainingTableCommandReceived += new EventHandler<CommandEventArgs<CreateTrainingTableCommand>>(m_CommandObserver_CreateTrainingTableCommandReceived);
             m_CommandObserver.IdentifyCommandReceived += new EventHandler<CommandEventArgs<IdentifyCommand>>(m_CommandObserver_IdentifyCommandReceived);
             
             //Career
+            m_CommandObserver.CreateCareerTableCommandReceived += new EventHandler<CommandEventArgs<CreateCareerTableCommand>>(m_CommandObserver_CreateCareerTableCommandReceived);
             m_CommandObserver.CheckDisplayExistCommandReceived += new EventHandler<CommandEventArgs<CheckDisplayExistCommand>>(m_CommandObserver_CheckDisplayExistCommandReceived);
             m_CommandObserver.CheckUserExistCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CheckUserExistCommand>>(m_CommandObserver_CheckUserExistCommandReceived);
             m_CommandObserver.CreateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand>>(m_CommandObserver_CreateUserCommandReceived);
             m_CommandObserver.AuthenticateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand>>(m_CommandObserver_AuthenticateUserCommandReceived);
             m_CommandObserver.GetUserCommandReceived += new EventHandler<CommandEventArgs<GetUserCommand>>(m_CommandObserver_GetUserCommandReceived);
+        }
+
+        void m_CommandObserver_CreateCareerTableCommandReceived(object sender, CommandEventArgs<CreateCareerTableCommand> e)
+        {
+            CreateCareerTableCommand c = e.Command;
+            Send(c.EncodeResponse(m_Lobby.CreateCareerTable(c)));
+        }
+
+        void m_CommandObserver_CreateTrainingTableCommandReceived(object sender, CommandEventArgs<CreateTrainingTableCommand> e)
+        {
+            CreateTrainingTableCommand c = e.Command;
+            Send(c.EncodeResponse(m_Lobby.CreateTrainingTable(c)));
         }
 
         void m_CommandObserver_GetUserCommandReceived(object sender, CommandEventArgs<GetUserCommand> e)
@@ -86,9 +99,16 @@ namespace BluffinPokerServer
 
         void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)
         {
-            GameServer client = new GameServer(e.Command.TableID, m_Lobby.GetGame(e.Command.TableID), m_PlayerName, 1500);
+            GameServer client = null;
+            PokerGame game = m_Lobby.GetGame(e.Command.TableID);
+            if (game is TrainingPokerGame)
+            {
+                TrainingPokerGame tgame = game as TrainingPokerGame;
+                client = new GameServer(e.Command.TableID, game, m_PlayerName, tgame.TrainingTable.StartingMoney);
+            }
+            else
+                client = new GameServer(e.Command.TableID, game, m_PlayerName, 1500);
             client.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(client_SendedSomething);
-            PokerGame game = client.Game;
             TableInfo table = game.Table;
              if (!game.IsRunning)
                 {
@@ -161,12 +181,6 @@ namespace BluffinPokerServer
             DisconnectCommand c = e.Command;
             m_Lobby.RemoveName(m_PlayerName);
             Close();
-        }
-
-        void m_CommandObserver_CreateTableCommandReceived(object sender, CommandEventArgs<CreateTableCommand> e)
-        {
-            CreateTableCommand c = e.Command;
-            Send(c.EncodeResponse(m_Lobby.CreateTable(c)));
         }
 
         void m_CommandObserver_ListTableCommandReceived(object sender, CommandEventArgs<ListTableCommand> e)

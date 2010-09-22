@@ -7,22 +7,16 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby
 {
-    public class CreateTableCommand : AbstractLobbyCommand
+    public abstract class AbstractCreateTableCommand : AbstractLobbyCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
-        public static string COMMAND_NAME = "lobbyCREATE_TABLE";
-
-        private readonly string m_TableName;
-        private readonly int m_BigBlind;
-        private readonly int m_MaxPlayers;
-        private readonly string m_PlayerName;
-        private readonly int m_WaitingTimeAfterPlayerAction;
-        private readonly int m_WaitingTimeAfterBoardDealed;
-        private readonly int m_WaitingTimeAfterPotWon;
-        private readonly TypeBet m_Limit;
+        protected readonly string m_TableName;
+        protected readonly int m_BigBlind;
+        protected readonly int m_MaxPlayers;
+        protected readonly string m_PlayerName;
+        protected readonly int m_WaitingTimeAfterPlayerAction;
+        protected readonly int m_WaitingTimeAfterBoardDealed;
+        protected readonly int m_WaitingTimeAfterPotWon;
+        protected readonly TypeBet m_Limit;
 
         public string TableName
         {
@@ -71,7 +65,7 @@ namespace PokerProtocol.Commands.Lobby
             get { return m_Limit; }
         }
 
-        public CreateTableCommand(StringTokenizer argsToken)
+        public AbstractCreateTableCommand(StringTokenizer argsToken)
         {
             m_TableName = argsToken.NextToken();
             m_BigBlind = int.Parse(argsToken.NextToken());
@@ -83,7 +77,7 @@ namespace PokerProtocol.Commands.Lobby
             m_Limit = (TypeBet)int.Parse(argsToken.NextToken());
         }
 
-        public CreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
         {
             m_TableName = p_tableName;
             m_BigBlind = p_bigBlind;
@@ -105,11 +99,6 @@ namespace PokerProtocol.Commands.Lobby
             Append(sb, m_WaitingTimeAfterBoardDealed);
             Append(sb, m_WaitingTimeAfterPotWon);
             Append(sb, (int)m_Limit);
-        }
-
-        public string EncodeResponse( int port )
-        {
-            return new CreateTableResponse(this, port).Encode();
         }
     }
 }

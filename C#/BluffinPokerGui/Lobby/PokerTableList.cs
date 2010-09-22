@@ -56,8 +56,12 @@ namespace BluffinPokerGUI.Lobby
             form.ShowDialog();
             if (form.OK)
             {
-                int noPort = m_Server.CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit);
-
+                int noPort = -1;
+                if (form.Training)
+                    noPort = m_Server.CreateTrainingTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.TrainingStartingAmount);
+                else
+                    noPort = m_Server.CreateCareerTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit);
+                
                 if (noPort != -1)
                 {
                     JoinTable(noPort, form.TableName, form.BigBlind);

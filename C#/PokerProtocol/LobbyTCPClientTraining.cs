@@ -31,7 +31,6 @@ namespace PokerProtocol
             IdentifyResponse response = new IdentifyResponse(token);
             return response.OK;
         }
-
         
     }
 }

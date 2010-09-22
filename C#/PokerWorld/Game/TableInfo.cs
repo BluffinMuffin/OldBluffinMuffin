@@ -8,41 +8,41 @@ namespace PokerWorld.Game
     public class TableInfo
     {
         // INFO
-        private readonly string m_Name; // Nom de la table
-        private TypeBet m_BetLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
+        protected readonly string m_Name; // Nom de la table
+        protected TypeBet m_BetLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
 
         // CARDS
-        private readonly GameCard[] m_Cards = new GameCard[5]; // Cartes du board
+        protected readonly GameCard[] m_Cards = new GameCard[5]; // Cartes du board
 
         // SEATS
-        private readonly int m_NbMaxSeats; // Nombe de siege total autour de la table
-        private readonly Stack<int> m_RemainingSeats = new Stack<int>(); // LIFO contenant les sieges non utilises
+        protected readonly int m_NbMaxSeats; // Nombe de siege total autour de la table
+        protected readonly Stack<int> m_RemainingSeats = new Stack<int>(); // LIFO contenant les sieges non utilises
 
         // PLAYERS
-        private readonly PlayerInfo[] m_Players; // Joueurs autour de la table
+        protected readonly PlayerInfo[] m_Players; // Joueurs autour de la table
 
         // POTS
-        private readonly List<MoneyPot> m_Pots = new List<MoneyPot>(); // La liste des POTS
-        private int m_TotalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
-        private readonly List<int> m_AllInCaps = new List<int>(); // Les differents CAPS ALL_IN de la ROUND
+        protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>(); // La liste des POTS
+        protected int m_TotalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
+        protected readonly List<int> m_AllInCaps = new List<int>(); // Les differents CAPS ALL_IN de la ROUND
 
         // BLINDS
-        private readonly int m_SmallBlindAmnt; // Montant a donner lorsqu'on est small blind
-        private readonly int m_BigBlindAmnt; // Montant a donner lorsqu'on est big blind
-        private readonly Dictionary<PlayerInfo, int> m_BlindNeeded = new Dictionary<PlayerInfo, int>(); // Hashmap contenant les blinds necessaire pour chaque player
-        private int m_TotalBlindNeeded; // Montant total necessaire pour les blinds
+        protected readonly int m_SmallBlindAmnt; // Montant a donner lorsqu'on est small blind
+        protected readonly int m_BigBlindAmnt; // Montant a donner lorsqu'on est big blind
+        protected readonly Dictionary<PlayerInfo, int> m_BlindNeeded = new Dictionary<PlayerInfo, int>(); // Hashmap contenant les blinds necessaire pour chaque player
+        protected int m_TotalBlindNeeded; // Montant total necessaire pour les blinds
 
         // STATES
-        private int m_NbPlayed; // Nombre de joueur ayant joues de cette ROUND
-        private int m_NbAllIn; // Nombre de joueurs ALL-IN
-        private int m_HigherBet; // Le bet actuel qu'il faut egaler
-        private TypeRound m_Round; // La round actuelle
-        private int m_NoSeatDealer; // La position actuelle du Dealer
-        private int m_NoSeatSmallBlind; // La position actuelle du SmallBlind
-        private int m_NoSeatBigBlind; // La position actuelle du BigBlind
-        private int m_NoSeatCurrPlayer; // La position du joueur actuel
-        private int m_CurrPotId; // L'id du pot qu'on travail actuellement avec
-        private int m_NoSeatLastRaise; // L'id du dernier player qui a raiser ou du premier a jouer
+        protected int m_NbPlayed; // Nombre de joueur ayant joues de cette ROUND
+        protected int m_NbAllIn; // Nombre de joueurs ALL-IN
+        protected int m_HigherBet; // Le bet actuel qu'il faut egaler
+        protected TypeRound m_Round; // La round actuelle
+        protected int m_NoSeatDealer; // La position actuelle du Dealer
+        protected int m_NoSeatSmallBlind; // La position actuelle du SmallBlind
+        protected int m_NoSeatBigBlind; // La position actuelle du BigBlind
+        protected int m_NoSeatCurrPlayer; // La position du joueur actuel
+        protected int m_CurrPotId; // L'id du pot qu'on travail actuellement avec
+        protected int m_NoSeatLastRaise; // L'id du dernier player qui a raiser ou du premier a jouer
 
         public string Name
         {
