@@ -13,7 +13,7 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
             get { return COMMAND_NAME; }
         }
-        public static string COMMAND_NAME = "lobbyCREATE_TABLE";
+        public static string COMMAND_NAME = "lobbyCAREER_CREATE_TABLE";
         
 
         public CreateCareerTableCommand(StringTokenizer argsToken) : base(argsToken)
