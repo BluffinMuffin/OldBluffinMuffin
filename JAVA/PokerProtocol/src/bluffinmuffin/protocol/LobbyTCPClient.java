@@ -17,16 +17,15 @@ import bluffinmuffin.poker.entities.type.GameBetLimitType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
 import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
-import bluffinmuffin.protocol.commands.lobby.CreateTableResponse;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableResponse;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
 import bluffinmuffin.protocol.commands.lobby.ListTableResponse;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableResponse;
 import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.commands.lobby.training.IdentifyResponse;
-
 
 public class LobbyTCPClient extends Thread
 {
@@ -197,14 +196,14 @@ public class LobbyTCPClient extends Thread
         return client;
     }
     
-    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit)
+    public int createTable(String p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit, int startingMoney)
     {
         // Send query.
-        send(new CreateTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
+        send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, startingMoney));
         // Wait for response.
         
-        final StringTokenizer token = receiveCommand(CreateTableResponse.COMMAND_NAME);
-        final CreateTableResponse response = new CreateTableResponse(token);
+        final StringTokenizer token = receiveCommand(CreateTrainingTableResponse.COMMAND_NAME);
+        final CreateTrainingTableResponse response = new CreateTrainingTableResponse(token);
         return response.getResponsePort();
     }
     

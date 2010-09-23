@@ -1,4 +1,4 @@
-package bluffinmuffin.protocol.commands.lobby;
+package bluffinmuffin.protocol.commands.lobby.training;
 
 import java.util.StringTokenizer;
 
@@ -6,10 +6,9 @@ import bluffinmuffin.poker.entities.type.GameBetLimitType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
 
-
-public class CreateTableCommand implements ICommand
+public class CreateTrainingTableResponse implements ICommand
 {
-    public static String COMMAND_NAME = "lobbyCREATE_TABLE";
+    public static String COMMAND_NAME = "lobbyTRAINING_CREATE_TABLE_RESPONSE";
     
     private final String m_tableName;
     private final int m_bigBlind;
@@ -19,8 +18,10 @@ public class CreateTableCommand implements ICommand
     private final int m_WaitingTimeAfterBoardDealed;
     private final int m_WaitingTimeAfterPotWon;
     private final GameBetLimitType m_limit;
+    private final int m_startingMoney;
+    private final int m_ResponsePort;
     
-    public CreateTableCommand(StringTokenizer argsToken)
+    public CreateTrainingTableResponse(StringTokenizer argsToken)
     {
         m_tableName = argsToken.nextToken();
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
@@ -30,9 +31,11 @@ public class CreateTableCommand implements ICommand
         m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
         m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
         m_limit = GameBetLimitType.values()[Integer.parseInt(argsToken.nextToken())];
+        m_startingMoney = Integer.parseInt(argsToken.nextToken());
+        m_ResponsePort = Integer.parseInt(argsToken.nextToken());
     }
     
-    public CreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit)
+    public CreateTrainingTableResponse(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit, int startingMoney, int responsePort)
     {
         m_tableName = p_tableName;
         m_bigBlind = p_bigBlind;
@@ -42,13 +45,15 @@ public class CreateTableCommand implements ICommand
         m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
         m_WaitingTimeAfterPotWon = wtaPotWon;
         m_limit = limit;
+        m_startingMoney = startingMoney;
+        m_ResponsePort = responsePort;
     }
     
     @Override
     public String encodeCommand()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(CreateTableCommand.COMMAND_NAME);
+        sb.append(CreateTrainingTableResponse.COMMAND_NAME);
         sb.append(Command.L_DELIMITER);
         sb.append(m_tableName);
         sb.append(Command.L_DELIMITER);
@@ -66,12 +71,11 @@ public class CreateTableCommand implements ICommand
         sb.append(Command.L_DELIMITER);
         sb.append(m_limit.ordinal());
         sb.append(Command.L_DELIMITER);
+        sb.append(m_startingMoney);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_ResponsePort);
+        sb.append(Command.L_DELIMITER);
         return sb.toString();
-    }
-    
-    public String encodeResponse(Integer noPort)
-    {
-        return new CreateTableResponse(m_tableName, m_bigBlind, m_maxPlayers, m_playerName, m_WaitingTimeAfterPlayerAction, m_WaitingTimeAfterBoardDealed, m_WaitingTimeAfterPotWon, m_limit, noPort).encodeCommand();
     }
     
     public String getTableName()
@@ -112,6 +116,16 @@ public class CreateTableCommand implements ICommand
     public GameBetLimitType getLimit()
     {
         return m_limit;
+    }
+    
+    public int getResponsePort()
+    {
+        return m_ResponsePort;
+    }
+    
+    public int getStartingMoney()
+    {
+        return m_startingMoney;
     }
     
 }

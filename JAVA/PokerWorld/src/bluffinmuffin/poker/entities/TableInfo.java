@@ -1,6 +1,5 @@
 package bluffinmuffin.poker.entities;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,41 +20,41 @@ import bluffinmuffin.poker.entities.type.GameRoundType;
 public class TableInfo
 {
     // INFO
-    private final String m_name; // Nom de la table
-    private GameBetLimitType m_betLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
+    protected final String m_name; // Nom de la table
+    protected GameBetLimitType m_betLimit; // Type de betLimit (NO_LIMIT, POT_LIMIT, etc.)
     
     // CARDS
-    private final CardSet m_cards = new CardSet(5); // Cartes du board
+    protected final CardSet m_cards = new CardSet(5); // Cartes du board
     
     // SEATS
-    private final int m_nbMaxSeats; // Nombe de siege total autour de la table
-    private final Stack<Integer> m_RemainingSeats = new Stack<Integer>(); // LIFO contenant les sieges non utilises
+    protected final int m_nbMaxSeats; // Nombe de siege total autour de la table
+    protected final Stack<Integer> m_RemainingSeats = new Stack<Integer>(); // LIFO contenant les sieges non utilises
     
     // PLAYERS
-    private final PlayerInfo[] m_players; // Joueurs autour de la table
+    protected final PlayerInfo[] m_players; // Joueurs autour de la table
     
     // POTS
-    private final List<PotInfo> m_pots = new ArrayList<PotInfo>(); // La liste des POTS
-    private int m_totalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
-    private final SortedSet<Integer> m_allInCaps = new TreeSet<Integer>(); // Les differents CAPS ALL_IN de la ROUND
+    protected final List<PotInfo> m_pots = new ArrayList<PotInfo>(); // La liste des POTS
+    protected int m_totalPotAmnt; // Le montant total en jeu (Tous les pots + l'argent en jeu)
+    protected final SortedSet<Integer> m_allInCaps = new TreeSet<Integer>(); // Les differents CAPS ALL_IN de la ROUND
     
     // BLINDS
-    private final int m_smallBlindAmnt; // Montant a donner lorsqu'on est small blind
-    private final int m_bigBlindAmnt; // Montant a donner lorsqu'on est big blind
-    private final Map<PlayerInfo, Integer> m_blindNeeded = new HashMap<PlayerInfo, Integer>(); // Hashmap contenant les blinds necessaire pour chaque player
-    private int m_totalBlindNeeded; // Montant total necessaire pour les blinds
+    protected final int m_smallBlindAmnt; // Montant a donner lorsqu'on est small blind
+    protected final int m_bigBlindAmnt; // Montant a donner lorsqu'on est big blind
+    protected final Map<PlayerInfo, Integer> m_blindNeeded = new HashMap<PlayerInfo, Integer>(); // Hashmap contenant les blinds necessaire pour chaque player
+    protected int m_totalBlindNeeded; // Montant total necessaire pour les blinds
     
     // STATES
-    private int m_nbPlayed; // Nombre de joueur ayant joues de cette ROUND
-    private int m_nbAllIn; // Nombre de joueurs ALL-IN
-    private int m_higherBet; // Le bet actuel qu'il faut egaler
-    private GameRoundType m_round; // La round actuelle
-    private int m_noSeatDealer; // La position actuelle du Dealer
-    private int m_noSeatSmallBlind; // La position actuelle du SmallBlind
-    private int m_noSeatBigBlind; // La position actuelle du BigBlind
-    private int m_noSeatCurrPlayer; // La position du joueur actuel
-    private int m_currPotId; // L'id du pot qu'on travail actuellement avec
-    private int m_noSeatLastRaise; // L'id du dernier player qui a raiser ou du premier a jouer
+    protected int m_nbPlayed; // Nombre de joueur ayant joues de cette ROUND
+    protected int m_nbAllIn; // Nombre de joueurs ALL-IN
+    protected int m_higherBet; // Le bet actuel qu'il faut egaler
+    protected GameRoundType m_round; // La round actuelle
+    protected int m_noSeatDealer; // La position actuelle du Dealer
+    protected int m_noSeatSmallBlind; // La position actuelle du SmallBlind
+    protected int m_noSeatBigBlind; // La position actuelle du BigBlind
+    protected int m_noSeatCurrPlayer; // La position du joueur actuel
+    protected int m_currPotId; // L'id du pot qu'on travail actuellement avec
+    protected int m_noSeatLastRaise; // L'id du dernier player qui a raiser ou du premier a jouer
     
     // // // // // // // // // // // // // // // // // //
     // // // // // // // CONSTRUCTOR // // // // // // //

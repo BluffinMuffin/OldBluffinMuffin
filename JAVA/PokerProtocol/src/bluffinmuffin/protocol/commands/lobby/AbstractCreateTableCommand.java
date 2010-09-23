@@ -1,0 +1,107 @@
+package bluffinmuffin.protocol.commands.lobby;
+
+import java.util.StringTokenizer;
+
+import bluffinmuffin.poker.entities.type.GameBetLimitType;
+import bluffinmuffin.protocol.commands.Command;
+import bluffinmuffin.protocol.commands.ICommand;
+
+public abstract class AbstractCreateTableCommand implements ICommand
+{
+    protected final String m_tableName;
+    protected final int m_bigBlind;
+    protected final int m_maxPlayers;
+    protected final String m_playerName;
+    protected final int m_WaitingTimeAfterPlayerAction;
+    protected final int m_WaitingTimeAfterBoardDealed;
+    protected final int m_WaitingTimeAfterPotWon;
+    protected final GameBetLimitType m_limit;
+    
+    public AbstractCreateTableCommand(StringTokenizer argsToken)
+    {
+        m_tableName = argsToken.nextToken();
+        m_bigBlind = Integer.parseInt(argsToken.nextToken());
+        m_maxPlayers = Integer.parseInt(argsToken.nextToken());
+        m_playerName = argsToken.nextToken();
+        m_WaitingTimeAfterPlayerAction = Integer.parseInt(argsToken.nextToken());
+        m_WaitingTimeAfterBoardDealed = Integer.parseInt(argsToken.nextToken());
+        m_WaitingTimeAfterPotWon = Integer.parseInt(argsToken.nextToken());
+        m_limit = GameBetLimitType.values()[Integer.parseInt(argsToken.nextToken())];
+    }
+    
+    public AbstractCreateTableCommand(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit)
+    {
+        m_tableName = p_tableName;
+        m_bigBlind = p_bigBlind;
+        m_maxPlayers = p_maxPlayers;
+        m_playerName = p_playerName;
+        m_WaitingTimeAfterPlayerAction = wtaPlayerAction;
+        m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
+        m_WaitingTimeAfterPotWon = wtaPotWon;
+        m_limit = limit;
+    }
+    
+    @Override
+    public String encodeCommand()
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(m_tableName);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_bigBlind);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_maxPlayers);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_playerName);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_WaitingTimeAfterPlayerAction);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_WaitingTimeAfterBoardDealed);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_WaitingTimeAfterPotWon);
+        sb.append(Command.L_DELIMITER);
+        sb.append(m_limit.ordinal());
+        sb.append(Command.L_DELIMITER);
+        return sb.toString();
+    }
+    
+    public String getTableName()
+    {
+        return m_tableName;
+    }
+    
+    public int getBigBlind()
+    {
+        return m_bigBlind;
+    }
+    
+    public int getMaxPlayers()
+    {
+        return m_maxPlayers;
+    }
+    
+    public String getPlayerName()
+    {
+        return m_playerName;
+    }
+    
+    public int getWaitingTimeAfterPlayerAction()
+    {
+        return m_WaitingTimeAfterPlayerAction;
+    }
+    
+    public int getWaitingTimeAfterBoardDealed()
+    {
+        return m_WaitingTimeAfterBoardDealed;
+    }
+    
+    public int getWaitingTimeAfterPotWon()
+    {
+        return m_WaitingTimeAfterPotWon;
+    }
+    
+    public GameBetLimitType getLimit()
+    {
+        return m_limit;
+    }
+    
+}

@@ -4,15 +4,16 @@ import java.util.StringTokenizer;
 
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
 import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
 import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
 import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
 import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
 import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
 import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.observer.CommandObserver;
 
@@ -31,10 +32,6 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         else if (commandName.equals(DisconnectCommand.COMMAND_NAME))
         {
             disconnect(new DisconnectCommand(token));
-        }
-        else if (commandName.equals(CreateTableCommand.COMMAND_NAME))
-        {
-            createTable(new CreateTableCommand(token));
         }
         else if (commandName.equals(ListTableCommand.COMMAND_NAME))
         {
@@ -67,6 +64,14 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         else if (commandName.equals(GetUserCommand.COMMAND_NAME))
         {
             getUser(new GetUserCommand(token));
+        }
+        else if (commandName.equals(CreateTrainingTableCommand.COMMAND_NAME))
+        {
+            createTrainingTable(new CreateTrainingTableCommand(token));
+        }
+        else if (commandName.equals(CreateCareerTableCommand.COMMAND_NAME))
+        {
+            createCareerTable(new CreateCareerTableCommand(token));
         }
         else
         {
@@ -139,14 +144,6 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         }
     }
     
-    private void createTable(CreateTableCommand lobbyCreateTableCommand)
-    {
-        for (final ILobbyServerListener listener : getSubscribers())
-        {
-            listener.createTableCommandReceived(lobbyCreateTableCommand);
-        }
-    }
-    
     private void disconnect(DisconnectCommand lobbyDisconnectCommand)
     {
         for (final ILobbyServerListener listener : getSubscribers())
@@ -160,6 +157,22 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
         for (final ILobbyServerListener listener : getSubscribers())
         {
             listener.identifyCommandReceived(lobbyConnectCommand);
+        }
+    }
+    
+    private void createTrainingTable(CreateTrainingTableCommand lobbyCreateTableCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.createTrainingTableCommandReceived(lobbyCreateTableCommand);
+        }
+    }
+    
+    private void createCareerTable(CreateCareerTableCommand lobbyCreateTableCommand)
+    {
+        for (final ILobbyServerListener listener : getSubscribers())
+        {
+            listener.createCareerTableCommandReceived(lobbyCreateTableCommand);
         }
     }
 }
