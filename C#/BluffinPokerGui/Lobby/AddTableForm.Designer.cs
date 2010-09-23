@@ -34,9 +34,9 @@
             this.btnAddReal = new System.Windows.Forms.Button();
             this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabTraining = new System.Windows.Forms.TabPage();
-            this.btnAddTraining = new System.Windows.Forms.Button();
             this.nudStartingAmnt = new System.Windows.Forms.NumericUpDown();
             this.lblBigBlindAmnt = new System.Windows.Forms.Label();
+            this.btnAddTraining = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabReal.SuspendLayout();
             this.tabTraining.SuspendLayout();
@@ -105,22 +105,10 @@
             this.tabTraining.Text = "Training";
             this.tabTraining.UseVisualStyleBackColor = true;
             // 
-            // btnAddTraining
-            // 
-            this.btnAddTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddTraining.Location = new System.Drawing.Point(6, 191);
-            this.btnAddTraining.Name = "btnAddTraining";
-            this.btnAddTraining.Size = new System.Drawing.Size(296, 41);
-            this.btnAddTraining.TabIndex = 13;
-            this.btnAddTraining.Text = "Create Table";
-            this.btnAddTraining.UseVisualStyleBackColor = true;
-            this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
-            // 
             // nudStartingAmnt
             // 
             this.nudStartingAmnt.Increment = new decimal(new int[] {
-            5,
+            100,
             0,
             0,
             0});
@@ -152,6 +140,18 @@
             this.lblBigBlindAmnt.Size = new System.Drawing.Size(85, 13);
             this.lblBigBlindAmnt.TabIndex = 17;
             this.lblBigBlindAmnt.Text = "Starting Amount:";
+            // 
+            // btnAddTraining
+            // 
+            this.btnAddTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddTraining.Location = new System.Drawing.Point(6, 191);
+            this.btnAddTraining.Name = "btnAddTraining";
+            this.btnAddTraining.Size = new System.Drawing.Size(296, 41);
+            this.btnAddTraining.TabIndex = 13;
+            this.btnAddTraining.Text = "Create Table";
+            this.btnAddTraining.UseVisualStyleBackColor = true;
+            this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
             // 
             // AddTableForm
             // 
