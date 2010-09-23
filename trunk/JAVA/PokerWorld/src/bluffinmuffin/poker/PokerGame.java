@@ -2,16 +2,15 @@ package bluffinmuffin.poker;
 
 import java.util.List;
 
-import bluffinmuffin.poker.entities.PotInfo;
 import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.PotInfo;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.poker.entities.dealer.AbstractDealer;
 import bluffinmuffin.poker.entities.dealer.RandomDealer;
-import bluffinmuffin.poker.entities.type.PlayerActionType;
 import bluffinmuffin.poker.entities.type.GameRoundType;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
 import bluffinmuffin.poker.observer.IPokerGameListener;
 import bluffinmuffin.poker.observer.PokerGameObserver;
-
 
 public class PokerGame implements IPokerGame
 {
@@ -28,19 +27,19 @@ public class PokerGame implements IPokerGame
     }
     
     // INFO
-    private final PokerGameObserver m_gameObserver; // L'observer qu'on notify
-    private final TableInfo m_table; // La table
+    protected final PokerGameObserver m_gameObserver; // L'observer qu'on notify
+    protected final TableInfo m_table; // La table
     
     // WAITING TIME
-    private final int m_WaitingTimeAfterPlayerAction; // Attente apres chaque player action (ms)
-    private final int m_WaitingTimeAfterBoardDealed; // Attente apres chaque board dealed (ms)
-    private final int m_WaitingTimeAfterPotWon; // Attente apres chaque pot won ! (ms)
+    protected final int m_WaitingTimeAfterPlayerAction; // Attente apres chaque player action (ms)
+    protected final int m_WaitingTimeAfterBoardDealed; // Attente apres chaque board dealed (ms)
+    protected final int m_WaitingTimeAfterPotWon; // Attente apres chaque pot won ! (ms)
     
     // STATES
-    private TypeState m_state; // L'etat global de la game
-    private TypeRoundState m_roundState; // L'etat de la game pour chaque round
+    protected TypeState m_state; // L'etat global de la game
+    protected TypeRoundState m_roundState; // L'etat de la game pour chaque round
     
-    private final AbstractDealer m_dealer; // Dealer
+    protected final AbstractDealer m_dealer; // Dealer
     
     // // // // // // // // // // // // // // // // // //
     // // // // // // // CONSTRUCTOR // // // // // // //
@@ -79,7 +78,7 @@ public class PokerGame implements IPokerGame
      */
     public PokerGame(AbstractDealer dealer)
     {
-        this(new RandomDealer(), new TableInfo(), 0, 0, 0);
+        this(dealer, new TableInfo(), 0, 0, 0);
     }
     
     /**

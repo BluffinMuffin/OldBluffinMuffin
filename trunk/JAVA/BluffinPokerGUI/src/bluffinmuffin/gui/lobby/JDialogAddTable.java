@@ -34,6 +34,7 @@ public class JDialogAddTable extends JDialog
     private int m_WaitingTimeAfterPlayerAction;
     private int m_WaitingTimeAfterBoardDealed;
     private int m_WaitingTimeAfterPotWon;
+    private int m_startingMoney;
     private GameBetLimitType m_Limit;
     
     private static final long serialVersionUID = 1L;
@@ -56,6 +57,9 @@ public class JDialogAddTable extends JDialog
     
     private JLabel jWTAPotWonLabel = null;
     private JSpinner jWTAPotWonSpinner = null;
+    
+    private JLabel jStartingMoneyLabel = null;
+    private JSpinner jStartingMoneySpinner = null;
     
     /**
      * @param owner
@@ -80,7 +84,7 @@ public class JDialogAddTable extends JDialog
      */
     private void initialize()
     {
-        this.setSize(254, 436);
+        this.setSize(254, 481);
         this.setModal(true);
         this.setTitle("Add Table");
         this.setContentPane(getJContentPane());
@@ -112,6 +116,9 @@ public class JDialogAddTable extends JDialog
     {
         if (jContentPane == null)
         {
+            jStartingMoneyLabel = new JLabel();
+            jStartingMoneyLabel.setBounds(new Rectangle(10, 350, 210, 16));
+            jStartingMoneyLabel.setText("Starting Money:");
             jWTAPotWonLabel = new JLabel();
             jWTAPotWonLabel.setBounds(new Rectangle(10, 305, 210, 16));
             jWTAPotWonLabel.setText("Waiting time after pot won: (ms)");
@@ -135,7 +142,7 @@ public class JDialogAddTable extends JDialog
             jTableNameLabel.setText("Table Name:");
             jContentPane = new JPanel();
             jContentPane.setLayout(null);
-            jContentPane.setPreferredSize(new Dimension(244, 396));
+            jContentPane.setPreferredSize(new Dimension(244, 441));
             jContentPane.add(jTableNameLabel, null);
             jContentPane.add(getJTableNameTextField(), null);
             jContentPane.add(jGameLimitLabel, null);
@@ -151,6 +158,8 @@ public class JDialogAddTable extends JDialog
             jContentPane.add(getJWTAPlayerActionSpinner(), null);
             jContentPane.add(getJWTABoardDealedSpinner(), null);
             jContentPane.add(getJWTAPotWonSpinner(), null);
+            jContentPane.add(jStartingMoneyLabel, null);
+            jContentPane.add(getJStartingMoneySpinner(), null);
         }
         return jContentPane;
     }
@@ -241,6 +250,18 @@ public class JDialogAddTable extends JDialog
         return jWTAPotWonSpinner;
     }
     
+    private JSpinner getJStartingMoneySpinner()
+    {
+        if (jStartingMoneySpinner == null)
+        {
+            jStartingMoneySpinner = new JSpinner();
+            jStartingMoneySpinner.setModel(new SpinnerNumberModel(1500, 500, 1000000, 100));
+            jStartingMoneySpinner.setBounds(new Rectangle(10, 370, 75, 20));
+            jStartingMoneySpinner.setEditor(new JSpinner.NumberEditor(jStartingMoneySpinner, "#"));
+        }
+        return jStartingMoneySpinner;
+    }
+    
     /**
      * This method initializes jNbPlayersSlider
      * 
@@ -273,7 +294,7 @@ public class JDialogAddTable extends JDialog
         if (jAddButton == null)
         {
             jAddButton = new JButton();
-            jAddButton.setBounds(new Rectangle(79, 359, 56, 26));
+            jAddButton.setBounds(new Rectangle(79, 404, 56, 26));
             jAddButton.setText("Add");
             jAddButton.addActionListener(new java.awt.event.ActionListener()
             {
@@ -285,6 +306,7 @@ public class JDialogAddTable extends JDialog
                     m_WaitingTimeAfterPlayerAction = (Integer) getJWTAPlayerActionSpinner().getValue();
                     m_WaitingTimeAfterBoardDealed = (Integer) getJWTABoardDealedSpinner().getValue();
                     m_WaitingTimeAfterPotWon = (Integer) getJWTAPotWonSpinner().getValue();
+                    m_startingMoney = (Integer) getJStartingMoneySpinner().getValue();
                     m_Limit = (GameBetLimitType) getJGameLimitComboBox().getSelectedItem();
                     m_OK = true;
                     setVisible(false);
@@ -327,6 +349,11 @@ public class JDialogAddTable extends JDialog
     public int getWaitingTimeAfterPotWon()
     {
         return m_WaitingTimeAfterPotWon;
+    }
+    
+    public int getStartingMoney()
+    {
+        return m_startingMoney;
     }
     
     public GameBetLimitType getLimit()

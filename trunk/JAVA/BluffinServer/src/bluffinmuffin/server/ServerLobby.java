@@ -12,9 +12,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import bluffinmuffin.poker.PokerGame;
+import bluffinmuffin.poker.TrainingPokerGame;
 import bluffinmuffin.poker.entities.TableInfo;
+import bluffinmuffin.poker.entities.TrainingTableInfo;
 import bluffinmuffin.protocol.TupleTableInfo;
-import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
 
 /**
  * @author Hocus
@@ -126,7 +129,21 @@ public class ServerLobby extends Thread
         }
     }
     
-    public int createTable(CreateTableCommand command)
+    public int createTrainingTable(CreateTrainingTableCommand command)
+    {
+        listTables();
+        m_LastUsedID++;
+        while (m_games.containsKey(m_LastUsedID))
+        {
+            m_LastUsedID++;
+        }
+        final TrainingPokerGame game = new TrainingPokerGame(new TrainingTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit(), command.getStartingMoney()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+        game.start();
+        m_games.put(m_LastUsedID, game);
+        return m_LastUsedID;
+    }
+    
+    public int createCareerTable(CreateCareerTableCommand command)
     {
         listTables();
         m_LastUsedID++;

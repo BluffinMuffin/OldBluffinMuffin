@@ -1,6 +1,5 @@
 package bluffinmuffin.client;
 
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -27,7 +26,6 @@ import bluffinmuffin.gui.lobby.JDialogNameUsed;
 import bluffinmuffin.protocol.GameTCPClient;
 import bluffinmuffin.protocol.LobbyTCPClient;
 import bluffinmuffin.protocol.TupleTableInfo;
-
 
 public class ClientLobby extends JFrame
 {
@@ -154,7 +152,7 @@ public class ClientLobby extends JFrame
         form.setVisible(true);
         if (form.isOK())
         {
-            final int noPort = m_server.createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer(), form.getWaitingTimeAfterPlayerAction(), form.getWaitingTimeAfterBoardDealed(), form.getWaitingTimeAfterPotWon(), form.getLimit());
+            final int noPort = m_server.createTable(form.getTableName(), form.getBigBlind(), form.getNbPlayer(), form.getWaitingTimeAfterPlayerAction(), form.getWaitingTimeAfterBoardDealed(), form.getWaitingTimeAfterPotWon(), form.getLimit(), form.getStartingMoney());
             
             if (noPort != -1)
             {

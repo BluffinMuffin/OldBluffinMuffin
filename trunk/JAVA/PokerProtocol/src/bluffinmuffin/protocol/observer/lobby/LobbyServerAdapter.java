@@ -1,15 +1,16 @@
 package bluffinmuffin.protocol.observer.lobby;
 
 import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.lobby.CreateTableCommand;
 import bluffinmuffin.protocol.commands.lobby.GameCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
 import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
 import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
 import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
 import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
 import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
 import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 
 public abstract class LobbyServerAdapter implements ILobbyServerListener
@@ -22,11 +23,6 @@ public abstract class LobbyServerAdapter implements ILobbyServerListener
     
     @Override
     public void identifyCommandReceived(IdentifyCommand command)
-    {
-    }
-    
-    @Override
-    public void createTableCommandReceived(CreateTableCommand command)
     {
     }
     
@@ -72,6 +68,16 @@ public abstract class LobbyServerAdapter implements ILobbyServerListener
     
     @Override
     public void getUserCommandReceived(GetUserCommand command)
+    {
+    }
+    
+    @Override
+    public void createTrainingTableCommandReceived(CreateTrainingTableCommand command)
+    {
+    }
+    
+    @Override
+    public void createCareerTableCommandReceived(CreateCareerTableCommand command)
     {
     }
 }

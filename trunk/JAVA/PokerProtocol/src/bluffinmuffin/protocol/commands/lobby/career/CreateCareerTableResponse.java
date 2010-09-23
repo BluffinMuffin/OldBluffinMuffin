@@ -1,4 +1,4 @@
-package bluffinmuffin.protocol.commands.lobby;
+package bluffinmuffin.protocol.commands.lobby.career;
 
 import java.util.StringTokenizer;
 
@@ -6,10 +6,9 @@ import bluffinmuffin.poker.entities.type.GameBetLimitType;
 import bluffinmuffin.protocol.commands.Command;
 import bluffinmuffin.protocol.commands.ICommand;
 
-
-public class CreateTableResponse implements ICommand
+public class CreateCareerTableResponse implements ICommand
 {
-    public static String COMMAND_NAME = "lobbyCREATE_TABLE_RESPONSE";
+    public static String COMMAND_NAME = "lobbyCAREER_CREATE_TABLE_RESPONSE";
     
     private final String m_tableName;
     private final int m_bigBlind;
@@ -21,7 +20,7 @@ public class CreateTableResponse implements ICommand
     private final GameBetLimitType m_limit;
     private final int m_ResponsePort;
     
-    public CreateTableResponse(StringTokenizer argsToken)
+    public CreateCareerTableResponse(StringTokenizer argsToken)
     {
         m_tableName = argsToken.nextToken();
         m_bigBlind = Integer.parseInt(argsToken.nextToken());
@@ -34,7 +33,7 @@ public class CreateTableResponse implements ICommand
         m_ResponsePort = Integer.parseInt(argsToken.nextToken());
     }
     
-    public CreateTableResponse(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit, int responsePort)
+    public CreateCareerTableResponse(String p_tableName, int p_bigBlind, int p_maxPlayers, String p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, GameBetLimitType limit, int responsePort)
     {
         m_tableName = p_tableName;
         m_bigBlind = p_bigBlind;
@@ -51,7 +50,7 @@ public class CreateTableResponse implements ICommand
     public String encodeCommand()
     {
         final StringBuilder sb = new StringBuilder();
-        sb.append(CreateTableResponse.COMMAND_NAME);
+        sb.append(CreateCareerTableResponse.COMMAND_NAME);
         sb.append(Command.L_DELIMITER);
         sb.append(m_tableName);
         sb.append(Command.L_DELIMITER);
