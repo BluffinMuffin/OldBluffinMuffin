@@ -2,19 +2,19 @@ package bluffinmuffin.protocol.observer.lobby;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.protocol.commands.Command;
-import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
-import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
-import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
-import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
-import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
+import bluffinmuffin.protocol.commands2.DisconnectCommand;
+import bluffinmuffin.protocol.commands2.lobby.AbstractLobbyCommand;
+import bluffinmuffin.protocol.commands2.lobby.GameCommand;
+import bluffinmuffin.protocol.commands2.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.AuthenticateUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CheckDisplayExistCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateCareerTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.observer.CommandObserver;
 
 public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
@@ -22,7 +22,7 @@ public class LobbyServerObserver extends CommandObserver<ILobbyServerListener>
     @Override
     protected void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Command.L_DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, "" + AbstractLobbyCommand.Delimitter);
         final String commandName = token.nextToken();
         
         if (commandName.equals(IdentifyCommand.COMMAND_NAME))

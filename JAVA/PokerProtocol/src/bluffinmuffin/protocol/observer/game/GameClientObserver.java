@@ -2,22 +2,21 @@ package bluffinmuffin.protocol.observer.game;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.protocol.commands.Command;
-import bluffinmuffin.protocol.commands.game.BetTurnEndedCommand;
-import bluffinmuffin.protocol.commands.game.BetTurnStartedCommand;
-import bluffinmuffin.protocol.commands.game.GameEndedCommand;
-import bluffinmuffin.protocol.commands.game.GameStartedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerHoleCardsChangedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerJoinedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerLeftCommand;
-import bluffinmuffin.protocol.commands.game.PlayerMoneyChangedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerTurnBeganCommand;
-import bluffinmuffin.protocol.commands.game.PlayerTurnEndedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerWonPotCommand;
-import bluffinmuffin.protocol.commands.game.TableClosedCommand;
-import bluffinmuffin.protocol.commands.game.TableInfoCommand;
+import bluffinmuffin.protocol.commands2.AbstractCommand;
+import bluffinmuffin.protocol.commands2.game.BetTurnEndedCommand;
+import bluffinmuffin.protocol.commands2.game.BetTurnStartedCommand;
+import bluffinmuffin.protocol.commands2.game.GameEndedCommand;
+import bluffinmuffin.protocol.commands2.game.GameStartedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerHoleCardsChangedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerJoinedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerLeftCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerMoneyChangedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerTurnBeganCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerTurnEndedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerWonPotCommand;
+import bluffinmuffin.protocol.commands2.game.TableClosedCommand;
+import bluffinmuffin.protocol.commands2.game.TableInfoCommand;
 import bluffinmuffin.protocol.observer.CommandObserver;
-
 
 public class GameClientObserver extends CommandObserver<IGameClientListener> implements IGameClientListener
 {
@@ -142,7 +141,7 @@ public class GameClientObserver extends CommandObserver<IGameClientListener> imp
     @Override
     public void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Command.G_DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, "" + AbstractCommand.Delimitter);
         final String commandName = token.nextToken();
         
         if (commandName.equals(BetTurnEndedCommand.COMMAND_NAME))

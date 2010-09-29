@@ -16,8 +16,8 @@ import bluffinmuffin.poker.TrainingPokerGame;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.poker.entities.TrainingTableInfo;
 import bluffinmuffin.protocol.TupleTableInfo;
-import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
-import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateCareerTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableCommand;
 
 /**
  * @author Hocus
