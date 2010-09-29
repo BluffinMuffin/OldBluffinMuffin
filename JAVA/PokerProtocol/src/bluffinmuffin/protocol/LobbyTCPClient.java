@@ -14,18 +14,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import bluffinmuffin.poker.IPokerViewer;
 import bluffinmuffin.poker.entities.type.GameBetLimitType;
-import bluffinmuffin.protocol.commands2.AbstractCommand;
-import bluffinmuffin.protocol.commands2.DisconnectCommand;
-import bluffinmuffin.protocol.commands2.lobby.AbstractLobbyCommand;
-import bluffinmuffin.protocol.commands2.lobby.GameCommand;
-import bluffinmuffin.protocol.commands2.lobby.JoinTableCommand;
-import bluffinmuffin.protocol.commands2.lobby.JoinTableResponse;
-import bluffinmuffin.protocol.commands2.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands2.lobby.ListTableResponse;
-import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableCommand;
-import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableResponse;
-import bluffinmuffin.protocol.commands2.lobby.training.IdentifyCommand;
-import bluffinmuffin.protocol.commands2.lobby.training.IdentifyResponse;
+import bluffinmuffin.protocol.commands.AbstractCommand;
+import bluffinmuffin.protocol.commands.DisconnectCommand;
+import bluffinmuffin.protocol.commands.lobby.AbstractLobbyCommand;
+import bluffinmuffin.protocol.commands.lobby.GameCommand;
+import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands.lobby.JoinTableResponse;
+import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands.lobby.ListTableResponse;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableResponse;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
+import bluffinmuffin.protocol.commands.lobby.training.IdentifyResponse;
 
 public class LobbyTCPClient extends Thread
 {
