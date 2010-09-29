@@ -7,7 +7,7 @@ using EricUtility.Networking.Commands;
 namespace PokerProtocol.Commands.Lobby
 {
     public abstract class AbstractLobbyResponse<T>: AbstractCommandResponse<T>
-        where T : AbstractCommand
+        where T : AbstractLobbyCommand
     {
         protected override void Append<T2>(StringBuilder sb, T2 thing)
         {
