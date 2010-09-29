@@ -2,9 +2,9 @@ package bluffinmuffin.protocol.observer.game;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.protocol.commands2.AbstractCommand;
-import bluffinmuffin.protocol.commands2.DisconnectCommand;
-import bluffinmuffin.protocol.commands2.game.PlayerPlayMoneyCommand;
+import bluffinmuffin.protocol.commands.AbstractCommand;
+import bluffinmuffin.protocol.commands.DisconnectCommand;
+import bluffinmuffin.protocol.commands.game.PlayerPlayMoneyCommand;
 import bluffinmuffin.protocol.observer.CommandObserver;
 
 public class GameServerObserver extends CommandObserver<IGameServerListener> implements IGameServerListener
