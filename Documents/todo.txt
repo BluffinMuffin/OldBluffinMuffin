@@ -5,4 +5,3 @@
 -> Autoriser le MUCK a la fin du tour
 -> Faire un serveur de jeu protocol uni-directionnel: ne fait que répondre au client, soo doit attendre que le client demande une action avant de lui donner
 -> Faire un serveur de lobby bi-directionnel: n'attend pas que le client demande un refresh pour updater l'info
--> Java: Refaire PokerProtocol avec Templates comme en C# car ca commence a etre bordelique

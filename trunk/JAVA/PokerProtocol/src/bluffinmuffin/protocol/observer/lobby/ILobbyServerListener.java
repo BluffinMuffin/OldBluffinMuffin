@@ -1,17 +1,17 @@
 package bluffinmuffin.protocol.observer.lobby;
 
-import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
-import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
-import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
-import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
-import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
+import bluffinmuffin.protocol.commands2.DisconnectCommand;
+import bluffinmuffin.protocol.commands2.lobby.GameCommand;
+import bluffinmuffin.protocol.commands2.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.AuthenticateUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CheckDisplayExistCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateCareerTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.observer.ICommandListener;
 
 public interface ILobbyServerListener extends ICommandListener

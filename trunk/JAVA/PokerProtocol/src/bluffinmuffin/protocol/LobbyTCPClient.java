@@ -14,18 +14,18 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import bluffinmuffin.poker.IPokerViewer;
 import bluffinmuffin.poker.entities.type.GameBetLimitType;
-import bluffinmuffin.protocol.commands.Command;
-import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
-import bluffinmuffin.protocol.commands.lobby.JoinTableResponse;
-import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands.lobby.ListTableResponse;
-import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
-import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableResponse;
-import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
-import bluffinmuffin.protocol.commands.lobby.training.IdentifyResponse;
+import bluffinmuffin.protocol.commands2.AbstractCommand;
+import bluffinmuffin.protocol.commands2.DisconnectCommand;
+import bluffinmuffin.protocol.commands2.lobby.AbstractLobbyCommand;
+import bluffinmuffin.protocol.commands2.lobby.GameCommand;
+import bluffinmuffin.protocol.commands2.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.JoinTableResponse;
+import bluffinmuffin.protocol.commands2.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.ListTableResponse;
+import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableResponse;
+import bluffinmuffin.protocol.commands2.lobby.training.IdentifyCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.IdentifyResponse;
 
 public class LobbyTCPClient extends Thread
 {
@@ -75,7 +75,7 @@ public class LobbyTCPClient extends Thread
         {
             e1.printStackTrace();
         }
-        StringTokenizer token = new StringTokenizer(s, Command.L_DELIMITER);
+        StringTokenizer token = new StringTokenizer(s, AbstractLobbyCommand.Delimitter + "");
         String commandName = token.nextToken();
         while (s == null || !commandName.equals(expected))
         {
@@ -87,7 +87,7 @@ public class LobbyTCPClient extends Thread
             {
                 e.printStackTrace();
             }
-            token = new StringTokenizer(s, Command.L_DELIMITER);
+            token = new StringTokenizer(s, AbstractLobbyCommand.Delimitter + "");
             commandName = token.nextToken();
         }
         return token;
@@ -141,9 +141,9 @@ public class LobbyTCPClient extends Thread
         m_toServer.println(p_msg);
     }
     
-    public void send(ICommand p_msg)
+    public void send(AbstractCommand p_msg)
     {
-        sendMessage(p_msg.encodeCommand());
+        sendMessage(p_msg.encode());
     }
     
     public String getPlayerName()
@@ -172,7 +172,7 @@ public class LobbyTCPClient extends Thread
         final JoinTableCommand command = new JoinTableCommand(m_playerName, p_noPort);
         
         // Send query.
-        m_toServer.println(command.encodeCommand());
+        m_toServer.println(command.encode());
         
         // Wait for response.
         final StringTokenizer token2 = receiveCommand(JoinTableResponse.COMMAND_NAME);
@@ -242,7 +242,7 @@ public class LobbyTCPClient extends Thread
         System.out.println(m_playerName + " IS WAITING");
         final String line = m_fromServer.readLine();
         System.out.println(m_playerName + " RECV [" + line + "]");
-        final StringTokenizer token = new StringTokenizer(line, Command.L_DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, AbstractLobbyCommand.Delimitter + "");
         final String commandName = token.nextToken();
         if (commandName.equals(GameCommand.COMMAND_NAME))
         {

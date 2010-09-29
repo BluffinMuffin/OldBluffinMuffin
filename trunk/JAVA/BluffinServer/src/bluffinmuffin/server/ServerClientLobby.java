@@ -16,19 +16,19 @@ import bluffinmuffin.poker.PokerGame;
 import bluffinmuffin.poker.TrainingPokerGame;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.protocol.GameTCPServer;
-import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.lobby.GameCommand;
-import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
-import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands.lobby.career.AuthenticateUserCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CheckDisplayExistCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CheckUserExistCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
-import bluffinmuffin.protocol.commands.lobby.career.CreateUserCommand;
-import bluffinmuffin.protocol.commands.lobby.career.GetUserCommand;
-import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
-import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
+import bluffinmuffin.protocol.commands2.AbstractCommand;
+import bluffinmuffin.protocol.commands2.DisconnectCommand;
+import bluffinmuffin.protocol.commands2.lobby.GameCommand;
+import bluffinmuffin.protocol.commands2.lobby.JoinTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.ListTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.AuthenticateUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CheckDisplayExistCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CheckUserExistCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateCareerTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.CreateUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.career.GetUserCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.CreateTrainingTableCommand;
+import bluffinmuffin.protocol.commands2.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.observer.lobby.LobbyServerAdapter;
 import bluffinmuffin.protocol.observer.lobby.LobbyServerObserver;
 
@@ -86,9 +86,9 @@ public class ServerClientLobby extends Thread
         return line;
     }
     
-    public void send(ICommand p_msg)
+    public void send(AbstractCommand p_msg)
     {
-        sendMessage(p_msg.encodeCommand());
+        sendMessage(p_msg.encode());
     }
     
     @Override

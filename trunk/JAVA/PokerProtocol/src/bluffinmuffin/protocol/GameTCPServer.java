@@ -1,6 +1,5 @@
 package bluffinmuffin.protocol;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,31 +9,30 @@ import java.util.concurrent.LinkedBlockingQueue;
 import bluffinmuffin.game.entities.Card;
 import bluffinmuffin.poker.PokerGame;
 import bluffinmuffin.poker.PokerGame.TypeState;
-import bluffinmuffin.poker.entities.PotInfo;
 import bluffinmuffin.poker.entities.PlayerInfo;
+import bluffinmuffin.poker.entities.PotInfo;
 import bluffinmuffin.poker.entities.TableInfo;
-import bluffinmuffin.poker.entities.type.PlayerActionType;
 import bluffinmuffin.poker.entities.type.GameRoundType;
+import bluffinmuffin.poker.entities.type.PlayerActionType;
 import bluffinmuffin.poker.observer.PokerGameAdapter;
-import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.ICommand;
-import bluffinmuffin.protocol.commands.game.BetTurnEndedCommand;
-import bluffinmuffin.protocol.commands.game.BetTurnStartedCommand;
-import bluffinmuffin.protocol.commands.game.GameEndedCommand;
-import bluffinmuffin.protocol.commands.game.GameStartedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerHoleCardsChangedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerJoinedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerLeftCommand;
-import bluffinmuffin.protocol.commands.game.PlayerMoneyChangedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerPlayMoneyCommand;
-import bluffinmuffin.protocol.commands.game.PlayerTurnBeganCommand;
-import bluffinmuffin.protocol.commands.game.PlayerTurnEndedCommand;
-import bluffinmuffin.protocol.commands.game.PlayerWonPotCommand;
-import bluffinmuffin.protocol.commands.game.TableClosedCommand;
-import bluffinmuffin.protocol.commands.game.TableInfoCommand;
+import bluffinmuffin.protocol.commands2.AbstractCommand;
+import bluffinmuffin.protocol.commands2.DisconnectCommand;
+import bluffinmuffin.protocol.commands2.game.BetTurnEndedCommand;
+import bluffinmuffin.protocol.commands2.game.BetTurnStartedCommand;
+import bluffinmuffin.protocol.commands2.game.GameEndedCommand;
+import bluffinmuffin.protocol.commands2.game.GameStartedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerHoleCardsChangedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerJoinedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerLeftCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerMoneyChangedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerPlayMoneyCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerTurnBeganCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerTurnEndedCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerWonPotCommand;
+import bluffinmuffin.protocol.commands2.game.TableClosedCommand;
+import bluffinmuffin.protocol.commands2.game.TableInfoCommand;
 import bluffinmuffin.protocol.observer.game.GameServerAdapter;
 import bluffinmuffin.protocol.observer.game.GameServerObserver;
-
 
 public class GameTCPServer implements Runnable
 {
@@ -95,12 +93,12 @@ public class GameTCPServer implements Runnable
      * @param p_msg
      *            The message to send
      */
-    protected void send(ICommand command)
+    protected void send(AbstractCommand command)
     {
         // System.out.println("Server SEND TO " + this.m_name + " [" + p_msg + "]");
         try
         {
-            m_outcoming.put(command.encodeCommand());
+            m_outcoming.put(command.encode());
         }
         catch (final InterruptedException e)
         {

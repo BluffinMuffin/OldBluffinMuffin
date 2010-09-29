@@ -2,11 +2,10 @@ package bluffinmuffin.protocol.observer.game;
 
 import java.util.StringTokenizer;
 
-import bluffinmuffin.protocol.commands.Command;
-import bluffinmuffin.protocol.commands.DisconnectCommand;
-import bluffinmuffin.protocol.commands.game.PlayerPlayMoneyCommand;
+import bluffinmuffin.protocol.commands2.AbstractCommand;
+import bluffinmuffin.protocol.commands2.DisconnectCommand;
+import bluffinmuffin.protocol.commands2.game.PlayerPlayMoneyCommand;
 import bluffinmuffin.protocol.observer.CommandObserver;
-
 
 public class GameServerObserver extends CommandObserver<IGameServerListener> implements IGameServerListener
 {
@@ -30,7 +29,7 @@ public class GameServerObserver extends CommandObserver<IGameServerListener> imp
     @Override
     public void commandReceived(String line)
     {
-        final StringTokenizer token = new StringTokenizer(line, Command.G_DELIMITER);
+        final StringTokenizer token = new StringTokenizer(line, "" + AbstractCommand.Delimitter);
         final String commandName = token.nextToken();
         
         if (commandName.equals(PlayerPlayMoneyCommand.COMMAND_NAME))
