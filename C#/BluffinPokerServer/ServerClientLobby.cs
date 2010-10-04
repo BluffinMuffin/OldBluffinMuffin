@@ -107,7 +107,9 @@ namespace BluffinPokerServer
                 client = new GameServer(e.Command.TableID, game, m_PlayerName, tgame.TrainingTable.StartingMoney);
             }
             else
-                client = new GameServer(e.Command.TableID, game, m_PlayerName, 1500);
+            {
+                client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
+            }
             client.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(client_SendedSomething);
             TableInfo table = game.Table;
              if (!game.IsRunning)

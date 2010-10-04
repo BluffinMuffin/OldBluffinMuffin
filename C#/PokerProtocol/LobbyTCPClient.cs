@@ -135,33 +135,37 @@ namespace PokerProtocol
             return null;
         }
 
+        protected virtual int GetJoinedSeat(int p_noPort, string player)
+        {
+            JoinTableCommand command = new JoinTableCommand(p_noPort, player);
+            Send(command);
+
+            StringTokenizer token2 = ReceiveCommand(JoinTableResponse.COMMAND_NAME);
+            if (!token2.HasMoreTokens())
+                return -1;
+            JoinTableResponse response2 = new JoinTableResponse(token2);
+            return response2.NoSeat;
+        }
+
         public GameClient JoinTable(int p_noPort, string p_tableName, IPokerViewer gui)
         {
-            JoinTableCommand command = new JoinTableCommand(p_noPort, m_PlayerName);
-            Send(command);
-            
-                StringTokenizer token2 = ReceiveCommand(JoinTableResponse.COMMAND_NAME);
-                if (!token2.HasMoreTokens())
-                    return null;
-                JoinTableResponse response2 = new JoinTableResponse(token2);
-                int noSeat = response2.NoSeat;
+            int noSeat = GetJoinedSeat(p_noPort, m_PlayerName);
+            if (noSeat == -1)
+            {
+                Console.WriteLine("Cannot sit at this table: " + p_tableName);
+                return null;
+            }
 
-                if (noSeat == -1)
-                {
-                    Console.WriteLine("Cannot sit at this table: " + p_tableName);
-                    return null;
-                }
-
-                GameClient client = new GameClient(noSeat, m_PlayerName, p_noPort);
-                client.SendedSomething += new EventHandler<KeyEventArgs<string>>(client_SendedSomething);
-                if (gui != null)
-                {
-                    gui.SetGame(client, client.NoSeat);
-                    gui.Start();
-                }
-                client.Start();
-                m_Clients.Add(p_noPort,client);
-                return client;
+            GameClient client = new GameClient(noSeat, m_PlayerName, p_noPort);
+            client.SendedSomething += new EventHandler<KeyEventArgs<string>>(client_SendedSomething);
+            if (gui != null)
+            {
+                gui.SetGame(client, client.NoSeat);
+                gui.Start();
+            }
+            client.Start();
+            m_Clients.Add(p_noPort, client);
+            return client;
         }
 
         protected void client_SendedSomething(object sender, KeyEventArgs<string> e)

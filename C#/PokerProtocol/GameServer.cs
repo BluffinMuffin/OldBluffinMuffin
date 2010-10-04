@@ -11,6 +11,7 @@ using PokerProtocol.Commands;
 using PokerProtocol.Commands.Game;
 using EricUtility.Games.CardGame;
 using EricUtility.Networking.Commands;
+using PokerWorld.Data;
 
 namespace PokerProtocol
 {
@@ -19,6 +20,7 @@ namespace PokerProtocol
         private readonly PlayerInfo m_Player;
         private readonly PokerGame m_Game;
         private readonly int m_ID;
+        private readonly UserInfo m_UserInfo;
 
         public int ID
         {
@@ -38,7 +40,19 @@ namespace PokerProtocol
             m_ID = id;
             m_Game = game;
             m_Player = new PlayerInfo(name, money);
+            m_UserInfo = null;
             base.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(GameServer_SendedSomething);
+
+        }
+
+        public GameServer(int id, PokerGame game, PokerWorld.Data.UserInfo userInfo)
+        {
+            m_ID = id;
+            m_Game = game;
+            m_UserInfo = userInfo;
+            int money = (int)m_UserInfo.TotalMoney;
+            m_UserInfo.TotalMoney -= money;
+            m_Player = new PlayerInfo(m_UserInfo.DisplayName,money);
         }
 
         void GameServer_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
@@ -182,6 +196,8 @@ namespace PokerProtocol
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
+            if( m_UserInfo != null && m_Game is PokerGameCareer )
+                m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
             m_IsConnected = false;
             m_Player.IsZombie = true;
             TableInfo t = m_Game.Table;
