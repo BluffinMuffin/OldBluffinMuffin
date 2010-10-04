@@ -43,6 +43,7 @@ namespace BluffinPokerGUI.Lobby
         public event EventHandler OnListRefreshed = delegate { };
         public event EventHandler OnSelectionChanged = delegate { };
         public event EventHandler OnChoiceMade = delegate { };
+        private Dictionary<int, AbstractTableForm> guis = new Dictionary<int, AbstractTableForm>();
         
         public void RefreshList()
         {
@@ -100,10 +101,25 @@ namespace BluffinPokerGUI.Lobby
                 }
             }
         }
-
+        public void LeaveAll()
+        {
+            int[] keys = new int[guis.Keys.Count];
+            guis.Keys.CopyTo(keys,0);
+            foreach (int i in keys)
+                LeaveTable(i);
+        }
         private void LeaveTable(int idGame)
         {
-            m_Server.LeaveTable(idGame);
+            if (guis.ContainsKey(idGame))
+            {
+                AbstractTableForm gui = guis[idGame];
+                guis.Remove(idGame);
+                gui.Close();
+            }
+            else
+            {
+                m_Server.LeaveTable(idGame);
+            }
             RefreshList();
         }
         public void LeaveSelected()
@@ -143,6 +159,7 @@ namespace BluffinPokerGUI.Lobby
         {
             AbstractTableForm gui = new TableForm();
             GameClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
+            guis.Add(p_noPort, gui);
             gui.FormClosed += delegate
             {
                 LeaveTable(p_noPort);
