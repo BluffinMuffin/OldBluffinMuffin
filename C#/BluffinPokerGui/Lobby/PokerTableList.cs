@@ -159,7 +159,10 @@ namespace BluffinPokerGUI.Lobby
         {
             AbstractTableForm gui = new TableForm();
             GameClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
-            guis.Add(p_noPort, gui);
+            if (guis.ContainsKey(p_noPort))
+                guis[p_noPort] = gui;
+            else
+                guis.Add(p_noPort, gui);
             gui.FormClosed += delegate
             {
                 LeaveTable(p_noPort);

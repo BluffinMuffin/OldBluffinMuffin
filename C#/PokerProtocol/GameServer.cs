@@ -12,6 +12,7 @@ using PokerProtocol.Commands.Game;
 using EricUtility.Games.CardGame;
 using EricUtility.Networking.Commands;
 using PokerWorld.Data;
+using EricUtility;
 
 namespace PokerProtocol
 {
@@ -21,6 +22,7 @@ namespace PokerProtocol
         private readonly PokerGame m_Game;
         private readonly int m_ID;
         private readonly UserInfo m_UserInfo;
+        public event EventHandler<KeyEventArgs<int>> LeftTable = delegate { };
 
         public int ID
         {
@@ -198,6 +200,7 @@ namespace PokerProtocol
         {
             if( m_UserInfo != null && m_Game is PokerGameCareer )
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
+            LeftTable(this, new KeyEventArgs<int>(m_ID));
             m_IsConnected = false;
             m_Player.IsZombie = true;
             TableInfo t = m_Game.Table;

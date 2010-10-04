@@ -75,7 +75,10 @@ namespace BluffinPokerServer
             UserInfo u = DataManager.Persistance.Authenticate(e.Command.Username, e.Command.Password);
             if (u != null)
                 m_PlayerName = u.DisplayName;
-            Send(e.Command.EncodeResponse(u != null));
+            bool ok = (u != null && !m_Lobby.NameUsed(m_PlayerName));
+            if( ok )
+                m_Lobby.AddName(m_PlayerName);
+            Send(e.Command.EncodeResponse(ok));
         }
 
         void m_CommandObserver_CreateUserCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand> e)
@@ -110,6 +113,7 @@ namespace BluffinPokerServer
             {
                 client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
             }
+            client.LeftTable += new EventHandler<EricUtility.KeyEventArgs<int>>(client_LeftTable);
             client.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(client_SendedSomething);
             TableInfo table = game.Table;
              if (!game.IsRunning)
@@ -138,6 +142,11 @@ namespace BluffinPokerServer
                 {
                     Send(e.Command.EncodeErrorResponse());
                 }
+        }
+
+        void client_LeftTable(object sender, EricUtility.KeyEventArgs<int> e)
+        {
+            m_Tables.Remove(e.Key);
         }
 
         void client_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
