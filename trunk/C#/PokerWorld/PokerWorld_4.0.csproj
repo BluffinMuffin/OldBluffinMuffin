@@ -42,8 +42,10 @@
     <Compile Include="Data\IDataPersistance.cs" />
     <Compile Include="Data\UserInfo.cs" />
     <Compile Include="Game\AbstractDealer.cs" />
-    <Compile Include="Game\TrainingPokerGame.cs" />
-    <Compile Include="Game\TrainingTableInfo.cs" />
+    <Compile Include="Game\PokerGameCareer.cs" />
+    <Compile Include="Game\TableInfoCareer.cs" />
+    <Compile Include="Game\PokerGameTraining.cs" />
+    <Compile Include="Game\TableInfoTraining.cs" />
     <Compile Include="Game\EventArgs.cs" />
     <Compile Include="Game\IPokerGame.cs" />
     <Compile Include="Game\IPokerViewer.cs" />

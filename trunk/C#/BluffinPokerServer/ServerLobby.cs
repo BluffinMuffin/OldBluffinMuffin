@@ -76,11 +76,12 @@ namespace BluffinPokerServer
 
         public int CreateTrainingTable(CreateTrainingTableCommand c)
         {
-            ListTables();
+            ListTrainingTables();
+            ListCareerTables();
             m_LastUsedID++;
             while (m_Games.ContainsKey(m_LastUsedID))
                 m_LastUsedID++;
-            TrainingPokerGame game = new TrainingPokerGame(new TrainingTableInfo(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+            PokerGameTraining game = new PokerGameTraining(new TableInfoTraining(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
             m_Games.Add(m_LastUsedID, game);
             game.Start();
             return m_LastUsedID;
@@ -88,29 +89,54 @@ namespace BluffinPokerServer
 
         public int CreateCareerTable(CreateCareerTableCommand c)
         {
-            ListTables();
+            ListTrainingTables();
+            ListCareerTables();
             m_LastUsedID++;
             while (m_Games.ContainsKey(m_LastUsedID))
                 m_LastUsedID++;
-            PokerGame game = new PokerGame(new TableInfo(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+            PokerGameCareer game = new PokerGameCareer(new TableInfoCareer(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
             m_Games.Add(m_LastUsedID, game);
             game.Start();
             return m_LastUsedID;
         }
 
-        public List<TupleTableInfo> ListTables()
+        public List<TupleTableInfoTraining> ListTrainingTables()
         {
-            List<TupleTableInfo> tables = new List<TupleTableInfo>();
+            List<TupleTableInfoTraining> tables = new List<TupleTableInfoTraining>();
             List<int> tablesToRemove = new List<int>();
 
-            foreach( KeyValuePair<int,PokerGame> kvp in m_Games )
+            foreach (KeyValuePair<int, PokerGame> kvp in m_Games)
             {
                 PokerGame game = kvp.Value;
                 int noPort = kvp.Key;
                 if (game.IsRunning)
                 {
                     TableInfo t = game.Table;
-                    tables.Add(new TupleTableInfo(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit));
+                    if( t is TableInfoTraining )
+                        tables.Add(new TupleTableInfoTraining(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, PossibleActionType.None));
+                }
+                else
+                    tablesToRemove.Add(noPort);
+            }
+            foreach (int i in tablesToRemove)
+                m_Games.Remove(i);
+            return tables;
+        }
+
+        public List<TupleTableInfoCareer> ListCareerTables()
+        {
+            List<TupleTableInfoCareer> tables = new List<TupleTableInfoCareer>();
+            List<int> tablesToRemove = new List<int>();
+
+            foreach (KeyValuePair<int, PokerGame> kvp in m_Games)
+            {
+                PokerGame game = kvp.Value;
+                int noPort = kvp.Key;
+                if (game.IsRunning)
+                {
+                    TableInfo t = game.Table;
+                    if (t is TableInfoCareer)
+                        tables.Add(new TupleTableInfoCareer(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, PossibleActionType.None));
                 }
                 else
                     tablesToRemove.Add(noPort);

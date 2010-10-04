@@ -13,6 +13,21 @@ namespace BluffinPokerGUI.Lobby
     public partial class PokerTableList : UserControl
     {
         private LobbyTCPClient m_Server;
+        private bool m_ShowTraining = true;
+        private bool m_ShowCareer = false;
+
+        public bool ShowTraining
+        {
+            get { return m_ShowTraining; }
+            set { m_ShowTraining = value; }
+        }
+
+        public bool ShowCareer
+        {
+            get { return m_ShowCareer; }
+            set { m_ShowCareer = value; }
+        }
+
         public PokerTableList()
         {
             InitializeComponent();
@@ -32,14 +47,26 @@ namespace BluffinPokerGUI.Lobby
         public void RefreshList()
         {
             datTables.Rows.Clear();
-            List<TupleTableInfo> lst = m_Server.getListTables();
+            List<TupleTableInfo> lst = new List<TupleTableInfo>();
+            if (ShowTraining)
+            {
+                List<TupleTableInfoTraining> lstT = m_Server.getListTrainingTables();
+                lst.AddRange(lstT.ToArray());
+            }
+            if (ShowCareer)
+            {
+                List<TupleTableInfoCareer> lstT = m_Server.getListCareerTables();
+                lst.AddRange(lstT.ToArray());
+            }
+            lst.Sort();
             for (int i = 0; i < lst.Count; ++i)
             {
                 TupleTableInfo info = lst[i];
+                string type = info is TupleTableInfoTraining ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.NoPort;
                 datTables.Rows[i].Cells[1].Value = info.TableName;
-                datTables.Rows[i].Cells[2].Value = info.Limit.ToString();
+                datTables.Rows[i].Cells[2].Value = type + " - " + info.Limit.ToString();
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.NbSeats;
             }

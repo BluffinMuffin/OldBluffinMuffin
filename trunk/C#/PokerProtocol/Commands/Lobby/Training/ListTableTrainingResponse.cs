@@ -4,35 +4,35 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 
-namespace PokerProtocol.Commands.Lobby
+namespace PokerProtocol.Commands.Lobby.Training
 {
-    public class ListTableResponse : AbstractLobbyResponse<ListTableCommand>
+    public class ListTableTrainingResponse : AbstractLobbyResponse<ListTableCommand>
     {
 
         protected override string CommandName
         {
             get { return COMMAND_NAME; }
         }
-        public static string COMMAND_NAME = "lobbyLIST_TABLES_RESPONSE";
-        private readonly List<TupleTableInfo> m_Tables;
-        public List<TupleTableInfo> Tables
+        public static string COMMAND_NAME = "lobbyTRAINING_LIST_TABLES_RESPONSE";
+        private readonly List<TupleTableInfoTraining> m_Tables;
+        public List<TupleTableInfoTraining> Tables
         {
             get { return m_Tables; }
         }
 
 
-        public ListTableResponse(StringTokenizer argsToken)
+        public ListTableTrainingResponse(StringTokenizer argsToken)
             : base(new ListTableCommand(argsToken))
         {
-            m_Tables = new List<TupleTableInfo>();
+            m_Tables = new List<TupleTableInfoTraining>();
             int count = int.Parse(argsToken.NextToken());
             for (int i = 0; i < count; ++i)
             {
-                m_Tables.Add(new TupleTableInfo(argsToken));
+                m_Tables.Add(new TupleTableInfoTraining(argsToken));
             }
         }
 
-        public ListTableResponse(ListTableCommand command, List<TupleTableInfo> tables)
+        public ListTableTrainingResponse(ListTableCommand command, List<TupleTableInfoTraining> tables)
             : base(command)
         {
             m_Tables = tables;
@@ -42,7 +42,7 @@ namespace PokerProtocol.Commands.Lobby
         {
             base.Encode(sb);
             Append(sb, m_Tables.Count);
-            foreach (TupleTableInfo tti in m_Tables)
+            foreach (TupleTableInfoTraining tti in m_Tables)
                 Append(sb, tti.ToString(AbstractLobbyCommand.Delimitter));
         }
     }

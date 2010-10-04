@@ -42,7 +42,9 @@
             this.btnAddTable = new System.Windows.Forms.ToolStripButton();
             this.btnJoinTable = new System.Windows.Forms.ToolStripButton();
             this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
+            this.lstFilter = new System.Windows.Forms.ToolStripComboBox();
             this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -166,8 +168,10 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnRefresh,
             this.btnAddTable,
+            this.toolStripSeparator1,
             this.btnJoinTable,
-            this.btnLeaveTable});
+            this.btnLeaveTable,
+            this.lstFilter});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(477, 25);
@@ -212,16 +216,35 @@
             this.btnLeaveTable.Text = "Leave Table";
             this.btnLeaveTable.Click += new System.EventHandler(this.btnLeaveTable_Click);
             // 
+            // lstFilter
+            // 
+            this.lstFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lstFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.lstFilter.Items.AddRange(new object[] {
+            "Real",
+            "Training",
+            "Both"});
+            this.lstFilter.Name = "lstFilter";
+            this.lstFilter.Size = new System.Drawing.Size(121, 25);
+            this.lstFilter.SelectedIndexChanged += new System.EventHandler(this.lstFilter_SelectedIndexChanged);
+            // 
             // tableList
             // 
             this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableList.Location = new System.Drawing.Point(0, 25);
             this.tableList.Name = "tableList";
+            this.tableList.ShowCareer = true;
+            this.tableList.ShowTraining = false;
             this.tableList.Size = new System.Drawing.Size(477, 156);
             this.tableList.TabIndex = 8;
             this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
             this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
             this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // LobbyCareerForm
             // 
@@ -233,6 +256,7 @@
             this.MinimumSize = new System.Drawing.Size(493, 330);
             this.Name = "LobbyCareerForm";
             this.Text = "Bluffin Muffin Poker Client";
+            this.Activated += new System.EventHandler(this.LobbyCareerForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CareerLobbyForm_FormClosed);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
@@ -262,5 +286,7 @@
         private System.Windows.Forms.ToolStripButton btnJoinTable;
         private System.Windows.Forms.ToolStripButton btnLeaveTable;
         private BluffinPokerGUI.Lobby.PokerTableList tableList;
+        private System.Windows.Forms.ToolStripComboBox lstFilter;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

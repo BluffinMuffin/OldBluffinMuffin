@@ -64,6 +64,7 @@
     <Compile Include="Commands\Lobby\Career\GetUserCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CreateUserCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CreateUserResponse.cs" />
+    <Compile Include="Commands\Lobby\Career\ListTableCareerResponse.cs" />
     <Compile Include="Commands\Lobby\GameCommand.cs" />
     <Compile Include="Commands\Lobby\AbstractCreateTableCommand.cs" />
     <Compile Include="Commands\Lobby\Training\CreateTrainingTableCommand.cs" />
@@ -74,7 +75,10 @@
     <Compile Include="Commands\Lobby\AbstractLobbyResponse.cs" />
     <Compile Include="Commands\Lobby\Training\IdentifyResponse.cs" />
     <Compile Include="Commands\Lobby\JoinTableResponse.cs" />
-    <Compile Include="Commands\Lobby\ListTableResponse.cs" />
+    <Compile Include="Commands\Lobby\Training\ListTableTrainingResponse.cs" />
+    <Compile Include="PossibleActionType.cs" />
+    <Compile Include="TupleTableInfoCareer.cs" />
+    <Compile Include="TupleTableInfoTraining.cs" />
     <Compile Include="LobbyTCPClientTraining.cs" />
     <Compile Include="LobbyTCPClientCareer.cs" />
     <Compile Include="GameClient.cs" />
