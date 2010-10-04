@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import bluffinmuffin.poker.PokerGame;
+import bluffinmuffin.poker.PokerGameCareer;
 import bluffinmuffin.poker.PokerGameTraining;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.poker.entities.TableInfoCareer;
@@ -156,7 +157,7 @@ public class ServerLobby extends Thread
         {
             m_LastUsedID++;
         }
-        final PokerGame game = new PokerGame(new TableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+        final PokerGameCareer game = new PokerGameCareer(new TableInfoCareer(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
         game.start();
         m_games.put(m_LastUsedID, game);
         return m_LastUsedID;
