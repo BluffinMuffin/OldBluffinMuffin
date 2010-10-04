@@ -211,9 +211,11 @@ namespace PokerProtocol
                 if (commandName == GameCommand.COMMAND_NAME)
                 {
                     GameCommand c = new GameCommand(token);
-                    while (!m_Clients.ContainsKey(c.TableID))
+                    int count = 0;
+                    while (!m_Clients.ContainsKey(c.TableID) && (count++ < 5))
                         Thread.Sleep(100);
-                    m_Clients[c.TableID].Incoming(c.Command);
+                    if (m_Clients.ContainsKey(c.TableID))
+                        m_Clients[c.TableID].Incoming(c.Command);
                 }
                 else
                     m_Incoming.Enqueue(line);
