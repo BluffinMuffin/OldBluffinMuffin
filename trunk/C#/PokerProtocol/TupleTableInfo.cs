@@ -6,7 +6,7 @@ using EricUtility;
 
 namespace PokerProtocol
 {
-    public class TupleTableInfo : IComparable<TupleTableInfo>
+    public abstract class TupleTableInfo : IComparable<TupleTableInfo>
     {
         private int m_NoPort;
         private string m_TableName;
