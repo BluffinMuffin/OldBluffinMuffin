@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace PokerWorld.Game
 {
-    public class PokerGame : IPokerGame
+    public abstract class PokerGame : IPokerGame
     {
         // Global States of the Game
         public enum TypeState
