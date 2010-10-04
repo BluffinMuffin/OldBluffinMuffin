@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import bluffinmuffin.data.UserInfo;
 import bluffinmuffin.game.entities.Card;
 import bluffinmuffin.poker.PokerGame;
 import bluffinmuffin.poker.PokerGame.TypeState;
+import bluffinmuffin.poker.PokerGameCareer;
 import bluffinmuffin.poker.entities.PlayerInfo;
 import bluffinmuffin.poker.entities.PotInfo;
 import bluffinmuffin.poker.entities.TableInfo;
@@ -43,6 +45,7 @@ public class GameTCPServer implements Runnable
     
     // POKER Things
     private final PlayerInfo m_player;
+    private final UserInfo m_userInfo;
     private final PokerGame m_game;
     private final GameServerObserver m_commandObserver = new GameServerObserver();
     
@@ -62,6 +65,17 @@ public class GameTCPServer implements Runnable
     {
         m_game = game;
         m_player = new PlayerInfo(name, money);
+        m_userInfo = null;
+        initializeCommandObserver();
+    }
+    
+    public GameTCPServer(PokerGame game, UserInfo user)
+    {
+        m_game = game;
+        m_userInfo = user;
+        final int money = (int) m_userInfo.getTotalMoney();
+        m_userInfo.setTotalMoney(m_userInfo.getTotalMoney() - money);
+        m_player = new PlayerInfo(m_userInfo.getDisplayName(), money);
         initializeCommandObserver();
     }
     
@@ -261,6 +275,10 @@ public class GameTCPServer implements Runnable
             @Override
             public void disconnectCommandReceived(DisconnectCommand command)
             {
+                if (m_userInfo != null && m_game.getClass().equals(PokerGameCareer.class))
+                {
+                    m_userInfo.setTotalMoney(m_userInfo.getTotalMoney() + m_player.getMoneySafeAmnt());
+                }
                 m_isConnected = false;
                 m_player.setZombie();
                 final TableInfo t = m_game.getTable();

@@ -190,7 +190,7 @@ public class ServerClientLobby extends Thread
                 }
                 else
                 {
-                    client = new GameTCPServer(game, m_playerName, 1500);
+                    client = new GameTCPServer(game, DataManager.Persistance.get(command.getPlayerName()));
                 }
                 final TableInfo table = game.getTable();
                 if (!game.isRunning())
