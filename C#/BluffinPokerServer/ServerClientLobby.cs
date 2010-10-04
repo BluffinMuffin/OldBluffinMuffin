@@ -101,9 +101,9 @@ namespace BluffinPokerServer
         {
             GameServer client = null;
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
-            if (game is TrainingPokerGame)
+            if (game is PokerGameTraining)
             {
-                TrainingPokerGame tgame = game as TrainingPokerGame;
+                PokerGameTraining tgame = game as PokerGameTraining;
                 client = new GameServer(e.Command.TableID, game, m_PlayerName, tgame.TrainingTable.StartingMoney);
             }
             else
@@ -186,7 +186,10 @@ namespace BluffinPokerServer
         void m_CommandObserver_ListTableCommandReceived(object sender, CommandEventArgs<ListTableCommand> e)
         {
             ListTableCommand c = e.Command;
-            Send(c.EncodeResponse(m_Lobby.ListTables()));
+            if( c.Training )
+                Send(c.EncodeTrainingResponse(m_Lobby.ListTrainingTables()));
+            else
+                Send(c.EncodeCareerResponse(m_Lobby.ListCareerTables()));
         }
     }
 }

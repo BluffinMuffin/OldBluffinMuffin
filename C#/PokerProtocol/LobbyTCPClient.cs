@@ -170,18 +170,32 @@ namespace PokerProtocol
             Send(new GameCommand(client.NoPort, e.Key));
         }
 
-        public List<TupleTableInfo> getListTables()
+        public List<TupleTableInfoTraining> getListTrainingTables()
         {
-            Send(new ListTableCommand());
+            Send(new ListTableCommand(true));
 
-            StringTokenizer token = ReceiveCommand(ListTableResponse.COMMAND_NAME);
+            StringTokenizer token = ReceiveCommand(ListTableTrainingResponse.COMMAND_NAME);
             if (token.HasMoreTokens())
             {
-                ListTableResponse response = new ListTableResponse(token);
+                ListTableTrainingResponse response = new ListTableTrainingResponse(token);
                 return response.Tables;
             }
-            else 
-                return new List<TupleTableInfo>();
+            else
+                return new List<TupleTableInfoTraining>();
+        }
+
+        public List<TupleTableInfoCareer> getListCareerTables()
+        {
+            Send(new ListTableCommand(false));
+
+            StringTokenizer token = ReceiveCommand(ListTableCareerResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                ListTableCareerResponse response = new ListTableCareerResponse(token);
+                return response.Tables;
+            }
+            else
+                return new List<TupleTableInfoCareer>();
         }
         protected override void Run()
         {

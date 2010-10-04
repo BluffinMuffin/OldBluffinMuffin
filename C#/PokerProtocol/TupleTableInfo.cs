@@ -14,6 +14,7 @@ namespace PokerProtocol
         private int m_NbPlayers;
         private int m_NbSeats;
         private TypeBet m_Limit;
+        private PossibleActionType m_PossibleAction;
 
         public int NoPort
         {
@@ -51,7 +52,13 @@ namespace PokerProtocol
             set { m_Limit = value; }
         }
 
-        public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit)
+        public PossibleActionType PossibleAction
+        {
+            get { return m_PossibleAction; }
+            set { m_PossibleAction = value; }
+        }
+
+        public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit, PossibleActionType possibleAction)
         {
             m_NoPort = p_noPort;
             m_TableName = p_tableName;
@@ -59,6 +66,7 @@ namespace PokerProtocol
             m_NbPlayers = p_nbPlayers;
             m_NbSeats = p_nbSeats;
             m_Limit = limit;
+            m_PossibleAction = possibleAction;
         }
 
         public TupleTableInfo(StringTokenizer argsToken)
@@ -69,6 +77,7 @@ namespace PokerProtocol
             m_NbPlayers = int.Parse(argsToken.NextToken());
             m_NbSeats = int.Parse(argsToken.NextToken());
             m_Limit = (TypeBet)int.Parse(argsToken.NextToken());
+            m_PossibleAction = (PossibleActionType)int.Parse(argsToken.NextToken());
         }
         public int CompareTo(TupleTableInfo other)
         {
@@ -89,6 +98,8 @@ namespace PokerProtocol
             sb.Append(m_NbSeats);
             sb.Append(p_delimiter);
             sb.Append((int)m_Limit);
+            sb.Append(p_delimiter);
+            sb.Append((int)m_PossibleAction);
 
             return sb.ToString();
         }

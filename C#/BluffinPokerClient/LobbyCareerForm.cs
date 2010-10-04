@@ -22,7 +22,7 @@ namespace BluffinPokerClient
             tableList.setServer(m_Server);
             Text = server.User.DisplayName + " ~ " + lblTitle.Text;
             lblServer.Text = String.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
-            tableList.RefreshList();
+            lstFilter.SelectedItem = "Real";
             if (tableList.NbTables == 0)
                 tableList.AddTable(false);
         }
@@ -91,6 +91,18 @@ namespace BluffinPokerClient
         private void tableList_OnSelectionChanged(object sender, EventArgs e)
         {
             AllowJoinOrLeave();
+        }
+
+        private void lstFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tableList.ShowTraining = ((string)lstFilter.SelectedItem == "Training" || (string)lstFilter.SelectedItem == "Both");
+            tableList.ShowCareer = ((string)lstFilter.SelectedItem == "Real" || (string)lstFilter.SelectedItem == "Both");
+            tableList.RefreshList();
+        }
+
+        private void LobbyCareerForm_Activated(object sender, EventArgs e)
+        {
+            tableList.RefreshList();
         }
     }
 }
