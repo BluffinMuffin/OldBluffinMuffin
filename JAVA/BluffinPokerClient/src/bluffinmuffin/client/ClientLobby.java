@@ -432,7 +432,7 @@ public class ClientLobby extends JFrame
         final DefaultTableModel model = (DefaultTableModel) getJMainTable().getModel();
         model.setRowCount(0);
         
-        for (final TupleTableInfo info : m_server.getListTables())
+        for (final TupleTableInfo info : m_server.getListTablesTraining())
         {
             final Object[] row = new Object[5];
             row[0] = info.m_noPort;

@@ -12,10 +12,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import bluffinmuffin.poker.PokerGame;
-import bluffinmuffin.poker.TrainingPokerGame;
+import bluffinmuffin.poker.PokerGameTraining;
 import bluffinmuffin.poker.entities.TableInfo;
-import bluffinmuffin.poker.entities.TrainingTableInfo;
-import bluffinmuffin.protocol.TupleTableInfo;
+import bluffinmuffin.poker.entities.TableInfoCareer;
+import bluffinmuffin.poker.entities.TableInfoTraining;
+import bluffinmuffin.protocol.PossibleActionType;
+import bluffinmuffin.protocol.TupleTableInfoCareer;
+import bluffinmuffin.protocol.TupleTableInfoTraining;
 import bluffinmuffin.protocol.commands.lobby.career.CreateCareerTableCommand;
 import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
 
@@ -131,13 +134,14 @@ public class ServerLobby extends Thread
     
     public int createTrainingTable(CreateTrainingTableCommand command)
     {
-        listTables();
+        listTrainingTables();
+        listCareerTables();
         m_LastUsedID++;
         while (m_games.containsKey(m_LastUsedID))
         {
             m_LastUsedID++;
         }
-        final TrainingPokerGame game = new TrainingPokerGame(new TrainingTableInfo(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit(), command.getStartingMoney()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
+        final PokerGameTraining game = new PokerGameTraining(new TableInfoTraining(command.getTableName(), command.getBigBlind(), command.getMaxPlayers(), command.getLimit(), command.getStartingMoney()), command.getWaitingTimeAfterPlayerAction(), command.getWaitingTimeAfterBoardDealed(), command.getWaitingTimeAfterPotWon());
         game.start();
         m_games.put(m_LastUsedID, game);
         return m_LastUsedID;
@@ -145,7 +149,8 @@ public class ServerLobby extends Thread
     
     public int createCareerTable(CreateCareerTableCommand command)
     {
-        listTables();
+        listTrainingTables();
+        listCareerTables();
         m_LastUsedID++;
         while (m_games.containsKey(m_LastUsedID))
         {
@@ -157,9 +162,9 @@ public class ServerLobby extends Thread
         return m_LastUsedID;
     }
     
-    public synchronized ArrayList<TupleTableInfo> listTables()
+    public synchronized ArrayList<TupleTableInfoCareer> listCareerTables()
     {
-        final ArrayList<TupleTableInfo> tables = new ArrayList<TupleTableInfo>();
+        final ArrayList<TupleTableInfoCareer> tables = new ArrayList<TupleTableInfoCareer>();
         final ArrayList<Integer> tablesToRemove = new ArrayList<Integer>();
         
         for (final Integer noPort : m_games.keySet())
@@ -170,7 +175,43 @@ public class ServerLobby extends Thread
             if (game.isRunning())
             {
                 final TableInfo table = game.getTable();
-                tables.add(new TupleTableInfo(noPort, table.getName(), table.getBigBlindAmnt(), table.getPlayers().size(), table.getNbMaxSeats(), table.getBetLimit()));
+                if (table.getClass().equals(TableInfoCareer.class))
+                {
+                    tables.add(new TupleTableInfoCareer(noPort, table.getName(), table.getBigBlindAmnt(), table.getPlayers().size(), table.getNbMaxSeats(), table.getBetLimit(), PossibleActionType.None));
+                }
+            }
+            else
+            {
+                tablesToRemove.add(noPort);
+            }
+        }
+        
+        // Remove closed tables.
+        for (final Integer key : tablesToRemove)
+        {
+            m_games.remove(key);
+        }
+        
+        return tables;
+    }
+    
+    public synchronized ArrayList<TupleTableInfoTraining> listTrainingTables()
+    {
+        final ArrayList<TupleTableInfoTraining> tables = new ArrayList<TupleTableInfoTraining>();
+        final ArrayList<Integer> tablesToRemove = new ArrayList<Integer>();
+        
+        for (final Integer noPort : m_games.keySet())
+        {
+            final PokerGame game = m_games.get(noPort);
+            
+            // Check if the table is still running.
+            if (game.isRunning())
+            {
+                final TableInfo table = game.getTable();
+                if (table.getClass().equals(TableInfoTraining.class))
+                {
+                    tables.add(new TupleTableInfoTraining(noPort, table.getName(), table.getBigBlindAmnt(), table.getPlayers().size(), table.getNbMaxSeats(), table.getBetLimit(), PossibleActionType.None));
+                }
             }
             else
             {
