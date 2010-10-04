@@ -26,6 +26,11 @@ namespace PokerProtocol
         {
         }
 
+        protected override int GetJoinedSeat(int p_noPort, string player)
+        {
+            return base.GetJoinedSeat(p_noPort, m_User.Username);
+        }
+
         public bool CheckUsernameAvailable(string username)
         {
             Send(new CheckUserExistCommand(username));
