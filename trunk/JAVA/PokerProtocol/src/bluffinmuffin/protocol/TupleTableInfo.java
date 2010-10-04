@@ -4,7 +4,6 @@ import java.util.StringTokenizer;
 
 import bluffinmuffin.poker.entities.type.GameBetLimitType;
 
-
 /**
  * @author Hocus
  *         This class represents a network table.
@@ -17,6 +16,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
     public int m_nbPlayers;
     public int m_nbSeats;
     public GameBetLimitType m_limit;
+    public PossibleActionType m_possibleAction;
     
     /**
      * Create a new table
@@ -34,7 +34,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
      * @param p_nbSeats
      *            Number of seat
      */
-    public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, GameBetLimitType limit)
+    public TupleTableInfo(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, GameBetLimitType limit, PossibleActionType possibleAction)
     {
         m_noPort = p_noPort;
         m_tableName = p_tableName;
@@ -42,6 +42,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
         m_nbPlayers = p_nbPlayers;
         m_nbSeats = p_nbSeats;
         m_limit = limit;
+        m_possibleAction = possibleAction;
     }
     
     public TupleTableInfo(StringTokenizer argsToken)
@@ -52,6 +53,7 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
         m_nbPlayers = Integer.parseInt(argsToken.nextToken());
         m_nbSeats = Integer.parseInt(argsToken.nextToken());
         m_limit = GameBetLimitType.values()[Integer.parseInt(argsToken.nextToken())];
+        m_possibleAction = PossibleActionType.values()[Integer.parseInt(argsToken.nextToken())];
     }
     
     public int compareTo(TupleTableInfo p_table)
@@ -82,6 +84,8 @@ public class TupleTableInfo implements Comparable<TupleTableInfo>
         sb.append(m_nbSeats);
         sb.append(p_delimiter);
         sb.append(m_limit.ordinal());
+        sb.append(p_delimiter);
+        sb.append(m_possibleAction.ordinal());
         sb.append(p_delimiter);
         
         return sb.toString();

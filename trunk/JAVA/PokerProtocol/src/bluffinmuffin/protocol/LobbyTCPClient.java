@@ -21,11 +21,12 @@ import bluffinmuffin.protocol.commands.lobby.GameCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableCommand;
 import bluffinmuffin.protocol.commands.lobby.JoinTableResponse;
 import bluffinmuffin.protocol.commands.lobby.ListTableCommand;
-import bluffinmuffin.protocol.commands.lobby.ListTableResponse;
+import bluffinmuffin.protocol.commands.lobby.career.ListTableCareerResponse;
 import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableCommand;
 import bluffinmuffin.protocol.commands.lobby.training.CreateTrainingTableResponse;
 import bluffinmuffin.protocol.commands.lobby.training.IdentifyCommand;
 import bluffinmuffin.protocol.commands.lobby.training.IdentifyResponse;
+import bluffinmuffin.protocol.commands.lobby.training.ListTableTrainingResponse;
 
 public class LobbyTCPClient extends Thread
 {
@@ -207,13 +208,23 @@ public class LobbyTCPClient extends Thread
         return response.getResponsePort();
     }
     
-    public List<TupleTableInfo> getListTables()
+    public List<TupleTableInfoCareer> getListTablesCareer()
     {
         // Ask the server for all available tables.
-        send(new ListTableCommand());
+        send(new ListTableCommand(false));
         
-        final StringTokenizer token = receiveCommand(ListTableResponse.COMMAND_NAME);
-        final ListTableResponse response = new ListTableResponse(token);
+        final StringTokenizer token = receiveCommand(ListTableCareerResponse.COMMAND_NAME);
+        final ListTableCareerResponse response = new ListTableCareerResponse(token);
+        return response.getTables();
+    }
+    
+    public List<TupleTableInfoTraining> getListTablesTraining()
+    {
+        // Ask the server for all available tables.
+        send(new ListTableCommand(true));
+        
+        final StringTokenizer token = receiveCommand(ListTableTrainingResponse.COMMAND_NAME);
+        final ListTableTrainingResponse response = new ListTableTrainingResponse(token);
         return response.getTables();
     }
     

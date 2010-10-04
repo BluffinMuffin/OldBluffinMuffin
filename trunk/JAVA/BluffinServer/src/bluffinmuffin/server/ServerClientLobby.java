@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import bluffinmuffin.data.DataManager;
 import bluffinmuffin.data.UserInfo;
 import bluffinmuffin.poker.PokerGame;
-import bluffinmuffin.poker.TrainingPokerGame;
+import bluffinmuffin.poker.PokerGameTraining;
 import bluffinmuffin.poker.entities.TableInfo;
 import bluffinmuffin.protocol.GameTCPServer;
 import bluffinmuffin.protocol.commands.AbstractCommand;
@@ -168,7 +168,14 @@ public class ServerClientLobby extends Thread
             @Override
             public void listTableCommandReceived(ListTableCommand command)
             {
-                sendMessage(command.encodeResponse(m_lobby.listTables()));
+                if (command.getTraining())
+                {
+                    sendMessage(command.encodeTrainingResponse(m_lobby.listTrainingTables()));
+                }
+                else
+                {
+                    sendMessage(command.encodeCareerResponse(m_lobby.listCareerTables()));
+                }
             }
             
             @Override
@@ -176,9 +183,9 @@ public class ServerClientLobby extends Thread
             {
                 GameTCPServer client = null;
                 final PokerGame game = m_lobby.getGame(command.getTableID());
-                if (game.getClass().equals(TrainingPokerGame.class))
+                if (game.getClass().equals(PokerGameTraining.class))
                 {
-                    final TrainingPokerGame tgame = (TrainingPokerGame) game;
+                    final PokerGameTraining tgame = (PokerGameTraining) game;
                     client = new GameTCPServer(game, m_playerName, tgame.getTrainingTable().getStartingMoney());
                 }
                 else
