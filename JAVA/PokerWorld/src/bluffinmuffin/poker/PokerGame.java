@@ -12,7 +12,7 @@ import bluffinmuffin.poker.entities.type.PlayerActionType;
 import bluffinmuffin.poker.observer.IPokerGameListener;
 import bluffinmuffin.poker.observer.PokerGameObserver;
 
-public class PokerGame implements IPokerGame
+public abstract class PokerGame implements IPokerGame
 {
     // Global States of the Game
     public enum TypeState

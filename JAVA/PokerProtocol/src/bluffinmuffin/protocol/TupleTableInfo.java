@@ -8,7 +8,7 @@ import bluffinmuffin.poker.entities.type.GameBetLimitType;
  * @author Hocus
  *         This class represents a network table.
  */
-public class TupleTableInfo implements Comparable<TupleTableInfo>
+public abstract class TupleTableInfo implements Comparable<TupleTableInfo>
 {
     public int m_noPort;
     public String m_tableName;
