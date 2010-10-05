@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using PokerProtocol;
 using BluffinPokerGui.Game;
+using EricUtility;
 
 namespace BluffinPokerGUI.Lobby
 {
@@ -97,7 +98,7 @@ namespace BluffinPokerGUI.Lobby
                 }
                 else
                 {
-                    Console.WriteLine("Cannot create table: '" + form.TableName + "'");
+                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", form.TableName); 
                 }
             }
         }
@@ -142,7 +143,7 @@ namespace BluffinPokerGUI.Lobby
                 return;
             string tableName = (string)o2;
             if (FindClient() != null)
-                Console.WriteLine("You are already sitting on the table: " + tableName);
+                LogManager.Log(LogLevel.Error, "PokerTableList.JoinSelected", "You are already sitting on the table: '{0}'", tableName);
             else
             {
                 object o3 = datTables.SelectedRows[0].Cells[3].Value;
@@ -150,7 +151,7 @@ namespace BluffinPokerGUI.Lobby
                     return;
                 int bigBlind = (int)o3;
                 if (!JoinTable(noPort, tableName, bigBlind))
-                    Console.WriteLine("Table '" + tableName + "' does not exist anymore.");
+                    LogManager.Log(LogLevel.Error, "PokerTableList.JoinSelected", "Table '{0}' does not exist anymore.", tableName);
                 RefreshList();
 
             }

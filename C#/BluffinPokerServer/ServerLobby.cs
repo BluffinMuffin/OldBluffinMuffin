@@ -9,6 +9,7 @@ using PokerProtocol;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerProtocol.Commands.Lobby.Career;
 using System.Net;
+using EricUtility;
 
 namespace BluffinPokerServer
 {
@@ -69,7 +70,7 @@ namespace BluffinPokerServer
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
+                    LogManager.Log(LogLevel.Error, "ServerLobby.Run", e.StackTrace);
                 }
             }
         }

@@ -81,7 +81,7 @@ namespace PokerProtocol
             try
             {
                 line = reader.ReadLine();
-                Console.WriteLine(m_PlayerName + " RECV [" + line + "]");
+                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.Receive", "{0} RECV [{1}]", m_PlayerName, line);
             }
             catch
             {
@@ -93,7 +93,7 @@ namespace PokerProtocol
         {
             if (e is IOException)
             {
-                Console.WriteLine("Lobby lost connection with server");
+                LogManager.Log(LogLevel.Error, "LobbyTCPClient.OnReceiveCrashed", "Lobby lost connection with server");
                 Disconnect();
             }
             else
@@ -103,7 +103,7 @@ namespace PokerProtocol
         {
             if (e is IOException)
             {
-                Console.WriteLine("Lobby lost connection with server");
+                LogManager.Log(LogLevel.Error, "LobbyTCPClient.OnReceiveCrashed", "Lobby lost connection with server");
                 Disconnect();
             }
             else
@@ -152,7 +152,7 @@ namespace PokerProtocol
             int noSeat = GetJoinedSeat(p_noPort, m_PlayerName);
             if (noSeat == -1)
             {
-                Console.WriteLine("Cannot sit at this table: " + p_tableName);
+                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.JoinTable", "Cannot sit at this table: {0}", p_tableName);
                 return null;
             }
 
@@ -205,11 +205,11 @@ namespace PokerProtocol
         {
             while (IsConnected)
             {
-                Console.WriteLine(m_PlayerName + " IS WAITING");
+                LogManager.Log(LogLevel.MessageVeryLow, "LobbyTCPClient.Run", "{0} IS WAITING", m_PlayerName);
                 string line = Receive();
                 if (line == null)
                     return;
-                Console.WriteLine(m_PlayerName + " RECV [" + line + "]");
+                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.Run", "{0} RECV [{1}]", m_PlayerName, line);
                 StringTokenizer token = new StringTokenizer(line, AbstractLobbyCommand.Delimitter);
                 String commandName = token.NextToken();
                 if (commandName == GameCommand.COMMAND_NAME)

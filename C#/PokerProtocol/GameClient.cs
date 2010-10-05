@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using PokerProtocol.Commands.Game;
 using EricUtility.Games.CardGame;
 using System.IO;
+using EricUtility;
 
 namespace PokerProtocol
 {
@@ -107,7 +108,7 @@ namespace PokerProtocol
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
-            Console.WriteLine(m_PlayerName + " RECV -=" + e.Str + "=-");
+            LogManager.Log(LogLevel.MessageLow, "GameClient.m_CommandObserver_CommandReceived", "{0} RECV -={1}=-", m_PlayerName, e.Str);
         }
 
         void m_CommandObserver_BetTurnEndedCommandReceived(object sender, CommandEventArgs<BetTurnEndedCommand> e)
