@@ -11,6 +11,7 @@ using PokerWorld.Game;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
+using EricUtility;
 
 namespace BluffinPokerServer
 {
@@ -50,13 +51,17 @@ namespace BluffinPokerServer
         void m_CommandObserver_CreateCareerTableCommandReceived(object sender, CommandEventArgs<CreateCareerTableCommand> e)
         {
             CreateCareerTableCommand c = e.Command;
-            Send(c.EncodeResponse(m_Lobby.CreateCareerTable(c)));
+            int res = m_Lobby.CreateCareerTable(c);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateCareerTableCommandReceived", "> Client '{0}' created the career table: {2}:{1}", m_PlayerName, c.TableName, res);
+            Send(c.EncodeResponse(res));
         }
 
         void m_CommandObserver_CreateTrainingTableCommandReceived(object sender, CommandEventArgs<CreateTrainingTableCommand> e)
         {
             CreateTrainingTableCommand c = e.Command;
-            Send(c.EncodeResponse(m_Lobby.CreateTrainingTable(c)));
+            int res = m_Lobby.CreateTrainingTable(c);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateTrainingTableCommandReceived", "> Client '{0}' created the career table: {2}:{1}", m_PlayerName, c.TableName, res);
+            Send(c.EncodeResponse(res));
         }
 
         void m_CommandObserver_GetUserCommandReceived(object sender, CommandEventArgs<GetUserCommand> e)
@@ -78,6 +83,7 @@ namespace BluffinPokerServer
             bool ok = (u != null && !m_Lobby.NameUsed(m_PlayerName));
             if( ok )
                 m_Lobby.AddName(m_PlayerName);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_AuthenticateUserCommandReceived", "> Client authenticate to Career Server as : {0}. Success={1}", m_PlayerName, ok);
             Send(e.Command.EncodeResponse(ok));
         }
 
@@ -87,6 +93,7 @@ namespace BluffinPokerServer
             bool ok = !DataManager.Persistance.IsUsernameExist(c.Username) && !DataManager.Persistance.IsDisplayNameExist(e.Command.DisplayName);
             if( ok)
                 DataManager.Persistance.Register(new UserInfo(c.Username,c.Password,c.Email,c.DisplayName,7500));
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateUserCommandReceived", "> Client register to Career Server as : {0}. Success={1}", c.Username, ok);
             Send(e.Command.EncodeResponse(ok));
         }
 
@@ -134,6 +141,7 @@ namespace BluffinPokerServer
                     {
                         m_Tables.Add(e.Command.TableID, client);
                         client.Start();
+                        LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Name, e.Command.TableID, client.Player.NoSeat);
                         Send(e.Command.EncodeResponse(client.Player.NoSeat));
                         client.SitIn();
                     }
@@ -158,7 +166,7 @@ namespace BluffinPokerServer
         {
             if (e is IOException)
             {
-                Console.WriteLine("Server lost connection with " + m_PlayerName);
+                LogManager.Log(LogLevel.Error, "ServerClientLobby.OnReceiveCrashed", "Server lost connection with {0}", m_PlayerName);
                 m_Lobby.RemoveName(m_PlayerName);
                 Close();
             }
@@ -168,13 +176,13 @@ namespace BluffinPokerServer
 
         protected override void Send(string line)
         {
-            Console.WriteLine("Server SEND to " + m_PlayerName + " [" + line + "]");
+            LogManager.Log(LogLevel.MessageLow, "ServerClientLobby.Send", "Server SEND to {0} [{1}]", m_PlayerName, line);
             base.Send(line);
         }
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
-            Console.WriteLine("Server RECV from " + m_PlayerName + " [" + e.Str + "]");
+            LogManager.Log(LogLevel.MessageLow, "ServerClientLobby.m_CommandObserver_CommandReceived", "Server RECV from {0} [{1}]", m_PlayerName, e.Str);
         }
 
         void m_CommandObserver_IdentifyCommandReceived(object sender, CommandEventArgs<IdentifyCommand> e)
@@ -182,6 +190,7 @@ namespace BluffinPokerServer
             IdentifyCommand c = e.Command;
             m_PlayerName = c.Name;
             bool ok = !m_Lobby.NameUsed(m_PlayerName) && !DataManager.Persistance.IsDisplayNameExist(m_PlayerName);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_IdentifyCommandReceived", "> Client indentifying training server as : {0}. Success={1}", m_PlayerName, ok);
             Send(c.EncodeResponse(ok));
             if (ok)
                 m_Lobby.AddName(m_PlayerName);
@@ -189,6 +198,7 @@ namespace BluffinPokerServer
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_DisconnectCommandReceived", "> Client disconnected: {0}", m_PlayerName);
             DisconnectCommand c = e.Command;
             m_Lobby.RemoveName(m_PlayerName);
             Close();

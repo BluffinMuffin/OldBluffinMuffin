@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using EricUtility;
 
 namespace BluffinPokerServer
 {
@@ -12,6 +13,8 @@ namespace BluffinPokerServer
             {
                 try
                 {
+                    LogManager.MessageLogged += new LogDelegate(LogManager_MessageLogged);
+
                     Dictionary<string, string> map = new Dictionary<string, string>();
                     for (int i = 0; i < args.Length; i += 2)
                         map.Add(args[i].ToLower(), args[i + 1]);
@@ -20,15 +23,68 @@ namespace BluffinPokerServer
                         port = int.Parse(map["-p"]);
                     ServerLobby server = new ServerLobby(port);
                     server.Start();
-                    Console.WriteLine("Server started on port " + port);
+                    LogManager.Log(LogLevel.Message, "BluffinPokerServer", "Server started on port {0}", port);
                 }
                 catch
                 {
-                    Console.WriteLine("ERROR: Can't start server !!");
+                    LogManager.Log(LogLevel.Error, "Program.Main", "Can't start server !!");
                 }
             }
             else
-                Console.WriteLine("ERROR: incorrect args");
+                LogManager.Log(LogLevel.Error, "Program.Main", "Incorrect number of application arguments");
+        }
+
+        static void LogManager_MessageLogged(string from, string message, int level)
+        {
+            ConsoleColor c = Console.ForegroundColor;
+
+            if (level >= (int)LogLevel.Error)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                message = "ERROR: " + message;
+            }
+            else if (level >= (int)LogLevel.ErrorLow)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+            }
+            else if (level >= (int)LogLevel.Warning)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                message = "WARNING: " + message;
+            }
+            else if (level >= (int)LogLevel.WarningLow)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+            }
+            else if (level >= (int)LogLevel.MessageVeryHigh)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                message = "IMPORTANT: " + message;
+            }
+            else if (level >= (int)LogLevel.Message)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (level >= (int)LogLevel.MessageLow)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                message = "DEBUG: " + message;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                message = "DEBUG: " + message;
+            }
+
+            // ATTENTION: This if must contain "LogLevel.Message" for RELEASE
+            //                                 "LogLevel.MessageLow" for DEBUGGING
+            //                                 "LogLevel.MessageVeryLow" for XTREM DEBUGGING
+            if (level >= (int)LogLevel.Message)
+                Console.WriteLine(message);
+
+
+
+            Console.ForegroundColor = c;
         }
     }
 }

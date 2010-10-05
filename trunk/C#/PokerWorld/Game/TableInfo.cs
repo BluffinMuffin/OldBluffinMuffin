@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
+using EricUtility;
 
 namespace PokerWorld.Game
 {
@@ -338,13 +339,13 @@ namespace PokerWorld.Game
         {
             if (m_RemainingSeats.Count == 0)
             {
-                Console.WriteLine("Too bad: m_RemainingSeats.size() == 0");
+                LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Not enough seats to join!");
                 return false;
             }
 
             if (ContainsPlayer(p))
             {
-                Console.WriteLine("Too bad: containsPlayer(p)");
+                LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already there someone with the same name!");
                 return false;
             }
 

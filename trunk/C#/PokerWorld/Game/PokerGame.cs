@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using EricUtility;
 
 namespace PokerWorld.Game
 {
@@ -192,7 +193,7 @@ namespace PokerWorld.Game
         {
             if (m_State == TypeState.Init || m_State == TypeState.End)
             {
-                Console.WriteLine("Bad timing:" + m_State);
+                LogManager.Log(LogLevel.Error, "PokerGame.JoinGame", "Can't join, bad timing: {0}", m_State);
                 return false;
             }
 
@@ -221,22 +222,22 @@ namespace PokerWorld.Game
         public bool PlayMoney(PlayerInfo p, int amount)
         {
             int amnt = Math.Min(amount, p.MoneySafeAmnt);
-            Console.WriteLine(p.Name + " is playing " + amnt + " money on state: " + m_State);
+            LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} is playing {1} money on state: {2}", p.Name, amnt, m_State);
             if (m_State == TypeState.WaitForBlinds)
             {
-                Console.WriteLine("Total blinds needed is " + m_Table.TotalBlindNeeded);
-                Console.WriteLine(p.Name + " is putting blind of " + amnt);
+                LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds needed is {0}", m_Table.TotalBlindNeeded);
+                LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "{0} is putting blind of {1}", p.Name, amnt);
                 int needed = m_Table.GetBlindNeeded(p);
                 if (amnt != needed)
                 {
                     if (p.CanBet(amnt + 1))
                     {
-                        Console.WriteLine(p.Name + " needed to put " + needed);
+                        LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to put a blind of {1} and tried {2}", p.Name, needed, amnt);
                         return false;
                     }
                     else
                     {
-                        Console.WriteLine("So ... All-In !");
+                        LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                         p.IsAllIn = true;
                         m_Table.NbAllIn++;
                         m_Table.AddAllInCap(p.MoneyBetAmnt + amnt);
@@ -244,7 +245,7 @@ namespace PokerWorld.Game
                 }
                 if (!p.TryBet(amnt))
                 {
-                    Console.WriteLine(p.Name + " just .. can't !! ");
+                    LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just put more money than he actually have ({1} > {2})", p.Name, amnt, p.MoneySafeAmnt);
                     return false;
                 }
                 m_Table.TotalPotAmnt += amnt;
@@ -252,9 +253,15 @@ namespace PokerWorld.Game
                 m_Table.AddBlindNeeded(p, 0);
 
                 if (amnt == m_Table.SmallBlindAmnt)
+                {
+                    LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED SMALL BLIND", p.Name);
                     PlayerActionTaken(this, new PlayerActionEventArgs(p, TypeAction.PostSmallBlind, amnt));
+                }
                 else
+                {
+                    LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED BIG BLIND", p.Name);
                     PlayerActionTaken(this, new PlayerActionEventArgs(p, TypeAction.PostBigBlind, amnt));
+                }
 
                 m_Table.TotalBlindNeeded -= needed;
 
@@ -264,22 +271,22 @@ namespace PokerWorld.Game
                 if (amnt > m_Table.HigherBet)
                     m_Table.HigherBet = amnt;
 
-                Console.WriteLine("Total blinds still needed is " + m_Table.TotalBlindNeeded);
+                LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds still needed is {0}", m_Table.TotalBlindNeeded);
                 return true;
             }
 
             else if (m_State == TypeState.Playing && m_RoundState == TypeRoundState.Betting)
             {
-                Console.WriteLine("Currently, we need " + m_Table.CallAmnt(p) + " minimum money from this player");
+                LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Currently, we need {0} minimum money from this player", m_Table.CallAmnt(p));
                 if (p.NoSeat != m_Table.NoSeatCurrPlayer)
                 {
-                    Console.WriteLine("BUT SCREW YOU, IT'S NOT YOUR TURN !!!!!");
+                    LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just played but it wasn't his turn", p.Name);
                     return false;
                 }
 
                 if (amnt == -1)
                 {
-                    Console.WriteLine("So ... the little girl folds !");
+                    LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} FOLDED", p.Name);
                     FoldPlayer(p);
                     ContinueBettingRound();
                     return true;
@@ -289,39 +296,39 @@ namespace PokerWorld.Game
                 {
                     if (p.CanBet(amnt + 1))
                     {
-                        Console.WriteLine("BUT SCREW YOU, IT'S NOT ENOUGH !!!!!");
+                        LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to play at least {1} and tried {2}", p.Name, amntNeeded, amnt);
                         return false;
                     }
                     amntNeeded = amnt;
                 }
                 if (!p.TryBet(amnt))
                 {
-                    Console.WriteLine("BUT SCREW YOU, YOU JUST CAN'T !!!!!");
+                    LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just put more money than he actually have ({1} > {2})", p.Name, amnt, p.MoneySafeAmnt);
                     return false;
                 }
                 PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
                 if (p.MoneySafeAmnt == 0)
                 {
-                    Console.WriteLine("So ... All-In ! getCurrentBetMoneyAmount: " + p.MoneyBetAmnt);
+                    LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                     p.IsAllIn = true;
                     m_Table.NbAllIn++;
                     m_Table.AddAllInCap(p.MoneyBetAmnt);
                 }
                 if (amnt == amntNeeded)
                 {
-                    Console.WriteLine("Will call with $" + amnt);
+                    LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} CALLED WITH ${1}", p.Name, amnt);
                     m_Table.TotalPotAmnt += amnt;
                     CallPlayer(p, amnt);
                     ContinueBettingRound();
                     return true;
                 }
-                Console.WriteLine("Will raise with $" + amnt);
+                LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} RAISED WITH ${1}", p.Name, amnt);
                 m_Table.TotalPotAmnt += amnt;
                 RaisePlayer(p, amnt);
                 ContinueBettingRound();
                 return true;
             }
-            Console.WriteLine("BUT WE DON'T CARE !!!!!");
+            LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} played money but the game is not it the right state", p.Name);
             return false;
         }
         private void StartRound()
@@ -530,12 +537,6 @@ namespace PokerWorld.Game
                 NextState(TypeState.WaitForBlinds);
                 GameBlindNeeded(this, new EventArgs());
             }
-            // Ne termine pas tout lorsque tlm est mort, permet de garder son STACK =)
-            //else if (m_Table.Players.Count > 1)
-            //{
-            //    m_State = TypeState.End;
-            //    EverythingEnded(this, new EventArgs());
-            //}
             else
             {
                 m_Table.NoSeatDealer = -1;

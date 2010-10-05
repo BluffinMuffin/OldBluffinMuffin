@@ -59,7 +59,7 @@ namespace PokerProtocol
 
         void GameServer_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
         {
-            Console.WriteLine("<Game:{0}> SEND [{1}]", m_Player.Name, e.Key);
+            LogManager.Log(LogLevel.MessageLow, "GameServer.GameServer_SendedSomething", "<Game:{0}> SEND [{1}]", m_Player.Name, e.Key);
         }
 
         public bool CanStartGame
@@ -204,7 +204,8 @@ namespace PokerProtocol
             m_IsConnected = false;
             m_Player.IsZombie = true;
             TableInfo t = m_Game.Table;
-            if( m_Game.State == PokerGame.TypeState.WaitForPlayers )
+            LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Name, m_ID);
+            if (m_Game.State == PokerGame.TypeState.WaitForPlayers)
                 m_Game.LeaveGame(m_Player);
             else if (t.NoSeatCurrPlayer == m_Player.NoSeat)
             {
@@ -217,7 +218,7 @@ namespace PokerProtocol
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
-            Console.WriteLine("<Game:{0}> RECV [{1}]", m_Player.Name, e.Str);
+            LogManager.Log(LogLevel.MessageLow, "GameServer.m_CommandObserver_CommandReceived", "<Game:{0}> RECV [{1}]", m_Player.Name, e.Str);
         }
     }
 }
