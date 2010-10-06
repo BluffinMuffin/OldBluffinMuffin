@@ -9,11 +9,11 @@ namespace BluffinPokerServer
     {
         static void Main(string[] args)
         {
+            LogManager.MessageLogged += new LogDelegate(LogManager_MessageLogged);
             if ((args.Length % 2) == 0)
             {
                 try
                 {
-                    LogManager.MessageLogged += new LogDelegate(LogManager_MessageLogged);
 
                     Dictionary<string, string> map = new Dictionary<string, string>();
                     for (int i = 0; i < args.Length; i += 2)

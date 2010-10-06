@@ -13,8 +13,10 @@ using PokerProtocol.Commands.Lobby.Career;
 
 namespace PokerProtocol
 {
+    public delegate void DisconnectDelegate();
     public class LobbyTCPClient : TCPCommunicator
     {
+        public event DisconnectDelegate ServerLost = delegate{};
         protected string m_PlayerName;
         protected string m_ServerAddress;
         protected int m_ServerPort;
@@ -119,7 +121,7 @@ namespace PokerProtocol
         }
         public void Disconnect()
         {
-            foreach(GameClient client in m_Clients.Values)
+            foreach (GameClient client in m_Clients.Values)
                 client.Disconnect();
             m_Clients.Clear();
             if (IsConnected)
@@ -208,7 +210,10 @@ namespace PokerProtocol
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTCPClient.Run", "{0} IS WAITING", m_PlayerName);
                 string line = Receive();
                 if (line == null)
+                {
+                    ServerLost();
                     return;
+                }
                 LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.Run", "{0} RECV [{1}]", m_PlayerName, line);
                 StringTokenizer token = new StringTokenizer(line, AbstractLobbyCommand.Delimitter);
                 String commandName = token.NextToken();

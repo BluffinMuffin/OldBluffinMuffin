@@ -18,6 +18,7 @@ namespace BluffinPokerClient
         public LobbyCareerForm(LobbyTCPClientCareer server)
         {
             m_Server = server;
+            m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
             InitializeComponent();
             tableList.setServer(m_Server);
             Text = server.User.DisplayName + " ~ " + lblTitle.Text;
@@ -26,6 +27,21 @@ namespace BluffinPokerClient
             if (tableList.NbTables == 0)
                 tableList.AddTable(false);
         }
+
+
+
+         public delegate void EmptyDelegate();
+         void m_Server_ServerLost()
+         {
+             if (InvokeRequired)
+             {
+                 // We're not in the UI thread, so we need to call BeginInvoke
+                 BeginInvoke(new EmptyDelegate(m_Server_ServerLost), new object[] { });
+                 return;
+             }
+             m_Server = null;
+             Close();
+         }
 
         private void RefreshInfo()
         {
