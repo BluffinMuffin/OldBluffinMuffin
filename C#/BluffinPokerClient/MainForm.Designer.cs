@@ -133,7 +133,7 @@
             this.clstServerName.FormattingEnabled = true;
             this.clstServerName.Items.AddRange(new object[] {
             "127.0.0.1",
-            "SRV-PRJ-05.dmi.usherb.ca"});
+            "zeus42.is-a-geek.com"});
             this.clstServerName.Location = new System.Drawing.Point(100, 6);
             this.clstServerName.Name = "clstServerName";
             this.clstServerName.Size = new System.Drawing.Size(353, 21);
@@ -179,7 +179,7 @@
             // 
             this.mainHSplit.Panel2.Controls.Add(this.rightVSplit);
             this.mainHSplit.Size = new System.Drawing.Size(624, 412);
-            this.mainHSplit.SplitterDistance = 381;
+            this.mainHSplit.SplitterDistance = 384;
             this.mainHSplit.SplitterWidth = 1;
             this.mainHSplit.TabIndex = 1;
             // 
@@ -311,7 +311,7 @@
             this.lblTitNewPlayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitNewPlayer.Location = new System.Drawing.Point(0, 0);
             this.lblTitNewPlayer.Name = "lblTitNewPlayer";
-            this.lblTitNewPlayer.Size = new System.Drawing.Size(381, 38);
+            this.lblTitNewPlayer.Size = new System.Drawing.Size(384, 38);
             this.lblTitNewPlayer.TabIndex = 0;
             this.lblTitNewPlayer.Text = "New Player";
             this.lblTitNewPlayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -343,8 +343,8 @@
             this.rightVSplit.Panel2.Controls.Add(this.lblPlayerName);
             this.rightVSplit.Panel2.Controls.Add(this.btnStartTraining);
             this.rightVSplit.Panel2.Controls.Add(this.label1);
-            this.rightVSplit.Size = new System.Drawing.Size(242, 412);
-            this.rightVSplit.SplitterDistance = 256;
+            this.rightVSplit.Size = new System.Drawing.Size(239, 412);
+            this.rightVSplit.SplitterDistance = 259;
             this.rightVSplit.SplitterWidth = 1;
             this.rightVSplit.TabIndex = 0;
             // 
@@ -415,7 +415,7 @@
             this.lblTitExistPlayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitExistPlayer.Location = new System.Drawing.Point(0, 0);
             this.lblTitExistPlayer.Name = "lblTitExistPlayer";
-            this.lblTitExistPlayer.Size = new System.Drawing.Size(242, 38);
+            this.lblTitExistPlayer.Size = new System.Drawing.Size(239, 38);
             this.lblTitExistPlayer.TabIndex = 1;
             this.lblTitExistPlayer.Text = "Existing Player";
             this.lblTitExistPlayer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -457,7 +457,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(242, 38);
+            this.label1.Size = new System.Drawing.Size(239, 38);
             this.label1.TabIndex = 2;
             this.label1.Text = "Training";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
