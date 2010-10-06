@@ -19,6 +19,7 @@ namespace BluffinPokerClient
         public LobbyTrainingForm(LobbyTCPClient server)
         {
             m_Server = server;
+            m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
             InitializeComponent();
             tableList.setServer(m_Server);
             lblStatus.Text = "[Training] Connected as " + server.PlayerName;
@@ -26,6 +27,19 @@ namespace BluffinPokerClient
             tableList.RefreshList();
             if (tableList.NbTables == 0)
                 tableList.AddTable(true);
+        }
+
+        public delegate void EmptyDelegate();
+        void m_Server_ServerLost()
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EmptyDelegate(m_Server_ServerLost), new object[] { });
+                return;
+            }
+            m_Server = null;
+            Close();
         }
         public void AllowJoinOrLeave()
         {

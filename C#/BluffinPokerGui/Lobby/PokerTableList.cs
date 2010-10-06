@@ -37,6 +37,13 @@ namespace BluffinPokerGUI.Lobby
         public void setServer(LobbyTCPClient server)
         {
             m_Server = server;
+            m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
+        }
+
+        void m_Server_ServerLost()
+        {
+            foreach (AbstractTableForm f in guis.Values)
+                f.ForceKill();
         }
 
         public int NbTables { get { return datTables.RowCount; } }
@@ -166,7 +173,8 @@ namespace BluffinPokerGUI.Lobby
                 guis.Add(p_noPort, gui);
             gui.FormClosed += delegate
             {
-                LeaveTable(p_noPort);
+                if( !gui.DirectKill )
+                    LeaveTable(p_noPort);
             };
             return true;
         }
