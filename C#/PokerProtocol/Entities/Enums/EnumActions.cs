@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerProtocol
+namespace PokerProtocol.Entities.Enums
 {
-    public enum PossibleActionType
+    public enum EnumActions
     {
         None,
         Join,

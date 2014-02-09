@@ -78,9 +78,9 @@
     <Compile Include="Commands\Lobby\Training\IdentifyResponse.cs" />
     <Compile Include="Commands\Lobby\JoinTableResponse.cs" />
     <Compile Include="Commands\Lobby\Training\ListTableTrainingResponse.cs" />
-    <Compile Include="PossibleActionType.cs" />
-    <Compile Include="TupleTableInfoCareer.cs" />
-    <Compile Include="TupleTableInfoTraining.cs" />
+    <Compile Include="Entities\Enums\EnumActions.cs" />
+    <Compile Include="Entities\TableCareer.cs" />
+    <Compile Include="Entities\TableTraining.cs" />
     <Compile Include="LobbyTCPClientTraining.cs" />
     <Compile Include="LobbyTCPClientCareer.cs" />
     <Compile Include="GameClient.cs" />
@@ -90,8 +90,8 @@
     <Compile Include="Observer\GameServerCommandObserver.cs" />
     <Compile Include="Observer\LobbyServerCommandObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TuplePlayerInfo.cs" />
-    <Compile Include="TupleTableInfo.cs" />
+    <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\Table.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EricUtilityCollections\EricUtilityCollections_2013.csproj">

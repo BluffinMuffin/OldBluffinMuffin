@@ -10,6 +10,8 @@ using PokerProtocol.Commands.Lobby.Training;
 using PokerProtocol.Commands.Lobby.Career;
 using System.Net;
 using EricUtility;
+using PokerProtocol.Entities;
+using PokerProtocol.Entities.Enums;
 
 namespace BluffinPokerServer
 {
@@ -101,9 +103,9 @@ namespace BluffinPokerServer
             return m_LastUsedID;
         }
 
-        public List<TupleTableInfoTraining> ListTrainingTables()
+        public List<TableTraining> ListTrainingTables()
         {
-            List<TupleTableInfoTraining> tables = new List<TupleTableInfoTraining>();
+            List<TableTraining> tables = new List<TableTraining>();
             List<int> tablesToRemove = new List<int>();
 
             foreach (KeyValuePair<int, PokerGame> kvp in m_Games)
@@ -114,7 +116,7 @@ namespace BluffinPokerServer
                 {
                     TableInfo t = game.Table;
                     if( t is TableInfoTraining )
-                        tables.Add(new TupleTableInfoTraining(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, PossibleActionType.None));
+                        tables.Add(new TableTraining(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, EnumActions.None));
                 }
                 else
                     tablesToRemove.Add(noPort);
@@ -124,9 +126,9 @@ namespace BluffinPokerServer
             return tables;
         }
 
-        public List<TupleTableInfoCareer> ListCareerTables()
+        public List<TableCareer> ListCareerTables()
         {
-            List<TupleTableInfoCareer> tables = new List<TupleTableInfoCareer>();
+            List<TableCareer> tables = new List<TableCareer>();
             List<int> tablesToRemove = new List<int>();
 
             foreach (KeyValuePair<int, PokerGame> kvp in m_Games)
@@ -137,7 +139,7 @@ namespace BluffinPokerServer
                 {
                     TableInfo t = game.Table;
                     if (t is TableInfoCareer)
-                        tables.Add(new TupleTableInfoCareer(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, PossibleActionType.None));
+                        tables.Add(new TableCareer(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, EnumActions.None));
                 }
                 else
                     tablesToRemove.Add(noPort);

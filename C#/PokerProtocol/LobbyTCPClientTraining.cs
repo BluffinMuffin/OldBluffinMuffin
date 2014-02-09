@@ -11,6 +11,7 @@ using PokerWorld.Game;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
+using PokerProtocol.Entities;
 
 namespace PokerProtocol
 {
@@ -24,13 +25,42 @@ namespace PokerProtocol
         public bool Identify(string name)
         {
             m_PlayerName = name;
+
             Send(new IdentifyCommand(m_PlayerName));
-            StringTokenizer token = ReceiveCommand(IdentifyResponse.COMMAND_NAME);
+
+            StringTokenizer token = WaitAndReceive(IdentifyResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return false;
-            IdentifyResponse response = new IdentifyResponse(token);
-            return response.OK;
+
+            return new IdentifyResponse(token).OK;
         }
-        
+
+        public List<TableTraining> ListTables()
+        {
+            Send(new ListTableCommand(true));
+
+            StringTokenizer token = WaitAndReceive(ListTableTrainingResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                ListTableTrainingResponse response = new ListTableTrainingResponse(token);
+                return response.Tables;
+            }
+            else
+                return new List<TableTraining>();
+        }
+
+        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit, int startingMoney)
+        {
+            Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, startingMoney));
+
+            StringTokenizer token = WaitAndReceive(CreateTrainingTableResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                CreateTrainingTableResponse response = new CreateTrainingTableResponse(token);
+                return response.Port;
+            }
+            else
+                return -1;
+        }
     }
 }
