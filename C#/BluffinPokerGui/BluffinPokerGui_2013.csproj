@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{473CC9C5-13CC-46E7-B3D0-B4AF4B24FD67}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BluffinPokerGUI</RootNamespace>
+    <AssemblyName>BluffinPokerGUI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Lobby\AddTableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lobby\AddTableControl.Designer.cs">
+      <DependentUpon>AddTableControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="Game\AbstractTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\AbstractTableForm.Designer.cs">
+      <DependentUpon>AbstractTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\ButtonPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Game\CardPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Game\PokerPlayerHud.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Game\PokerPlayerHud.Designer.cs">
+      <DependentUpon>PokerPlayerHud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\TableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\TableForm.Designer.cs">
+      <DependentUpon>TableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Game\TableViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\TableViewerForm.Designer.cs">
+      <DependentUpon>TableViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HandStrengthForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HandStrengthForm.Designer.cs">
+      <DependentUpon>HandStrengthForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lobby\AddTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lobby\AddTableForm.Designer.cs">
+      <DependentUpon>AddTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lobby\NameUsedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lobby\NameUsedForm.Designer.cs">
+      <DependentUpon>NameUsedForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lobby\PokerTableList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lobby\PokerTableList.Designer.cs">
+      <DependentUpon>PokerTableList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogConsole.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogConsole.Designer.cs">
+      <DependentUpon>LogConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Lobby\AddTableControl.resx">
+      <DependentUpon>AddTableControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\AbstractTableForm.resx">
+      <DependentUpon>AbstractTableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\PokerPlayerHud.resx">
+      <DependentUpon>PokerPlayerHud.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\TableForm.resx">
+      <DependentUpon>TableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Game\TableViewerForm.resx">
+      <DependentUpon>TableViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HandStrengthForm.resx">
+      <DependentUpon>HandStrengthForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\AddTableForm.resx">
+      <DependentUpon>AddTableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\NameUsedForm.resx">
+      <DependentUpon>NameUsedForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\PokerTableList.resx">
+      <DependentUpon>PokerTableList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogConsole.resx">
+      <DependentUpon>LogConsole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\big_blind.png" />
+    <Content Include="Resources\dealer.png" />
+    <Content Include="Resources\hands_strength.png" />
+    <Content Include="Resources\small_blind.png" />
+    <Content Include="Resources\table.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EricUtilityGamesWinForms\EricUtilityGamesWinForms_2013.csproj">
+      <Project>{f6ceba42-0faf-42e8-9a16-55a42d861ea6}</Project>
+      <Name>EricUtilityGamesWinForms_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_2013.csproj">
+      <Project>{3177997f-d216-4b02-855b-9bde6406d51f}</Project>
+      <Name>EricUtilityGames_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
+      <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
+      <Name>EricUtilityNetworking_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
+      <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>
+      <Name>EricUtility_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerProtocol\PokerProtocol_2013.csproj">
+      <Project>{d442bf36-e1b5-4f91-975a-b10b1f23e41a}</Project>
+      <Name>PokerProtocol_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PokerWorld\PokerWorld_2013.csproj">
+      <Project>{fbaa74eb-22ce-4c30-9d10-0214b605578a}</Project>
+      <Name>PokerWorld_2013</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
