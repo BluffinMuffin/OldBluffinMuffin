@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using PokerProtocol;
 using BluffinPokerGui.Game;
 using EricUtility;
+using PokerProtocol.Entities;
 
 namespace BluffinPokerGUI.Lobby
 {
@@ -56,22 +57,22 @@ namespace BluffinPokerGUI.Lobby
         public void RefreshList()
         {
             datTables.Rows.Clear();
-            List<TupleTableInfo> lst = new List<TupleTableInfo>();
+            List<Table> lst = new List<Table>();
             if (ShowTraining)
             {
-                List<TupleTableInfoTraining> lstT = m_Server.getListTrainingTables();
+                List<TableTraining> lstT = ((LobbyTCPClientTraining)m_Server).ListTables();
                 lst.AddRange(lstT.ToArray());
             }
             if (ShowCareer)
             {
-                List<TupleTableInfoCareer> lstT = m_Server.getListCareerTables();
+                List<TableCareer> lstT = ((LobbyTCPClientCareer)m_Server).ListTables();
                 lst.AddRange(lstT.ToArray());
             }
             lst.Sort();
             for (int i = 0; i < lst.Count; ++i)
             {
-                TupleTableInfo info = lst[i];
-                string type = info is TupleTableInfoTraining ? "Training" : "Real";
+                Table info = lst[i];
+                string type = info is TableTraining ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.NoPort;
                 datTables.Rows[i].Cells[1].Value = info.TableName;
@@ -94,9 +95,9 @@ namespace BluffinPokerGUI.Lobby
             {
                 int noPort = -1;
                 if (form.Training)
-                    noPort = m_Server.CreateTrainingTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.TrainingStartingAmount);
+                    noPort = ((LobbyTCPClientTraining)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.TrainingStartingAmount);
                 else
-                    noPort = m_Server.CreateCareerTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit);
+                    noPort = ((LobbyTCPClientCareer)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit);
                 
                 if (noPort != -1)
                 {

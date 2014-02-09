@@ -4,6 +4,7 @@ using EricUtility;
 using EricUtility.Games.CardGame;
 using EricUtility.Networking.Commands;
 using PokerWorld.Game;
+using PokerProtocol.Entities;
 
 namespace PokerProtocol.Commands.Game
 {
@@ -16,7 +17,7 @@ namespace PokerProtocol.Commands.Game
         private readonly List<int> m_PotsAmount;
         private readonly List<int> m_BoardCardIDs;
         private readonly int m_NbPlayers;
-        private readonly List<TuplePlayerInfo> m_Seats;
+        private readonly List<Player> m_Seats;
         private readonly TypeBet m_Limit;
 
         public int TotalPotAmount
@@ -39,7 +40,7 @@ namespace PokerProtocol.Commands.Game
         {
             get { return m_NbPlayers; }
         }
-        public List<TuplePlayerInfo> Seats
+        public List<Player> Seats
         {
             get { return m_Seats; }
         }
@@ -52,7 +53,7 @@ namespace PokerProtocol.Commands.Game
         {
             m_PotsAmount = new List<int>();
             m_BoardCardIDs = new List<int>();
-            m_Seats = new List<TuplePlayerInfo>();
+            m_Seats = new List<Player>();
 
             m_TotalPotAmount = int.Parse(argsToken.NextToken());
             m_NbSeats = int.Parse(argsToken.NextToken());
@@ -67,12 +68,12 @@ namespace PokerProtocol.Commands.Game
             m_NbPlayers = int.Parse(argsToken.NextToken());
             for (int i = 0; i < m_NbPlayers; ++i)
             {
-                m_Seats.Add(new TuplePlayerInfo(argsToken));
+                m_Seats.Add(new Player(argsToken));
             }
             m_Limit = (TypeBet)int.Parse(argsToken.NextToken());
         }
 
-        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<TuplePlayerInfo> seats, TypeBet limit)
+        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats, TypeBet limit)
         {
             m_TotalPotAmount = totalPotAmount;
             m_NbSeats = nbSeats;
@@ -87,7 +88,7 @@ namespace PokerProtocol.Commands.Game
     {
         m_PotsAmount = new List<int>();
         m_BoardCardIDs = new List<int>();
-        m_Seats = new List<TuplePlayerInfo>();
+        m_Seats = new List<Player>();
         
         m_TotalPotAmount = info.TotalPotAmnt;
         m_NbSeats = info.NbMaxSeats;
@@ -110,7 +111,7 @@ namespace PokerProtocol.Commands.Game
         
         for (int i = 0; i < info.NbMaxSeats; ++i)
         {
-            TuplePlayerInfo seat = new TuplePlayerInfo(i);
+            Player seat = new Player(i);
             m_Seats.Add(seat);
             PlayerInfo player = info.GetPlayer(i);
             seat.IsEmpty = (player == null);

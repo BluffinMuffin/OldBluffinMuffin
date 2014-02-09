@@ -11,6 +11,7 @@ using PokerWorld.Game;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
+using PokerProtocol.Entities;
 
 namespace PokerProtocol
 {
@@ -34,51 +35,86 @@ namespace PokerProtocol
         public bool CheckUsernameAvailable(string username)
         {
             Send(new CheckUserExistCommand(username));
-            StringTokenizer token = ReceiveCommand(CheckUserExistResponse.COMMAND_NAME);
+
+            StringTokenizer token = WaitAndReceive(CheckUserExistResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return false;
-            CheckUserExistResponse response = new CheckUserExistResponse(token);
-            return !response.Exist;
+
+            return !new CheckUserExistResponse(token).Exist;
         }
 
         public bool CheckDisplayNameAvailable(string display)
         {
             Send(new CheckDisplayExistCommand(display));
-            StringTokenizer token = ReceiveCommand(CheckDisplayExistResponse.COMMAND_NAME);
+
+            StringTokenizer token = WaitAndReceive(CheckDisplayExistResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return false;
-            CheckDisplayExistResponse response = new CheckDisplayExistResponse(token);
-            return !response.Exist;
+
+            return !new CheckDisplayExistResponse(token).Exist;
         }
+
         public bool CreateUser(string username, string password, string email, string displayname)
         {
             Send(new CreateUserCommand(username, password, email, displayname));
-            StringTokenizer token = ReceiveCommand(CreateUserResponse.COMMAND_NAME);
+
+            StringTokenizer token = WaitAndReceive(CreateUserResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return false;
-            CreateUserResponse response = new CreateUserResponse(token);
-            return response.Success;
+
+            return new CreateUserResponse(token).Success;
         }
 
         public bool Authenticate(string username, string password)
         {
             Send(new AuthenticateUserCommand(username, password));
-            StringTokenizer token = ReceiveCommand(AuthenticateUserResponse.COMMAND_NAME);
+
+            StringTokenizer token = WaitAndReceive(AuthenticateUserResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return false;
-            AuthenticateUserResponse response = new AuthenticateUserResponse(token);
-            return response.Success;
+
+            return new AuthenticateUserResponse(token).Success;
         }
 
         public void RefreshUserInfo(string username)
         {
             Send(new GetUserCommand(username));
-            StringTokenizer token = ReceiveCommand(GetUserResponse.COMMAND_NAME);
+
+            StringTokenizer token = WaitAndReceive(GetUserResponse.COMMAND_NAME);
             if (!token.HasMoreTokens())
                 return;
+
             GetUserResponse response = new GetUserResponse(token);
             m_PlayerName = response.DisplayName;
             m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
+        }
+
+        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+        {
+            Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
+
+            StringTokenizer token = WaitAndReceive(CreateCareerTableResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                CreateCareerTableResponse response = new CreateCareerTableResponse(token);
+                return response.Port;
+            }
+            else
+                return -1;
+        }
+
+        public List<TableCareer> ListTables()
+        {
+            Send(new ListTableCommand(false));
+
+            StringTokenizer token = WaitAndReceive(ListTableCareerResponse.COMMAND_NAME);
+            if (token.HasMoreTokens())
+            {
+                ListTableCareerResponse response = new ListTableCareerResponse(token);
+                return response.Tables;
+            }
+            else
+                return new List<TableCareer>();
         }
     }
 }
