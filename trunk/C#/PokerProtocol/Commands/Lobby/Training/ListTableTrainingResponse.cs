@@ -8,11 +8,6 @@ namespace PokerProtocol.Commands.Lobby.Training
 {
     public class ListTableTrainingResponse : AbstractLobbyResponse<ListTableCommand>
     {
-
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyTRAINING_LIST_TABLES_RESPONSE";
         private readonly List<TupleTableInfoTraining> m_Tables;
         public List<TupleTableInfoTraining> Tables

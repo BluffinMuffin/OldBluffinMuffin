@@ -9,10 +9,6 @@ namespace PokerProtocol.Commands.Lobby
 {
     public class JoinTableCommand : AbstractLobbyCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyJOIN_TABLE";
 
         private readonly int m_TableID;

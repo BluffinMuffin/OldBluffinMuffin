@@ -9,13 +9,8 @@ namespace PokerProtocol.Commands.Lobby.Career
 {
     public class CreateCareerTableCommand : AbstractCreateTableCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyCAREER_CREATE_TABLE";
         
-
         public CreateCareerTableCommand(StringTokenizer argsToken) : base(argsToken)
         {
         }

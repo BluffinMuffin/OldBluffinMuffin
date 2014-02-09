@@ -6,10 +6,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class PlayerPlayMoneyCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gamePLAY_MONEY";
 
         private readonly int m_Played;

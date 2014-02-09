@@ -8,11 +8,6 @@ namespace PokerProtocol.Commands.Lobby.Career
 {
     public class AuthenticateUserResponse : AbstractLobbyResponse<AuthenticateUserCommand>
     {
-
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyCAREER_AUTHENTICATE_USER_RESPONSE";
         private readonly bool m_Success;
         public bool Success

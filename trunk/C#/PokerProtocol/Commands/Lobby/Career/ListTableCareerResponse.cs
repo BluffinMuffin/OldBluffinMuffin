@@ -8,11 +8,6 @@ namespace PokerProtocol.Commands.Lobby.Career
 {
     public class ListTableCareerResponse : AbstractLobbyResponse<ListTableCommand>
     {
-
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyCAREER_LIST_TABLES_RESPONSE";
         private readonly List<TupleTableInfoCareer> m_Tables;
         public List<TupleTableInfoCareer> Tables

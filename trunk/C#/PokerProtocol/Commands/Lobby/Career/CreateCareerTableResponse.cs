@@ -8,11 +8,6 @@ namespace PokerProtocol.Commands.Lobby.Career
 {
     public class CreateCareerTableResponse : AbstractLobbyResponse<CreateCareerTableCommand>
     {
-
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyCAREER_CREATE_TABLE_RESPONSE";
         private readonly int m_Port;
         public int Port

@@ -9,10 +9,6 @@ namespace PokerProtocol.Commands.Lobby.Training
 {
     public class CreateTrainingTableCommand : AbstractCreateTableCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyTRAINING_CREATE_TABLE";
 
         private int m_StartingMoney;

@@ -7,10 +7,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class PlayerHoleCardsChangedCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gameHOLE_CARDS_CHANGED";
 
         private readonly int m_PlayerPos;

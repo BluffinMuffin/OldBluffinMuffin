@@ -9,10 +9,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class TableInfoCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gameTABLE_INFO";
 
         private readonly int m_TotalPotAmount;
