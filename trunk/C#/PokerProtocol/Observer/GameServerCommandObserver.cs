@@ -10,17 +10,9 @@ namespace PokerProtocol.Observer
 {
     public class GameServerCommandObserver : CommandObserver
     {
+        protected override char Delimitter { get { return AbstractCommand.Delimitter; } }
+
         public event EventHandler<CommandEventArgs<PlayerPlayMoneyCommand>> PlayMoneyCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
-
-        protected override void receiveSomething(string line)
-        {
-            StringTokenizer token = new StringTokenizer(line, AbstractCommand.Delimitter);
-            string commandName = token.NextToken();
-            if (commandName == PlayerPlayMoneyCommand.COMMAND_NAME)
-                PlayMoneyCommandReceived(this, new CommandEventArgs<PlayerPlayMoneyCommand>(new PlayerPlayMoneyCommand(token)));
-            else if (commandName == DisconnectCommand.COMMAND_NAME)
-                DisconnectCommandReceived(this, new CommandEventArgs<DisconnectCommand>(new DisconnectCommand(token)));
-        }
     }
 }
