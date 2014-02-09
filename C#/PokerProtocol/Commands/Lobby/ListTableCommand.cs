@@ -10,17 +10,12 @@ namespace PokerProtocol.Commands.Lobby
 {
     public class ListTableCommand : AbstractLobbyCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
         private readonly bool m_Training;
         public bool Training
         {
             get { return m_Training; }
         } 
-
 
         public ListTableCommand(StringTokenizer argsToken)
         {

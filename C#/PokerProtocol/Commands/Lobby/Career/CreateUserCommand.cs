@@ -9,10 +9,6 @@ namespace PokerProtocol.Commands.Lobby.Career
 {
     public class CreateUserCommand : AbstractLobbyCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyCAREER_CREATE_USER";
         
         private readonly string m_Username;

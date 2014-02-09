@@ -6,10 +6,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class PlayerTurnBeganCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gamePLAYER_TURN_BEGAN";
 
         private readonly int m_PlayerPos;

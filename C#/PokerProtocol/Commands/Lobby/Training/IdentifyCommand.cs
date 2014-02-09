@@ -8,10 +8,6 @@ namespace PokerProtocol.Commands.Lobby.Training
 {
     public class IdentifyCommand : AbstractLobbyCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyTRAINING_IDENTIFY";
 
         private readonly string m_Name;

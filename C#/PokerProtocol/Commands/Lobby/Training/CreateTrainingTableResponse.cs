@@ -8,11 +8,6 @@ namespace PokerProtocol.Commands.Lobby.Training
 {
     public class CreateTrainingTableResponse : AbstractLobbyResponse<CreateTrainingTableCommand>
     {
-
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyTRAINING_CREATE_TABLE_RESPONSE";
         private readonly int m_Port;
         public int Port

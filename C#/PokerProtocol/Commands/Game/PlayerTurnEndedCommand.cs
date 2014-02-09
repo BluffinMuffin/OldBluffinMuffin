@@ -7,10 +7,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class PlayerTurnEndedCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gamePLAYER_TURN_ENDED";
 
         private readonly int m_PlayerPos;

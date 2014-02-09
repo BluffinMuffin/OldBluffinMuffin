@@ -9,10 +9,6 @@ namespace PokerProtocol.Commands.Lobby.Career
 {
     public class CheckDisplayExistCommand : AbstractLobbyCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "lobbyCAREER_CHECK_DISPLAY_EXIST";
         
         private readonly string m_DisplayName;

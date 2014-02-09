@@ -8,10 +8,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class GameStartedCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gameSTARTED";
 
         private readonly int m_NoSeatD;

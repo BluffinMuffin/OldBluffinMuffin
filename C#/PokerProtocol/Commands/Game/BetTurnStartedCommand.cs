@@ -8,10 +8,6 @@ namespace PokerProtocol.Commands.Game
 {
     public class BetTurnStartedCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gameBET_TURN_STARTED";
 
         private readonly TypeRound m_Round;

@@ -8,12 +8,7 @@ namespace PokerProtocol.Commands.Game
 {
     public class TableClosedCommand : AbstractCommand
     {
-        protected override string CommandName
-        {
-            get { return COMMAND_NAME; }
-        }
         public static string COMMAND_NAME = "gameTABLE_CLOSED";
-
 
         public TableClosedCommand(StringTokenizer argsToken)
         {
