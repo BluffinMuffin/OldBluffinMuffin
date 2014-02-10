@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
 using EricUtility.Games.CardGame;
+using PokerWorld.Game.Enums;
+using PokerWorld.Game.PokerEventArgs;
 
 namespace BluffinPokerGui.Game
 {
@@ -147,7 +149,7 @@ namespace BluffinPokerGui.Game
             }
             for (int i = 0; i < huds.Length; ++i)
             {
-                huds[i].DoAction(TypeAction.DoNothing, 0);
+                huds[i].DoAction(GameActionEnum.DoNothing, 0);
                 bets[i].Text = "";
             }
         }
@@ -230,7 +232,7 @@ namespace BluffinPokerGui.Game
                         php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
                         php.Alive = false;
                     }
-                    php.DoAction(TypeAction.DoNothing);
+                    php.DoAction(GameActionEnum.DoNothing);
                 }
             }
         }
@@ -271,7 +273,7 @@ namespace BluffinPokerGui.Game
             }
             PlayerInfo p = e.Player;
             PokerPlayerHud php = huds[p.NoSeat];
-            php.DoAction(TypeAction.DoNothing, 0);
+            php.DoAction(GameActionEnum.DoNothing, 0);
             php.SetPlaying();
         }
 
@@ -291,7 +293,7 @@ namespace BluffinPokerGui.Game
             php.SetSleeping();
             php.DoAction(e.Action, e.AmountPlayed);
             lblTotalPot.Text = "$" + table.TotalPotAmnt;
-            if (e.Action == TypeAction.Fold)
+            if (e.Action == GameActionEnum.Fold)
                 php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
             if (p.MoneyBetAmnt > 0)
                 bet.Text = "$" + p.MoneyBetAmnt;
@@ -395,7 +397,7 @@ namespace BluffinPokerGui.Game
             }
             TableInfo table = m_Game.Table;
             WriteLine("==> Beginning of " + e.Round.ToString());
-            if (e.Round != TypeRound.Preflop)
+            if (e.Round != RoundEnum.Preflop)
             {
                 Write("==> Current board cards:");
                 for (int i = 0; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
@@ -536,7 +538,7 @@ namespace BluffinPokerGui.Game
         private void InstallPlayer(PokerPlayerHud php, PlayerInfo player)
         {
             php.PlayerName = player.Name;
-            php.DoAction(TypeAction.DoNothing);
+            php.DoAction(GameActionEnum.DoNothing);
             GameCard[] cards = player.Cards;
             php.SetCards(cards[0], cards[1]);
             php.SetMoney(player.MoneySafeAmnt);

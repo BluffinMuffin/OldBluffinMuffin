@@ -12,6 +12,7 @@ using PokerProtocol.Commands.Lobby.Training;
 using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
 using PokerProtocol.Entities;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol
 {
@@ -49,7 +50,7 @@ namespace PokerProtocol
                 return new List<TableTraining>();
         }
 
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit, int startingMoney)
+        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int startingMoney)
         {
             Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, startingMoney));
 

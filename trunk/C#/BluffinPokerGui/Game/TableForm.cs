@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
+using PokerWorld.Game.PokerEventArgs;
 
 namespace BluffinPokerGui.Game
 {
@@ -50,10 +51,10 @@ namespace BluffinPokerGui.Game
         public override void SetGame(PokerWorld.Game.IPokerGame c, int s)
         {
             base.SetGame(c, s);
-            m_Game.PlayerActionNeeded += new EventHandler<PokerWorld.Game.HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);
+            m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);
         }
 
-        void m_Game_PlayerActionNeeded(object sender, PokerWorld.Game.HistoricPlayerInfoEventArgs e)
+        void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {

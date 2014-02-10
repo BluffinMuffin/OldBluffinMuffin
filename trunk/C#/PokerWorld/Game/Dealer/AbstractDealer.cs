@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
 
-namespace PokerWorld.Game
+namespace PokerWorld.Game.Dealer
 {
     public abstract class AbstractDealer
     {

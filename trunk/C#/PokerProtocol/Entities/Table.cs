@@ -4,6 +4,7 @@ using System.Text;
 using PokerWorld.Game;
 using EricUtility;
 using PokerProtocol.Entities.Enums;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Entities
 {
@@ -14,10 +15,10 @@ namespace PokerProtocol.Entities
         public int BigBlind { get; set; }
         public int NbPlayers { get; set; }
         public int NbSeats { get; set; }
-        public TypeBet Limit { get; set; }
-        public EnumActions PossibleAction { get; set; }
+        public BetEnum Limit { get; set; }
+        public LobyActionEnum PossibleAction { get; set; }
 
-        public Table(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, TypeBet limit, EnumActions possibleAction)
+        public Table(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, BetEnum limit, LobyActionEnum possibleAction)
         {
             NoPort = p_noPort;
             TableName = p_tableName;
@@ -35,8 +36,8 @@ namespace PokerProtocol.Entities
             BigBlind = int.Parse(argsToken.NextToken());
             NbPlayers = int.Parse(argsToken.NextToken());
             NbSeats = int.Parse(argsToken.NextToken());
-            Limit = (TypeBet)int.Parse(argsToken.NextToken());
-            PossibleAction = (EnumActions)int.Parse(argsToken.NextToken());
+            Limit = (BetEnum)int.Parse(argsToken.NextToken());
+            PossibleAction = (LobyActionEnum)int.Parse(argsToken.NextToken());
         }
         public int CompareTo(Table other)
         {

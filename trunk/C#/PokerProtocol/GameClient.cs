@@ -12,6 +12,8 @@ using EricUtility.Games.CardGame;
 using System.IO;
 using EricUtility;
 using PokerProtocol.Entities;
+using PokerWorld.Game.Enums;
+using PokerWorld.Game.PokerEventArgs;
 
 namespace PokerProtocol
 {
@@ -108,7 +110,7 @@ namespace PokerProtocol
             BetTurnStartedCommand cmd = e.Command;
             SetCards(cmd.CardsID);
             m_PokerTable.Round = cmd.Round;
-            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == TypeRound.Preflop ? m_PokerTable.NoSeatBigBlind : m_PokerTable.NoSeatDealer).NoSeat;
+            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundEnum.Preflop ? m_PokerTable.NoSeatBigBlind : m_PokerTable.NoSeatDealer).NoSeat;
 
             GameBettingRoundStarted(this, new RoundEventArgs(cmd.Round));
         }
@@ -211,7 +213,7 @@ namespace PokerProtocol
 
             if (p != null)
             {
-                if (cmd.ActionType == TypeAction.Raise)
+                if (cmd.ActionType == GameActionEnum.Raise)
                     m_PokerTable.NoSeatLastRaise = p.NoSeat;
 
                 p.MoneyBetAmnt = cmd.PlayerBet;

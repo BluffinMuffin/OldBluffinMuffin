@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
+using PokerWorld.Game.Enums;
 
 namespace PokerWorld.Game
 {
@@ -18,7 +19,7 @@ namespace PokerWorld.Game
         {
         }
 
-        public TableInfoCareer(string name, int bigBlind, int nbSeats, TypeBet limit)
+        public TableInfoCareer(string name, int bigBlind, int nbSeats, BetEnum limit)
             : base(name, bigBlind, nbSeats, limit)
         {
         }

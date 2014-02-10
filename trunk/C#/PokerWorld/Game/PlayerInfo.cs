@@ -3,53 +3,36 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
 using PokerWorld.HandEvaluator;
+using System.Linq;
 
 namespace PokerWorld.Game
 {
     public class PlayerInfo
     {
-        // INFO
-        private String m_Name; // Nom du joueur
-        private int m_NoSeat; // Position du joueur autour de la table
-        
-        // CARDS
-        private readonly GameCard[] m_Cards = new GameCard[2]; // Cartes du joueur
-        
-        // MONEY
-        private int m_MoneyInitAmnt; // Argent du joueur au moment ou il s'installe a la table
-        private int m_MoneySafeAmnt; // Argent du joueur qu'il a en sa pocession, non-jouee
-        private int m_MoneyBetAmnt; // Argent du joueur qu'il a jouee depuis le debut de la round
-        
-        // STATES
-        private bool m_IsPlaying; // Est-il en train de jouer ? Faux si Folded, AllIn or NotPlaying
-        private bool m_IsAllIn; // Est-il All-in ? Vrai si All-in
-        private bool m_IsShowingCards; // Montre-il ses cartes ? Vrai si showdown
-        private bool m_Zombie; // Est-ce que le vrai player a quitté la partie ? Vrai si zombie
+        #region Fields
+        private readonly GameCard[] m_Cards = new GameCard[2]; // Player Cards
+        private bool m_IsPlaying; // Is the player Playing ? False if Folded, AllIn or NotPlaying
+        private bool m_IsAllIn; // Is the player All-in ?
+        #endregion Fields
 
-        public string Name
-        {
-            get { return m_Name; }
-        }
-        public int NoSeat
-        {
-            get { return m_NoSeat; }
-            set { m_NoSeat = value; }
-        }
+        #region Properties
+
+        /// <summary>
+        /// Player Name
+        /// </summary>
+        public string Name { get; private set; }
+        
+        /// <summary>
+        /// Player position around the table
+        /// </summary>
+        public int NoSeat { get; set; }
+        
+        /// <summary>
+        /// Player Cards as viewed by himself
+        /// </summary>
         public GameCard[] Cards
         {
-            get
-            {
-                GameCard[] cards = new GameCard[2] { m_Cards[0], m_Cards[1] };
-                for (int i = 0; i < 2; ++i)
-                {
-                    if (cards[i] == null || !(m_IsPlaying || m_IsAllIn))
-                    {
-                        cards[i] = GameCard.NO_CARD;
-                    }
-                }
-
-                return cards;
-            }
+            get { return m_Cards.Select(c => (c == null || !(m_IsPlaying || m_IsAllIn)) ? GameCard.NO_CARD : c).ToArray(); }
             set
             {
                 if (value != null && value.Length == 2)
@@ -59,120 +42,163 @@ namespace PokerWorld.Game
                 }
             }
         }
+
+        /// <summary>
+        /// Player Cards as viewed by the other players
+        /// </summary>
         public GameCard[] RelativeCards
         {
             get
             {
-                if (!m_IsShowingCards)
+                if (!IsShowingCards)
                     return new GameCard[2] { GameCard.HIDDEN, GameCard.HIDDEN };
                 return Cards;
             }
         }
-        public int MoneyInitAmnt
-        {
-            get { return m_MoneyInitAmnt; }
-        }
-        public int MoneySafeAmnt
-        {
-            get { return m_MoneySafeAmnt; }
-            set { m_MoneySafeAmnt = value; }
-        }
-        public int MoneyBetAmnt
-        {
-            get { return m_MoneyBetAmnt; }
-            set { m_MoneyBetAmnt = value; }
-        }
+
+        /// <summary>
+        /// Initial Money Amount of the Player when he sits at the table
+        /// </summary>
+        public int MoneyInitAmnt { get; private set; }
+
+        /// <summary>
+        /// Current Money Amount of the player that he isn't playing with
+        /// </summary>
+        public int MoneySafeAmnt { get; set; }
+
+        /// <summary>
+        /// Current Money Amount of the player that he played this round
+        /// </summary>
+        public int MoneyBetAmnt { get; set; }
+
+        /// <summary>
+        /// Current Money Amount of the player (Safe + Bet)
+        /// </summary>
         public int MoneyAmnt
         {
-            get { return m_MoneyBetAmnt + m_MoneySafeAmnt; }
+            get { return MoneyBetAmnt + MoneySafeAmnt; }
         }
+
+        /// <summary>
+        /// Is the player Playing ? False if Folded, AllIn or NotPlaying
+        /// If set to true, IsAllIn must be false
+        /// </summary>
         public bool IsPlaying
         {
             get { return m_IsPlaying; }
             set
             {
                 m_IsPlaying = value;
-                m_IsAllIn = false;
+                if (m_IsPlaying)
+                    m_IsAllIn = false;
             }
         }
+
+        /// <summary>
+        /// Is the player AllIn ?
+        /// If set to true, IsPlaying must be false
+        /// </summary>
         public bool IsAllIn
         {
             get { return m_IsAllIn; }
             set
             {
-                m_IsPlaying = false;
                 m_IsAllIn = value;
+                if (m_IsAllIn)
+                    m_IsPlaying = false;
             }
         }
-        public bool IsZombie
-        {
-            get { return m_Zombie; }
-            set { m_Zombie = value; }
-        }
-        public bool IsShowingCards
-        {
-            get { return m_IsShowingCards; }
-            set { m_IsShowingCards = value; }
-        }
+        
+        /// <summary>
+        /// A player who was playing but disconnected is a Zombie. He will remain in place and put blinds / check / fold
+        /// </summary>
+        public bool IsZombie { get; set; }
+
+        /// <summary>
+        /// Montre-il ses cartes ? Vrai si showdown
+        /// </summary>
+        public bool IsShowingCards { get; set; }
+
+        /// <summary>
+        /// A player who can play has money and is seated !
+        /// </summary>
         public bool CanPlay
         {
-            get { return m_NoSeat >= 0 && m_MoneySafeAmnt > 0; }
+            get { return NoSeat >= 0 && MoneySafeAmnt > 0; }
         }
 
+        #endregion Properties
+
+        #region Ctors & Init
         public PlayerInfo()
         {
-            m_Name = "Anonymous Player";
-            m_NoSeat = -1;
-            m_MoneySafeAmnt = 0;
-            m_MoneyBetAmnt = 0;
-            m_MoneyInitAmnt = 0;
+            Name = "Anonymous Player";
+            NoSeat = -1;
+            MoneySafeAmnt = 0;
+            MoneyBetAmnt = 0;
+            MoneyInitAmnt = 0;
         }
         public PlayerInfo(String name)
             : this()
         {
-            m_Name = name;
+            Name = name;
         }
         public PlayerInfo(int seat)
             : this()
         {
-            m_NoSeat = seat;
+            NoSeat = seat;
         }
         public PlayerInfo(String name, int money)
             : this(name)
         {
-            m_MoneySafeAmnt = money;
-            m_MoneyInitAmnt = money;
+            MoneySafeAmnt = money;
+            MoneyInitAmnt = money;
         }
         public PlayerInfo(int seat, String name, int money):
             this(name, money)
         {
-            m_NoSeat = seat;
+            NoSeat = seat;
         }
+        #endregion Ctors & Init
 
+        #region Public Methods
+
+        /// <summary>
+        /// Put a number on the current "Hand" of the player. The we will use that number to compare who is winning !
+        /// </summary>
+        /// <param name="boardCards">Visible cards available to all players</param>
+        /// <returns>A unsigned int that we can use to compare with another hand</returns>
         public uint EvaluateCards(GameCard[] boardCards)
         {
             if (boardCards == null || boardCards.Length != 5 || m_Cards == null || m_Cards.Length != 2)
                 return 0;
-            string pocket = String.Format("{0} {1}",m_Cards[0],m_Cards[1]);
-            string board = String.Format("{0} {1} {2} {3} {4}", boardCards[0], boardCards[1], boardCards[2], boardCards[3], boardCards[4]);
 
-            return new Hand(pocket, board).HandValue;
+            return new Hand(String.Join<GameCard>(" ", m_Cards), String.Join<GameCard>(" ", boardCards)).HandValue;
         }
 
+        /// <summary>
+        /// Check if the player has enough money to bet some amount
+        /// </summary>
         public bool CanBet(int amnt)
         {
-            return amnt <= m_MoneySafeAmnt;
+            return amnt <= MoneySafeAmnt;
         }
 
+        /// <summary>
+        /// Tries to put some money on the table
+        /// </summary>
+        /// <returns>True if the money has been successfully played</returns>
         public bool TryBet(int amnt)
         {
             if (!CanBet(amnt))
             {
                 return false;
             }
-            m_MoneySafeAmnt -= amnt;
-            m_MoneyBetAmnt += amnt;
+
+            MoneySafeAmnt -= amnt;
+            MoneyBetAmnt += amnt;
             return true;
         }
+        #endregion Public Methods
     }
 }

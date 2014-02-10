@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
 using EricUtility.Games.CardGame;
+using PokerWorld.Game.Enums;
 
 namespace BluffinPokerGui.Game
 {
@@ -62,29 +63,29 @@ namespace BluffinPokerGui.Game
             InitializeComponent();
         }
 
-        public void DoAction(TypeAction action )
+        public void DoAction(GameActionEnum action )
         {
             DoAction(action, 0);
         }
 
-        public void DoAction(TypeAction action, int amnt)
+        public void DoAction(GameActionEnum action, int amnt)
         {
             string s = "";
             switch (action)
             {
-                case TypeAction.Call:
+                case GameActionEnum.Call:
                     if (amnt == 0)
                         s = "CHECK";
                     else
                         s = "CALL";
                     break;
-                case TypeAction.Raise:
+                case GameActionEnum.Raise:
                     if (amnt == -1)
                         s = "BET";
                     else
                         s = "RAISE";
                     break;
-                case TypeAction.Fold:
+                case GameActionEnum.Fold:
                     s = "FOLD";
                     break;
             }

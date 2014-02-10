@@ -78,7 +78,7 @@
     <Compile Include="Commands\Lobby\Training\IdentifyResponse.cs" />
     <Compile Include="Commands\Lobby\JoinTableResponse.cs" />
     <Compile Include="Commands\Lobby\Training\ListTableTrainingResponse.cs" />
-    <Compile Include="Entities\Enums\EnumActions.cs" />
+    <Compile Include="Entities\Enums\LobyActionEnum.cs" />
     <Compile Include="Entities\TableCareer.cs" />
     <Compile Include="Entities\TableTraining.cs" />
     <Compile Include="LobbyTCPClientTraining.cs" />

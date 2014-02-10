@@ -116,7 +116,7 @@ namespace BluffinPokerServer
                 {
                     TableInfo t = game.Table;
                     if( t is TableInfoTraining )
-                        tables.Add(new TableTraining(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, EnumActions.None));
+                        tables.Add(new TableTraining(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
                 }
                 else
                     tablesToRemove.Add(noPort);
@@ -139,7 +139,7 @@ namespace BluffinPokerServer
                 {
                     TableInfo t = game.Table;
                     if (t is TableInfoCareer)
-                        tables.Add(new TableCareer(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, EnumActions.None));
+                        tables.Add(new TableCareer(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
                 }
                 else
                     tablesToRemove.Add(noPort);

@@ -2,6 +2,7 @@
 using EricUtility;
 using EricUtility.Networking.Commands;
 using PokerWorld.Game;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Game
 {
@@ -13,7 +14,7 @@ namespace PokerProtocol.Commands.Game
         private readonly int m_PlayerBet;
         private readonly int m_PlayerMoney;
         private readonly int m_TotalPot;
-        private readonly TypeAction m_ActionType;
+        private readonly GameActionEnum m_ActionType;
         private readonly int m_ActionAmount;
         private readonly bool m_IsPlaying;
 
@@ -33,7 +34,7 @@ namespace PokerProtocol.Commands.Game
         {
             get { return m_TotalPot; }
         }
-        public TypeAction ActionType
+        public GameActionEnum ActionType
         {
             get { return m_ActionType; }
         }
@@ -52,12 +53,12 @@ namespace PokerProtocol.Commands.Game
             m_PlayerBet = int.Parse(argsToken.NextToken());
             m_PlayerMoney = int.Parse(argsToken.NextToken());
             m_TotalPot = int.Parse(argsToken.NextToken());
-            m_ActionType = (TypeAction)int.Parse(argsToken.NextToken());
+            m_ActionType = (GameActionEnum)int.Parse(argsToken.NextToken());
             m_ActionAmount = int.Parse(argsToken.NextToken());
             m_IsPlaying = bool.Parse(argsToken.NextToken());
         }
 
-        public PlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, TypeAction actionType, int actionAmount, bool isPlaying)
+        public PlayerTurnEndedCommand(int pos, int bet, int money, int totalPot, GameActionEnum actionType, int actionAmount, bool isPlaying)
         {
             m_PlayerPos = pos;
             m_PlayerBet = bet;
