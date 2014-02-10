@@ -4,6 +4,7 @@ using System.Text;
 using EricUtility;
 using PokerWorld.Game;
 using EricUtility.Networking.Commands;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Lobby
 {
@@ -16,7 +17,7 @@ namespace PokerProtocol.Commands.Lobby
         protected readonly int m_WaitingTimeAfterPlayerAction;
         protected readonly int m_WaitingTimeAfterBoardDealed;
         protected readonly int m_WaitingTimeAfterPotWon;
-        protected readonly TypeBet m_Limit;
+        protected readonly BetEnum m_Limit;
 
         public string TableName
         {
@@ -60,7 +61,7 @@ namespace PokerProtocol.Commands.Lobby
         } 
 
 
-        public TypeBet Limit
+        public BetEnum Limit
         {
             get { return m_Limit; }
         }
@@ -74,10 +75,10 @@ namespace PokerProtocol.Commands.Lobby
             m_WaitingTimeAfterPlayerAction = int.Parse(argsToken.NextToken());
             m_WaitingTimeAfterBoardDealed = int.Parse(argsToken.NextToken());
             m_WaitingTimeAfterPotWon = int.Parse(argsToken.NextToken());
-            m_Limit = (TypeBet)int.Parse(argsToken.NextToken());
+            m_Limit = (BetEnum)int.Parse(argsToken.NextToken());
         }
 
-        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit)
         {
             m_TableName = p_tableName;
             m_BigBlind = p_bigBlind;

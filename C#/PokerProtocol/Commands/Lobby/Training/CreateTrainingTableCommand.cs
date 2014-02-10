@@ -4,6 +4,7 @@ using System.Text;
 using EricUtility;
 using PokerWorld.Game;
 using EricUtility.Networking.Commands;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Lobby.Training
 {
@@ -20,7 +21,7 @@ namespace PokerProtocol.Commands.Lobby.Training
             m_StartingMoney = int.Parse(argsToken.NextToken());
         }
 
-        public CreateTrainingTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit, int startingMoney):base(p_tableName, p_bigBlind, p_maxPlayers, p_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit)
+        public CreateTrainingTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int startingMoney):base(p_tableName, p_bigBlind, p_maxPlayers, p_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit)
         {
             m_StartingMoney = startingMoney;
         }

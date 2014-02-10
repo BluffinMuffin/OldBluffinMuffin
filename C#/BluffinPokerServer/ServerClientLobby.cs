@@ -60,7 +60,7 @@ namespace BluffinPokerServer
         {
             CreateTrainingTableCommand c = e.Command;
             int res = m_Lobby.CreateTrainingTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateTrainingTableCommandReceived", "> Client '{0}' created the career table: {2}:{1}", m_PlayerName, c.TableName, res);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateTrainingTableCommandReceived", "> Client '{0}' created the training table: {2}:{1}", m_PlayerName, c.TableName, res);
             Send(c.EncodeResponse(res));
         }
 

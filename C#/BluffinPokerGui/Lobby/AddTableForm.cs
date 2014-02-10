@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
+using PokerWorld.Game.Enums;
 
 namespace BluffinPokerGUI.Lobby
 {
@@ -20,7 +21,7 @@ namespace BluffinPokerGUI.Lobby
         private int m_WaitingTimeAfterPlayerAction;
         private int m_WaitingTimeAfterBoardDealed;
         private int m_WaitingTimeAfterPotWon;
-        private TypeBet m_Limit;
+        private BetEnum m_Limit;
         private bool m_TrainingOnly;
         private bool m_Training;
         private int m_TrainingStartingAmount;
@@ -33,7 +34,7 @@ namespace BluffinPokerGUI.Lobby
         {
             get { return m_TrainingStartingAmount; }
         }
-        public TypeBet Limit
+        public BetEnum Limit
         {
             get { return m_Limit; }
         }

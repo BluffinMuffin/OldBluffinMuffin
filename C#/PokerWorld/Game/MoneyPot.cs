@@ -9,79 +9,64 @@ namespace PokerWorld.Game
     /// </summary>
     public class MoneyPot
     {
-        /************ VARIABLES MEMBRES ************/
-        private readonly int m_Id; // ID du pot
-        private int m_Amount; // Quantite d'argent
-        private readonly List<PlayerInfo> m_AttachedPlayers = new List<PlayerInfo>(); // Liste de joueurs attaches
+        #region Fields
+        private readonly List<PlayerInfo> m_AttachedPlayers = new List<PlayerInfo>();
+        #endregion Fields
 
-        /************ PROPRIETES ************/
+        #region Properties
+
         /// <summary>
-        /// ID du pot
+        /// Sequence given to the actual MenyPot
         /// </summary>
-        public int Id
-        {
-            get { return m_Id; }
-        }
+        public int Id { get; private set; }
 
         /// <summary>
-        /// Quantite d'argent
+        /// Amount of money in the Pot
         /// </summary>
-        public int Amount
-        {
-            get { return m_Amount; }
-            set { m_Amount = value; }
-        }
+        public int Amount { get; set; }
 
         /// <summary>
-        /// Liste de joueurs attaches
+        /// Number of player playing for this Pot
         /// </summary>
         public PlayerInfo[] AttachedPlayers
         {
             get { return m_AttachedPlayers.ToArray(); }
         }
+        #endregion Properties
 
-        /************ CONSTRUCTEURS ************/
-        /// <summary>
-        /// MoneyPot avec amount initial a 0
-        /// </summary>
-        /// <param name="id">ID du pot</param>
+        #region Ctors & Init
         public MoneyPot(int id)
             : this(id, 0)
         {
         }
 
-        /// <summary>
-        /// MoneyPot avec amount initial
-        /// </summary>
-        /// <param name="id">ID du pot</param>
-        /// <param name="amount">Quantite d'argent</param>
         public MoneyPot(int id, int amount)
         {
-            m_Id = id;
-            m_Amount = amount;
+            Id = id;
+            Amount = amount;
         }
+        #endregion Ctors & Init
 
-        /************ METHODES ************/
+        #region Public Methods
+        
         /// <summary>
-        /// Attache un joueur au POT
+        /// Attach a player to the MoneyPot
         /// </summary>
-        /// <param name="p"></param>
         public void AttachPlayer(PlayerInfo p)
         {
             m_AttachedPlayers.Add(p);
         }
 
         /// <summary>
-        /// Detache un joueur du POT
+        /// Detach a player from the MoneyPot
         /// </summary>
-        /// <param name="p"></param>
         public void DetachPlayer(PlayerInfo p)
         {
             m_AttachedPlayers.Remove(p);
         }
 
         /// <summary>
-        /// Detache tous les joueurs du POT
+        /// Detach all players from the MoneyPot
         /// </summary>
         public void DetachAllPlayers()
         {
@@ -89,12 +74,12 @@ namespace PokerWorld.Game
         }
 
         /// <summary>
-        /// Ajoute un montant d'argent au POT
+        /// Add money to the pot !
         /// </summary>
-        /// <param name="added"></param>
         public void AddAmount(int added)
         {
-            m_Amount += added;
+            Amount += added;
         }
+        #endregion Public Methods
     }
 }

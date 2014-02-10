@@ -14,6 +14,7 @@ using EricUtility.Games.CardGame;
 using EricUtility.Networking.Commands;
 using PokerWorld.Data;
 using EricUtility;
+using PokerWorld.Game.PokerEventArgs;
 
 namespace PokerProtocol
 {
@@ -187,7 +188,7 @@ namespace PokerProtocol
             TableInfo t = m_Game.Table;
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Name, m_ID);
 
-            if (m_Game.State == PokerGame.TypeState.WaitForPlayers)
+            if (m_Game.State == GameStateEnum.WaitForPlayers)
                 m_Game.LeaveGame(m_Player);
             else if (t.NoSeatCurrPlayer == m_Player.NoSeat)
             {

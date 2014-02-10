@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Game
+namespace PokerWorld.Game.Enums
 {
-    public enum TypeRound
+    public enum RoundEnum
     {
         Preflop,
         Flop,

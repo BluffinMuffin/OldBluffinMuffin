@@ -12,6 +12,7 @@ using PokerProtocol.Commands.Lobby.Training;
 using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
 using PokerProtocol.Entities;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol
 {
@@ -89,7 +90,7 @@ namespace PokerProtocol
             m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
         }
 
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, TypeBet limit)
+        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit)
         {
             Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
 

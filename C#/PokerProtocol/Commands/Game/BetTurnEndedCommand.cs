@@ -3,6 +3,7 @@ using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
 using PokerWorld.Game;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Game
 {
@@ -10,10 +11,10 @@ namespace PokerProtocol.Commands.Game
     {
         public static string COMMAND_NAME = "gameBET_TURN_ENDED";
 
-        private readonly TypeRound m_Round;
+        private readonly RoundEnum m_Round;
         private readonly List<int> m_PotsAmounts;
 
-        public TypeRound Round
+        public RoundEnum Round
         {
             get { return m_Round; }
         }
@@ -31,10 +32,10 @@ namespace PokerProtocol.Commands.Game
             {
                 m_PotsAmounts.Add(int.Parse(argsToken.NextToken()));
             }
-            m_Round = (TypeRound)int.Parse(argsToken.NextToken());
+            m_Round = (RoundEnum)int.Parse(argsToken.NextToken());
         }
 
-        public BetTurnEndedCommand(List<int> potsAmounts, TypeRound round)
+        public BetTurnEndedCommand(List<int> potsAmounts, RoundEnum round)
         {
             m_PotsAmounts = potsAmounts;
             m_Round = round;

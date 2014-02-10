@@ -6,14 +6,15 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
+using PokerWorld.Game.Enums;
 
 namespace BluffinPokerGUI.Lobby
 {
     public partial class AddTableControl : UserControl
     {
-        public TypeBet Limit
+        public BetEnum Limit
         {
-            get { return (TypeBet)clstGameLimit.SelectedIndex; }
+            get { return (BetEnum)clstGameLimit.SelectedIndex; }
         }
         public int WaitingTimeAfterPotWon
         {
@@ -46,9 +47,9 @@ namespace BluffinPokerGUI.Lobby
         public void InitControl(string playerName, int nbPlayers)
         {
             txtTableName.Text = playerName + " Table";
-            foreach (string s in Enum.GetNames(typeof(TypeBet)))
+            foreach (string s in Enum.GetNames(typeof(BetEnum)))
                 clstGameLimit.Items.Add(s);
-            clstGameLimit.SelectedItem = TypeBet.NoLimit.ToString();
+            clstGameLimit.SelectedItem = BetEnum.NoLimit.ToString();
             nudNbPlayers.Minimum = Math.Max(nbPlayers, 2);
         }
     }
