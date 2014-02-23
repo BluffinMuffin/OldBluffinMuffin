@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddTableForm));
             this.atcTraining = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabReal = new System.Windows.Forms.TabPage();
-            this.btnAddReal = new System.Windows.Forms.Button();
             this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabTraining = new System.Windows.Forms.TabPage();
             this.nudStartingAmnt = new System.Windows.Forms.NumericUpDown();
             this.lblBigBlindAmnt = new System.Windows.Forms.Label();
-            this.btnAddTraining = new System.Windows.Forms.Button();
+            this.btnAddCareer = new VIBlend.WinForms.Controls.vButton();
+            this.btnAddTraining = new VIBlend.WinForms.Controls.vButton();
             this.tabControl1.SuspendLayout();
             this.tabReal.SuspendLayout();
             this.tabTraining.SuspendLayout();
@@ -57,32 +58,20 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(317, 264);
+            this.tabControl1.Size = new System.Drawing.Size(317, 277);
             this.tabControl1.TabIndex = 13;
             // 
             // tabReal
             // 
-            this.tabReal.Controls.Add(this.btnAddReal);
+            this.tabReal.Controls.Add(this.btnAddCareer);
             this.tabReal.Controls.Add(this.atcReal);
             this.tabReal.Location = new System.Drawing.Point(4, 22);
             this.tabReal.Name = "tabReal";
             this.tabReal.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReal.Size = new System.Drawing.Size(309, 238);
+            this.tabReal.Size = new System.Drawing.Size(309, 251);
             this.tabReal.TabIndex = 0;
-            this.tabReal.Text = "Real";
+            this.tabReal.Text = "Career";
             this.tabReal.UseVisualStyleBackColor = true;
-            // 
-            // btnAddReal
-            // 
-            this.btnAddReal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddReal.Location = new System.Drawing.Point(6, 191);
-            this.btnAddReal.Name = "btnAddReal";
-            this.btnAddReal.Size = new System.Drawing.Size(296, 41);
-            this.btnAddReal.TabIndex = 15;
-            this.btnAddReal.Text = "Create Table";
-            this.btnAddReal.UseVisualStyleBackColor = true;
-            this.btnAddReal.Click += new System.EventHandler(this.btnAddReal_Click);
             // 
             // atcReal
             // 
@@ -95,12 +84,12 @@
             // 
             this.tabTraining.Controls.Add(this.nudStartingAmnt);
             this.tabTraining.Controls.Add(this.lblBigBlindAmnt);
-            this.tabTraining.Controls.Add(this.btnAddTraining);
             this.tabTraining.Controls.Add(this.atcTraining);
+            this.tabTraining.Controls.Add(this.btnAddTraining);
             this.tabTraining.Location = new System.Drawing.Point(4, 22);
             this.tabTraining.Name = "tabTraining";
             this.tabTraining.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTraining.Size = new System.Drawing.Size(309, 238);
+            this.tabTraining.Size = new System.Drawing.Size(309, 251);
             this.tabTraining.TabIndex = 1;
             this.tabTraining.Text = "Training";
             this.tabTraining.UseVisualStyleBackColor = true;
@@ -141,25 +130,52 @@
             this.lblBigBlindAmnt.TabIndex = 17;
             this.lblBigBlindAmnt.Text = "Starting Amount:";
             // 
+            // btnAddCareer
+            // 
+            this.btnAddCareer.AllowAnimations = true;
+            this.btnAddCareer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddCareer.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddCareer.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddCareer.Image = global::BluffinPokerGUI.Properties.Resources.cards;
+            this.btnAddCareer.Location = new System.Drawing.Point(72, 192);
+            this.btnAddCareer.Name = "btnAddCareer";
+            this.btnAddCareer.RoundedCornersMask = ((byte)(15));
+            this.btnAddCareer.Size = new System.Drawing.Size(167, 53);
+            this.btnAddCareer.TabIndex = 15;
+            this.btnAddCareer.Text = "Create Table";
+            this.btnAddCareer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnAddCareer.UseVisualStyleBackColor = true;
+            this.btnAddCareer.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
+            this.btnAddCareer.Click += new System.EventHandler(this.btnAddReal_Click);
+            // 
             // btnAddTraining
             // 
-            this.btnAddTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddTraining.Location = new System.Drawing.Point(6, 191);
+            this.btnAddTraining.AllowAnimations = true;
+            this.btnAddTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddTraining.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddTraining.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddTraining.Image = global::BluffinPokerGUI.Properties.Resources.learn;
+            this.btnAddTraining.Location = new System.Drawing.Point(76, 192);
             this.btnAddTraining.Name = "btnAddTraining";
-            this.btnAddTraining.Size = new System.Drawing.Size(296, 41);
+            this.btnAddTraining.RoundedCornersMask = ((byte)(15));
+            this.btnAddTraining.Size = new System.Drawing.Size(167, 53);
             this.btnAddTraining.TabIndex = 13;
             this.btnAddTraining.Text = "Create Table";
+            this.btnAddTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnAddTraining.UseVisualStyleBackColor = true;
+            this.btnAddTraining.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
             // 
             // AddTableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 292);
+            this.ClientSize = new System.Drawing.Size(336, 298);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddTableForm";
@@ -180,11 +196,11 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabReal;
         private System.Windows.Forms.TabPage tabTraining;
-        private System.Windows.Forms.Button btnAddTraining;
-        private System.Windows.Forms.Button btnAddReal;
+        private VIBlend.WinForms.Controls.vButton btnAddTraining;
         private AddTableControl atcReal;
         private System.Windows.Forms.NumericUpDown nudStartingAmnt;
         private System.Windows.Forms.Label lblBigBlindAmnt;
+        private VIBlend.WinForms.Controls.vButton btnAddCareer;
     }
 }
 
