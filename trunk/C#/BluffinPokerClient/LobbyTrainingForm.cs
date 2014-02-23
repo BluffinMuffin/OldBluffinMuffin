@@ -22,8 +22,8 @@ namespace BluffinPokerClient
             m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
             InitializeComponent();
             tableList.setServer(m_Server);
-            lblStatus.Text = "[Training] Connected as " + server.PlayerName;
             Text = server.PlayerName + " ~ " + lblTitle.Text;
+            lblPlayerName.Text = server.PlayerName;
             tableList.RefreshList();
         }
 

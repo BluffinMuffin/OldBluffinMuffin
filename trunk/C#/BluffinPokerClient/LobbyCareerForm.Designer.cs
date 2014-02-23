@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LobbyCareerForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnLogOut = new System.Windows.Forms.Button();
             this.lblServer = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblMoney = new System.Windows.Forms.Label();
@@ -38,19 +37,20 @@
             this.lblAccount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
-            this.btnAddTable = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnJoinTable = new System.Windows.Forms.ToolStripButton();
-            this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
-            this.lstFilter = new System.Windows.Forms.ToolStripComboBox();
             this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnLeaveTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnJoinTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnRefresh = new VIBlend.WinForms.Controls.vButton();
+            this.btnLogOut = new VIBlend.WinForms.Controls.vButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -64,7 +64,13 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel1.Controls.Add(this.pictureBox2);
+            this.splitContainer1.Panel1.Controls.Add(this.pictureBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.btnLeaveTable);
+            this.splitContainer1.Panel1.Controls.Add(this.btnJoinTable);
+            this.splitContainer1.Panel1.Controls.Add(this.btnAddTable);
+            this.splitContainer1.Panel1.Controls.Add(this.btnRefresh);
             this.splitContainer1.Panel1.Controls.Add(this.btnLogOut);
             this.splitContainer1.Panel1.Controls.Add(this.lblServer);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
@@ -78,23 +84,10 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel2.Controls.Add(this.tableList);
-            this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
             this.splitContainer1.Size = new System.Drawing.Size(477, 292);
-            this.splitContainer1.SplitterDistance = 110;
+            this.splitContainer1.SplitterDistance = 160;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // btnLogOut
-            // 
-            this.btnLogOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogOut.Location = new System.Drawing.Point(383, 40);
-            this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(82, 58);
-            this.btnLogOut.TabIndex = 8;
-            this.btnLogOut.Text = "Log Out";
-            this.btnLogOut.UseVisualStyleBackColor = true;
-            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // lblServer
             // 
@@ -155,109 +148,148 @@
             // 
             // lblTitle
             // 
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblTitle.Location = new System.Drawing.Point(58, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(477, 38);
+            this.lblTitle.Size = new System.Drawing.Size(355, 38);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "Bluffin Muffin Poker Client";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // toolStrip1
-            // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnRefresh,
-            this.btnAddTable,
-            this.toolStripSeparator1,
-            this.btnJoinTable,
-            this.btnLeaveTable,
-            this.lstFilter});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(477, 25);
-            this.toolStrip1.TabIndex = 7;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(50, 22);
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // btnAddTable
-            // 
-            this.btnAddTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnAddTable.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnAddTable.Name = "btnAddTable";
-            this.btnAddTable.Size = new System.Drawing.Size(65, 22);
-            this.btnAddTable.Text = "Add Table";
-            this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnJoinTable
-            // 
-            this.btnJoinTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnJoinTable.Enabled = false;
-            this.btnJoinTable.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnJoinTable.Name = "btnJoinTable";
-            this.btnJoinTable.Size = new System.Drawing.Size(64, 22);
-            this.btnJoinTable.Text = "Join Table";
-            this.btnJoinTable.Click += new System.EventHandler(this.btnJoinTable_Click);
-            // 
-            // btnLeaveTable
-            // 
-            this.btnLeaveTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnLeaveTable.Enabled = false;
-            this.btnLeaveTable.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnLeaveTable.Name = "btnLeaveTable";
-            this.btnLeaveTable.Size = new System.Drawing.Size(73, 22);
-            this.btnLeaveTable.Text = "Leave Table";
-            this.btnLeaveTable.Click += new System.EventHandler(this.btnLeaveTable_Click);
-            // 
-            // lstFilter
-            // 
-            this.lstFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lstFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.lstFilter.Items.AddRange(new object[] {
-            "Real",
-            "Training",
-            "Both"});
-            this.lstFilter.Name = "lstFilter";
-            this.lstFilter.Size = new System.Drawing.Size(121, 25);
-            this.lstFilter.SelectedIndexChanged += new System.EventHandler(this.lstFilter_SelectedIndexChanged);
-            // 
             // tableList
             // 
+            this.tableList.BackColor = System.Drawing.Color.White;
             this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableList.Location = new System.Drawing.Point(0, 25);
+            this.tableList.Location = new System.Drawing.Point(0, 0);
             this.tableList.Name = "tableList";
             this.tableList.ShowCareer = true;
             this.tableList.ShowTraining = false;
-            this.tableList.Size = new System.Drawing.Size(477, 156);
+            this.tableList.Size = new System.Drawing.Size(477, 131);
             this.tableList.TabIndex = 8;
             this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
             this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
             this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.Image = global::BluffinPokerClient.Properties.Resources.cards;
+            this.pictureBox2.Location = new System.Drawing.Point(430, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(35, 35);
+            this.pictureBox2.TabIndex = 15;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::BluffinPokerClient.Properties.Resources.cards;
+            this.pictureBox1.Location = new System.Drawing.Point(17, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(35, 35);
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
+            // 
+            // btnLeaveTable
+            // 
+            this.btnLeaveTable.AllowAnimations = true;
+            this.btnLeaveTable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLeaveTable.BackColor = System.Drawing.Color.Transparent;
+            this.btnLeaveTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLeaveTable.Image = global::BluffinPokerClient.Properties.Resources.leave;
+            this.btnLeaveTable.Location = new System.Drawing.Point(357, 122);
+            this.btnLeaveTable.Name = "btnLeaveTable";
+            this.btnLeaveTable.RoundedCornersMask = ((byte)(15));
+            this.btnLeaveTable.Size = new System.Drawing.Size(108, 35);
+            this.btnLeaveTable.TabIndex = 13;
+            this.btnLeaveTable.Text = "Leave Table";
+            this.btnLeaveTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnLeaveTable.UseVisualStyleBackColor = false;
+            this.btnLeaveTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
+            this.btnLeaveTable.Click += new System.EventHandler(this.btnLeaveTable_Click);
+            // 
+            // btnJoinTable
+            // 
+            this.btnJoinTable.AllowAnimations = true;
+            this.btnJoinTable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnJoinTable.BackColor = System.Drawing.Color.Transparent;
+            this.btnJoinTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnJoinTable.Image = global::BluffinPokerClient.Properties.Resources.cards_mini;
+            this.btnJoinTable.Location = new System.Drawing.Point(251, 122);
+            this.btnJoinTable.Name = "btnJoinTable";
+            this.btnJoinTable.RoundedCornersMask = ((byte)(15));
+            this.btnJoinTable.Size = new System.Drawing.Size(100, 35);
+            this.btnJoinTable.TabIndex = 12;
+            this.btnJoinTable.Text = "Join Table";
+            this.btnJoinTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnJoinTable.UseVisualStyleBackColor = false;
+            this.btnJoinTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROGREEN;
+            this.btnJoinTable.Click += new System.EventHandler(this.btnJoinTable_Click);
+            // 
+            // btnAddTable
+            // 
+            this.btnAddTable.AllowAnimations = true;
+            this.btnAddTable.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddTable.Image = global::BluffinPokerClient.Properties.Resources.add;
+            this.btnAddTable.Location = new System.Drawing.Point(121, 122);
+            this.btnAddTable.Name = "btnAddTable";
+            this.btnAddTable.RoundedCornersMask = ((byte)(15));
+            this.btnAddTable.Size = new System.Drawing.Size(100, 35);
+            this.btnAddTable.TabIndex = 11;
+            this.btnAddTable.Text = "Add Table";
+            this.btnAddTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddTable.UseVisualStyleBackColor = false;
+            this.btnAddTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
+            this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.AllowAnimations = true;
+            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.Image = global::BluffinPokerClient.Properties.Resources.refresh;
+            this.btnRefresh.Location = new System.Drawing.Point(15, 122);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.RoundedCornersMask = ((byte)(15));
+            this.btnRefresh.Size = new System.Drawing.Size(100, 35);
+            this.btnRefresh.TabIndex = 10;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnRefresh.UseVisualStyleBackColor = false;
+            this.btnRefresh.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnLogOut
+            // 
+            this.btnLogOut.AllowAnimations = true;
+            this.btnLogOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLogOut.BackColor = System.Drawing.Color.Transparent;
+            this.btnLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogOut.Image = global::BluffinPokerClient.Properties.Resources.exit;
+            this.btnLogOut.Location = new System.Drawing.Point(365, 38);
+            this.btnLogOut.Name = "btnLogOut";
+            this.btnLogOut.RoundedCornersMask = ((byte)(15));
+            this.btnLogOut.Size = new System.Drawing.Size(100, 58);
+            this.btnLogOut.TabIndex = 9;
+            this.btnLogOut.Text = "Log Out";
+            this.btnLogOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnLogOut.UseVisualStyleBackColor = false;
+            this.btnLogOut.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
+            this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
+            // 
             // LobbyCareerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(477, 292);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(493, 330);
             this.Name = "LobbyCareerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bluffin Muffin Poker Client";
             this.Activated += new System.EventHandler(this.LobbyCareerForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CareerLobbyForm_FormClosed);
@@ -265,11 +297,10 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -278,20 +309,19 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Button btnLogOut;
         private System.Windows.Forms.Label lblServer;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblMoney;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblAccount;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton btnRefresh;
-        private System.Windows.Forms.ToolStripButton btnAddTable;
-        private System.Windows.Forms.ToolStripButton btnJoinTable;
-        private System.Windows.Forms.ToolStripButton btnLeaveTable;
         private BluffinPokerGUI.Lobby.PokerTableList tableList;
-        private System.Windows.Forms.ToolStripComboBox lstFilter;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private VIBlend.WinForms.Controls.vButton btnLogOut;
+        private VIBlend.WinForms.Controls.vButton btnRefresh;
+        private VIBlend.WinForms.Controls.vButton btnAddTable;
+        private VIBlend.WinForms.Controls.vButton btnLeaveTable;
+        private VIBlend.WinForms.Controls.vButton btnJoinTable;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
