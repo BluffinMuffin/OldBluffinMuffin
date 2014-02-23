@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LobbyCareerForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnLogOut = new System.Windows.Forms.Button();
             this.lblServer = new System.Windows.Forms.Label();
@@ -37,7 +38,6 @@
             this.lblAccount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
             this.btnAddTable = new System.Windows.Forms.ToolStripButton();
@@ -45,6 +45,7 @@
             this.btnJoinTable = new System.Windows.Forms.ToolStripButton();
             this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
             this.lstFilter = new System.Windows.Forms.ToolStripComboBox();
+            this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -163,19 +164,6 @@
             this.lblTitle.Text = "Bluffin Muffin Poker Client";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tableList
-            // 
-            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableList.Location = new System.Drawing.Point(0, 25);
-            this.tableList.Name = "tableList";
-            this.tableList.ShowCareer = true;
-            this.tableList.ShowTraining = false;
-            this.tableList.Size = new System.Drawing.Size(477, 156);
-            this.tableList.TabIndex = 8;
-            this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
-            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
-            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
-            // 
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -247,6 +235,19 @@
             this.lstFilter.Size = new System.Drawing.Size(121, 25);
             this.lstFilter.SelectedIndexChanged += new System.EventHandler(this.lstFilter_SelectedIndexChanged);
             // 
+            // tableList
+            // 
+            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableList.Location = new System.Drawing.Point(0, 25);
+            this.tableList.Name = "tableList";
+            this.tableList.ShowCareer = true;
+            this.tableList.ShowTraining = false;
+            this.tableList.Size = new System.Drawing.Size(477, 156);
+            this.tableList.TabIndex = 8;
+            this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
+            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
+            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
+            // 
             // LobbyCareerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,6 +255,7 @@
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(477, 292);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(493, 330);
             this.Name = "LobbyCareerForm";
             this.Text = "Bluffin Muffin Poker Client";
