@@ -9,27 +9,21 @@ using System.Threading;
 using PokerProtocol;
 using BluffinPokerGUI.Lobby;
 using EricUtility.Windows.Forms;
+using EricUtility;
 
 namespace BluffinPokerClient
 {
-    public partial class SplashTrainingConnect : Form
+    public partial class SplashTrainingConnect : StepSplashForm
     {
-        private delegate void EmptyHandler();
         private string m_PlayerName;
         private string m_ServerAddress;
         private int m_ServerPort;
 
         private LobbyTCPClientTraining m_Server;
-        private bool m_OK = false;
 
         public LobbyTCPClientTraining Server
         {
             get { return m_Server; }
-        }
-
-        public bool OK
-        {
-            get { return m_OK; }
         }
         
         public SplashTrainingConnect(string playerName,string serverAddress,int serverPort)
@@ -40,44 +34,47 @@ namespace BluffinPokerClient
 
             InitializeComponent();
 
+            m_Steps = new Tuple<BoolEmptyHandler, StatePictureBox>[]
+            {
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep1ReachingServer, spb1ReachingServer),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep2Identifying, spb2IdentifyingPlayer)
+            };
+
             new Thread(new ThreadStart(Connect)).Start();
+        }
+
+        private bool ExecuteStep1ReachingServer()
+        {
+            return m_Server.Connect();
+        }
+
+        private bool ExecuteStep2Identifying()
+        {
+            m_Server.Start();
+            bool isOk = m_Server.Identify(m_PlayerName);
+            bool retry = true;
+            while (!isOk && retry)
+            {
+                NameUsedForm form2 = new NameUsedForm(m_PlayerName);
+                form2.ShowDialog();
+                retry = form2.OK;
+                m_PlayerName = form2.PlayerName;
+                isOk = m_Server.Identify(m_PlayerName);
+            }
+            return isOk;
         }
 
         private void Connect()
         {
             m_Server = new LobbyTCPClientTraining(m_ServerAddress, m_ServerPort);
-            if (m_Server.Connect())
+
+            if (ExecuteSteps())
             {
-                spbStep1.Etat = StatePictureBoxStates.Ok;
-                spbStep2.Etat = StatePictureBoxStates.Waiting;
-                m_Server.Start();
-                bool isOk = m_Server.Identify(m_PlayerName);
-                bool retry = true;
-                while (!isOk && retry)
-                {
-                    NameUsedForm form2 = new NameUsedForm(m_PlayerName);
-                    form2.ShowDialog();
-                    retry = form2.OK;
-                    m_PlayerName = form2.PlayerName;
-                    isOk = m_Server.Identify(m_PlayerName);
-                }
-                if (isOk)
-                {
-                    spbStep2.Etat = StatePictureBoxStates.Ok;
-                    m_OK = true;
-                    Quit();
-                }
-                else
-                {
-                    spbStep2.Etat = StatePictureBoxStates.Bad;
-                    Error();
-                }
+                this.DialogResult = DialogResult.OK;
+                Quit();
             }
             else
-            {
-                spbStep1.Etat = StatePictureBoxStates.Bad;
                 Error();
-            }
         }
 
         private void Error()
@@ -102,7 +99,7 @@ namespace BluffinPokerClient
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            m_OK = false;
+            this.DialogResult = DialogResult.Cancel;
             Quit();
         }
     }

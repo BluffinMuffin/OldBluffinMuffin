@@ -9,32 +9,27 @@ using System.Threading;
 using PokerProtocol;
 using BluffinPokerGUI.Lobby;
 using EricUtility.Windows.Forms;
+using EricUtility;
 
 namespace BluffinPokerClient
 {
-    public partial class SplashCareerConnect : Form
+    public partial class SplashCareerConnect : StepSplashForm
     {
-        private delegate void EmptyHandler();
         private string m_ServerAddress;
         private int m_ServerPort;
         private string m_Username;
         private string m_Password;
 
         private LobbyTCPClientCareer m_Server;
-        private bool m_OK = false;
 
         public LobbyTCPClientCareer Server
         {
             get { return m_Server; }
         }
 
-        public bool OK
-        {
-            get { return m_OK; }
-        }
-
         public SplashCareerConnect(string serverAddress, int serverPort, string username, string password)
         {
+            this.DialogResult = DialogResult.Cancel;
             m_Password = password;
             m_Username = username;
             m_ServerAddress = serverAddress;
@@ -42,54 +37,50 @@ namespace BluffinPokerClient
 
             InitializeComponent();
 
+            m_Steps = new Tuple<BoolEmptyHandler, StatePictureBox>[]
+            {
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep1ReachingServer, spb1ReachingServer),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep2CheckUsernameExistence, spb2CheckExistence),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep3Authenticate, spb3Authenticate),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep4RetrieveUserInfo, spb4RetrieveInfo)
+            };
+
             new Thread(new ThreadStart(Connect)).Start();
+        }
+
+        private bool ExecuteStep1ReachingServer()
+        {
+            return m_Server.Connect();
+        }
+
+        private bool ExecuteStep2CheckUsernameExistence()
+        {
+            m_Server.Start();
+            return !m_Server.CheckUsernameAvailable(m_Username);
+        }
+
+        private bool ExecuteStep3Authenticate()
+        {
+            return m_Server.Authenticate(m_Username, m_Password);
+        }
+
+        private bool ExecuteStep4RetrieveUserInfo()
+        {
+            m_Server.RefreshUserInfo(m_Username);
+            return true;
         }
 
         private void Connect()
         {
             m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
-            // Reaching the server ...
-            if (m_Server.Connect())
+
+            if (ExecuteSteps())
             {
-                spbStep1.Etat = StatePictureBoxStates.Ok;
-                spbStep2.Etat = StatePictureBoxStates.Waiting;
-                m_Server.Start();
-                // Existence of Username ...
-                if (!m_Server.CheckUsernameAvailable(m_Username))
-                {
-                    spbStep2.Etat = StatePictureBoxStates.Ok;
-                    spbStep3.Etat = StatePictureBoxStates.Waiting;
-                    // Authenticating Player ...
-                    if (m_Server.Authenticate(m_Username, m_Password))
-                    {
-                        spbStep3.Etat = StatePictureBoxStates.Ok;
-                        spbStep4.Etat = StatePictureBoxStates.Waiting;
-
-                        // Retrieving User Info ...
-                        m_Server.RefreshUserInfo(m_Username);
-                        spbStep4.Etat = StatePictureBoxStates.Ok;
-
-                        // Done !
-                        m_OK = true;
-                        Quit();
-                    }
-                    else
-                    {
-                        spbStep3.Etat = StatePictureBoxStates.Bad;
-                        Error();
-                    }
-                }
-                else
-                {
-                    spbStep2.Etat = StatePictureBoxStates.Bad;
-                    Error();
-                }
+                this.DialogResult = DialogResult.OK;
+                Quit();
             }
             else
-            {
-                spbStep1.Etat = StatePictureBoxStates.Bad;
                 Error();
-            }
         }
 
         private void Error()
@@ -114,7 +105,7 @@ namespace BluffinPokerClient
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            m_OK = false;
+            this.DialogResult = DialogResult.Cancel;
             Quit();
         }
     }
