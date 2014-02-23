@@ -208,7 +208,7 @@ namespace PokerProtocol
             PlayerTurnEndedCommand cmd = e.Command;
             PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
 
-            m_PokerTable.HigherBet = Math.Min(m_PokerTable.HigherBet, cmd.PlayerBet);
+            m_PokerTable.HigherBet = Math.Max(m_PokerTable.HigherBet, cmd.PlayerBet);
             m_PokerTable.TotalPotAmnt = cmd.TotalPot;
 
             if (p != null)

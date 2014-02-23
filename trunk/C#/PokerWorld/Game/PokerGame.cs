@@ -175,17 +175,20 @@ namespace PokerWorld.Game
         /// </summary>
         public bool PlayMoney(PlayerInfo p, int amount)
         {
-            int amnt = Math.Min(amount, p.MoneySafeAmnt);
-            LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} is playing {1} money on state: {2}", p.Name, amnt, m_State);
+            lock(m_Table)
+            {
+                int amnt = Math.Min(amount, p.MoneySafeAmnt);
+                LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} is playing {1} money on state: {2}", p.Name, amnt, m_State);
 
-            if (m_State == GameStateEnum.WaitForBlinds)
-                return PlayBlinds(p, amnt);
-            else if (m_State == GameStateEnum.Playing && m_RoundState == RoundStateEnum.Betting)
-                return BetMoney(p, amnt);
+                if (m_State == GameStateEnum.WaitForBlinds)
+                    return PlayBlinds(p, amnt);
+                else if (m_State == GameStateEnum.Playing && m_RoundState == RoundStateEnum.Betting)
+                    return BetMoney(p, amnt);
 
-            LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} played money but the game is not in the right state", p.Name);
+                LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} played money but the game is not in the right state", p.Name);
 
-            return false;
+                return false;
+            }
         }
         #endregion
 
