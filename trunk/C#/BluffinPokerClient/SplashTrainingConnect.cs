@@ -91,7 +91,14 @@ namespace BluffinPokerClient
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new EmptyHandler(Quit), new object[] { });
+                try
+                {
+                    this.Invoke(new EmptyHandler(Quit), new object[] { });
+                }
+                catch
+                {
+
+                }
                 return;
             }
             Close();
