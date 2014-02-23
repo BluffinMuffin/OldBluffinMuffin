@@ -13,6 +13,7 @@ using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
 using EricUtility;
 
+
 namespace BluffinPokerServer
 {
     public class ServerClientLobby : CommandTCPCommunicator<LobbyServerCommandObserver>
@@ -20,7 +21,6 @@ namespace BluffinPokerServer
         private string m_PlayerName = "?";
         private readonly ServerLobby m_Lobby;
         Dictionary<int, GameServer> m_Tables = new Dictionary<int, GameServer>();
-
 
         public ServerClientLobby(TcpClient client, ServerLobby lobby)
             : base(client)
@@ -50,18 +50,19 @@ namespace BluffinPokerServer
 
         void m_CommandObserver_CreateCareerTableCommandReceived(object sender, CommandEventArgs<CreateCareerTableCommand> e)
         {
-            CreateCareerTableCommand c = e.Command;
-            int res = m_Lobby.CreateCareerTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateCareerTableCommandReceived", "> Client '{0}' created the career table: {2}:{1}", m_PlayerName, c.TableName, res);
-            Send(c.EncodeResponse(res));
+            Send(e.Command.EncodeResponse(CreateTable(e.Command)));
         }
 
         void m_CommandObserver_CreateTrainingTableCommandReceived(object sender, CommandEventArgs<CreateTrainingTableCommand> e)
         {
-            CreateTrainingTableCommand c = e.Command;
-            int res = m_Lobby.CreateTrainingTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateTrainingTableCommandReceived", "> Client '{0}' created the training table: {2}:{1}", m_PlayerName, c.TableName, res);
-            Send(c.EncodeResponse(res));
+            Send(e.Command.EncodeResponse(CreateTable(e.Command)));
+        }
+
+        private int CreateTable(AbstractCreateTableCommand c)
+        {
+            int res = m_Lobby.CreateTable(c);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.TableName, res, c.GetType().Name);
+            return res;
         }
 
         void m_CommandObserver_GetUserCommandReceived(object sender, CommandEventArgs<GetUserCommand> e)
@@ -78,11 +79,14 @@ namespace BluffinPokerServer
         void m_CommandObserver_AuthenticateUserCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand> e)
         {
             UserInfo u = DataManager.Persistance.Authenticate(e.Command.Username, e.Command.Password);
+
             if (u != null)
                 m_PlayerName = u.DisplayName;
+
             bool ok = (u != null && !m_Lobby.NameUsed(m_PlayerName));
             if( ok )
                 m_Lobby.AddName(m_PlayerName);
+
             LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_AuthenticateUserCommandReceived", "> Client authenticate to Career Server as : {0}. Success={1}", m_PlayerName, ok);
             Send(e.Command.EncodeResponse(ok));
         }
@@ -91,8 +95,10 @@ namespace BluffinPokerServer
         {
             CreateUserCommand c = e.Command;
             bool ok = !DataManager.Persistance.IsUsernameExist(c.Username) && !DataManager.Persistance.IsDisplayNameExist(e.Command.DisplayName);
+
             if( ok)
                 DataManager.Persistance.Register(new UserInfo(c.Username,c.Password,c.Email,c.DisplayName,7500));
+
             LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateUserCommandReceived", "> Client register to Career Server as : {0}. Success={1}", c.Username, ok);
             Send(e.Command.EncodeResponse(ok));
         }
@@ -111,45 +117,43 @@ namespace BluffinPokerServer
         {
             GameServer client = null;
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
+            TableInfo table = game.Table;
+
             if (game is PokerGameTraining)
+                client = new GameServer(e.Command.TableID, game, m_PlayerName, ((PokerGameTraining)game).TrainingTable.StartingMoney);
+            else
+                client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
+
+            client.LeftTable += new EventHandler<EricUtility.KeyEventArgs<int>>(client_LeftTable);
+            client.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(client_SendedSomething);
+
+            if (!game.IsRunning)
             {
-                PokerGameTraining tgame = game as PokerGameTraining;
-                client = new GameServer(e.Command.TableID, game, m_PlayerName, tgame.TrainingTable.StartingMoney);
+                Send(e.Command.EncodeErrorResponse());
+                return;
+            }
+
+            // Verify the player does not already playing on that table.
+            if (!table.ContainsPlayer(e.Command.PlayerName))
+            {
+                bool ok = client.JoinGame();
+                if (!ok)
+                    Send(e.Command.EncodeErrorResponse());
+                else
+                {
+                    m_Tables.Add(e.Command.TableID, client);
+                    client.Start();
+
+                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Name, e.Command.TableID, client.Player.NoSeat);
+                    Send(e.Command.EncodeResponse(client.Player.NoSeat));
+
+                    client.SitIn();
+                }
             }
             else
             {
-                client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
+                Send(e.Command.EncodeErrorResponse());
             }
-            client.LeftTable += new EventHandler<EricUtility.KeyEventArgs<int>>(client_LeftTable);
-            client.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(client_SendedSomething);
-            TableInfo table = game.Table;
-             if (!game.IsRunning)
-                {
-                    Send(e.Command.EncodeErrorResponse());
-                    return;
-                }
-                
-                // Verify the player does not already playing on that table.
-                if (!table.ContainsPlayer(e.Command.PlayerName))
-                {
-                    bool ok = client.JoinGame();
-                    if (!ok)
-                    {
-                        Send(e.Command.EncodeErrorResponse());
-                    }
-                    else
-                    {
-                        m_Tables.Add(e.Command.TableID, client);
-                        client.Start();
-                        LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Name, e.Command.TableID, client.Player.NoSeat);
-                        Send(e.Command.EncodeResponse(client.Player.NoSeat));
-                        client.SitIn();
-                    }
-                }
-                else
-                {
-                    Send(e.Command.EncodeErrorResponse());
-                }
         }
 
         void client_LeftTable(object sender, EricUtility.KeyEventArgs<int> e)
@@ -176,13 +180,13 @@ namespace BluffinPokerServer
 
         protected override void Send(string line)
         {
-            LogManager.Log(LogLevel.MessageLow, "ServerClientLobby.Send", "Server SEND to {0} [{1}]", m_PlayerName, line);
+            LogManager.Log(LogLevel.MessageVeryLow, "ServerClientLobby.Send", "Server SEND to {0} [{1}]", m_PlayerName, line);
             base.Send(line);
         }
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
-            LogManager.Log(LogLevel.MessageLow, "ServerClientLobby.m_CommandObserver_CommandReceived", "Server RECV from {0} [{1}]", m_PlayerName, e.Str);
+            LogManager.Log(LogLevel.MessageVeryLow, "ServerClientLobby.m_CommandObserver_CommandReceived", "Server RECV from {0} [{1}]", m_PlayerName, e.Str);
         }
 
         void m_CommandObserver_IdentifyCommandReceived(object sender, CommandEventArgs<IdentifyCommand> e)

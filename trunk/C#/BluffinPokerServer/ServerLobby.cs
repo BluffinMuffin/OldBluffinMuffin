@@ -12,6 +12,7 @@ using System.Net;
 using EricUtility;
 using PokerProtocol.Entities;
 using PokerProtocol.Entities.Enums;
+using System.Linq;
 
 namespace BluffinPokerServer
 {
@@ -76,77 +77,57 @@ namespace BluffinPokerServer
                 }
             }
         }
-
-        public int CreateTrainingTable(CreateTrainingTableCommand c)
+        public int CreateTable(AbstractCreateTableCommand c)
         {
             ListTrainingTables();
             ListCareerTables();
+
             m_LastUsedID++;
             while (m_Games.ContainsKey(m_LastUsedID))
                 m_LastUsedID++;
-            PokerGameTraining game = new PokerGameTraining(new TableInfoTraining(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+
+            PokerGame game = null;
+
+            if (c is CreateCareerTableCommand)
+                game = new PokerGameCareer(new TableInfoCareer(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+            else
+                game = new PokerGameTraining(new TableInfoTraining(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, ((CreateTrainingTableCommand)c).StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+
             m_Games.Add(m_LastUsedID, game);
             game.Start();
+
             return m_LastUsedID;
         }
 
-        public int CreateCareerTable(CreateCareerTableCommand c)
+        public List<T> ListTables<T>() where T : Table
         {
-            ListTrainingTables();
-            ListCareerTables();
-            m_LastUsedID++;
-            while (m_Games.ContainsKey(m_LastUsedID))
-                m_LastUsedID++;
-            PokerGameCareer game = new PokerGameCareer(new TableInfoCareer(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
-            m_Games.Add(m_LastUsedID, game);
-            game.Start();
-            return m_LastUsedID;
-        }
+            List<Table> tables = new List<Table>();
 
+            // Remove non-running tables
+            m_Games.Where(kvp => !kvp.Value.IsRunning).Select(kvp => kvp.Key).ToList().ForEach(i => m_Games.Remove(i));
+
+            //List Tables
+            foreach (KeyValuePair<int, PokerGame> kvp in m_Games.Where(kvp => kvp.Value.IsRunning))
+            {
+                TableInfo t = kvp.Value.Table;
+
+                if (t is TableInfoTraining && typeof(T) == typeof(TableTraining))
+                    tables.Add(new TableTraining(kvp.Key, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
+
+                if (t is TableInfoCareer && typeof(T) == typeof(TableCareer))
+                    tables.Add(new TableCareer(kvp.Key, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
+            }
+
+            return tables.OfType<T>().ToList();
+        }
         public List<TableTraining> ListTrainingTables()
         {
-            List<TableTraining> tables = new List<TableTraining>();
-            List<int> tablesToRemove = new List<int>();
-
-            foreach (KeyValuePair<int, PokerGame> kvp in m_Games)
-            {
-                PokerGame game = kvp.Value;
-                int noPort = kvp.Key;
-                if (game.IsRunning)
-                {
-                    TableInfo t = game.Table;
-                    if( t is TableInfoTraining )
-                        tables.Add(new TableTraining(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
-                }
-                else
-                    tablesToRemove.Add(noPort);
-            }
-            foreach (int i in tablesToRemove)
-                m_Games.Remove(i);
-            return tables;
+            return ListTables<TableTraining>();
         }
 
         public List<TableCareer> ListCareerTables()
         {
-            List<TableCareer> tables = new List<TableCareer>();
-            List<int> tablesToRemove = new List<int>();
-
-            foreach (KeyValuePair<int, PokerGame> kvp in m_Games)
-            {
-                PokerGame game = kvp.Value;
-                int noPort = kvp.Key;
-                if (game.IsRunning)
-                {
-                    TableInfo t = game.Table;
-                    if (t is TableInfoCareer)
-                        tables.Add(new TableCareer(noPort, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
-                }
-                else
-                    tablesToRemove.Add(noPort);
-            }
-            foreach (int i in tablesToRemove)
-                m_Games.Remove(i);
-            return tables;
+            return ListTables<TableCareer>();
         }
     }
 }
