@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using EricUtility.Windows.Forms;
+using BluffinPokerClient.Splash;
 
 namespace BluffinPokerClient
 {
@@ -26,9 +28,9 @@ namespace BluffinPokerClient
         private void btnStartTraining_Click(object sender, EventArgs e)
         {
             Hide();
-            SplashTrainingConnect cf = new SplashTrainingConnect(txtPlayerName.Text, clstServerName.Text, (int)nudServerPort.Value);
-            if (cf.ShowDialog() == DialogResult.OK)
-                new LobbyTrainingForm(cf.Server).Show();
+            TrainingSplashInfo info = new TrainingSplashInfo(txtPlayerName.Text, clstServerName.Text, (int)nudServerPort.Value);
+            if (new StepSplashForm(info).ShowDialog() == DialogResult.OK)
+                new LobbyTrainingForm(info.Server).Show();
             else
                 Show();
         }
@@ -37,11 +39,11 @@ namespace BluffinPokerClient
         {
 
             Hide();
-            SplashCareerConnect cf = new SplashCareerConnect(clstServerName.Text, (int)nudServerPort.Value, txtUsername.Text, txtPassword.Text);
-            if (cf.ShowDialog() == DialogResult.OK)
+            CareerConnectSplashInfo info = new CareerConnectSplashInfo(clstServerName.Text, (int)nudServerPort.Value, txtUsername.Text, txtPassword.Text);
+            if (new StepSplashForm(info).ShowDialog() == DialogResult.OK)
             {
                 txtPassword.Text = "";
-                new LobbyCareerForm(cf.Server).Show();
+                new LobbyCareerForm(info.Server).Show();
             }
             else
                 Show();
@@ -52,8 +54,8 @@ namespace BluffinPokerClient
             //TODO: RICK: Validate Password & Email
 
             Hide();
-            SplashCareerRegister cf = new SplashCareerRegister(clstServerName.Text, (int)nudServerPort.Value, txtUser.Text, txtPassword1.Text, txtEmail1.Text, txtDisplayName.Text);
-            if (cf.ShowDialog() == DialogResult.OK)
+            CareerRegisterSplashInfo info = new CareerRegisterSplashInfo(clstServerName.Text, (int)nudServerPort.Value, txtUser.Text, txtPassword1.Text, txtEmail1.Text, txtDisplayName.Text);
+            if (new StepSplashForm(info).ShowDialog() == DialogResult.OK)
             {
                 txtUser.Text = "";
                 txtPassword1.Text = "";
@@ -61,7 +63,7 @@ namespace BluffinPokerClient
                 txtEmail1.Text = "";
                 txtEmail2.Text = "";
                 txtDisplayName.Text = "";
-                new LobbyCareerForm(cf.Server).Show();
+                new LobbyCareerForm(info.Server).Show();
             }
             else
                 Show();

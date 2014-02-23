@@ -69,18 +69,6 @@
     <Compile Include="LobbyCareerForm.Designer.cs">
       <DependentUpon>LobbyCareerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SplashCareerConnect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplashCareerConnect.Designer.cs">
-      <DependentUpon>SplashCareerConnect.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SplashCareerRegister.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplashCareerRegister.Designer.cs">
-      <DependentUpon>SplashCareerRegister.cs</DependentUpon>
-    </Compile>
     <Compile Include="LobbyTrainingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,26 +77,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SplashTrainingConnect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SplashTrainingConnect.Designer.cs">
-      <DependentUpon>SplashTrainingConnect.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Splash\CareerConnectSplashInfo.cs" />
+    <Compile Include="Splash\CareerRegisterSplashInfo.cs" />
+    <Compile Include="Splash\TrainingSplashInfo.cs" />
     <EmbeddedResource Include="LobbyCareerForm.resx">
       <DependentUpon>LobbyCareerForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SplashCareerConnect.resx">
-      <DependentUpon>SplashCareerConnect.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SplashCareerRegister.resx">
-      <DependentUpon>SplashCareerRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LobbyTrainingForm.resx">
       <DependentUpon>LobbyTrainingForm.cs</DependentUpon>
@@ -123,9 +102,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SplashTrainingConnect.resx">
-      <DependentUpon>SplashTrainingConnect.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
