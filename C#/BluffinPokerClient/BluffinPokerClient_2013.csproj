@@ -203,14 +203,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\1393150350_list-add-user.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\add_user.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="cards.ico" />
     <Content Include="chips2.ico" />
+    <None Include="Resources\leave.png" />
+    <None Include="Resources\cards_mini.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\exit.png" />
     <None Include="Resources\learn.png" />
     <None Include="Resources\cards.png" />
   </ItemGroup>

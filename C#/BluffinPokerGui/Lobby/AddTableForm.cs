@@ -76,6 +76,8 @@ namespace BluffinPokerGUI.Lobby
             atcReal.InitControl(m_PlayerName, nbPlayers);
             if (trainingOnly)
                 tabControl1.TabPages.Remove(tabReal);
+            else
+                tabControl1.TabPages.Remove(tabTraining);
         }
 
         private void GatherCommonFields(AddTableControl control)
