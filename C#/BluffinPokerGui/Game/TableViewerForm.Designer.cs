@@ -28,7 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableViewerForm));
+            this.logConsole = new BluffinPokerGui.LogConsole();
+            this.btnHelp = new VIBlend.WinForms.Controls.vButton();
             this.pnlTable = new System.Windows.Forms.Panel();
+            this.lblPot9 = new System.Windows.Forms.Label();
+            this.lblPot8 = new System.Windows.Forms.Label();
+            this.lblPot7 = new System.Windows.Forms.Label();
+            this.lblPot6 = new System.Windows.Forms.Label();
+            this.lblPot5 = new System.Windows.Forms.Label();
+            this.lblPot0 = new System.Windows.Forms.Label();
+            this.lblPot1 = new System.Windows.Forms.Label();
+            this.lblPot2 = new System.Windows.Forms.Label();
+            this.lblPot3 = new System.Windows.Forms.Label();
+            this.lblPot4 = new System.Windows.Forms.Label();
+            this.lblPot9Title = new System.Windows.Forms.Label();
+            this.lblPot8Title = new System.Windows.Forms.Label();
+            this.lblPot7Title = new System.Windows.Forms.Label();
+            this.lblPot6Title = new System.Windows.Forms.Label();
+            this.lblPot5Title = new System.Windows.Forms.Label();
+            this.lblPot4Title = new System.Windows.Forms.Label();
+            this.lblPot3Title = new System.Windows.Forms.Label();
+            this.lblPot2Title = new System.Windows.Forms.Label();
+            this.lblPot1Title = new System.Windows.Forms.Label();
+            this.lblPot0Title = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -56,28 +79,6 @@
             this.pokerPlayerHud1 = new BluffinPokerGui.Game.PokerPlayerHud();
             this.lblTotalPot = new System.Windows.Forms.Label();
             this.lblTotalPotTitle = new System.Windows.Forms.Label();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.logConsole = new BluffinPokerGui.LogConsole();
-            this.lblPot0Title = new System.Windows.Forms.Label();
-            this.lblPot1Title = new System.Windows.Forms.Label();
-            this.lblPot2Title = new System.Windows.Forms.Label();
-            this.lblPot3Title = new System.Windows.Forms.Label();
-            this.lblPot4Title = new System.Windows.Forms.Label();
-            this.lblPot9Title = new System.Windows.Forms.Label();
-            this.lblPot8Title = new System.Windows.Forms.Label();
-            this.lblPot7Title = new System.Windows.Forms.Label();
-            this.lblPot6Title = new System.Windows.Forms.Label();
-            this.lblPot5Title = new System.Windows.Forms.Label();
-            this.lblPot4 = new System.Windows.Forms.Label();
-            this.lblPot3 = new System.Windows.Forms.Label();
-            this.lblPot2 = new System.Windows.Forms.Label();
-            this.lblPot1 = new System.Windows.Forms.Label();
-            this.lblPot0 = new System.Windows.Forms.Label();
-            this.lblPot5 = new System.Windows.Forms.Label();
-            this.lblPot6 = new System.Windows.Forms.Label();
-            this.lblPot7 = new System.Windows.Forms.Label();
-            this.lblPot8 = new System.Windows.Forms.Label();
-            this.lblPot9 = new System.Windows.Forms.Label();
             this.pnlTable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox4)).BeginInit();
@@ -85,6 +86,30 @@
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // logConsole
+            // 
+            this.logConsole.Location = new System.Drawing.Point(0, 553);
+            this.logConsole.Name = "logConsole";
+            this.logConsole.Size = new System.Drawing.Size(1019, 135);
+            this.logConsole.TabIndex = 3;
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.AllowAnimations = true;
+            this.btnHelp.BackColor = System.Drawing.Color.Transparent;
+            this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHelp.Image = global::BluffinPokerGUI.Properties.Resources.help;
+            this.btnHelp.Location = new System.Drawing.Point(880, 12);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.RoundedCornersMask = ((byte)(15));
+            this.btnHelp.Size = new System.Drawing.Size(134, 23);
+            this.btnHelp.TabIndex = 1;
+            this.btnHelp.Text = "HELP";
+            this.btnHelp.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.EXPRESSIONDARK;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // pnlTable
             // 
@@ -140,6 +165,256 @@
             this.pnlTable.Name = "pnlTable";
             this.pnlTable.Size = new System.Drawing.Size(874, 556);
             this.pnlTable.TabIndex = 0;
+            // 
+            // lblPot9
+            // 
+            this.lblPot9.BackColor = System.Drawing.Color.Black;
+            this.lblPot9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot9.ForeColor = System.Drawing.Color.White;
+            this.lblPot9.Location = new System.Drawing.Point(89, 503);
+            this.lblPot9.Name = "lblPot9";
+            this.lblPot9.Size = new System.Drawing.Size(100, 18);
+            this.lblPot9.TabIndex = 47;
+            this.lblPot9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot9.Visible = false;
+            // 
+            // lblPot8
+            // 
+            this.lblPot8.BackColor = System.Drawing.Color.Black;
+            this.lblPot8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot8.ForeColor = System.Drawing.Color.White;
+            this.lblPot8.Location = new System.Drawing.Point(89, 485);
+            this.lblPot8.Name = "lblPot8";
+            this.lblPot8.Size = new System.Drawing.Size(100, 18);
+            this.lblPot8.TabIndex = 46;
+            this.lblPot8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot8.Visible = false;
+            // 
+            // lblPot7
+            // 
+            this.lblPot7.BackColor = System.Drawing.Color.Black;
+            this.lblPot7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot7.ForeColor = System.Drawing.Color.White;
+            this.lblPot7.Location = new System.Drawing.Point(89, 467);
+            this.lblPot7.Name = "lblPot7";
+            this.lblPot7.Size = new System.Drawing.Size(100, 18);
+            this.lblPot7.TabIndex = 45;
+            this.lblPot7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot7.Visible = false;
+            // 
+            // lblPot6
+            // 
+            this.lblPot6.BackColor = System.Drawing.Color.Black;
+            this.lblPot6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot6.ForeColor = System.Drawing.Color.White;
+            this.lblPot6.Location = new System.Drawing.Point(89, 449);
+            this.lblPot6.Name = "lblPot6";
+            this.lblPot6.Size = new System.Drawing.Size(100, 18);
+            this.lblPot6.TabIndex = 44;
+            this.lblPot6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot6.Visible = false;
+            // 
+            // lblPot5
+            // 
+            this.lblPot5.BackColor = System.Drawing.Color.Black;
+            this.lblPot5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot5.ForeColor = System.Drawing.Color.White;
+            this.lblPot5.Location = new System.Drawing.Point(89, 431);
+            this.lblPot5.Name = "lblPot5";
+            this.lblPot5.Size = new System.Drawing.Size(100, 18);
+            this.lblPot5.TabIndex = 43;
+            this.lblPot5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot5.Visible = false;
+            // 
+            // lblPot0
+            // 
+            this.lblPot0.BackColor = System.Drawing.Color.Black;
+            this.lblPot0.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot0.ForeColor = System.Drawing.Color.White;
+            this.lblPot0.Location = new System.Drawing.Point(89, 9);
+            this.lblPot0.Name = "lblPot0";
+            this.lblPot0.Size = new System.Drawing.Size(100, 18);
+            this.lblPot0.TabIndex = 42;
+            this.lblPot0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot0.Visible = false;
+            // 
+            // lblPot1
+            // 
+            this.lblPot1.BackColor = System.Drawing.Color.Black;
+            this.lblPot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot1.ForeColor = System.Drawing.Color.White;
+            this.lblPot1.Location = new System.Drawing.Point(89, 27);
+            this.lblPot1.Name = "lblPot1";
+            this.lblPot1.Size = new System.Drawing.Size(100, 18);
+            this.lblPot1.TabIndex = 41;
+            this.lblPot1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot1.Visible = false;
+            // 
+            // lblPot2
+            // 
+            this.lblPot2.BackColor = System.Drawing.Color.Black;
+            this.lblPot2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot2.ForeColor = System.Drawing.Color.White;
+            this.lblPot2.Location = new System.Drawing.Point(89, 45);
+            this.lblPot2.Name = "lblPot2";
+            this.lblPot2.Size = new System.Drawing.Size(100, 18);
+            this.lblPot2.TabIndex = 40;
+            this.lblPot2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot2.Visible = false;
+            // 
+            // lblPot3
+            // 
+            this.lblPot3.BackColor = System.Drawing.Color.Black;
+            this.lblPot3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot3.ForeColor = System.Drawing.Color.White;
+            this.lblPot3.Location = new System.Drawing.Point(89, 63);
+            this.lblPot3.Name = "lblPot3";
+            this.lblPot3.Size = new System.Drawing.Size(100, 18);
+            this.lblPot3.TabIndex = 39;
+            this.lblPot3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot3.Visible = false;
+            // 
+            // lblPot4
+            // 
+            this.lblPot4.BackColor = System.Drawing.Color.Black;
+            this.lblPot4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot4.ForeColor = System.Drawing.Color.White;
+            this.lblPot4.Location = new System.Drawing.Point(89, 81);
+            this.lblPot4.Name = "lblPot4";
+            this.lblPot4.Size = new System.Drawing.Size(100, 18);
+            this.lblPot4.TabIndex = 38;
+            this.lblPot4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot4.Visible = false;
+            // 
+            // lblPot9Title
+            // 
+            this.lblPot9Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot9Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot9Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot9Title.Location = new System.Drawing.Point(12, 503);
+            this.lblPot9Title.Name = "lblPot9Title";
+            this.lblPot9Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot9Title.TabIndex = 37;
+            this.lblPot9Title.Text = "Side Pot 9:";
+            this.lblPot9Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot9Title.Visible = false;
+            // 
+            // lblPot8Title
+            // 
+            this.lblPot8Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot8Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot8Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot8Title.Location = new System.Drawing.Point(12, 485);
+            this.lblPot8Title.Name = "lblPot8Title";
+            this.lblPot8Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot8Title.TabIndex = 36;
+            this.lblPot8Title.Text = "Side Pot 8:";
+            this.lblPot8Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot8Title.Visible = false;
+            // 
+            // lblPot7Title
+            // 
+            this.lblPot7Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot7Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot7Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot7Title.Location = new System.Drawing.Point(12, 467);
+            this.lblPot7Title.Name = "lblPot7Title";
+            this.lblPot7Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot7Title.TabIndex = 35;
+            this.lblPot7Title.Text = "Side Pot 7:";
+            this.lblPot7Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot7Title.Visible = false;
+            // 
+            // lblPot6Title
+            // 
+            this.lblPot6Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot6Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot6Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot6Title.Location = new System.Drawing.Point(12, 449);
+            this.lblPot6Title.Name = "lblPot6Title";
+            this.lblPot6Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot6Title.TabIndex = 34;
+            this.lblPot6Title.Text = "Side Pot 6:";
+            this.lblPot6Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot6Title.Visible = false;
+            // 
+            // lblPot5Title
+            // 
+            this.lblPot5Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot5Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot5Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot5Title.Location = new System.Drawing.Point(12, 431);
+            this.lblPot5Title.Name = "lblPot5Title";
+            this.lblPot5Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot5Title.TabIndex = 33;
+            this.lblPot5Title.Text = "Side Pot 5:";
+            this.lblPot5Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot5Title.Visible = false;
+            // 
+            // lblPot4Title
+            // 
+            this.lblPot4Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot4Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot4Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot4Title.Location = new System.Drawing.Point(12, 81);
+            this.lblPot4Title.Name = "lblPot4Title";
+            this.lblPot4Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot4Title.TabIndex = 32;
+            this.lblPot4Title.Text = "Side Pot 4:";
+            this.lblPot4Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot4Title.Visible = false;
+            // 
+            // lblPot3Title
+            // 
+            this.lblPot3Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot3Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot3Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot3Title.Location = new System.Drawing.Point(12, 63);
+            this.lblPot3Title.Name = "lblPot3Title";
+            this.lblPot3Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot3Title.TabIndex = 31;
+            this.lblPot3Title.Text = "Side Pot 3:";
+            this.lblPot3Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot3Title.Visible = false;
+            // 
+            // lblPot2Title
+            // 
+            this.lblPot2Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot2Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot2Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot2Title.Location = new System.Drawing.Point(12, 45);
+            this.lblPot2Title.Name = "lblPot2Title";
+            this.lblPot2Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot2Title.TabIndex = 30;
+            this.lblPot2Title.Text = "Side Pot 2:";
+            this.lblPot2Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot2Title.Visible = false;
+            // 
+            // lblPot1Title
+            // 
+            this.lblPot1Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot1Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot1Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot1Title.Location = new System.Drawing.Point(12, 27);
+            this.lblPot1Title.Name = "lblPot1Title";
+            this.lblPot1Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot1Title.TabIndex = 29;
+            this.lblPot1Title.Text = "Side Pot 1:";
+            this.lblPot1Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot1Title.Visible = false;
+            // 
+            // lblPot0Title
+            // 
+            this.lblPot0Title.BackColor = System.Drawing.Color.Black;
+            this.lblPot0Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPot0Title.ForeColor = System.Drawing.Color.White;
+            this.lblPot0Title.Location = new System.Drawing.Point(12, 9);
+            this.lblPot0Title.Name = "lblPot0Title";
+            this.lblPot0Title.Size = new System.Drawing.Size(71, 18);
+            this.lblPot0Title.TabIndex = 28;
+            this.lblPot0Title.Text = "Main Pot:";
+            this.lblPot0Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblPot0Title.Visible = false;
             // 
             // label10
             // 
@@ -454,273 +729,6 @@
             this.lblTotalPotTitle.Text = "Total Pot:";
             this.lblTotalPotTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnHelp
-            // 
-            this.btnHelp.Location = new System.Drawing.Point(880, 12);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(134, 23);
-            this.btnHelp.TabIndex = 1;
-            this.btnHelp.Text = "HELP";
-            this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // logConsole
-            // 
-            this.logConsole.Location = new System.Drawing.Point(0, 553);
-            this.logConsole.Name = "logConsole";
-            this.logConsole.Size = new System.Drawing.Size(1019, 135);
-            this.logConsole.TabIndex = 3;
-            // 
-            // lblPot0Title
-            // 
-            this.lblPot0Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot0Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot0Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot0Title.Location = new System.Drawing.Point(12, 9);
-            this.lblPot0Title.Name = "lblPot0Title";
-            this.lblPot0Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot0Title.TabIndex = 28;
-            this.lblPot0Title.Text = "Main Pot:";
-            this.lblPot0Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot0Title.Visible = false;
-            // 
-            // lblPot1Title
-            // 
-            this.lblPot1Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot1Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot1Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot1Title.Location = new System.Drawing.Point(12, 27);
-            this.lblPot1Title.Name = "lblPot1Title";
-            this.lblPot1Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot1Title.TabIndex = 29;
-            this.lblPot1Title.Text = "Side Pot 1:";
-            this.lblPot1Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot1Title.Visible = false;
-            // 
-            // lblPot2Title
-            // 
-            this.lblPot2Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot2Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot2Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot2Title.Location = new System.Drawing.Point(12, 45);
-            this.lblPot2Title.Name = "lblPot2Title";
-            this.lblPot2Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot2Title.TabIndex = 30;
-            this.lblPot2Title.Text = "Side Pot 2:";
-            this.lblPot2Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot2Title.Visible = false;
-            // 
-            // lblPot3Title
-            // 
-            this.lblPot3Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot3Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot3Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot3Title.Location = new System.Drawing.Point(12, 63);
-            this.lblPot3Title.Name = "lblPot3Title";
-            this.lblPot3Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot3Title.TabIndex = 31;
-            this.lblPot3Title.Text = "Side Pot 3:";
-            this.lblPot3Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot3Title.Visible = false;
-            // 
-            // lblPot4Title
-            // 
-            this.lblPot4Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot4Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot4Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot4Title.Location = new System.Drawing.Point(12, 81);
-            this.lblPot4Title.Name = "lblPot4Title";
-            this.lblPot4Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot4Title.TabIndex = 32;
-            this.lblPot4Title.Text = "Side Pot 4:";
-            this.lblPot4Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot4Title.Visible = false;
-            // 
-            // lblPot9Title
-            // 
-            this.lblPot9Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot9Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot9Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot9Title.Location = new System.Drawing.Point(12, 503);
-            this.lblPot9Title.Name = "lblPot9Title";
-            this.lblPot9Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot9Title.TabIndex = 37;
-            this.lblPot9Title.Text = "Side Pot 9:";
-            this.lblPot9Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot9Title.Visible = false;
-            // 
-            // lblPot8Title
-            // 
-            this.lblPot8Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot8Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot8Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot8Title.Location = new System.Drawing.Point(12, 485);
-            this.lblPot8Title.Name = "lblPot8Title";
-            this.lblPot8Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot8Title.TabIndex = 36;
-            this.lblPot8Title.Text = "Side Pot 8:";
-            this.lblPot8Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot8Title.Visible = false;
-            // 
-            // lblPot7Title
-            // 
-            this.lblPot7Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot7Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot7Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot7Title.Location = new System.Drawing.Point(12, 467);
-            this.lblPot7Title.Name = "lblPot7Title";
-            this.lblPot7Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot7Title.TabIndex = 35;
-            this.lblPot7Title.Text = "Side Pot 7:";
-            this.lblPot7Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot7Title.Visible = false;
-            // 
-            // lblPot6Title
-            // 
-            this.lblPot6Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot6Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot6Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot6Title.Location = new System.Drawing.Point(12, 449);
-            this.lblPot6Title.Name = "lblPot6Title";
-            this.lblPot6Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot6Title.TabIndex = 34;
-            this.lblPot6Title.Text = "Side Pot 6:";
-            this.lblPot6Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot6Title.Visible = false;
-            // 
-            // lblPot5Title
-            // 
-            this.lblPot5Title.BackColor = System.Drawing.Color.Black;
-            this.lblPot5Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot5Title.ForeColor = System.Drawing.Color.White;
-            this.lblPot5Title.Location = new System.Drawing.Point(12, 431);
-            this.lblPot5Title.Name = "lblPot5Title";
-            this.lblPot5Title.Size = new System.Drawing.Size(71, 18);
-            this.lblPot5Title.TabIndex = 33;
-            this.lblPot5Title.Text = "Side Pot 5:";
-            this.lblPot5Title.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot5Title.Visible = false;
-            // 
-            // lblPot4
-            // 
-            this.lblPot4.BackColor = System.Drawing.Color.Black;
-            this.lblPot4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot4.ForeColor = System.Drawing.Color.White;
-            this.lblPot4.Location = new System.Drawing.Point(89, 81);
-            this.lblPot4.Name = "lblPot4";
-            this.lblPot4.Size = new System.Drawing.Size(100, 18);
-            this.lblPot4.TabIndex = 38;
-            this.lblPot4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot4.Visible = false;
-            // 
-            // lblPot3
-            // 
-            this.lblPot3.BackColor = System.Drawing.Color.Black;
-            this.lblPot3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot3.ForeColor = System.Drawing.Color.White;
-            this.lblPot3.Location = new System.Drawing.Point(89, 63);
-            this.lblPot3.Name = "lblPot3";
-            this.lblPot3.Size = new System.Drawing.Size(100, 18);
-            this.lblPot3.TabIndex = 39;
-            this.lblPot3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot3.Visible = false;
-            // 
-            // lblPot2
-            // 
-            this.lblPot2.BackColor = System.Drawing.Color.Black;
-            this.lblPot2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot2.ForeColor = System.Drawing.Color.White;
-            this.lblPot2.Location = new System.Drawing.Point(89, 45);
-            this.lblPot2.Name = "lblPot2";
-            this.lblPot2.Size = new System.Drawing.Size(100, 18);
-            this.lblPot2.TabIndex = 40;
-            this.lblPot2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot2.Visible = false;
-            // 
-            // lblPot1
-            // 
-            this.lblPot1.BackColor = System.Drawing.Color.Black;
-            this.lblPot1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot1.ForeColor = System.Drawing.Color.White;
-            this.lblPot1.Location = new System.Drawing.Point(89, 27);
-            this.lblPot1.Name = "lblPot1";
-            this.lblPot1.Size = new System.Drawing.Size(100, 18);
-            this.lblPot1.TabIndex = 41;
-            this.lblPot1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot1.Visible = false;
-            // 
-            // lblPot0
-            // 
-            this.lblPot0.BackColor = System.Drawing.Color.Black;
-            this.lblPot0.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot0.ForeColor = System.Drawing.Color.White;
-            this.lblPot0.Location = new System.Drawing.Point(89, 9);
-            this.lblPot0.Name = "lblPot0";
-            this.lblPot0.Size = new System.Drawing.Size(100, 18);
-            this.lblPot0.TabIndex = 42;
-            this.lblPot0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot0.Visible = false;
-            // 
-            // lblPot5
-            // 
-            this.lblPot5.BackColor = System.Drawing.Color.Black;
-            this.lblPot5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot5.ForeColor = System.Drawing.Color.White;
-            this.lblPot5.Location = new System.Drawing.Point(89, 431);
-            this.lblPot5.Name = "lblPot5";
-            this.lblPot5.Size = new System.Drawing.Size(100, 18);
-            this.lblPot5.TabIndex = 43;
-            this.lblPot5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot5.Visible = false;
-            // 
-            // lblPot6
-            // 
-            this.lblPot6.BackColor = System.Drawing.Color.Black;
-            this.lblPot6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot6.ForeColor = System.Drawing.Color.White;
-            this.lblPot6.Location = new System.Drawing.Point(89, 449);
-            this.lblPot6.Name = "lblPot6";
-            this.lblPot6.Size = new System.Drawing.Size(100, 18);
-            this.lblPot6.TabIndex = 44;
-            this.lblPot6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot6.Visible = false;
-            // 
-            // lblPot7
-            // 
-            this.lblPot7.BackColor = System.Drawing.Color.Black;
-            this.lblPot7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot7.ForeColor = System.Drawing.Color.White;
-            this.lblPot7.Location = new System.Drawing.Point(89, 467);
-            this.lblPot7.Name = "lblPot7";
-            this.lblPot7.Size = new System.Drawing.Size(100, 18);
-            this.lblPot7.TabIndex = 45;
-            this.lblPot7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot7.Visible = false;
-            // 
-            // lblPot8
-            // 
-            this.lblPot8.BackColor = System.Drawing.Color.Black;
-            this.lblPot8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot8.ForeColor = System.Drawing.Color.White;
-            this.lblPot8.Location = new System.Drawing.Point(89, 485);
-            this.lblPot8.Name = "lblPot8";
-            this.lblPot8.Size = new System.Drawing.Size(100, 18);
-            this.lblPot8.TabIndex = 46;
-            this.lblPot8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot8.Visible = false;
-            // 
-            // lblPot9
-            // 
-            this.lblPot9.BackColor = System.Drawing.Color.Black;
-            this.lblPot9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPot9.ForeColor = System.Drawing.Color.White;
-            this.lblPot9.Location = new System.Drawing.Point(89, 503);
-            this.lblPot9.Name = "lblPot9";
-            this.lblPot9.Size = new System.Drawing.Size(100, 18);
-            this.lblPot9.TabIndex = 47;
-            this.lblPot9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblPot9.Visible = false;
-            // 
             // TableViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -730,6 +738,7 @@
             this.Controls.Add(this.logConsole);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.pnlTable);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TableViewerForm";
             this.Text = "C# Poker Table (Viewer Only)";
             this.pnlTable.ResumeLayout(false);
@@ -772,7 +781,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnHelp;
+        private VIBlend.WinForms.Controls.vButton btnHelp;
         private LogConsole logConsole;
         private System.Windows.Forms.Label lblPot9;
         private System.Windows.Forms.Label lblPot8;
