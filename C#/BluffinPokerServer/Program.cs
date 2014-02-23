@@ -36,8 +36,17 @@ namespace BluffinPokerServer
 
         static void LogManager_MessageLogged(string from, string message, int level)
         {
-            ConsoleColor c = Console.ForegroundColor;
+            ConsoleColor fc = Console.ForegroundColor;
+            ConsoleColor bc = Console.BackgroundColor;
 
+
+            //Errors
+            if (level >= (int)LogLevel.ErrorHigh)
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.White;
+                message = "ERROR: " + message;
+            }
             if (level >= (int)LogLevel.Error)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -47,6 +56,9 @@ namespace BluffinPokerServer
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
             }
+
+
+            //Warnings
             else if (level >= (int)LogLevel.Warning)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -56,6 +68,9 @@ namespace BluffinPokerServer
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
             }
+
+
+            //Messages
             else if (level >= (int)LogLevel.MessageVeryHigh)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -76,15 +91,18 @@ namespace BluffinPokerServer
                 message = "DEBUG: " + message;
             }
 
-            // ATTENTION: This if must contain "LogLevel.Message" for RELEASE
-            //                                 "LogLevel.MessageLow" for DEBUGGING
-            //                                 "LogLevel.MessageVeryLow" for XTREM DEBUGGING
-            if (level >= (int)LogLevel.Message)
+
+
+            // ATTENTION: This "if" must contain "LogLevel.Message" for RELEASE
+            //                                   "LogLevel.MessageLow" for DEBUGGING
+            //                                   "LogLevel.MessageVeryLow" for XTREM DEBUGGING
+            if (level >= (int)LogLevel.MessageVeryLow)
                 Console.WriteLine(message);
 
 
 
-            Console.ForegroundColor = c;
+            Console.ForegroundColor = fc;
+            Console.BackgroundColor = bc;
         }
     }
 }
