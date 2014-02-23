@@ -55,7 +55,7 @@
     <StartupObject>BluffinPokerClient.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>chips2.ico</ApplicationIcon>
+    <ApplicationIcon>cards.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -209,6 +209,7 @@
     <None Include="Resources\add_user.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="cards.ico" />
     <Content Include="chips2.ico" />
     <None Include="Resources\learn.png" />
     <None Include="Resources\cards.png" />
