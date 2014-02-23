@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using EricUtility;
+using BluffinPokerClient.Menu;
 
 namespace BluffinPokerClient
 {
     public static class Program
     {
-        private static MainForm m_WForm;
-        public static MainForm WForm { get { return m_WForm; } }
         /// <summary>
         /// Point d'entrée principal de l'application.
         /// </summary>
@@ -18,8 +17,7 @@ namespace BluffinPokerClient
             LogManager.MessageLogged += new LogDelegate(LogManager_MessageLogged);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            m_WForm = new MainForm();
-            Application.Run(m_WForm);
+            Application.Run(new MenuForm());
         }
         static void LogManager_MessageLogged(string from, string message, int level)
         {

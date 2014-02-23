@@ -24,8 +24,6 @@ namespace BluffinPokerClient
             Text = server.User.DisplayName + " ~ " + lblTitle.Text;
             lblServer.Text = String.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
             lstFilter.SelectedItem = "Real";
-            if (tableList.NbTables == 0)
-                tableList.AddTable(false);
         }
 
 
@@ -91,7 +89,7 @@ namespace BluffinPokerClient
         {
             if (m_Server != null)
                 m_Server.Disconnect();
-            Program.WForm.Show();
+            //Program.WForm.Show();
         }
 
         private void tableList_OnChoiceMade(object sender, EventArgs e)
@@ -120,6 +118,11 @@ namespace BluffinPokerClient
         private void LobbyCareerForm_Activated(object sender, EventArgs e)
         {
             tableList.RefreshList();
+        }
+
+        private void LobbyCareerForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -37,14 +37,15 @@
             this.lblAccount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
             this.btnAddTable = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnJoinTable = new System.Windows.Forms.ToolStripButton();
             this.btnLeaveTable = new System.Windows.Forms.ToolStripButton();
             this.lstFilter = new System.Windows.Forms.ToolStripComboBox();
-            this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -162,6 +163,19 @@
             this.lblTitle.Text = "Bluffin Muffin Poker Client";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tableList
+            // 
+            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableList.Location = new System.Drawing.Point(0, 25);
+            this.tableList.Name = "tableList";
+            this.tableList.ShowCareer = true;
+            this.tableList.ShowTraining = false;
+            this.tableList.Size = new System.Drawing.Size(477, 156);
+            this.tableList.TabIndex = 8;
+            this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
+            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
+            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
+            // 
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -196,6 +210,11 @@
             this.btnAddTable.Text = "Add Table";
             this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // btnJoinTable
             // 
             this.btnJoinTable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -228,24 +247,6 @@
             this.lstFilter.Size = new System.Drawing.Size(121, 25);
             this.lstFilter.SelectedIndexChanged += new System.EventHandler(this.lstFilter_SelectedIndexChanged);
             // 
-            // tableList
-            // 
-            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableList.Location = new System.Drawing.Point(0, 25);
-            this.tableList.Name = "tableList";
-            this.tableList.ShowCareer = true;
-            this.tableList.ShowTraining = false;
-            this.tableList.Size = new System.Drawing.Size(477, 156);
-            this.tableList.TabIndex = 8;
-            this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
-            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
-            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
             // LobbyCareerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -258,10 +259,12 @@
             this.Text = "Bluffin Muffin Poker Client";
             this.Activated += new System.EventHandler(this.LobbyCareerForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CareerLobbyForm_FormClosed);
+            this.Load += new System.EventHandler(this.LobbyCareerForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

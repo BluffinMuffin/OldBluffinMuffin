@@ -25,8 +25,6 @@ namespace BluffinPokerClient
             lblStatus.Text = "[Training] Connected as " + server.PlayerName;
             Text = server.PlayerName + " ~ " + lblTitle.Text;
             tableList.RefreshList();
-            if (tableList.NbTables == 0)
-                tableList.AddTable(true);
         }
 
         public delegate void EmptyDelegate();
@@ -80,7 +78,7 @@ namespace BluffinPokerClient
         {
             if (m_Server != null)
                 m_Server.Disconnect();
-            Program.WForm.Show();
+            //Program.WForm.Show();
         }
 
         private void tableList_OnChoiceMade(object sender, EventArgs e)
@@ -92,6 +90,12 @@ namespace BluffinPokerClient
         private void tableList_OnSelectionChanged(object sender, EventArgs e)
         {
             AllowJoinOrLeave();
+        }
+
+        private void LobbyTrainingForm_Load(object sender, EventArgs e)
+        {
+            if (tableList.NbTables == 0)
+                tableList.AddTable(true);
         }
     }
 }

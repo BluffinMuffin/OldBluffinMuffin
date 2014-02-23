@@ -136,6 +136,8 @@
             this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableList.Location = new System.Drawing.Point(0, 70);
             this.tableList.Name = "tableList";
+            this.tableList.ShowCareer = false;
+            this.tableList.ShowTraining = true;
             this.tableList.Size = new System.Drawing.Size(500, 155);
             this.tableList.TabIndex = 7;
             this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
@@ -154,6 +156,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bluffin Muffin Poker Training Client";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LobbyForm_FormClosed);
+            this.Load += new System.EventHandler(this.LobbyTrainingForm_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
