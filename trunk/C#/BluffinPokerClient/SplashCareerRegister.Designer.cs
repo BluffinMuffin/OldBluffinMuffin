@@ -31,28 +31,28 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashCareerRegister));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.spb6RetrieveInfo = new EricUtility.Windows.Forms.StatePictureBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.spbStep5 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb5Authenticate = new EricUtility.Windows.Forms.StatePictureBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.spbStep4 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb4Creating = new EricUtility.Windows.Forms.StatePictureBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.spbStep3 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb3AvailabilityDisplay = new EricUtility.Windows.Forms.StatePictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.spbStep2 = new EricUtility.Windows.Forms.StatePictureBox();
-            this.spbStep1 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb2AvailabilityUser = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb1ReachingServer = new EricUtility.Windows.Forms.StatePictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.spbStep6 = new EricUtility.Windows.Forms.StatePictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb6RetrieveInfo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb5Authenticate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb4Creating)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb3AvailabilityDisplay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb2AvailabilityUser)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb1ReachingServer)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -70,24 +70,44 @@
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.label7);
-            this.panel2.Controls.Add(this.spbStep6);
+            this.panel2.Controls.Add(this.spb6RetrieveInfo);
             this.panel2.Controls.Add(this.label6);
-            this.panel2.Controls.Add(this.spbStep5);
+            this.panel2.Controls.Add(this.spb5Authenticate);
             this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.spbStep4);
+            this.panel2.Controls.Add(this.spb4Creating);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.spbStep3);
+            this.panel2.Controls.Add(this.spb3AvailabilityDisplay);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.btnCancel);
-            this.panel2.Controls.Add(this.spbStep2);
-            this.panel2.Controls.Add(this.spbStep1);
+            this.panel2.Controls.Add(this.spb2AvailabilityUser);
+            this.panel2.Controls.Add(this.spb1ReachingServer);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(280, 354);
             this.panel2.TabIndex = 0;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(46, 282);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(208, 23);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Retrieving User Info ...";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // spb6RetrieveInfo
+            // 
+            this.spb6RetrieveInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb6RetrieveInfo.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spb6RetrieveInfo.Location = new System.Drawing.Point(20, 282);
+            this.spb6RetrieveInfo.Name = "spb6RetrieveInfo";
+            this.spb6RetrieveInfo.Size = new System.Drawing.Size(20, 23);
+            this.spb6RetrieveInfo.TabIndex = 12;
+            this.spb6RetrieveInfo.TabStop = false;
             // 
             // label6
             // 
@@ -99,15 +119,15 @@
             this.label6.Text = "Authenticating Player ...";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // spbStep5
+            // spb5Authenticate
             // 
-            this.spbStep5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep5.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep5.Location = new System.Drawing.Point(20, 242);
-            this.spbStep5.Name = "spbStep5";
-            this.spbStep5.Size = new System.Drawing.Size(20, 23);
-            this.spbStep5.TabIndex = 10;
-            this.spbStep5.TabStop = false;
+            this.spb5Authenticate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb5Authenticate.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spb5Authenticate.Location = new System.Drawing.Point(20, 242);
+            this.spb5Authenticate.Name = "spb5Authenticate";
+            this.spb5Authenticate.Size = new System.Drawing.Size(20, 23);
+            this.spb5Authenticate.TabIndex = 10;
+            this.spb5Authenticate.TabStop = false;
             // 
             // label5
             // 
@@ -119,15 +139,15 @@
             this.label5.Text = "Creating User  ...";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // spbStep4
+            // spb4Creating
             // 
-            this.spbStep4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep4.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep4.Location = new System.Drawing.Point(20, 201);
-            this.spbStep4.Name = "spbStep4";
-            this.spbStep4.Size = new System.Drawing.Size(20, 23);
-            this.spbStep4.TabIndex = 8;
-            this.spbStep4.TabStop = false;
+            this.spb4Creating.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb4Creating.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spb4Creating.Location = new System.Drawing.Point(20, 201);
+            this.spb4Creating.Name = "spb4Creating";
+            this.spb4Creating.Size = new System.Drawing.Size(20, 23);
+            this.spb4Creating.TabIndex = 8;
+            this.spb4Creating.TabStop = false;
             // 
             // label4
             // 
@@ -139,15 +159,15 @@
             this.label4.Text = "Availability of Display Name ...";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // spbStep3
+            // spb2AvailabilityDisplay
             // 
-            this.spbStep3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep3.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep3.Location = new System.Drawing.Point(20, 158);
-            this.spbStep3.Name = "spbStep3";
-            this.spbStep3.Size = new System.Drawing.Size(20, 23);
-            this.spbStep3.TabIndex = 6;
-            this.spbStep3.TabStop = false;
+            this.spb3AvailabilityDisplay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb3AvailabilityDisplay.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spb3AvailabilityDisplay.Location = new System.Drawing.Point(20, 158);
+            this.spb3AvailabilityDisplay.Name = "spb2AvailabilityDisplay";
+            this.spb3AvailabilityDisplay.Size = new System.Drawing.Size(20, 23);
+            this.spb3AvailabilityDisplay.TabIndex = 6;
+            this.spb3AvailabilityDisplay.TabStop = false;
             // 
             // label3
             // 
@@ -181,26 +201,26 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // spbStep2
+            // spb2AvailabilityUser
             // 
-            this.spbStep2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep2.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep2.Location = new System.Drawing.Point(20, 117);
-            this.spbStep2.Name = "spbStep2";
-            this.spbStep2.Size = new System.Drawing.Size(20, 23);
-            this.spbStep2.TabIndex = 2;
-            this.spbStep2.TabStop = false;
+            this.spb2AvailabilityUser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb2AvailabilityUser.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spb2AvailabilityUser.Location = new System.Drawing.Point(20, 117);
+            this.spb2AvailabilityUser.Name = "spb2AvailabilityUser";
+            this.spb2AvailabilityUser.Size = new System.Drawing.Size(20, 23);
+            this.spb2AvailabilityUser.TabIndex = 2;
+            this.spb2AvailabilityUser.TabStop = false;
             // 
-            // spbStep1
+            // spb1ReachingServer
             // 
-            this.spbStep1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("spbStep1.BackgroundImage")));
-            this.spbStep1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep1.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.Waiting;
-            this.spbStep1.Location = new System.Drawing.Point(20, 79);
-            this.spbStep1.Name = "spbStep1";
-            this.spbStep1.Size = new System.Drawing.Size(20, 23);
-            this.spbStep1.TabIndex = 1;
-            this.spbStep1.TabStop = false;
+            this.spb1ReachingServer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("spb1ReachingServer.BackgroundImage")));
+            this.spb1ReachingServer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb1ReachingServer.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.Waiting;
+            this.spb1ReachingServer.Location = new System.Drawing.Point(20, 79);
+            this.spb1ReachingServer.Name = "spb1ReachingServer";
+            this.spb1ReachingServer.Size = new System.Drawing.Size(20, 23);
+            this.spb1ReachingServer.TabIndex = 1;
+            this.spb1ReachingServer.TabStop = false;
             // 
             // label1
             // 
@@ -212,26 +232,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Create Player and Start Playing ...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label7
-            // 
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(46, 282);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(208, 23);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "Retrieving User Info ...";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // spbStep6
-            // 
-            this.spbStep6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep6.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep6.Location = new System.Drawing.Point(20, 282);
-            this.spbStep6.Name = "spbStep6";
-            this.spbStep6.Size = new System.Drawing.Size(20, 23);
-            this.spbStep6.TabIndex = 12;
-            this.spbStep6.TabStop = false;
             // 
             // SplashCareerRegister
             // 
@@ -245,12 +245,12 @@
             this.Text = "TrainingConnectForm";
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb6RetrieveInfo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb5Authenticate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb4Creating)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb3AvailabilityDisplay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb2AvailabilityUser)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb1ReachingServer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -260,18 +260,18 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep2;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep1;
+        private EricUtility.Windows.Forms.StatePictureBox spb2AvailabilityUser;
+        private EricUtility.Windows.Forms.StatePictureBox spb1ReachingServer;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep5;
+        private EricUtility.Windows.Forms.StatePictureBox spb5Authenticate;
         private System.Windows.Forms.Label label5;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep4;
+        private EricUtility.Windows.Forms.StatePictureBox spb4Creating;
         private System.Windows.Forms.Label label4;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep3;
+        private EricUtility.Windows.Forms.StatePictureBox spb3AvailabilityDisplay;
         private System.Windows.Forms.Label label7;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep6;
+        private EricUtility.Windows.Forms.StatePictureBox spb6RetrieveInfo;
     }
 }

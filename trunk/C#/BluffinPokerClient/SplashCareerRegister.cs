@@ -9,12 +9,12 @@ using System.Threading;
 using PokerProtocol;
 using BluffinPokerGUI.Lobby;
 using EricUtility.Windows.Forms;
+using EricUtility;
 
 namespace BluffinPokerClient
 {
-    public partial class SplashCareerRegister : Form
+    public partial class SplashCareerRegister : StepSplashForm
     {
-        private delegate void EmptyHandler();
         private string m_ServerAddress;
         private int m_ServerPort;
         private string m_Username;
@@ -23,20 +23,15 @@ namespace BluffinPokerClient
         private string m_DisplayName;
 
         private LobbyTCPClientCareer m_Server;
-        private bool m_OK = false;
 
         public LobbyTCPClientCareer Server
         {
             get { return m_Server; }
         }
 
-        public bool OK
-        {
-            get { return m_OK; }
-        }
-
         public SplashCareerRegister(string serverAddress, int serverPort, string username, string password, string email, string displayname)
         {
+            this.DialogResult = DialogResult.Cancel;
             m_DisplayName = displayname;
             m_Email = email;
             m_Password = password;
@@ -46,100 +41,79 @@ namespace BluffinPokerClient
 
             InitializeComponent();
 
+            m_Steps = new Tuple<BoolEmptyHandler, StatePictureBox>[]
+            {
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep1ReachingServer, spb1ReachingServer),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep2CheckUsernameAvailability, spb2AvailabilityUser),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep3CheckDisplaynameAvailability, spb3AvailabilityDisplay),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep4CreatingUser, spb4Creating),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep5Authenticate, spb5Authenticate),
+                new Tuple<BoolEmptyHandler, StatePictureBox>(ExecuteStep6RetrieveUserInfo, spb6RetrieveInfo)
+            };
+
             new Thread(new ThreadStart(Connect)).Start();
         }
 
+        private bool ExecuteStep1ReachingServer()
+        {
+            return m_Server.Connect();
+        }
+
+        private bool ExecuteStep2CheckUsernameAvailability()
+        {
+            m_Server.Start();
+            bool step2OK = m_Server.CheckUsernameAvailable(m_Username);
+            bool step2Retry = true;
+            while (!step2OK && step2Retry)
+            {
+                NameUsedForm form2 = new NameUsedForm(m_Username);
+                form2.ShowDialog();
+                step2Retry = form2.OK;
+                m_Username = form2.PlayerName;
+                step2OK = m_Server.CheckUsernameAvailable(m_Username);
+            }
+            return step2OK;
+        }
+        private bool ExecuteStep3CheckDisplaynameAvailability()
+        {
+            bool step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
+            bool step3Retry = true;
+            while (!step3OK && step3Retry)
+            {
+                NameUsedForm form3 = new NameUsedForm(m_DisplayName);
+                form3.ShowDialog();
+                step3Retry = form3.OK;
+                m_DisplayName = form3.PlayerName;
+                step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
+            }
+            return step3OK;
+        }
+        private bool ExecuteStep4CreatingUser()
+        {
+           return m_Server.CreateUser(m_Username, m_Password, m_Email, m_DisplayName);
+        }
+
+        private bool ExecuteStep5Authenticate()
+        {
+            return m_Server.Authenticate(m_Username, m_Password);
+        }
+
+        private bool ExecuteStep6RetrieveUserInfo()
+        {
+            m_Server.RefreshUserInfo(m_Username);
+            return true;
+        }
         private void Connect()
         {
             m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
-            // Reaching the server ...
-            if (m_Server.Connect())
+
+            if (ExecuteSteps())
             {
-                spbStep1.Etat = StatePictureBoxStates.Ok;
-                spbStep2.Etat = StatePictureBoxStates.Waiting;
-                m_Server.Start();
-
-                // Availability of Username ...
-                bool step2OK = m_Server.CheckUsernameAvailable(m_Username);
-                bool step2Retry = true;
-                while (!step2OK && step2Retry)
-                {
-                    NameUsedForm form2 = new NameUsedForm(m_Username);
-                    form2.ShowDialog();
-                    step2Retry = form2.OK;
-                    m_Username = form2.PlayerName;
-                    step2OK = m_Server.CheckUsernameAvailable(m_Username);
-                }
-                if (step2OK)
-                {
-                    spbStep2.Etat = StatePictureBoxStates.Ok;
-                    spbStep3.Etat = StatePictureBoxStates.Waiting;
-
-                    // Availability of Display Name ...
-                    bool step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
-                    bool step3Retry = true;
-                    while (!step3OK && step3Retry)
-                    {
-                        NameUsedForm form3 = new NameUsedForm(m_DisplayName);
-                        form3.ShowDialog();
-                        step3Retry = form3.OK;
-                        m_DisplayName = form3.PlayerName;
-                        step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
-                    }
-                    if (step3OK)
-                    {
-                        spbStep3.Etat = StatePictureBoxStates.Ok;
-                        spbStep4.Etat = StatePictureBoxStates.Waiting;
-
-                        // Creating User  ...
-                        if (m_Server.CreateUser(m_Username, m_Password, m_Email, m_DisplayName))
-                        {
-                            spbStep4.Etat = StatePictureBoxStates.Ok;
-                            spbStep5.Etat = StatePictureBoxStates.Waiting;
-
-                            // Authenticating Player ...
-                            if (m_Server.Authenticate(m_Username, m_Password))
-                            {
-                                spbStep5.Etat = StatePictureBoxStates.Ok;
-                                spbStep6.Etat = StatePictureBoxStates.Waiting;
-
-                                // Retrieving User Info ...
-                                m_Server.RefreshUserInfo(m_Username);
-                                spbStep6.Etat = StatePictureBoxStates.Ok;
-
-                                // Done !
-                                m_OK = true;
-                                Quit();
-                            }
-                            else
-                            {
-                                spbStep5.Etat = StatePictureBoxStates.Bad;
-                                Error();
-                            }
-                        }
-                        else
-                        {
-                            spbStep4.Etat = StatePictureBoxStates.Bad;
-                            Error();
-                        }
-                    }
-                    else
-                    {
-                        spbStep3.Etat = StatePictureBoxStates.Bad;
-                        Error();
-                    }
-                }
-                else
-                {
-                    spbStep2.Etat = StatePictureBoxStates.Bad;
-                    Error();
-                }
+                this.DialogResult = DialogResult.OK;
+                Quit();
             }
             else
-            {
-                spbStep1.Etat = StatePictureBoxStates.Bad;
                 Error();
-            }
         }
 
         private void Error()
@@ -164,7 +138,7 @@ namespace BluffinPokerClient
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            m_OK = false;
+            this.DialogResult = DialogResult.Cancel;
             Quit();
         }
     }

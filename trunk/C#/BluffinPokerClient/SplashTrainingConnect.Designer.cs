@@ -34,13 +34,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.spbStep2 = new EricUtility.Windows.Forms.StatePictureBox();
-            this.spbStep1 = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb2IdentifyingPlayer = new EricUtility.Windows.Forms.StatePictureBox();
+            this.spb1ReachingServer = new EricUtility.Windows.Forms.StatePictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb2IdentifyingPlayer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb1ReachingServer)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -60,8 +60,8 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.btnCancel);
-            this.panel2.Controls.Add(this.spbStep2);
-            this.panel2.Controls.Add(this.spbStep1);
+            this.panel2.Controls.Add(this.spb2IdentifyingPlayer);
+            this.panel2.Controls.Add(this.spb1ReachingServer);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -101,26 +101,26 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // spbStep2
+            // spb2IdentifyingPlayer
             // 
-            this.spbStep2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep2.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
-            this.spbStep2.Location = new System.Drawing.Point(20, 126);
-            this.spbStep2.Name = "spbStep2";
-            this.spbStep2.Size = new System.Drawing.Size(20, 23);
-            this.spbStep2.TabIndex = 2;
-            this.spbStep2.TabStop = false;
+            this.spb2IdentifyingPlayer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb2IdentifyingPlayer.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.None;
+            this.spb2IdentifyingPlayer.Location = new System.Drawing.Point(20, 126);
+            this.spb2IdentifyingPlayer.Name = "spb2IdentifyingPlayer";
+            this.spb2IdentifyingPlayer.Size = new System.Drawing.Size(20, 23);
+            this.spb2IdentifyingPlayer.TabIndex = 2;
+            this.spb2IdentifyingPlayer.TabStop = false;
             // 
-            // spbStep1
+            // spb1ReachingServer
             // 
-            this.spbStep1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("spbStep1.BackgroundImage")));
-            this.spbStep1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.spbStep1.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.Waiting;
-            this.spbStep1.Location = new System.Drawing.Point(20, 79);
-            this.spbStep1.Name = "spbStep1";
-            this.spbStep1.Size = new System.Drawing.Size(20, 23);
-            this.spbStep1.TabIndex = 1;
-            this.spbStep1.TabStop = false;
+            this.spb1ReachingServer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("spb1ReachingServer.BackgroundImage")));
+            this.spb1ReachingServer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.spb1ReachingServer.Etat = EricUtility.Windows.Forms.StatePictureBoxStates.Waiting;
+            this.spb1ReachingServer.Location = new System.Drawing.Point(20, 79);
+            this.spb1ReachingServer.Name = "spb1ReachingServer";
+            this.spb1ReachingServer.Size = new System.Drawing.Size(20, 23);
+            this.spb1ReachingServer.TabIndex = 1;
+            this.spb1ReachingServer.TabStop = false;
             // 
             // label1
             // 
@@ -145,8 +145,8 @@
             this.Text = "TrainingConnectForm";
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spbStep1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb2IdentifyingPlayer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spb1ReachingServer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -156,8 +156,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep2;
-        private EricUtility.Windows.Forms.StatePictureBox spbStep1;
+        private EricUtility.Windows.Forms.StatePictureBox spb2IdentifyingPlayer;
+        private EricUtility.Windows.Forms.StatePictureBox spb1ReachingServer;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
