@@ -590,8 +590,9 @@ namespace PokerWorld.Game
                     p.IsPlaying = false;
             }
 
-            if (m_Table.NbPlaying > 1)
+            if (m_Table.NbPlaying >= m_Table.NbMinPlayersToStart)
             {
+                m_Table.NbMinPlayersToStart = 2;
                 m_Table.InitTable();
                 m_Dealer.FreshDeck();
                 AdvanceToNextGameState(); //Advancing to WaitForBlinds State

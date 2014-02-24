@@ -50,9 +50,9 @@ namespace PokerProtocol
                 return new List<TableTraining>();
         }
 
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int startingMoney)
+        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart, int startingMoney)
         {
-            Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, startingMoney));
+            Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart, startingMoney));
 
             StringTokenizer token = WaitAndReceive(CreateTrainingTableResponse.COMMAND_NAME);
             if (token.HasMoreTokens())

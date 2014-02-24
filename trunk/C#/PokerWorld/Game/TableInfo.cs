@@ -53,6 +53,11 @@ namespace PokerWorld.Game
         public int NbMaxSeats { get; private set; }
 
         /// <summary>
+        /// Maximum of players that can be seated around the table
+        /// </summary>
+        public int NbMinPlayersToStart { get; set; }
+
+        /// <summary>
         /// List of MoneyPots currently on the table. There should always have at least one MoneyPot
         /// </summary>
         public List<MoneyPot> Pots
@@ -141,6 +146,11 @@ namespace PokerWorld.Game
         public List<PlayerInfo> Players { get { return m_Players.Where(p => p != null).ToList(); } }
 
         /// <summary>
+        /// List of the Seats
+        /// </summary>
+        public List<PlayerInfo> Seats { get { return m_Players.ToList(); } }
+
+        /// <summary>
         /// List of the playing Players in order starting from the first seat
         /// </summary>
         public List<PlayerInfo> PlayingPlayers
@@ -193,11 +203,11 @@ namespace PokerWorld.Game
         }
 
         public TableInfo(int nbSeats)
-            : this("Anonymous Table", 10, nbSeats, BetEnum.NoLimit)
+            : this("Anonymous Table", 10, nbSeats, BetEnum.NoLimit, 2)
         {
         }
 
-        public TableInfo(string name, int bigBlind, int nbSeats, BetEnum limit)
+        public TableInfo(string name, int bigBlind, int nbSeats, BetEnum limit, int minPlayersToStart)
         {
             NbMaxSeats = nbSeats;
             m_Players = new PlayerInfo[nbSeats];
@@ -207,6 +217,7 @@ namespace PokerWorld.Game
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
             BetLimit = limit;
+            NbMinPlayersToStart = minPlayersToStart;
             Enumerable.Range(1, NbMaxSeats).ToList().ForEach(i => m_RemainingSeats.Push(NbMaxSeats - i));
         }
 

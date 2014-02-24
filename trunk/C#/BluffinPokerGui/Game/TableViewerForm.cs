@@ -418,9 +418,9 @@ namespace BluffinPokerGui.Game
             }
             TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
-            PlayerInfo d = table.Players[table.NoSeatDealer];
-            PlayerInfo sb = table.Players[table.NoSeatSmallBlind];
-            PlayerInfo bb = table.Players[table.NoSeatBigBlind];
+            PlayerInfo d = table.Seats[table.NoSeatDealer];
+            PlayerInfo sb = table.Seats[table.NoSeatSmallBlind];
+            PlayerInfo bb = table.Seats[table.NoSeatBigBlind];
             WriteLine("==> " + d.Name + " is the Dealer");
             WriteLine("==> " + sb.Name + " is the SmallBlind");
             WriteLine("==> " + bb.Name + " is the BigBlind");

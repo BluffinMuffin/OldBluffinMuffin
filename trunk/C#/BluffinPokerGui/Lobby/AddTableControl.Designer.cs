@@ -43,12 +43,14 @@
             this.lblGameLimit = new System.Windows.Forms.Label();
             this.txtTableName = new System.Windows.Forms.TextBox();
             this.lblTableName = new System.Windows.Forms.Label();
+            this.nudNbPlayersMin = new System.Windows.Forms.NumericUpDown();
             this.grpWTA.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPotWon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTABoardDealed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPlayerAction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBigBlindAmnt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayersMin)).BeginInit();
             this.SuspendLayout();
             // 
             // grpWTA
@@ -173,22 +175,23 @@
             0,
             0});
             this.nudNbPlayers.Name = "nudNbPlayers";
-            this.nudNbPlayers.Size = new System.Drawing.Size(84, 20);
+            this.nudNbPlayers.Size = new System.Drawing.Size(40, 20);
             this.nudNbPlayers.TabIndex = 12;
             this.nudNbPlayers.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
+            this.nudNbPlayers.ValueChanged += new System.EventHandler(this.nudNbPlayers_ValueChanged);
             // 
             // lblNbPlayers
             // 
             this.lblNbPlayers.AutoSize = true;
             this.lblNbPlayers.Location = new System.Drawing.Point(204, 0);
             this.lblNbPlayers.Name = "lblNbPlayers";
-            this.lblNbPlayers.Size = new System.Drawing.Size(73, 13);
+            this.lblNbPlayers.Size = new System.Drawing.Size(96, 13);
             this.lblNbPlayers.TabIndex = 16;
-            this.lblNbPlayers.Text = "Nb of Players:";
+            this.lblNbPlayers.Text = "Players (Max - Min)";
             // 
             // nudBigBlindAmnt
             // 
@@ -260,10 +263,33 @@
             this.lblTableName.TabIndex = 9;
             this.lblTableName.Text = "Table Name:";
             // 
+            // nudNbPlayersMin
+            // 
+            this.nudNbPlayersMin.Location = new System.Drawing.Point(254, 16);
+            this.nudNbPlayersMin.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudNbPlayersMin.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nudNbPlayersMin.Name = "nudNbPlayersMin";
+            this.nudNbPlayersMin.Size = new System.Drawing.Size(40, 20);
+            this.nudNbPlayersMin.TabIndex = 18;
+            this.nudNbPlayersMin.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            // 
             // AddTableControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.nudNbPlayersMin);
             this.Controls.Add(this.grpWTA);
             this.Controls.Add(this.nudNbPlayers);
             this.Controls.Add(this.lblNbPlayers);
@@ -282,6 +308,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPlayerAction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBigBlindAmnt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayersMin)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,5 +331,6 @@
         private System.Windows.Forms.Label lblGameLimit;
         private System.Windows.Forms.TextBox txtTableName;
         private System.Windows.Forms.Label lblTableName;
+        private System.Windows.Forms.NumericUpDown nudNbPlayersMin;
     }
 }

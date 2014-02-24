@@ -90,9 +90,9 @@ namespace PokerProtocol
             m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
         }
 
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit)
+        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart)
         {
-            Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit));
+            Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart));
 
             StringTokenizer token = WaitAndReceive(CreateCareerTableResponse.COMMAND_NAME);
             if (token.HasMoreTokens())

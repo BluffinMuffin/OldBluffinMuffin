@@ -32,6 +32,10 @@ namespace BluffinPokerGUI.Lobby
         {
             get { return (int)nudNbPlayers.Value; }
         }
+        public int NbPlayerMin
+        {
+            get { return (int)nudNbPlayersMin.Value; }
+        }
         public int BigBlind
         {
             get { return (int)nudBigBlindAmnt.Value; }
@@ -51,6 +55,11 @@ namespace BluffinPokerGUI.Lobby
                 clstGameLimit.Items.Add(s);
             clstGameLimit.SelectedItem = BetEnum.NoLimit.ToString();
             nudNbPlayers.Minimum = Math.Max(nbPlayers, 2);
+        }
+
+        private void nudNbPlayers_ValueChanged(object sender, EventArgs e)
+        {
+            nudNbPlayersMin.Maximum = nudNbPlayers.Value;
         }
     }
 }

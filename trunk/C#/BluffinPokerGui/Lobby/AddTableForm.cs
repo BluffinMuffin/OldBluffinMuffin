@@ -18,6 +18,7 @@ namespace BluffinPokerGUI.Lobby
         private string m_TableName;
         private int m_BigBlind;
         private int m_NbPlayer;
+        private int m_NbPlayerMin;
         private int m_WaitingTimeAfterPlayerAction;
         private int m_WaitingTimeAfterBoardDealed;
         private int m_WaitingTimeAfterPotWon;
@@ -54,6 +55,10 @@ namespace BluffinPokerGUI.Lobby
         {
             get { return m_NbPlayer; }
         }
+        public int NbPlayerMin
+        {
+            get { return m_NbPlayerMin; }
+        }
         public int BigBlind
         {
             get { return m_BigBlind; }
@@ -89,6 +94,7 @@ namespace BluffinPokerGUI.Lobby
             m_WaitingTimeAfterBoardDealed = control.WaitingTimeAfterBoardDealed;
             m_WaitingTimeAfterPotWon = control.WaitingTimeAfterPotWon;
             m_Limit = control.Limit;
+            m_NbPlayerMin = control.NbPlayerMin;
         }
 
         private void btnAddTraining_Click(object sender, EventArgs e)

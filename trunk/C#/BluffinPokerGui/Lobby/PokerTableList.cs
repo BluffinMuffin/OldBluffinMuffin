@@ -95,9 +95,9 @@ namespace BluffinPokerGUI.Lobby
             {
                 int noPort = -1;
                 if (form.Training)
-                    noPort = ((LobbyTCPClientTraining)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.TrainingStartingAmount);
+                    noPort = ((LobbyTCPClientTraining)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.NbPlayerMin, form.TrainingStartingAmount);
                 else
-                    noPort = ((LobbyTCPClientCareer)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit);
+                    noPort = ((LobbyTCPClientCareer)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.NbPlayerMin);
                 
                 if (noPort != -1)
                 {

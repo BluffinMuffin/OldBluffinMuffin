@@ -89,9 +89,9 @@ namespace BluffinPokerServer
             PokerGame game = null;
 
             if (c is CreateCareerTableCommand)
-                game = new PokerGameCareer(new TableInfoCareer(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+                game = new PokerGameCareer(new TableInfoCareer(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.MinPlayersToStart), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
             else
-                game = new PokerGameTraining(new TableInfoTraining(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, ((CreateTrainingTableCommand)c).StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+                game = new PokerGameTraining(new TableInfoTraining(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.MinPlayersToStart, ((CreateTrainingTableCommand)c).StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
 
             m_Games.Add(m_LastUsedID, game);
             game.Start();

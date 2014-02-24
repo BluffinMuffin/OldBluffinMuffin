@@ -25,7 +25,8 @@ namespace PokerWorld.Game
         {
         }
 
-        public TableInfoTraining(string name, int bigBlind, int nbSeats, BetEnum limit, int startingMoney) : base(name,  bigBlind,  nbSeats,  limit)
+        public TableInfoTraining(string name, int bigBlind, int nbSeats, BetEnum limit, int minPlayersToStart, int startingMoney)
+            : base(name, bigBlind, nbSeats, limit, minPlayersToStart)
         {
             m_StartingMoney = startingMoney;
         }
