@@ -18,6 +18,7 @@ namespace PokerProtocol.Commands.Lobby
         protected readonly int m_WaitingTimeAfterBoardDealed;
         protected readonly int m_WaitingTimeAfterPotWon;
         protected readonly BetEnum m_Limit;
+        protected readonly int m_MinPlayersToStart;
 
         public string TableName
         {
@@ -28,12 +29,17 @@ namespace PokerProtocol.Commands.Lobby
         public int BigBlind
         {
             get { return m_BigBlind; }
-        } 
+        }
 
 
         public int MaxPlayers
         {
             get { return m_MaxPlayers; }
+        }
+
+        public int MinPlayersToStart
+        {
+            get { return m_MinPlayersToStart; }
         } 
 
 
@@ -76,9 +82,10 @@ namespace PokerProtocol.Commands.Lobby
             m_WaitingTimeAfterBoardDealed = int.Parse(argsToken.NextToken());
             m_WaitingTimeAfterPotWon = int.Parse(argsToken.NextToken());
             m_Limit = (BetEnum)int.Parse(argsToken.NextToken());
+            m_MinPlayersToStart = int.Parse(argsToken.NextToken());
         }
 
-        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit)
+        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart)
         {
             m_TableName = p_tableName;
             m_BigBlind = p_bigBlind;
@@ -88,6 +95,7 @@ namespace PokerProtocol.Commands.Lobby
             m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
             m_WaitingTimeAfterPotWon = wtaPotWon;
             m_Limit = limit;
+            m_MinPlayersToStart = minPlayersToStart;
         }
 
         public override void Encode(StringBuilder sb)
@@ -100,6 +108,7 @@ namespace PokerProtocol.Commands.Lobby
             Append(sb, m_WaitingTimeAfterBoardDealed);
             Append(sb, m_WaitingTimeAfterPotWon);
             Append(sb, (int)m_Limit);
+            Append(sb, m_MinPlayersToStart);
         }
     }
 }

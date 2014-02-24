@@ -1,6 +1,8 @@
 ﻿
 TODO on the JAVA version to stay up to date:
--> Add the big Blind Amount to the TableInfoCommand
+-> Add the big Blind Amount to the TableInfoCommand (r416)
+-> Correction between Players & Seats (Crash when people sits out) (r418)
+-> Adding the MinimumPlayersToStart! This will only affect the first round, the game then continues if people loose or quit ! :) (r418)
 
 TODO:
 -> Redo the "Create Table" Interface on the client
@@ -9,7 +11,6 @@ TODO:
 	:- Generally the minimum buy-in will be 20 big blinds (so $40 in our example), and the maximum will be 100 big blinds ($200), though there are some casinos that spread games with no maximum buy-in.
 	:- http://www.pokerlistings.com/texas-holdem-betting-rules
 -> Should any player sitting a the table be the big blind, unless it is the first round !
--> Add a minimum player before game starts. This will only affect the first round, the game then continues if people loose or quit ! :)
 -> Support the Fixed-Limit (http://www.pokerlistings.com/texas-holdem-betting-rules)
 -> Support the Pot-Limit (http://www.pokerlistings.com/texas-holdem-betting-rules)
 -> Add a "Five-card Draw" variant (http://en.wikipedia.org/wiki/Five-card_draw)

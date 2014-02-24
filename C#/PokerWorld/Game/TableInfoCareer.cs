@@ -19,8 +19,8 @@ namespace PokerWorld.Game
         {
         }
 
-        public TableInfoCareer(string name, int bigBlind, int nbSeats, BetEnum limit)
-            : base(name, bigBlind, nbSeats, limit)
+        public TableInfoCareer(string name, int bigBlind, int nbSeats, BetEnum limit, int minPlayersToStart)
+            : base(name, bigBlind, nbSeats, limit, minPlayersToStart)
         {
         }
     }

@@ -21,7 +21,7 @@ namespace BluffinPokerGui.Game
         {
             DisableButtons();
             TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Players[m_NoSeat];
+            PlayerInfo p = table.Seats[m_NoSeat];
             m_Game.PlayMoney(p, -1);
         }
 
@@ -29,7 +29,7 @@ namespace BluffinPokerGui.Game
         {
             DisableButtons();
             TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Players[m_NoSeat];
+            PlayerInfo p = table.Seats[m_NoSeat];
             m_Game.PlayMoney(p, table.CallAmnt(p));
         }
 
@@ -37,7 +37,7 @@ namespace BluffinPokerGui.Game
         {
             DisableButtons();
             TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Players[m_NoSeat];
+            PlayerInfo p = table.Seats[m_NoSeat];
             m_Game.PlayMoney(p, (int)nudRaise.Value - p.MoneyBetAmnt);
         }
 

@@ -21,6 +21,7 @@ namespace PokerProtocol.Commands.Game
         private readonly List<Player> m_Seats;
         private readonly BetEnum m_Limit;
         private readonly int m_BigBlindAmount;
+        private readonly int m_NbMinPlayersToStart;
 
         public int TotalPotAmount
         {
@@ -29,6 +30,10 @@ namespace PokerProtocol.Commands.Game
         public int NbSeats
         {
             get { return m_NbSeats; }
+        }
+        public int NbMinPlayersToStart
+        {
+            get { return m_NbMinPlayersToStart; }
         }
         public List<int> PotsAmount
         {
@@ -78,9 +83,10 @@ namespace PokerProtocol.Commands.Game
             }
             m_Limit = (BetEnum)int.Parse(argsToken.NextToken());
             m_BigBlindAmount = int.Parse(argsToken.NextToken());
+            m_NbMinPlayersToStart = int.Parse(argsToken.NextToken());
         }
 
-        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats, BetEnum limit, int bigBlindAmount)
+        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats, BetEnum limit, int bigBlindAmount, int nbMinPlayersToStart)
         {
             m_TotalPotAmount = totalPotAmount;
             m_NbSeats = nbSeats;
@@ -90,6 +96,7 @@ namespace PokerProtocol.Commands.Game
             m_Seats = seats;
             m_Limit = limit;
             m_BigBlindAmount = bigBlindAmount;
+            m_NbMinPlayersToStart = nbMinPlayersToStart;
         }
 
         public TableInfoCommand(TableInfo info, PlayerInfo pPlayer)
@@ -151,6 +158,7 @@ namespace PokerProtocol.Commands.Game
         }
         m_Limit = info.BetLimit;
         m_BigBlindAmount = info.BigBlindAmnt;
+        m_NbMinPlayersToStart = info.NbMinPlayersToStart;
     }
 
         public override void Encode(StringBuilder sb)
@@ -172,6 +180,7 @@ namespace PokerProtocol.Commands.Game
             }
             Append(sb, (int)m_Limit);
             Append(sb, m_BigBlindAmount);
+            Append(sb, m_NbMinPlayersToStart);
         }
     }
 }

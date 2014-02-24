@@ -31,12 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddTableForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabReal = new System.Windows.Forms.TabPage();
+            this.btnAddCareer = new VIBlend.WinForms.Controls.vButton();
+            this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabTraining = new System.Windows.Forms.TabPage();
             this.nudStartingAmnt = new System.Windows.Forms.NumericUpDown();
             this.lblBigBlindAmnt = new System.Windows.Forms.Label();
-            this.btnAddCareer = new VIBlend.WinForms.Controls.vButton();
             this.btnAddTraining = new VIBlend.WinForms.Controls.vButton();
-            this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
             this.atcTraining = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabControl1.SuspendLayout();
             this.tabReal.SuspendLayout();
@@ -65,6 +65,32 @@
             this.tabReal.TabIndex = 0;
             this.tabReal.Text = "Career";
             this.tabReal.UseVisualStyleBackColor = true;
+            // 
+            // btnAddCareer
+            // 
+            this.btnAddCareer.AllowAnimations = true;
+            this.btnAddCareer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddCareer.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddCareer.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddCareer.Image = global::BluffinPokerGUI.Properties.Resources.cards;
+            this.btnAddCareer.Location = new System.Drawing.Point(72, 192);
+            this.btnAddCareer.Name = "btnAddCareer";
+            this.btnAddCareer.RoundedCornersMask = ((byte)(15));
+            this.btnAddCareer.Size = new System.Drawing.Size(167, 53);
+            this.btnAddCareer.TabIndex = 15;
+            this.btnAddCareer.Text = "Create Table";
+            this.btnAddCareer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnAddCareer.UseVisualStyleBackColor = true;
+            this.btnAddCareer.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
+            this.btnAddCareer.Click += new System.EventHandler(this.btnAddReal_Click);
+            // 
+            // atcReal
+            // 
+            this.atcReal.Location = new System.Drawing.Point(6, 6);
+            this.atcReal.Name = "atcReal";
+            this.atcReal.Size = new System.Drawing.Size(296, 165);
+            this.atcReal.TabIndex = 14;
             // 
             // tabTraining
             // 
@@ -116,25 +142,6 @@
             this.lblBigBlindAmnt.TabIndex = 17;
             this.lblBigBlindAmnt.Text = "Starting Amount:";
             // 
-            // btnAddCareer
-            // 
-            this.btnAddCareer.AllowAnimations = true;
-            this.btnAddCareer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddCareer.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddCareer.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddCareer.Image = global::BluffinPokerGUI.Properties.Resources.cards;
-            this.btnAddCareer.Location = new System.Drawing.Point(72, 192);
-            this.btnAddCareer.Name = "btnAddCareer";
-            this.btnAddCareer.RoundedCornersMask = ((byte)(15));
-            this.btnAddCareer.Size = new System.Drawing.Size(167, 53);
-            this.btnAddCareer.TabIndex = 15;
-            this.btnAddCareer.Text = "Create Table";
-            this.btnAddCareer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnAddCareer.UseVisualStyleBackColor = true;
-            this.btnAddCareer.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
-            this.btnAddCareer.Click += new System.EventHandler(this.btnAddReal_Click);
-            // 
             // btnAddTraining
             // 
             this.btnAddTraining.AllowAnimations = true;
@@ -153,13 +160,6 @@
             this.btnAddTraining.UseVisualStyleBackColor = true;
             this.btnAddTraining.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
-            // 
-            // atcReal
-            // 
-            this.atcReal.Location = new System.Drawing.Point(6, 6);
-            this.atcReal.Name = "atcReal";
-            this.atcReal.Size = new System.Drawing.Size(296, 165);
-            this.atcReal.TabIndex = 14;
             // 
             // atcTraining
             // 
