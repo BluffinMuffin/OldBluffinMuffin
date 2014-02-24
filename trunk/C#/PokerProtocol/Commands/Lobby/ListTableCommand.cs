@@ -11,8 +11,6 @@ namespace PokerProtocol.Commands.Lobby
 {
     public class ListTableCommand : AbstractLobbyCommand
     {
-        //TODO RICK: Make ListTrainingTableCommand and ListCareerTableCommand and get rid of the boolean!
-
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
         private readonly bool m_Training;
         public bool Training

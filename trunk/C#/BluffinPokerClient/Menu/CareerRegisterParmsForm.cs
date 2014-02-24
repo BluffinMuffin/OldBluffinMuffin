@@ -44,8 +44,6 @@ namespace BluffinPokerClient.Menu
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            //TODO: RICK: Validate Password & Email
-
             Hide();
             CareerRegisterSplashInfo info = new CareerRegisterSplashInfo(m_ServerAdress, m_ServerPort, txtUsername.Text, txtPassword.Text, txtEmail.Text, txtDisplayName.Text);
             if (new StepSplashForm(info).ShowDialog() == DialogResult.OK)
