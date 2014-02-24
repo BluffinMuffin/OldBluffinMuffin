@@ -141,7 +141,7 @@ namespace PokerProtocol
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
-            Send(new PlayerTurnBeganCommand(p.NoSeat, e.Last.NoSeat));
+            Send(new PlayerTurnBeganCommand(p.NoSeat, e.Last.NoSeat, m_Game.Table.MinimumRaiseAmount));
         }
 
         void m_Game_GameBlindNeeded(object sender, EventArgs e)

@@ -305,6 +305,9 @@ namespace PokerWorld.Game
                 return false;
             }
 
+            //Update the MinimumRaiseAmount
+            m_Table.MinimumRaiseAmount = Math.Max(m_Table.MinimumRaiseAmount, p.MoneyBetAmnt);
+
             //Notify the change in the player's account
             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
 
@@ -427,6 +430,7 @@ namespace PokerWorld.Game
 
             m_Table.NbPlayed = 0;
             m_Table.NoSeatLastRaise = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer).NoSeat;
+            m_Table.MinimumRaiseAmount = m_Table.BigBlindAmnt;
 
             WaitALittle(m_WaitingTimeAfterBoardDealed);
 

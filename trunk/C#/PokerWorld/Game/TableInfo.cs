@@ -81,6 +81,11 @@ namespace PokerWorld.Game
         public int BigBlindAmnt { get; set; }
 
         /// <summary>
+        /// Minimum amount to Raise
+        /// </summary>
+        public int MinimumRaiseAmount { get; set; }
+
+        /// <summary>
         /// Total amount of money still needed as Blinds for the game to start
         /// </summary>
         public int TotalBlindNeeded { get { return m_BlindNeeded.Values.Sum(); } }
@@ -466,7 +471,7 @@ namespace PokerWorld.Game
         /// </summary>
         public int MinRaiseAmnt(PlayerInfo p)
         {
-            return Math.Min(CallAmnt(p) + BigBlindAmnt, MaxRaiseAmnt(p));
+            return Math.Min(CallAmnt(p) + MinimumRaiseAmount, MaxRaiseAmnt(p));
         }
 
         /// <summary>
