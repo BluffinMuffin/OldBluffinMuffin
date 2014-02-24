@@ -29,27 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddTableForm));
-            this.atcTraining = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabReal = new System.Windows.Forms.TabPage();
-            this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabTraining = new System.Windows.Forms.TabPage();
             this.nudStartingAmnt = new System.Windows.Forms.NumericUpDown();
             this.lblBigBlindAmnt = new System.Windows.Forms.Label();
             this.btnAddCareer = new VIBlend.WinForms.Controls.vButton();
             this.btnAddTraining = new VIBlend.WinForms.Controls.vButton();
+            this.atcReal = new BluffinPokerGUI.Lobby.AddTableControl();
+            this.atcTraining = new BluffinPokerGUI.Lobby.AddTableControl();
             this.tabControl1.SuspendLayout();
             this.tabReal.SuspendLayout();
             this.tabTraining.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmnt)).BeginInit();
             this.SuspendLayout();
-            // 
-            // atcTraining
-            // 
-            this.atcTraining.Location = new System.Drawing.Point(6, 6);
-            this.atcTraining.Name = "atcTraining";
-            this.atcTraining.Size = new System.Drawing.Size(296, 165);
-            this.atcTraining.TabIndex = 12;
             // 
             // tabControl1
             // 
@@ -73,19 +66,12 @@
             this.tabReal.Text = "Career";
             this.tabReal.UseVisualStyleBackColor = true;
             // 
-            // atcReal
-            // 
-            this.atcReal.Location = new System.Drawing.Point(6, 6);
-            this.atcReal.Name = "atcReal";
-            this.atcReal.Size = new System.Drawing.Size(296, 165);
-            this.atcReal.TabIndex = 14;
-            // 
             // tabTraining
             // 
             this.tabTraining.Controls.Add(this.nudStartingAmnt);
             this.tabTraining.Controls.Add(this.lblBigBlindAmnt);
-            this.tabTraining.Controls.Add(this.atcTraining);
             this.tabTraining.Controls.Add(this.btnAddTraining);
+            this.tabTraining.Controls.Add(this.atcTraining);
             this.tabTraining.Location = new System.Drawing.Point(4, 22);
             this.tabTraining.Name = "tabTraining";
             this.tabTraining.Padding = new System.Windows.Forms.Padding(3);
@@ -167,6 +153,20 @@
             this.btnAddTraining.UseVisualStyleBackColor = true;
             this.btnAddTraining.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnAddTraining.Click += new System.EventHandler(this.btnAddTraining_Click);
+            // 
+            // atcReal
+            // 
+            this.atcReal.Location = new System.Drawing.Point(6, 6);
+            this.atcReal.Name = "atcReal";
+            this.atcReal.Size = new System.Drawing.Size(296, 165);
+            this.atcReal.TabIndex = 14;
+            // 
+            // atcTraining
+            // 
+            this.atcTraining.Location = new System.Drawing.Point(6, 6);
+            this.atcTraining.Name = "atcTraining";
+            this.atcTraining.Size = new System.Drawing.Size(296, 165);
+            this.atcTraining.TabIndex = 12;
             // 
             // AddTableForm
             // 

@@ -1,0 +1,2 @@
+﻿TODO on the JAVA version to stay up to date:
+-> Add the big Blind Amount to the TableInfoCommand

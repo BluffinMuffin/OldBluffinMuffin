@@ -20,6 +20,7 @@ namespace PokerProtocol.Commands.Game
         private readonly int m_NbPlayers;
         private readonly List<Player> m_Seats;
         private readonly BetEnum m_Limit;
+        private readonly int m_BigBlindAmount;
 
         public int TotalPotAmount
         {
@@ -49,6 +50,10 @@ namespace PokerProtocol.Commands.Game
         {
             get { return m_Limit; }
         }
+        public int BigBlindAmount
+        {
+            get { return m_BigBlindAmount; }
+        }
 
         public TableInfoCommand(StringTokenizer argsToken)
         {
@@ -72,9 +77,10 @@ namespace PokerProtocol.Commands.Game
                 m_Seats.Add(new Player(argsToken));
             }
             m_Limit = (BetEnum)int.Parse(argsToken.NextToken());
+            m_BigBlindAmount = int.Parse(argsToken.NextToken());
         }
 
-        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats, BetEnum limit)
+        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats, BetEnum limit, int bigBlindAmount)
         {
             m_TotalPotAmount = totalPotAmount;
             m_NbSeats = nbSeats;
@@ -83,6 +89,7 @@ namespace PokerProtocol.Commands.Game
             m_NbPlayers = nbPlayers;
             m_Seats = seats;
             m_Limit = limit;
+            m_BigBlindAmount = bigBlindAmount;
         }
 
         public TableInfoCommand(TableInfo info, PlayerInfo pPlayer)
@@ -143,6 +150,7 @@ namespace PokerProtocol.Commands.Game
             seat.IsPlaying = player.IsPlaying;
         }
         m_Limit = info.BetLimit;
+        m_BigBlindAmount = info.BigBlindAmnt;
     }
 
         public override void Encode(StringBuilder sb)
@@ -163,6 +171,7 @@ namespace PokerProtocol.Commands.Game
                 Append(sb, m_Seats[i].ToString(AbstractCommand.Delimitter));
             }
             Append(sb, (int)m_Limit);
+            Append(sb, m_BigBlindAmount);
         }
     }
 }

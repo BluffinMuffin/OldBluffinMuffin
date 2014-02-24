@@ -251,6 +251,7 @@ namespace PokerProtocol
 
             m_PokerTable.BetLimit = cmd.Limit;
             m_PokerTable.Players.ForEach(p => m_PokerTable.LeaveTable(p));
+            m_PokerTable.BigBlindAmnt = cmd.BigBlindAmount;
 
             for (int i = 0; i < cmd.NbPlayers; ++i)
             {
