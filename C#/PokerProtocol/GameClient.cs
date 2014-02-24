@@ -198,6 +198,7 @@ namespace PokerProtocol
             if (p != null)
             {
                 m_PokerTable.NoSeatCurrPlayer = cmd.PlayerPos;
+                m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
 
                 PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(p, l));
             }
@@ -252,6 +253,7 @@ namespace PokerProtocol
             m_PokerTable.BetLimit = cmd.Limit;
             m_PokerTable.Players.ForEach(p => m_PokerTable.LeaveTable(p));
             m_PokerTable.BigBlindAmnt = cmd.BigBlindAmount;
+            m_PokerTable.NbMinPlayersToStart = cmd.NbMinPlayersToStart;
 
             for (int i = 0; i < cmd.NbPlayers; ++i)
             {
