@@ -68,12 +68,12 @@ namespace PokerWorld.Game
         /// <summary>
         /// Amount of the Small Blind
         /// </summary>
-        public int SmallBlindAmnt { get; private set; }
+        public int SmallBlindAmnt { get { return BigBlindAmnt / 2; } }
 
         /// <summary>
         /// Amount of the Big Blind
         /// </summary>
-        public int BigBlindAmnt { get; private set; }
+        public int BigBlindAmnt { get; set; }
 
         /// <summary>
         /// Total amount of money still needed as Blinds for the game to start
@@ -203,7 +203,6 @@ namespace PokerWorld.Game
             m_Players = new PlayerInfo[nbSeats];
             Name = name;
             BigBlindAmnt = bigBlind;
-            SmallBlindAmnt = bigBlind / 2;
             NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
