@@ -1,0 +1,17 @@
+﻿
+TODO on the JAVA version to stay up to date:
+-> Add the big Blind Amount to the TableInfoCommand
+
+TODO:
+-> Redo the "Create Table" Interface on the client
+-> Better support of the betting rules of the no-limit game 
+	:- Once a bet has been made, the minimum you can raise is the size of the last bet.
+	:- Generally the minimum buy-in will be 20 big blinds (so $40 in our example), and the maximum will be 100 big blinds ($200), though there are some casinos that spread games with no maximum buy-in.
+	:- http://www.pokerlistings.com/texas-holdem-betting-rules
+-> Should any player sitting a the table be the big blind, unless it is the first round !
+-> Add a minimum player before game starts. This will only affect the first round, the game then continues if people loose or quit ! :)
+-> Support the Fixed-Limit (http://www.pokerlistings.com/texas-holdem-betting-rules)
+-> Support the Pot-Limit (http://www.pokerlistings.com/texas-holdem-betting-rules)
+-> Add a "Five-card Draw" variant (http://en.wikipedia.org/wiki/Five-card_draw)
+-> Add a "Seven-card Stud" variant (http://en.wikipedia.org/wiki/Seven-card_stud)
+-> Add a "Omaha Holdem" variant (http://en.wikipedia.org/wiki/Omaha_hold_'em)
