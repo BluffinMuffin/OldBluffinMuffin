@@ -4,7 +4,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class PlayerTurnBeganCommand : AbstractCommand
+    public class PlayerTurnBeganCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gamePLAYER_TURN_BEGAN";
 

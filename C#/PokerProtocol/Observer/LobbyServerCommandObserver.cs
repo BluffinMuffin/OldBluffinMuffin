@@ -12,7 +12,7 @@ namespace PokerProtocol.Observer
     {
         protected override char Delimitter { get { return AbstractLobbyCommand.Delimitter; } }
 
-        public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<DisconnectTextCommand>> DisconnectCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<GameCommand>> GameCommandReceived = delegate { };

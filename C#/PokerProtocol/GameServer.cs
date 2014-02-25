@@ -77,7 +77,7 @@ namespace PokerProtocol
         protected override void InitializeCommandObserver()
         {
             m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
-            m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
+            m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectTextCommand>>(m_CommandObserver_DisconnectCommandReceived);
             m_CommandObserver.PlayMoneyCommandReceived += new EventHandler<CommandEventArgs<PlayerPlayMoneyCommand>>(m_CommandObserver_PlayMoneyCommandReceived);
         }
         #endregion Ctors & Init
@@ -175,7 +175,7 @@ namespace PokerProtocol
             m_Game.PlayMoney(m_Player, e.Command.Played);
         }
 
-        void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
+        void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectTextCommand> e)
         {
             if (m_UserInfo != null && m_Game is PokerGameCareer)
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;

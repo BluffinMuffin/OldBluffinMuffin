@@ -9,7 +9,7 @@ using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class TableInfoCommand : AbstractCommand
+    public class TableInfoCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gameTABLE_INFO";
 
@@ -176,7 +176,7 @@ namespace PokerProtocol.Commands.Game
             Append(sb, m_NbPlayers);
             for (int i = 0; i < m_Seats.Count; ++i)
             {
-                Append(sb, m_Seats[i].ToString(AbstractCommand.Delimitter));
+                Append(sb, m_Seats[i].ToString(AbstractTextCommand.Delimitter));
             }
             Append(sb, (int)m_Limit);
             Append(sb, m_BigBlindAmount);

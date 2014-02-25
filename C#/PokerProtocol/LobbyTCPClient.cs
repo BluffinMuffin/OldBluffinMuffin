@@ -92,12 +92,12 @@ namespace PokerProtocol
                 base.OnSendCrashed(e);
         }
 
-        public void Send(StreamWriter writer, AbstractCommand command)
+        public void Send(StreamWriter writer, AbstractTextCommand command)
         {
             writer.WriteLine(command.Encode());
         }
 
-        public void Send(AbstractCommand command)
+        public void Send(AbstractTextCommand command)
         {
             base.Send(command.Encode());
         }
@@ -111,7 +111,7 @@ namespace PokerProtocol
 
             if (IsConnected)
             {
-                Send(new DisconnectCommand());
+                Send(new DisconnectTextCommand());
                 Close();
             }
         }
