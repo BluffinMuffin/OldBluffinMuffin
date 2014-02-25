@@ -7,7 +7,7 @@ using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class BetTurnEndedCommand : AbstractCommand
+    public class BetTurnEndedCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gameBET_TURN_ENDED";
 

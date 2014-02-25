@@ -5,7 +5,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby
 {
-    public abstract class AbstractLobbyCommand : AbstractCommand
+    public abstract class AbstractLobbyCommand : AbstractTextCommand
     {
         public static new char Delimitter { get { return '|'; } }
 

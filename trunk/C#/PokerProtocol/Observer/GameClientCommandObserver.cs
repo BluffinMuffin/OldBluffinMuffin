@@ -10,7 +10,7 @@ namespace PokerProtocol.Observer
 {
     public class GameClientCommandObserver : TextCommandObserver
     {
-        protected override char Delimitter { get { return AbstractCommand.Delimitter; } }
+        protected override char Delimitter { get { return AbstractTextCommand.Delimitter; } }
 
         public event EventHandler<CommandEventArgs<BetTurnEndedCommand>> BetTurnEndedCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<BetTurnStartedCommand>> BetTurnStartedCommandReceived = delegate { };

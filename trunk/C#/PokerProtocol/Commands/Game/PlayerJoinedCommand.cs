@@ -4,7 +4,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class PlayerJoinedCommand : AbstractCommand
+    public class PlayerJoinedCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gamePLAYER_JOINED";
 

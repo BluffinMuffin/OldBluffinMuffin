@@ -294,7 +294,7 @@ namespace PokerProtocol
         {
             if (IsConnected)
             {
-                Send(new DisconnectCommand());
+                Send(new DisconnectTextCommand());
             }
         }
 
@@ -306,7 +306,7 @@ namespace PokerProtocol
 
         public bool LeaveGame(PlayerInfo p)
         {
-            Send(new DisconnectCommand());
+            Send(new DisconnectTextCommand());
             return true;
         }
         #endregion Public Methods

@@ -6,7 +6,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class GameStartedCommand : AbstractCommand
+    public class GameStartedCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gameSTARTED";
 

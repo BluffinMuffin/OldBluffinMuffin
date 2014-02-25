@@ -6,7 +6,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class TableClosedCommand : AbstractCommand
+    public class TableClosedCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gameTABLE_CLOSED";
 

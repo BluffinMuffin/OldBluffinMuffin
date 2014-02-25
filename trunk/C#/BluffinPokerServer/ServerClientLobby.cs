@@ -30,7 +30,7 @@ namespace BluffinPokerServer
         protected override void InitializeCommandObserver()
         {
             m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
-            m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
+            m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectTextCommand>>(m_CommandObserver_DisconnectCommandReceived);
             m_CommandObserver.ListTableCommandReceived += new EventHandler<CommandEventArgs<ListTableCommand>>(m_CommandObserver_ListTableCommandReceived);
             m_CommandObserver.JoinTableCommandReceived += new EventHandler<CommandEventArgs<JoinTableCommand>>(m_CommandObserver_JoinTableCommandReceived);
             m_CommandObserver.GameCommandReceived += new EventHandler<CommandEventArgs<GameCommand>>(m_CommandObserver_GameCommandReceived);
@@ -200,10 +200,10 @@ namespace BluffinPokerServer
                 m_Lobby.AddName(m_PlayerName);
         }
 
-        void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
+        void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectTextCommand> e)
         {
             LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_DisconnectCommandReceived", "> Client disconnected: {0}", m_PlayerName);
-            DisconnectCommand c = e.Command;
+            DisconnectTextCommand c = e.Command;
             m_Lobby.RemoveName(m_PlayerName);
             Close();
         }

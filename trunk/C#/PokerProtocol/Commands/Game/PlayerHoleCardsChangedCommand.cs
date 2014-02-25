@@ -5,7 +5,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class PlayerHoleCardsChangedCommand : AbstractCommand
+    public class PlayerHoleCardsChangedCommand : AbstractTextCommand
     {
         public static string COMMAND_NAME = "gameHOLE_CARDS_CHANGED";
 
