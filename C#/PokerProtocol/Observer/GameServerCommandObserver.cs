@@ -8,7 +8,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Observer
 {
-    public class GameServerCommandObserver : CommandObserver
+    public class GameServerCommandObserver : TextCommandObserver
     {
         protected override char Delimitter { get { return AbstractCommand.Delimitter; } }
 
