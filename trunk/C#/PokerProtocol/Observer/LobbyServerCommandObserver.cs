@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace PokerProtocol.Observer
 {
-    public class LobbyServerCommandObserver : CommandObserver
+    public class LobbyServerCommandObserver : TextCommandObserver
     {
         protected override char Delimitter { get { return AbstractLobbyCommand.Delimitter; } }
 
