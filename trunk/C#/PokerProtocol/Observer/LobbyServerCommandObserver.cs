@@ -5,12 +5,13 @@ using PokerProtocol.Commands.Lobby;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerProtocol.Commands.Lobby.Career;
 using System.Reflection;
+using PokerProtocol.Commands;
 
 namespace PokerProtocol.Observer
 {
     public class LobbyServerCommandObserver : JsonCommandObserver
     {
-        public event EventHandler<CommandEventArgs<DisconnectTextCommand>> DisconnectCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<GameCommand>> GameCommandReceived = delegate { };

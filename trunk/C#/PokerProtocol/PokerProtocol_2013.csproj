@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DisconnectCommand.cs" />
     <Compile Include="Commands\Game\BetTurnEndedCommand.cs" />
     <Compile Include="Commands\Game\BetTurnStartedCommand.cs" />
     <Compile Include="Commands\Game\GameEndedCommand.cs" />
