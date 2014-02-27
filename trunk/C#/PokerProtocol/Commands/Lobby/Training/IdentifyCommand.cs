@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EricUtility;
 using EricUtility.Networking.Commands;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby.Training
 {
@@ -10,28 +11,16 @@ namespace PokerProtocol.Commands.Lobby.Training
     {
         public static string COMMAND_NAME = "lobbyTRAINING_IDENTIFY";
 
-        private readonly string m_Name;
+        public string Name { get; private set; }
 
-
-        public string Name
+        public IdentifyCommand(JObject obj)
         {
-            get { return m_Name; }
-        } 
-
-
-        public IdentifyCommand(StringTokenizer argsToken)
-        {
-            m_Name = argsToken.NextToken();
+            Name = (string)obj["Name"];
         }
 
         public IdentifyCommand(string name)
         {
-            m_Name = name;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_Name);
+            Name = name;
         }
 
         public string EncodeResponse( bool success )

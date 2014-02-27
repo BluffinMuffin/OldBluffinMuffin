@@ -8,10 +8,8 @@ using System.Reflection;
 
 namespace PokerProtocol.Observer
 {
-    public class LobbyServerCommandObserver : TextCommandObserver
+    public class LobbyServerCommandObserver : JsonCommandObserver
     {
-        protected override char Delimitter { get { return AbstractLobbyCommand.Delimitter; } }
-
         public event EventHandler<CommandEventArgs<DisconnectTextCommand>> DisconnectCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };

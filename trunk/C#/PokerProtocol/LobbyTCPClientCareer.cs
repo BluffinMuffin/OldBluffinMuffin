@@ -13,6 +13,7 @@ using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
 using PokerProtocol.Entities;
 using PokerWorld.Game.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol
 {
@@ -37,55 +38,45 @@ namespace PokerProtocol
         {
             Send(new CheckUserExistCommand(username));
 
-            StringTokenizer token = WaitAndReceive(CheckUserExistResponse.COMMAND_NAME);
-            if (!token.HasMoreTokens())
-                return false;
+            JObject jObj = WaitAndReceive(CheckUserExistResponse.COMMAND_NAME);
 
-            return !new CheckUserExistResponse(token).Exist;
+            return !new CheckUserExistResponse(jObj).Exist;
         }
 
         public bool CheckDisplayNameAvailable(string display)
         {
             Send(new CheckDisplayExistCommand(display));
 
-            StringTokenizer token = WaitAndReceive(CheckDisplayExistResponse.COMMAND_NAME);
-            if (!token.HasMoreTokens())
-                return false;
+            JObject jObj = WaitAndReceive(CheckDisplayExistResponse.COMMAND_NAME);
 
-            return !new CheckDisplayExistResponse(token).Exist;
+            return !new CheckDisplayExistResponse(jObj).Exist;
         }
 
         public bool CreateUser(string username, string password, string email, string displayname)
         {
             Send(new CreateUserCommand(username, password, email, displayname));
 
-            StringTokenizer token = WaitAndReceive(CreateUserResponse.COMMAND_NAME);
-            if (!token.HasMoreTokens())
-                return false;
+            JObject jObj = WaitAndReceive(CreateUserResponse.COMMAND_NAME);
 
-            return new CreateUserResponse(token).Success;
+            return new CreateUserResponse(jObj).Success;
         }
 
         public bool Authenticate(string username, string password)
         {
             Send(new AuthenticateUserCommand(username, password));
 
-            StringTokenizer token = WaitAndReceive(AuthenticateUserResponse.COMMAND_NAME);
-            if (!token.HasMoreTokens())
-                return false;
+            JObject jObj = WaitAndReceive(AuthenticateUserResponse.COMMAND_NAME);
 
-            return new AuthenticateUserResponse(token).Success;
+            return new AuthenticateUserResponse(jObj).Success;
         }
 
         public void RefreshUserInfo(string username)
         {
             Send(new GetUserCommand(username));
 
-            StringTokenizer token = WaitAndReceive(GetUserResponse.COMMAND_NAME);
-            if (!token.HasMoreTokens())
-                return;
+            JObject jObj = WaitAndReceive(GetUserResponse.COMMAND_NAME);
 
-            GetUserResponse response = new GetUserResponse(token);
+            GetUserResponse response = new GetUserResponse(jObj);
             m_PlayerName = response.DisplayName;
             m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
         }
@@ -94,28 +85,16 @@ namespace PokerProtocol
         {
             Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart));
 
-            StringTokenizer token = WaitAndReceive(CreateCareerTableResponse.COMMAND_NAME);
-            if (token.HasMoreTokens())
-            {
-                CreateCareerTableResponse response = new CreateCareerTableResponse(token);
-                return response.Port;
-            }
-            else
-                return -1;
+            JObject jObj = WaitAndReceive(CreateCareerTableResponse.COMMAND_NAME);
+            return new CreateCareerTableResponse(jObj).Port;
         }
 
         public List<TableCareer> ListTables()
         {
             Send(new ListTableCommand(false));
 
-            StringTokenizer token = WaitAndReceive(ListTableCareerResponse.COMMAND_NAME);
-            if (token.HasMoreTokens())
-            {
-                ListTableCareerResponse response = new ListTableCareerResponse(token);
-                return response.Tables;
-            }
-            else
-                return new List<TableCareer>();
+            JObject jObj = WaitAndReceive(ListTableCareerResponse.COMMAND_NAME);
+            return new ListTableCareerResponse(jObj).Tables;
         }
     }
 }

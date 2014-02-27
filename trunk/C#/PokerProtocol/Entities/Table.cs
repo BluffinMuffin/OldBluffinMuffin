@@ -5,6 +5,7 @@ using PokerWorld.Game;
 using EricUtility;
 using PokerProtocol.Entities.Enums;
 using PokerWorld.Game.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Entities
 {
@@ -29,39 +30,19 @@ namespace PokerProtocol.Entities
             PossibleAction = possibleAction;
         }
 
-        public Table(StringTokenizer argsToken)
+        public Table(JObject obj)
         {
-            NoPort = int.Parse(argsToken.NextToken());
-            TableName = argsToken.NextToken();
-            BigBlind = int.Parse(argsToken.NextToken());
-            NbPlayers = int.Parse(argsToken.NextToken());
-            NbSeats = int.Parse(argsToken.NextToken());
-            Limit = (BetEnum)int.Parse(argsToken.NextToken());
-            PossibleAction = (LobyActionEnum)int.Parse(argsToken.NextToken());
+            NoPort = (int)obj["NoPort"];
+            TableName = (string)obj["TableName"];
+            BigBlind = (int)obj["BigBlind"];
+            NbPlayers = (int)obj["NbPlayers"];
+            NbSeats = (int)obj["NbSeats"];
+            Limit = (BetEnum)(int)obj["Limit"];
+            PossibleAction = (LobyActionEnum)(int)obj["PossibleAction"];
         }
         public int CompareTo(Table other)
         {
             return NoPort.CompareTo(other.NoPort);
-        }
-
-        public string ToString(char p_delimiter)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(NoPort);
-            sb.Append(p_delimiter);
-            sb.Append(TableName);
-            sb.Append(p_delimiter);
-            sb.Append(BigBlind);
-            sb.Append(p_delimiter);
-            sb.Append(NbPlayers);
-            sb.Append(p_delimiter);
-            sb.Append(NbSeats);
-            sb.Append(p_delimiter);
-            sb.Append((int)Limit);
-            sb.Append(p_delimiter);
-            sb.Append((int)PossibleAction);
-
-            return sb.ToString();
         }
     }
 }

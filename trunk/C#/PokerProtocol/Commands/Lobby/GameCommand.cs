@@ -4,6 +4,8 @@ using System.Text;
 using EricUtility;
 using PokerWorld.Game;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
+using System.Web;
 
 namespace PokerProtocol.Commands.Lobby
 {
@@ -11,35 +13,19 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyGAME_COMMAND";
 
-        private readonly int m_TableID;
-        private readonly string m_Command;
+        public int TableID { get; private set; }
+        public string Command { get; private set; }
 
-        public int TableID
+        public GameCommand(JObject obj)
         {
-            get { return m_TableID; }
-        }
-
-        public string Command
-        {
-            get { return m_Command; }
-        } 
-
-        public GameCommand(StringTokenizer argsToken)
-        {
-            m_TableID = int.Parse(argsToken.NextToken());
-            m_Command = argsToken.NextToken();
+            Command = (string)obj["Command"];
+            TableID = (int)obj["TableID"];
         }
 
         public GameCommand(int p_tableID, string p_Command)
         {
-            m_TableID = p_tableID;
-            m_Command = p_Command;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_TableID);
-            Append(sb, m_Command);
+            TableID = p_tableID;
+            Command = HttpUtility.UrlEncode(p_Command);
         }
     }
 }
