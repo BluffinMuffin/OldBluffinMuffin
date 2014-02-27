@@ -3,35 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby.Career
 {
     public class CheckDisplayExistResponse : AbstractLobbyResponse<CheckDisplayExistCommand>
     {
         public static string COMMAND_NAME = "lobbyCAREER_CHECK_DISPLAY_EXIST_RESPONSE";
-        private readonly bool m_Exist;
-        public bool Exist
-        {
-            get { return m_Exist; }
-        } 
+        public bool Exist { get; private set; }
 
-
-        public CheckDisplayExistResponse(StringTokenizer argsToken)
-            : base(new CheckDisplayExistCommand(argsToken))
+        public CheckDisplayExistResponse(JObject obj)
+            : base(new CheckDisplayExistCommand((JObject)obj["Command"]))
         {
-            m_Exist = bool.Parse(argsToken.NextToken());
+            Exist = (bool)obj["Exist"];
         }
 
         public CheckDisplayExistResponse(CheckDisplayExistCommand command, bool exist)
             : base(command)
         {
-            m_Exist = exist;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            base.Encode(sb);
-            Append(sb, m_Exist);
+            Exist = exist;
         }
     }
 }

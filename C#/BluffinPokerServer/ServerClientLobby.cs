@@ -12,6 +12,7 @@ using PokerProtocol.Commands.Lobby.Training;
 using PokerWorld.Data;
 using PokerProtocol.Commands.Lobby.Career;
 using EricUtility;
+using System.Web;
 
 
 namespace BluffinPokerServer
@@ -110,7 +111,7 @@ namespace BluffinPokerServer
 
         void m_CommandObserver_GameCommandReceived(object sender, CommandEventArgs<GameCommand> e)
         {
-            m_Tables[e.Command.TableID].Incoming(e.Command.Command);
+            m_Tables[e.Command.TableID].Incoming(HttpUtility.UrlDecode(e.Command.Command));
         }
 
         void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)

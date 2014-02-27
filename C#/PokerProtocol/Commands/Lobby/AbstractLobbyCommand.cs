@@ -5,14 +5,7 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Lobby
 {
-    public abstract class AbstractLobbyCommand : AbstractTextCommand
+    public abstract class AbstractLobbyCommand : AbstractJsonCommand
     {
-        public static new char Delimitter { get { return '|'; } }
-
-        protected override void Append<T>(StringBuilder sb, T thing)
-        {
-            sb.Append(thing);
-            sb.Append(AbstractLobbyCommand.Delimitter);
-        }
     }
 }

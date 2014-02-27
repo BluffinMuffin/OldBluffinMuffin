@@ -4,6 +4,7 @@ using System.Text;
 using EricUtility;
 using PokerWorld.Game;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby
 {
@@ -11,35 +12,19 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyJOIN_TABLE";
 
-        private readonly int m_TableID;
-        private readonly string m_PlayerName;
+        public int TableID { get; private set; }
+        public string PlayerName { get; private set; }
 
-        public int TableID
+        public JoinTableCommand(JObject obj)
         {
-            get { return m_TableID; }
-        } 
-
-        public string PlayerName
-        {
-            get { return m_PlayerName; }
-        } 
-
-        public JoinTableCommand(StringTokenizer argsToken)
-        {
-            m_PlayerName = argsToken.NextToken();
-            m_TableID = int.Parse(argsToken.NextToken());
+            PlayerName = (string)obj["PlayerName"];
+            TableID = (int)obj["TableID"];
         }
 
         public JoinTableCommand(int p_tableID, string p_playerName)
         {
-            m_TableID = p_tableID;
-            m_PlayerName = p_playerName;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_PlayerName);
-            Append(sb, m_TableID);
+            TableID = p_tableID;
+            PlayerName = p_playerName;
         }
 
         public string EncodeResponse(int seat)

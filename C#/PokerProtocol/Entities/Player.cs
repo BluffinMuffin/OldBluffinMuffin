@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using EricUtility;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Entities
 {
@@ -9,7 +11,7 @@ namespace PokerProtocol.Entities
     {
         public int NoSeat { get; set; }
         public bool IsEmpty { get; set; }
-        public String PlayerName { get; set; }
+        public string PlayerName { get; set; }
         public int Money { get; set; }
         public List<int> HoleCardIDs { get; set; }
         public bool IsDealer { get; set; }
@@ -41,6 +43,22 @@ namespace PokerProtocol.Entities
             HoleCardIDs = new List<int>();
             NoSeat = noSeat;
             IsEmpty = true;
+        }
+
+        public Player(JObject obj)
+        {
+            NoSeat = (int)obj["NoSeat"];
+            IsEmpty = (bool)obj["IsEmpty"];
+            PlayerName = (string)obj["PlayerName"];
+            Money = (int)obj["Money"];
+            HoleCardIDs = ((JArray)obj["HoleCardIDs"]).Select(x => (int)x).ToList();
+            IsDealer = (bool)obj["IsDealer"];
+            IsSmallBlind = (bool)obj["IsSmallBlind"];
+            IsBigBlind = (bool)obj["IsBigBlind"];
+            IsCurrentPlayer = (bool)obj["IsCurrentPlayer"];
+            TimeRemaining = (int)obj["TimeRemaining"];
+            Bet = (int)obj["Bet"];
+            IsPlaying = (bool)obj["IsPlaying"];
         }
 
         public Player(StringTokenizer argsToken)
@@ -95,6 +113,7 @@ namespace PokerProtocol.Entities
                 sb.Append(IsPlaying);
                 sb.Append(d);
             }
+
 
             return sb.ToString();
         }

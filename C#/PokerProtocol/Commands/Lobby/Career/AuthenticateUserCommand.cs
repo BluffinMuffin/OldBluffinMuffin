@@ -4,42 +4,27 @@ using System.Text;
 using EricUtility;
 using PokerWorld.Game;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby.Career
 {
     public class AuthenticateUserCommand : AbstractLobbyCommand
     {
         public static string COMMAND_NAME = "lobbyCAREER_AUTHENTICATE_USER";
-        
-        private readonly string m_Username;
-        private readonly string m_Password;
 
-        public string Username
-        {
-            get { return m_Username; }
-        }
+        public string Username { get; private set; }
+        public string Password { get; private set; }
 
-        public string Password
+        public AuthenticateUserCommand(JObject obj)
         {
-            get { return m_Password; }
-        }
-
-        public AuthenticateUserCommand(StringTokenizer argsToken)
-        {
-            m_Username = argsToken.NextToken();
-            m_Password = argsToken.NextToken();
+            Username = (string)obj["Username"];
+            Password = (string)obj["Password"];
         }
 
         public AuthenticateUserCommand(string p_Username, string p_Password)
         {
-            m_Username = p_Username;
-            m_Password = p_Password;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_Username);
-            Append(sb, m_Password);
+            Username = p_Username;
+            Password = p_Password;
         }
 
         public string EncodeResponse(bool yes)

@@ -6,32 +6,22 @@ using EricUtility.Networking.Commands;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerProtocol.Commands.Lobby.Career;
 using PokerProtocol.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby
 {
     public class ListTableCommand : AbstractLobbyCommand
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
-        private readonly bool m_Training;
-        public bool Training
-        {
-            get { return m_Training; }
-        } 
+        public bool Training { get; private set; }
 
-        public ListTableCommand(StringTokenizer argsToken)
+        public ListTableCommand(JObject obj)
         {
-            m_Training = bool.Parse(argsToken.NextToken());
+            Training = (bool)obj["Training"];
         }
-
-
         public ListTableCommand(bool training)
         {
-            m_Training = training;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_Training);
+            Training = training;
         }
 
         public string EncodeTrainingResponse(List<TableTraining> tables)

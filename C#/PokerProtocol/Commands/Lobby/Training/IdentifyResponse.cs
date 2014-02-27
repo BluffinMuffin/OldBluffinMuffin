@@ -3,35 +3,26 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby.Training
 {
     public class IdentifyResponse : AbstractLobbyResponse<IdentifyCommand>
     {
         public static string COMMAND_NAME = "lobbyIDENTIFY_TRAINING_RESPONSE";
-        private readonly bool m_OK;
-        public bool OK
-        {
-            get { return m_OK; }
-        } 
 
+        public bool OK { get; private set; }
 
-        public IdentifyResponse(StringTokenizer argsToken)
-            : base(new IdentifyCommand(argsToken))
+        public IdentifyResponse(JObject obj)
+            : base(new IdentifyCommand((JObject)obj["Command"]))
         {
-            m_OK = bool.Parse(argsToken.NextToken());
+            OK = (bool)obj["OK"];
         }
 
         public IdentifyResponse(IdentifyCommand command, bool ok)
             : base(command)
         {
-            m_OK = ok;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            base.Encode(sb);
-            Append(sb, m_OK);
+            OK = ok;
         }
     }
 }

@@ -4,33 +4,24 @@ using System.Text;
 using EricUtility;
 using PokerWorld.Game;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby.Career
 {
     public class CheckUserExistCommand : AbstractLobbyCommand
     {
         public static string COMMAND_NAME = "lobbyCAREER_CHECK_USER_EXIST";
-        
-        private readonly string m_Username;
 
-        public string Username
-        {
-            get { return m_Username; }
-        }
+        public string Username { get; private set; }
 
-        public CheckUserExistCommand(StringTokenizer argsToken)
+        public CheckUserExistCommand(JObject obj)
         {
-            m_Username = argsToken.NextToken();
+            Username = (string)obj["Username"];
         }
 
         public CheckUserExistCommand(string p_Username)
         {
-            m_Username = p_Username;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_Username);
+            Username = p_Username;
         }
 
         public string EncodeResponse(bool yes)

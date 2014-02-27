@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Linq;
 using EricUtility;
 using EricUtility.Collections;
 using EricUtility.Networking;
@@ -10,6 +11,10 @@ using PokerProtocol.Commands.Lobby;
 using PokerWorld.Game;
 using PokerProtocol.Commands.Lobby.Training;
 using PokerProtocol.Commands.Lobby.Career;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Reflection;
+using System.Web;
 
 namespace PokerProtocol
 {
@@ -92,12 +97,12 @@ namespace PokerProtocol
                 base.OnSendCrashed(e);
         }
 
-        public void Send(StreamWriter writer, AbstractTextCommand command)
+        public void Send(StreamWriter writer, AbstractCommand command)
         {
             writer.WriteLine(command.Encode());
         }
 
-        public void Send(AbstractTextCommand command)
+        public void Send(AbstractCommand command)
         {
             base.Send(command.Encode());
         }
@@ -152,21 +157,22 @@ namespace PokerProtocol
         #endregion Public Methods
 
         #region Protected Methods
-        protected StringTokenizer WaitAndReceive(string expected)
+        protected JObject WaitAndReceive(string expected)
         {
             string s;
-            StringTokenizer token;
             string commandName;
+
+            JObject jObj;
 
             do
             {
                 s = m_Incoming.Dequeue();
-                token = new StringTokenizer(s, AbstractLobbyCommand.Delimitter);
-                commandName = token.NextToken();
+                jObj = JsonConvert.DeserializeObject<dynamic>(s);
+                commandName = (string)jObj["CommandName"];
             } 
             while (s != null && commandName != expected);
 
-            return token;
+            return jObj;
         }
 
         protected string Receive(StreamReader reader)
@@ -189,12 +195,9 @@ namespace PokerProtocol
             JoinTableCommand cmd = new JoinTableCommand(p_noPort, player);
             Send(cmd);
 
-            StringTokenizer token = WaitAndReceive(JoinTableResponse.COMMAND_NAME);
+            JObject jObj = WaitAndReceive(JoinTableResponse.COMMAND_NAME);
 
-            if (!token.HasMoreTokens())
-                return -1;
-
-            return new JoinTableResponse(token).NoSeat;
+            return new JoinTableResponse(jObj).NoSeat;
         }
 
         protected override void Run()
@@ -212,12 +215,12 @@ namespace PokerProtocol
 
                 LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.Run", "{0} RECV [{1}]", m_PlayerName, line);
 
-                StringTokenizer token = new StringTokenizer(line, AbstractLobbyCommand.Delimitter);
-                String cmdName = token.NextToken();
+                JObject jObj = JsonConvert.DeserializeObject<dynamic>(line);
+                String cmdName = (string)jObj["CommandName"];
 
                 if (cmdName == GameCommand.COMMAND_NAME)
                 {
-                    GameCommand c = new GameCommand(token);
+                    GameCommand c = new GameCommand(jObj);
                     int count = 0;
 
                     //Be patient
@@ -225,7 +228,7 @@ namespace PokerProtocol
                         Thread.Sleep(100);
 
                     if (m_Clients.ContainsKey(c.TableID))
-                        m_Clients[c.TableID].Incoming(c.Command);
+                        m_Clients[c.TableID].Incoming(HttpUtility.UrlDecode(c.Command));
                 }
                 else
                     m_Incoming.Enqueue(line);

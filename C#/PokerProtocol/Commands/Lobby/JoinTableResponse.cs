@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Commands.Lobby
 {
@@ -10,29 +11,20 @@ namespace PokerProtocol.Commands.Lobby
     {
 
         public static string COMMAND_NAME = "lobbyJOIN_TABLE_RESPONSE";
-        private readonly int m_NoSeat;
-        public int NoSeat
-        {
-            get { return m_NoSeat; }
-        } 
 
+        public int NoSeat { get; private set; }
 
-        public JoinTableResponse(StringTokenizer argsToken)
-            : base(new JoinTableCommand(argsToken))
+        public JoinTableResponse(JObject obj)
+            : base(new JoinTableCommand((JObject)obj["Command"]))
         {
-            m_NoSeat = int.Parse(argsToken.NextToken());
+            NoSeat = (int)obj["NoSeat"];
         }
+
 
         public JoinTableResponse(JoinTableCommand command, int seat)
             : base(command)
         {
-            m_NoSeat = seat;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            base.Encode(sb);
-            Append(sb, m_NoSeat);
+            NoSeat = seat;
         }
     }
 }

@@ -5,6 +5,7 @@ using PokerWorld.Game;
 using EricUtility;
 using PokerProtocol.Entities.Enums;
 using PokerWorld.Game.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Entities
 {
@@ -15,8 +16,8 @@ namespace PokerProtocol.Entities
         {
         }
 
-        public TableTraining(StringTokenizer argsToken)
-            :base(argsToken)
+        public TableTraining(JObject obj)
+            :base(obj)
         {
         }
     }
