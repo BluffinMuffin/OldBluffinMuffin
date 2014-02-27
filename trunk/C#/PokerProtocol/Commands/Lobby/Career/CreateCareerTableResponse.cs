@@ -11,12 +11,11 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_CREATE_TABLE_RESPONSE";
 
-        public int Port { get; private set; }
+        public int Port { get; set; }
 
-        public CreateCareerTableResponse(JObject obj)
-            : base(new CreateCareerTableCommand((JObject)obj["Command"]))
+        public CreateCareerTableResponse()
+            : base()
         {
-            Port = (int)obj["Port"];
         }
 
         public CreateCareerTableResponse(CreateCareerTableCommand command, int port)

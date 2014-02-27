@@ -11,12 +11,11 @@ namespace PokerProtocol.Commands.Lobby.Training
     {
         public static string COMMAND_NAME = "lobbyTRAINING_CREATE_TABLE_RESPONSE";
 
-        public int Port { get; private set; }
+        public int Port { get; set; }
 
-        public CreateTrainingTableResponse(JObject obj)
-            : base(new CreateTrainingTableCommand((JObject)obj["Command"]))
+        public CreateTrainingTableResponse()
+            : base()
         {
-            Port = (int)obj["Port"];
         }
 
         public CreateTrainingTableResponse(CreateTrainingTableCommand command, int port)

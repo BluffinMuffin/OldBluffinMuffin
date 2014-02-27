@@ -30,16 +30,10 @@ namespace PokerProtocol.Entities
             PossibleAction = possibleAction;
         }
 
-        public Table(JObject obj)
+        public Table()
         {
-            NoPort = (int)obj["NoPort"];
-            TableName = (string)obj["TableName"];
-            BigBlind = (int)obj["BigBlind"];
-            NbPlayers = (int)obj["NbPlayers"];
-            NbSeats = (int)obj["NbSeats"];
-            Limit = (BetEnum)(int)obj["Limit"];
-            PossibleAction = (LobyActionEnum)(int)obj["PossibleAction"];
         }
+
         public int CompareTo(Table other)
         {
             return NoPort.CompareTo(other.NoPort);

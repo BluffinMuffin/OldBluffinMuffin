@@ -9,17 +9,14 @@ namespace PokerProtocol.Commands.Lobby
 {
     public class JoinTableResponse : AbstractLobbyResponse<JoinTableCommand>
     {
-
         public static string COMMAND_NAME = "lobbyJOIN_TABLE_RESPONSE";
 
-        public int NoSeat { get; private set; }
+        public int NoSeat { get; set; }
 
-        public JoinTableResponse(JObject obj)
-            : base(new JoinTableCommand((JObject)obj["Command"]))
+        public JoinTableResponse()
+            : base()
         {
-            NoSeat = (int)obj["NoSeat"];
         }
-
 
         public JoinTableResponse(JoinTableCommand command, int seat)
             : base(command)

@@ -13,11 +13,10 @@ namespace PokerProtocol.Commands.Lobby
     public class ListTableCommand : AbstractLobbyCommand
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
-        public bool Training { get; private set; }
+        public bool Training { get; set; }
 
-        public ListTableCommand(JObject obj)
+        public ListTableCommand()
         {
-            Training = (bool)obj["Training"];
         }
         public ListTableCommand(bool training)
         {

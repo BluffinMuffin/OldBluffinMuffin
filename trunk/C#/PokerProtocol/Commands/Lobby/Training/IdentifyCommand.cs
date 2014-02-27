@@ -11,11 +11,10 @@ namespace PokerProtocol.Commands.Lobby.Training
     {
         public static string COMMAND_NAME = "lobbyTRAINING_IDENTIFY";
 
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
-        public IdentifyCommand(JObject obj)
+        public IdentifyCommand()
         {
-            Name = (string)obj["Name"];
         }
 
         public IdentifyCommand(string name)

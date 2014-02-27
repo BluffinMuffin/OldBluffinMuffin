@@ -12,12 +12,11 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_LIST_TABLES_RESPONSE";
 
-        public List<TableCareer> Tables { get; private set; }
+        public List<TableCareer> Tables { get; set; }
 
-        public ListTableCareerResponse(JObject obj)
-            : base(new ListTableCommand((JObject)obj["Command"]))
+        public ListTableCareerResponse()
+            : base()
         {
-            Tables = ((JArray)obj["Tables"]).Select(x => new TableCareer((JObject)x)).ToList();
         }
 
         public ListTableCareerResponse(ListTableCommand command, List<TableCareer> tables)

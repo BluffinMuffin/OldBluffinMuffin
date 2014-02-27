@@ -13,12 +13,11 @@ namespace PokerProtocol.Commands.Lobby.Training
     {
         public static string COMMAND_NAME = "lobbyTRAINING_CREATE_TABLE";
 
-        public int StartingMoney { get; private set; }
+        public int StartingMoney { get; set; }
 
-        public CreateTrainingTableCommand(JObject obj)
-            : base(obj)
+        public CreateTrainingTableCommand()
+            : base()
         {
-            StartingMoney = (int)obj["StartingMoney"];
         }
 
         public CreateTrainingTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart, int startingMoney)

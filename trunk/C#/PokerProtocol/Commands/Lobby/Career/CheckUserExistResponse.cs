@@ -11,12 +11,11 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_CHECK_USER_EXIST_RESPONSE";
 
-        public bool Exist { get; private set; }
+        public bool Exist { get; set; }
 
-        public CheckUserExistResponse(JObject obj)
-            : base(new CheckUserExistCommand((JObject)obj["Command"]))
+        public CheckUserExistResponse()
+            : base()
         {
-            Exist = (bool)obj["Exist"];
         }
 
         public CheckUserExistResponse(CheckUserExistCommand command, bool exist)

@@ -16,8 +16,8 @@ namespace PokerProtocol.Entities
         {
         }
 
-        public TableTraining(JObject obj)
-            :base(obj)
+        public TableTraining()
+            :base()
         {
         }
     }

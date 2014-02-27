@@ -12,11 +12,10 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_GET_USER";
 
-        public string Username { get; private set; }
+        public string Username { get; set; }
 
-        public GetUserCommand(JObject obj)
+        public GetUserCommand()
         {
-            Username = (string)obj["Username"];
         }
 
         public GetUserCommand(string p_Username)

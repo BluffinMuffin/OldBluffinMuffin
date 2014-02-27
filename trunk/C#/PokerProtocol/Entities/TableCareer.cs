@@ -16,8 +16,8 @@ namespace PokerProtocol.Entities
         {
         }
 
-        public TableCareer(JObject obj)
-            :base(obj)
+        public TableCareer()
+            :base()
         {
         }
     }

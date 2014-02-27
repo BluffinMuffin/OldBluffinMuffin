@@ -9,7 +9,12 @@ namespace PokerProtocol.Commands.Lobby
     public abstract class AbstractLobbyResponse<T>: AbstractJsonCommandResponse<T>
         where T : AbstractLobbyCommand
     {
-        public AbstractLobbyResponse(T command) : base(command)
+        public AbstractLobbyResponse()
+            : base()
+        {
+        }
+        public AbstractLobbyResponse(T command)
+            : base(command)
         {
         }
     }
