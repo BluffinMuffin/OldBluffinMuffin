@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.Web;
+using PokerProtocol.Commands;
 
 namespace PokerProtocol
 {
@@ -116,7 +117,7 @@ namespace PokerProtocol
 
             if (IsConnected)
             {
-                Send(new DisconnectTextCommand());
+                Send(new DisconnectCommand());
                 Close();
             }
         }
@@ -228,7 +229,7 @@ namespace PokerProtocol
                         Thread.Sleep(100);
 
                     if (m_Clients.ContainsKey(c.TableID))
-                        m_Clients[c.TableID].Incoming(HttpUtility.UrlDecode(c.Command));
+                        m_Clients[c.TableID].Incoming(c.Command);
                 }
                 else
                     m_Incoming.Enqueue(line);

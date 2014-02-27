@@ -6,6 +6,7 @@ using PokerWorld.Game;
 using EricUtility.Networking.Commands;
 using Newtonsoft.Json.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace PokerProtocol.Commands.Lobby
 {
@@ -14,18 +15,32 @@ namespace PokerProtocol.Commands.Lobby
         public static string COMMAND_NAME = "lobbyGAME_COMMAND";
 
         public int TableID { get; private set; }
-        public string Command { get; private set; }
+
+        [JsonIgnore]
+        public string Command 
+        {
+            get
+            {
+                return HttpUtility.UrlDecode(EncodedCommand);
+            }
+            private set
+            {
+                EncodedCommand = HttpUtility.UrlEncode(value);
+            }
+        }
+
+        public string EncodedCommand { get; private set; }
 
         public GameCommand(JObject obj)
         {
-            Command = (string)obj["Command"];
+            EncodedCommand = (string)obj["EncodedCommand"];
             TableID = (int)obj["TableID"];
         }
 
         public GameCommand(int p_tableID, string p_Command)
         {
             TableID = p_tableID;
-            Command = HttpUtility.UrlEncode(p_Command);
+            EncodedCommand = p_Command;
         }
     }
 }
