@@ -45,20 +45,8 @@ namespace PokerProtocol.Entities
             IsEmpty = true;
         }
 
-        public Player(JObject obj)
+        public Player()
         {
-            NoSeat = (int)obj["NoSeat"];
-            IsEmpty = (bool)obj["IsEmpty"];
-            PlayerName = (string)obj["PlayerName"];
-            Money = (int)obj["Money"];
-            HoleCardIDs = ((JArray)obj["HoleCardIDs"]).Select(x => (int)x).ToList();
-            IsDealer = (bool)obj["IsDealer"];
-            IsSmallBlind = (bool)obj["IsSmallBlind"];
-            IsBigBlind = (bool)obj["IsBigBlind"];
-            IsCurrentPlayer = (bool)obj["IsCurrentPlayer"];
-            TimeRemaining = (int)obj["TimeRemaining"];
-            Bet = (int)obj["Bet"];
-            IsPlaying = (bool)obj["IsPlaying"];
         }
 
         public Player(StringTokenizer argsToken)

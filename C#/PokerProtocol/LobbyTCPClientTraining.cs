@@ -30,25 +30,21 @@ namespace PokerProtocol
 
             Send(new IdentifyCommand(m_PlayerName));
 
-            JObject jObj = WaitAndReceive(IdentifyResponse.COMMAND_NAME);
-
-            return new IdentifyResponse(jObj).OK;
+            return WaitAndReceive<IdentifyResponse>().OK;
         }
 
         public List<TableTraining> ListTables()
         {
             Send(new ListTableCommand(true));
 
-            JObject jObj = WaitAndReceive(ListTableTrainingResponse.COMMAND_NAME);
-            return new ListTableTrainingResponse(jObj).Tables;
+            return WaitAndReceive<ListTableTrainingResponse>().Tables;
         }
 
         public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart, int startingMoney)
         {
             Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart, startingMoney));
 
-            JObject jObj = WaitAndReceive(CreateTrainingTableResponse.COMMAND_NAME);
-            return new CreateTrainingTableResponse(jObj).Port;
+            return WaitAndReceive<CreateTrainingTableResponse>().Port;
         }
     }
 }

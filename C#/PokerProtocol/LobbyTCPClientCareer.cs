@@ -38,45 +38,35 @@ namespace PokerProtocol
         {
             Send(new CheckUserExistCommand(username));
 
-            JObject jObj = WaitAndReceive(CheckUserExistResponse.COMMAND_NAME);
-
-            return !new CheckUserExistResponse(jObj).Exist;
+            return !WaitAndReceive<CheckUserExistResponse>().Exist;
         }
 
         public bool CheckDisplayNameAvailable(string display)
         {
             Send(new CheckDisplayExistCommand(display));
 
-            JObject jObj = WaitAndReceive(CheckDisplayExistResponse.COMMAND_NAME);
-
-            return !new CheckDisplayExistResponse(jObj).Exist;
+            return !WaitAndReceive<CheckDisplayExistResponse>().Exist;
         }
 
         public bool CreateUser(string username, string password, string email, string displayname)
         {
             Send(new CreateUserCommand(username, password, email, displayname));
 
-            JObject jObj = WaitAndReceive(CreateUserResponse.COMMAND_NAME);
-
-            return new CreateUserResponse(jObj).Success;
+            return WaitAndReceive<CreateUserResponse>().Success;
         }
 
         public bool Authenticate(string username, string password)
         {
             Send(new AuthenticateUserCommand(username, password));
 
-            JObject jObj = WaitAndReceive(AuthenticateUserResponse.COMMAND_NAME);
-
-            return new AuthenticateUserResponse(jObj).Success;
+            return WaitAndReceive<AuthenticateUserResponse>().Success;
         }
 
         public void RefreshUserInfo(string username)
         {
             Send(new GetUserCommand(username));
 
-            JObject jObj = WaitAndReceive(GetUserResponse.COMMAND_NAME);
-
-            GetUserResponse response = new GetUserResponse(jObj);
+            GetUserResponse response = WaitAndReceive<GetUserResponse>();
             m_PlayerName = response.DisplayName;
             m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
         }
@@ -86,15 +76,14 @@ namespace PokerProtocol
             Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart));
 
             JObject jObj = WaitAndReceive(CreateCareerTableResponse.COMMAND_NAME);
-            return new CreateCareerTableResponse(jObj).Port;
+            return WaitAndReceive<CreateCareerTableResponse>().Port;
         }
 
         public List<TableCareer> ListTables()
         {
             Send(new ListTableCommand(false));
 
-            JObject jObj = WaitAndReceive(ListTableCareerResponse.COMMAND_NAME);
-            return new ListTableCareerResponse(jObj).Tables;
+            return WaitAndReceive<ListTableCareerResponse>().Tables;
         }
     }
 }

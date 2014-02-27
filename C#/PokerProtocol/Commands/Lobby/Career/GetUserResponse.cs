@@ -12,16 +12,13 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_GET_USER_RESPONSE";
 
-        public string Email { get; private set; }
-        public string DisplayName { get; private set; }
-        public double Money { get; private set; }
+        public string Email { get; set; }
+        public string DisplayName { get; set; }
+        public double Money { get; set; }
 
-        public GetUserResponse(JObject obj)
-            : base(new GetUserCommand((JObject)obj["Command"]))
+        public GetUserResponse()
+            : base()
         {
-            Email = (string)obj["Email"];
-            DisplayName = (string)obj["DisplayName"];
-            Money = (double)obj["Money"];
         }
 
         public GetUserResponse(GetUserCommand command, string mail, string display, double money)

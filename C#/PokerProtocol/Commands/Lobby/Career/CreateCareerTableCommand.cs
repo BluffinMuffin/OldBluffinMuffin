@@ -13,8 +13,8 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_CREATE_TABLE";
 
-        public CreateCareerTableCommand(JObject obj)
-            : base(obj)
+        public CreateCareerTableCommand()
+            : base()
         {
         }
 

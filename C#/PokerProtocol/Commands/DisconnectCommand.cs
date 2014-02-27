@@ -12,11 +12,8 @@ namespace PokerProtocol.Commands
 {
     public class DisconnectCommand : DisconnectJsonCommand
     {
-        public DisconnectCommand(JObject obj): base(obj)
-        {
-        }
-
-        public DisconnectCommand(): base()
+        public DisconnectCommand()
+            : base()
         {
         }
     }

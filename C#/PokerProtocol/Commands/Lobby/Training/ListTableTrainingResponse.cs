@@ -13,12 +13,11 @@ namespace PokerProtocol.Commands.Lobby.Training
     {
         public static string COMMAND_NAME = "lobbyTRAINING_LIST_TABLES_RESPONSE";
 
-        public List<TableTraining> Tables { get; private set; }
+        public List<TableTraining> Tables { get; set; }
 
-        public ListTableTrainingResponse(JObject obj)
-            : base(new ListTableCommand((JObject)obj["Command"]))
+        public ListTableTrainingResponse()
+            : base()
         {
-            Tables = ((JArray)obj["Tables"]).Select(x => new TableTraining((JObject)x)).ToList();
         }
 
         public ListTableTrainingResponse(ListTableCommand command, List<TableTraining> tables)

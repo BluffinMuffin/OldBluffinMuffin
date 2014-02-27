@@ -10,12 +10,11 @@ namespace PokerProtocol.Commands.Lobby.Career
     public class CheckDisplayExistResponse : AbstractLobbyResponse<CheckDisplayExistCommand>
     {
         public static string COMMAND_NAME = "lobbyCAREER_CHECK_DISPLAY_EXIST_RESPONSE";
-        public bool Exist { get; private set; }
+        public bool Exist { get; set; }
 
-        public CheckDisplayExistResponse(JObject obj)
-            : base(new CheckDisplayExistCommand((JObject)obj["Command"]))
+        public CheckDisplayExistResponse()
+            : base()
         {
-            Exist = (bool)obj["Exist"];
         }
 
         public CheckDisplayExistResponse(CheckDisplayExistCommand command, bool exist)

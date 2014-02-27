@@ -12,13 +12,11 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_AUTHENTICATE_USER";
 
-        public string Username { get; private set; }
-        public string Password { get; private set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
 
-        public AuthenticateUserCommand(JObject obj)
+        public AuthenticateUserCommand()
         {
-            Username = (string)obj["Username"];
-            Password = (string)obj["Password"];
         }
 
         public AuthenticateUserCommand(string p_Username, string p_Password)

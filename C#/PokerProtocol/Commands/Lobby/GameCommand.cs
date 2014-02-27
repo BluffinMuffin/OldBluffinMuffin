@@ -14,7 +14,9 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyGAME_COMMAND";
 
-        public int TableID { get; private set; }
+        public int TableID { get; set; }
+
+        public string EncodedCommand { get; set; }
 
         [JsonIgnore]
         public string Command 
@@ -29,12 +31,8 @@ namespace PokerProtocol.Commands.Lobby
             }
         }
 
-        public string EncodedCommand { get; private set; }
-
-        public GameCommand(JObject obj)
+        public GameCommand()
         {
-            EncodedCommand = (string)obj["EncodedCommand"];
-            TableID = (int)obj["TableID"];
         }
 
         public GameCommand(int p_tableID, string p_Command)

@@ -11,12 +11,11 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_AUTHENTICATE_USER_RESPONSE";
 
-        public bool Success { get; private set; }
+        public bool Success { get; set; }
 
-        public AuthenticateUserResponse(JObject obj)
-            : base(new AuthenticateUserCommand((JObject)obj["Command"]))
+        public AuthenticateUserResponse()
+            : base()
         {
-            Success = (bool)obj["Success"];
         }
 
         public AuthenticateUserResponse(AuthenticateUserCommand command, bool success)

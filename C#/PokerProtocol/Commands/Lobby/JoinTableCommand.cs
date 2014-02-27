@@ -12,13 +12,11 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyJOIN_TABLE";
 
-        public int TableID { get; private set; }
-        public string PlayerName { get; private set; }
+        public int TableID { get; set; }
+        public string PlayerName { get; set; }
 
-        public JoinTableCommand(JObject obj)
+        public JoinTableCommand()
         {
-            PlayerName = (string)obj["PlayerName"];
-            TableID = (int)obj["TableID"];
         }
 
         public JoinTableCommand(int p_tableID, string p_playerName)

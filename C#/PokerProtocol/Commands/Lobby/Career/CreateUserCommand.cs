@@ -12,17 +12,13 @@ namespace PokerProtocol.Commands.Lobby.Career
     {
         public static string COMMAND_NAME = "lobbyCAREER_CREATE_USER";
 
-        public string Username { get; private set; }
-        public string Password { get; private set; }
-        public string Email { get; private set; }
-        public string DisplayName { get; private set; }
+        public string Username { get;  set; }
+        public string Password { get;  set; }
+        public string Email { get;  set; }
+        public string DisplayName { get;  set; }
 
-        public CreateUserCommand(JObject obj)
+        public CreateUserCommand()
         {
-            Username = (string)obj["Username"];
-            Password = (string)obj["Password"];
-            Email = (string)obj["Email"];
-            DisplayName = (string)obj["DisplayName"];
         }
 
         public CreateUserCommand(string p_Username, string p_Password, string p_Email, string p_DisplayName)
