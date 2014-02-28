@@ -14,72 +14,26 @@ namespace BluffinPokerGUI.Lobby
     {
         private readonly string m_PlayerName;
 
-        private bool m_OK;
-        private string m_TableName;
-        private int m_BigBlind;
-        private int m_NbPlayer;
-        private int m_NbPlayerMin;
-        private int m_WaitingTimeAfterPlayerAction;
-        private int m_WaitingTimeAfterBoardDealed;
-        private int m_WaitingTimeAfterPotWon;
-        private BetEnum m_Limit;
-        private bool m_TrainingOnly;
-        private bool m_Training;
-        private int m_TrainingStartingAmount;
-
-        public bool Training
+        public bool Training { get; private set; }
+        public int TrainingStartingAmount { get; private set; }
+        public BetEnum Limit { get; private set; }
+        public int WaitingTimeAfterPotWon { get; private set; }
+        public int WaitingTimeAfterBoardDealed { get; private set; }
+        public int WaitingTimeAfterPlayerAction { get; private set; }
+        public int NbPlayer { get; private set; }
+        public int NbPlayerMin { get; private set; }
+        public int BigBlind { get; private set; }
+        public string TableName { get; private set; }
+        public bool OK { get; private set; }
+        public AddTableForm(string playerName, int nbPlayers, bool isTraining, List<RuleInfo> rules) : base()
         {
-            get { return m_Training; }
-        }
-        public int TrainingStartingAmount
-        {
-            get { return m_TrainingStartingAmount; }
-        }
-        public BetEnum Limit
-        {
-            get { return m_Limit; }
-        }
-        public int WaitingTimeAfterPotWon
-        {
-            get { return m_WaitingTimeAfterPotWon; }
-        }
-        public int WaitingTimeAfterBoardDealed
-        {
-            get { return m_WaitingTimeAfterBoardDealed; }
-        }
-        public int WaitingTimeAfterPlayerAction
-        {
-            get { return m_WaitingTimeAfterPlayerAction; }
-        }
-        public int NbPlayer
-        {
-            get { return m_NbPlayer; }
-        }
-        public int NbPlayerMin
-        {
-            get { return m_NbPlayerMin; }
-        }
-        public int BigBlind
-        {
-            get { return m_BigBlind; }
-        }
-        public string TableName
-        {
-            get { return m_TableName; }
-        }
-        public bool OK
-        {
-            get { return m_OK; }
-        }
-        public AddTableForm(string playerName, int nbPlayers, bool trainingOnly) : base()
-        {
-            m_OK = false;
+            OK = false;
             m_PlayerName = playerName;
-            m_TrainingOnly = trainingOnly;
+            Training = isTraining;
             InitializeComponent();
             atcTraining.InitControl(m_PlayerName, nbPlayers);
             atcReal.InitControl(m_PlayerName, nbPlayers);
-            if (trainingOnly)
+            if (isTraining)
                 tabControl1.TabPages.Remove(tabReal);
             else
                 tabControl1.TabPages.Remove(tabTraining);
@@ -87,30 +41,30 @@ namespace BluffinPokerGUI.Lobby
 
         private void GatherCommonFields(AddTableControl control)
         {
-            m_TableName = control.TableName;
-            m_BigBlind = control.BigBlind;
-            m_NbPlayer = control.NbPlayer;
-            m_WaitingTimeAfterPlayerAction = control.WaitingTimeAfterPlayerAction;
-            m_WaitingTimeAfterBoardDealed = control.WaitingTimeAfterBoardDealed;
-            m_WaitingTimeAfterPotWon = control.WaitingTimeAfterPotWon;
-            m_Limit = control.Limit;
-            m_NbPlayerMin = control.NbPlayerMin;
+            TableName = control.TableName;
+            BigBlind = control.BigBlind;
+            NbPlayer = control.NbPlayer;
+            WaitingTimeAfterPlayerAction = control.WaitingTimeAfterPlayerAction;
+            WaitingTimeAfterBoardDealed = control.WaitingTimeAfterBoardDealed;
+            WaitingTimeAfterPotWon = control.WaitingTimeAfterPotWon;
+            Limit = control.Limit;
+            NbPlayerMin = control.NbPlayerMin;
         }
 
         private void btnAddTraining_Click(object sender, EventArgs e)
         {
             GatherCommonFields(atcTraining);
-            m_Training = true;
-            m_TrainingStartingAmount = (int)nudStartingAmnt.Value;
-            m_OK = true;
+            Training = true;
+            TrainingStartingAmount = (int)nudStartingAmnt.Value;
+            OK = true;
             Close();
         }
 
         private void btnAddReal_Click(object sender, EventArgs e)
         {
             GatherCommonFields(atcReal);
-            m_Training = false;
-            m_OK = true;
+            Training = false;
+            OK = true;
             Close();
         }
     }
