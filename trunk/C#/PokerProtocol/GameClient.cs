@@ -14,6 +14,7 @@ using EricUtility;
 using PokerProtocol.Entities;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.PokerEventArgs;
+using PokerProtocol.Commands;
 
 namespace PokerProtocol
 {
@@ -294,7 +295,7 @@ namespace PokerProtocol
         {
             if (IsConnected)
             {
-                Send(new DisconnectTextCommand());
+                Send(new DisconnectCommand());
             }
         }
 
@@ -306,7 +307,7 @@ namespace PokerProtocol
 
         public bool LeaveGame(PlayerInfo p)
         {
-            Send(new DisconnectTextCommand());
+            Send(new DisconnectCommand());
             return true;
         }
         #endregion Public Methods

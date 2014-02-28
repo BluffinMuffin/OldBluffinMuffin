@@ -8,11 +8,9 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Observer
 {
-    public class GameServerCommandObserver : TextCommandObserver
+    public class GameServerCommandObserver : JsonCommandObserver
     {
-        protected override char Delimitter { get { return AbstractTextCommand.Delimitter; } }
-
         public event EventHandler<CommandEventArgs<PlayerPlayMoneyCommand>> PlayMoneyCommandReceived = delegate { };
-        public event EventHandler<CommandEventArgs<DisconnectTextCommand>> DisconnectCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
     }
 }
