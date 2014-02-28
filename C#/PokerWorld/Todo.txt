@@ -5,10 +5,9 @@ TODO on the JAVA version to stay up to date:
 -> Adding the MinimumPlayersToStart! This will only affect the first round, the game then continues if people loose or quit ! :) (r418)
 -> Better support of the betting rules of the no-limit game 
 	:- Once a bet has been made, the minimum you can raise is the size of the last bet. (r420)
--> Convert LobbyCommands to JSON (r421-422-423)
+-> Convert Commands to JSON (r421-422-423-424-425-426)
 
 TODO:
--> Convert GameCommands to JSON
 -> (Bug) Visual glitches
 	:- When a player is waiting for player for an already played games, he stays with his cards
 	:- When starting, if minimum players > 2, waiting players show dealed cards in other hands

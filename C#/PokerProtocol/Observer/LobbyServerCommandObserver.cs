@@ -27,6 +27,5 @@ namespace PokerProtocol.Observer
         public event EventHandler<CommandEventArgs<CheckDisplayExistCommand>> CheckDisplayExistCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<AuthenticateUserCommand>> AuthenticateUserCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<GetUserCommand>> GetUserCommandReceived = delegate { };
-
     }
 }

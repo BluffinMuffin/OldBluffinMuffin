@@ -6,13 +6,9 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class GameEndedCommand : AbstractTextCommand
+    public class GameEndedCommand : AbstractJsonCommand
     {
         public static string COMMAND_NAME = "gameENDED";
-
-        public GameEndedCommand(StringTokenizer argsToken)
-        {
-        }
 
         public GameEndedCommand()
         {

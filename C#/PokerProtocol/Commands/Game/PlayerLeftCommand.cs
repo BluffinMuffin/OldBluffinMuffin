@@ -4,30 +4,19 @@ using EricUtility.Networking.Commands;
 
 namespace PokerProtocol.Commands.Game
 {
-    public class PlayerLeftCommand : AbstractTextCommand
+    public class PlayerLeftCommand : AbstractJsonCommand
     {
         public static string COMMAND_NAME = "gamePLAYER_LEFT";
 
-        private readonly int m_PlayerPos;
+        public int PlayerPos { get; set; }
 
-        public int PlayerPos
+        public PlayerLeftCommand()
         {
-            get { return m_PlayerPos; }
-        }
-
-        public PlayerLeftCommand(StringTokenizer argsToken)
-        {
-            m_PlayerPos = int.Parse(argsToken.NextToken());
         }
 
         public PlayerLeftCommand(int pos)
         {
-            m_PlayerPos = pos;
-        }
-
-        public override void Encode(StringBuilder sb)
-        {
-            Append(sb, m_PlayerPos);
+            PlayerPos = pos;
         }
     }
 }
