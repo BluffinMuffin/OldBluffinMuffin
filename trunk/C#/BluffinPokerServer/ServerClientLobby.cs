@@ -31,23 +31,29 @@ namespace BluffinPokerServer
         }
         protected override void InitializeCommandObserver()
         {
-            m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
-            m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
-            m_CommandObserver.ListTableCommandReceived += new EventHandler<CommandEventArgs<ListTableCommand>>(m_CommandObserver_ListTableCommandReceived);
-            m_CommandObserver.JoinTableCommandReceived += new EventHandler<CommandEventArgs<JoinTableCommand>>(m_CommandObserver_JoinTableCommandReceived);
-            m_CommandObserver.GameCommandReceived += new EventHandler<CommandEventArgs<GameCommand>>(m_CommandObserver_GameCommandReceived);
+            m_CommandObserver.CommandReceived += m_CommandObserver_CommandReceived;
+            m_CommandObserver.DisconnectCommandReceived += m_CommandObserver_DisconnectCommandReceived;
+            m_CommandObserver.ListTableCommandReceived += m_CommandObserver_ListTableCommandReceived;
+            m_CommandObserver.JoinTableCommandReceived += m_CommandObserver_JoinTableCommandReceived;
+            m_CommandObserver.GameCommandReceived += m_CommandObserver_GameCommandReceived;
+            m_CommandObserver.SupportedRulesCommandReceived += m_CommandObserver_SupportedRulesCommandReceived;
 
             //Training
-            m_CommandObserver.CreateTrainingTableCommandReceived += new EventHandler<CommandEventArgs<CreateTrainingTableCommand>>(m_CommandObserver_CreateTrainingTableCommandReceived);
-            m_CommandObserver.IdentifyCommandReceived += new EventHandler<CommandEventArgs<IdentifyCommand>>(m_CommandObserver_IdentifyCommandReceived);
+            m_CommandObserver.CreateTrainingTableCommandReceived += m_CommandObserver_CreateTrainingTableCommandReceived;
+            m_CommandObserver.IdentifyCommandReceived += m_CommandObserver_IdentifyCommandReceived;
             
             //Career
-            m_CommandObserver.CreateCareerTableCommandReceived += new EventHandler<CommandEventArgs<CreateCareerTableCommand>>(m_CommandObserver_CreateCareerTableCommandReceived);
-            m_CommandObserver.CheckDisplayExistCommandReceived += new EventHandler<CommandEventArgs<CheckDisplayExistCommand>>(m_CommandObserver_CheckDisplayExistCommandReceived);
-            m_CommandObserver.CheckUserExistCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CheckUserExistCommand>>(m_CommandObserver_CheckUserExistCommandReceived);
-            m_CommandObserver.CreateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand>>(m_CommandObserver_CreateUserCommandReceived);
-            m_CommandObserver.AuthenticateUserCommandReceived += new EventHandler<CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand>>(m_CommandObserver_AuthenticateUserCommandReceived);
-            m_CommandObserver.GetUserCommandReceived += new EventHandler<CommandEventArgs<GetUserCommand>>(m_CommandObserver_GetUserCommandReceived);
+            m_CommandObserver.CreateCareerTableCommandReceived += m_CommandObserver_CreateCareerTableCommandReceived;
+            m_CommandObserver.CheckDisplayExistCommandReceived += m_CommandObserver_CheckDisplayExistCommandReceived;
+            m_CommandObserver.CheckUserExistCommandReceived += m_CommandObserver_CheckUserExistCommandReceived;
+            m_CommandObserver.CreateUserCommandReceived += m_CommandObserver_CreateUserCommandReceived;
+            m_CommandObserver.AuthenticateUserCommandReceived += m_CommandObserver_AuthenticateUserCommandReceived;
+            m_CommandObserver.GetUserCommandReceived += m_CommandObserver_GetUserCommandReceived;
+        }
+
+        void m_CommandObserver_SupportedRulesCommandReceived(object sender, CommandEventArgs<SupportedRulesCommand> e)
+        {
+            Send(e.Command.EncodeResponse());
         }
 
         void m_CommandObserver_CreateCareerTableCommandReceived(object sender, CommandEventArgs<CreateCareerTableCommand> e)

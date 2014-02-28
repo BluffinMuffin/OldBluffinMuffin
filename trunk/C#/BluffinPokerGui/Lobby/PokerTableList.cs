@@ -89,7 +89,7 @@ namespace BluffinPokerGUI.Lobby
         }
         public void AddTable(bool trainingOnly)
         {
-            AddTableForm form = new AddTableForm(m_Server.PlayerName, 1, trainingOnly);
+            AddTableForm form = new AddTableForm(m_Server.PlayerName, 1, trainingOnly, m_Server.GetSupportedRules());
             form.ShowDialog();
             if (form.OK)
             {

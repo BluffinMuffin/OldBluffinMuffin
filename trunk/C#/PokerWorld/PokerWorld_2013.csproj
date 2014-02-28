@@ -44,6 +44,8 @@
     <Compile Include="Data\IDataPersistance.cs" />
     <Compile Include="Data\UserInfo.cs" />
     <Compile Include="Game\Dealer\AbstractDealer.cs" />
+    <Compile Include="Game\Enums\GameTypeEnum.cs" />
+    <Compile Include="Game\Enums\BlindEnum.cs" />
     <Compile Include="Game\Enums\GameStateEnum.cs" />
     <Compile Include="Game\Enums\RoundStateEnum.cs" />
     <Compile Include="Game\PokerEventArgs\PlayerInfoEventArgs.cs" />
@@ -51,6 +53,8 @@
     <Compile Include="Game\PokerEventArgs\RoundEventArgs.cs" />
     <Compile Include="Game\PokerEventArgs\PlayerActionEventArgs.cs" />
     <Compile Include="Game\PokerGameCareer.cs" />
+    <Compile Include="Game\RuleFactory.cs" />
+    <Compile Include="Game\RuleInfo.cs" />
     <Compile Include="Game\TableInfoCareer.cs" />
     <Compile Include="Game\PokerGameTraining.cs" />
     <Compile Include="Game\TableInfoTraining.cs" />

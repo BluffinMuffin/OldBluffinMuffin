@@ -15,6 +15,7 @@ namespace PokerProtocol.Observer
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<GameCommand>> GameCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<SupportedRulesCommand>> SupportedRulesCommandReceived = delegate { };
 
         //Training
         public event EventHandler<CommandEventArgs<CreateTrainingTableCommand>> CreateTrainingTableCommandReceived = delegate { };

@@ -76,6 +76,8 @@
     <Compile Include="Commands\Lobby\Career\ListTableCareerResponse.cs" />
     <Compile Include="Commands\Lobby\GameCommand.cs" />
     <Compile Include="Commands\Lobby\AbstractCreateTableCommand.cs" />
+    <Compile Include="Commands\Lobby\SupportedRulesResponse.cs" />
+    <Compile Include="Commands\Lobby\SupportedRulesCommand.cs" />
     <Compile Include="Commands\Lobby\Training\CreateTrainingTableCommand.cs" />
     <Compile Include="Commands\Lobby\Training\CreateTrainingTableResponse.cs" />
     <Compile Include="Commands\Lobby\Training\IdentifyCommand.cs" />

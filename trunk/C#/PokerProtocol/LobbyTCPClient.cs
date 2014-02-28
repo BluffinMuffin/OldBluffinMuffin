@@ -217,6 +217,14 @@ namespace PokerProtocol
             return WaitAndReceive<JoinTableResponse>().NoSeat;
         }
 
+        public List<RuleInfo> GetSupportedRules()
+        {
+            SupportedRulesCommand cmd = new SupportedRulesCommand();
+            Send(cmd);
+
+            return WaitAndReceive<SupportedRulesResponse>().Rules;
+        }
+
         protected override void Run()
         {
             while (IsConnected)
