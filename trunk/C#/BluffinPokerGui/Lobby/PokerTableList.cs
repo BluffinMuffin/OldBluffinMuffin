@@ -89,6 +89,7 @@ namespace BluffinPokerGUI.Lobby
         }
         public void AddTable(bool trainingOnly)
         {
+            //new CreateTableForm(m_Server.PlayerName, 1, trainingOnly, m_Server.GetSupportedRules()).ShowDialog();
             AddTableForm form = new AddTableForm(m_Server.PlayerName, 1, trainingOnly, m_Server.GetSupportedRules());
             form.ShowDialog();
             if (form.OK)
@@ -98,7 +99,7 @@ namespace BluffinPokerGUI.Lobby
                     noPort = ((LobbyTCPClientTraining)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.NbPlayerMin, form.TrainingStartingAmount);
                 else
                     noPort = ((LobbyTCPClientCareer)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.NbPlayerMin);
-                
+
                 if (noPort != -1)
                 {
                     JoinTable(noPort, form.TableName, form.BigBlind);
@@ -106,7 +107,7 @@ namespace BluffinPokerGUI.Lobby
                 }
                 else
                 {
-                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", form.TableName); 
+                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", form.TableName);
                 }
             }
         }

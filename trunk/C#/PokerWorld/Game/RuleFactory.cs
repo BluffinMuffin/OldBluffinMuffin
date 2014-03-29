@@ -15,7 +15,7 @@ namespace PokerWorld.Game
             {
                 return new RuleInfo[]
                 {
-                    new RuleInfo("Texas Hold'em", GameTypeEnum.Holdem, 2, 10, new List<BetEnum>(){BetEnum.NoLimit}, new List<BlindEnum>(){BlindEnum.Blinds}, true, true)
+                    new RuleInfo("Texas Hold'em", GameTypeEnum.Holdem, 2, 10, new List<BetEnum>(){BetEnum.NoLimit}, BetEnum.NoLimit, new List<BlindEnum>(){BlindEnum.Blinds}, BlindEnum.Blinds, true, true)
                 };
             }
         }

@@ -111,6 +111,11 @@ namespace PokerWorld.Game
         public int NoSeatCurrPlayer { get; set; }
 
         /// <summary>
+        /// Who is the current player
+        /// </summary>
+        public PlayerInfo CurrentPlayer { get { return GetPlayer(NoSeatCurrPlayer); } }
+
+        /// <summary>
         /// Where is the one who setted the current Bet Amount
         /// </summary>
         public int NoSeatLastRaise { get; set; }
@@ -161,6 +166,14 @@ namespace PokerWorld.Game
         public List<PlayerInfo> PlayingPlayers
         {
             get { return PlayingPlayersFrom(0); }
+        }
+
+        /// <summary>
+        /// List of the playing Players in order starting from the first seat
+        /// </summary>
+        public List<PlayerInfo> PlayingAndAllInPlayers
+        {
+            get { return PlayingAndAllInPlayersFrom(0); }
         }
 
         /// <summary>
@@ -344,6 +357,7 @@ namespace PokerWorld.Game
         /// </summary>
         public bool ForceJoinTable(PlayerInfo p, int seat)
         {
+            p.IsZombie = false;
             p.IsPlaying = false;
             p.NoSeat = seat;
             m_Players[seat] = p;
@@ -381,6 +395,7 @@ namespace PokerWorld.Game
 
             int seat = p.NoSeat;
             p.IsPlaying = false;
+            p.IsZombie = true;
             m_Players[seat] = null;
             m_RemainingSeats.Push(seat);
             return true;
@@ -498,10 +513,14 @@ namespace PokerWorld.Game
         {
             return m_Players.Where(p => (p != null && p.IsPlaying)).ToList();
         }
+        private List<PlayerInfo> PlayingAndAllInPlayersFrom(int seat)
+        {
+            return m_Players.Where(p => (p != null && (p.IsPlaying || p.IsAllIn))).ToList();
+        }
 
         private bool ContainsPlayer(PlayerInfo p)
         {
-            return Players.Contains(p);
+            return Players.Contains(p) || Players.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
         }
 
         private void AddBet(PlayerInfo p, MoneyPot pot, int bet)

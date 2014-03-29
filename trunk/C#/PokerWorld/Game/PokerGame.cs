@@ -158,8 +158,15 @@ namespace PokerWorld.Game
         /// </summary>
         public bool LeaveGame(PlayerInfo p)
         {
+            bool wasPlaying = (State == GameStateEnum.Playing && m_Table.CurrentPlayer == p);
+            int blindNeeded = m_Table.GetBlindNeeded(p);
+
             if (m_Table.LeaveTable(p))
             {
+                if (wasPlaying)
+                    PlayMoney(p, -1);
+                if (blindNeeded > 0)
+                    PlayMoney(p, blindNeeded);
                 PlayerLeaved(this, new PlayerInfoEventArgs(p));
 
                 if (m_Table.Players.Count == 0)
@@ -298,6 +305,12 @@ namespace PokerWorld.Game
                 amntNeeded = amnt;
             }
 
+            if (amnt > amntNeeded && amnt < m_Table.MinRaiseAmnt(p))
+            {
+                LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to play at least {1} to raise and tried {2}", p.Name, amntNeeded, amnt);
+                return false;
+            }
+
             //Let's hope the player has enough money ! Time to Bet!
             if (!p.TryBet(amnt))
             {
@@ -351,18 +364,18 @@ namespace PokerWorld.Game
             //If the player isn't giving what we expected from him
             if (amnt != needed)
             {
-                //Maybe the player just isn't playing fair
-                if (amnt > needed || p.CanBet(amnt + 1))
-                {
-                    LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to put a blind of {1} and tried {2}", p.Name, needed, amnt);
-                    return false;
-                }
-                else //Or the player can't do better, in this case, time to go All-In
+                //If the player isn't playing enough but it's all he got, time to go All-In
+                if( amnt < needed && !p.CanBet(amnt+1))
                 {
                     LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                     p.IsAllIn = true;
                     m_Table.NbAllIn++;
                     m_Table.AddAllInCap(p.MoneyBetAmnt + amnt);
+                }
+                else //well, it's just not fair to play that
+                {
+                    LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to put a blind of {1} and tried {2}", p.Name, needed, amnt);
+                    return false;
                 }
             }
 
@@ -383,7 +396,7 @@ namespace PokerWorld.Game
             m_Table.SetBlindNeeded(p, 0);
 
             //Take note of the action
-            bool isPostingSmallBlind = amnt == m_Table.SmallBlindAmnt;
+            bool isPostingSmallBlind = (needed == m_Table.SmallBlindAmnt);
             LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED {1} BLIND", p.Name, isPostingSmallBlind ? "SMALL" : "BIG");
             PlayerActionTaken(this, new PlayerActionEventArgs(p, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt));
 
@@ -474,7 +487,7 @@ namespace PokerWorld.Game
         }
         private void DealHole()
         {
-            foreach (PlayerInfo p in m_Table.PlayingPlayers)
+            foreach (PlayerInfo p in m_Table.PlayingAndAllInPlayers)
             {
                 p.Cards = m_Dealer.DealHoles(p);
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
@@ -534,12 +547,11 @@ namespace PokerWorld.Game
         }
         private void ChooseNextPlayer()
         {
-            PlayerInfo current = m_Table.GetPlayer(m_Table.NoSeatCurrPlayer);
             PlayerInfo next = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer);
 
             m_Table.NoSeatCurrPlayer = next.NoSeat;
 
-            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,current));
+            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,m_Table.CurrentPlayer));
 
             if (next.IsZombie)
             {
