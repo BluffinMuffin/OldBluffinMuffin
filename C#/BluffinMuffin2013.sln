@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EricUtilityNetworking_2013"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EricUtilityWinForms_2013", "EricUtilityWinForms\EricUtilityWinForms_2013.csproj", "{ABF7D9DE-3646-4737-8EFC-5C3D5FD1CFA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.PokerWorld_2013", "Test.PokerWorld_2013\Test.PokerWorld_2013.csproj", "{01760FEE-3AFB-486B-897D-765081C43F8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -203,6 +205,21 @@ Global
 		{ABF7D9DE-3646-4737-8EFC-5C3D5FD1CFA5}.TestLive|Mixed Platforms.ActiveCfg = TestLive|Any CPU
 		{ABF7D9DE-3646-4737-8EFC-5C3D5FD1CFA5}.TestLive|Mixed Platforms.Build.0 = TestLive|Any CPU
 		{ABF7D9DE-3646-4737-8EFC-5C3D5FD1CFA5}.TestLive|x86.ActiveCfg = TestLive|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.Release|x86.ActiveCfg = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.TestLive|Any CPU.ActiveCfg = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.TestLive|Any CPU.Build.0 = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.TestLive|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.TestLive|Mixed Platforms.Build.0 = Release|Any CPU
+		{01760FEE-3AFB-486B-897D-765081C43F8B}.TestLive|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,7 @@ using EricUtility.Networking.Commands;
 using PokerWorld.Data;
 using EricUtility;
 using PokerWorld.Game.PokerEventArgs;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol
 {

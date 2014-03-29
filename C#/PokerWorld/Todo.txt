@@ -20,7 +20,7 @@ TODO:
 	:- Generally the minimum buy-in will be 20 big blinds (so $40 in our example), and the maximum will be 100 big blinds ($200), though there are some casinos that spread games with no maximum buy-in.
 	:- http://www.pokerlistings.com/texas-holdem-betting-rules
 -> Validate email and passwords on career registering
--> Better trainoing / Career support
+-> Better training / Career support
 	:- (ListTableCommand) Make ListTrainingTableCommand and ListCareerTableCommand and get rid of the boolean!
 	:- Double code everywhere
 -> Should any player sitting a the table be the big blind, unless it is the first round !
@@ -29,4 +29,4 @@ TODO:
 -> Add a "Five-card Draw" variant (http://en.wikipedia.org/wiki/Five-card_draw)
 -> Add a "Seven-card Stud" variant (http://en.wikipedia.org/wiki/Seven-card_stud)
 -> Add a "Omaha Holdem" variant (http://en.wikipedia.org/wiki/Omaha_hold_'em)
--> Tests projects (TDD)
+-> Tests projects (TDD) (started)

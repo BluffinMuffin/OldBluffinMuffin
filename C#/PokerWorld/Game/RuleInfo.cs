@@ -14,7 +14,9 @@ namespace PokerWorld.Game
         public int MinPlayers { get; set; }
         public int MaxPlayers { get; set; }
         public List<BetEnum> AvailableLimits { get; set; }
+        public BetEnum DefaultLimit { get; set; }
         public List<BlindEnum> AvailableBlinds { get; set; }
+        public BlindEnum DefaultBlind { get; set; }
         public bool CanConfigWaitingTime { get; set; }
         public bool HasTrainingMode { get; set; }
 
@@ -22,7 +24,7 @@ namespace PokerWorld.Game
         {
         }
 
-        public RuleInfo(string name, GameTypeEnum gameType, int minPlayers, int maxPlayers, List<BetEnum> availableLimits, List<BlindEnum> availableBlinds, bool canConfigWaitingTime, bool hasTrainingMode)
+        public RuleInfo(string name, GameTypeEnum gameType, int minPlayers, int maxPlayers, List<BetEnum> availableLimits, BetEnum defaultLimit, List<BlindEnum> availableBlinds, BlindEnum defaultBlind, bool canConfigWaitingTime, bool hasTrainingMode)
         {
             Name = name;
             GameType = gameType;

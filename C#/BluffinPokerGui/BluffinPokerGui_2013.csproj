@@ -98,6 +98,18 @@
     <Compile Include="Lobby\AddTableForm.Designer.cs">
       <DependentUpon>AddTableForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lobby\CreateTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lobby\CreateTableForm.Designer.cs">
+      <DependentUpon>CreateTableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lobby\CreateTableTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lobby\CreateTableTabControl.Designer.cs">
+      <DependentUpon>CreateTableTabControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lobby\NameUsedForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +158,12 @@
     <EmbeddedResource Include="Lobby\AddTableForm.resx">
       <DependentUpon>AddTableForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\CreateTableForm.resx">
+      <DependentUpon>CreateTableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\CreateTableTabControl.resx">
+      <DependentUpon>CreateTableTabControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Lobby\NameUsedForm.resx">
       <DependentUpon>NameUsedForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -185,6 +203,10 @@
     <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
       <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
       <Name>EricUtilityNetworking_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtilityWinForms\EricUtilityWinForms_2013.csproj">
+      <Project>{abf7d9de-3646-4737-8efc-5c3d5fd1cfa5}</Project>
+      <Name>EricUtilityWinForms_2013</Name>
     </ProjectReference>
     <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
       <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>

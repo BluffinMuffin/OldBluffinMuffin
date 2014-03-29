@@ -7,7 +7,7 @@ using PokerWorld.Game.Dealer;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.PokerEventArgs;
 
-namespace PokerWorld.Game
+namespace PokerWorld.Game.Enums
 {
     public enum GameStateEnum
     {
