@@ -106,7 +106,13 @@ namespace BluffinPokerServer
             {
                 PokerTable t = kvp.Value.Table;
                 if (lobbyTypes.Length == 0 || lobbyTypes.Contains(t.Rules.CurrentLobby.LobbyType))
-                    tables.Add(new TableInfo(kvp.Key, t.Rules, t.Players.Count, LobbyActionEnum.None));
+                    tables.Add(new TableInfo()
+                    {
+                        IdTable = kvp.Key,
+                        Rules = t.Rules,
+                        NbPlayers = t.Players.Count,
+                        PossibleAction = LobbyActionEnum.None,
+                    });
             }
 
             return tables;

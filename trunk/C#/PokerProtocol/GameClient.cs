@@ -157,7 +157,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerJoinedCommandReceived(object sender, CommandEventArgs<PlayerJoinedCommand> e)
         {
             PlayerJoinedCommand cmd = e.Command;
-            PokerPlayer p = new PokerPlayer(cmd.PlayerPos, cmd.PlayerName, cmd.PlayerMoney);
+            PokerPlayer p = new PokerPlayer(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
 
             m_PokerTable.ForceJoinTable(p, cmd.PlayerPos);
 
@@ -262,7 +262,7 @@ namespace PokerProtocol
                     continue;
                 }
                 int noSeat = seat.NoSeat;
-                PokerPlayer p = new PokerPlayer(noSeat, seat.PlayerName, seat.Money);
+                PokerPlayer p = new PokerPlayer(seat.PlayerName, seat.Money) { NoSeat = noSeat };
                 m_PokerTable.ForceJoinTable(p, noSeat);
 
                 SetPlayerVisibility(p, seat.IsPlaying, seat.HoleCardIDs);

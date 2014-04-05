@@ -7,6 +7,7 @@ using PokerWorld.Game;
 using PokerProtocol.Entities;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.Rules;
+using System.Linq;
 
 namespace PokerProtocol.Commands.Game
 {
@@ -25,63 +26,47 @@ namespace PokerProtocol.Commands.Game
         {
         }
 
-        public TableInfoCommand(PokerTable info, PokerPlayer pPlayer)
+        public TableInfoCommand(PokerTable table, PokerPlayer player)
         {
-            PotsAmount = new List<int>();
-            BoardCardIDs = new List<int>();
+            BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
             Seats = new List<PlayerInfo>();
 
-            Rules = info.Rules;
+            Rules = table.Rules;
 
-            TotalPotAmount = info.TotalPotAmnt;
+            TotalPotAmount = table.TotalPotAmnt;
             NbPlayers = Rules.MaxPlayers;
 
-            foreach (MoneyPot pot in info.Pots)
-            {
-                PotsAmount.Add(pot.Amount);
-            }
-
-            for (int i = info.Pots.Count; i < Rules.MaxPlayers; i++)
-            {
-                PotsAmount.Add(0);
-            }
-            GameCard[] boardCards = info.Cards;
-            for (int i = 0; i < 5; ++i)
-            {
-                BoardCardIDs.Add(boardCards[i].Id);
-            }
+            PotsAmount = table.Pots.Select(pot => pot.Amount).ToList();
+            PotsAmount.AddRange(Enumerable.Repeat(0, Rules.MaxPlayers - table.Pots.Count));
 
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
-                PlayerInfo seat = new PlayerInfo(i);
-                Seats.Add(seat);
-                PokerPlayer player = info.GetPlayer(i);
-                seat.IsEmpty = (player == null);
+                PlayerInfo pi = new PlayerInfo() { NoSeat = i };
+                Seats.Add(pi);
 
-                if (seat.IsEmpty)
-                {
+                PokerPlayer p = table.GetPlayer(i);
+
+                pi.IsEmpty = (p == null);
+                if (pi.IsEmpty)
                     continue;
-                }
 
-                seat.PlayerName = player.Name; // playerName
-                seat.Money = player.MoneySafeAmnt; // playerMoney
+                pi.PlayerName = p.Name;
+                pi.Money = p.MoneySafeAmnt; 
 
-                bool itsMe = (i == pPlayer.NoSeat);
+                bool itsHim = (i == player.NoSeat);
 
                 // Player cards
-                GameCard[] holeCards = itsMe ? player.Cards : player.RelativeCards;
+                GameCard[] holeCards = itsHim ? p.Cards : p.RelativeCards;
                 for (int j = 0; j < 2; ++j)
-                {
-                    seat.HoleCardIDs.Add(holeCards[j].Id);
-                }
+                    pi.HoleCardIDs.Add(holeCards[j].Id);
 
-                seat.IsDealer = info.NoSeatDealer == i;
-                seat.IsSmallBlind = info.NoSeatSmallBlind == i;
-                seat.IsBigBlind = info.NoSeatBigBlind == i;
-                seat.IsCurrentPlayer = info.NoSeatCurrPlayer == i;
-                seat.TimeRemaining = 0;
-                seat.Bet = player.MoneyBetAmnt;
-                seat.IsPlaying = player.IsPlaying;
+                pi.IsDealer = table.NoSeatDealer == i;
+                pi.IsSmallBlind = table.NoSeatSmallBlind == i;
+                pi.IsBigBlind = table.NoSeatBigBlind == i;
+                pi.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
+                pi.TimeRemaining = 0;
+                pi.Bet = p.MoneyBetAmnt;
+                pi.IsPlaying = p.IsPlaying;
             }
         }
     }
