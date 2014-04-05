@@ -13,11 +13,11 @@ namespace PokerWorld.Game.Rules
         public GameTypeEnum GameType { get; set; }
         public int MinPlayers { get; set; }
         public int MaxPlayers { get; set; }
-        public List<BetEnum> AvailableLimits { get; set; }
-        public BetEnum DefaultLimit { get; set; }
-        public List<BlindEnum> AvailableBlinds { get; set; }
-        public BlindEnum DefaultBlind { get; set; }
+        public List<LimitTypeEnum> AvailableLimits { get; set; }
+        public LimitTypeEnum DefaultLimit { get; set; }
+        public List<BlindTypeEnum> AvailableBlinds { get; set; }
+        public BlindTypeEnum DefaultBlind { get; set; }
         public bool CanConfigWaitingTime { get; set; }
-        public List<LobbyEnum> AvailableLobbys { get; set; }
+        public List<LobbyTypeEnum> AvailableLobbys { get; set; }
     }
 }

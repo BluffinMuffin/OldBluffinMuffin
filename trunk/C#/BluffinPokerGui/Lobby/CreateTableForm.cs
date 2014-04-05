@@ -16,7 +16,7 @@ namespace BluffinPokerGUI.Lobby
     public partial class CreateTableForm : Form
     {
         public GameRule GameRules { get; private set; }
-        public CreateTableForm(string playerName, int minPlayers, LobbyEnum lobby, List<RuleInfo> rules)
+        public CreateTableForm(string playerName, int minPlayers, LobbyTypeEnum lobby, List<RuleInfo> rules)
         {
             GameRules = null;
             InitializeComponent();

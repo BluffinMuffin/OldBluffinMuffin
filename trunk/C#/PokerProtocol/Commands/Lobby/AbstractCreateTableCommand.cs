@@ -19,13 +19,13 @@ namespace PokerProtocol.Commands.Lobby
         public int WaitingTimeAfterPlayerAction { get; set; }
         public int WaitingTimeAfterBoardDealed { get; set; }
         public int WaitingTimeAfterPotWon { get; set; }
-        public BetEnum Limit { get; set; }
+        public LimitTypeEnum Limit { get; set; }
 
         public AbstractCreateTableCommand()
         {
         }
 
-        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart)
+        public AbstractCreateTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, LimitTypeEnum limit, int minPlayersToStart)
         {
             TableName = p_tableName;
             BigBlind = p_bigBlind;

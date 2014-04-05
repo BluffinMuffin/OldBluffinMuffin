@@ -22,12 +22,12 @@ namespace PokerWorld.Game.Rules
                         GameType = GameTypeEnum.Holdem,
                         MinPlayers = 2,
                         MaxPlayers = 10,
-                        AvailableLimits = new List<BetEnum>(){BetEnum.NoLimit,BetEnum.PotLimit,BetEnum.BetLimit},
-                        DefaultLimit = BetEnum.NoLimit,
-                        AvailableBlinds = new List<BlindEnum>(){BlindEnum.Blinds,BlindEnum.Antes,BlindEnum.None},
-                        DefaultBlind = BlindEnum.Blinds,
+                        AvailableLimits = new List<LimitTypeEnum>(){LimitTypeEnum.NoLimit,LimitTypeEnum.PotLimit,LimitTypeEnum.BetLimit},
+                        DefaultLimit = LimitTypeEnum.NoLimit,
+                        AvailableBlinds = new List<BlindTypeEnum>(){BlindTypeEnum.Blinds,BlindTypeEnum.Antes,BlindTypeEnum.None},
+                        DefaultBlind = BlindTypeEnum.Blinds,
                         CanConfigWaitingTime = true,
-                        AvailableLobbys = new List<LobbyEnum>(){LobbyEnum.Training,LobbyEnum.Career},
+                        AvailableLobbys = new List<LobbyTypeEnum>(){LobbyTypeEnum.Training,LobbyTypeEnum.Career},
                     },
                 };
             }

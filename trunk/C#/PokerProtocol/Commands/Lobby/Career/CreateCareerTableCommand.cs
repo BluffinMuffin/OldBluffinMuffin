@@ -18,7 +18,7 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
         }
 
-        public CreateCareerTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart)
+        public CreateCareerTableCommand(string p_tableName, int p_bigBlind, int p_maxPlayers, string p_playerName, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, LimitTypeEnum limit, int minPlayersToStart)
             : base(p_tableName, p_bigBlind, p_maxPlayers, p_playerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart)
         {
         }

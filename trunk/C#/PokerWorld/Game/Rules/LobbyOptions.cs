@@ -8,6 +8,6 @@ namespace PokerWorld.Game.Rules
 {
     public abstract class LobbyOptions
     {
-        public abstract LobbyEnum LobbyType { get; }
+        public abstract LobbyTypeEnum LobbyType { get; }
     }
 }

@@ -123,7 +123,7 @@ namespace BluffinPokerServer
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
             TableInfo table = game.Table;
 
-            if (game.Rules.CurrentLobby.LobbyType == LobbyEnum.Training)
+            if (game.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Training)
                 client = new GameServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Rules.CurrentLobby).StartingAmount);
             else
                 client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));

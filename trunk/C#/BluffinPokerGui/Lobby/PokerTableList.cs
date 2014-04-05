@@ -62,15 +62,15 @@ namespace BluffinPokerGUI.Lobby
             List<Table> lst = new List<Table>();
 
             if (ShowTraining)
-                lst.AddRange(m_Server.ListTables(LobbyEnum.Training).ToArray());
+                lst.AddRange(m_Server.ListTables(LobbyTypeEnum.Training).ToArray());
             if (ShowCareer)
-                lst.AddRange(m_Server.ListTables(LobbyEnum.Career).ToArray());
+                lst.AddRange(m_Server.ListTables(LobbyTypeEnum.Career).ToArray());
 
             lst.Sort();
             for (int i = 0; i < lst.Count; ++i)
             {
                 Table info = lst[i];
-                string type = info.Rules.CurrentLobby.LobbyType == LobbyEnum.Training ? "Training" : "Real";
+                string type = info.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
                 datTables.Rows[i].Cells[1].Value = info.Rules.TableName;
@@ -85,7 +85,7 @@ namespace BluffinPokerGUI.Lobby
             }
             OnListRefreshed(this, new EventArgs());
         }
-        public void AddTable(LobbyEnum lobby)
+        public void AddTable(LobbyTypeEnum lobby)
         {
             CreateTableForm ctf = new CreateTableForm(m_Server.PlayerName, 1, lobby, m_Server.GetSupportedRules());
             ctf.ShowDialog();

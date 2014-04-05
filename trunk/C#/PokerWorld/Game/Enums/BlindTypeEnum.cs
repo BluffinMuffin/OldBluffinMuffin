@@ -4,10 +4,10 @@ using System.Text;
 
 namespace PokerWorld.Game.Enums
 {
-    public enum BetEnum
+    public enum BlindTypeEnum
     {
-        NoLimit,
-        BetLimit,
-        PotLimit
+        Blinds,
+        Antes,
+        None
     }
 }

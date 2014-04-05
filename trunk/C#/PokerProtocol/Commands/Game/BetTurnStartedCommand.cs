@@ -11,20 +11,20 @@ namespace PokerProtocol.Commands.Game
     {
         public static string COMMAND_NAME = "gameBET_TURN_STARTED";
 
-        public RoundEnum Round { get; set; }
+        public RoundTypeEnum Round { get; set; }
         public List<int> CardsID { get; set; }
 
         public BetTurnStartedCommand()
         {
         }
 
-        public BetTurnStartedCommand(RoundEnum round,params int[] cardsID)
+        public BetTurnStartedCommand(RoundTypeEnum round,params int[] cardsID)
         {
             CardsID = new List<int>(cardsID);
             Round = round;
         }
 
-        public BetTurnStartedCommand(RoundEnum round, List<int> cardsID)
+        public BetTurnStartedCommand(RoundTypeEnum round, List<int> cardsID)
         {
             CardsID = cardsID;
             Round = round;

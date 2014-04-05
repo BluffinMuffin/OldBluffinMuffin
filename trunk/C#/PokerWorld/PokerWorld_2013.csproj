@@ -49,9 +49,9 @@
     <Compile Include="Data\UserInfo.cs" />
     <Compile Include="Game\Dealer\AbstractDealer.cs" />
     <Compile Include="Game\Enums\GameTypeEnum.cs" />
-    <Compile Include="Game\Enums\BlindEnum.cs" />
+    <Compile Include="Game\Enums\BlindTypeEnum.cs" />
     <Compile Include="Game\Enums\GameStateEnum.cs" />
-    <Compile Include="Game\Enums\LobbyEnum.cs" />
+    <Compile Include="Game\Enums\LobbyTypeEnum.cs" />
     <Compile Include="Game\Enums\RoundStateEnum.cs" />
     <Compile Include="Game\PokerEventArgs\PlayerInfoEventArgs.cs" />
     <Compile Include="Game\PokerEventArgs\HistoricPlayerInfoEventArgs.cs" />
@@ -77,8 +77,8 @@
     <Compile Include="Game\Dealer\RandomDealer.cs" />
     <Compile Include="Game\TableInfo.cs" />
     <Compile Include="Game\Enums\GameActionEnum.cs" />
-    <Compile Include="Game\Enums\BetEnum.cs" />
-    <Compile Include="Game\Enums\RoundEnum.cs" />
+    <Compile Include="Game\Enums\LimitTypeEnum.cs" />
+    <Compile Include="Game\Enums\RoundTypeEnum.cs" />
     <Compile Include="HandEvaluator\HandAnalysis.cs" />
     <Compile Include="HandEvaluator\HandEvaluator.cs" />
     <Compile Include="HandEvaluator\HandIterator.cs" />

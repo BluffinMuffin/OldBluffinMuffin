@@ -55,7 +55,7 @@ namespace BluffinPokerClient
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
-            tableList.AddTable(LobbyEnum.Training);
+            tableList.AddTable(LobbyTypeEnum.Training);
         }
 
         private void btnJoinTable_Click(object sender, EventArgs e)
@@ -96,7 +96,7 @@ namespace BluffinPokerClient
         private void LobbyTrainingForm_Load(object sender, EventArgs e)
         {
             if (tableList.NbTables == 0)
-                tableList.AddTable(LobbyEnum.Training);
+                tableList.AddTable(LobbyTypeEnum.Training);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PokerWorld.Game.Rules
     public class BlindInfo
     {
         public string Name { get; set; }
-        public BlindEnum Type { get; set; }
+        public BlindTypeEnum Type { get; set; }
         public bool HasConfigurableAmount { get; set; }
         public string ConfigurableAmountName { get; set; }
         public int ConfigurableDefaultValue { get; set; }

@@ -9,11 +9,11 @@ namespace PokerWorld.Game.Rules
 {
     public static class BlindFactory
     {
-        public static BlindInfo GetInfos(BlindEnum blindType)
+        public static BlindInfo GetInfos(BlindTypeEnum blindType)
         {
             switch(blindType)
             {
-                case BlindEnum.Blinds:
+                case BlindTypeEnum.Blinds:
                     return new BlindInfo()
                     {
                         Name = "Blinds",
@@ -23,7 +23,7 @@ namespace PokerWorld.Game.Rules
                         ConfigurableDefaultValue = 10,
                     };
 
-                case BlindEnum.Antes:
+                case BlindTypeEnum.Antes:
                     return new BlindInfo()
                     {
                         Name = "Antes",

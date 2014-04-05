@@ -95,7 +95,7 @@ namespace BluffinPokerServer
             return m_LastUsedID;
         }
 
-        public List<Table> ListTables(params LobbyEnum[] lobbyTypes)
+        public List<Table> ListTables(params LobbyTypeEnum[] lobbyTypes)
         {
             List<Table> tables = new List<Table>();
 

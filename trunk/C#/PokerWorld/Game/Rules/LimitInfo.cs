@@ -10,7 +10,7 @@ namespace PokerWorld.Game.Rules
     public class LimitInfo
     {
         public string Name { get; set; }
-        public BetEnum Type { get; set; }
+        public LimitTypeEnum Type { get; set; }
 
         public override string ToString()
         {

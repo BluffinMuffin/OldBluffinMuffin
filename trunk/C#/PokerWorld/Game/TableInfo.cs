@@ -129,7 +129,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// What is the actual Round of the Game
         /// </summary>
-        public RoundEnum Round { get; set; }
+        public RoundTypeEnum Round { get; set; }
 
         /// <summary>
         /// List of the Players currently seated
@@ -186,7 +186,7 @@ namespace PokerWorld.Game
         {
             get
             {
-                if (Round == RoundEnum.Preflop)
+                if (Round == RoundTypeEnum.Preflop)
                 {
                     return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatBigBlind).NoSeat);
                 }
