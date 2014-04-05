@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PokerProtocol.Entities
 {
-    public class Player
+    public class PlayerInfo
     {
         public int NoSeat { get; set; }
         public bool IsEmpty { get; set; }
@@ -22,7 +22,7 @@ namespace PokerProtocol.Entities
         public int Bet { get; set; }
         public bool IsPlaying { get; set; }
 
-        public Player(int noSeat, bool isEmpty, string playerName, int money, List<int> hole, bool isDealer, bool isSmallBlind, bool isBigBlind, bool isCurrentPlayer, int timeRemaining, int bet, bool isPlaying)
+        public PlayerInfo(int noSeat, bool isEmpty, string playerName, int money, List<int> hole, bool isDealer, bool isSmallBlind, bool isBigBlind, bool isCurrentPlayer, int timeRemaining, int bet, bool isPlaying)
         {
             NoSeat = noSeat;
             IsEmpty = isEmpty;
@@ -38,14 +38,14 @@ namespace PokerProtocol.Entities
             IsPlaying = isPlaying;
         }
 
-        public Player(int noSeat)
+        public PlayerInfo(int noSeat)
         {
             HoleCardIDs = new List<int>();
             NoSeat = noSeat;
             IsEmpty = true;
         }
 
-        public Player()
+        public PlayerInfo()
         {
         }
     }

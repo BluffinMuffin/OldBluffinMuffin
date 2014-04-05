@@ -7,7 +7,7 @@ namespace PokerWorld.Game.Dealer
 {
     public class RandomDealer : AbstractDealer
     {
-        public override GameCard[] DealHoles(PlayerInfo p)
+        public override GameCard[] DealHoles(PokerPlayer p)
         {
             GameCard[] set = new GameCard[2];
             set[0] = m_Deck.Pop();

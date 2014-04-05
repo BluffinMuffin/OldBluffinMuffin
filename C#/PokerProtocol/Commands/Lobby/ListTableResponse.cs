@@ -13,14 +13,14 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES_RESPONSE";
 
-        public List<Table> Tables { get; set; }
+        public List<TableInfo> Tables { get; set; }
 
         public ListTableResponse()
             : base()
         {
         }
 
-        public ListTableResponse(ListTableCommand command, List<Table> tables)
+        public ListTableResponse(ListTableCommand command, List<TableInfo> tables)
             : base(command)
         {
             Tables = tables;

@@ -87,7 +87,7 @@
     <Compile Include="Commands\Lobby\Training\IdentifyResponse.cs" />
     <Compile Include="Commands\Lobby\JoinTableResponse.cs" />
     <Compile Include="Commands\Lobby\ListTableResponse.cs" />
-    <Compile Include="Entities\Enums\LobyActionEnum.cs" />
+    <Compile Include="Entities\LobbyActionEnum.cs" />
     <Compile Include="LobbyTCPClientTraining.cs" />
     <Compile Include="LobbyTCPClientCareer.cs" />
     <Compile Include="GameClient.cs" />
@@ -97,8 +97,8 @@
     <Compile Include="Observer\GameServerCommandObserver.cs" />
     <Compile Include="Observer\LobbyServerCommandObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\Player.cs" />
-    <Compile Include="Entities\Table.cs" />
+    <Compile Include="Entities\PlayerInfo.cs" />
+    <Compile Include="Entities\TableInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EricUtilityCollections\EricUtilityCollections_2013.csproj">

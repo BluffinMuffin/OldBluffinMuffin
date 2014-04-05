@@ -20,24 +20,24 @@ namespace BluffinPokerGui.Game
         private void btnFold_Click(object sender, EventArgs e)
         {
             DisableButtons();
-            TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat];
+            PokerTable table = m_Game.Table;
+            PokerPlayer p = table.Seats[m_NoSeat];
             m_Game.PlayMoney(p, -1);
         }
 
         private void btnCall_Click(object sender, EventArgs e)
         {
             DisableButtons();
-            TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat];
+            PokerTable table = m_Game.Table;
+            PokerPlayer p = table.Seats[m_NoSeat];
             m_Game.PlayMoney(p, table.CallAmnt(p));
         }
 
         private void btnRaise_Click(object sender, EventArgs e)
         {
             DisableButtons();
-            TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat];
+            PokerTable table = m_Game.Table;
+            PokerPlayer p = table.Seats[m_NoSeat];
             m_Game.PlayMoney(p, (int)nudRaise.Value - p.MoneyBetAmnt);
         }
 
@@ -62,8 +62,8 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
                 return;
             }
-            PlayerInfo p = e.Player;
-            TableInfo table = m_Game.Table;
+            PokerPlayer p = e.Player;
+            PokerTable table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
                 btnFold.Enabled = true;
@@ -82,9 +82,9 @@ namespace BluffinPokerGui.Game
             }
         }
 
-        private void SetCallButtonName(PlayerInfo p)
+        private void SetCallButtonName(PokerPlayer p)
         {
-            TableInfo table = m_Game.Table;
+            PokerTable table = m_Game.Table;
             string s = "CALL";
             if (table.CanCheck(p))
                 s = "CHECK";

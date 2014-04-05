@@ -24,10 +24,10 @@ namespace PokerWorld.Game
 
         event EventHandler<PotWonEventArgs> PlayerWonPot;
 
-        TableInfo Table { get; }
+        PokerTable Table { get; }
 
-        bool PlayMoney(PlayerInfo p, int amnt);
-        bool LeaveGame(PlayerInfo p);
+        bool PlayMoney(PokerPlayer p, int amnt);
+        bool LeaveGame(PokerPlayer p);
 
         string Encode { get; }
     }

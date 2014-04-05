@@ -15,11 +15,11 @@ namespace Test.PokerWorld
         [TestMethod]
         public void JoinAndLeaveTest()
         {
-            PokerGame game = new PokerGame( new TableInfo(new GameRule() { MaxPlayers = 2}));
-            PlayerInfo p1 = new PlayerInfo("p1", 5000);
-            PlayerInfo p1Dup = new PlayerInfo("p1", 5000);
-            PlayerInfo p2 = new PlayerInfo("p2", 5000);
-            PlayerInfo p3 = new PlayerInfo("p3", 5000);
+            PokerGame game = new PokerGame( new PokerTable(new GameRule() { MaxPlayers = 2}));
+            PokerPlayer p1 = new PokerPlayer("p1", 5000);
+            PokerPlayer p1Dup = new PokerPlayer("p1", 5000);
+            PokerPlayer p2 = new PokerPlayer("p2", 5000);
+            PokerPlayer p3 = new PokerPlayer("p3", 5000);
 
             Assert.AreEqual(false, game.JoinGame(p1), "You should not enter a non-started game");
 
@@ -48,11 +48,11 @@ namespace Test.PokerWorld
         public void BlindsTest()
         {
             //start the game with p1 and p2
-            PokerGame game = new PokerGame( new TableInfo(new GameRule() { MaxPlayers = 2}));
+            PokerGame game = new PokerGame( new PokerTable(new GameRule() { MaxPlayers = 2}));
             game.Start();
-            PlayerInfo p1 = new PlayerInfo("p1", 5000);
+            PokerPlayer p1 = new PokerPlayer("p1", 5000);
             SitInGame(game, p1);
-            PlayerInfo p2 = new PlayerInfo("p2", 2);
+            PokerPlayer p2 = new PokerPlayer("p2", 2);
             SitInGame(game, p2);
 
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should now wait for blinds");
@@ -91,7 +91,7 @@ namespace Test.PokerWorld
         [TestMethod]
         public void StatesTest()
         {
-            PokerGame game = new PokerGame(new TableInfo(new GameRule() { MaxPlayers = 2 }));
+            PokerGame game = new PokerGame(new PokerTable(new GameRule() { MaxPlayers = 2 }));
 
             Assert.AreEqual(GameStateEnum.Init, game.State, "The game should not be started");
 
@@ -101,13 +101,13 @@ namespace Test.PokerWorld
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should wait for players");
 
             //make p1 join the game
-            PlayerInfo p1 = new PlayerInfo("p1", 5000);
+            PokerPlayer p1 = new PokerPlayer("p1", 5000);
             SitInGame(game, p1);
 
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should still wait for players to sit in when only 1 is seated");
 
             //make p2 join the game
-            PlayerInfo p2 = new PlayerInfo("p2", 5000);
+            PokerPlayer p2 = new PokerPlayer("p2", 5000);
             SitInGame(game, p2);
 
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should now wait for blinds");
@@ -132,7 +132,7 @@ namespace Test.PokerWorld
             PutBlinds(game, p2);
 
             //Make the playing player leave the game without taking any actions
-            PlayerInfo cp = game.Table.CurrentPlayer;
+            PokerPlayer cp = game.Table.CurrentPlayer;
             game.LeaveGame(cp);
 
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since only one player is left");
@@ -164,7 +164,7 @@ namespace Test.PokerWorld
             PutBlinds(game, p2);
 
             cp = game.Table.CurrentPlayer;
-            PlayerInfo np = game.Table.GetPlayingPlayerNextTo(cp.NoSeat);
+            PokerPlayer np = game.Table.GetPlayingPlayerNextTo(cp.NoSeat);
             game.LeaveGame(np);
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should be still in playing mode since it wasn't the playing player.");
 
@@ -182,15 +182,15 @@ namespace Test.PokerWorld
         public void BettingTest()
         {
             //start the game
-            PokerGame game = new PokerGame(new TableInfo(new GameRule() { MaxPlayers = 2 }));
+            PokerGame game = new PokerGame(new PokerTable(new GameRule() { MaxPlayers = 2 }));
             game.Start();
 
             //make p1 join the game
-            PlayerInfo p1 = new PlayerInfo("p1", 100);
+            PokerPlayer p1 = new PokerPlayer("p1", 100);
             SitInGame(game, p1);
 
             //make p2 join the game
-            PlayerInfo p2 = new PlayerInfo("p2", 1000);
+            PokerPlayer p2 = new PokerPlayer("p2", 1000);
             SitInGame(game, p2);
 
             //Post needed blinds
@@ -253,13 +253,13 @@ namespace Test.PokerWorld
 
 
 
-        private void PutBlinds(PokerGame game, PlayerInfo p)
+        private void PutBlinds(PokerGame game, PokerPlayer p)
         {
             int b = game.Table.GetBlindNeeded(p);
             game.PlayMoney(p, b);
         }
 
-        private static void SitInGame(PokerGame game, PlayerInfo p1)
+        private static void SitInGame(PokerGame game, PokerPlayer p1)
         {
             game.JoinGame(p1);
             game.SitInGame(p1);
