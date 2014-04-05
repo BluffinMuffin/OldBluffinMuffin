@@ -54,7 +54,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Current Round of the Playing State
         /// </summary>
-        public RoundEnum Round
+        public RoundTypeEnum Round
         {
             get { return Table.Round; }
         }
@@ -213,7 +213,7 @@ namespace PokerWorld.Game
                     Table.HigherBet = 0;
                     break;
                 case GameStateEnum.Playing:
-                    Table.Round = RoundEnum.Preflop;
+                    Table.Round = RoundTypeEnum.Preflop;
                     m_RoundState = RoundStateEnum.Cards;
                     StartRound();
                     break;
@@ -243,13 +243,13 @@ namespace PokerWorld.Game
             if (m_State != GameStateEnum.Playing)
                 return;
 
-            if (Table.Round == RoundEnum.River)
+            if (Table.Round == RoundTypeEnum.River)
                 AdvanceToNextGameState(); //Advancing to Showdown State
             else
             {
                 m_RoundState = RoundStateEnum.Cards;
                 Table.NoSeatCurrPlayer = Table.NoSeatDealer;
-                Table.Round = (RoundEnum)(((int)Table.Round) + 1);
+                Table.Round = (RoundTypeEnum)(((int)Table.Round) + 1);
                 StartRound();
             }
         }
@@ -451,17 +451,17 @@ namespace PokerWorld.Game
         {
             switch (Table.Round)
             {
-                case RoundEnum.Preflop:
+                case RoundTypeEnum.Preflop:
                     Table.NoSeatCurrPlayer = Table.NoSeatBigBlind;
                     DealHole();
                     break;
-                case RoundEnum.Flop:
+                case RoundTypeEnum.Flop:
                     DealFlop();
                     break;
-                case RoundEnum.Turn:
+                case RoundTypeEnum.Turn:
                     DealTurn();
                     break;
-                case RoundEnum.River:
+                case RoundTypeEnum.River:
                     DealRiver();
                     break;
             }

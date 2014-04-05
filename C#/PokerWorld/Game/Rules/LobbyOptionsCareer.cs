@@ -8,9 +8,9 @@ namespace PokerWorld.Game.Rules
 {
     public class LobbyOptionsCareer : LobbyOptions
     {
-        public override LobbyEnum LobbyType
+        public override LobbyTypeEnum LobbyType
         {
-            get { return LobbyEnum.Career; }
+            get { return LobbyTypeEnum.Career; }
         }
     }
 }

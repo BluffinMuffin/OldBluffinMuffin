@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PokerWorld.Game.Enums
 {
-    public enum RoundEnum
+    public enum LobbyTypeEnum
     {
-        Preflop,
-        Flop,
-        Turn,
-        River
+        Training,
+        Career
     }
 }

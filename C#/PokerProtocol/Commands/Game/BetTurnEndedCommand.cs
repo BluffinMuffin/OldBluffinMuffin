@@ -11,7 +11,7 @@ namespace PokerProtocol.Commands.Game
     {
         public static string COMMAND_NAME = "gameBET_TURN_ENDED";
 
-        public RoundEnum Round { get; set; }
+        public RoundTypeEnum Round { get; set; }
 
         public List<int> PotsAmounts { get; set; }
 
@@ -19,7 +19,7 @@ namespace PokerProtocol.Commands.Game
         {
         }
 
-        public BetTurnEndedCommand(List<int> potsAmounts, RoundEnum round)
+        public BetTurnEndedCommand(List<int> potsAmounts, RoundTypeEnum round)
         {
             PotsAmounts = potsAmounts;
             Round = round;

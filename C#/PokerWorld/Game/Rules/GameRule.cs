@@ -16,8 +16,8 @@ namespace PokerWorld.Game.Rules
         public string TableName { get; set; }
         public GameTypeEnum GameType { get; set; }
         public string Variant { get; set; }
-        public BetEnum LimitType { get; set; }
-        public BlindEnum BlindType { get; set; }
+        public LimitTypeEnum LimitType { get; set; }
+        public BlindTypeEnum BlindType { get; set; }
         public int BlindAmount { get; set; }
         public int MinPlayersToStart { get; set; }
         public int MaxPlayers { get; set; }
@@ -36,8 +36,8 @@ namespace PokerWorld.Game.Rules
             TableName = "Anonymous Table";
             GameType = GameTypeEnum.Holdem;
             Variant = "Texas Hold'Em";
-            LimitType = BetEnum.NoLimit;
-            BlindType = BlindEnum.Blinds;
+            LimitType = LimitTypeEnum.NoLimit;
+            BlindType = BlindTypeEnum.Blinds;
             BlindAmount = 10;
             MinPlayersToStart = 2;
             MaxPlayers = 10;

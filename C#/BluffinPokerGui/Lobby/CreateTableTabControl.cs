@@ -15,12 +15,12 @@ namespace BluffinPokerGUI.Lobby
 {
     public partial class CreateTableTabControl : UserControl
     {
-        LobbyEnum m_LobbyType;
+        LobbyTypeEnum m_LobbyType;
         GameTypeEnum m_GameType;
         IEnumerable<RuleInfo> m_Rules;
         String CurrentVariant { get { return lstVariant.SelectedItem.ToString(); } }
         RuleInfo CurrentRule { get { return m_Rules.First(r => r.Name == CurrentVariant); } }
-        public CreateTableTabControl(string playerName, int minPlayers, LobbyEnum lobby, GameTypeEnum gameType, IEnumerable<RuleInfo> rules)
+        public CreateTableTabControl(string playerName, int minPlayers, LobbyTypeEnum lobby, GameTypeEnum gameType, IEnumerable<RuleInfo> rules)
         {
             m_LobbyType = lobby;
             m_GameType = gameType;
@@ -28,7 +28,7 @@ namespace BluffinPokerGUI.Lobby
             InitializeComponent();
             txtTableName.Text = playerName + " Table";
             InitVariants();
-            grpTraining.Visible = lobby == LobbyEnum.Training;
+            grpTraining.Visible = lobby == LobbyTypeEnum.Training;
         }
 
         private void InitVariants()
@@ -125,14 +125,14 @@ namespace BluffinPokerGUI.Lobby
                 LobbyOptions lobby = null;
                 switch (m_LobbyType)
                 {
-                    case LobbyEnum.Training:
+                    case LobbyTypeEnum.Training:
                         lobby = new LobbyOptionsTraining()
                         {
                             StartingAmount = (int)nudStartingAmount.Value,
                         };
                         break;
 
-                    case LobbyEnum.Career:
+                    case LobbyTypeEnum.Career:
                         lobby = new LobbyOptionsCareer();
                         break;
                 }

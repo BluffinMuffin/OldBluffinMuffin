@@ -14,8 +14,8 @@ namespace PokerProtocol.Commands.Lobby
     public class ListTableCommand : AbstractLobbyCommand
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
-        public LobbyEnum[] LobbyTypes { get; set; }
-        public ListTableCommand(params LobbyEnum[] lobbyTypes)
+        public LobbyTypeEnum[] LobbyTypes { get; set; }
+        public ListTableCommand(params LobbyTypeEnum[] lobbyTypes)
         {
             LobbyTypes = lobbyTypes;
         }

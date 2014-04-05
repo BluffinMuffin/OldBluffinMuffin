@@ -198,33 +198,33 @@ namespace Test.PokerWorld
             PutBlinds(game, p2);
 
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should now be in the playing state");
-            Assert.AreEqual(RoundEnum.Preflop, game.Round, "The game should now be in the preflop round");
+            Assert.AreEqual(RoundTypeEnum.Preflop, game.Round, "The game should now be in the preflop round");
 
             //Make the first player call
             Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer)), "The first player should be allowed to call");
-            Assert.AreEqual(RoundEnum.Preflop, game.Round, "The game should still be in the preflop round");
+            Assert.AreEqual(RoundTypeEnum.Preflop, game.Round, "The game should still be in the preflop round");
 
             //Make the second player call
             Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer)), "The second player should be allowed to call");
-            Assert.AreEqual(RoundEnum.Flop, game.Round, "The game should now be in the flop round");
+            Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should now be in the flop round");
 
             //Make the first player check
             Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, 0), "The first player should be allowed to check");
-            Assert.AreEqual(RoundEnum.Flop, game.Round, "The game should still be in the flop round");
+            Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the second player bet
             Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer) - 1), "The player should not be able to raise under the minimum");
             Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer)), "The player should be able to raise with the minimum");
-            Assert.AreEqual(RoundEnum.Flop, game.Round, "The game should still be in the flop round");
+            Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the first player come back and raise even more than he needs to
             Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer) + 5), "The player should be able to raise over the minimum");
-            Assert.AreEqual(RoundEnum.Flop, game.Round, "The game should still be in the flop round");
+            Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the second player stay calm and call, but try to call less the first time
             Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer) - 1), "The first player should not be allowed to play under what is needed to call");
             Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer)), "The first player should be allowed to play what is needed to call");
-            Assert.AreEqual(RoundEnum.Turn, game.Round, "The game should now be in the turn round");
+            Assert.AreEqual(RoundTypeEnum.Turn, game.Round, "The game should now be in the turn round");
 
             //if this is the player with less money (p1), well just check, i want the other one :)
             if (game.Table.CurrentPlayer == p1)

@@ -178,7 +178,7 @@ namespace PokerProtocol
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
-            if (m_UserInfo != null && m_Game.Rules.CurrentLobby.LobbyType == LobbyEnum.Career)
+            if (m_UserInfo != null && m_Game.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Career)
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
 
             LeftTable(this, new KeyEventArgs<int>(m_ID));

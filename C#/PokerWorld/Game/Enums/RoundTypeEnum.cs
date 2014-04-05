@@ -4,10 +4,11 @@ using System.Text;
 
 namespace PokerWorld.Game.Enums
 {
-    public enum BlindEnum
+    public enum RoundTypeEnum
     {
-        Blinds,
-        Antes,
-        None
+        Preflop,
+        Flop,
+        Turn,
+        River
     }
 }

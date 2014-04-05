@@ -7,10 +7,10 @@ namespace PokerWorld.Game.PokerEventArgs
 {
     public class RoundEventArgs : EventArgs
     {
-        private readonly RoundEnum m_Round;
-        public RoundEnum Round { get { return m_Round; } }
+        private readonly RoundTypeEnum m_Round;
+        public RoundTypeEnum Round { get { return m_Round; } }
 
-        public RoundEventArgs(RoundEnum r)
+        public RoundEventArgs(RoundTypeEnum r)
         {
             m_Round = r;
         }

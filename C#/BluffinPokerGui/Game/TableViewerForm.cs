@@ -397,7 +397,7 @@ namespace BluffinPokerGui.Game
             }
             TableInfo table = m_Game.Table;
             WriteLine("==> Beginning of " + e.Round.ToString());
-            if (e.Round != RoundEnum.Preflop)
+            if (e.Round != RoundTypeEnum.Preflop)
             {
                 Write("==> Current board cards:");
                 for (int i = 0; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
