@@ -43,10 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\DataManager.cs" />
-    <Compile Include="Data\DummyPersistance.cs" />
-    <Compile Include="Data\IDataPersistance.cs" />
-    <Compile Include="Data\UserInfo.cs" />
     <Compile Include="Game\Dealer\AbstractDealer.cs" />
     <Compile Include="Game\Enums\GameTypeEnum.cs" />
     <Compile Include="Game\Enums\BlindTypeEnum.cs" />

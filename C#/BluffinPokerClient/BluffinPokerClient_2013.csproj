@@ -181,6 +181,10 @@
       <Project>{473cc9c5-13cc-46e7-b3d0-b4af4b24fd67}</Project>
       <Name>BluffinPokerGui_2013</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Persistance\Com.Ericmas001.Game.Poker.Persistance.csproj">
+      <Project>{032c04ff-5c33-4be2-ad7f-bed27134c8df}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Persistance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Client\Com.Ericmas001.Game.Poker.Protocol.Client.csproj">
       <Project>{a5be76d4-ec5f-4285-b713-9c0a7947bf72}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Client</Name>

@@ -8,7 +8,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using System.IO;
 using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
-using PokerWorld.Data;
+using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using EricUtility;
 using System.Web;
