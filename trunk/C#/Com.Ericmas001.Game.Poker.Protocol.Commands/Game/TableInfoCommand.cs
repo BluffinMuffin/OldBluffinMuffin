@@ -8,6 +8,7 @@ using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.Rules;
 using System.Linq;
 using EricUtility.Games.CardGame;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
 {

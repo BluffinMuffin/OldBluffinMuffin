@@ -6,6 +6,7 @@ using EricUtility;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using PokerWorld.Game.Rules;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace PokerWorld.Game
 {
