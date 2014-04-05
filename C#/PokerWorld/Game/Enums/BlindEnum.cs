@@ -6,6 +6,8 @@ namespace PokerWorld.Game.Enums
 {
     public enum BlindEnum
     {
-        Blinds
+        Blinds,
+        Antes,
+        None
     }
 }

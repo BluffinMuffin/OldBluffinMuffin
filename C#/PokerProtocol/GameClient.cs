@@ -134,7 +134,7 @@ namespace PokerProtocol
             if (m_PokerTable.NoSeatSmallBlind == m_TablePosition)
                 Send(new PlayerPlayMoneyCommand(m_PokerTable.SmallBlindAmnt));
             if (m_PokerTable.NoSeatBigBlind == m_TablePosition)
-                Send(new PlayerPlayMoneyCommand(m_PokerTable.BigBlindAmnt));
+                Send(new PlayerPlayMoneyCommand(m_PokerTable.Rules.BlindAmount));
 
             GameBlindNeeded(this, new EventArgs());
         }
@@ -250,11 +250,8 @@ namespace PokerProtocol
 
             InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
             SetCards(cmd.BoardCardIDs);
-
-            m_PokerTable.BetLimit = cmd.Limit;
+            m_PokerTable.Rules = cmd.Rules;
             m_PokerTable.Players.ForEach(p => m_PokerTable.LeaveTable(p));
-            m_PokerTable.BigBlindAmnt = cmd.BigBlindAmount;
-            m_PokerTable.NbMinPlayersToStart = cmd.NbMinPlayersToStart;
 
             for (int i = 0; i < cmd.NbPlayers; ++i)
             {

@@ -14,6 +14,8 @@ using PokerProtocol.Commands.Lobby.Career;
 using EricUtility;
 using System.Web;
 using PokerProtocol.Commands;
+using PokerWorld.Game.Enums;
+using PokerWorld.Game.Rules;
 
 
 namespace BluffinPokerServer
@@ -37,13 +39,12 @@ namespace BluffinPokerServer
             m_CommandObserver.JoinTableCommandReceived += m_CommandObserver_JoinTableCommandReceived;
             m_CommandObserver.GameCommandReceived += m_CommandObserver_GameCommandReceived;
             m_CommandObserver.SupportedRulesCommandReceived += m_CommandObserver_SupportedRulesCommandReceived;
+            m_CommandObserver.CreateTableCommandReceived += m_CommandObserver_CreateTableCommandReceived;
 
             //Training
-            m_CommandObserver.CreateTrainingTableCommandReceived += m_CommandObserver_CreateTrainingTableCommandReceived;
             m_CommandObserver.IdentifyCommandReceived += m_CommandObserver_IdentifyCommandReceived;
             
             //Career
-            m_CommandObserver.CreateCareerTableCommandReceived += m_CommandObserver_CreateCareerTableCommandReceived;
             m_CommandObserver.CheckDisplayExistCommandReceived += m_CommandObserver_CheckDisplayExistCommandReceived;
             m_CommandObserver.CheckUserExistCommandReceived += m_CommandObserver_CheckUserExistCommandReceived;
             m_CommandObserver.CreateUserCommandReceived += m_CommandObserver_CreateUserCommandReceived;
@@ -51,25 +52,20 @@ namespace BluffinPokerServer
             m_CommandObserver.GetUserCommandReceived += m_CommandObserver_GetUserCommandReceived;
         }
 
+        void m_CommandObserver_CreateTableCommandReceived(object sender, CommandEventArgs<CreateTableCommand> e)
+        {
+            Send(e.Command.EncodeResponse(CreateTable(e.Command)));
+        }
+
         void m_CommandObserver_SupportedRulesCommandReceived(object sender, CommandEventArgs<SupportedRulesCommand> e)
         {
             Send(e.Command.EncodeResponse());
         }
 
-        void m_CommandObserver_CreateCareerTableCommandReceived(object sender, CommandEventArgs<CreateCareerTableCommand> e)
-        {
-            Send(e.Command.EncodeResponse(CreateTable(e.Command)));
-        }
-
-        void m_CommandObserver_CreateTrainingTableCommandReceived(object sender, CommandEventArgs<CreateTrainingTableCommand> e)
-        {
-            Send(e.Command.EncodeResponse(CreateTable(e.Command)));
-        }
-
-        private int CreateTable(AbstractCreateTableCommand c)
+        private int CreateTable(CreateTableCommand c)
         {
             int res = m_Lobby.CreateTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.TableName, res, c.GetType().Name);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.GameRules.TableName, res, c.GameRules.CurrentLobby.LobbyType);
             return res;
         }
 
@@ -127,8 +123,8 @@ namespace BluffinPokerServer
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
             TableInfo table = game.Table;
 
-            if (game is PokerGameTraining)
-                client = new GameServer(e.Command.TableID, game, m_PlayerName, ((PokerGameTraining)game).TrainingTable.StartingMoney);
+            if (game.Rules.CurrentLobby.LobbyType == LobbyEnum.Training)
+                client = new GameServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Rules.CurrentLobby).StartingAmount);
             else
                 client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
 
@@ -152,7 +148,7 @@ namespace BluffinPokerServer
                     m_Tables.Add(e.Command.TableID, client);
                     client.Start();
 
-                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Name, e.Command.TableID, client.Player.NoSeat);
+                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Rules.TableName, e.Command.TableID, client.Player.NoSeat);
                     Send(e.Command.EncodeResponse(client.Player.NoSeat));
 
                     client.SitIn();
@@ -219,10 +215,7 @@ namespace BluffinPokerServer
         void m_CommandObserver_ListTableCommandReceived(object sender, CommandEventArgs<ListTableCommand> e)
         {
             ListTableCommand c = e.Command;
-            if( c.Training )
-                Send(c.EncodeTrainingResponse(m_Lobby.ListTrainingTables()));
-            else
-                Send(c.EncodeCareerResponse(m_Lobby.ListCareerTables()));
+            Send(c.EncodeResponse(m_Lobby.ListTables(c.LobbyTypes)));
         }
     }
 }

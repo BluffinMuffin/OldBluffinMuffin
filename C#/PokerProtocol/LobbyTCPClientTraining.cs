@@ -32,19 +32,5 @@ namespace PokerProtocol
 
             return WaitAndReceive<IdentifyResponse>().OK;
         }
-
-        public List<TableTraining> ListTables()
-        {
-            Send(new ListTableCommand(true));
-
-            return WaitAndReceive<ListTableTrainingResponse>().Tables;
-        }
-
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart, int startingMoney)
-        {
-            Send(new CreateTrainingTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart, startingMoney));
-
-            return WaitAndReceive<CreateTrainingTableResponse>().Port;
-        }
     }
 }

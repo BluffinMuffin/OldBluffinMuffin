@@ -9,6 +9,7 @@ using PokerProtocol;
 using BluffinPokerGUI.Lobby;
 using BluffinPokerGui.Game;
 using PokerWorld.Data;
+using PokerWorld.Game.Enums;
 
 namespace BluffinPokerClient
 {
@@ -64,7 +65,7 @@ namespace BluffinPokerClient
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
-            tableList.AddTable(false);
+            tableList.AddTable(LobbyEnum.Career);
         }
 
         private void btnJoinTable_Click(object sender, EventArgs e)
@@ -115,7 +116,7 @@ namespace BluffinPokerClient
         private void LobbyCareerForm_Load(object sender, EventArgs e)
         {
             if (tableList.NbTables == 0)
-                tableList.AddTable(false);
+                tableList.AddTable(LobbyEnum.Career);
         }
     }
 }

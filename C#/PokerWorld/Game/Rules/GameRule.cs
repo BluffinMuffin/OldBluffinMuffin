@@ -1,0 +1,48 @@
+﻿using Newtonsoft.Json;
+using PokerWorld.Game.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PokerWorld.Game.Rules
+{
+    public class GameRule
+    {
+        //Important: have to be set to have a defaut value;
+        private LobbyOptions m_Lobby;// = new LobbyOptionsTraining();
+
+        public string TableName { get; set; }
+        public GameTypeEnum GameType { get; set; }
+        public string Variant { get; set; }
+        public BetEnum LimitType { get; set; }
+        public BlindEnum BlindType { get; set; }
+        public int BlindAmount { get; set; }
+        public int MinPlayersToStart { get; set; }
+        public int MaxPlayers { get; set; }
+        public ConfigurableWaitingTimes WaitingTimes { get; set; }
+
+        /// <summary>
+        /// IMPORTANT: Do not use to Get the value, only use CurrentLobby
+        /// </summary>
+        public LobbyOptions Lobby { get { return m_Lobby; } set { m_Lobby = value; } }
+
+        [JsonIgnore]
+        public LobbyOptions CurrentLobby { get { return m_Lobby == null ? new LobbyOptionsTraining() : m_Lobby; } }
+
+        public GameRule()
+        {
+            TableName = "Anonymous Table";
+            GameType = GameTypeEnum.Holdem;
+            Variant = "Texas Hold'Em";
+            LimitType = BetEnum.NoLimit;
+            BlindType = BlindEnum.Blinds;
+            BlindAmount = 10;
+            MinPlayersToStart = 2;
+            MaxPlayers = 10;
+            WaitingTimes = new ConfigurableWaitingTimes();
+        }
+
+    }
+}

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PokerProtocol.Entities.Enums
 {
-    public enum LobyActionEnum
+    public enum LobbyActionEnum
     {
         None,
         Join,

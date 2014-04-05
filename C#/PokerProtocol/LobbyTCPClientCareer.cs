@@ -70,20 +70,5 @@ namespace PokerProtocol
             m_PlayerName = response.DisplayName;
             m_User = new UserInfo(username, "", response.Email, response.DisplayName, response.Money);
         }
-
-        public int CreateTable(string p_tableName, int p_bigBlind, int p_maxPlayers, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon, BetEnum limit, int minPlayersToStart)
-        {
-            Send(new CreateCareerTableCommand(p_tableName, p_bigBlind, p_maxPlayers, m_PlayerName, wtaPlayerAction, wtaBoardDealed, wtaPotWon, limit, minPlayersToStart));
-
-            JObject jObj = WaitAndReceive(CreateCareerTableResponse.COMMAND_NAME);
-            return WaitAndReceive<CreateCareerTableResponse>().Port;
-        }
-
-        public List<TableCareer> ListTables()
-        {
-            Send(new ListTableCommand(false));
-
-            return WaitAndReceive<ListTableCareerResponse>().Tables;
-        }
     }
 }

@@ -13,6 +13,8 @@ using EricUtility;
 using PokerProtocol.Entities;
 using PokerProtocol.Entities.Enums;
 using System.Linq;
+using PokerWorld.Game.Rules;
+using PokerWorld.Game.Enums;
 
 namespace BluffinPokerServer
 {
@@ -77,21 +79,15 @@ namespace BluffinPokerServer
                 }
             }
         }
-        public int CreateTable(AbstractCreateTableCommand c)
+        public int CreateTable(CreateTableCommand c)
         {
-            ListTrainingTables();
-            ListCareerTables();
+            ListTables();
 
             m_LastUsedID++;
             while (m_Games.ContainsKey(m_LastUsedID))
                 m_LastUsedID++;
 
-            PokerGame game = null;
-
-            if (c is CreateCareerTableCommand)
-                game = new PokerGameCareer(new TableInfoCareer(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.MinPlayersToStart), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
-            else
-                game = new PokerGameTraining(new TableInfoTraining(c.TableName, c.BigBlind, c.MaxPlayers, c.Limit, c.MinPlayersToStart, ((CreateTrainingTableCommand)c).StartingMoney), c.WaitingTimeAfterPlayerAction, c.WaitingTimeAfterBoardDealed, c.WaitingTimeAfterPotWon);
+            PokerGame game = new PokerGame(new TableInfo(c.GameRules));
 
             m_Games.Add(m_LastUsedID, game);
             game.Start();
@@ -99,7 +95,7 @@ namespace BluffinPokerServer
             return m_LastUsedID;
         }
 
-        public List<T> ListTables<T>() where T : Table
+        public List<Table> ListTables(params LobbyEnum[] lobbyTypes)
         {
             List<Table> tables = new List<Table>();
 
@@ -110,24 +106,11 @@ namespace BluffinPokerServer
             foreach (KeyValuePair<int, PokerGame> kvp in m_Games.Where(kvp => kvp.Value.IsRunning))
             {
                 TableInfo t = kvp.Value.Table;
-
-                if (t is TableInfoTraining && typeof(T) == typeof(TableTraining))
-                    tables.Add(new TableTraining(kvp.Key, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
-
-                if (t is TableInfoCareer && typeof(T) == typeof(TableCareer))
-                    tables.Add(new TableCareer(kvp.Key, t.Name, t.BigBlindAmnt, t.Players.Count, t.NbMaxSeats, t.BetLimit, LobyActionEnum.None));
+                if (lobbyTypes.Length == 0 || lobbyTypes.Contains(t.Rules.CurrentLobby.LobbyType))
+                    tables.Add(new Table(kvp.Key, t.Rules, t.Players.Count, LobbyActionEnum.None));
             }
 
-            return tables.OfType<T>().ToList();
-        }
-        public List<TableTraining> ListTrainingTables()
-        {
-            return ListTables<TableTraining>();
-        }
-
-        public List<TableCareer> ListCareerTables()
-        {
-            return ListTables<TableCareer>();
+            return tables;
         }
     }
 }
