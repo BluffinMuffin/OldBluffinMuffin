@@ -142,10 +142,10 @@ namespace Test.PokerWorld
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should be back waiting for blinds since enough players are there to play");
 
             //let's leave before putting the blind now
-            int safeMoneyBefore = p1.MoneySafeAmnt;
+            int safeMoneyBefore = p1.Info.MoneySafeAmnt;
             game.LeaveGame(p1);
 
-            Assert.AreEqual(true, p1.MoneySafeAmnt < safeMoneyBefore, "The player should have less money then before, since blinds have been posted before he left");
+            Assert.AreEqual(true, p1.Info.MoneySafeAmnt < safeMoneyBefore, "The player should have less money then before, since blinds have been posted before he left");
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should still be waiting for blinds");
 
             //p2 will put his blind, and the game should start, p2 will win the pot, and then go back to waiting for players
@@ -163,11 +163,11 @@ namespace Test.PokerWorld
             PutBlinds(game, p2);
 
             cp = game.Table.CurrentPlayer;
-            PokerPlayer np = game.Table.GetPlayingPlayerNextTo(cp.NoSeat);
+            PokerPlayer np = game.Table.GetPlayingPlayerNextTo(cp.Info.NoSeat);
             game.LeaveGame(np);
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should be still in playing mode since it wasn't the playing player.");
 
-            game.PlayMoney(cp, game.Table.CallAmnt(cp));
+            game.PlayMoney(cp, game.Table.CallAmnt(cp.Info));
             
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since only one player is left");
 
@@ -200,11 +200,11 @@ namespace Test.PokerWorld
             Assert.AreEqual(RoundTypeEnum.Preflop, game.Round, "The game should now be in the preflop round");
 
             //Make the first player call
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer)), "The first player should be allowed to call");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The first player should be allowed to call");
             Assert.AreEqual(RoundTypeEnum.Preflop, game.Round, "The game should still be in the preflop round");
 
             //Make the second player call
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer)), "The second player should be allowed to call");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The second player should be allowed to call");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should now be in the flop round");
 
             //Make the first player check
@@ -212,17 +212,17 @@ namespace Test.PokerWorld
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the second player bet
-            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer) - 1), "The player should not be able to raise under the minimum");
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer)), "The player should be able to raise with the minimum");
+            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info) - 1), "The player should not be able to raise under the minimum");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info)), "The player should be able to raise with the minimum");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the first player come back and raise even more than he needs to
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer) + 5), "The player should be able to raise over the minimum");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info) + 5), "The player should be able to raise over the minimum");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the second player stay calm and call, but try to call less the first time
-            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer) - 1), "The first player should not be allowed to play under what is needed to call");
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer)), "The first player should be allowed to play what is needed to call");
+            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info) - 1), "The first player should not be allowed to play under what is needed to call");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The first player should be allowed to play what is needed to call");
             Assert.AreEqual(RoundTypeEnum.Turn, game.Round, "The game should now be in the turn round");
 
             //if this is the player with less money (p1), well just check, i want the other one :)
@@ -230,13 +230,13 @@ namespace Test.PokerWorld
                 game.PlayMoney(p1, 0);
 
             //make the second player put more than the first one can put
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, p1.MoneySafeAmnt + 10), "The second player should be allowed to play over what the other player have");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, p1.Info.MoneySafeAmnt + 10), "The second player should be allowed to play over what the other player have");
 
             //make the first player call it, so allin
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer) - 1), "The first player should be allowed to go all-in");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info) - 1), "The first player should be allowed to go all-in");
 
             //The pot is won, let's start over.
-            if (p1.MoneySafeAmnt == 0)
+            if (p1.Info.MoneySafeAmnt == 0)
                 Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since the pot was won and there is only one player left with money");
             else
                 Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should be back waiting for blinds since the pot was won and it's starting over");

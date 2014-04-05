@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
 using PokerWorld.Game.PokerEventArgs;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace BluffinPokerGui.Game
 {
@@ -30,7 +31,7 @@ namespace BluffinPokerGui.Game
             DisableButtons();
             PokerTable table = m_Game.Table;
             PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p, table.CallAmnt(p));
+            m_Game.PlayMoney(p, table.CallAmnt(p.Info));
         }
 
         private void btnRaise_Click(object sender, EventArgs e)
@@ -38,7 +39,7 @@ namespace BluffinPokerGui.Game
             DisableButtons();
             PokerTable table = m_Game.Table;
             PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p, (int)nudRaise.Value - p.MoneyBetAmnt);
+            m_Game.PlayMoney(p, (int)nudRaise.Value - p.Info.MoneyBetAmnt);
         }
 
         private void DisableButtons()
@@ -62,7 +63,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerTable table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
@@ -82,7 +83,7 @@ namespace BluffinPokerGui.Game
             }
         }
 
-        private void SetCallButtonName(PokerPlayer p)
+        private void SetCallButtonName(PlayerInfo p)
         {
             PokerTable table = m_Game.Table;
             string s = "CALL";

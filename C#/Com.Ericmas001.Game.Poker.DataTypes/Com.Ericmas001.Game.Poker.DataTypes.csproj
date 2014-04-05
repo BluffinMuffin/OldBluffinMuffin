@@ -65,6 +65,7 @@
     <Compile Include="Rules\LimitFactory.cs" />
     <Compile Include="Rules\LimitInfo.cs" />
     <Compile Include="Rules\RuleInfo.cs" />
+    <Compile Include="PlayerInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_2013.csproj">

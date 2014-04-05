@@ -4,42 +4,31 @@ using System.Text;
 using EricUtility.Games.CardGame;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.HandEval;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace PokerWorld.Game
 {
     public class PokerPlayer
     {
         #region Fields
-        private readonly GameCard[] m_Cards = new GameCard[2]; // Player Cards
         private bool m_IsPlaying; // Is the player Playing ? False if Folded, AllIn or NotPlaying
         private bool m_IsAllIn; // Is the player All-in ?
         #endregion Fields
 
         #region Properties
 
-        /// <summary>
-        /// Player Name
-        /// </summary>
-        public string Name { get; private set; }
-        
-        /// <summary>
-        /// Player position around the table
-        /// </summary>
-        public int NoSeat { get; set; }
+        public PlayerInfo Info { get; private set; }
         
         /// <summary>
         /// Player Cards as viewed by himself
         /// </summary>
         public GameCard[] Cards
         {
-            get { return m_Cards.Select(c => (c == null || !(m_IsPlaying || m_IsAllIn)) ? GameCard.NO_CARD : c).ToArray(); }
+            get { return Info.HoleCards.Select(c => (c == null || !(m_IsPlaying || m_IsAllIn)) ? GameCard.NO_CARD : c).ToArray(); }
             set
             {
                 if (value != null && value.Length == 2)
-                {
-                    m_Cards[0] = value[0];
-                    m_Cards[1] = value[1];
-                }
+                    Info.HoleCards = value.ToList();
             }
         }
 
@@ -54,29 +43,6 @@ namespace PokerWorld.Game
                     return new GameCard[2] { GameCard.HIDDEN, GameCard.HIDDEN };
                 return Cards;
             }
-        }
-
-        /// <summary>
-        /// Initial Money Amount of the Player when he sits at the table
-        /// </summary>
-        public int MoneyInitAmnt { get; private set; }
-
-        /// <summary>
-        /// Current Money Amount of the player that he isn't playing with
-        /// </summary>
-        public int MoneySafeAmnt { get; set; }
-
-        /// <summary>
-        /// Current Money Amount of the player that he played this round
-        /// </summary>
-        public int MoneyBetAmnt { get; set; }
-
-        /// <summary>
-        /// Current Money Amount of the player (Safe + Bet)
-        /// </summary>
-        public int MoneyAmnt
-        {
-            get { return MoneyBetAmnt + MoneySafeAmnt; }
         }
 
         /// <summary>
@@ -124,26 +90,23 @@ namespace PokerWorld.Game
         /// </summary>
         public bool CanPlay
         {
-            get { return NoSeat >= 0 && MoneySafeAmnt > 0; }
+            get { return Info.NoSeat >= 0 && Info.MoneySafeAmnt > 0; }
         }
 
         #endregion Properties
 
         #region Ctors & Init
-        public PokerPlayer()
+        public PokerPlayer(PlayerInfo info)
         {
-            Name = "Anonymous Player";
-            NoSeat = -1;
-            MoneySafeAmnt = 0;
-            MoneyBetAmnt = 0;
-            MoneyInitAmnt = 0;
+            Info = info;
+        }
+        public PokerPlayer()
+            : this(new PlayerInfo())
+        {
         }
         public PokerPlayer(String name, int money)
-            : this()
+            : this(new PlayerInfo(name, money))
         {
-            Name = name;
-            MoneySafeAmnt = money;
-            MoneyInitAmnt = money;
         }
         #endregion Ctors & Init
 
@@ -156,10 +119,10 @@ namespace PokerWorld.Game
         /// <returns>A unsigned int that we can use to compare with another hand</returns>
         public uint EvaluateCards(GameCard[] boardCards)
         {
-            if (boardCards == null || boardCards.Length != 5 || m_Cards == null || m_Cards.Length != 2)
+            if (boardCards == null || boardCards.Length != 5 || Info.HoleCards == null || Info.HoleCards.Count != 2)
                 return 0;
 
-            return new Hand(String.Join<GameCard>(" ", m_Cards), String.Join<GameCard>(" ", boardCards)).HandValue;
+            return new Hand(String.Join<GameCard>(" ", Info.HoleCards), String.Join<GameCard>(" ", boardCards)).HandValue;
         }
 
         /// <summary>
@@ -167,7 +130,7 @@ namespace PokerWorld.Game
         /// </summary>
         public bool CanBet(int amnt)
         {
-            return amnt <= MoneySafeAmnt;
+            return amnt <= Info.MoneySafeAmnt;
         }
 
         /// <summary>
@@ -181,8 +144,8 @@ namespace PokerWorld.Game
                 return false;
             }
 
-            MoneySafeAmnt -= amnt;
-            MoneyBetAmnt += amnt;
+            Info.MoneySafeAmnt -= amnt;
+            Info.MoneyBetAmnt += amnt;
             return true;
         }
         #endregion Public Methods

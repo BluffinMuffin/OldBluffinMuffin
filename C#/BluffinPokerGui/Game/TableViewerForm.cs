@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using PokerWorld.Game;
 using EricUtility.Games.CardGame;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.PokerEventArgs;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace BluffinPokerGui.Game
 {
@@ -163,7 +165,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PokerTable table = m_Game.Table;
-            foreach (PokerPlayer p in table.PlayingPlayers)
+            foreach (PlayerInfo p in table.Players.Select(p => p.Info))
                 huds[p.NoSeat].Alive = true;
             int i = 0;
             for (; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
@@ -207,7 +209,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PokerTable table = m_Game.Table;
-            foreach (PokerPlayer p in table.Players)
+            foreach (PlayerInfo p in table.Players.Select(p => p.Info))
             {
                 if (p != null)
                 {
@@ -258,7 +260,7 @@ namespace BluffinPokerGui.Game
             PokerTable table = m_Game.Table;
             foreach (PokerPlayer p in table.Players)
             {
-                PokerPlayerHud php = huds[p.NoSeat];
+                PokerPlayerHud php = huds[p.Info.NoSeat];
                 InstallPlayer(php, p);
             }
         }
@@ -271,7 +273,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
             php.DoAction(GameActionEnum.DoNothing, 0);
             php.SetPlaying();
@@ -285,7 +287,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
             Label bet = bets[p.NoSeat];
             PokerTable table = m_Game.Table;
@@ -307,9 +309,9 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
-            php.SetCards (p.Cards[0], p.Cards[1]);
+            php.SetCards (p.HoleCards[0], p.HoleCards[1]);
         }
 
         void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
@@ -320,9 +322,9 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
-            InstallPlayer(php, p);
+            InstallPlayer(php, e.Player);
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
@@ -333,7 +335,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
             php.Visible = false;
         }
@@ -346,7 +348,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
         }
@@ -359,7 +361,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot), new object[] { sender,e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             PokerPlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
             php.SetWinning();
@@ -421,9 +423,9 @@ namespace BluffinPokerGui.Game
             PokerPlayer d = table.Seats[table.NoSeatDealer];
             PokerPlayer sb = table.Seats[table.NoSeatSmallBlind];
             PokerPlayer bb = table.Seats[table.NoSeatBigBlind];
-            WriteLine("==> " + d.Name + " is the Dealer");
-            WriteLine("==> " + sb.Name + " is the SmallBlind");
-            WriteLine("==> " + bb.Name + " is the BigBlind");
+            WriteLine("==> " + d.Info.Name + " is the Dealer");
+            WriteLine("==> " + sb.Info.Name + " is the SmallBlind");
+            WriteLine("==> " + bb.Info.Name + " is the BigBlind");
         }
 
         void m_Game_GameEnded_Console(object sender, EventArgs e)
@@ -456,8 +458,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded_Console), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
-            //WriteLine("Player turn began (" + p.Name + ")");
+            //WriteLine("Player turn began (" + e.Player.Info.Name + ")");
         }
 
         void m_Game_PlayerActionTaken_Console(object sender, PlayerActionEventArgs e)
@@ -468,8 +469,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
-            WriteLine(p.Name + " did [" + e.Action.ToString() + "]");
+            WriteLine(e.Player.Info.Name + " did [" + e.Action.ToString() + "]");
         }
 
         void m_Game_PlayerHoleCardsChanged_Console(object sender, PlayerInfoEventArgs e)
@@ -483,7 +483,7 @@ namespace BluffinPokerGui.Game
             PokerPlayer p = e.Player;
             if (p.Cards[0].Id >= 0)
             {
-                WriteLine("==> Hole Card changed for " + p.Name + ": " + p.Cards[0].ToString() + " " + p.Cards[1].ToString());
+                WriteLine("==> Hole Card changed for " + p.Info.Name + ": " + p.Cards[0].ToString() + " " + p.Cards[1].ToString());
             }
         }
 
@@ -495,8 +495,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
-            WriteLine(p.Name + " joined the table");
+            WriteLine(e.Player.Info.Name + " joined the table");
         }
 
         void m_Game_PlayerLeaved_Console(object sender, PlayerInfoEventArgs e)
@@ -507,8 +506,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
-            WriteLine(p.Name + " left the table");
+            WriteLine(e.Player.Info.Name + " left the table");
         }
 
         void m_Game_PlayerMoneyChanged_Console(object sender, PlayerInfoEventArgs e)
@@ -519,7 +517,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player.Info;
             //WriteLine(p.Name + " money changed to " + p.MoneySafeAmnt);
         }
 
@@ -531,19 +529,18 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console), new object[] { sender, e });
                 return;
             }
-            PokerPlayer p = e.Player;
-            WriteLine(p.Name + " won pot ($" + e.AmountWon + ")");
+            WriteLine(e.Player.Info.Name + " won pot ($" + e.AmountWon + ")");
         }
 
         private void InstallPlayer(PokerPlayerHud php, PokerPlayer player)
         {
-            php.PlayerName = player.Name;
+            php.PlayerName = player.Info.Name;
             php.DoAction(GameActionEnum.DoNothing);
             GameCard[] cards = player.Cards;
             php.SetCards(cards[0], cards[1]);
-            php.SetMoney(player.MoneySafeAmnt);
+            php.SetMoney(player.Info.MoneySafeAmnt);
             php.SetSleeping();
-            php.Main = (m_NoSeat == player.NoSeat);
+            php.Main = (m_NoSeat == player.Info.NoSeat);
             php.Alive = player.IsPlaying;
             php.Visible = true;
         }

@@ -162,7 +162,7 @@ namespace PokerWorld.Game
         /// </summary>
         public List<PokerPlayer> PlayingPlayersFromNext
         {
-            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrPlayer).NoSeat); }
+            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrPlayer).Info.NoSeat); }
         }
 
         /// <summary>
@@ -188,9 +188,9 @@ namespace PokerWorld.Game
             {
                 if (Round == RoundTypeEnum.Preflop)
                 {
-                    return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatBigBlind).NoSeat);
+                    return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatBigBlind).Info.NoSeat);
                 }
-                return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatDealer).NoSeat);
+                return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat);
             }
         }
         #endregion Properties
@@ -290,7 +290,7 @@ namespace PokerWorld.Game
         /// </summary>
         public bool ContainsPlayer(String name)
         {
-            return Players.Any(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            return Players.Any(p => p.Info.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -331,7 +331,7 @@ namespace PokerWorld.Game
         {
             p.IsZombie = false;
             p.IsPlaying = false;
-            p.NoSeat = seat;
+            p.Info.NoSeat = seat;
             m_Players[seat] = p;
             return true;
         }
@@ -365,7 +365,7 @@ namespace PokerWorld.Game
             if (!ContainsPlayer(p))
                 return false;
 
-            int seat = p.NoSeat;
+            int seat = p.Info.NoSeat;
             p.IsPlaying = false;
             p.IsZombie = true;
             m_Players[seat] = null;
@@ -392,7 +392,7 @@ namespace PokerWorld.Game
 
                 int cap = aicf - currentTaken;
                 foreach (PokerPlayer p in Players)
-                    AddBet(p, pot, Math.Min(p.MoneyBetAmnt, cap));
+                    AddBet(p, pot, Math.Min(p.Info.MoneyBetAmnt, cap));
 
                 currentTaken += cap;
                 m_CurrPotId++;
@@ -402,7 +402,7 @@ namespace PokerWorld.Game
             MoneyPot curPot = m_Pots[m_CurrPotId];
             curPot.DetachAllPlayers();
             foreach (PokerPlayer p in Players)
-                AddBet(p, curPot, p.MoneyBetAmnt);
+                AddBet(p, curPot, p.Info.MoneyBetAmnt);
 
             HigherBet = 0;
         }
@@ -440,7 +440,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Can this user RAISE ?
         /// </summary>
-        public bool CanRaise(PokerPlayer p)
+        public bool CanRaise(PlayerInfo p)
         {
             return HigherBet < p.MoneyAmnt;
         }
@@ -448,7 +448,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Can this player use the CHECK action ?
         /// </summary>
-        public bool CanCheck(PokerPlayer p)
+        public bool CanCheck(PlayerInfo p)
         {
             return HigherBet <= p.MoneyBetAmnt;
         }
@@ -456,7 +456,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// What is the minimum amount that this player can put on the table to RAISE
         /// </summary>
-        public int MinRaiseAmnt(PokerPlayer p)
+        public int MinRaiseAmnt(PlayerInfo p)
         {
             return Math.Min(CallAmnt(p) + MinimumRaiseAmount, MaxRaiseAmnt(p));
         }
@@ -466,7 +466,7 @@ namespace PokerWorld.Game
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public int MaxRaiseAmnt(PokerPlayer p)
+        public int MaxRaiseAmnt(PlayerInfo p)
         {
             return p.MoneySafeAmnt;
         }
@@ -474,7 +474,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// What is the needed amount for this player to CALL ?
         /// </summary>
-        public int CallAmnt(PokerPlayer p)
+        public int CallAmnt(PlayerInfo p)
         {
             return HigherBet - p.MoneyBetAmnt;
         }
@@ -492,12 +492,12 @@ namespace PokerWorld.Game
 
         private bool ContainsPlayer(PokerPlayer p)
         {
-            return Players.Contains(p) || Players.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
+            return Players.Contains(p) || Players.Count(x => x.Info.Name.ToLower() == p.Info.Name.ToLower()) > 0;
         }
 
         private void AddBet(PokerPlayer p, MoneyPot pot, int bet)
         {
-            p.MoneyBetAmnt -= bet;
+            p.Info.MoneyBetAmnt -= bet;
             pot.AddAmount(bet);
 
             if (bet >= 0 && (p.IsPlaying || p.IsAllIn))
@@ -505,9 +505,9 @@ namespace PokerWorld.Game
         }
         private void PlaceButtons()
         {
-            NoSeatDealer = GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
-            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
-            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
+            NoSeatDealer = GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat;
+            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat;
+            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).Info.NoSeat;
             m_BlindNeeded.Clear();
             m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
             m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Rules.BlindAmount);

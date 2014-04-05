@@ -20,16 +20,16 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
         public int NbPlayers { get; set; }
-        public List<PlayerInfo> Seats { get; set; }
+        public List<SeatInfo> Seats { get; set; }
 
         public TableInfoCommand()
         {
         }
 
-        public TableInfoCommand(PokerTable table, PokerPlayer player)
+        public TableInfoCommand(PokerTable table, PokerPlayer playerSendingTo)
         {
             BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
-            Seats = new List<PlayerInfo>();
+            Seats = new List<SeatInfo>();
 
             Rules = table.Rules;
 
@@ -41,32 +41,25 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
 
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
-                PlayerInfo pi = new PlayerInfo() { NoSeat = i };
-                Seats.Add(pi);
+                SeatInfo si = new SeatInfo() { NoSeat = i };
+                Seats.Add(si);
 
                 PokerPlayer p = table.GetPlayer(i);
 
-                pi.IsEmpty = (p == null);
-                if (pi.IsEmpty)
+                si.IsEmpty = (p == null);
+                if (si.IsEmpty)
                     continue;
+                si.Player = p.Info.Clone();
 
-                pi.PlayerName = p.Name;
-                pi.Money = p.MoneySafeAmnt; 
+                //If we are not sending the info about the player who is receiving, don't show the cards unless you can
+                if (i != playerSendingTo.Info.NoSeat)
+                    si.Player.HoleCards = p.RelativeCards.ToList();
 
-                bool itsHim = (i == player.NoSeat);
-
-                // Player cards
-                GameCard[] holeCards = itsHim ? p.Cards : p.RelativeCards;
-                for (int j = 0; j < 2; ++j)
-                    pi.HoleCardIDs.Add(holeCards[j].Id);
-
-                pi.IsDealer = table.NoSeatDealer == i;
-                pi.IsSmallBlind = table.NoSeatSmallBlind == i;
-                pi.IsBigBlind = table.NoSeatBigBlind == i;
-                pi.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
-                pi.TimeRemaining = 0;
-                pi.Bet = p.MoneyBetAmnt;
-                pi.IsPlaying = p.IsPlaying;
+                si.IsDealer = table.NoSeatDealer == i;
+                si.IsSmallBlind = table.NoSeatSmallBlind == i;
+                si.IsBigBlind = table.NoSeatBigBlind == i;
+                si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
+                si.IsPlaying = p.IsPlaying;
             }
         }
     }
