@@ -6,27 +6,23 @@ using EricUtility;
 using PokerProtocol.Entities.Enums;
 using PokerWorld.Game.Enums;
 using Newtonsoft.Json.Linq;
+using PokerWorld.Game.Rules;
 
 namespace PokerProtocol.Entities
 {
-    public abstract class Table : IComparable<Table>
+    public class Table : IComparable<Table>
     {
-        public int NoPort { get; set; }
-        public string TableName { get; set; }
+        public int IdTable { get; set; }
         public int BigBlind { get; set; }
         public int NbPlayers { get; set; }
-        public int NbSeats { get; set; }
-        public BetEnum Limit { get; set; }
-        public LobyActionEnum PossibleAction { get; set; }
+        public LobbyActionEnum PossibleAction { get; set; }
+        public GameRule Rules { get; set; }
 
-        public Table(int p_noPort, String p_tableName, int p_bigBlind, int p_nbPlayers, int p_nbSeats, BetEnum limit, LobyActionEnum possibleAction)
+        public Table(int idTable, GameRule rules, int nbPlayers, LobbyActionEnum possibleAction)
         {
-            NoPort = p_noPort;
-            TableName = p_tableName;
-            BigBlind = p_bigBlind;
-            NbPlayers = p_nbPlayers;
-            NbSeats = p_nbSeats;
-            Limit = limit;
+            IdTable = idTable;
+            Rules = rules;
+            NbPlayers = nbPlayers;
             PossibleAction = possibleAction;
         }
 
@@ -36,7 +32,7 @@ namespace PokerProtocol.Entities
 
         public int CompareTo(Table other)
         {
-            return NoPort.CompareTo(other.NoPort);
+            return IdTable.CompareTo(other.IdTable);
         }
     }
 }

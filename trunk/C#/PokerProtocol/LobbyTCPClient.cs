@@ -16,6 +16,9 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Web;
 using PokerProtocol.Commands;
+using PokerWorld.Game.Rules;
+using PokerProtocol.Entities;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol
 {
@@ -105,7 +108,8 @@ namespace PokerProtocol
 
         public void Send(AbstractCommand command)
         {
-            base.Send(command.Encode());
+            string encode = command.Encode();
+            base.Send(encode);
         }
 
         public void Disconnect()
@@ -155,6 +159,13 @@ namespace PokerProtocol
             return client;
         }
 
+        public int CreateTable(GameRule gr)
+        {
+            Send(new CreateTableCommand(gr));
+
+            return WaitAndReceive<CreateTableResponse>().IdTable;
+        }
+
         #endregion Public Methods
 
         #region Protected Methods
@@ -168,7 +179,7 @@ namespace PokerProtocol
             do
             {
                 s = m_Incoming.Dequeue();
-                jObj = JsonConvert.DeserializeObject<dynamic>(s);
+                jObj = JsonConvert.DeserializeObject<dynamic>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
                 commandName = (string)jObj["CommandName"];
             }
             while (s != null && commandName != expected);
@@ -191,7 +202,7 @@ namespace PokerProtocol
             }
             while (s != null && commandName != expected);
 
-            return JsonConvert.DeserializeObject<T>(s);
+            return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
         }
 
         protected string Receive(StreamReader reader)
@@ -245,7 +256,7 @@ namespace PokerProtocol
 
                 if (cmdName == GameCommand.COMMAND_NAME)
                 {
-                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line);
+                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
                     int count = 0;
 
                     //Be patient
@@ -258,6 +269,13 @@ namespace PokerProtocol
                 else
                     m_Incoming.Enqueue(line);
             }
+        }
+
+        public List<Table> ListTables(params LobbyEnum[] lobbyTypes)
+        {
+            Send(new ListTableCommand(lobbyTypes));
+
+            return WaitAndReceive<ListTableResponse>().Tables;
         }
 
         #endregion Protected Methods

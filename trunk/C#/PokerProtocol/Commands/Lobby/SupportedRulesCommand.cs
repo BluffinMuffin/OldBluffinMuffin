@@ -9,6 +9,7 @@ using PokerProtocol.Commands.Lobby.Career;
 using PokerProtocol.Entities;
 using Newtonsoft.Json.Linq;
 using PokerWorld.Game;
+using PokerWorld.Game.Rules;
 
 namespace PokerProtocol.Commands.Lobby
 {

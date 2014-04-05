@@ -6,6 +6,6 @@ namespace PokerWorld.Game.Enums
 {
     public enum GameTypeEnum
     {
-        Holdem
+        Holdem,
     }
 }

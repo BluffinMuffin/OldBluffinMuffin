@@ -5,6 +5,7 @@ using EricUtility.Games.CardGame;
 using EricUtility;
 using PokerWorld.Game.Enums;
 using System.Linq;
+using PokerWorld.Game.Rules;
 
 namespace PokerWorld.Game
 {
@@ -22,14 +23,9 @@ namespace PokerWorld.Game
 
         #region Properties
         /// <summary>
-        /// Table Name
+        /// Contains all the rules of the current game
         /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Type of Limit: NO_LIMIT, POT_LIMIT, ...
-        /// </summary>
-        public BetEnum BetLimit { get; set; }
+        public GameRule Rules { get; set; }
 
         /// <summary>
         /// Cards on the Board
@@ -48,16 +44,6 @@ namespace PokerWorld.Game
         }
 
         /// <summary>
-        /// Maximum of players that can be seated around the table
-        /// </summary>
-        public int NbMaxSeats { get; private set; }
-
-        /// <summary>
-        /// Maximum of players that can be seated around the table
-        /// </summary>
-        public int NbMinPlayersToStart { get; set; }
-
-        /// <summary>
         /// List of MoneyPots currently on the table. There should always have at least one MoneyPot
         /// </summary>
         public List<MoneyPot> Pots
@@ -73,12 +59,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Amount of the Small Blind
         /// </summary>
-        public int SmallBlindAmnt { get { return BigBlindAmnt / 2; } }
-
-        /// <summary>
-        /// Amount of the Big Blind
-        /// </summary>
-        public int BigBlindAmnt { get; set; }
+        public int SmallBlindAmnt { get { return Rules.BlindAmount / 2; } }
 
         /// <summary>
         /// Minimum amount to Raise
@@ -216,27 +197,18 @@ namespace PokerWorld.Game
 
         #region Ctors & Init
         public TableInfo()
-            : this(10)
+            : this(new GameRule())
         {
         }
 
-        public TableInfo(int nbSeats)
-            : this("Anonymous Table", 10, nbSeats, BetEnum.NoLimit, 2)
+        public TableInfo(GameRule rules)
         {
-        }
-
-        public TableInfo(string name, int bigBlind, int nbSeats, BetEnum limit, int minPlayersToStart)
-        {
-            NbMaxSeats = nbSeats;
-            m_Players = new PlayerInfo[nbSeats];
-            Name = name;
-            BigBlindAmnt = bigBlind;
+            Rules = rules;
+            m_Players = new PlayerInfo[rules.MaxPlayers];
             NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
-            BetLimit = limit;
-            NbMinPlayersToStart = minPlayersToStart;
-            Enumerable.Range(1, NbMaxSeats).ToList().ForEach(i => m_RemainingSeats.Push(NbMaxSeats - i));
+            Enumerable.Range(1, rules.MaxPlayers).ToList().ForEach(i => m_RemainingSeats.Push(rules.MaxPlayers - i));
         }
 
         public void InitTable()
@@ -286,9 +258,9 @@ namespace PokerWorld.Game
         /// </summary>
         public PlayerInfo GetPlayerNextTo(int seat)
         {
-            for (int i = 0; i < NbMaxSeats; ++i)
+            for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
-                int j = (seat + 1 + i) % NbMaxSeats;
+                int j = (seat + 1 + i) % Rules.MaxPlayers;
                 if (m_Players[j] != null)
                 {
                     return m_Players[j];
@@ -302,9 +274,9 @@ namespace PokerWorld.Game
         /// </summary>
         public PlayerInfo GetPlayingPlayerNextTo(int seat)
         {
-            for (int i = 0; i < NbMaxSeats; ++i)
+            for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
-                int j = (seat + 1 + i) % NbMaxSeats;
+                int j = (seat + 1 + i) % Rules.MaxPlayers;
                 if (m_Players[j] != null && m_Players[j].IsPlaying)
                 {
                     return m_Players[j];
@@ -538,7 +510,7 @@ namespace PokerWorld.Game
             NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
             m_BlindNeeded.Clear();
             m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
-            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), BigBlindAmnt);
+            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Rules.BlindAmount);
         }
         #endregion Private Methods
     }

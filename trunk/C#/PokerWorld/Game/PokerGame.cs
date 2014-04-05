@@ -6,6 +6,7 @@ using EricUtility;
 using PokerWorld.Game.Dealer;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.PokerEventArgs;
+using PokerWorld.Game.Rules;
 
 namespace PokerWorld.Game
 {
@@ -13,16 +14,10 @@ namespace PokerWorld.Game
     /// This represent only one "Game" of Poker. This means from Putting Blinds to preflop, flop, turn, river and then declaring the winner.
     /// Tipically you would have many "Game" while sitting at a table, but players can sit-in and sit-out, so it's like a different game every "Game".
     /// </summary>
-    public abstract class PokerGame : IPokerGame
+    public class PokerGame : IPokerGame
     {
         #region Fields
-        protected readonly TableInfo m_Table; // La table
         protected readonly AbstractDealer m_Dealer; // Dealer
-
-        // WAITING TIME
-        protected readonly int m_WaitingTimeAfterPlayerAction; // Attente apres chaque player action (ms)
-        protected readonly int m_WaitingTimeAfterBoardDealed; // Attente apres chaque board dealed (ms)
-        protected readonly int m_WaitingTimeAfterPotWon; // Attente apres chaque pot won ! (ms)
 
         // STATES
         protected GameStateEnum m_State; // L'etat global de la game
@@ -49,17 +44,19 @@ namespace PokerWorld.Game
         /// <summary>
         /// The Table Entity
         /// </summary>
-        public TableInfo Table
-        {
-            get { return m_Table; }
-        }
+        public TableInfo Table { get; private set; }
+
+        /// <summary>
+        /// The Rules Entity
+        /// </summary>
+        public GameRule Rules { get; private set; }
 
         /// <summary>
         /// Current Round of the Playing State
         /// </summary>
         public RoundEnum Round
         {
-            get { return m_Table.Round; }
+            get { return Table.Round; }
         }
 
         /// <summary>
@@ -86,7 +83,7 @@ namespace PokerWorld.Game
         /// 3 : NoLimit (0)
         /// 4 : GameRound (0,1,2,3)
         /// </summary>
-        public string Encode { get { return string.Format("{0}{1}{2}{3}{4}", 1, 0, 0, 0, (int)m_Table.Round); } }
+        public string Encode { get { return string.Format("{0}{1}{2}{3}{4}", 1, 0, 0, 0, (int)Table.Round); } }
 
         #endregion
 
@@ -96,24 +93,22 @@ namespace PokerWorld.Game
         {
         }
         public PokerGame(AbstractDealer dealer) :
-            this(new RandomDealer(), new TableInfo(), 0, 0, 0)
+            this(new RandomDealer(), new TableInfo())
         {
         }
 
-        public PokerGame(TableInfo table, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
-            : this(new RandomDealer(), table, wtaPlayerAction, wtaBoardDealed, wtaPotWon)
+        public PokerGame(TableInfo table)
+            : this(new RandomDealer(), table)
         {
         }
 
-        public PokerGame(AbstractDealer dealer, TableInfo table, int wtaPlayerAction, int wtaBoardDealed, int wtaPotWon)
+        public PokerGame(AbstractDealer dealer, TableInfo table)
         {
             m_Dealer = dealer;
-            m_Table = table;
+            Table = table;
+            Rules = table.Rules;
             m_State = GameStateEnum.Init;
             m_RoundState = RoundStateEnum.Cards;
-            m_WaitingTimeAfterPlayerAction = wtaPlayerAction;
-            m_WaitingTimeAfterBoardDealed = wtaBoardDealed;
-            m_WaitingTimeAfterPotWon = wtaPotWon;
         }
         #endregion Ctors & Init
 
@@ -138,7 +133,7 @@ namespace PokerWorld.Game
                 return false;
             }
 
-            return m_Table.JoinTable(p);
+            return Table.JoinTable(p);
         }
 
 
@@ -158,10 +153,10 @@ namespace PokerWorld.Game
         /// </summary>
         public bool LeaveGame(PlayerInfo p)
         {
-            bool wasPlaying = (State == GameStateEnum.Playing && m_Table.CurrentPlayer == p);
-            int blindNeeded = m_Table.GetBlindNeeded(p);
+            bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
+            int blindNeeded = Table.GetBlindNeeded(p);
 
-            if (m_Table.LeaveTable(p))
+            if (Table.LeaveTable(p))
             {
                 if (wasPlaying)
                     PlayMoney(p, -1);
@@ -169,7 +164,7 @@ namespace PokerWorld.Game
                     PlayMoney(p, blindNeeded);
                 PlayerLeaved(this, new PlayerInfoEventArgs(p));
 
-                if (m_Table.Players.Count == 0)
+                if (Table.Players.Count == 0)
                     m_State = GameStateEnum.End;
 
                 return true;
@@ -182,7 +177,7 @@ namespace PokerWorld.Game
         /// </summary>
         public bool PlayMoney(PlayerInfo p, int amount)
         {
-            lock(m_Table)
+            lock(Table)
             {
                 int amnt = Math.Min(amount, p.MoneySafeAmnt);
                 LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} is playing {1} money on state: {2}", p.Name, amnt, m_State);
@@ -215,10 +210,10 @@ namespace PokerWorld.Game
                     TryToBegin();
                     break;
                 case GameStateEnum.WaitForBlinds:
-                    m_Table.HigherBet = 0;
+                    Table.HigherBet = 0;
                     break;
                 case GameStateEnum.Playing:
-                    m_Table.Round = RoundEnum.Preflop;
+                    Table.Round = RoundEnum.Preflop;
                     m_RoundState = RoundStateEnum.Cards;
                     StartRound();
                     break;
@@ -248,13 +243,13 @@ namespace PokerWorld.Game
             if (m_State != GameStateEnum.Playing)
                 return;
 
-            if (m_Table.Round == RoundEnum.River)
+            if (Table.Round == RoundEnum.River)
                 AdvanceToNextGameState(); //Advancing to Showdown State
             else
             {
                 m_RoundState = RoundStateEnum.Cards;
-                m_Table.NoSeatCurrPlayer = m_Table.NoSeatDealer;
-                m_Table.Round = (RoundEnum)(((int)m_Table.Round) + 1);
+                Table.NoSeatCurrPlayer = Table.NoSeatDealer;
+                Table.Round = (RoundEnum)(((int)Table.Round) + 1);
                 StartRound();
             }
         }
@@ -271,10 +266,10 @@ namespace PokerWorld.Game
         }
         private bool BetMoney(PlayerInfo p, int amnt)
         {
-            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Currently, we need {0} minimum money from this player", m_Table.CallAmnt(p));
+            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Currently, we need {0} minimum money from this player", Table.CallAmnt(p));
 
             //Validation: Is it the player's turn to play ?
-            if (p.NoSeat != m_Table.NoSeatCurrPlayer)
+            if (p.NoSeat != Table.NoSeatCurrPlayer)
             {
                 LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just played but it wasn't his turn", p.Name);
                 return false;
@@ -289,7 +284,7 @@ namespace PokerWorld.Game
                 return true;
             }
 
-            int amntNeeded = m_Table.CallAmnt(p);
+            int amntNeeded = Table.CallAmnt(p);
 
             //Validation: Is the player betting under what he needs to Call ?
             if (amnt < amntNeeded)
@@ -305,7 +300,7 @@ namespace PokerWorld.Game
                 amntNeeded = amnt;
             }
 
-            if (amnt > amntNeeded && amnt < m_Table.MinRaiseAmnt(p))
+            if (amnt > amntNeeded && amnt < Table.MinRaiseAmnt(p))
             {
                 LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to play at least {1} to raise and tried {2}", p.Name, amntNeeded, amnt);
                 return false;
@@ -319,7 +314,7 @@ namespace PokerWorld.Game
             }
 
             //Update the MinimumRaiseAmount
-            m_Table.MinimumRaiseAmount = Math.Max(m_Table.MinimumRaiseAmount, p.MoneyBetAmnt);
+            Table.MinimumRaiseAmount = Math.Max(Table.MinimumRaiseAmount, p.MoneyBetAmnt);
 
             //Notify the change in the player's account
             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
@@ -329,12 +324,12 @@ namespace PokerWorld.Game
             {
                 LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                 p.IsAllIn = true;
-                m_Table.NbAllIn++;
-                m_Table.AddAllInCap(p.MoneyBetAmnt);
+                Table.NbAllIn++;
+                Table.AddAllInCap(p.MoneyBetAmnt);
             }
 
             //Hmmm ... More Money !! 
-            m_Table.TotalPotAmnt += amnt;
+            Table.TotalPotAmnt += amnt;
 
             //Was it a CALL or a RAISE ?
             if (amnt == amntNeeded)
@@ -355,11 +350,11 @@ namespace PokerWorld.Game
         }
         private bool PlayBlinds(PlayerInfo p, int amnt)
         {
-            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds needed is {0}", m_Table.TotalBlindNeeded);
+            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds needed is {0}", Table.TotalBlindNeeded);
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "{0} is putting blind of {1}", p.Name, amnt);
 
             //What is the need Blind from the player ?
-            int needed = m_Table.GetBlindNeeded(p);
+            int needed = Table.GetBlindNeeded(p);
 
             //If the player isn't giving what we expected from him
             if (amnt != needed)
@@ -369,8 +364,8 @@ namespace PokerWorld.Game
                 {
                     LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                     p.IsAllIn = true;
-                    m_Table.NbAllIn++;
-                    m_Table.AddAllInCap(p.MoneyBetAmnt + amnt);
+                    Table.NbAllIn++;
+                    Table.AddAllInCap(p.MoneyBetAmnt + amnt);
                 }
                 else //well, it's just not fair to play that
                 {
@@ -387,27 +382,27 @@ namespace PokerWorld.Game
             }
 
             //Hmmm ... More Money !! 
-            m_Table.TotalPotAmnt += amnt;
+            Table.TotalPotAmnt += amnt;
 
             //Notify the change in the player's account
             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
 
             //Take note of the given Blind Amount for the player.
-            m_Table.SetBlindNeeded(p, 0);
+            Table.SetBlindNeeded(p, 0);
 
             //Take note of the action
-            bool isPostingSmallBlind = (needed == m_Table.SmallBlindAmnt);
+            bool isPostingSmallBlind = (needed == Table.SmallBlindAmnt);
             LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED {1} BLIND", p.Name, isPostingSmallBlind ? "SMALL" : "BIG");
             PlayerActionTaken(this, new PlayerActionEventArgs(p, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt));
 
             //Let's set the HigherBet
-            if (amnt > m_Table.HigherBet)
-                m_Table.HigherBet = amnt;
+            if (amnt > Table.HigherBet)
+                Table.HigherBet = amnt;
 
-            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds still needed is {0}", m_Table.TotalBlindNeeded);
+            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds still needed is {0}", Table.TotalBlindNeeded);
 
             //If we got all the blinds, what are we waiting for ?!
-            if (m_Table.TotalBlindNeeded == 0)
+            if (Table.TotalBlindNeeded == 0)
                 AdvanceToNextGameState(); //Advancing to Playing State
             return true;
         }
@@ -428,36 +423,36 @@ namespace PokerWorld.Game
         }
         private void StartCumulRound()
         {
-            m_Table.ManagePotsRoundEnd();
+            Table.ManagePotsRoundEnd();
 
-            GameBettingRoundEnded(this, new RoundEventArgs(m_Table.Round));
+            GameBettingRoundEnded(this, new RoundEventArgs(Table.Round));
 
-            if (m_Table.NbPlayingAndAllIn <= 1)
+            if (Table.NbPlayingAndAllIn <= 1)
                 AdvanceToNextGameState(); //Advancing to Showdown State
             else
                 AdvanceToNextRound(); //Advancing to Next Round
         }
         private void StartBettingRound()
         {
-            GameBettingRoundStarted(this, new RoundEventArgs(m_Table.Round));
+            GameBettingRoundStarted(this, new RoundEventArgs(Table.Round));
 
-            m_Table.NbPlayed = 0;
-            m_Table.NoSeatLastRaise = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer).NoSeat;
-            m_Table.MinimumRaiseAmount = m_Table.BigBlindAmnt;
+            Table.NbPlayed = 0;
+            Table.NoSeatLastRaise = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).NoSeat;
+            Table.MinimumRaiseAmount = Table.Rules.BlindAmount;
 
-            WaitALittle(m_WaitingTimeAfterBoardDealed);
+            WaitALittle(Rules.WaitingTimes.AfterBoardDealed);
 
-            if (m_Table.NbPlaying <= 1)
+            if (Table.NbPlaying <= 1)
                 EndBettingRound();
             else
                 ContinueBettingRound();
         }
         private void StartCardRound()
         {
-            switch (m_Table.Round)
+            switch (Table.Round)
             {
                 case RoundEnum.Preflop:
-                    m_Table.NoSeatCurrPlayer = m_Table.NoSeatBigBlind;
+                    Table.NoSeatCurrPlayer = Table.NoSeatBigBlind;
                     DealHole();
                     break;
                 case RoundEnum.Flop:
@@ -475,19 +470,19 @@ namespace PokerWorld.Game
         }
         private void DealRiver()
         {
-            m_Table.AddCards(m_Dealer.DealRiver());
+            Table.AddCards(m_Dealer.DealRiver());
         }
         private void DealTurn()
         {
-            m_Table.AddCards(m_Dealer.DealTurn());
+            Table.AddCards(m_Dealer.DealTurn());
         }
         private void DealFlop()
         {
-            m_Table.AddCards(m_Dealer.DealFlop());
+            Table.AddCards(m_Dealer.DealFlop());
         }
         private void DealHole()
         {
-            foreach (PlayerInfo p in m_Table.PlayingAndAllInPlayers)
+            foreach (PlayerInfo p in Table.PlayingAndAllInPlayers)
             {
                 p.Cards = m_Dealer.DealHoles(p);
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
@@ -495,7 +490,7 @@ namespace PokerWorld.Game
         }
         private void ShowAllCards()
         {
-            foreach (PlayerInfo p in m_Table.Players)
+            foreach (PlayerInfo p in Table.Players)
                 if (p.IsPlaying || p.IsAllIn)
                 {
                     p.IsShowingCards = true;
@@ -507,15 +502,15 @@ namespace PokerWorld.Game
         {
             p.IsPlaying = false;
 
-            WaitALittle(m_WaitingTimeAfterPlayerAction);
+            WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Fold, -1));
         }
         private void CallPlayer(PlayerInfo p, int played)
         {
-            m_Table.NbPlayed++;
+            Table.NbPlayed++;
 
-            WaitALittle(m_WaitingTimeAfterPlayerAction);
+            WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Call, played));
         }
@@ -523,20 +518,20 @@ namespace PokerWorld.Game
         {
             // Since every raise "restart" the round, 
             // the number of players who played is the number of AllIn players plus the raising player
-            m_Table.NbPlayed = m_Table.NbAllIn;
+            Table.NbPlayed = Table.NbAllIn;
             if (!p.IsAllIn)
-                m_Table.NbPlayed++;
+                Table.NbPlayed++;
 
-            m_Table.NoSeatLastRaise = p.NoSeat;
-            m_Table.HigherBet = p.MoneyBetAmnt;
+            Table.NoSeatLastRaise = p.NoSeat;
+            Table.HigherBet = p.MoneyBetAmnt;
 
-            WaitALittle(m_WaitingTimeAfterPlayerAction);
+            WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Raise, played));
         }
         private void ContinueBettingRound()
         {
-            if (m_Table.NbPlayingAndAllIn == 1 || m_Table.NbPlayed >= m_Table.NbPlayingAndAllIn)
+            if (Table.NbPlayingAndAllIn == 1 || Table.NbPlayed >= Table.NbPlayingAndAllIn)
                 EndBettingRound();
             else
                 ChooseNextPlayer();
@@ -547,15 +542,15 @@ namespace PokerWorld.Game
         }
         private void ChooseNextPlayer()
         {
-            PlayerInfo next = m_Table.GetPlayingPlayerNextTo(m_Table.NoSeatCurrPlayer);
+            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer);
 
-            m_Table.NoSeatCurrPlayer = next.NoSeat;
+            Table.NoSeatCurrPlayer = next.NoSeat;
 
-            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,m_Table.CurrentPlayer));
+            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,Table.CurrentPlayer));
 
             if (next.IsZombie)
             {
-                if (m_Table.CanCheck(next))
+                if (Table.CanCheck(next))
                     PlayMoney(next, 0);
                 else
                     PlayMoney(next, -1);
@@ -563,7 +558,7 @@ namespace PokerWorld.Game
         }
         private void DistributeMoney()
         {
-            foreach (MoneyPot pot in m_Table.Pots)
+            foreach (MoneyPot pot in Table.Pots)
             {
                 PlayerInfo[] players = pot.AttachedPlayers;
                 if (players.Length > 0)
@@ -576,7 +571,7 @@ namespace PokerWorld.Game
                             p.MoneySafeAmnt += wonAmount;
                             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
                             PlayerWonPot(this, new PotWonEventArgs(p, pot.Id, wonAmount));
-                            WaitALittle(m_WaitingTimeAfterPotWon);
+                            WaitALittle(Rules.WaitingTimes.AfterPotWon);
                         }
                     }
                 }
@@ -584,7 +579,7 @@ namespace PokerWorld.Game
         }
         private void DecideWinners()
         {
-            m_Table.CleanPotsForWinning();
+            Table.CleanPotsForWinning();
             AdvanceToNextGameState(); //Advancing to DistributeMoney State
         }
         private void WaitALittle(int waitingTime)
@@ -593,7 +588,7 @@ namespace PokerWorld.Game
         }
         private void TryToBegin()
         {
-            foreach (PlayerInfo p in m_Table.Players)
+            foreach (PlayerInfo p in Table.Players)
             {
                 if (p.IsZombie)
                     LeaveGame(p);
@@ -606,19 +601,19 @@ namespace PokerWorld.Game
                     p.IsPlaying = false;
             }
 
-            if (m_Table.NbPlaying >= m_Table.NbMinPlayersToStart)
+            if (Table.NbPlaying >= Table.Rules.MinPlayersToStart)
             {
-                m_Table.NbMinPlayersToStart = 2;
-                m_Table.InitTable();
+                Table.Rules.MinPlayersToStart = 2;
+                Table.InitTable();
                 m_Dealer.FreshDeck();
                 AdvanceToNextGameState(); //Advancing to WaitForBlinds State
                 GameBlindNeeded(this, new EventArgs());
             }
             else
             {
-                m_Table.NoSeatDealer = -1;
-                m_Table.NoSeatSmallBlind = -1;
-                m_Table.NoSeatSmallBlind = -1;
+                Table.NoSeatDealer = -1;
+                Table.NoSeatSmallBlind = -1;
+                Table.NoSeatSmallBlind = -1;
             }
         }
         #endregion Private Methods

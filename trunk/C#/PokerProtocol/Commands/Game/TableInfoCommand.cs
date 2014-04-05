@@ -6,6 +6,7 @@ using EricUtility.Networking.Commands;
 using PokerWorld.Game;
 using PokerProtocol.Entities;
 using PokerWorld.Game.Enums;
+using PokerWorld.Game.Rules;
 
 namespace PokerProtocol.Commands.Game
 {
@@ -13,31 +14,26 @@ namespace PokerProtocol.Commands.Game
     {
         public static string COMMAND_NAME = "gameTABLE_INFO";
 
+        public GameRule Rules { get; set; }
+
         public int TotalPotAmount { get; set; }
-        public int NbSeats { get; set; }
-        public int NbMinPlayersToStart { get; set; }
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
         public int NbPlayers { get; set; }
         public List<Player> Seats { get; set; }
-        public BetEnum Limit { get; set; }
-        public int BigBlindAmount { get; set; }
 
         public TableInfoCommand()
         {
         }
 
-        public TableInfoCommand(int totalPotAmount, int nbSeats, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats, BetEnum limit, int bigBlindAmount, int nbMinPlayersToStart)
+        public TableInfoCommand(GameRule rules, int totalPotAmount, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats)
         {
+            Rules = rules;
             TotalPotAmount = totalPotAmount;
-            NbSeats = nbSeats;
             PotsAmount = potsAmount;
             BoardCardIDs = boardCardIDs;
             NbPlayers = nbPlayers;
             Seats = seats;
-            Limit = limit;
-            BigBlindAmount = bigBlindAmount;
-            NbMinPlayersToStart = nbMinPlayersToStart;
         }
 
         public TableInfoCommand(TableInfo info, PlayerInfo pPlayer)
@@ -46,16 +42,17 @@ namespace PokerProtocol.Commands.Game
             BoardCardIDs = new List<int>();
             Seats = new List<Player>();
 
+            Rules = info.Rules;
+
             TotalPotAmount = info.TotalPotAmnt;
-            NbSeats = info.NbMaxSeats;
-            NbPlayers = info.NbMaxSeats;
+            NbPlayers = Rules.MaxPlayers;
 
             foreach (MoneyPot pot in info.Pots)
             {
                 PotsAmount.Add(pot.Amount);
             }
 
-            for (int i = info.Pots.Count; i < NbSeats; i++)
+            for (int i = info.Pots.Count; i < Rules.MaxPlayers; i++)
             {
                 PotsAmount.Add(0);
             }
@@ -65,7 +62,7 @@ namespace PokerProtocol.Commands.Game
                 BoardCardIDs.Add(boardCards[i].Id);
             }
 
-            for (int i = 0; i < info.NbMaxSeats; ++i)
+            for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
                 Player seat = new Player(i);
                 Seats.Add(seat);
@@ -89,17 +86,14 @@ namespace PokerProtocol.Commands.Game
                     seat.HoleCardIDs.Add(holeCards[j].Id);
                 }
 
-                seat.IsDealer = info.NoSeatDealer == i; // isDealer
-                seat.IsSmallBlind = info.NoSeatSmallBlind == i; // isSmallBlind
-                seat.IsBigBlind = info.NoSeatBigBlind == i; // isBigBlind
-                seat.IsCurrentPlayer = info.NoSeatCurrPlayer == i; // isCurrentPlayer
-                seat.TimeRemaining = 0; // timeRemaining
-                seat.Bet = player.MoneyBetAmnt; // betAmount
+                seat.IsDealer = info.NoSeatDealer == i;
+                seat.IsSmallBlind = info.NoSeatSmallBlind == i;
+                seat.IsBigBlind = info.NoSeatBigBlind == i;
+                seat.IsCurrentPlayer = info.NoSeatCurrPlayer == i;
+                seat.TimeRemaining = 0;
+                seat.Bet = player.MoneyBetAmnt;
                 seat.IsPlaying = player.IsPlaying;
             }
-            Limit = info.BetLimit;
-            BigBlindAmount = info.BigBlindAmnt;
-            NbMinPlayersToStart = info.NbMinPlayersToStart;
         }
     }
 }

@@ -9,6 +9,8 @@ using PokerProtocol;
 using BluffinPokerGui.Game;
 using EricUtility;
 using PokerProtocol.Entities;
+using PokerWorld.Game.Enums;
+using PokerWorld.Game.Rules;
 
 namespace BluffinPokerGUI.Lobby
 {
@@ -58,27 +60,23 @@ namespace BluffinPokerGUI.Lobby
         {
             datTables.Rows.Clear();
             List<Table> lst = new List<Table>();
+
             if (ShowTraining)
-            {
-                List<TableTraining> lstT = ((LobbyTCPClientTraining)m_Server).ListTables();
-                lst.AddRange(lstT.ToArray());
-            }
+                lst.AddRange(m_Server.ListTables(LobbyEnum.Training).ToArray());
             if (ShowCareer)
-            {
-                List<TableCareer> lstT = ((LobbyTCPClientCareer)m_Server).ListTables();
-                lst.AddRange(lstT.ToArray());
-            }
+                lst.AddRange(m_Server.ListTables(LobbyEnum.Career).ToArray());
+
             lst.Sort();
             for (int i = 0; i < lst.Count; ++i)
             {
                 Table info = lst[i];
-                string type = info is TableTraining ? "Training" : "Real";
+                string type = info.Rules.CurrentLobby.LobbyType == LobbyEnum.Training ? "Training" : "Real";
                 datTables.Rows.Add();
-                datTables.Rows[i].Cells[0].Value = info.NoPort;
-                datTables.Rows[i].Cells[1].Value = info.TableName;
-                datTables.Rows[i].Cells[2].Value = type + " - " + info.Limit.ToString();
+                datTables.Rows[i].Cells[0].Value = info.IdTable;
+                datTables.Rows[i].Cells[1].Value = info.Rules.TableName;
+                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Rules.LimitType).Name;
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
-                datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.NbSeats;
+                datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Rules.MaxPlayers;
             }
             if (datTables.RowCount > 0 && datTables.SelectedRows.Count > 0)
             {
@@ -87,27 +85,22 @@ namespace BluffinPokerGUI.Lobby
             }
             OnListRefreshed(this, new EventArgs());
         }
-        public void AddTable(bool trainingOnly)
+        public void AddTable(LobbyEnum lobby)
         {
-            //new CreateTableForm(m_Server.PlayerName, 1, trainingOnly, m_Server.GetSupportedRules()).ShowDialog();
-            AddTableForm form = new AddTableForm(m_Server.PlayerName, 1, trainingOnly, m_Server.GetSupportedRules());
-            form.ShowDialog();
-            if (form.OK)
+            CreateTableForm ctf = new CreateTableForm(m_Server.PlayerName, 1, lobby, m_Server.GetSupportedRules());
+            ctf.ShowDialog();
+            GameRule gameRule = ctf.GameRules;
+            if(gameRule != null)
             {
-                int noPort = -1;
-                if (form.Training)
-                    noPort = ((LobbyTCPClientTraining)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.NbPlayerMin, form.TrainingStartingAmount);
-                else
-                    noPort = ((LobbyTCPClientCareer)m_Server).CreateTable(form.TableName, form.BigBlind, form.NbPlayer, form.WaitingTimeAfterPlayerAction, form.WaitingTimeAfterBoardDealed, form.WaitingTimeAfterPotWon, form.Limit, form.NbPlayerMin);
-
-                if (noPort != -1)
+                int id = m_Server.CreateTable(gameRule);
+                if (id != -1)
                 {
-                    JoinTable(noPort, form.TableName, form.BigBlind);
+                    JoinTable(id, gameRule.TableName, gameRule.BlindAmount);
                     RefreshList();
                 }
                 else
                 {
-                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", form.TableName);
+                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", gameRule.TableName);
                 }
             }
         }

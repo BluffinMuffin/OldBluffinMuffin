@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PokerWorld.Game.Enums
 {
-    public enum BetEnum
+    public enum LobbyEnum
     {
-        NoLimit,
-        BetLimit,
-        PotLimit
+        Training,
+        Career
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PokerWorld.Game;
 using PokerWorld.Game.Dealer;
 using PokerWorld.Game.Enums;
+using PokerWorld.Game.Rules;
 
 namespace Test.PokerWorld
 {
@@ -14,8 +15,7 @@ namespace Test.PokerWorld
         [TestMethod]
         public void JoinAndLeaveTest()
         {
-            TableInfoCareer table = new TableInfoCareer(2);
-            PokerGame game = new PokerGameCareer(table, 0, 0, 0);
+            PokerGame game = new PokerGame( new TableInfo(new GameRule() { MaxPlayers = 2}));
             PlayerInfo p1 = new PlayerInfo("p1", 5000);
             PlayerInfo p1Dup = new PlayerInfo("p1", 5000);
             PlayerInfo p2 = new PlayerInfo("p2", 5000);
@@ -48,8 +48,7 @@ namespace Test.PokerWorld
         public void BlindsTest()
         {
             //start the game with p1 and p2
-            TableInfoCareer table = new TableInfoCareer(2);
-            PokerGame game = new PokerGameCareer(table, 0, 0, 0);
+            PokerGame game = new PokerGame( new TableInfo(new GameRule() { MaxPlayers = 2}));
             game.Start();
             PlayerInfo p1 = new PlayerInfo("p1", 5000);
             SitInGame(game, p1);
@@ -92,8 +91,7 @@ namespace Test.PokerWorld
         [TestMethod]
         public void StatesTest()
         {
-            TableInfoCareer table = new TableInfoCareer(2);
-            PokerGame game = new PokerGameCareer(table, 0, 0, 0);
+            PokerGame game = new PokerGame(new TableInfo(new GameRule() { MaxPlayers = 2 }));
 
             Assert.AreEqual(GameStateEnum.Init, game.State, "The game should not be started");
 
@@ -184,8 +182,7 @@ namespace Test.PokerWorld
         public void BettingTest()
         {
             //start the game
-            TableInfoCareer table = new TableInfoCareer(2);
-            PokerGame game = new PokerGameCareer(table, 0, 0, 0);
+            PokerGame game = new PokerGame(new TableInfo(new GameRule() { MaxPlayers = 2 }));
             game.Start();
 
             //make p1 join the game

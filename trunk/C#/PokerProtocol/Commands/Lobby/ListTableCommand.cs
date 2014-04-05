@@ -7,30 +7,22 @@ using PokerProtocol.Commands.Lobby.Training;
 using PokerProtocol.Commands.Lobby.Career;
 using PokerProtocol.Entities;
 using Newtonsoft.Json.Linq;
+using PokerWorld.Game.Enums;
 
 namespace PokerProtocol.Commands.Lobby
 {
     public class ListTableCommand : AbstractLobbyCommand
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
-        public bool Training { get; set; }
-
-        public ListTableCommand()
+        public LobbyEnum[] LobbyTypes { get; set; }
+        public ListTableCommand(params LobbyEnum[] lobbyTypes)
         {
-        }
-        public ListTableCommand(bool training)
-        {
-            Training = training;
+            LobbyTypes = lobbyTypes;
         }
 
-        public string EncodeTrainingResponse(List<TableTraining> tables)
+        public string EncodeResponse(List<Table> tables)
         {
-            return new ListTableTrainingResponse(this, tables).Encode();
-        }
-
-        public string EncodeCareerResponse(List<TableCareer> tables)
-        {
-            return new ListTableCareerResponse(this, tables).Encode();
+            return new ListTableResponse(this, tables).Encode();
         }
     }
 }
