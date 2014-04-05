@@ -14,6 +14,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.PokerEventArgs;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
@@ -100,7 +101,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             InitPotAmounts(cmd.PotsAmounts, 0);
             m_PokerTable.HigherBet = 0;
-            m_PokerTable.Players.ForEach(p => p.MoneyBetAmnt = 0);
+            m_PokerTable.Players.ForEach(p => p.Info.MoneyBetAmnt = 0);
 
             GameBettingRoundEnded(this, new RoundEventArgs(cmd.Round));
         }
@@ -110,7 +111,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             BetTurnStartedCommand cmd = e.Command;
             SetCards(cmd.CardsID);
             m_PokerTable.Round = cmd.Round;
-            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundTypeEnum.Preflop ? m_PokerTable.NoSeatBigBlind : m_PokerTable.NoSeatDealer).NoSeat;
+            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundTypeEnum.Preflop ? m_PokerTable.NoSeatBigBlind : m_PokerTable.NoSeatDealer).Info.NoSeat;
 
             GameBettingRoundStarted(this, new RoundEventArgs(cmd.Round));
         }
@@ -146,7 +147,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             if (p != null)
             {
-                SetPlayerVisibility(p, cmd.IsPlaying, cmd.CardsID);
+                SetPlayerVisibility(p, cmd.IsPlaying, cmd.CardsID.Select(id => new GameCard(id)).ToList());
 
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
             }
@@ -156,7 +157,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         void m_CommandObserver_PlayerJoinedCommandReceived(object sender, CommandEventArgs<PlayerJoinedCommand> e)
         {
             PlayerJoinedCommand cmd = e.Command;
-            PokerPlayer p = new PokerPlayer(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
+            PokerPlayer p = new PokerPlayer(new PlayerInfo(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos });
 
             m_PokerTable.ForceJoinTable(p, cmd.PlayerPos);
 
@@ -184,7 +185,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             if (p != null)
             {
-                p.MoneySafeAmnt = cmd.PlayerMoney;
+                p.Info.MoneySafeAmnt = cmd.PlayerMoney;
 
                 PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
             }
@@ -216,10 +217,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             if (p != null)
             {
                 if (cmd.ActionType == GameActionEnum.Raise)
-                    m_PokerTable.NoSeatLastRaise = p.NoSeat;
+                    m_PokerTable.NoSeatLastRaise = p.Info.NoSeat;
 
-                p.MoneyBetAmnt = cmd.PlayerBet;
-                p.MoneySafeAmnt = cmd.PlayerMoney;
+                p.Info.MoneyBetAmnt = cmd.PlayerBet;
+                p.Info.MoneySafeAmnt = cmd.PlayerMoney;
                 p.IsPlaying = cmd.IsPlaying;
 
                 PlayerActionTaken(this, new PlayerActionEventArgs(p, cmd.ActionType, cmd.ActionAmount));
@@ -233,7 +234,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             if (p != null)
             {
-                p.MoneySafeAmnt = cmd.PlayerMoney;
+                p.Info.MoneySafeAmnt = cmd.PlayerMoney;
 
                 PlayerWonPot(this, new PotWonEventArgs(p, cmd.PotID, cmd.Shared));
             }
@@ -255,16 +256,16 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             for (int i = 0; i < cmd.NbPlayers; ++i)
             {
-                PlayerInfo seat = cmd.Seats[i];
+                SeatInfo seat = cmd.Seats[i];
                 if (seat.IsEmpty)
                 {
                     continue;
                 }
                 int noSeat = seat.NoSeat;
-                PokerPlayer p = new PokerPlayer(seat.PlayerName, seat.Money) { NoSeat = noSeat };
+                PokerPlayer p = new PokerPlayer(seat.Player);
                 m_PokerTable.ForceJoinTable(p, noSeat);
 
-                SetPlayerVisibility(p, seat.IsPlaying, seat.HoleCardIDs);
+                SetPlayerVisibility(p, seat.IsPlaying, seat.Player.HoleCards);
 
                 if (seat.IsDealer)
                     m_PokerTable.NoSeatDealer = noSeat;
@@ -277,8 +278,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                 if (seat.IsCurrentPlayer)
                     m_PokerTable.NoSeatCurrPlayer = noSeat;
-
-                p.MoneyBetAmnt = seat.Bet;
 
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
 
@@ -328,10 +327,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
         }
 
-        private void SetPlayerVisibility(PokerPlayer p, bool isPlaying, List<int> cardIds)
+        private void SetPlayerVisibility(PokerPlayer p, bool isPlaying, List<GameCard> cards)
         {
             p.IsPlaying = isPlaying;
-            p.Cards = cardIds.Select(c => new GameCard(c)).ToArray();
+            p.Cards = cards.ToArray();
         }
         #endregion Private Methods
     }

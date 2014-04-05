@@ -148,8 +148,8 @@ namespace BluffinPokerServer
                     m_Tables.Add(e.Command.TableID, client);
                     client.Start();
 
-                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Rules.TableName, e.Command.TableID, client.Player.NoSeat);
-                    Send(e.Command.EncodeResponse(client.Player.NoSeat));
+                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Rules.TableName, e.Command.TableID, client.Player.Info.NoSeat);
+                    Send(e.Command.EncodeResponse(client.Player.Info.NoSeat));
 
                     client.SitIn();
                 }
