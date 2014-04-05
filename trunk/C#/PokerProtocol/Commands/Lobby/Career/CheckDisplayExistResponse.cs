@@ -17,10 +17,9 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
         }
 
-        public CheckDisplayExistResponse(CheckDisplayExistCommand command, bool exist)
+        public CheckDisplayExistResponse(CheckDisplayExistCommand command)
             : base(command)
         {
-            Exist = exist;
         }
     }
 }

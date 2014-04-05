@@ -56,7 +56,7 @@ namespace PokerProtocol
         #region GameClient Event Handler
         protected void client_SendedSomething(object sender, KeyEventArgs<string> e)
         {
-            Send(new GameCommand(((GameClient)sender).NoPort, e.Key));
+            Send(new GameCommand() { TableID = ((GameClient)sender).NoPort, EncodedCommand = e.Key });
         }
 
         #endregion GameClient Event Handler
@@ -162,7 +162,7 @@ namespace PokerProtocol
 
         public int CreateTable(GameRule gr)
         {
-            Send(new CreateTableCommand(gr));
+            Send(new CreateTableCommand() { GameRules = gr });
 
             return WaitAndReceive<CreateTableResponse>().IdTable;
         }
@@ -223,8 +223,11 @@ namespace PokerProtocol
 
         protected virtual int GetJoinedSeat(int p_noPort, string player)
         {
-            JoinTableCommand cmd = new JoinTableCommand(p_noPort, player);
-            Send(cmd);
+            Send(new JoinTableCommand()
+            {
+                TableID = p_noPort,
+                PlayerName = player,
+            });
 
             return WaitAndReceive<JoinTableResponse>().NoSeat;
         }
@@ -265,7 +268,7 @@ namespace PokerProtocol
                         Thread.Sleep(100);
 
                     if (m_Clients.ContainsKey(c.TableID))
-                        m_Clients[c.TableID].Incoming(c.Command);
+                        m_Clients[c.TableID].Incoming(c.DecodedCommand);
                 }
                 else
                     m_Incoming.Enqueue(line);
@@ -274,7 +277,7 @@ namespace PokerProtocol
 
         public List<TableInfo> ListTables(params LobbyTypeEnum[] lobbyTypes)
         {
-            Send(new ListTableCommand(lobbyTypes));
+            Send(new ListTableCommand() { LobbyTypes = lobbyTypes });
 
             return WaitAndReceive<ListTableResponse>().Tables;
         }

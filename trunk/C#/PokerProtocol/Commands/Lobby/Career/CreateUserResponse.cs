@@ -18,10 +18,9 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
         }
 
-        public CreateUserResponse(CreateUserCommand command, bool success)
+        public CreateUserResponse(CreateUserCommand command)
             : base(command)
         {
-            Success = success;
         }
     }
 }

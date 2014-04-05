@@ -13,18 +13,9 @@ namespace PokerProtocol.Commands.Lobby.Training
 
         public string Name { get; set; }
 
-        public IdentifyCommand()
-        {
-        }
-
-        public IdentifyCommand(string name)
-        {
-            Name = name;
-        }
-
         public string EncodeResponse( bool success )
         {
-            return new IdentifyResponse(this, success).Encode();
+            return new IdentifyResponse(this) { OK = success }.Encode();
         }
     }
 }

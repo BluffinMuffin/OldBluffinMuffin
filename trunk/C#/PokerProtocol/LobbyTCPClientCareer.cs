@@ -36,35 +36,54 @@ namespace PokerProtocol
 
         public bool CheckUsernameAvailable(string username)
         {
-            Send(new CheckUserExistCommand(username));
+            Send(new CheckUserExistCommand()
+            {
+                Username = username,
+            });
 
             return !WaitAndReceive<CheckUserExistResponse>().Exist;
         }
 
         public bool CheckDisplayNameAvailable(string display)
         {
-            Send(new CheckDisplayExistCommand(display));
+            Send(new CheckDisplayExistCommand()
+            {
+                DisplayName = display,
+            });
 
             return !WaitAndReceive<CheckDisplayExistResponse>().Exist;
         }
 
         public bool CreateUser(string username, string password, string email, string displayname)
         {
-            Send(new CreateUserCommand(username, password, email, displayname));
+            Send(new CreateUserCommand()
+            {
+                Username = username,
+                Password = password,
+                Email = email,
+                DisplayName = displayname,
+            });
 
             return WaitAndReceive<CreateUserResponse>().Success;
         }
 
         public bool Authenticate(string username, string password)
         {
-            Send(new AuthenticateUserCommand(username, password));
+            Send(new AuthenticateUserCommand()
+            {
+                Username = username,
+                Password = password,
+            });
 
             return WaitAndReceive<AuthenticateUserResponse>().Success;
         }
 
         public void RefreshUserInfo(string username)
         {
-            Send(new GetUserCommand(username));
+            Send(new GetUserCommand()
+            {
+                Username = username,
+            });
 
             GetUserResponse response = WaitAndReceive<GetUserResponse>();
             m_PlayerName = response.DisplayName;

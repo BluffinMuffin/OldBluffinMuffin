@@ -15,14 +15,10 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES";
         public LobbyTypeEnum[] LobbyTypes { get; set; }
-        public ListTableCommand(params LobbyTypeEnum[] lobbyTypes)
-        {
-            LobbyTypes = lobbyTypes;
-        }
 
         public string EncodeResponse(List<TableInfo> tables)
         {
-            return new ListTableResponse(this, tables).Encode();
+            return new ListTableResponse(this) { Tables = tables }.Encode();
         }
     }
 }

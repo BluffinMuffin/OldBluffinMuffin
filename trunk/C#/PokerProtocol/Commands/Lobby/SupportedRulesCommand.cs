@@ -17,13 +17,9 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbySUPPORTED_RULES";
 
-        public SupportedRulesCommand()
-        {
-        }
-
         public string EncodeResponse()
         {
-            return new SupportedRulesResponse(this, RuleFactory.SupportedRules.ToList()).Encode();
+            return new SupportedRulesResponse(this) { Rules = RuleFactory.SupportedRules.ToList() }.Encode();
         }
     }
 }

@@ -15,18 +15,9 @@ namespace PokerProtocol.Commands.Lobby
         public static string COMMAND_NAME = "lobbyCREATE_TABLE";
         public GameRule GameRules { get; set; }
 
-        public CreateTableCommand()
-        {
-        }
-
-        public CreateTableCommand(GameRule rules)
-        {
-            GameRules = rules;
-        }
-
         public string EncodeResponse(int id)
         {
-            return new CreateTableResponse(this, id).Encode();
+            return new CreateTableResponse(this) { IdTable = id }.Encode();
         }
     }
 }

@@ -22,10 +22,9 @@ namespace PokerProtocol.Commands.Lobby
             : base()
         {
         }
-        public SupportedRulesResponse(SupportedRulesCommand command, List<RuleInfo> rules)
+        public SupportedRulesResponse(SupportedRulesCommand command)
             : base(command)
         {
-            Rules = rules;
         }
     }
 }

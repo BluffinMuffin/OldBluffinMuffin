@@ -114,7 +114,7 @@ namespace BluffinPokerServer
 
         void m_CommandObserver_GameCommandReceived(object sender, CommandEventArgs<GameCommand> e)
         {
-            m_Tables[e.Command.TableID].Incoming(e.Command.Command);
+            m_Tables[e.Command.TableID].Incoming(e.Command.DecodedCommand);
         }
 
         void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)
@@ -168,7 +168,7 @@ namespace BluffinPokerServer
         void client_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
         {
             GameServer client = (GameServer)sender;
-            Send(new GameCommand(client.ID,e.Key));
+            Send(new GameCommand() { TableID = client.ID, EncodedCommand = e.Key });
         }
         public override void OnReceiveCrashed(Exception e)
         {

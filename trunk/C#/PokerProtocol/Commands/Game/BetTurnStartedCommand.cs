@@ -13,21 +13,5 @@ namespace PokerProtocol.Commands.Game
 
         public RoundTypeEnum Round { get; set; }
         public List<int> CardsID { get; set; }
-
-        public BetTurnStartedCommand()
-        {
-        }
-
-        public BetTurnStartedCommand(RoundTypeEnum round,params int[] cardsID)
-        {
-            CardsID = new List<int>(cardsID);
-            Round = round;
-        }
-
-        public BetTurnStartedCommand(RoundTypeEnum round, List<int> cardsID)
-        {
-            CardsID = cardsID;
-            Round = round;
-        }
     }
 }

@@ -12,27 +12,19 @@ namespace PokerProtocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyJOIN_TABLE";
 
+        public static int NOT_SEATED { get { return -1; } }
+
         public int TableID { get; set; }
         public string PlayerName { get; set; }
 
-        public JoinTableCommand()
-        {
-        }
-
-        public JoinTableCommand(int p_tableID, string p_playerName)
-        {
-            TableID = p_tableID;
-            PlayerName = p_playerName;
-        }
-
         public string EncodeResponse(int seat)
         {
-            return new JoinTableResponse(this, seat).Encode();
+            return new JoinTableResponse(this) { NoSeat = seat }.Encode();
         }
 
         public string EncodeErrorResponse()
         {
-            return new JoinTableResponse(this, -1).Encode();
+            return new JoinTableResponse(this) { NoSeat = JoinTableCommand.NOT_SEATED }.Encode();
         }
     }
 }

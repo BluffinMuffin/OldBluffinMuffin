@@ -14,18 +14,14 @@ namespace PokerProtocol.Commands.Lobby.Career
 
         public string Username { get; set; }
 
-        public GetUserCommand()
-        {
-        }
-
-        public GetUserCommand(string p_Username)
-        {
-            Username = p_Username;
-        }
-
         public string EncodeResponse(string mail, string display, double money)
         {
-            return new GetUserResponse(this, mail, display, money).Encode();
+            return new GetUserResponse(this)
+            {
+                Email = mail,
+                DisplayName = display,
+                Money = money,
+            }.Encode();
         }
     }
 }

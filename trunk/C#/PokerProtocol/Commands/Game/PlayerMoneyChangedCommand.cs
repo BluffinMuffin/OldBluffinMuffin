@@ -10,15 +10,5 @@ namespace PokerProtocol.Commands.Game
 
         public int PlayerPos { get; set; }
         public int PlayerMoney { get; set; }
-
-        public PlayerMoneyChangedCommand()
-        {
-        }
-
-        public PlayerMoneyChangedCommand(int pos, int money)
-        {
-            PlayerPos = pos;
-            PlayerMoney = money;
-        }
     }
 }

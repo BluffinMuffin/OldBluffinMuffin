@@ -12,23 +12,5 @@ namespace PokerProtocol.Commands.Game
         public int PlayerPos { get; set; }
         public bool IsPlaying { get; set; }
         public List<int> CardsID { get; set; }
-
-        public PlayerHoleCardsChangedCommand()
-        {
-        }
-
-        public PlayerHoleCardsChangedCommand(int pos, bool playing, params int[] cardsID)
-        {
-            CardsID = new List<int>(cardsID);
-            PlayerPos = pos;
-            IsPlaying = playing;
-        }
-
-        public PlayerHoleCardsChangedCommand(int pos, bool playing, List<int> cardsID)
-        {
-            CardsID = cardsID;
-            PlayerPos = pos;
-            IsPlaying = playing;
-        }
     }
 }

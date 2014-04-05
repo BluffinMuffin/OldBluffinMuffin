@@ -15,7 +15,6 @@ namespace PokerProtocol.Commands.Game
         public static string COMMAND_NAME = "gameTABLE_INFO";
 
         public GameRule Rules { get; set; }
-
         public int TotalPotAmount { get; set; }
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
@@ -24,16 +23,6 @@ namespace PokerProtocol.Commands.Game
 
         public TableInfoCommand()
         {
-        }
-
-        public TableInfoCommand(GameRule rules, int totalPotAmount, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<PlayerInfo> seats)
-        {
-            Rules = rules;
-            TotalPotAmount = totalPotAmount;
-            PotsAmount = potsAmount;
-            BoardCardIDs = boardCardIDs;
-            NbPlayers = nbPlayers;
-            Seats = seats;
         }
 
         public TableInfoCommand(PokerTable info, PokerPlayer pPlayer)

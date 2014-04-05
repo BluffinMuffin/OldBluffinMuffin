@@ -14,18 +14,9 @@ namespace PokerProtocol.Commands.Lobby.Career
 
         public string Username { get; set; }
 
-        public CheckUserExistCommand()
+        public string EncodeResponse(bool exist)
         {
-        }
-
-        public CheckUserExistCommand(string p_Username)
-        {
-            Username = p_Username;
-        }
-
-        public string EncodeResponse(bool yes)
-        {
-            return new CheckUserExistResponse(this, yes).Encode();
+            return new CheckUserExistResponse(this) { Exist = exist }.Encode();
         }
     }
 }

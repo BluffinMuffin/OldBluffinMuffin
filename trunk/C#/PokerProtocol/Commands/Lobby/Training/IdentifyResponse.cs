@@ -18,10 +18,9 @@ namespace PokerProtocol.Commands.Lobby.Training
         {
         }
 
-        public IdentifyResponse(IdentifyCommand command, bool ok)
+        public IdentifyResponse(IdentifyCommand command)
             : base(command)
         {
-            OK = ok;
         }
     }
 }
