@@ -22,31 +22,10 @@ namespace PokerProtocol.Entities
         public int Bet { get; set; }
         public bool IsPlaying { get; set; }
 
-        public PlayerInfo(int noSeat, bool isEmpty, string playerName, int money, List<int> hole, bool isDealer, bool isSmallBlind, bool isBigBlind, bool isCurrentPlayer, int timeRemaining, int bet, bool isPlaying)
-        {
-            NoSeat = noSeat;
-            IsEmpty = isEmpty;
-            PlayerName = playerName;
-            Money = money;
-            HoleCardIDs = hole;
-            IsDealer = isDealer;
-            IsSmallBlind = isSmallBlind;
-            IsBigBlind = isBigBlind;
-            IsCurrentPlayer = isCurrentPlayer;
-            TimeRemaining = timeRemaining;
-            Bet = bet;
-            IsPlaying = isPlaying;
-        }
-
-        public PlayerInfo(int noSeat)
-        {
-            HoleCardIDs = new List<int>();
-            NoSeat = noSeat;
-            IsEmpty = true;
-        }
-
         public PlayerInfo()
         {
+            HoleCardIDs = new List<int>();
+            IsEmpty = true;
         }
     }
 }

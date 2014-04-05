@@ -17,18 +17,6 @@ namespace PokerProtocol.Entities
         public LobbyActionEnum PossibleAction { get; set; }
         public GameRule Rules { get; set; }
 
-        public TableInfo(int idTable, GameRule rules, int nbPlayers, LobbyActionEnum possibleAction)
-        {
-            IdTable = idTable;
-            Rules = rules;
-            NbPlayers = nbPlayers;
-            PossibleAction = possibleAction;
-        }
-
-        public TableInfo()
-        {
-        }
-
         public int CompareTo(TableInfo other)
         {
             return IdTable.CompareTo(other.IdTable);

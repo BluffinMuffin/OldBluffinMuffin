@@ -138,26 +138,12 @@ namespace PokerWorld.Game
             MoneyBetAmnt = 0;
             MoneyInitAmnt = 0;
         }
-        public PokerPlayer(String name)
+        public PokerPlayer(String name, int money)
             : this()
         {
             Name = name;
-        }
-        public PokerPlayer(int seat)
-            : this()
-        {
-            NoSeat = seat;
-        }
-        public PokerPlayer(String name, int money)
-            : this(name)
-        {
             MoneySafeAmnt = money;
             MoneyInitAmnt = money;
-        }
-        public PokerPlayer(int seat, String name, int money):
-            this(name, money)
-        {
-            NoSeat = seat;
         }
         #endregion Ctors & Init
 
