@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
-namespace PokerWorld.Game.Dealer
+namespace Com.Ericmas001.Game.Poker.Logic
 {
-    public class RandomDealer : AbstractDealer
+    public class TexasHoldemDealer : AbstractDealer
     {
-        public override GameCard[] DealHoles(PokerPlayer p)
+        public override GameCard[] DealHoles()
         {
             GameCard[] set = new GameCard[2];
             set[0] = m_Deck.Pop();

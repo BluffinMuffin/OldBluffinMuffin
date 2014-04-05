@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\Dealer\AbstractDealer.cs" />
     <Compile Include="Game\Enums\GameTypeEnum.cs" />
     <Compile Include="Game\Enums\BlindTypeEnum.cs" />
     <Compile Include="Game\Enums\GameStateEnum.cs" />
@@ -70,7 +69,6 @@
     <Compile Include="Game\MoneyPot.cs" />
     <Compile Include="Game\PokerPlayer.cs" />
     <Compile Include="Game\PokerGame.cs" />
-    <Compile Include="Game\Dealer\RandomDealer.cs" />
     <Compile Include="Game\PokerTable.cs" />
     <Compile Include="Game\Enums\GameActionEnum.cs" />
     <Compile Include="Game\Enums\LimitTypeEnum.cs" />
@@ -82,6 +80,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
+      <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
+      <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Logic\Com.Ericmas001.Game.Poker.Logic.csproj">
+      <Project>{27a8b599-cd12-415a-b20f-4f1e718a1a0b}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_2013.csproj">
       <Project>{3177997f-d216-4b02-855b-9bde6406d51f}</Project>
       <Name>EricUtilityGames_2013</Name>

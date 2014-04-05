@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
 
-namespace PokerWorld.Game.Dealer
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public abstract class AbstractDealer
     {
@@ -14,7 +14,7 @@ namespace PokerWorld.Game.Dealer
             FreshDeck();
         }
 
-        public abstract GameCard[] DealHoles(PokerPlayer p);
+        public abstract GameCard[] DealHoles();
         public abstract GameCard[] DealFlop();
         public abstract GameCard DealTurn();
         public abstract GameCard DealRiver();

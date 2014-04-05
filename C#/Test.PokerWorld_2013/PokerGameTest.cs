@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PokerWorld.Game;
-using PokerWorld.Game.Dealer;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.Rules;
 
