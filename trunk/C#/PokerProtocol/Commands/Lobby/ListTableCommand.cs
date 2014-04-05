@@ -20,7 +20,7 @@ namespace PokerProtocol.Commands.Lobby
             LobbyTypes = lobbyTypes;
         }
 
-        public string EncodeResponse(List<Table> tables)
+        public string EncodeResponse(List<TableInfo> tables)
         {
             return new ListTableResponse(this, tables).Encode();
         }

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PokerWorld.Game
 {
-    public class PlayerInfo
+    public class PokerPlayer
     {
         #region Fields
         private readonly GameCard[] m_Cards = new GameCard[2]; // Player Cards
@@ -130,7 +130,7 @@ namespace PokerWorld.Game
         #endregion Properties
 
         #region Ctors & Init
-        public PlayerInfo()
+        public PokerPlayer()
         {
             Name = "Anonymous Player";
             NoSeat = -1;
@@ -138,23 +138,23 @@ namespace PokerWorld.Game
             MoneyBetAmnt = 0;
             MoneyInitAmnt = 0;
         }
-        public PlayerInfo(String name)
+        public PokerPlayer(String name)
             : this()
         {
             Name = name;
         }
-        public PlayerInfo(int seat)
+        public PokerPlayer(int seat)
             : this()
         {
             NoSeat = seat;
         }
-        public PlayerInfo(String name, int money)
+        public PokerPlayer(String name, int money)
             : this(name)
         {
             MoneySafeAmnt = money;
             MoneyInitAmnt = money;
         }
-        public PlayerInfo(int seat, String name, int money):
+        public PokerPlayer(int seat, String name, int money):
             this(name, money)
         {
             NoSeat = seat;

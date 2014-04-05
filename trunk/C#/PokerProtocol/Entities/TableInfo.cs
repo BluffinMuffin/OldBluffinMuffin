@@ -10,7 +10,7 @@ using PokerWorld.Game.Rules;
 
 namespace PokerProtocol.Entities
 {
-    public class Table : IComparable<Table>
+    public class TableInfo : IComparable<TableInfo>
     {
         public int IdTable { get; set; }
         public int BigBlind { get; set; }
@@ -18,7 +18,7 @@ namespace PokerProtocol.Entities
         public LobbyActionEnum PossibleAction { get; set; }
         public GameRule Rules { get; set; }
 
-        public Table(int idTable, GameRule rules, int nbPlayers, LobbyActionEnum possibleAction)
+        public TableInfo(int idTable, GameRule rules, int nbPlayers, LobbyActionEnum possibleAction)
         {
             IdTable = idTable;
             Rules = rules;
@@ -26,11 +26,11 @@ namespace PokerProtocol.Entities
             PossibleAction = possibleAction;
         }
 
-        public Table()
+        public TableInfo()
         {
         }
 
-        public int CompareTo(Table other)
+        public int CompareTo(TableInfo other)
         {
             return IdTable.CompareTo(other.IdTable);
         }

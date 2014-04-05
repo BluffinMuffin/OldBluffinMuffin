@@ -10,7 +10,7 @@ namespace PokerWorld.Game
     public class MoneyPot
     {
         #region Fields
-        private readonly List<PlayerInfo> m_AttachedPlayers = new List<PlayerInfo>();
+        private readonly List<PokerPlayer> m_AttachedPlayers = new List<PokerPlayer>();
         #endregion Fields
 
         #region Properties
@@ -28,7 +28,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Number of player playing for this Pot
         /// </summary>
-        public PlayerInfo[] AttachedPlayers
+        public PokerPlayer[] AttachedPlayers
         {
             get { return m_AttachedPlayers.ToArray(); }
         }
@@ -52,7 +52,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Attach a player to the MoneyPot
         /// </summary>
-        public void AttachPlayer(PlayerInfo p)
+        public void AttachPlayer(PokerPlayer p)
         {
             m_AttachedPlayers.Add(p);
         }
@@ -60,7 +60,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Detach a player from the MoneyPot
         /// </summary>
-        public void DetachPlayer(PlayerInfo p)
+        public void DetachPlayer(PokerPlayer p)
         {
             m_AttachedPlayers.Remove(p);
         }

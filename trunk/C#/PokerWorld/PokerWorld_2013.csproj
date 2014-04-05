@@ -72,10 +72,10 @@
     <Compile Include="Game\IPokerGame.cs" />
     <Compile Include="Game\IPokerViewer.cs" />
     <Compile Include="Game\MoneyPot.cs" />
-    <Compile Include="Game\PlayerInfo.cs" />
+    <Compile Include="Game\PokerPlayer.cs" />
     <Compile Include="Game\PokerGame.cs" />
     <Compile Include="Game\Dealer\RandomDealer.cs" />
-    <Compile Include="Game\TableInfo.cs" />
+    <Compile Include="Game\PokerTable.cs" />
     <Compile Include="Game\Enums\GameActionEnum.cs" />
     <Compile Include="Game\Enums\LimitTypeEnum.cs" />
     <Compile Include="Game\Enums\RoundTypeEnum.cs" />

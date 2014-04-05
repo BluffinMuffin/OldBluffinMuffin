@@ -272,7 +272,7 @@ namespace PokerProtocol
             }
         }
 
-        public List<Table> ListTables(params LobbyTypeEnum[] lobbyTypes)
+        public List<TableInfo> ListTables(params LobbyTypeEnum[] lobbyTypes)
         {
             Send(new ListTableCommand(lobbyTypes));
 

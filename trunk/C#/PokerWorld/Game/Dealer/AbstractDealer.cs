@@ -14,7 +14,7 @@ namespace PokerWorld.Game.Dealer
             FreshDeck();
         }
 
-        public abstract GameCard[] DealHoles(PlayerInfo p);
+        public abstract GameCard[] DealHoles(PokerPlayer p);
         public abstract GameCard[] DealFlop();
         public abstract GameCard DealTurn();
         public abstract GameCard DealRiver();

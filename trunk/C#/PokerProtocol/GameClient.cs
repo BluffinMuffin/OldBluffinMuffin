@@ -21,7 +21,7 @@ namespace PokerProtocol
     public class GameClient : CommandQueueCommunicator<GameClientCommandObserver>, IPokerGame
     {
         #region Fields
-        private readonly TableInfo m_PokerTable = new TableInfo();
+        private readonly PokerTable m_PokerTable = new PokerTable();
         private readonly int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
@@ -44,7 +44,7 @@ namespace PokerProtocol
         #endregion Events
 
         #region Properties
-        public TableInfo Table { get { return m_PokerTable; } }
+        public PokerTable Table { get { return m_PokerTable; } }
         public int NoSeat { get { return m_TablePosition; } }
         public int NoPort { get { return m_NoPort; } }
         public string Encode
@@ -142,7 +142,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerHoleCardsChangedCommandReceived(object sender, CommandEventArgs<PlayerHoleCardsChangedCommand> e)
         {
             PlayerHoleCardsChangedCommand cmd = e.Command;
-            PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+            PokerPlayer p = m_PokerTable.GetPlayer(cmd.PlayerPos);
 
             if (p != null)
             {
@@ -156,7 +156,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerJoinedCommandReceived(object sender, CommandEventArgs<PlayerJoinedCommand> e)
         {
             PlayerJoinedCommand cmd = e.Command;
-            PlayerInfo p = new PlayerInfo(cmd.PlayerPos, cmd.PlayerName, cmd.PlayerMoney);
+            PokerPlayer p = new PokerPlayer(cmd.PlayerPos, cmd.PlayerName, cmd.PlayerMoney);
 
             m_PokerTable.ForceJoinTable(p, cmd.PlayerPos);
 
@@ -167,7 +167,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerLeftCommandReceived(object sender, CommandEventArgs<PlayerLeftCommand> e)
         {
             PlayerLeftCommand cmd = e.Command;
-            PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+            PokerPlayer p = m_PokerTable.GetPlayer(cmd.PlayerPos);
 
             if (p != null)
             {
@@ -180,7 +180,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerMoneyChangedCommandReceived(object sender, CommandEventArgs<PlayerMoneyChangedCommand> e)
         {
             PlayerMoneyChangedCommand cmd = e.Command;
-            PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+            PokerPlayer p = m_PokerTable.GetPlayer(cmd.PlayerPos);
 
             if (p != null)
             {
@@ -193,8 +193,8 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerTurnBeganCommandReceived(object sender, CommandEventArgs<PlayerTurnBeganCommand> e)
         {
             PlayerTurnBeganCommand cmd = e.Command;
-            PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
-            PlayerInfo l = m_PokerTable.GetPlayer(cmd.LastPlayerNoSeat);
+            PokerPlayer p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+            PokerPlayer l = m_PokerTable.GetPlayer(cmd.LastPlayerNoSeat);
 
             if (p != null)
             {
@@ -208,7 +208,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerTurnEndedCommandReceived(object sender, CommandEventArgs<PlayerTurnEndedCommand> e)
         {
             PlayerTurnEndedCommand cmd = e.Command;
-            PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+            PokerPlayer p = m_PokerTable.GetPlayer(cmd.PlayerPos);
 
             m_PokerTable.HigherBet = Math.Max(m_PokerTable.HigherBet, cmd.PlayerBet);
             m_PokerTable.TotalPotAmnt = cmd.TotalPot;
@@ -229,7 +229,7 @@ namespace PokerProtocol
         void m_CommandObserver_PlayerWonPotCommandReceived(object sender, CommandEventArgs<PlayerWonPotCommand> e)
         {
             PlayerWonPotCommand cmd = e.Command;
-            PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+            PokerPlayer p = m_PokerTable.GetPlayer(cmd.PlayerPos);
 
             if (p != null)
             {
@@ -255,13 +255,13 @@ namespace PokerProtocol
 
             for (int i = 0; i < cmd.NbPlayers; ++i)
             {
-                Player seat = cmd.Seats[i];
+                PlayerInfo seat = cmd.Seats[i];
                 if (seat.IsEmpty)
                 {
                     continue;
                 }
                 int noSeat = seat.NoSeat;
-                PlayerInfo p = new PlayerInfo(noSeat, seat.PlayerName, seat.Money);
+                PokerPlayer p = new PokerPlayer(noSeat, seat.PlayerName, seat.Money);
                 m_PokerTable.ForceJoinTable(p, noSeat);
 
                 SetPlayerVisibility(p, seat.IsPlaying, seat.HoleCardIDs);
@@ -296,13 +296,13 @@ namespace PokerProtocol
             }
         }
 
-        public bool PlayMoney(PlayerInfo p, int amnt)
+        public bool PlayMoney(PokerPlayer p, int amnt)
         {
             Send(new PlayerPlayMoneyCommand(amnt));
             return true;
         }
 
-        public bool LeaveGame(PlayerInfo p)
+        public bool LeaveGame(PokerPlayer p)
         {
             Send(new DisconnectCommand());
             return true;
@@ -328,7 +328,7 @@ namespace PokerProtocol
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
         }
 
-        private void SetPlayerVisibility(PlayerInfo p, bool isPlaying, List<int> cardIds)
+        private void SetPlayerVisibility(PokerPlayer p, bool isPlaying, List<int> cardIds)
         {
             p.IsPlaying = isPlaying;
             p.Cards = cardIds.Select(c => new GameCard(c)).ToArray();

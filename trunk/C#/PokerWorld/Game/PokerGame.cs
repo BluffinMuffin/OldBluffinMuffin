@@ -44,7 +44,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// The Table Entity
         /// </summary>
-        public TableInfo Table { get; private set; }
+        public PokerTable Table { get; private set; }
 
         /// <summary>
         /// The Rules Entity
@@ -93,16 +93,16 @@ namespace PokerWorld.Game
         {
         }
         public PokerGame(AbstractDealer dealer) :
-            this(new RandomDealer(), new TableInfo())
+            this(new RandomDealer(), new PokerTable())
         {
         }
 
-        public PokerGame(TableInfo table)
+        public PokerGame(PokerTable table)
             : this(new RandomDealer(), table)
         {
         }
 
-        public PokerGame(AbstractDealer dealer, TableInfo table)
+        public PokerGame(AbstractDealer dealer, PokerTable table)
         {
             m_Dealer = dealer;
             Table = table;
@@ -125,7 +125,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Add a player to the table
         /// </summary>
-        public bool JoinGame(PlayerInfo p)
+        public bool JoinGame(PokerPlayer p)
         {
             if (m_State == GameStateEnum.Init || m_State == GameStateEnum.End)
             {
@@ -140,7 +140,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// The player will play the next game
         /// </summary>
-        public void SitInGame(PlayerInfo p)
+        public void SitInGame(PokerPlayer p)
         {
             PlayerJoined(this, new PlayerInfoEventArgs(p));
 
@@ -151,7 +151,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// The player is leaving the game
         /// </summary>
-        public bool LeaveGame(PlayerInfo p)
+        public bool LeaveGame(PokerPlayer p)
         {
             bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
             int blindNeeded = Table.GetBlindNeeded(p);
@@ -175,7 +175,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// The player is putting money in the game
         /// </summary>
-        public bool PlayMoney(PlayerInfo p, int amount)
+        public bool PlayMoney(PokerPlayer p, int amount)
         {
             lock(Table)
             {
@@ -264,7 +264,7 @@ namespace PokerWorld.Game
             m_RoundState = (RoundStateEnum)(((int)m_RoundState) + 1);
             StartRound();
         }
-        private bool BetMoney(PlayerInfo p, int amnt)
+        private bool BetMoney(PokerPlayer p, int amnt)
         {
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Currently, we need {0} minimum money from this player", Table.CallAmnt(p));
 
@@ -348,7 +348,7 @@ namespace PokerWorld.Game
 
             return true;
         }
-        private bool PlayBlinds(PlayerInfo p, int amnt)
+        private bool PlayBlinds(PokerPlayer p, int amnt)
         {
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds needed is {0}", Table.TotalBlindNeeded);
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "{0} is putting blind of {1}", p.Name, amnt);
@@ -482,7 +482,7 @@ namespace PokerWorld.Game
         }
         private void DealHole()
         {
-            foreach (PlayerInfo p in Table.PlayingAndAllInPlayers)
+            foreach (PokerPlayer p in Table.PlayingAndAllInPlayers)
             {
                 p.Cards = m_Dealer.DealHoles(p);
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
@@ -490,7 +490,7 @@ namespace PokerWorld.Game
         }
         private void ShowAllCards()
         {
-            foreach (PlayerInfo p in Table.Players)
+            foreach (PokerPlayer p in Table.Players)
                 if (p.IsPlaying || p.IsAllIn)
                 {
                     p.IsShowingCards = true;
@@ -498,7 +498,7 @@ namespace PokerWorld.Game
                 }
             AdvanceToNextGameState(); //Advancing to DecideWinners State
         }
-        private void FoldPlayer(PlayerInfo p)
+        private void FoldPlayer(PokerPlayer p)
         {
             p.IsPlaying = false;
 
@@ -506,7 +506,7 @@ namespace PokerWorld.Game
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Fold, -1));
         }
-        private void CallPlayer(PlayerInfo p, int played)
+        private void CallPlayer(PokerPlayer p, int played)
         {
             Table.NbPlayed++;
 
@@ -514,7 +514,7 @@ namespace PokerWorld.Game
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Call, played));
         }
-        private void RaisePlayer(PlayerInfo p, int played)
+        private void RaisePlayer(PokerPlayer p, int played)
         {
             // Since every raise "restart" the round, 
             // the number of players who played is the number of AllIn players plus the raising player
@@ -542,7 +542,7 @@ namespace PokerWorld.Game
         }
         private void ChooseNextPlayer()
         {
-            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer);
+            PokerPlayer next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer);
 
             Table.NoSeatCurrPlayer = next.NoSeat;
 
@@ -560,13 +560,13 @@ namespace PokerWorld.Game
         {
             foreach (MoneyPot pot in Table.Pots)
             {
-                PlayerInfo[] players = pot.AttachedPlayers;
+                PokerPlayer[] players = pot.AttachedPlayers;
                 if (players.Length > 0)
                 {
                     int wonAmount = pot.Amount / players.Length;
                     if (wonAmount > 0)
                     {
-                        foreach (PlayerInfo p in players)
+                        foreach (PokerPlayer p in players)
                         {
                             p.MoneySafeAmnt += wonAmount;
                             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
@@ -588,7 +588,7 @@ namespace PokerWorld.Game
         }
         private void TryToBegin()
         {
-            foreach (PlayerInfo p in Table.Players)
+            foreach (PokerPlayer p in Table.Players)
             {
                 if (p.IsZombie)
                     LeaveGame(p);

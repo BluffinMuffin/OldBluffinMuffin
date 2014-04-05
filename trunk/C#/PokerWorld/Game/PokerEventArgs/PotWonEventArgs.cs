@@ -13,7 +13,7 @@ namespace PokerWorld.Game.PokerEventArgs
         public int Id { get { return m_Id; } }
         public int AmountWon { get { return m_AmountWon; } }
 
-        public PotWonEventArgs(PlayerInfo p, int id, int amntWon)
+        public PotWonEventArgs(PokerPlayer p, int id, int amntWon)
             : base(p)
         {
             m_Id = id;

@@ -7,10 +7,10 @@ namespace PokerWorld.Game.PokerEventArgs
 {
     public class PlayerInfoEventArgs : EventArgs
     {
-        private readonly PlayerInfo m_Player;
-        public PlayerInfo Player { get { return m_Player; } }
+        private readonly PokerPlayer m_Player;
+        public PokerPlayer Player { get { return m_Player; } }
 
-        public PlayerInfoEventArgs(PlayerInfo p)
+        public PlayerInfoEventArgs(PokerPlayer p)
         {
             m_Player = p;
         }

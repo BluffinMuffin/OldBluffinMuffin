@@ -59,7 +59,7 @@ namespace BluffinPokerGUI.Lobby
         public void RefreshList()
         {
             datTables.Rows.Clear();
-            List<Table> lst = new List<Table>();
+            List<TableInfo> lst = new List<TableInfo>();
 
             if (ShowTraining)
                 lst.AddRange(m_Server.ListTables(LobbyTypeEnum.Training).ToArray());
@@ -69,7 +69,7 @@ namespace BluffinPokerGUI.Lobby
             lst.Sort();
             for (int i = 0; i < lst.Count; ++i)
             {
-                Table info = lst[i];
+                TableInfo info = lst[i];
                 string type = info.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;

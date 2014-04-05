@@ -13,7 +13,7 @@ namespace PokerWorld.Game.PokerEventArgs
         public GameActionEnum Action { get { return m_Action; } }
         public int AmountPlayed { get { return m_AmountPlayed; } }
 
-        public PlayerActionEventArgs(PlayerInfo p, GameActionEnum action, int amnt)
+        public PlayerActionEventArgs(PokerPlayer p, GameActionEnum action, int amnt)
             : base(p)
         {
             m_Action = action;

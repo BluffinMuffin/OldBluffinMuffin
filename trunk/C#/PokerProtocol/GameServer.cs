@@ -22,7 +22,7 @@ namespace PokerProtocol
     public class GameServer : CommandQueueCommunicator<GameServerCommandObserver>
     {
         #region Fields
-        private readonly PlayerInfo m_Player;
+        private readonly PokerPlayer m_Player;
         private readonly PokerGame m_Game;
         private readonly int m_ID;
         private readonly UserInfo m_UserInfo;
@@ -34,7 +34,7 @@ namespace PokerProtocol
 
         #region Properties
         public int ID { get { return m_ID; } }
-        public PlayerInfo Player { get { return m_Player; } }
+        public PokerPlayer Player { get { return m_Player; } }
         public PokerGame Game { get { return m_Game; } }
         #endregion Properties
 
@@ -43,7 +43,7 @@ namespace PokerProtocol
         {
             m_ID = id;
             m_Game = game;
-            m_Player = new PlayerInfo(name, money);
+            m_Player = new PokerPlayer(name, money);
             m_UserInfo = null;
             base.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(GameServer_SendedSomething);
 
@@ -56,7 +56,7 @@ namespace PokerProtocol
             m_UserInfo = userInfo;
             int money = (int)m_UserInfo.TotalMoney;
             m_UserInfo.TotalMoney -= money;
-            m_Player = new PlayerInfo(m_UserInfo.DisplayName, money);
+            m_Player = new PokerPlayer(m_UserInfo.DisplayName, money);
         }
 
         private void InitializePokerObserver()
@@ -104,7 +104,7 @@ namespace PokerProtocol
 
         void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             GameCard[] holeCards = p.NoSeat == m_Player.NoSeat ? p.Cards : p.RelativeCards;
 
             Send(new PlayerHoleCardsChangedCommand(p.NoSeat, p.IsPlaying, holeCards[0].Id, holeCards[1].Id));
@@ -117,19 +117,19 @@ namespace PokerProtocol
 
         void m_Game_PlayerWonPot(object sender, PotWonEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             Send(new PlayerWonPotCommand(p.NoSeat, e.Id, e.AmountWon, p.MoneySafeAmnt));
         }
 
         void m_Game_PlayerActionTaken(object sender, PlayerActionEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             Send(new PlayerTurnEndedCommand(p.NoSeat, p.MoneyBetAmnt, p.MoneySafeAmnt, m_Game.Table.TotalPotAmnt, e.Action, e.AmountPlayed, p.IsPlaying));
         }
 
         void m_Game_PlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             Send(new PlayerMoneyChangedCommand(p.NoSeat, p.MoneySafeAmnt));
         }
 
@@ -141,13 +141,13 @@ namespace PokerProtocol
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             Send(new PlayerTurnBeganCommand(p.NoSeat, e.Last.NoSeat, m_Game.Table.MinimumRaiseAmount));
         }
 
         void m_Game_GameBlindNeeded(object sender, EventArgs e)
         {
-            TableInfo t = m_Game.Table;
+            PokerTable t = m_Game.Table;
             Send(new GameStartedCommand(t.NoSeatDealer, t.NoSeatSmallBlind, t.NoSeatBigBlind));
         }
 
@@ -159,13 +159,13 @@ namespace PokerProtocol
 
         void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             Send(new PlayerJoinedCommand(p.NoSeat, p.Name, p.MoneySafeAmnt));
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
         {
-            PlayerInfo p = e.Player;
+            PokerPlayer p = e.Player;
             Send(new PlayerLeftCommand(p.NoSeat));
         }
         #endregion PokerObserver Event Handling
@@ -186,7 +186,7 @@ namespace PokerProtocol
             m_IsConnected = false;
             m_Player.IsZombie = true;
 
-            TableInfo t = m_Game.Table;
+            PokerTable t = m_Game.Table;
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Rules.TableName, m_ID);
 
             if (m_Game.State == GameStateEnum.WaitForPlayers)

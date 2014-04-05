@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerProtocol.Entities.Enums
+namespace PokerProtocol.Entities
 {
     public enum LobbyActionEnum
     {

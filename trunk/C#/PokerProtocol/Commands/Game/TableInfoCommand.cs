@@ -20,13 +20,13 @@ namespace PokerProtocol.Commands.Game
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
         public int NbPlayers { get; set; }
-        public List<Player> Seats { get; set; }
+        public List<PlayerInfo> Seats { get; set; }
 
         public TableInfoCommand()
         {
         }
 
-        public TableInfoCommand(GameRule rules, int totalPotAmount, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<Player> seats)
+        public TableInfoCommand(GameRule rules, int totalPotAmount, List<int> potsAmount, List<int> boardCardIDs, int nbPlayers, List<PlayerInfo> seats)
         {
             Rules = rules;
             TotalPotAmount = totalPotAmount;
@@ -36,11 +36,11 @@ namespace PokerProtocol.Commands.Game
             Seats = seats;
         }
 
-        public TableInfoCommand(TableInfo info, PlayerInfo pPlayer)
+        public TableInfoCommand(PokerTable info, PokerPlayer pPlayer)
         {
             PotsAmount = new List<int>();
             BoardCardIDs = new List<int>();
-            Seats = new List<Player>();
+            Seats = new List<PlayerInfo>();
 
             Rules = info.Rules;
 
@@ -64,9 +64,9 @@ namespace PokerProtocol.Commands.Game
 
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
-                Player seat = new Player(i);
+                PlayerInfo seat = new PlayerInfo(i);
                 Seats.Add(seat);
-                PlayerInfo player = info.GetPlayer(i);
+                PokerPlayer player = info.GetPlayer(i);
                 seat.IsEmpty = (player == null);
 
                 if (seat.IsEmpty)
