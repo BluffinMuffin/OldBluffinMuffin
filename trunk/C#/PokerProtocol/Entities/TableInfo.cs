@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using PokerWorld.Game;
 using EricUtility;
-using PokerProtocol.Entities.Enums;
 using PokerWorld.Game.Enums;
 using Newtonsoft.Json.Linq;
 using PokerWorld.Game.Rules;
