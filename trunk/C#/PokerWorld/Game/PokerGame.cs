@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using EricUtility;
-using PokerWorld.Game.Dealer;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.PokerEventArgs;
 using PokerWorld.Game.Rules;
+using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.Logic;
 
 namespace PokerWorld.Game
 {
@@ -89,16 +90,16 @@ namespace PokerWorld.Game
 
         #region Ctors & Init
         public PokerGame()
-            : this(new RandomDealer())
+            : this(new TexasHoldemDealer())
         {
         }
         public PokerGame(AbstractDealer dealer) :
-            this(new RandomDealer(), new PokerTable())
+            this(new TexasHoldemDealer(), new PokerTable())
         {
         }
 
         public PokerGame(PokerTable table)
-            : this(new RandomDealer(), table)
+            : this(new TexasHoldemDealer(), table)
         {
         }
 
@@ -484,7 +485,7 @@ namespace PokerWorld.Game
         {
             foreach (PokerPlayer p in Table.PlayingAndAllInPlayers)
             {
-                p.Cards = m_Dealer.DealHoles(p);
+                p.Cards = m_Dealer.DealHoles();
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
             }
         }
