@@ -174,6 +174,14 @@
     <Content Include="Resources\table.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Client\Com.Ericmas001.Game.Poker.Protocol.Client.csproj">
+      <Project>{a5be76d4-ec5f-4285-b713-9c0a7947bf72}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Protocol.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Commands\Com.Ericmas001.Game.Poker.Protocol.Commands.csproj">
+      <Project>{d19c48c3-3af0-4323-8479-0c4f21eab104}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Protocol.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EricUtilityGamesWinForms\EricUtilityGamesWinForms_2013.csproj">
       <Project>{f6ceba42-0faf-42e8-9a16-55a42d861ea6}</Project>
       <Name>EricUtilityGamesWinForms_2013</Name>
@@ -193,10 +201,6 @@
     <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
       <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>
       <Name>EricUtility_2013</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PokerProtocol\PokerProtocol_2013.csproj">
-      <Project>{d442bf36-e1b5-4f91-975a-b10b1f23e41a}</Project>
-      <Name>PokerProtocol_2013</Name>
     </ProjectReference>
     <ProjectReference Include="..\PokerWorld\PokerWorld_2013.csproj">
       <Project>{fbaa74eb-22ce-4c30-9d10-0214b605578a}</Project>

@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using EricUtility.Networking.Commands;
-using PokerProtocol.Observer;
+using Com.Ericmas001.Game.Poker.Protocol.Server;
 using System.Net.Sockets;
-using PokerProtocol.Commands.Lobby;
+using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using System.IO;
-using PokerProtocol;
 using PokerWorld.Game;
-using PokerProtocol.Commands.Lobby.Training;
+using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using PokerWorld.Data;
-using PokerProtocol.Commands.Lobby.Career;
+using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using EricUtility;
 using System.Web;
-using PokerProtocol.Commands;
+using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.Rules;
 
@@ -80,7 +79,7 @@ namespace BluffinPokerServer
             Send(e.Command.EncodeResponse(m_Lobby.NameUsed(e.Command.DisplayName) || DataManager.Persistance.IsDisplayNameExist(e.Command.DisplayName)));
         }
 
-        void m_CommandObserver_AuthenticateUserCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.AuthenticateUserCommand> e)
+        void m_CommandObserver_AuthenticateUserCommandReceived(object sender, CommandEventArgs<Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career.AuthenticateUserCommand> e)
         {
             UserInfo u = DataManager.Persistance.Authenticate(e.Command.Username, e.Command.Password);
 
@@ -95,7 +94,7 @@ namespace BluffinPokerServer
             Send(e.Command.EncodeResponse(ok));
         }
 
-        void m_CommandObserver_CreateUserCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CreateUserCommand> e)
+        void m_CommandObserver_CreateUserCommandReceived(object sender, CommandEventArgs<Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career.CreateUserCommand> e)
         {
             CreateUserCommand c = e.Command;
             bool ok = !DataManager.Persistance.IsUsernameExist(c.Username) && !DataManager.Persistance.IsDisplayNameExist(e.Command.DisplayName);
@@ -107,7 +106,7 @@ namespace BluffinPokerServer
             Send(e.Command.EncodeResponse(ok));
         }
 
-        void m_CommandObserver_CheckUserExistCommandReceived(object sender, CommandEventArgs<PokerProtocol.Commands.Lobby.Career.CheckUserExistCommand> e)
+        void m_CommandObserver_CheckUserExistCommandReceived(object sender, CommandEventArgs<Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career.CheckUserExistCommand> e)
         {
             Send(e.Command.EncodeResponse(DataManager.Persistance.IsUsernameExist(e.Command.Username)));
         }

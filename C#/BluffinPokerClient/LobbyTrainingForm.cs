@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using PokerProtocol;
+using Com.Ericmas001.Game.Poker.Protocol.Client;
 using BluffinPokerGUI.Lobby;
 using BluffinPokerGui;
 using PokerWorld.Game;

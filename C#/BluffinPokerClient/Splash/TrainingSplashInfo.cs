@@ -1,6 +1,6 @@
 ﻿using BluffinPokerGUI.Lobby;
 using EricUtility.Windows.Forms;
-using PokerProtocol;
+using Com.Ericmas001.Game.Poker.Protocol.Client;
 using System;
 
 namespace BluffinPokerClient.Splash

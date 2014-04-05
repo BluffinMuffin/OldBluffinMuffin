@@ -5,10 +5,10 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using PokerProtocol;
+using Com.Ericmas001.Game.Poker.Protocol.Client;
 using BluffinPokerGui.Game;
 using EricUtility;
-using PokerProtocol.Entities;
+using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using PokerWorld.Game.Enums;
 using PokerWorld.Game.Rules;
 
