@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,14 +45,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDealer.cs" />
+    <Compile Include="ConfigurableWaitingTimes.cs" />
     <Compile Include="Enums\BlindTypeEnum.cs" />
     <Compile Include="Enums\GameActionEnum.cs" />
     <Compile Include="Enums\GameStateEnum.cs" />
     <Compile Include="Enums\GameTypeEnum.cs" />
     <Compile Include="Enums\LimitTypeEnum.cs" />
+    <Compile Include="Enums\LobbyActionEnum.cs" />
     <Compile Include="Enums\LobbyTypeEnum.cs" />
     <Compile Include="Enums\RoundStateEnum.cs" />
     <Compile Include="Enums\RoundTypeEnum.cs" />
+    <Compile Include="GameRule.cs" />
+    <Compile Include="LobbyOptions.cs" />
+    <Compile Include="LobbyOptionsCareer.cs" />
+    <Compile Include="LobbyOptionsTraining.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

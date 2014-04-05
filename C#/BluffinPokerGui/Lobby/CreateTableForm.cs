@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace BluffinPokerGUI.Lobby
 {

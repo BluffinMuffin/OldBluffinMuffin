@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using PokerWorld.Game;
 using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace BluffinPokerGUI.Lobby
 {

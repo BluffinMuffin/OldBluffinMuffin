@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PokerWorld.Game.Rules
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public class ConfigurableWaitingTimes
     {

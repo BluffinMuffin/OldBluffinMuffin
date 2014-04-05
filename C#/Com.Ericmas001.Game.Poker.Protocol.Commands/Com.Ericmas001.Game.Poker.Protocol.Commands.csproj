@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisconnectCommand.cs" />
-    <Compile Include="Entities\LobbyActionEnum.cs" />
     <Compile Include="Entities\PlayerInfo.cs" />
     <Compile Include="Entities\TableInfo.cs" />
     <Compile Include="Game\BetTurnEndedCommand.cs" />

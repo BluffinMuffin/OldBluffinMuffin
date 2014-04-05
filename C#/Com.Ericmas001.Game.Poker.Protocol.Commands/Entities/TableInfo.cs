@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using PokerWorld.Game;
 using EricUtility;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Newtonsoft.Json.Linq;
 using PokerWorld.Game.Rules;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
 {

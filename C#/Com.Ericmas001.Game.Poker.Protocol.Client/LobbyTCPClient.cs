@@ -20,6 +20,7 @@ using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Runtime.Serialization.Formatters;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
