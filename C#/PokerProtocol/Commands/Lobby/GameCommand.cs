@@ -19,26 +19,12 @@ namespace PokerProtocol.Commands.Lobby
         public string EncodedCommand { get; set; }
 
         [JsonIgnore]
-        public string Command 
+        public string DecodedCommand 
         {
             get
             {
                 return HttpUtility.UrlDecode(EncodedCommand);
             }
-            private set
-            {
-                EncodedCommand = HttpUtility.UrlEncode(value);
-            }
-        }
-
-        public GameCommand()
-        {
-        }
-
-        public GameCommand(int p_tableID, string p_Command)
-        {
-            TableID = p_tableID;
-            EncodedCommand = p_Command;
         }
     }
 }

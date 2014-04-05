@@ -18,10 +18,9 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
         }
 
-        public AuthenticateUserResponse(AuthenticateUserCommand command, bool success)
+        public AuthenticateUserResponse(AuthenticateUserCommand command)
             : base(command)
         {
-            Success = success;
         }
     }
 }

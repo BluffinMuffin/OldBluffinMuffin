@@ -11,16 +11,5 @@ namespace PokerProtocol.Commands.Game
         public int PlayerPos { get; set; }
         public int LastPlayerNoSeat { get; set; }
         public int MinimumRaise { get; set; }
-
-        public PlayerTurnBeganCommand()
-        {
-        }
-
-        public PlayerTurnBeganCommand(int pos, int last, int minimumRaise)
-        {
-            PlayerPos = pos;
-            LastPlayerNoSeat = last;
-            MinimumRaise = minimumRaise;
-        }
     }
 }

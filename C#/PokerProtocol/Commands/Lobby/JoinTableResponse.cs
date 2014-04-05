@@ -18,10 +18,9 @@ namespace PokerProtocol.Commands.Lobby
         {
         }
 
-        public JoinTableResponse(JoinTableCommand command, int seat)
+        public JoinTableResponse(JoinTableCommand command)
             : base(command)
         {
-            NoSeat = seat;
         }
     }
 }

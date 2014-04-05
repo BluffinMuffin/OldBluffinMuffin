@@ -9,14 +9,5 @@ namespace PokerProtocol.Commands.Game
         public static string COMMAND_NAME = "gamePLAYER_LEFT";
 
         public int PlayerPos { get; set; }
-
-        public PlayerLeftCommand()
-        {
-        }
-
-        public PlayerLeftCommand(int pos)
-        {
-            PlayerPos = pos;
-        }
     }
 }

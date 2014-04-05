@@ -9,14 +9,5 @@ namespace PokerProtocol.Commands.Game
         public static string COMMAND_NAME = "gamePLAY_MONEY";
 
         public int Played { get; set; }
-
-        public PlayerPlayMoneyCommand()
-        {
-        }
-
-        public PlayerPlayMoneyCommand(int played)
-        {
-            Played = played;
-        }
     }
 }

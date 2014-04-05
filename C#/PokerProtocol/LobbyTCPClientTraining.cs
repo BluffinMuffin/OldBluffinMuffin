@@ -28,7 +28,7 @@ namespace PokerProtocol
         {
             m_PlayerName = name;
 
-            Send(new IdentifyCommand(m_PlayerName));
+            Send(new IdentifyCommand() { Name = m_PlayerName });
 
             return WaitAndReceive<IdentifyResponse>().OK;
         }

@@ -18,10 +18,9 @@ namespace PokerProtocol.Commands.Lobby
         {
         }
 
-        public CreateTableResponse(CreateTableCommand command, int id)
+        public CreateTableResponse(CreateTableCommand command)
             : base(command)
         {
-            IdTable = id;
         }
     }
 }

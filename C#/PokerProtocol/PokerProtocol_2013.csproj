@@ -68,17 +68,13 @@
     <Compile Include="Commands\Lobby\Career\CheckUserExistResponse.cs" />
     <Compile Include="Commands\Lobby\Career\CheckDisplayExistCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CheckDisplayExistResponse.cs" />
-    <Compile Include="Commands\Lobby\Career\CreateCareerTableCommand.cs" />
-    <Compile Include="Commands\Lobby\Career\CreateCareerTableResponse.cs" />
     <Compile Include="Commands\Lobby\Career\GetUserResponse.cs" />
     <Compile Include="Commands\Lobby\Career\GetUserCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CreateUserCommand.cs" />
     <Compile Include="Commands\Lobby\Career\CreateUserResponse.cs" />
     <Compile Include="Commands\Lobby\GameCommand.cs" />
-    <Compile Include="Commands\Lobby\AbstractCreateTableCommand.cs" />
     <Compile Include="Commands\Lobby\SupportedRulesResponse.cs" />
     <Compile Include="Commands\Lobby\SupportedRulesCommand.cs" />
-    <Compile Include="Commands\Lobby\Training\CreateTrainingTableCommand.cs" />
     <Compile Include="Commands\Lobby\CreateTableResponse.cs" />
     <Compile Include="Commands\Lobby\Training\IdentifyCommand.cs" />
     <Compile Include="Commands\Lobby\JoinTableCommand.cs" />

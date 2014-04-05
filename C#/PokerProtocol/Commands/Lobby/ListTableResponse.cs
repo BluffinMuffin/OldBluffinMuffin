@@ -20,10 +20,9 @@ namespace PokerProtocol.Commands.Lobby
         {
         }
 
-        public ListTableResponse(ListTableCommand command, List<TableInfo> tables)
+        public ListTableResponse(ListTableCommand command)
             : base(command)
         {
-            Tables = tables;
         }
     }
 }

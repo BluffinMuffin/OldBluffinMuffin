@@ -9,9 +9,5 @@ namespace PokerProtocol.Commands.Game
     public class GameEndedCommand : AbstractJsonCommand
     {
         public static string COMMAND_NAME = "gameENDED";
-
-        public GameEndedCommand()
-        {
-        }
     }
 }

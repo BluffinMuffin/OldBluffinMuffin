@@ -99,7 +99,11 @@ namespace PokerProtocol
             for (int i = pots.Count; i < m_Game.Table.Rules.MaxPlayers; i++)
                 amounts.Add(0);
 
-            Send(new BetTurnEndedCommand(amounts, e.Round));
+            Send(new BetTurnEndedCommand() 
+            { 
+                PotsAmounts = amounts, 
+                Round = e.Round,
+            });
         }
 
         void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
@@ -107,7 +111,12 @@ namespace PokerProtocol
             PokerPlayer p = e.Player;
             GameCard[] holeCards = p.NoSeat == m_Player.NoSeat ? p.Cards : p.RelativeCards;
 
-            Send(new PlayerHoleCardsChangedCommand(p.NoSeat, p.IsPlaying, holeCards[0].Id, holeCards[1].Id));
+            Send(new PlayerHoleCardsChangedCommand() 
+            { 
+                PlayerPos = p.NoSeat, 
+                IsPlaying = p.IsPlaying, 
+                CardsID = holeCards.Select(c => c.Id).ToList() ,
+            });
         }
 
         void m_Game_GameEnded(object sender, EventArgs e)
@@ -118,19 +127,38 @@ namespace PokerProtocol
         void m_Game_PlayerWonPot(object sender, PotWonEventArgs e)
         {
             PokerPlayer p = e.Player;
-            Send(new PlayerWonPotCommand(p.NoSeat, e.Id, e.AmountWon, p.MoneySafeAmnt));
+            Send(new PlayerWonPotCommand()
+            {
+                PlayerPos = p.NoSeat,
+                PotID = e.Id,
+                Shared = e.AmountWon,
+                PlayerMoney = p.MoneySafeAmnt,
+            });
         }
 
         void m_Game_PlayerActionTaken(object sender, PlayerActionEventArgs e)
         {
             PokerPlayer p = e.Player;
-            Send(new PlayerTurnEndedCommand(p.NoSeat, p.MoneyBetAmnt, p.MoneySafeAmnt, m_Game.Table.TotalPotAmnt, e.Action, e.AmountPlayed, p.IsPlaying));
+            Send(new PlayerTurnEndedCommand()
+            {
+                PlayerPos = p.NoSeat,
+                PlayerBet = p.MoneyBetAmnt,
+                PlayerMoney = p.MoneySafeAmnt,
+                TotalPot = m_Game.Table.TotalPotAmnt,
+                ActionType = e.Action,
+                ActionAmount = e.AmountPlayed,
+                IsPlaying = p.IsPlaying,
+            });
         }
 
         void m_Game_PlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
         {
             PokerPlayer p = e.Player;
-            Send(new PlayerMoneyChangedCommand(p.NoSeat, p.MoneySafeAmnt));
+            Send(new PlayerMoneyChangedCommand()
+            {
+                PlayerPos = p.NoSeat,
+                PlayerMoney = p.MoneySafeAmnt,
+            });
         }
 
         void m_Game_EverythingEnded(object sender, EventArgs e)
@@ -141,32 +169,52 @@ namespace PokerProtocol
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
-            PokerPlayer p = e.Player;
-            Send(new PlayerTurnBeganCommand(p.NoSeat, e.Last.NoSeat, m_Game.Table.MinimumRaiseAmount));
+            Send(new PlayerTurnBeganCommand()
+            {
+                PlayerPos = e.Player.NoSeat,
+                LastPlayerNoSeat = e.Last.NoSeat,
+                MinimumRaise = m_Game.Table.MinimumRaiseAmount,
+            });
         }
 
         void m_Game_GameBlindNeeded(object sender, EventArgs e)
         {
             PokerTable t = m_Game.Table;
-            Send(new GameStartedCommand(t.NoSeatDealer, t.NoSeatSmallBlind, t.NoSeatBigBlind));
+            Send(new GameStartedCommand()
+            {
+                NoSeatD = t.NoSeatDealer,
+                NoSeatSB = t.NoSeatSmallBlind,
+                NoSeatBB = t.NoSeatBigBlind,
+            });
         }
 
         void m_Game_GameBettingRoundStarted(object sender, RoundEventArgs e)
         {
-            GameCard[] c = m_Game.Table.Cards;
-            Send(new BetTurnStartedCommand(e.Round, c[0].Id, c[1].Id, c[2].Id, c[3].Id, c[4].Id));
+            Send(new BetTurnStartedCommand()
+            {
+                Round = e.Round,
+                CardsID = m_Game.Table.Cards.Select(x => x.Id).ToList()
+            });
         }
 
         void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
         {
             PokerPlayer p = e.Player;
-            Send(new PlayerJoinedCommand(p.NoSeat, p.Name, p.MoneySafeAmnt));
+            Send(new PlayerJoinedCommand()
+            {
+                PlayerPos = p.NoSeat,
+                PlayerName = p.Name,
+                PlayerMoney = p.MoneySafeAmnt,
+            });
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
         {
             PokerPlayer p = e.Player;
-            Send(new PlayerLeftCommand(p.NoSeat));
+            Send(new PlayerLeftCommand()
+            {
+                PlayerPos = p.NoSeat,
+            });
         }
         #endregion PokerObserver Event Handling
 

@@ -11,16 +11,5 @@ namespace PokerProtocol.Commands.Game
         public int PlayerPos { get; set; }
         public int PlayerMoney { get; set; }
         public string PlayerName { get; set; }
-
-        public PlayerJoinedCommand()
-        {
-        }
-
-        public PlayerJoinedCommand(int pos, string name, int money)
-        {
-            PlayerPos = pos;
-            PlayerName = name;
-            PlayerMoney = money;
-        }
     }
 }

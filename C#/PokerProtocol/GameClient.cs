@@ -132,9 +132,10 @@ namespace PokerProtocol
             m_PokerTable.NoSeatBigBlind = cmd.NoSeatBB;
 
             if (m_PokerTable.NoSeatSmallBlind == m_TablePosition)
-                Send(new PlayerPlayMoneyCommand(m_PokerTable.SmallBlindAmnt));
+                Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.SmallBlindAmnt });
+
             if (m_PokerTable.NoSeatBigBlind == m_TablePosition)
-                Send(new PlayerPlayMoneyCommand(m_PokerTable.Rules.BlindAmount));
+                Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Rules.BlindAmount });
 
             GameBlindNeeded(this, new EventArgs());
         }
@@ -298,7 +299,7 @@ namespace PokerProtocol
 
         public bool PlayMoney(PokerPlayer p, int amnt)
         {
-            Send(new PlayerPlayMoneyCommand(amnt));
+            Send(new PlayerPlayMoneyCommand() { Played = amnt });
             return true;
         }
 

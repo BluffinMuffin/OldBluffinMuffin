@@ -12,17 +12,5 @@ namespace PokerProtocol.Commands.Game
         public int PotID { get; set; }
         public int Shared { get; set; }
         public int PlayerMoney { get; set; }
-
-        public PlayerWonPotCommand()
-        {
-        }
-
-        public PlayerWonPotCommand(int pos, int potID, int shared, int money)
-        {
-            PlayerPos = pos;
-            PotID = potID;
-            Shared = shared;
-            PlayerMoney = money;
-        }
     }
 }

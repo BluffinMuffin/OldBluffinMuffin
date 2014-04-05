@@ -13,16 +13,5 @@ namespace PokerProtocol.Commands.Game
         public int NoSeatD { get; set; }
         public int NoSeatSB { get; set; }
         public int NoSeatBB { get; set; }
-
-        public GameStartedCommand()
-        {
-        }
-
-        public GameStartedCommand(int noSeatD, int noSeatSB, int noSeatBB)
-        {
-            NoSeatD = noSeatD;
-            NoSeatSB = noSeatSB;
-            NoSeatBB = noSeatBB;
-        }
     }
 }

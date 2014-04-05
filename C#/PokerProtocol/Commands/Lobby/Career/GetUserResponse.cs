@@ -21,12 +21,9 @@ namespace PokerProtocol.Commands.Lobby.Career
         {
         }
 
-        public GetUserResponse(GetUserCommand command, string mail, string display, double money)
+        public GetUserResponse(GetUserCommand command)
             : base(command)
         {
-            Email = mail;
-            DisplayName = display;
-            Money = money;
         }
     }
 }

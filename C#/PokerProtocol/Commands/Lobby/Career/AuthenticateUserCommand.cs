@@ -15,19 +15,9 @@ namespace PokerProtocol.Commands.Lobby.Career
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public AuthenticateUserCommand()
+        public string EncodeResponse(bool success)
         {
-        }
-
-        public AuthenticateUserCommand(string p_Username, string p_Password)
-        {
-            Username = p_Username;
-            Password = p_Password;
-        }
-
-        public string EncodeResponse(bool yes)
-        {
-            return new AuthenticateUserResponse(this, yes).Encode();
+            return new AuthenticateUserResponse(this) { Success = success }.Encode();
         }
     }
 }
