@@ -5,7 +5,6 @@ using EricUtility.Networking.Commands;
 using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using PokerWorld.Game.Rules;
 using System.Linq;
 using EricUtility.Games.CardGame;
 using Com.Ericmas001.Game.Poker.DataTypes;

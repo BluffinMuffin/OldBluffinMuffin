@@ -6,7 +6,6 @@ using PokerWorld.Game;
 using EricUtility.Networking.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Newtonsoft.Json.Linq;
-using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby

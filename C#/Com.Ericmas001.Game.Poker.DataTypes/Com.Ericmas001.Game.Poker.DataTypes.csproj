@@ -60,6 +60,11 @@
     <Compile Include="LobbyOptionsCareer.cs" />
     <Compile Include="LobbyOptionsTraining.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\BlindFactory.cs" />
+    <Compile Include="Rules\BlindInfo.cs" />
+    <Compile Include="Rules\LimitFactory.cs" />
+    <Compile Include="Rules\LimitInfo.cs" />
+    <Compile Include="Rules\RuleInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_2013.csproj">
@@ -67,6 +72,7 @@
       <Name>EricUtilityGames_2013</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

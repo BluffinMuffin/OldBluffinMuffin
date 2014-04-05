@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Test.PokerWorld

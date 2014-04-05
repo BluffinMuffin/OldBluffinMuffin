@@ -47,12 +47,6 @@
     <Compile Include="Game\PokerEventArgs\HistoricPlayerInfoEventArgs.cs" />
     <Compile Include="Game\PokerEventArgs\RoundEventArgs.cs" />
     <Compile Include="Game\PokerEventArgs\PlayerActionEventArgs.cs" />
-    <Compile Include="Game\Rules\LimitFactory.cs" />
-    <Compile Include="Game\Rules\BlindFactory.cs" />
-    <Compile Include="Game\Rules\LimitInfo.cs" />
-    <Compile Include="Game\Rules\BlindInfo.cs" />
-    <Compile Include="Game\Rules\RuleFactory.cs" />
-    <Compile Include="Game\Rules\RuleInfo.cs" />
     <Compile Include="Game\PokerEventArgs\PotWonEventArgs.cs" />
     <Compile Include="Game\IPokerGame.cs" />
     <Compile Include="Game\IPokerViewer.cs" />
@@ -86,6 +80,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Game\Rules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

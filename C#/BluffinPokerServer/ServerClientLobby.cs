@@ -14,8 +14,8 @@ using EricUtility;
 using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.Logic;
 
 
 namespace BluffinPokerServer
@@ -59,7 +59,7 @@ namespace BluffinPokerServer
 
         void m_CommandObserver_SupportedRulesCommandReceived(object sender, CommandEventArgs<SupportedRulesCommand> e)
         {
-            Send(e.Command.EncodeResponse());
+            Send(e.Command.EncodeResponse(RuleFactory.SupportedRules));
         }
 
         private int CreateTable(CreateTableCommand c)

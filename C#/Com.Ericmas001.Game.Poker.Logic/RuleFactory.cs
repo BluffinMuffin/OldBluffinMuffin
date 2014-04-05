@@ -1,11 +1,12 @@
 ﻿using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PokerWorld.Game.Rules
+namespace Com.Ericmas001.Game.Poker.Logic
 {
     public static class RuleFactory
     {

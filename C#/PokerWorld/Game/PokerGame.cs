@@ -5,7 +5,6 @@ using System.Threading;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.PokerEventArgs;
-using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 
