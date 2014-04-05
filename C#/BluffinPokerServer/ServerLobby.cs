@@ -11,7 +11,6 @@ using PokerProtocol.Commands.Lobby.Career;
 using System.Net;
 using EricUtility;
 using PokerProtocol.Entities;
-using PokerProtocol.Entities.Enums;
 using System.Linq;
 using PokerWorld.Game.Rules;
 using PokerWorld.Game.Enums;
