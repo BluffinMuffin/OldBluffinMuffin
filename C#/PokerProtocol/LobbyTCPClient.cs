@@ -19,6 +19,7 @@ using PokerProtocol.Commands;
 using PokerWorld.Game.Rules;
 using PokerProtocol.Entities;
 using PokerWorld.Game.Enums;
+using System.Runtime.Serialization.Formatters;
 
 namespace PokerProtocol
 {
@@ -179,7 +180,7 @@ namespace PokerProtocol
             do
             {
                 s = m_Incoming.Dequeue();
-                jObj = JsonConvert.DeserializeObject<dynamic>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+                jObj = JsonConvert.DeserializeObject<dynamic>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
                 commandName = (string)jObj["CommandName"];
             }
             while (s != null && commandName != expected);
@@ -202,7 +203,7 @@ namespace PokerProtocol
             }
             while (s != null && commandName != expected);
 
-            return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+            return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
         }
 
         protected string Receive(StreamReader reader)
@@ -256,7 +257,7 @@ namespace PokerProtocol
 
                 if (cmdName == GameCommand.COMMAND_NAME)
                 {
-                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
                     int count = 0;
 
                     //Be patient
