@@ -11,7 +11,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
 using EricUtility.Games.CardGame;
 using EricUtility.Networking.Commands;
-using PokerWorld.Data;
+using Com.Ericmas001.Game.Poker.Persistance;
 using EricUtility;
 using PokerWorld.Game.PokerEventArgs;
 using PokerWorld.Game.Enums;
@@ -48,7 +48,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         }
 
-        public GameServer(int id, PokerGame game, PokerWorld.Data.UserInfo userInfo)
+        public GameServer(int id, PokerGame game, Com.Ericmas001.Game.Poker.Persistance.UserInfo userInfo)
         {
             m_ID = id;
             m_Game = game;

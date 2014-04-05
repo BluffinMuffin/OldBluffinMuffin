@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Data
+namespace Com.Ericmas001.Game.Poker.Persistance
 {
     public interface IDataPersistance
     {

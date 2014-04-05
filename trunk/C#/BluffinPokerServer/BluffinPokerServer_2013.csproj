@@ -55,6 +55,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Persistance\Com.Ericmas001.Game.Poker.Persistance.csproj">
+      <Project>{032c04ff-5c33-4be2-ad7f-bed27134c8df}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Persistance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Commands\Com.Ericmas001.Game.Poker.Protocol.Commands.csproj">
       <Project>{d19c48c3-3af0-4323-8479-0c4f21eab104}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Commands</Name>

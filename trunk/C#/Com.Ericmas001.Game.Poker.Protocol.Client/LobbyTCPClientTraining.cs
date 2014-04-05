@@ -9,7 +9,7 @@ using EricUtility.Networking.Commands;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
-using PokerWorld.Data;
+using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using PokerWorld.Game.Enums;

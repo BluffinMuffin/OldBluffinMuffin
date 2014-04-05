@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D0973089-76FA-4361-9D10-79DC6E12CA11}</ProjectGuid>
+    <ProjectGuid>{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Com.Ericmas001.Game.Poker.Protocol.Server</RootNamespace>
-    <AssemblyName>Com.Ericmas001.Game.Poker.Protocol.Server</AssemblyName>
+    <RootNamespace>Com.Ericmas001.Game.Poker.Persistance</RootNamespace>
+    <AssemblyName>Com.Ericmas001.Game.Poker.Persistance</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -40,36 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameServer.cs" />
-    <Compile Include="GameServerCommandObserver.cs" />
-    <Compile Include="LobbyServerCommandObserver.cs" />
+    <Compile Include="DataManager.cs" />
+    <Compile Include="DummyPersistance.cs" />
+    <Compile Include="IDataPersistance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Persistance\Com.Ericmas001.Game.Poker.Persistance.csproj">
-      <Project>{032c04ff-5c33-4be2-ad7f-bed27134c8df}</Project>
-      <Name>Com.Ericmas001.Game.Poker.Persistance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Commands\Com.Ericmas001.Game.Poker.Protocol.Commands.csproj">
-      <Project>{d19c48c3-3af0-4323-8479-0c4f21eab104}</Project>
-      <Name>Com.Ericmas001.Game.Poker.Protocol.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_2013.csproj">
-      <Project>{3177997f-d216-4b02-855b-9bde6406d51f}</Project>
-      <Name>EricUtilityGames_2013</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
-      <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
-      <Name>EricUtilityNetworking_2013</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
-      <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>
-      <Name>EricUtility_2013</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PokerWorld\PokerWorld_2013.csproj">
-      <Project>{fbaa74eb-22ce-4c30-9d10-0214b605578a}</Project>
-      <Name>PokerWorld_2013</Name>
-    </ProjectReference>
+    <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

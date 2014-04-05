@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Ericmas001.Game.Poker.P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Ericmas001.Game.Poker.Protocol.Server", "Com.Ericmas001.Game.Poker.Protocol.Server\Com.Ericmas001.Game.Poker.Protocol.Server.csproj", "{D0973089-76FA-4361-9D10-79DC6E12CA11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Com.Ericmas001.Game.Poker.Persistance", "Com.Ericmas001.Game.Poker.Persistance\Com.Ericmas001.Game.Poker.Persistance.csproj", "{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -260,6 +262,21 @@ Global
 		{D0973089-76FA-4361-9D10-79DC6E12CA11}.TestLive|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D0973089-76FA-4361-9D10-79DC6E12CA11}.TestLive|Mixed Platforms.Build.0 = Release|Any CPU
 		{D0973089-76FA-4361-9D10-79DC6E12CA11}.TestLive|x86.ActiveCfg = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.TestLive|Any CPU.ActiveCfg = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.TestLive|Any CPU.Build.0 = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.TestLive|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.TestLive|Mixed Platforms.Build.0 = Release|Any CPU
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF}.TestLive|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -279,5 +296,6 @@ Global
 		{D19C48C3-3AF0-4323-8479-0C4F21EAB104} = {4BD5D67A-321B-4D91-990E-6BE36655AB2B}
 		{A5BE76D4-EC5F-4285-B713-9C0A7947BF72} = {4BD5D67A-321B-4D91-990E-6BE36655AB2B}
 		{D0973089-76FA-4361-9D10-79DC6E12CA11} = {4BD5D67A-321B-4D91-990E-6BE36655AB2B}
+		{032C04FF-5C33-4BE2-AD7F-BED27134C8DF} = {4BD5D67A-321B-4D91-990E-6BE36655AB2B}
 	EndGlobalSection
 EndGlobal

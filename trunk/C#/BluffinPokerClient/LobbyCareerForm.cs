@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
 using BluffinPokerGUI.Lobby;
 using BluffinPokerGui.Game;
-using PokerWorld.Data;
+using Com.Ericmas001.Game.Poker.Persistance;
 using PokerWorld.Game.Enums;
 
 namespace BluffinPokerClient
