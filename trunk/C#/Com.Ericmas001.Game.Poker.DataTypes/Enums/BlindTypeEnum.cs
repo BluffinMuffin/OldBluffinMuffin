@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Game.Enums
+namespace Com.Ericmas001.Game.Poker.DataTypes.Enums
 {
     public enum BlindTypeEnum
     {

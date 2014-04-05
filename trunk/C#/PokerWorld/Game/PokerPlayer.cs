@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using EricUtility.Games.CardGame;
-using PokerWorld.HandEvaluator;
 using System.Linq;
+using Com.Ericmas001.Game.Poker.HandEval;
 
 namespace PokerWorld.Game
 {

@@ -13,7 +13,7 @@ using EricUtility;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using System.Linq;
 using PokerWorld.Game.Rules;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace BluffinPokerServer
 {

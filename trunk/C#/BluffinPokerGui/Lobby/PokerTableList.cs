@@ -9,7 +9,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Client;
 using BluffinPokerGui.Game;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.Rules;
 
 namespace BluffinPokerGUI.Lobby

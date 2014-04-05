@@ -22,7 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace PokerWorld.HandEvaluator
+namespace Com.Ericmas001.Game.Poker.HandEval
 {
     public partial class Hand : IComparable
     {

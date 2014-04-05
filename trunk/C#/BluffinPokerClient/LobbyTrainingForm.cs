@@ -10,7 +10,7 @@ using BluffinPokerGUI.Lobby;
 using BluffinPokerGui;
 using PokerWorld.Game;
 using BluffinPokerGui.Game;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace BluffinPokerClient
 {

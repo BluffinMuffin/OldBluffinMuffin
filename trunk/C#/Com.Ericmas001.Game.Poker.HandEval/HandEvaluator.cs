@@ -21,7 +21,7 @@ using System;
 using System.Text;
 using System.Diagnostics;
 
-namespace PokerWorld.HandEvaluator
+namespace Com.Ericmas001.Game.Poker.HandEval
 {
     #region Hand Class
     /// <example>

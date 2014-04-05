@@ -23,7 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.HandEvaluator
+namespace Com.Ericmas001.Game.Poker.HandEval
 {
     /// <summary>
     /// Represents a set of pocket hands and operations that

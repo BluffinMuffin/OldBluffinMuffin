@@ -18,7 +18,7 @@ using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Runtime.Serialization.Formatters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client

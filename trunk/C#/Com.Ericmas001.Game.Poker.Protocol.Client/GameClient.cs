@@ -11,7 +11,7 @@ using EricUtility.Games.CardGame;
 using System.IO;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.PokerEventArgs;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 
