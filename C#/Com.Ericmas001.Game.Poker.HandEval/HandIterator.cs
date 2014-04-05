@@ -26,7 +26,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace PokerWorld.HandEvaluator
+namespace Com.Ericmas001.Game.Poker.HandEval
 {
     public partial class Hand : IComparable
     {

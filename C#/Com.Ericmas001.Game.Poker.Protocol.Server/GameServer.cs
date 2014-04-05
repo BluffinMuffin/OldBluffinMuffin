@@ -14,7 +14,7 @@ using EricUtility.Networking.Commands;
 using Com.Ericmas001.Game.Poker.Persistance;
 using EricUtility;
 using PokerWorld.Game.PokerEventArgs;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {

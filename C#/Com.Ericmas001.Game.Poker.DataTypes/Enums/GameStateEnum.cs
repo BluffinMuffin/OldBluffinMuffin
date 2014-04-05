@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using EricUtility;
-using PokerWorld.Game.Enums;
-using PokerWorld.Game.PokerEventArgs;
 
-namespace PokerWorld.Game.Enums
+namespace Com.Ericmas001.Game.Poker.DataTypes.Enums
 {
     public enum GameStateEnum
     {

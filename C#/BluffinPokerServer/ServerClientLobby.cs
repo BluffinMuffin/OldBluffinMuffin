@@ -13,7 +13,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using EricUtility;
 using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
-using PokerWorld.Game.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using PokerWorld.Game.Rules;
 
 
