@@ -16,11 +16,11 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
-using PokerWorld.Game.Rules;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Runtime.Serialization.Formatters;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {

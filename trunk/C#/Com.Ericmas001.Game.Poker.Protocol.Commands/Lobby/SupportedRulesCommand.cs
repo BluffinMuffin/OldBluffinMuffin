@@ -9,7 +9,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Newtonsoft.Json.Linq;
 using PokerWorld.Game;
-using PokerWorld.Game.Rules;
+using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
 {
@@ -17,9 +17,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbySUPPORTED_RULES";
 
-        public string EncodeResponse()
+        public string EncodeResponse(RuleInfo[] rules)
         {
-            return new SupportedRulesResponse(this) { Rules = RuleFactory.SupportedRules.ToList() }.Encode();
+            return new SupportedRulesResponse(this) { Rules = rules.ToList() }.Encode();
         }
     }
 }
