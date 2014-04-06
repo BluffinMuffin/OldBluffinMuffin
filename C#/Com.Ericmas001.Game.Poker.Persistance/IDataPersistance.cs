@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Com.Ericmas001.Game.Poker.DataTypes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

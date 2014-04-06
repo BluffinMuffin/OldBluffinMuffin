@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using System.IO;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
-using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Com.Ericmas001.Util;
 using System.Web;
@@ -16,6 +15,7 @@ using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Net.Protocol;
+using Com.Ericmas001.Game.Poker.Persistance;
 
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Server
