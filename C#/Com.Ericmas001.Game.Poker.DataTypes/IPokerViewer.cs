@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Game
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public interface IPokerViewer
     {

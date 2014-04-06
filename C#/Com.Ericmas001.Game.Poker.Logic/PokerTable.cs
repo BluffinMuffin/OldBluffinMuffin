@@ -8,7 +8,7 @@ using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.HandEval;
 
-namespace PokerWorld.Game
+namespace Com.Ericmas001.Game.Poker.Logic
 {
     public class PokerTable : TableInfo
     {

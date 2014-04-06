@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
 using EricUtility;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace BluffinPokerGui.Game
 {

@@ -49,7 +49,7 @@ namespace BluffinPokerGui.Game
             btnFold.Enabled = false;
             nudRaise.Enabled = false;
         }
-        public override void SetGame(PokerWorld.Game.IPokerGame c, int s)
+        public override void SetGame(IPokerGame c, int s)
         {
             base.SetGame(c, s);
             m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);

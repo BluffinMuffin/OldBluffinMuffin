@@ -83,7 +83,7 @@ namespace BluffinPokerGui.Game
             new HandStrengthForm().Show();
         }
 
-        public override void SetGame(PokerWorld.Game.IPokerGame c, int s)
+        public override void SetGame(IPokerGame c, int s)
         {
             base.SetGame(c, s);
             InitializePokerObserverForGUI();

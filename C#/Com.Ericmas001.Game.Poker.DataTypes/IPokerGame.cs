@@ -1,9 +1,8 @@
-﻿using Com.Ericmas001.Game.Poker.DataTypes;
-using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+﻿using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using System;
 using System.Collections.Generic;
 
-namespace PokerWorld.Game
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public interface IPokerGame
     {
