@@ -16,7 +16,7 @@ namespace BluffinPokerGui.Game
 {
     public partial class TableViewerForm : AbstractTableForm
     {
-        protected readonly PokerPlayerHud[] huds = new PokerPlayerHud[10];
+        protected readonly PlayerHud[] huds = new PlayerHud[10];
         protected readonly Label[] bets = new Label[10];
         protected readonly Label[] potTitles = new Label[10];
         protected readonly Label[] potValues = new Label[10];
@@ -25,16 +25,16 @@ namespace BluffinPokerGui.Game
         public TableViewerForm()
         {
             InitializeComponent();
-            huds[0] = pokerPlayerHud1;
-            huds[1] = pokerPlayerHud2;
-            huds[2] = pokerPlayerHud3;
-            huds[3] = pokerPlayerHud4;
-            huds[4] = pokerPlayerHud5;
-            huds[5] = pokerPlayerHud6;
-            huds[6] = pokerPlayerHud7;
-            huds[7] = pokerPlayerHud8;
-            huds[8] = pokerPlayerHud9;
-            huds[9] = pokerPlayerHud10;
+            huds[0] = playerHud1;
+            huds[1] = playerHud2;
+            huds[2] = playerHud3;
+            huds[3] = playerHud4;
+            huds[4] = playerHud5;
+            huds[5] = playerHud6;
+            huds[6] = playerHud7;
+            huds[7] = playerHud8;
+            huds[8] = playerHud9;
+            huds[9] = playerHud10;
             bets[0] = label1;
             bets[1] = label2;
             bets[2] = label3;
@@ -213,7 +213,7 @@ namespace BluffinPokerGui.Game
             {
                 if (p != null)
                 {
-                    PokerPlayerHud php = huds[p.NoSeat];
+                    PlayerHud php = huds[p.NoSeat];
                     Label bet = bets[p.NoSeat];
                     bet.Text = "";
                     for (int i = 1; i < 10; ++i)
@@ -258,9 +258,9 @@ namespace BluffinPokerGui.Game
             potValues[0].Visible = true;
             potValues[0].Text = "$0";
             PokerTable table = m_Game.Table;
-            foreach (PokerPlayer p in table.Players)
+            foreach (PlayerInfo p in table.Players.Select(p => p.Info))
             {
-                PokerPlayerHud php = huds[p.Info.NoSeat];
+                PlayerHud php = huds[p.NoSeat];
                 InstallPlayer(php, p);
             }
         }
@@ -274,7 +274,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
+            PlayerHud php = huds[p.NoSeat];
             php.DoAction(GameActionEnum.DoNothing, 0);
             php.SetPlaying();
         }
@@ -288,7 +288,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
+            PlayerHud php = huds[p.NoSeat];
             Label bet = bets[p.NoSeat];
             PokerTable table = m_Game.Table;
             php.SetMoney(p.MoneySafeAmnt);
@@ -310,8 +310,11 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
-            php.SetCards (p.HoleCards[0], p.HoleCards[1]);
+            PlayerHud php = huds[p.NoSeat];
+            if(p.HoleCards.Count == 2)
+                php.SetCards (p.HoleCards[0], p.HoleCards[1]);
+            else
+                php.SetCards(null,null);
         }
 
         void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
@@ -323,8 +326,8 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
-            InstallPlayer(php, e.Player);
+            PlayerHud php = huds[p.NoSeat];
+            InstallPlayer(php, p);
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
@@ -336,7 +339,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
+            PlayerHud php = huds[p.NoSeat];
             php.Visible = false;
         }
 
@@ -349,7 +352,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
+            PlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
         }
 
@@ -362,7 +365,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PlayerInfo p = e.Player.Info;
-            PokerPlayerHud php = huds[p.NoSeat];
+            PlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
             php.SetWinning();
         }
@@ -481,7 +484,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PokerPlayer p = e.Player;
-            if (p.Cards[0].Id >= 0)
+            if (p.Cards.Length > 0 && p.Cards[0].Id >= 0)
             {
                 WriteLine("==> Hole Card changed for " + p.Info.Name + ": " + p.Cards[0].ToString() + " " + p.Cards[1].ToString());
             }
@@ -532,16 +535,16 @@ namespace BluffinPokerGui.Game
             WriteLine(e.Player.Info.Name + " won pot ($" + e.AmountWon + ")");
         }
 
-        private void InstallPlayer(PokerPlayerHud php, PokerPlayer player)
+        private void InstallPlayer(PlayerHud php, PlayerInfo player)
         {
-            php.PlayerName = player.Info.Name;
+            php.PlayerName = player.Name;
             php.DoAction(GameActionEnum.DoNothing);
-            GameCard[] cards = player.Cards;
+            GameCard[] cards = player.HoleCards.ToArray();
             php.SetCards(cards[0], cards[1]);
-            php.SetMoney(player.Info.MoneySafeAmnt);
+            php.SetMoney(player.MoneySafeAmnt);
             php.SetSleeping();
-            php.Main = (m_NoSeat == player.Info.NoSeat);
-            php.Alive = player.IsPlaying;
+            php.Main = (m_NoSeat == player.NoSeat);
+            php.Alive = player.State == PlayerStateEnum.Playing;
             php.Visible = true;
         }
     }

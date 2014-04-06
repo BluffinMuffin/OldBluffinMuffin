@@ -11,7 +11,7 @@ using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace BluffinPokerGui.Game
 {
-    public partial class PokerPlayerHud : UserControl
+    public partial class PlayerHud : UserControl
     {
         private bool m_Main = false;
         private bool m_Alive = false;
@@ -58,7 +58,7 @@ namespace BluffinPokerGui.Game
             }
         }
 
-        public PokerPlayerHud()
+        public PlayerHud()
         {
             InitializeComponent();
         }
