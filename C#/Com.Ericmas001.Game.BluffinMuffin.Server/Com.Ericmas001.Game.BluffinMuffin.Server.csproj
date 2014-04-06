@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3082C9E0-DEFF-4B86-975A-0AE88AF51377}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.Ericmas001.Game.BluffinMuffin.Server</RootNamespace>
+    <AssemblyName>Com.Ericmas001.Game.BluffinMuffin.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>server.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerClientLobby.cs" />
+    <Compile Include="ServerLobby.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="server.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
+      <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
+      <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Logic\Com.Ericmas001.Game.Poker.Logic.csproj">
+      <Project>{27a8b599-cd12-415a-b20f-4f1e718a1a0b}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Persistance\Com.Ericmas001.Game.Poker.Persistance.csproj">
+      <Project>{032c04ff-5c33-4be2-ad7f-bed27134c8df}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Persistance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Commands\Com.Ericmas001.Game.Poker.Protocol.Commands.csproj">
+      <Project>{d19c48c3-3af0-4323-8479-0c4f21eab104}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Protocol.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Server\Com.Ericmas001.Game.Poker.Protocol.Server.csproj">
+      <Project>{d0973089-76fa-4361-9d10-79dc6e12ca11}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Protocol.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
+      <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
+      <Name>EricUtilityNetworking_2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
+      <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>
+      <Name>EricUtility_2013</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
