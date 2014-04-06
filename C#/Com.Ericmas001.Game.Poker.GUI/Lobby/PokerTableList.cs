@@ -12,6 +12,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
@@ -71,13 +72,13 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             for (int i = 0; i < lst.Count; ++i)
             {
                 TupleTable info = lst[i];
-                string type = info.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
+                string type = info.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
-                datTables.Rows[i].Cells[1].Value = info.Rules.TableName;
-                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Rules.LimitType).Name;
+                datTables.Rows[i].Cells[1].Value = info.Params.TableName;
+                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Params.LimitType).Name;
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
-                datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Rules.MaxPlayers;
+                datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Params.MaxPlayers;
             }
             if (datTables.RowCount > 0 && datTables.SelectedRows.Count > 0)
             {
@@ -90,18 +91,18 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         {
             CreateTableForm ctf = new CreateTableForm(m_Server.PlayerName, 1, lobby, m_Server.GetSupportedRules());
             ctf.ShowDialog();
-            GameRule gameRule = ctf.GameRules;
-            if(gameRule != null)
+            TableParams parms = ctf.Params;
+            if(parms != null)
             {
-                int id = m_Server.CreateTable(gameRule);
+                int id = m_Server.CreateTable(parms);
                 if (id != -1)
                 {
-                    JoinTable(id, gameRule.TableName, gameRule.BlindAmount);
+                    JoinTable(id, parms.TableName, parms.BlindAmount);
                     RefreshList();
                 }
                 else
                 {
-                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", gameRule.TableName);
+                    LogManager.Log(LogLevel.Error, "PokerTableList.AddTable", "Cannot create table: '{0}'", parms.TableName);
                 }
             }
         }

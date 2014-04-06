@@ -16,6 +16,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Game.Poker.Persistance;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Server
@@ -65,7 +66,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
         private int CreateTable(CreateTableCommand c)
         {
             int res = m_Lobby.CreateTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.GameRules.TableName, res, c.GameRules.CurrentLobby.LobbyType);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.Params.TableName, res, c.Params.CurrentLobby.LobbyType);
             return res;
         }
 
@@ -123,8 +124,8 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
             TableInfo table = game.Table;
 
-            if (game.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Training)
-                client = new GameServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Rules.CurrentLobby).StartingAmount);
+            if (game.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Training)
+                client = new GameServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Params.CurrentLobby).StartingAmount);
             else
                 client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
 
@@ -148,7 +149,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
                     m_Tables.Add(e.Command.TableID, client);
                     client.Start();
 
-                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Rules.TableName, e.Command.TableID, client.Player.NoSeat);
+                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Params.TableName, e.Command.TableID, client.Player.NoSeat);
                     Send(e.Command.EncodeResponse(client.Player.NoSeat));
 
                     client.SitIn();

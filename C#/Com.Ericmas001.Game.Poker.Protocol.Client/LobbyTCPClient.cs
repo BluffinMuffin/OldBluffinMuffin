@@ -21,6 +21,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
@@ -161,9 +162,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return client;
         }
 
-        public int CreateTable(GameRule gr)
+        public int CreateTable(TableParams parms)
         {
-            Send(new CreateTableCommand() { GameRules = gr });
+            Send(new CreateTableCommand() { Params = parms });
 
             return WaitAndReceive<CreateTableResponse>().IdTable;
         }

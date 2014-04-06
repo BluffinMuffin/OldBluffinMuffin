@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
@@ -118,7 +119,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             SetBlindRules();
         }
 
-        public GameRule GameRules
+        public TableParams Params
         {
             get
             {
@@ -136,7 +137,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         lobby = new LobbyOptionsCareer();
                         break;
                 }
-                return new GameRule()
+                return new TableParams()
                 {
                     TableName = txtTableName.Text,
                     GameType = m_GameType,

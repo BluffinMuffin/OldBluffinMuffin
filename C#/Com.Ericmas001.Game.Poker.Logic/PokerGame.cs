@@ -9,6 +9,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Logic
 {
@@ -55,7 +56,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// <summary>
         /// The Rules Entity
         /// </summary>
-        public GameRule Rules { get; private set; }
+        public TableParams Params { get; private set; }
 
         /// <summary>
         /// Current Round of the Playing State
@@ -112,7 +113,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             m_Dealer = dealer;
             Table = table;
-            Rules = table.Rules;
+            Params = table.Params;
             m_State = GameStateEnum.Init;
             m_RoundState = RoundStateEnum.Cards;
         }
@@ -444,9 +445,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             Table.NbPlayed = 0;
             Table.NoSeatLastRaise = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).NoSeat;
-            Table.MinimumRaiseAmount = Table.Rules.BlindAmount;
+            Table.MinimumRaiseAmount = Table.Params.BlindAmount;
 
-            WaitALittle(Rules.WaitingTimes.AfterBoardDealed);
+            WaitALittle(Params.WaitingTimes.AfterBoardDealed);
 
             if (Table.NbPlaying <= 1)
                 EndBettingRound();
@@ -508,7 +509,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             p.State = PlayerStateEnum.SitIn;
 
-            WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
+            WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Fold, -1));
         }
@@ -516,7 +517,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             Table.NbPlayed++;
 
-            WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
+            WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Call, played));
         }
@@ -531,7 +532,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             Table.NoSeatLastRaise = p.NoSeat;
             Table.HigherBet = p.MoneyBetAmnt;
 
-            WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
+            WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
             PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Raise, played));
         }
@@ -577,7 +578,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                             p.MoneySafeAmnt += wonAmount;
                             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
                             PlayerWonPot(this, new PotWonEventArgs(p, pot.Id, wonAmount));
-                            WaitALittle(Rules.WaitingTimes.AfterPotWon);
+                            WaitALittle(Params.WaitingTimes.AfterPotWon);
                         }
                     }
                 }
@@ -607,9 +608,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     p.State = PlayerStateEnum.SitIn;
             }
 
-            if (Table.NbPlaying >= Table.Rules.MinPlayersToStart)
+            if (Table.NbPlaying >= Table.Params.MinPlayersToStart)
             {
-                Table.Rules.MinPlayersToStart = 2;
+                Table.Params.MinPlayersToStart = 2;
                 Table.InitTable();
                 m_Dealer.FreshDeck();
                 AdvanceToNextGameState(); //Advancing to WaitForBlinds State

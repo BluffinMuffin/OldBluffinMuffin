@@ -136,7 +136,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.SmallBlindAmnt });
 
             if (m_PokerTable.NoSeatBigBlind == m_TablePosition)
-                Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Rules.BlindAmount });
+                Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
 
             GameBlindNeeded(this, new EventArgs());
         }
@@ -252,7 +252,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
             SetCards(cmd.BoardCardIDs);
-            m_PokerTable.Rules = cmd.Rules;
+            m_PokerTable.Params = cmd.Params;
             m_PokerTable.Players.ForEach(p => m_PokerTable.LeaveTable(p));
 
             for (int i = 0; i < cmd.NbPlayers; ++i)

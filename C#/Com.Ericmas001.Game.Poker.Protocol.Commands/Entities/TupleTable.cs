@@ -5,6 +5,7 @@ using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
 {
@@ -14,7 +15,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
         public int BigBlind { get; set; }
         public int NbPlayers { get; set; }
         public LobbyActionEnum PossibleAction { get; set; }
-        public GameRule Rules { get; set; }
+        public TableParams Params { get; set; }
 
         public int CompareTo(TupleTable other)
         {
