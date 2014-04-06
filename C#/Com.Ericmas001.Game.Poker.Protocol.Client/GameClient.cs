@@ -148,7 +148,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             if (p != null)
             {
-                SetPlayerVisibility(p, cmd.IsPlaying, cmd.CardsID.Select(id => new GameCard(id)).ToList());
+                SetPlayerVisibility(p, cmd.State, cmd.CardsID.Select(id => new GameCard(id)).ToList());
 
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
             }
@@ -160,7 +160,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             PlayerJoinedCommand cmd = e.Command;
             PlayerInfo p = new PlayerInfo(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
 
-            m_PokerTable.ForceJoinTable(p, cmd.PlayerPos);
+            m_PokerTable.JoinTable(p, cmd.PlayerPos);
 
             PlayerJoined(this, new PlayerInfoEventArgs(p));
 
@@ -222,7 +222,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                 p.MoneyBetAmnt = cmd.PlayerBet;
                 p.MoneySafeAmnt = cmd.PlayerMoney;
-                p.IsPlaying = cmd.IsPlaying;
+                p.State = cmd.State;
 
                 PlayerActionTaken(this, new PlayerActionEventArgs(p, cmd.ActionType, cmd.ActionAmount));
             }
@@ -264,9 +264,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 }
                 int noSeat = seat.NoSeat;
                 PlayerInfo p = seat.Player;
-                m_PokerTable.ForceJoinTable(p, noSeat);
+                m_PokerTable.JoinTable(p, noSeat);
 
-                SetPlayerVisibility(p, seat.IsPlaying, seat.Player.HoleCards);
+                SetPlayerVisibility(p, p.State, seat.Player.HoleCards);
 
                 if (seat.IsDealer)
                     m_PokerTable.NoSeatDealer = noSeat;
@@ -328,9 +328,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
         }
 
-        private void SetPlayerVisibility(PlayerInfo p, bool isPlaying, List<GameCard> cards)
+        private void SetPlayerVisibility(PlayerInfo p, PlayerStateEnum pState, List<GameCard> cards)
         {
-            p.IsPlaying = isPlaying;
+            p.State = pState;
             p.Cards = cards.ToArray();
         }
         #endregion Private Methods

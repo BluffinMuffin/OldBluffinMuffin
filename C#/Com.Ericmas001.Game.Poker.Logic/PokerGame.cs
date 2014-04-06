@@ -329,7 +329,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             if (p.MoneySafeAmnt == 0)
             {
                 LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
-                p.IsAllIn = true;
+                p.State = PlayerStateEnum.AllIn;
                 Table.NbAllIn++;
                 GameTable.AddAllInCap(p.MoneyBetAmnt);
             }
@@ -369,7 +369,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 if (amnt < needed && !p.CanBet(amnt + 1))
                 {
                     LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
-                    p.IsAllIn = true;
+                    p.State = PlayerStateEnum.AllIn;
                     Table.NbAllIn++;
                     GameTable.AddAllInCap(p.MoneyBetAmnt + amnt);
                 }
@@ -506,7 +506,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void FoldPlayer(PlayerInfo p)
         {
-            p.IsPlaying = false;
+            p.State = PlayerStateEnum.SitIn;
 
             WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
@@ -600,11 +600,11 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     LeaveGame(p);
                 else if (p.CanPlay)
                 {
-                    p.IsPlaying = true;
+                    p.State = PlayerStateEnum.Playing;
                     p.IsShowingCards = false;
                 }
                 else
-                    p.IsPlaying = false;
+                    p.State = PlayerStateEnum.SitIn;
             }
 
             if (Table.NbPlaying >= Table.Rules.MinPlayersToStart)

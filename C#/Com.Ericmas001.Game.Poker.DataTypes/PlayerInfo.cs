@@ -142,7 +142,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public bool IsPlaying
         {
             get { return State == PlayerStateEnum.Playing; }
-            set { State = value ? PlayerStateEnum.Playing : PlayerStateEnum.SitIn; }
         }
 
         /// <summary>
@@ -153,7 +152,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public bool IsAllIn
         {
             get { return State == PlayerStateEnum.AllIn; }
-            set { State = value ? PlayerStateEnum.AllIn : PlayerStateEnum.SitIn; }
         }
 
         /// <summary>
@@ -163,7 +161,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public bool IsZombie
         {
             get { return State == PlayerStateEnum.Zombie; }
-            set { State = value ? PlayerStateEnum.Zombie : PlayerStateEnum.SitIn; }
         }
 
         /// <summary>

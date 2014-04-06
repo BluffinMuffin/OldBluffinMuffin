@@ -114,7 +114,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             Send(new PlayerHoleCardsChangedCommand() 
             {
                 PlayerPos = p.NoSeat, 
-                IsPlaying = p.State == PlayerStateEnum.Playing, 
+                State = p.State,
                 CardsID = holeCards.Select(c => c.Id).ToList() ,
             });
         }
@@ -147,7 +147,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                 TotalPot = m_Game.Table.TotalPotAmnt,
                 ActionType = e.Action,
                 ActionAmount = e.AmountPlayed,
-                IsPlaying = p.State == PlayerStateEnum.Playing,
+                State = p.State,
             });
         }
 
@@ -232,7 +232,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             LeftTable(this, new KeyEventArgs<int>(m_ID));
 
             m_IsConnected = false;
-            m_Player.IsZombie = true;
+            m_Player.State = PlayerStateEnum.Zombie;
 
             TableInfo t = m_Game.Table;
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Rules.TableName, m_ID);
