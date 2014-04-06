@@ -36,6 +36,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
         public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
+        public event EventHandler<PlayerInfoEventArgs> PlayerSatIn = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
         public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
@@ -79,6 +80,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_CommandObserver.GameStartedCommandReceived += new EventHandler<CommandEventArgs<GameStartedCommand>>(m_CommandObserver_GameStartedCommandReceived);
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += new EventHandler<CommandEventArgs<PlayerHoleCardsChangedCommand>>(m_CommandObserver_PlayerHoleCardsChangedCommandReceived);
             m_CommandObserver.PlayerJoinedCommandReceived += new EventHandler<CommandEventArgs<PlayerJoinedCommand>>(m_CommandObserver_PlayerJoinedCommandReceived);
+            m_CommandObserver.PlayerSatInCommandReceived += new EventHandler<CommandEventArgs<PlayerSatInCommand>>(m_CommandObserver_PlayerSatInCommandReceived);
             m_CommandObserver.PlayerLeftCommandReceived += new EventHandler<CommandEventArgs<PlayerLeftCommand>>(m_CommandObserver_PlayerLeftCommandReceived);
             m_CommandObserver.PlayerMoneyChangedCommandReceived += new EventHandler<CommandEventArgs<PlayerMoneyChangedCommand>>(m_CommandObserver_PlayerMoneyChangedCommandReceived);
             m_CommandObserver.PlayerTurnBeganCommandReceived += new EventHandler<CommandEventArgs<PlayerTurnBeganCommand>>(m_CommandObserver_PlayerTurnBeganCommandReceived);
@@ -158,12 +160,22 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         void m_CommandObserver_PlayerJoinedCommandReceived(object sender, CommandEventArgs<PlayerJoinedCommand> e)
         {
             PlayerJoinedCommand cmd = e.Command;
-            PlayerInfo p = new PlayerInfo(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
+            PlayerInfo p = new PlayerInfo() { Name = cmd.PlayerName };
 
             m_PokerTable.JoinTable(p);
-            m_PokerTable.SitInToTable(p, cmd.PlayerPos);
 
             PlayerJoined(this, new PlayerInfoEventArgs(p));
+
+        }
+
+        void m_CommandObserver_PlayerSatInCommandReceived(object sender, CommandEventArgs<PlayerSatInCommand> e)
+        {
+            PlayerSatInCommand cmd = e.Command;
+            PlayerInfo p = new PlayerInfo(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
+
+            m_PokerTable.SitInToTable(p, cmd.PlayerPos);
+
+            PlayerSatIn(this, new PlayerInfoEventArgs(p));
 
         }
 
