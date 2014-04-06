@@ -6,14 +6,14 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
-using Com.Ericmas001.Game.BluffinMuffin.GUI.Game;
+using Com.Ericmas001.Game.Poker.GUI.Game;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby
+namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class PokerTableList : UserControl
     {

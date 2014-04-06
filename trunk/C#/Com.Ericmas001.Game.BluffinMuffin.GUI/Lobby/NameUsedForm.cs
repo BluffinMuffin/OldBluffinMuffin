@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby
+namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class NameUsedForm : Form
     {

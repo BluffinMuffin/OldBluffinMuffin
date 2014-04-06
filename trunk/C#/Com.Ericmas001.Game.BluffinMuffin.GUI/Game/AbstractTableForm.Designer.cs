@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+﻿namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     partial class AbstractTableForm
     {

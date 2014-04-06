@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI
+﻿namespace Com.Ericmas001.Game.Poker.GUI
 {
     partial class HandStrengthForm
     {
@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.hands_strength;
+            this.BackgroundImage = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.hands_strength;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(215, 553);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;

@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+﻿namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     partial class TableViewerForm
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableViewerForm));
-            this.logConsole = new Com.Ericmas001.Game.BluffinMuffin.GUI.LogConsole();
+            this.logConsole = new Com.Ericmas001.Game.Poker.GUI.LogConsole();
             this.btnHelp = new VIBlend.WinForms.Controls.vButton();
             this.pnlTable = new System.Windows.Forms.Panel();
             this.lblPot9 = new System.Windows.Forms.Label();
@@ -62,21 +62,21 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.cardPictureBox5 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
-            this.cardPictureBox4 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
-            this.cardPictureBox3 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
-            this.cardPictureBox2 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
-            this.cardPictureBox1 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
-            this.playerHud10 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud9 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud8 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud7 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud6 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud5 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud4 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud3 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud2 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
-            this.playerHud1 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.PlayerHud();
+            this.cardPictureBox5 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
+            this.cardPictureBox4 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
+            this.cardPictureBox3 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
+            this.cardPictureBox2 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
+            this.cardPictureBox1 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
+            this.playerHud10 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud9 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud8 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud7 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud6 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud5 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud4 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud3 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud2 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
+            this.playerHud1 = new Com.Ericmas001.Game.Poker.GUI.Game.PlayerHud();
             this.lblTotalPot = new System.Windows.Forms.Label();
             this.lblTotalPotTitle = new System.Windows.Forms.Label();
             this.pnlTable.SuspendLayout();
@@ -99,7 +99,7 @@
             this.btnHelp.AllowAnimations = true;
             this.btnHelp.BackColor = System.Drawing.Color.Transparent;
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHelp.Image = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.help;
+            this.btnHelp.Image = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.help;
             this.btnHelp.Location = new System.Drawing.Point(880, 12);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.RoundedCornersMask = ((byte)(15));
@@ -113,7 +113,7 @@
             // 
             // pnlTable
             // 
-            this.pnlTable.BackgroundImage = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.table;
+            this.pnlTable.BackgroundImage = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.table;
             this.pnlTable.Controls.Add(this.lblPot9);
             this.pnlTable.Controls.Add(this.lblPot8);
             this.pnlTable.Controls.Add(this.lblPot7);

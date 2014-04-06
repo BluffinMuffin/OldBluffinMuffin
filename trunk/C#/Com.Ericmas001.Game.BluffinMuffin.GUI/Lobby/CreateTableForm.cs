@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby
+namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class CreateTableForm : Form
     {

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public partial class AbstractTableForm : Form, IPokerViewer
     {
