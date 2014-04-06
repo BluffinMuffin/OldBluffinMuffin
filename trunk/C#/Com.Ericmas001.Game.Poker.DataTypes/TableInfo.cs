@@ -14,7 +14,8 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     {
         #region Fields
         protected readonly GameCard[] m_Cards = new GameCard[5];
-        protected readonly PlayerInfo[] m_Players;
+        protected readonly PlayerInfo[] m_Seats;
+        private readonly List<PlayerInfo> m_People = new List<PlayerInfo>();
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
         #endregion Fields
 
@@ -23,6 +24,10 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// Contains all the rules of the current game
         /// </summary>
         public TableParams Params { get; set; }
+        /// <summary>
+        /// Contains all the People that are watching anbd playing the game. Everybody in the room.
+        /// </summary>
+        public List<PlayerInfo> People { get { return m_People; } }
 
         /// <summary>
         /// Cards on the Board
@@ -126,12 +131,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// List of the Players currently seated
         /// </summary>
-        public List<PlayerInfo> Players { get { return m_Players.Where(p => p != null).ToList(); } }
+        public List<PlayerInfo> Players { get { return m_Seats.Where(p => p != null).ToList(); } }
 
         /// <summary>
         /// List of the Seats
         /// </summary>
-        public List<PlayerInfo> Seats { get { return m_Players.ToList(); } }
+        public List<PlayerInfo> Seats { get { return m_Seats.ToList(); } }
 
         /// <summary>
         /// List of the playing Players in order starting from the first seat
@@ -196,7 +201,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public TableInfo(TableParams parms)
         {
             Params = parms;
-            m_Players = new PlayerInfo[parms.MaxPlayers];
+            m_Seats = new PlayerInfo[parms.MaxPlayers];
             NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
@@ -228,7 +233,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public PlayerInfo GetPlayer(int seat)
         {
-            return m_Players[seat];
+            return m_Seats[seat];
         }
 
 
@@ -240,12 +245,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
                 int j = (seat + 1 + i) % Params.MaxPlayers;
-                if (m_Players[j] != null)
+                if (m_Seats[j] != null)
                 {
-                    return m_Players[j];
+                    return m_Seats[j];
                 }
             }
-            return m_Players[seat];
+            return m_Seats[seat];
         }
 
         /// <summary>
@@ -256,12 +261,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
                 int j = (seat + 1 + i) % Params.MaxPlayers;
-                if (m_Players[j] != null && m_Players[j].IsPlaying)
+                if (m_Seats[j] != null && m_Seats[j].IsPlaying)
                 {
-                    return m_Players[j];
+                    return m_Seats[j];
                 }
             }
-            return m_Players[seat];
+            return m_Seats[seat];
         }
 
         /// <summary>
@@ -272,14 +277,21 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             return Players.Any(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
+        public virtual bool JoinTable(PlayerInfo p)
+        {
+            People.Add(p);
+            p.State = PlayerStateEnum.Joined;
+            return true;
+        }
+
         /// <summary>
         /// Sit a player without the validations. This is used here after validation, or on the client side when the game is telling the client where a player is seated
         /// </summary>
-        public bool JoinTable(PlayerInfo p, int seat)
+        public bool SitInToTable(PlayerInfo p, int seat)
         {
-            p.State = PlayerStateEnum.Joined;
+            p.State = PlayerStateEnum.SitIn;
             p.NoSeat = seat;
-            m_Players[seat] = p;
+            m_Seats[seat] = p;
             return true;
         }
 
@@ -288,12 +300,13 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public virtual bool LeaveTable(PlayerInfo p)
         {
-            if (!ContainsPlayer(p))
+            if (!PeopleContainsPlayer(p))
                 return false;
 
             int seat = p.NoSeat;
             p.State = PlayerStateEnum.Zombie;
-            m_Players[seat] = null;
+            m_Seats[seat] = null;
+            People.Remove(p);
             return true;
         }
 
@@ -343,16 +356,20 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         #region Protected Methods
         protected List<PlayerInfo> PlayingPlayersFrom(int seat)
         {
-            return m_Players.Where(p => (p != null && p.IsPlaying)).ToList();
+            return m_Seats.Where(p => (p != null && p.IsPlaying)).ToList();
         }
         protected List<PlayerInfo> PlayingAndAllInPlayersFrom(int seat)
         {
-            return m_Players.Where(p => (p != null && (p.IsPlaying || p.IsAllIn))).ToList();
+            return m_Seats.Where(p => (p != null && (p.IsPlaying || p.IsAllIn))).ToList();
         }
 
-        protected bool ContainsPlayer(PlayerInfo p)
+        protected bool SeatsContainsPlayer(PlayerInfo p)
         {
             return Players.Contains(p) || Players.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
+        }
+        protected bool PeopleContainsPlayer(PlayerInfo p)
+        {
+            return People.Contains(p) || People.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
         }
         protected virtual void PlaceButtons()
         {

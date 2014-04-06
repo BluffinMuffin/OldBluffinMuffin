@@ -160,7 +160,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             PlayerJoinedCommand cmd = e.Command;
             PlayerInfo p = new PlayerInfo(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
 
-            m_PokerTable.JoinTable(p, cmd.PlayerPos);
+            m_PokerTable.JoinTable(p);
+            m_PokerTable.SitInToTable(p, cmd.PlayerPos);
 
             PlayerJoined(this, new PlayerInfoEventArgs(p));
 
@@ -264,7 +265,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 }
                 int noSeat = seat.NoSeat;
                 PlayerInfo p = seat.Player;
-                m_PokerTable.JoinTable(p, noSeat);
+                m_PokerTable.JoinTable(p);
+                m_PokerTable.SitInToTable(p, noSeat);
 
                 SetPlayerVisibility(p, p.State, seat.Player.HoleCards);
 
