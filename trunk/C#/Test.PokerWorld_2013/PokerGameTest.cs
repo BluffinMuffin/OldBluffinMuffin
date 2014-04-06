@@ -34,11 +34,11 @@ namespace Test.PokerWorld
 
             Assert.AreEqual(false, game.JoinGame(p3), "You should not be able to enter a started game with already 2 players (MaxSeats=2)");
 
-            game.LeaveGame(p2);
+            game.LeaveGame(p2.Info);
             Assert.AreEqual(true, game.JoinGame(p3), "You should not take the place of a player that left");
 
-            game.LeaveGame(p1);
-            game.LeaveGame(p3);
+            game.LeaveGame(p1.Info);
+            game.LeaveGame(p3.Info);
             Assert.AreEqual(false, game.JoinGame(p2), "You should not enter an ended game");
 
         }
@@ -64,13 +64,13 @@ namespace Test.PokerWorld
             Assert.AreNotEqual(0, needed2, "The game should need a blind from p2");
 
             //Try to bet more than what is needed
-            Assert.AreEqual(false, game.PlayMoney(p1, needed1 + 1), "The game should not accept any blind that is over what is needed");
+            Assert.AreEqual(false, game.PlayMoney(p1.Info, needed1 + 1), "The game should not accept any blind that is over what is needed");
 
             //Try to bet less than what is needed while beaing able to put more
-            Assert.AreEqual(false, game.PlayMoney(p1, needed1 - 1), "The game should not accept any blind that is under what is needed unless that is all the player got");
+            Assert.AreEqual(false, game.PlayMoney(p1.Info, needed1 - 1), "The game should not accept any blind that is under what is needed unless that is all the player got");
 
             //Try to bet the exact needed amount
-            Assert.AreEqual(true, game.PlayMoney(p1, needed1), "The game should accept a perfect blind");
+            Assert.AreEqual(true, game.PlayMoney(p1.Info, needed1), "The game should accept a perfect blind");
 
 
             //Get the amount still needed from both players
@@ -84,7 +84,7 @@ namespace Test.PokerWorld
             //This test is useless, the game already change the amount if you are playing over what you can
 
             //Try to bet more than what the player have
-            Assert.AreEqual(true, game.PlayMoney(p2, 2), "The game should accept a blind that is under what is needed if that is all the player got");
+            Assert.AreEqual(true, game.PlayMoney(p2.Info, 2), "The game should accept a blind that is under what is needed if that is all the player got");
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace Test.PokerWorld
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should now be in the playing state");
 
             //Make the player fold so the other one already win the pot
-            game.PlayMoney(game.Table.CurrentPlayer, -1);
+            game.PlayMoney(game.Table.CurrentPlayer.Info, -1);
 
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should be back waiting for blinds sincepot was won and it's starting over");
 
@@ -132,7 +132,7 @@ namespace Test.PokerWorld
 
             //Make the playing player leave the game without taking any actions
             PokerPlayer cp = game.Table.CurrentPlayer;
-            game.LeaveGame(cp);
+            game.LeaveGame(cp.Info);
 
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since only one player is left");
 
@@ -143,7 +143,7 @@ namespace Test.PokerWorld
 
             //let's leave before putting the blind now
             int safeMoneyBefore = p1.Info.MoneySafeAmnt;
-            game.LeaveGame(p1);
+            game.LeaveGame(p1.Info);
 
             Assert.AreEqual(true, p1.Info.MoneySafeAmnt < safeMoneyBefore, "The player should have less money then before, since blinds have been posted before he left");
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should still be waiting for blinds");
@@ -164,15 +164,15 @@ namespace Test.PokerWorld
 
             cp = game.Table.CurrentPlayer;
             PokerPlayer np = game.Table.GetPlayingPlayerNextTo(cp.Info.NoSeat);
-            game.LeaveGame(np);
+            game.LeaveGame(np.Info);
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should be still in playing mode since it wasn't the playing player.");
 
-            game.PlayMoney(cp, game.Table.CallAmnt(cp.Info));
+            game.PlayMoney(cp.Info, game.Table.CallAmnt(cp.Info));
             
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since only one player is left");
 
             //Let's end the game
-            game.LeaveGame(cp);
+            game.LeaveGame(cp.Info);
 
             Assert.AreEqual(GameStateEnum.End, game.State, "The game should be ended");
         }
@@ -200,40 +200,40 @@ namespace Test.PokerWorld
             Assert.AreEqual(RoundTypeEnum.Preflop, game.Round, "The game should now be in the preflop round");
 
             //Make the first player call
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The first player should be allowed to call");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The first player should be allowed to call");
             Assert.AreEqual(RoundTypeEnum.Preflop, game.Round, "The game should still be in the preflop round");
 
             //Make the second player call
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The second player should be allowed to call");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The second player should be allowed to call");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should now be in the flop round");
 
             //Make the first player check
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, 0), "The first player should be allowed to check");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, 0), "The first player should be allowed to check");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the second player bet
-            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info) - 1), "The player should not be able to raise under the minimum");
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info)), "The player should be able to raise with the minimum");
+            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info) - 1), "The player should not be able to raise under the minimum");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info)), "The player should be able to raise with the minimum");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the first player come back and raise even more than he needs to
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info) + 5), "The player should be able to raise over the minimum");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.MinRaiseAmnt(game.Table.CurrentPlayer.Info) + 5), "The player should be able to raise over the minimum");
             Assert.AreEqual(RoundTypeEnum.Flop, game.Round, "The game should still be in the flop round");
 
             //Make the second player stay calm and call, but try to call less the first time
-            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info) - 1), "The first player should not be allowed to play under what is needed to call");
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The first player should be allowed to play what is needed to call");
+            Assert.AreEqual(false, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.CallAmnt(game.Table.CurrentPlayer.Info) - 1), "The first player should not be allowed to play under what is needed to call");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.CallAmnt(game.Table.CurrentPlayer.Info)), "The first player should be allowed to play what is needed to call");
             Assert.AreEqual(RoundTypeEnum.Turn, game.Round, "The game should now be in the turn round");
 
             //if this is the player with less money (p1), well just check, i want the other one :)
             if (game.Table.CurrentPlayer == p1)
-                game.PlayMoney(p1, 0);
+                game.PlayMoney(p1.Info, 0);
 
             //make the second player put more than the first one can put
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, p1.Info.MoneySafeAmnt + 10), "The second player should be allowed to play over what the other player have");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, p1.Info.MoneySafeAmnt + 10), "The second player should be allowed to play over what the other player have");
 
             //make the first player call it, so allin
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer.Info) - 1), "The first player should be allowed to go all-in");
+            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer.Info, game.Table.CallAmnt(game.Table.CurrentPlayer.Info) - 1), "The first player should be allowed to go all-in");
 
             //The pot is won, let's start over.
             if (p1.Info.MoneySafeAmnt == 0)
@@ -255,7 +255,7 @@ namespace Test.PokerWorld
         private void PutBlinds(PokerGame game, PokerPlayer p)
         {
             int b = game.Table.GetBlindNeeded(p.Info);
-            game.PlayMoney(p, b);
+            game.PlayMoney(p.Info, b);
         }
 
         private static void SitInGame(PokerGame game, PokerPlayer p1)
