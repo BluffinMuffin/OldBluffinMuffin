@@ -295,13 +295,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             }
         }
 
-        public bool PlayMoney(PokerPlayer p, int amnt)
+        public bool PlayMoney(PlayerInfo p, int amnt)
         {
             Send(new PlayerPlayMoneyCommand() { Played = amnt });
             return true;
         }
 
-        public bool LeaveGame(PokerPlayer p)
+        public bool LeaveGame(PlayerInfo p)
         {
             Send(new DisconnectCommand());
             return true;

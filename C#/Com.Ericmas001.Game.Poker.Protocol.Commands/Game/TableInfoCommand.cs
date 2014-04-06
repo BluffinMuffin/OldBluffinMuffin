@@ -44,11 +44,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
                 SeatInfo si = new SeatInfo() { NoSeat = i };
                 Seats.Add(si);
 
-                PlayerInfo p = table.GetPlayer(i).Info;
+                PokerPlayer pp = table.GetPlayer(i);
 
-                si.IsEmpty = (p == null);
+                si.IsEmpty = (pp == null);
                 if (si.IsEmpty)
                     continue;
+                PlayerInfo p = pp.Info;
                 si.Player = p.Clone();
 
                 //If we are not sending the info about the player who is receiving, don't show the cards unless you can

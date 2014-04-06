@@ -221,7 +221,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         #region CommandObserver Event Handling
         void m_CommandObserver_PlayMoneyCommandReceived(object sender, CommandEventArgs<PlayerPlayMoneyCommand> e)
         {
-            m_Game.PlayMoney(m_Player, e.Command.Played);
+            m_Game.PlayMoney(m_Player.Info, e.Command.Played);
         }
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
@@ -238,13 +238,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Info.Name, t.Rules.TableName, m_ID);
 
             if (m_Game.State == GameStateEnum.WaitForPlayers)
-                m_Game.LeaveGame(m_Player);
+                m_Game.LeaveGame(m_Player.Info);
             else if (t.NoSeatCurrPlayer == m_Player.Info.NoSeat)
             {
                 if (t.CanCheck(m_Player.Info))
-                    m_Game.PlayMoney(m_Player, 0);
+                    m_Game.PlayMoney(m_Player.Info, 0);
                 else
-                    m_Game.PlayMoney(m_Player, -1);
+                    m_Game.PlayMoney(m_Player.Info, -1);
             }
         }
 

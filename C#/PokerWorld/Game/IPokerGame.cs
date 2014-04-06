@@ -1,4 +1,5 @@
-﻿using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+﻿using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using System;
 using System.Collections.Generic;
 
@@ -26,8 +27,8 @@ namespace PokerWorld.Game
 
         PokerTable Table { get; }
 
-        bool PlayMoney(PokerPlayer p, int amnt);
-        bool LeaveGame(PokerPlayer p);
+        bool PlayMoney(PlayerInfo p, int amnt);
+        bool LeaveGame(PlayerInfo p);
 
         string Encode { get; }
     }

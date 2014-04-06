@@ -23,7 +23,7 @@ namespace BluffinPokerGui.Game
             DisableButtons();
             PokerTable table = m_Game.Table;
             PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p, -1);
+            m_Game.PlayMoney(p.Info, -1);
         }
 
         private void btnCall_Click(object sender, EventArgs e)
@@ -31,7 +31,7 @@ namespace BluffinPokerGui.Game
             DisableButtons();
             PokerTable table = m_Game.Table;
             PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p, table.CallAmnt(p.Info));
+            m_Game.PlayMoney(p.Info, table.CallAmnt(p.Info));
         }
 
         private void btnRaise_Click(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace BluffinPokerGui.Game
             DisableButtons();
             PokerTable table = m_Game.Table;
             PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p, (int)nudRaise.Value - p.Info.MoneyBetAmnt);
+            m_Game.PlayMoney(p.Info, (int)nudRaise.Value - p.Info.MoneyBetAmnt);
         }
 
         private void DisableButtons()
