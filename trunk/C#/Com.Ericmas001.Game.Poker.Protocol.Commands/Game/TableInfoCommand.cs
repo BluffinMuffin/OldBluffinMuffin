@@ -61,7 +61,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
                 si.IsSmallBlind = table.NoSeatSmallBlind == i;
                 si.IsBigBlind = table.NoSeatBigBlind == i;
                 si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
-                si.IsPlaying = p.IsPlaying;
             }
         }
     }

@@ -15,6 +15,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public int TotalPot { get; set; }
         public GameActionEnum ActionType { get; set; }
         public int ActionAmount { get; set; }
-        public bool IsPlaying { get; set; }
+        public PlayerStateEnum State { get; set; }
     }
 }

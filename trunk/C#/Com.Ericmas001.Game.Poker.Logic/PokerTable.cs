@@ -109,7 +109,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 return false;
             }
 
-            ForceJoinTable(p,  m_RemainingSeats.Pop());
+            base.JoinTable(p,  m_RemainingSeats.Pop());
             return true;
         }
 

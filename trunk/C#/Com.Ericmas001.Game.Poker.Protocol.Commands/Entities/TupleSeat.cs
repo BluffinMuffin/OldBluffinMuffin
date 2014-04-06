@@ -12,12 +12,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
     {
         public int NoSeat { get; set; }
         public PlayerInfo Player { get; set; }
-        public bool IsEmpty { get; set; } //SeatInfo
-        public bool IsDealer { get; set; } //SeatInfo
-        public bool IsSmallBlind { get; set; } //SeatInfo
-        public bool IsBigBlind { get; set; } //SeatInfo
-        public bool IsCurrentPlayer { get; set; } //SeatInfo
-        public bool IsPlaying { get; set; } //SeatInfo
+        public bool IsEmpty { get; set; }
+        public bool IsDealer { get; set; }
+        public bool IsSmallBlind { get; set; }
+        public bool IsBigBlind { get; set; }
+        public bool IsCurrentPlayer { get; set; }
 
         public TupleSeat()
         {

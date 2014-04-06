@@ -274,10 +274,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// Sit a player without the validations. This is used here after validation, or on the client side when the game is telling the client where a player is seated
         /// </summary>
-        public bool ForceJoinTable(PlayerInfo p, int seat)
+        public bool JoinTable(PlayerInfo p, int seat)
         {
-            p.IsZombie = false;
-            p.IsPlaying = false;
+            p.State = PlayerStateEnum.Joined;
             p.NoSeat = seat;
             m_Players[seat] = p;
             return true;
@@ -292,8 +291,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 return false;
 
             int seat = p.NoSeat;
-            p.IsPlaying = false;
-            p.IsZombie = true;
+            p.State = PlayerStateEnum.Zombie;
             m_Players[seat] = null;
             return true;
         }
