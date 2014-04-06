@@ -5,6 +5,7 @@ using System.Linq;
 using EricUtility;
 using Newtonsoft.Json.Linq;
 using EricUtility.Games.CardGame;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {
@@ -29,15 +30,18 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public int MoneyBetAmnt { get; set; }
         public List<GameCard> HoleCards { get; set; }
 
+        public PlayerStateEnum State { get; set; }
+
         public PlayerInfo()
         {
-            HoleCards = new List<GameCard>();
+            HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD }; ;
 
             Name = "Anonymous Player";
             NoSeat = -1;
             MoneySafeAmnt = 0;
             MoneyBetAmnt = 0;
             MoneyInitAmnt = 0;
+            State = PlayerStateEnum.Zombie;
         }
 
         public PlayerInfo(String name, int money)
@@ -66,7 +70,8 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 MoneyInitAmnt = this.MoneyInitAmnt,
                 MoneyBetAmnt = this.MoneyBetAmnt,
                 MoneySafeAmnt = this.MoneySafeAmnt,
-                HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToList()
+                HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToList(),
+                State = this.State,
             };
         }
 

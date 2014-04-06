@@ -1,6 +1,6 @@
 ﻿namespace BluffinPokerGui.Game
 {
-    partial class PokerPlayerHud
+    partial class PlayerHud
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
@@ -130,7 +130,7 @@
             this.picCard1.TabIndex = 0;
             this.picCard1.TabStop = false;
             // 
-            // PokerPlayerHud
+            // PlayerHud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -140,7 +140,7 @@
             this.Controls.Add(this.pnlCenter);
             this.Controls.Add(this.lblAction);
             this.Controls.Add(this.lblName);
-            this.Name = "PokerPlayerHud";
+            this.Name = "PlayerHud";
             this.Size = new System.Drawing.Size(121, 121);
             this.pnlCenter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBlind)).EndInit();

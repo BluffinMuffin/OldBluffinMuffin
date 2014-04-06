@@ -55,6 +55,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
                 if (i != playerSendingTo.Info.NoSeat)
                     si.Player.HoleCards = p.RelativeCards.ToList();
 
+                if (si.Player.HoleCards.Count != 2)
+                    si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
+
                 si.IsDealer = table.NoSeatDealer == i;
                 si.IsSmallBlind = table.NoSeatSmallBlind == i;
                 si.IsBigBlind = table.NoSeatBigBlind == i;

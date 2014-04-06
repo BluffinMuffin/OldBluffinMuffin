@@ -5,16 +5,12 @@ using EricUtility.Games.CardGame;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.HandEval;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace PokerWorld.Game
 {
     public class PokerPlayer
     {
-        #region Fields
-        private bool m_IsPlaying; // Is the player Playing ? False if Folded, AllIn or NotPlaying
-        private bool m_IsAllIn; // Is the player All-in ?
-        #endregion Fields
-
         #region Properties
 
         public PlayerInfo Info { get; private set; }
@@ -24,7 +20,7 @@ namespace PokerWorld.Game
         /// </summary>
         public GameCard[] Cards
         {
-            get { return Info.HoleCards.Select(c => (c == null || !(m_IsPlaying || m_IsAllIn)) ? GameCard.NO_CARD : c).ToArray(); }
+            get { return Info.HoleCards.Select(c => (c == null || !(Info.State >= PlayerStateEnum.AllIn)) ? GameCard.NO_CARD : c).ToArray(); }
             set
             {
                 if (value != null && value.Length == 2)
@@ -51,13 +47,8 @@ namespace PokerWorld.Game
         /// </summary>
         public bool IsPlaying
         {
-            get { return m_IsPlaying; }
-            set
-            {
-                m_IsPlaying = value;
-                if (m_IsPlaying)
-                    m_IsAllIn = false;
-            }
+            get { return Info.State == PlayerStateEnum.Playing; }
+            set { Info.State = value ? PlayerStateEnum.Playing : PlayerStateEnum.SitIn; }
         }
 
         /// <summary>
@@ -66,19 +57,18 @@ namespace PokerWorld.Game
         /// </summary>
         public bool IsAllIn
         {
-            get { return m_IsAllIn; }
-            set
-            {
-                m_IsAllIn = value;
-                if (m_IsAllIn)
-                    m_IsPlaying = false;
-            }
+            get { return Info.State == PlayerStateEnum.AllIn; }
+            set { Info.State = value ? PlayerStateEnum.AllIn : PlayerStateEnum.SitIn; }
         }
         
         /// <summary>
         /// A player who was playing but disconnected is a Zombie. He will remain in place and put blinds / check / fold
         /// </summary>
-        public bool IsZombie { get; set; }
+        public bool IsZombie
+        {
+            get { return Info.State == PlayerStateEnum.Zombie; }
+            set { Info.State = value ? PlayerStateEnum.Zombie : PlayerStateEnum.SitIn; }
+        }
 
         /// <summary>
         /// Montre-il ses cartes ? Vrai si showdown

@@ -67,16 +67,16 @@
             this.cardPictureBox3 = new BluffinPokerGui.Game.CardPictureBox();
             this.cardPictureBox2 = new BluffinPokerGui.Game.CardPictureBox();
             this.cardPictureBox1 = new BluffinPokerGui.Game.CardPictureBox();
-            this.pokerPlayerHud10 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud9 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud8 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud7 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud6 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud5 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud4 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud3 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud2 = new BluffinPokerGui.Game.PokerPlayerHud();
-            this.pokerPlayerHud1 = new BluffinPokerGui.Game.PokerPlayerHud();
+            this.playerHud10 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud9 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud8 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud7 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud6 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud5 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud4 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud3 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud2 = new BluffinPokerGui.Game.PlayerHud();
+            this.playerHud1 = new BluffinPokerGui.Game.PlayerHud();
             this.lblTotalPot = new System.Windows.Forms.Label();
             this.lblTotalPotTitle = new System.Windows.Forms.Label();
             this.pnlTable.SuspendLayout();
@@ -149,16 +149,16 @@
             this.pnlTable.Controls.Add(this.cardPictureBox3);
             this.pnlTable.Controls.Add(this.cardPictureBox2);
             this.pnlTable.Controls.Add(this.cardPictureBox1);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud10);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud9);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud8);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud7);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud6);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud5);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud4);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud3);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud2);
-            this.pnlTable.Controls.Add(this.pokerPlayerHud1);
+            this.pnlTable.Controls.Add(this.playerHud10);
+            this.pnlTable.Controls.Add(this.playerHud9);
+            this.pnlTable.Controls.Add(this.playerHud8);
+            this.pnlTable.Controls.Add(this.playerHud7);
+            this.pnlTable.Controls.Add(this.playerHud6);
+            this.pnlTable.Controls.Add(this.playerHud5);
+            this.pnlTable.Controls.Add(this.playerHud4);
+            this.pnlTable.Controls.Add(this.playerHud3);
+            this.pnlTable.Controls.Add(this.playerHud2);
+            this.pnlTable.Controls.Add(this.playerHud1);
             this.pnlTable.Controls.Add(this.lblTotalPot);
             this.pnlTable.Controls.Add(this.lblTotalPotTitle);
             this.pnlTable.Location = new System.Drawing.Point(0, 0);
@@ -576,135 +576,135 @@
             this.cardPictureBox1.TabIndex = 13;
             this.cardPictureBox1.TabStop = false;
             // 
-            // pokerPlayerHud10
+            // playerHud10
             // 
-            this.pokerPlayerHud10.Alive = false;
-            this.pokerPlayerHud10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud10.Location = new System.Drawing.Point(75, 130);
-            this.pokerPlayerHud10.Main = false;
-            this.pokerPlayerHud10.Name = "pokerPlayerHud10";
-            this.pokerPlayerHud10.PlayerName = "Player Name";
-            this.pokerPlayerHud10.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud10.TabIndex = 12;
-            this.pokerPlayerHud10.Visible = false;
+            this.playerHud10.Alive = false;
+            this.playerHud10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud10.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud10.Location = new System.Drawing.Point(75, 130);
+            this.playerHud10.Main = false;
+            this.playerHud10.Name = "playerHud10";
+            this.playerHud10.PlayerName = "Player Name";
+            this.playerHud10.Size = new System.Drawing.Size(121, 121);
+            this.playerHud10.TabIndex = 12;
+            this.playerHud10.Visible = false;
             // 
-            // pokerPlayerHud9
+            // playerHud9
             // 
-            this.pokerPlayerHud9.Alive = false;
-            this.pokerPlayerHud9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud9.Location = new System.Drawing.Point(75, 275);
-            this.pokerPlayerHud9.Main = false;
-            this.pokerPlayerHud9.Name = "pokerPlayerHud9";
-            this.pokerPlayerHud9.PlayerName = "Player Name";
-            this.pokerPlayerHud9.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud9.TabIndex = 11;
-            this.pokerPlayerHud9.Visible = false;
+            this.playerHud9.Alive = false;
+            this.playerHud9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud9.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud9.Location = new System.Drawing.Point(75, 275);
+            this.playerHud9.Main = false;
+            this.playerHud9.Name = "playerHud9";
+            this.playerHud9.PlayerName = "Player Name";
+            this.playerHud9.Size = new System.Drawing.Size(121, 121);
+            this.playerHud9.TabIndex = 11;
+            this.playerHud9.Visible = false;
             // 
-            // pokerPlayerHud8
+            // playerHud8
             // 
-            this.pokerPlayerHud8.Alive = false;
-            this.pokerPlayerHud8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud8.Location = new System.Drawing.Point(225, 400);
-            this.pokerPlayerHud8.Main = false;
-            this.pokerPlayerHud8.Name = "pokerPlayerHud8";
-            this.pokerPlayerHud8.PlayerName = "Player Name";
-            this.pokerPlayerHud8.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud8.TabIndex = 10;
-            this.pokerPlayerHud8.Visible = false;
+            this.playerHud8.Alive = false;
+            this.playerHud8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud8.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud8.Location = new System.Drawing.Point(225, 400);
+            this.playerHud8.Main = false;
+            this.playerHud8.Name = "playerHud8";
+            this.playerHud8.PlayerName = "Player Name";
+            this.playerHud8.Size = new System.Drawing.Size(121, 121);
+            this.playerHud8.TabIndex = 10;
+            this.playerHud8.Visible = false;
             // 
-            // pokerPlayerHud7
+            // playerHud7
             // 
-            this.pokerPlayerHud7.Alive = false;
-            this.pokerPlayerHud7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud7.Location = new System.Drawing.Point(370, 400);
-            this.pokerPlayerHud7.Main = false;
-            this.pokerPlayerHud7.Name = "pokerPlayerHud7";
-            this.pokerPlayerHud7.PlayerName = "Player Name";
-            this.pokerPlayerHud7.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud7.TabIndex = 9;
-            this.pokerPlayerHud7.Visible = false;
+            this.playerHud7.Alive = false;
+            this.playerHud7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud7.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud7.Location = new System.Drawing.Point(370, 400);
+            this.playerHud7.Main = false;
+            this.playerHud7.Name = "playerHud7";
+            this.playerHud7.PlayerName = "Player Name";
+            this.playerHud7.Size = new System.Drawing.Size(121, 121);
+            this.playerHud7.TabIndex = 9;
+            this.playerHud7.Visible = false;
             // 
-            // pokerPlayerHud6
+            // playerHud6
             // 
-            this.pokerPlayerHud6.Alive = false;
-            this.pokerPlayerHud6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud6.Location = new System.Drawing.Point(515, 400);
-            this.pokerPlayerHud6.Main = false;
-            this.pokerPlayerHud6.Name = "pokerPlayerHud6";
-            this.pokerPlayerHud6.PlayerName = "Player Name";
-            this.pokerPlayerHud6.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud6.TabIndex = 8;
-            this.pokerPlayerHud6.Visible = false;
+            this.playerHud6.Alive = false;
+            this.playerHud6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud6.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud6.Location = new System.Drawing.Point(515, 400);
+            this.playerHud6.Main = false;
+            this.playerHud6.Name = "playerHud6";
+            this.playerHud6.PlayerName = "Player Name";
+            this.playerHud6.Size = new System.Drawing.Size(121, 121);
+            this.playerHud6.TabIndex = 8;
+            this.playerHud6.Visible = false;
             // 
-            // pokerPlayerHud5
+            // playerHud5
             // 
-            this.pokerPlayerHud5.Alive = false;
-            this.pokerPlayerHud5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud5.Location = new System.Drawing.Point(665, 275);
-            this.pokerPlayerHud5.Main = false;
-            this.pokerPlayerHud5.Name = "pokerPlayerHud5";
-            this.pokerPlayerHud5.PlayerName = "Player Name";
-            this.pokerPlayerHud5.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud5.TabIndex = 7;
-            this.pokerPlayerHud5.Visible = false;
+            this.playerHud5.Alive = false;
+            this.playerHud5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud5.Location = new System.Drawing.Point(665, 275);
+            this.playerHud5.Main = false;
+            this.playerHud5.Name = "playerHud5";
+            this.playerHud5.PlayerName = "Player Name";
+            this.playerHud5.Size = new System.Drawing.Size(121, 121);
+            this.playerHud5.TabIndex = 7;
+            this.playerHud5.Visible = false;
             // 
-            // pokerPlayerHud4
+            // playerHud4
             // 
-            this.pokerPlayerHud4.Alive = false;
-            this.pokerPlayerHud4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud4.Location = new System.Drawing.Point(665, 130);
-            this.pokerPlayerHud4.Main = false;
-            this.pokerPlayerHud4.Name = "pokerPlayerHud4";
-            this.pokerPlayerHud4.PlayerName = "Player Name";
-            this.pokerPlayerHud4.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud4.TabIndex = 6;
-            this.pokerPlayerHud4.Visible = false;
+            this.playerHud4.Alive = false;
+            this.playerHud4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud4.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud4.Location = new System.Drawing.Point(665, 130);
+            this.playerHud4.Main = false;
+            this.playerHud4.Name = "playerHud4";
+            this.playerHud4.PlayerName = "Player Name";
+            this.playerHud4.Size = new System.Drawing.Size(121, 121);
+            this.playerHud4.TabIndex = 6;
+            this.playerHud4.Visible = false;
             // 
-            // pokerPlayerHud3
+            // playerHud3
             // 
-            this.pokerPlayerHud3.Alive = false;
-            this.pokerPlayerHud3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud3.Location = new System.Drawing.Point(515, 10);
-            this.pokerPlayerHud3.Main = false;
-            this.pokerPlayerHud3.Name = "pokerPlayerHud3";
-            this.pokerPlayerHud3.PlayerName = "Player Name";
-            this.pokerPlayerHud3.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud3.TabIndex = 5;
-            this.pokerPlayerHud3.Visible = false;
+            this.playerHud3.Alive = false;
+            this.playerHud3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud3.Location = new System.Drawing.Point(515, 10);
+            this.playerHud3.Main = false;
+            this.playerHud3.Name = "playerHud3";
+            this.playerHud3.PlayerName = "Player Name";
+            this.playerHud3.Size = new System.Drawing.Size(121, 121);
+            this.playerHud3.TabIndex = 5;
+            this.playerHud3.Visible = false;
             // 
-            // pokerPlayerHud2
+            // playerHud2
             // 
-            this.pokerPlayerHud2.Alive = false;
-            this.pokerPlayerHud2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud2.Location = new System.Drawing.Point(370, 10);
-            this.pokerPlayerHud2.Main = false;
-            this.pokerPlayerHud2.Name = "pokerPlayerHud2";
-            this.pokerPlayerHud2.PlayerName = "Player Name";
-            this.pokerPlayerHud2.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud2.TabIndex = 3;
-            this.pokerPlayerHud2.Visible = false;
+            this.playerHud2.Alive = false;
+            this.playerHud2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud2.Location = new System.Drawing.Point(370, 10);
+            this.playerHud2.Main = false;
+            this.playerHud2.Name = "playerHud2";
+            this.playerHud2.PlayerName = "Player Name";
+            this.playerHud2.Size = new System.Drawing.Size(121, 121);
+            this.playerHud2.TabIndex = 3;
+            this.playerHud2.Visible = false;
             // 
-            // pokerPlayerHud1
+            // playerHud1
             // 
-            this.pokerPlayerHud1.Alive = false;
-            this.pokerPlayerHud1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
-            this.pokerPlayerHud1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pokerPlayerHud1.Location = new System.Drawing.Point(225, 10);
-            this.pokerPlayerHud1.Main = false;
-            this.pokerPlayerHud1.Name = "pokerPlayerHud1";
-            this.pokerPlayerHud1.PlayerName = "Player Name";
-            this.pokerPlayerHud1.Size = new System.Drawing.Size(121, 121);
-            this.pokerPlayerHud1.TabIndex = 2;
-            this.pokerPlayerHud1.Visible = false;
+            this.playerHud1.Alive = false;
+            this.playerHud1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(98)))), ((int)(((byte)(114)))));
+            this.playerHud1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.playerHud1.Location = new System.Drawing.Point(225, 10);
+            this.playerHud1.Main = false;
+            this.playerHud1.Name = "playerHud1";
+            this.playerHud1.PlayerName = "Player Name";
+            this.playerHud1.Size = new System.Drawing.Size(121, 121);
+            this.playerHud1.TabIndex = 2;
+            this.playerHud1.Visible = false;
             // 
             // lblTotalPot
             // 
@@ -754,18 +754,18 @@
         #endregion
 
         private System.Windows.Forms.Panel pnlTable;
-        private PokerPlayerHud pokerPlayerHud3;
-        private PokerPlayerHud pokerPlayerHud2;
-        private PokerPlayerHud pokerPlayerHud1;
+        private PlayerHud playerHud3;
+        private PlayerHud playerHud2;
+        private PlayerHud playerHud1;
         private System.Windows.Forms.Label lblTotalPot;
         private System.Windows.Forms.Label lblTotalPotTitle;
-        private PokerPlayerHud pokerPlayerHud10;
-        private PokerPlayerHud pokerPlayerHud9;
-        private PokerPlayerHud pokerPlayerHud8;
-        private PokerPlayerHud pokerPlayerHud7;
-        private PokerPlayerHud pokerPlayerHud6;
-        private PokerPlayerHud pokerPlayerHud5;
-        private PokerPlayerHud pokerPlayerHud4;
+        private PlayerHud playerHud10;
+        private PlayerHud playerHud9;
+        private PlayerHud playerHud8;
+        private PlayerHud playerHud7;
+        private PlayerHud playerHud6;
+        private PlayerHud playerHud5;
+        private PlayerHud playerHud4;
         private System.Windows.Forms.Label label1;
         private CardPictureBox cardPictureBox5;
         private CardPictureBox cardPictureBox4;

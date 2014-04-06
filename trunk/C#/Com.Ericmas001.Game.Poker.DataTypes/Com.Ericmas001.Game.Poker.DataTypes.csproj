@@ -48,6 +48,7 @@
     <Compile Include="ConfigurableWaitingTimes.cs" />
     <Compile Include="Enums\BlindTypeEnum.cs" />
     <Compile Include="Enums\GameActionEnum.cs" />
+    <Compile Include="Enums\PlayerStateEnum.cs" />
     <Compile Include="Enums\GameStateEnum.cs" />
     <Compile Include="Enums\GameTypeEnum.cs" />
     <Compile Include="Enums\LimitTypeEnum.cs" />
