@@ -96,7 +96,19 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// <summary>
         /// When a player joined the table
         /// </summary>
-        public bool JoinTable(PlayerInfo p)
+        public override bool JoinTable(PlayerInfo p)
+        {
+
+            if (PeopleContainsPlayer(p))
+            {
+                LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone with the same name!");
+                return false;
+            }
+            base.JoinTable(p);
+            return true;
+        }
+
+        public bool AskToSitIn(PlayerInfo p)
         {
             if (m_RemainingSeats.Count == 0)
             {
@@ -104,14 +116,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 return false;
             }
 
-            if (ContainsPlayer(p))
+            if (SeatsContainsPlayer(p))
             {
-                LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone with the same name!");
+                LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone seated with the same name! Is this you ?");
                 return false;
             }
-
-            base.JoinTable(p,  m_RemainingSeats.Pop());
-            return true;
+            return SitInToTable(p, m_RemainingSeats.Pop());
         }
 
         /// <summary>
@@ -119,7 +129,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public override bool LeaveTable(PlayerInfo p)
         {
-            if (!ContainsPlayer(p))
+            if (!PeopleContainsPlayer(p))
                 return false;
 
             int seat = p.NoSeat;
