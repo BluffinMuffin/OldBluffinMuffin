@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Server;
 using System.Net.Sockets;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
@@ -9,12 +9,13 @@ using System.IO;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
-using EricUtility;
+using Com.Ericmas001.Util;
 using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
+using Com.Ericmas001.Net.Protocol;
 
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Server
@@ -127,8 +128,8 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
             else
                 client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
 
-            client.LeftTable += new EventHandler<EricUtility.KeyEventArgs<int>>(client_LeftTable);
-            client.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(client_SendedSomething);
+            client.LeftTable += new EventHandler<Com.Ericmas001.Util.KeyEventArgs<int>>(client_LeftTable);
+            client.SendedSomething += new EventHandler<Com.Ericmas001.Util.KeyEventArgs<string>>(client_SendedSomething);
 
             if (!game.IsRunning)
             {
@@ -159,12 +160,12 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
             }
         }
 
-        void client_LeftTable(object sender, EricUtility.KeyEventArgs<int> e)
+        void client_LeftTable(object sender, Com.Ericmas001.Util.KeyEventArgs<int> e)
         {
             m_Tables.Remove(e.Key);
         }
 
-        void client_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
+        void client_SendedSomething(object sender, Com.Ericmas001.Util.KeyEventArgs<string> e)
         {
             GameServer client = (GameServer)sender;
             Send(new GameCommand() { TableID = client.ID, EncodedCommand = e.Key });

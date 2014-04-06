@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility.Games.CardGame;
+using Com.Ericmas001.Games;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {

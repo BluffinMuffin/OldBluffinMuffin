@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Linq;
-using EricUtility;
+using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+using Com.Ericmas001.Util;
 
 namespace Com.Ericmas001.Game.Poker.Logic
 {

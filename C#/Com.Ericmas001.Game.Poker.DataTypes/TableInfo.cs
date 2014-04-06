@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility.Games.CardGame;
-using EricUtility;
+using Com.Ericmas001.Games;
+using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;

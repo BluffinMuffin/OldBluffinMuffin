@@ -92,13 +92,13 @@
       <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
       <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtilityGames\EricUtilityGames_2013.csproj">
-      <Project>{3177997f-d216-4b02-855b-9bde6406d51f}</Project>
-      <Name>EricUtilityGames_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Games\Com.Ericmas001.Games.csproj">
+      <Project>{64d407d1-1119-42a6-86f2-a98a31fdb3b2}</Project>
+      <Name>Com.Ericmas001.Games</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
-      <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
-      <Name>EricUtilityNetworking_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
+      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
+      <Name>Com.Ericmas001.Net.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

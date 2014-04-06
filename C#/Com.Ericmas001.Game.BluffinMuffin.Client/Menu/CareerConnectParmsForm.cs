@@ -1,5 +1,5 @@
 ﻿using Com.Ericmas001.Game.BluffinMuffin.Client.Splash;
-using EricUtility.Windows.Forms;
+using Com.Ericmas001.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

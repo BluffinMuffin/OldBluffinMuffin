@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using EricUtility;
+using Com.Ericmas001;
 using Newtonsoft.Json.Linq;
-using EricUtility.Games.CardGame;
+using Com.Ericmas001.Games;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Newtonsoft.Json;
 

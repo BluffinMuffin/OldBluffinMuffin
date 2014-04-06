@@ -8,14 +8,15 @@ using System.IO;
 using System.Threading;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
-using EricUtility.Games.CardGame;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001.Games;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Persistance;
-using EricUtility;
+using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
+using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
@@ -45,7 +46,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_Game = game;
             m_Player = new PlayerInfo(name, money);
             m_UserInfo = null;
-            base.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(GameServer_SendedSomething);
+            base.SendedSomething += new EventHandler<KeyEventArgs<string>>(GameServer_SendedSomething);
 
         }
 
@@ -84,7 +85,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         #endregion Ctors & Init
 
         #region GameServer Event Handling
-        void GameServer_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
+        void GameServer_SendedSomething(object sender, KeyEventArgs<string> e)
         {
             LogManager.Log(LogLevel.MessageLow, "GameServer.GameServer_SendedSomething", "<Game:{0}> SEND [{1}]", m_Player.Name, e.Key);
         }

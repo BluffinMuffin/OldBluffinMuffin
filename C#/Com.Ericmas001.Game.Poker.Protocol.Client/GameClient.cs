@@ -2,18 +2,20 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility.Networking;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001.Net;
+using Com.Ericmas001.Net.Protocol.JSON;
 using System.Net.Sockets;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
-using EricUtility.Games.CardGame;
+using Com.Ericmas001.Games;
 using System.IO;
-using EricUtility;
+using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+using Com.Ericmas001.Util;
+using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
 using Com.Ericmas001.Game.Poker.GUI.Game;
-using EricUtility;
+using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;

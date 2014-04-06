@@ -1,5 +1,5 @@
 ﻿using Com.Ericmas001.Game.Poker.GUI.Lobby;
-using EricUtility.Windows.Forms;
+using Com.Ericmas001.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
 using System;
 

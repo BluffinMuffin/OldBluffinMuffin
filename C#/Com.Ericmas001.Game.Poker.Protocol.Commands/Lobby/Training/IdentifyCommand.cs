@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using EricUtility;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001;
+using Com.Ericmas001.Net.Protocol.JSON;
 using System.Text;
 using Newtonsoft.Json.Linq;
 

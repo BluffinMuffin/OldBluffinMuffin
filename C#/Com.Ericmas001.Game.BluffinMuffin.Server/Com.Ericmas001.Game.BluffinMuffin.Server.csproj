@@ -77,13 +77,17 @@
       <Project>{d0973089-76fa-4361-9d10-79dc6e12ca11}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
-      <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
-      <Name>EricUtilityNetworking_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
+      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
+      <Name>Com.Ericmas001.Net.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
-      <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>
-      <Name>EricUtility_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Net\Com.Ericmas001.Net.csproj">
+      <Project>{51054dbd-fa2e-4617-bc78-f5caabe926f2}</Project>
+      <Name>Com.Ericmas001.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
+      <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
+      <Name>Com.Ericmas001.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

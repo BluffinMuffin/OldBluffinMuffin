@@ -186,17 +186,21 @@
       <Project>{a5be76d4-ec5f-4285-b713-9c0a7947bf72}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtilityNetworking\EricUtilityNetworking_2013.csproj">
-      <Project>{980f8de9-2f6e-4a96-849d-23754b364271}</Project>
-      <Name>EricUtilityNetworking_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
+      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
+      <Name>Com.Ericmas001.Net.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtilityWinForms\EricUtilityWinForms_2013.csproj">
-      <Project>{abf7d9de-3646-4737-8efc-5c3d5fd1cfa5}</Project>
-      <Name>EricUtilityWinForms_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Net\Com.Ericmas001.Net.csproj">
+      <Project>{51054dbd-fa2e-4617-bc78-f5caabe926f2}</Project>
+      <Name>Com.Ericmas001.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EricUtility\EricUtility_2013.csproj">
-      <Project>{e88c4aef-1b0b-45c0-a08d-cbcda35c1e62}</Project>
-      <Name>EricUtility_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
+      <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
+      <Name>Com.Ericmas001.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Windows.Forms\Com.Ericmas001.Windows.Forms.csproj">
+      <Project>{47e11091-f60c-4263-90b4-b4107a27057f}</Project>
+      <Name>Com.Ericmas001.Windows.Forms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
