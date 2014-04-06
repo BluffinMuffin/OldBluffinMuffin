@@ -12,9 +12,9 @@ using System.IO;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using PokerWorld.Game.PokerEventArgs;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
@@ -149,7 +149,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 SetPlayerVisibility(p, cmd.IsPlaying, cmd.CardsID.Select(id => new GameCard(id)).ToList());
 
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
             }
         }
 
@@ -161,7 +161,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             m_PokerTable.ForceJoinTable(p, cmd.PlayerPos);
 
-            PlayerJoined(this, new PlayerInfoEventArgs(p));
+            PlayerJoined(this, new PlayerInfoEventArgs(p.Info));
 
         }
 
@@ -174,7 +174,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 m_PokerTable.LeaveTable(p);
 
-                PlayerLeaved(this, new PlayerInfoEventArgs(p));
+                PlayerLeaved(this, new PlayerInfoEventArgs(p.Info));
             }
         }
 
@@ -187,7 +187,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 p.Info.MoneySafeAmnt = cmd.PlayerMoney;
 
-                PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+                PlayerMoneyChanged(this, new PlayerInfoEventArgs(p.Info));
             }
         }
 
@@ -202,7 +202,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 m_PokerTable.NoSeatCurrPlayer = cmd.PlayerPos;
                 m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
 
-                PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(p, l));
+                PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(p.Info, l.Info));
             }
         }
 
@@ -223,7 +223,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 p.Info.MoneySafeAmnt = cmd.PlayerMoney;
                 p.IsPlaying = cmd.IsPlaying;
 
-                PlayerActionTaken(this, new PlayerActionEventArgs(p, cmd.ActionType, cmd.ActionAmount));
+                PlayerActionTaken(this, new PlayerActionEventArgs(p.Info, cmd.ActionType, cmd.ActionAmount));
             }
         }
 
@@ -236,7 +236,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 p.Info.MoneySafeAmnt = cmd.PlayerMoney;
 
-                PlayerWonPot(this, new PotWonEventArgs(p, cmd.PotID, cmd.Shared));
+                PlayerWonPot(this, new PotWonEventArgs(p.Info, cmd.PotID, cmd.Shared));
             }
         }
 
@@ -279,7 +279,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 if (seat.IsCurrentPlayer)
                     m_PokerTable.NoSeatCurrPlayer = noSeat;
 
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
 
             }
             GameGenerallyUpdated(this, new EventArgs());

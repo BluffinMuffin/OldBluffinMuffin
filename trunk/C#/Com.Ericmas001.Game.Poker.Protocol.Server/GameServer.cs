@@ -13,8 +13,9 @@ using EricUtility.Games.CardGame;
 using EricUtility.Networking.Commands;
 using Com.Ericmas001.Game.Poker.Persistance;
 using EricUtility;
-using PokerWorld.Game.PokerEventArgs;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
@@ -107,13 +108,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
         {
-            PokerPlayer p = e.Player;
-            GameCard[] holeCards = p.Info.NoSeat == m_Player.Info.NoSeat ? p.Cards : p.RelativeCards;
+            PlayerInfo p = e.Player;
+            PokerPlayer pp = m_Game.Table.GetPlayer(p.NoSeat);
+            GameCard[] holeCards = p.NoSeat == m_Player.Info.NoSeat ? pp.Cards : pp.RelativeCards;
 
             Send(new PlayerHoleCardsChangedCommand() 
             {
-                PlayerPos = p.Info.NoSeat, 
-                IsPlaying = p.IsPlaying, 
+                PlayerPos = p.NoSeat, 
+                IsPlaying = p.State == PlayerStateEnum.Playing, 
                 CardsID = holeCards.Select(c => c.Id).ToList() ,
             });
         }
@@ -125,38 +127,38 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_Game_PlayerWonPot(object sender, PotWonEventArgs e)
         {
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player;
             Send(new PlayerWonPotCommand()
             {
-                PlayerPos = p.Info.NoSeat,
+                PlayerPos = p.NoSeat,
                 PotID = e.Id,
                 Shared = e.AmountWon,
-                PlayerMoney = p.Info.MoneySafeAmnt,
+                PlayerMoney = p.MoneySafeAmnt,
             });
         }
 
         void m_Game_PlayerActionTaken(object sender, PlayerActionEventArgs e)
         {
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player;
             Send(new PlayerTurnEndedCommand()
             {
-                PlayerPos = p.Info.NoSeat,
-                PlayerBet = p.Info.MoneyBetAmnt,
-                PlayerMoney = p.Info.MoneySafeAmnt,
+                PlayerPos = p.NoSeat,
+                PlayerBet = p.MoneyBetAmnt,
+                PlayerMoney = p.MoneySafeAmnt,
                 TotalPot = m_Game.Table.TotalPotAmnt,
                 ActionType = e.Action,
                 ActionAmount = e.AmountPlayed,
-                IsPlaying = p.IsPlaying,
+                IsPlaying = p.State == PlayerStateEnum.Playing,
             });
         }
 
         void m_Game_PlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
         {
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player;
             Send(new PlayerMoneyChangedCommand()
             {
-                PlayerPos = p.Info.NoSeat,
-                PlayerMoney = p.Info.MoneySafeAmnt,
+                PlayerPos = p.NoSeat,
+                PlayerMoney = p.MoneySafeAmnt,
             });
         }
 
@@ -170,8 +172,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             Send(new PlayerTurnBeganCommand()
             {
-                PlayerPos = e.Player.Info.NoSeat,
-                LastPlayerNoSeat = e.Last.Info.NoSeat,
+                PlayerPos = e.Player.NoSeat,
+                LastPlayerNoSeat = e.Last.NoSeat,
                 MinimumRaise = m_Game.Table.MinimumRaiseAmount,
             });
         }
@@ -198,21 +200,21 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
         {
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player;
             Send(new PlayerJoinedCommand()
             {
-                PlayerPos = p.Info.NoSeat,
-                PlayerName = p.Info.Name,
-                PlayerMoney = p.Info.MoneySafeAmnt,
+                PlayerPos = p.NoSeat,
+                PlayerName = p.Name,
+                PlayerMoney = p.MoneySafeAmnt,
             });
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
         {
-            PokerPlayer p = e.Player;
+            PlayerInfo p = e.Player;
             Send(new PlayerLeftCommand()
             {
-                PlayerPos = p.Info.NoSeat,
+                PlayerPos = p.NoSeat,
             });
         }
         #endregion PokerObserver Event Handling
@@ -264,7 +266,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         public void SitIn()
         {
             Send(new TableInfoCommand(m_Game.Table, m_Player));
-            m_Game.SitInGame(m_Player);
+            m_Game.SitInGame(m_Player.Info);
         }
 
         public bool JoinGame()

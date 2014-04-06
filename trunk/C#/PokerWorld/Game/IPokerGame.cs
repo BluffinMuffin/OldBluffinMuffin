@@ -1,4 +1,4 @@
-﻿using PokerWorld.Game.PokerEventArgs;
+﻿using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using System;
 using System.Collections.Generic;
 

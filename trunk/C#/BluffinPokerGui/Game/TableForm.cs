@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using PokerWorld.Game;
-using PokerWorld.Game.PokerEventArgs;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 
 namespace BluffinPokerGui.Game
 {
@@ -63,7 +63,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
                 return;
             }
-            PlayerInfo p = e.Player.Info;
+            PlayerInfo p = e.Player;
             PokerTable table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {

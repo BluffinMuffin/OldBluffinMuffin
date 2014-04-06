@@ -43,11 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game\PokerEventArgs\PlayerInfoEventArgs.cs" />
-    <Compile Include="Game\PokerEventArgs\HistoricPlayerInfoEventArgs.cs" />
-    <Compile Include="Game\PokerEventArgs\RoundEventArgs.cs" />
-    <Compile Include="Game\PokerEventArgs\PlayerActionEventArgs.cs" />
-    <Compile Include="Game\PokerEventArgs\PotWonEventArgs.cs" />
     <Compile Include="Game\IPokerGame.cs" />
     <Compile Include="Game\IPokerViewer.cs" />
     <Compile Include="Game\MoneyPot.cs" />
@@ -81,9 +76,7 @@
   <ItemGroup>
     <Content Include="Todo.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\Rules\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Game.PokerEventArgs
+namespace Com.Ericmas001.Game.Poker.DataTypes.EventHandling
 {
     public class PlayerActionEventArgs : PlayerInfoEventArgs
     {
@@ -13,7 +13,7 @@ namespace PokerWorld.Game.PokerEventArgs
         public GameActionEnum Action { get { return m_Action; } }
         public int AmountPlayed { get { return m_AmountPlayed; } }
 
-        public PlayerActionEventArgs(PokerPlayer p, GameActionEnum action, int amnt)
+        public PlayerActionEventArgs(PlayerInfo p, GameActionEnum action, int amnt)
             : base(p)
         {
             m_Action = action;
