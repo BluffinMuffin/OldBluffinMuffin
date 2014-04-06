@@ -179,7 +179,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_Game_GameBlindNeeded(object sender, EventArgs e)
         {
-            PokerTable t = m_Game.Table;
+            TableInfo t = m_Game.Table;
             Send(new GameStartedCommand()
             {
                 NoSeatD = t.NoSeatDealer,
@@ -234,7 +234,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_IsConnected = false;
             m_Player.IsZombie = true;
 
-            PokerTable t = m_Game.Table;
+            TableInfo t = m_Game.Table;
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Rules.TableName, m_ID);
 
             if (m_Game.State == GameStateEnum.WaitForPlayers)

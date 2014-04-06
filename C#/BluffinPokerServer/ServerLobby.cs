@@ -13,6 +13,7 @@ using EricUtility;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace BluffinPokerServer
 {
@@ -103,7 +104,7 @@ namespace BluffinPokerServer
             //List Tables
             foreach (KeyValuePair<int, PokerGame> kvp in m_Games.Where(kvp => kvp.Value.IsRunning))
             {
-                PokerTable t = kvp.Value.Table;
+                TableInfo t = kvp.Value.Table;
                 if (lobbyTypes.Length == 0 || lobbyTypes.Contains(t.Rules.CurrentLobby.LobbyType))
                     tables.Add(new TupleTable()
                     {

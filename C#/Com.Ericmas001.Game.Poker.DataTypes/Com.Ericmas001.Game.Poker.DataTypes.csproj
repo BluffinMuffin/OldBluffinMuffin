@@ -66,6 +66,7 @@
     <Compile Include="LobbyOptionsCareer.cs" />
     <Compile Include="LobbyOptionsTraining.cs" />
     <Compile Include="MoneyPot.cs" />
+    <Compile Include="TableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\BlindFactory.cs" />
     <Compile Include="Rules\BlindInfo.cs" />

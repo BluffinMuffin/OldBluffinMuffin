@@ -25,7 +25,7 @@ namespace PokerWorld.Game
 
         event EventHandler<PotWonEventArgs> PlayerWonPot;
 
-        PokerTable Table { get; }
+        TableInfo Table { get; }
 
         bool PlayMoney(PlayerInfo p, int amnt);
         bool LeaveGame(PlayerInfo p);

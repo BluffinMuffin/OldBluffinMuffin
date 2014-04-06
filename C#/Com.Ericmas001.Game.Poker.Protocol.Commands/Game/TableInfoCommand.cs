@@ -26,7 +26,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         {
         }
 
-        public TableInfoCommand(PokerTable table, PlayerInfo playerSendingTo)
+        public TableInfoCommand(TableInfo table, PlayerInfo playerSendingTo)
         {
             BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
             Seats = new List<TupleSeat>();

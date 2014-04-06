@@ -21,7 +21,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
     public class GameClient : CommandQueueCommunicator<GameClientCommandObserver>, IPokerGame
     {
         #region Fields
-        private readonly PokerTable m_PokerTable = new PokerTable();
+        private readonly TableInfo m_PokerTable = new TableInfo();
         private readonly int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
@@ -44,7 +44,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         #endregion Events
 
         #region Properties
-        public PokerTable Table { get { return m_PokerTable; } }
+        public TableInfo Table { get { return m_PokerTable; } }
         public int NoSeat { get { return m_TablePosition; } }
         public int NoPort { get { return m_NoPort; } }
         public string Encode
