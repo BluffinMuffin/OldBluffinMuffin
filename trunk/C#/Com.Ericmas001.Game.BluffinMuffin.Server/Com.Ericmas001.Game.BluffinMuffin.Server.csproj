@@ -81,10 +81,6 @@
       <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
       <Name>Com.Ericmas001.Net.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Net\Com.Ericmas001.Net.csproj">
-      <Project>{51054dbd-fa2e-4617-bc78-f5caabe926f2}</Project>
-      <Name>Com.Ericmas001.Net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
       <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
       <Name>Com.Ericmas001.Util</Name>
