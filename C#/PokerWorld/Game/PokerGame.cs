@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading;
 using EricUtility;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using PokerWorld.Game.PokerEventArgs;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
+using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 
 namespace PokerWorld.Game
 {
@@ -140,7 +140,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// The player will play the next game
         /// </summary>
-        public void SitInGame(PokerPlayer p)
+        public void SitInGame(PlayerInfo p)
         {
             PlayerJoined(this, new PlayerInfoEventArgs(p));
 
@@ -162,7 +162,7 @@ namespace PokerWorld.Game
                     PlayMoney(p, -1);
                 if (blindNeeded > 0)
                     PlayMoney(p, blindNeeded);
-                PlayerLeaved(this, new PlayerInfoEventArgs(p));
+                PlayerLeaved(this, new PlayerInfoEventArgs(p.Info));
 
                 if (Table.Players.Count == 0)
                     m_State = GameStateEnum.End;
@@ -317,7 +317,7 @@ namespace PokerWorld.Game
             Table.MinimumRaiseAmount = Math.Max(Table.MinimumRaiseAmount, p.Info.MoneyBetAmnt);
 
             //Notify the change in the player's account
-            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p.Info));
 
             //Is the player All-In?
             if (p.Info.MoneySafeAmnt == 0)
@@ -335,7 +335,7 @@ namespace PokerWorld.Game
             if (amnt == amntNeeded)
             {
                 LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} CALLED WITH ${1}", p.Info.Name, amnt);
-                CallPlayer(p, amnt);
+                CallPlayer(p.Info, amnt);
             }
             else
             {
@@ -385,7 +385,7 @@ namespace PokerWorld.Game
             Table.TotalPotAmnt += amnt;
 
             //Notify the change in the player's account
-            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p.Info));
 
             //Take note of the given Blind Amount for the player.
             Table.SetBlindNeeded(p, 0);
@@ -393,7 +393,7 @@ namespace PokerWorld.Game
             //Take note of the action
             bool isPostingSmallBlind = (needed == Table.SmallBlindAmnt);
             LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED {1} BLIND", p.Info.Name, isPostingSmallBlind ? "SMALL" : "BIG");
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt));
+            PlayerActionTaken(this, new PlayerActionEventArgs(p.Info, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt));
 
             //Let's set the HigherBet
             if (amnt > Table.HigherBet)
@@ -485,7 +485,7 @@ namespace PokerWorld.Game
             foreach (PokerPlayer p in Table.PlayingAndAllInPlayers)
             {
                 p.Cards = m_Dealer.DealHoles();
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
             }
         }
         private void ShowAllCards()
@@ -494,7 +494,7 @@ namespace PokerWorld.Game
                 if (p.IsPlaying || p.IsAllIn)
                 {
                     p.IsShowingCards = true;
-                    PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                    PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
                 }
             AdvanceToNextGameState(); //Advancing to DecideWinners State
         }
@@ -504,9 +504,9 @@ namespace PokerWorld.Game
 
             WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Fold, -1));
+            PlayerActionTaken(this, new PlayerActionEventArgs(p.Info, GameActionEnum.Fold, -1));
         }
-        private void CallPlayer(PokerPlayer p, int played)
+        private void CallPlayer(PlayerInfo p, int played)
         {
             Table.NbPlayed++;
 
@@ -527,7 +527,7 @@ namespace PokerWorld.Game
 
             WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Raise, played));
+            PlayerActionTaken(this, new PlayerActionEventArgs(p.Info, GameActionEnum.Raise, played));
         }
         private void ContinueBettingRound()
         {
@@ -546,7 +546,7 @@ namespace PokerWorld.Game
 
             Table.NoSeatCurrPlayer = next.Info.NoSeat;
 
-            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,Table.CurrentPlayer));
+            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next.Info,Table.CurrentPlayer.Info));
 
             if (next.IsZombie)
             {
@@ -569,8 +569,8 @@ namespace PokerWorld.Game
                         foreach (PokerPlayer p in players)
                         {
                             p.Info.MoneySafeAmnt += wonAmount;
-                            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
-                            PlayerWonPot(this, new PotWonEventArgs(p, pot.Id, wonAmount));
+                            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p.Info));
+                            PlayerWonPot(this, new PotWonEventArgs(p.Info, pot.Id, wonAmount));
                             WaitALittle(Rules.WaitingTimes.AfterPotWon);
                         }
                     }

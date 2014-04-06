@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Game.PokerEventArgs
+namespace Com.Ericmas001.Game.Poker.DataTypes.EventHandling
 {
     public class HistoricPlayerInfoEventArgs : PlayerInfoEventArgs
     {
-        private readonly PokerPlayer m_Last;
-        public PokerPlayer Last { get { return m_Last; } }
+        private readonly PlayerInfo m_Last;
+        public PlayerInfo Last { get { return m_Last; } }
 
-        public HistoricPlayerInfoEventArgs(PokerPlayer p, PokerPlayer l)
+        public HistoricPlayerInfoEventArgs(PlayerInfo p, PlayerInfo l)
             : base(p)
         {
             m_Last = l;

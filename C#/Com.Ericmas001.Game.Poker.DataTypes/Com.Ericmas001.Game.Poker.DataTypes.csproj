@@ -56,6 +56,11 @@
     <Compile Include="Enums\LobbyTypeEnum.cs" />
     <Compile Include="Enums\RoundStateEnum.cs" />
     <Compile Include="Enums\RoundTypeEnum.cs" />
+    <Compile Include="EventHandling\HistoricPlayerInfoEventArgs.cs" />
+    <Compile Include="EventHandling\PlayerActionEventArgs.cs" />
+    <Compile Include="EventHandling\PlayerInfoEventArgs.cs" />
+    <Compile Include="EventHandling\PotWonEventArgs.cs" />
+    <Compile Include="EventHandling\RoundEventArgs.cs" />
     <Compile Include="GameRule.cs" />
     <Compile Include="LobbyOptions.cs" />
     <Compile Include="LobbyOptionsCareer.cs" />

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PokerWorld.Game.PokerEventArgs
+namespace Com.Ericmas001.Game.Poker.DataTypes.EventHandling
 {
     public class RoundEventArgs : EventArgs
     {

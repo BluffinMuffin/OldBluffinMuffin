@@ -261,7 +261,7 @@ namespace Test.PokerWorld
         private static void SitInGame(PokerGame game, PokerPlayer p1)
         {
             game.JoinGame(p1);
-            game.SitInGame(p1);
+            game.SitInGame(p1.Info);
         }
     }
 }
