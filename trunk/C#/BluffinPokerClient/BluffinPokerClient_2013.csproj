@@ -177,9 +177,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BluffinPokerGui\BluffinPokerGui_2013.csproj">
-      <Project>{473cc9c5-13cc-46e7-b3d0-b4af4b24fd67}</Project>
-      <Name>BluffinPokerGui_2013</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Game.BluffinMuffin.GUI\Com.Ericmas001.Game.BluffinMuffin.GUI.csproj">
+      <Project>{a3855920-6ace-454b-8dc6-01b6d835215f}</Project>
+      <Name>Com.Ericmas001.Game.BluffinMuffin.GUI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
       <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>

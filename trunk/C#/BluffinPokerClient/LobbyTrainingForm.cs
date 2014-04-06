@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
-using BluffinPokerGUI.Lobby;
-using BluffinPokerGui;
-using BluffinPokerGui.Game;
+using Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby;
+using Com.Ericmas001.Game.BluffinMuffin.GUI;
+using Com.Ericmas001.Game.BluffinMuffin.GUI.Game;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace BluffinPokerClient

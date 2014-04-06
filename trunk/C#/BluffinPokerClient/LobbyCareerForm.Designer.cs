@@ -37,7 +37,7 @@
             this.lblAccount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.tableList = new BluffinPokerGUI.Lobby.PokerTableList();
+            this.tableList = new Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby.PokerTableList();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnLeaveTable = new VIBlend.WinForms.Controls.vButton();
@@ -315,7 +315,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblAccount;
         private System.Windows.Forms.Label label1;
-        private BluffinPokerGUI.Lobby.PokerTableList tableList;
+        private Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby.PokerTableList tableList;
         private VIBlend.WinForms.Controls.vButton btnLogOut;
         private VIBlend.WinForms.Controls.vButton btnRefresh;
         private VIBlend.WinForms.Controls.vButton btnAddTable;
