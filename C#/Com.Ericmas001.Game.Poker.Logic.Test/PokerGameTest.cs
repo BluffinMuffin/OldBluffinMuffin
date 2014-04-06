@@ -36,7 +36,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
             Assert.AreEqual(false, game.JoinGame(p3), "You should not be able to enter a started game with already 2 players (MaxSeats=2)");
 
             game.LeaveGame(p2);
-            Assert.AreEqual(true, game.JoinGame(p3), "You should not take the place of a player that left");
+            Assert.AreEqual(true, game.JoinGame(p3), "You should be able take the place of a player that left");
 
             game.LeaveGame(p1);
             game.LeaveGame(p3);

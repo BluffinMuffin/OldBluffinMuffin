@@ -302,11 +302,14 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             if (!PeopleContainsPlayer(p))
                 return false;
+            People.Remove(p);
+
+            if (!SeatsContainsPlayer(p))
+                return true;
 
             int seat = p.NoSeat;
             p.State = PlayerStateEnum.Zombie;
             m_Seats[seat] = null;
-            People.Remove(p);
             return true;
         }
 
