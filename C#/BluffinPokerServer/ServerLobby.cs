@@ -93,9 +93,9 @@ namespace BluffinPokerServer
             return m_LastUsedID;
         }
 
-        public List<TableInfo> ListTables(params LobbyTypeEnum[] lobbyTypes)
+        public List<TupleTable> ListTables(params LobbyTypeEnum[] lobbyTypes)
         {
-            List<TableInfo> tables = new List<TableInfo>();
+            List<TupleTable> tables = new List<TupleTable>();
 
             // Remove non-running tables
             m_Games.Where(kvp => !kvp.Value.IsRunning).Select(kvp => kvp.Key).ToList().ForEach(i => m_Games.Remove(i));
@@ -105,7 +105,7 @@ namespace BluffinPokerServer
             {
                 PokerTable t = kvp.Value.Table;
                 if (lobbyTypes.Length == 0 || lobbyTypes.Contains(t.Rules.CurrentLobby.LobbyType))
-                    tables.Add(new TableInfo()
+                    tables.Add(new TupleTable()
                     {
                         IdTable = kvp.Key,
                         Rules = t.Rules,

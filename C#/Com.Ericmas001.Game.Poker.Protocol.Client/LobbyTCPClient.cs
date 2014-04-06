@@ -276,7 +276,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             }
         }
 
-        public List<TableInfo> ListTables(params LobbyTypeEnum[] lobbyTypes)
+        public List<TupleTable> ListTables(params LobbyTypeEnum[] lobbyTypes)
         {
             Send(new ListTableCommand() { LobbyTypes = lobbyTypes });
 

@@ -6,6 +6,7 @@ using EricUtility;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.HandEval;
 
 namespace PokerWorld.Game
 {
@@ -13,7 +14,7 @@ namespace PokerWorld.Game
     {
         #region Fields
         protected readonly GameCard[] m_Cards = new GameCard[5];
-        protected readonly PokerPlayer[] m_Players;
+        protected readonly PlayerInfo[] m_Players;
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
         protected readonly Stack<int> m_RemainingSeats = new Stack<int>(); // LIFO with the unused seats
         protected readonly List<int> m_AllInCaps = new List<int>(); // All the distincts ALL_IN CAPS of the ROUND
@@ -94,7 +95,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Who is the current player
         /// </summary>
-        public PokerPlayer CurrentPlayer { get { return GetPlayer(NoSeatCurrPlayer); } }
+        public PlayerInfo CurrentPlayer { get { return GetPlayer(NoSeatCurrPlayer); } }
 
         /// <summary>
         /// Where is the one who setted the current Bet Amount
@@ -134,17 +135,17 @@ namespace PokerWorld.Game
         /// <summary>
         /// List of the Players currently seated
         /// </summary>
-        public List<PokerPlayer> Players { get { return m_Players.Where(p => p != null).ToList(); } }
+        public List<PlayerInfo> Players { get { return m_Players.Where(p => p != null).ToList(); } }
 
         /// <summary>
         /// List of the Seats
         /// </summary>
-        public List<PokerPlayer> Seats { get { return m_Players.ToList(); } }
+        public List<PlayerInfo> Seats { get { return m_Players.ToList(); } }
 
         /// <summary>
         /// List of the playing Players in order starting from the first seat
         /// </summary>
-        public List<PokerPlayer> PlayingPlayers
+        public List<PlayerInfo> PlayingPlayers
         {
             get { return PlayingPlayersFrom(0); }
         }
@@ -152,7 +153,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// List of the playing Players in order starting from the first seat
         /// </summary>
-        public List<PokerPlayer> PlayingAndAllInPlayers
+        public List<PlayerInfo> PlayingAndAllInPlayers
         {
             get { return PlayingAndAllInPlayersFrom(0); }
         }
@@ -160,15 +161,15 @@ namespace PokerWorld.Game
         /// <summary>
         /// List of the playing Players in order starting from the next player that will have to play
         /// </summary>
-        public List<PokerPlayer> PlayingPlayersFromNext
+        public List<PlayerInfo> PlayingPlayersFromNext
         {
-            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrPlayer).Info.NoSeat); }
+            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrPlayer).NoSeat); }
         }
 
         /// <summary>
         /// List of the playing Players in order starting from the current playing player
         /// </summary>
-        public List<PokerPlayer> PlayingPlayersFromCurrent
+        public List<PlayerInfo> PlayingPlayersFromCurrent
         {
             get { return PlayingPlayersFrom(NoSeatCurrPlayer); }
         }
@@ -176,21 +177,21 @@ namespace PokerWorld.Game
         /// <summary>
         /// List of the playing Players in order starting from the last raising player
         /// </summary>
-        public List<PokerPlayer> PlayingPlayersFromLastRaise
+        public List<PlayerInfo> PlayingPlayersFromLastRaise
         {
             get { return PlayingPlayersFrom(NoSeatLastRaise); }
         }
 
         // List of the playing Players in order starting from the one who started the round
-        public List<PokerPlayer> PlayingPlayersFromFirst
+        public List<PlayerInfo> PlayingPlayersFromFirst
         {
             get
             {
                 if (Round == RoundTypeEnum.Preflop)
                 {
-                    return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatBigBlind).Info.NoSeat);
+                    return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatBigBlind).NoSeat);
                 }
-                return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat);
+                return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatDealer).NoSeat);
             }
         }
         #endregion Properties
@@ -204,7 +205,7 @@ namespace PokerWorld.Game
         public PokerTable(GameRule rules)
         {
             Rules = rules;
-            m_Players = new PokerPlayer[rules.MaxPlayers];
+            m_Players = new PlayerInfo[rules.MaxPlayers];
             NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
@@ -247,7 +248,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Who is the player for this seat number ?
         /// </summary>
-        public PokerPlayer GetPlayer(int seat)
+        public PlayerInfo GetPlayer(int seat)
         {
             return m_Players[seat];
         }
@@ -256,7 +257,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Return the next playing player next to a seat numberr (Any player is included, GamingStatus Invariant)
         /// </summary>
-        public PokerPlayer GetPlayerNextTo(int seat)
+        public PlayerInfo GetPlayerNextTo(int seat)
         {
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
@@ -272,12 +273,12 @@ namespace PokerWorld.Game
         /// <summary>
         /// Return the next playing player next to a seat number (All-In not included)
         /// </summary>
-        public PokerPlayer GetPlayingPlayerNextTo(int seat)
+        public PlayerInfo GetPlayingPlayerNextTo(int seat)
         {
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
                 int j = (seat + 1 + i) % Rules.MaxPlayers;
-                if (m_Players[j] != null && m_Players[j].Info.IsPlaying)
+                if (m_Players[j] != null && m_Players[j].IsPlaying)
                 {
                     return m_Players[j];
                 }
@@ -290,7 +291,7 @@ namespace PokerWorld.Game
         /// </summary>
         public bool ContainsPlayer(String name)
         {
-            return Players.Any(p => p.Info.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            return Players.Any(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -327,11 +328,11 @@ namespace PokerWorld.Game
         /// <summary>
         /// Sit a player without the validations. This is used here after validation, or on the client side when the game is telling the client where a player is seated
         /// </summary>
-        public bool ForceJoinTable(PokerPlayer p, int seat)
+        public bool ForceJoinTable(PlayerInfo p, int seat)
         {
-            p.Info.IsZombie = false;
-            p.Info.IsPlaying = false;
-            p.Info.NoSeat = seat;
+            p.IsZombie = false;
+            p.IsPlaying = false;
+            p.NoSeat = seat;
             m_Players[seat] = p;
             return true;
         }
@@ -339,7 +340,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// When a player joined the table
         /// </summary>
-        public bool JoinTable(PokerPlayer p)
+        public bool JoinTable(PlayerInfo p)
         {
             if (m_RemainingSeats.Count == 0)
             {
@@ -360,17 +361,31 @@ namespace PokerWorld.Game
         /// <summary>
         /// When a player leaves the table
         /// </summary>
-        public bool LeaveTable(PokerPlayer p)
+        public bool LeaveTable(PlayerInfo p)
         {
             if (!ContainsPlayer(p))
                 return false;
 
-            int seat = p.Info.NoSeat;
-            p.Info.IsPlaying = false;
-            p.Info.IsZombie = true;
+            int seat = p.NoSeat;
+            p.IsPlaying = false;
+            p.IsZombie = true;
             m_Players[seat] = null;
             m_RemainingSeats.Push(seat);
             return true;
+        }
+
+
+        /// <summary>
+        /// Put a number on the current "Hand" of a player. The we will use that number to compare who is winning !
+        /// </summary>
+        /// <param name="playerCards">Player cards</param>
+        /// <returns>A unsigned int that we can use to compare with another hand</returns>
+        public uint EvaluateCards(List<GameCard> playerCards)
+        {
+            if (Cards == null || Cards.Length != 5 || playerCards == null || playerCards.Count != 2)
+                return 0;
+
+            return new Hand(String.Join<GameCard>(" ", playerCards), String.Join<GameCard>(" ", Cards)).HandValue;
         }
 
         /// <summary>
@@ -391,8 +406,8 @@ namespace PokerWorld.Game
                 m_AllInCaps.RemoveAt(0);
 
                 int cap = aicf - currentTaken;
-                foreach (PokerPlayer p in Players)
-                    AddBet(p, pot, Math.Min(p.Info.MoneyBetAmnt, cap));
+                foreach (PlayerInfo p in Players)
+                    AddBet(p, pot, Math.Min(p.MoneyBetAmnt, cap));
 
                 currentTaken += cap;
                 m_CurrPotId++;
@@ -401,8 +416,8 @@ namespace PokerWorld.Game
 
             MoneyPot curPot = m_Pots[m_CurrPotId];
             curPot.DetachAllPlayers();
-            foreach (PokerPlayer p in Players)
-                AddBet(p, curPot, p.Info.MoneyBetAmnt);
+            foreach (PlayerInfo p in Players)
+                AddBet(p, curPot, p.MoneyBetAmnt);
 
             HigherBet = 0;
         }
@@ -423,7 +438,7 @@ namespace PokerWorld.Game
                 {
                     foreach (PlayerInfo p in infos)
                     {
-                        uint handValue = GetPlayer(p.NoSeat).EvaluateCards(Cards);
+                        uint handValue = EvaluateCards(GetPlayer(p.NoSeat).HoleCards);
                         if (handValue > bestHand)
                         {
                             pot.DetachAllPlayers();
@@ -481,36 +496,36 @@ namespace PokerWorld.Game
         #endregion Public Methods
 
         #region Private Methods
-        private List<PokerPlayer> PlayingPlayersFrom(int seat)
+        private List<PlayerInfo> PlayingPlayersFrom(int seat)
         {
-            return m_Players.Where(p => (p != null && p.Info.IsPlaying)).ToList();
+            return m_Players.Where(p => (p != null && p.IsPlaying)).ToList();
         }
-        private List<PokerPlayer> PlayingAndAllInPlayersFrom(int seat)
+        private List<PlayerInfo> PlayingAndAllInPlayersFrom(int seat)
         {
-            return m_Players.Where(p => (p != null && (p.Info.IsPlaying || p.Info.IsAllIn))).ToList();
-        }
-
-        private bool ContainsPlayer(PokerPlayer p)
-        {
-            return Players.Contains(p) || Players.Count(x => x.Info.Name.ToLower() == p.Info.Name.ToLower()) > 0;
+            return m_Players.Where(p => (p != null && (p.IsPlaying || p.IsAllIn))).ToList();
         }
 
-        private void AddBet(PokerPlayer p, MoneyPot pot, int bet)
+        private bool ContainsPlayer(PlayerInfo p)
         {
-            p.Info.MoneyBetAmnt -= bet;
+            return Players.Contains(p) || Players.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
+        }
+
+        private void AddBet(PlayerInfo p, MoneyPot pot, int bet)
+        {
+            p.MoneyBetAmnt -= bet;
             pot.AddAmount(bet);
 
-            if (bet >= 0 && (p.Info.IsPlaying || p.Info.IsAllIn))
-                pot.AttachPlayer(p.Info);
+            if (bet >= 0 && (p.IsPlaying || p.IsAllIn))
+                pot.AttachPlayer(p);
         }
         private void PlaceButtons()
         {
-            NoSeatDealer = GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat;
-            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat;
-            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).Info.NoSeat;
+            NoSeatDealer = GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
+            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
+            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
             m_BlindNeeded.Clear();
-            m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind).Info, SmallBlindAmnt);
-            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind).Info, Rules.BlindAmount);
+            m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
+            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Rules.BlindAmount);
         }
         #endregion Private Methods
     }

@@ -22,24 +22,24 @@ namespace BluffinPokerGui.Game
         {
             DisableButtons();
             PokerTable table = m_Game.Table;
-            PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p.Info, -1);
+            PlayerInfo p = table.Seats[m_NoSeat];
+            m_Game.PlayMoney(p, -1);
         }
 
         private void btnCall_Click(object sender, EventArgs e)
         {
             DisableButtons();
             PokerTable table = m_Game.Table;
-            PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p.Info, table.CallAmnt(p.Info));
+            PlayerInfo p = table.Seats[m_NoSeat];
+            m_Game.PlayMoney(p, table.CallAmnt(p));
         }
 
         private void btnRaise_Click(object sender, EventArgs e)
         {
             DisableButtons();
             PokerTable table = m_Game.Table;
-            PokerPlayer p = table.Seats[m_NoSeat];
-            m_Game.PlayMoney(p.Info, (int)nudRaise.Value - p.Info.MoneyBetAmnt);
+            PlayerInfo p = table.Seats[m_NoSeat];
+            m_Game.PlayMoney(p, (int)nudRaise.Value - p.MoneyBetAmnt);
         }
 
         private void DisableButtons()

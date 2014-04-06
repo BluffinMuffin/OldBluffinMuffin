@@ -165,7 +165,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PokerTable table = m_Game.Table;
-            foreach (PlayerInfo p in table.Players.Select(p => p.Info))
+            foreach (PlayerInfo p in table.Players)
                 huds[p.NoSeat].Alive = true;
             int i = 0;
             for (; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
@@ -209,7 +209,7 @@ namespace BluffinPokerGui.Game
                 return;
             }
             PokerTable table = m_Game.Table;
-            foreach (PlayerInfo p in table.Players.Select(p => p.Info))
+            foreach (PlayerInfo p in table.Players)
             {
                 if (p != null)
                 {
@@ -258,7 +258,7 @@ namespace BluffinPokerGui.Game
             potValues[0].Visible = true;
             potValues[0].Text = "$0";
             PokerTable table = m_Game.Table;
-            foreach (PlayerInfo p in table.Players.Select(p => p.Info))
+            foreach (PlayerInfo p in table.Players)
             {
                 PlayerHud php = huds[p.NoSeat];
                 InstallPlayer(php, p);
@@ -423,12 +423,12 @@ namespace BluffinPokerGui.Game
             }
             PokerTable table = m_Game.Table;
             WriteLine("==> Game started");
-            PokerPlayer d = table.Seats[table.NoSeatDealer];
-            PokerPlayer sb = table.Seats[table.NoSeatSmallBlind];
-            PokerPlayer bb = table.Seats[table.NoSeatBigBlind];
-            WriteLine("==> " + d.Info.Name + " is the Dealer");
-            WriteLine("==> " + sb.Info.Name + " is the SmallBlind");
-            WriteLine("==> " + bb.Info.Name + " is the BigBlind");
+            PlayerInfo d = table.Seats[table.NoSeatDealer];
+            PlayerInfo sb = table.Seats[table.NoSeatSmallBlind];
+            PlayerInfo bb = table.Seats[table.NoSeatBigBlind];
+            WriteLine("==> " + d.Name + " is the Dealer");
+            WriteLine("==> " + sb.Name + " is the SmallBlind");
+            WriteLine("==> " + bb.Name + " is the BigBlind");
         }
 
         void m_Game_GameEnded_Console(object sender, EventArgs e)

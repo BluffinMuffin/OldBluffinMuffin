@@ -8,7 +8,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
 {
-    public class SeatInfo
+    public class TupleSeat
     {
         public int NoSeat { get; set; }
         public PlayerInfo Player { get; set; }
@@ -19,7 +19,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
         public bool IsCurrentPlayer { get; set; } //SeatInfo
         public bool IsPlaying { get; set; } //SeatInfo
 
-        public SeatInfo()
+        public TupleSeat()
         {
             IsEmpty = true;
         }

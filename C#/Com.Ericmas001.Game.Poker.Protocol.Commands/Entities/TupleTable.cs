@@ -9,7 +9,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
 {
-    public class TableInfo : IComparable<TableInfo>
+    public class TupleTable : IComparable<TupleTable>
     {
         public int IdTable { get; set; }
         public int BigBlind { get; set; }
@@ -17,7 +17,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
         public LobbyActionEnum PossibleAction { get; set; }
         public GameRule Rules { get; set; }
 
-        public int CompareTo(TableInfo other)
+        public int CompareTo(TupleTable other)
         {
             return IdTable.CompareTo(other.IdTable);
         }
