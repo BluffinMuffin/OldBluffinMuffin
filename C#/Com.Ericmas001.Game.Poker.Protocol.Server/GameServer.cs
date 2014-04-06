@@ -72,6 +72,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_Game.GameBlindNeeded += new EventHandler(m_Game_GameBlindNeeded);
             m_Game.GameBettingRoundStarted += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted);
             m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined);
+            m_Game.PlayerSatIn += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn);
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
         }
 
@@ -201,6 +202,15 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             PlayerInfo p = e.Player;
             Send(new PlayerJoinedCommand()
+            {
+                PlayerName = p.Name,
+            });
+        }
+
+        void m_Game_PlayerSatIn(object sender, PlayerInfoEventArgs e)
+        {
+            PlayerInfo p = e.Player;
+            Send(new PlayerSatInCommand()
             {
                 PlayerPos = p.NoSeat,
                 PlayerName = p.Name,

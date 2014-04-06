@@ -110,6 +110,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken);
             m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged);
             m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined);
+            m_Game.PlayerSatIn += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn);
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
             m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged);
             m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot);
@@ -127,6 +128,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console);
             m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged_Console);
             m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console);
+            m_Game.PlayerSatIn += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn_Console);
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console);
             m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console);
             m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console);
@@ -324,6 +326,17 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined), new object[] { sender, e });
                 return;
             }
+            //PlayerInfo p = e.Player;
+        }
+
+        void m_Game_PlayerSatIn(object sender, PlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined), new object[] { sender, e });
+                return;
+            }
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             InstallPlayer(php, p);
@@ -496,6 +509,17 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 return;
             }
             WriteLine(e.Player.Name + " joined the table");
+        }
+
+        void m_Game_PlayerSatIn_Console(object sender, PlayerInfoEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn_Console), new object[] { sender, e });
+                return;
+            }
+            WriteLine(e.Player.Name + " sat in at seat #" + e.Player.NoSeat);
         }
 
         void m_Game_PlayerLeaved_Console(object sender, PlayerInfoEventArgs e)

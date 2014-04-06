@@ -35,6 +35,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
         public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
+        public event EventHandler<PlayerInfoEventArgs> PlayerSatIn = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
         public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
@@ -140,6 +141,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 return false;
             }
 
+            PlayerJoined(this, new PlayerInfoEventArgs(p));
             return GameTable.JoinTable(p);
         }
 
@@ -149,7 +151,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public void SitInGame(PlayerInfo p)
         {
-            PlayerJoined(this, new PlayerInfoEventArgs(p));
+            PlayerSatIn(this, new PlayerInfoEventArgs(p));
 
             if (m_State == GameStateEnum.WaitForPlayers)
                 TryToBegin();
