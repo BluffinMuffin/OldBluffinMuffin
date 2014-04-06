@@ -264,7 +264,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         }
         public void SitIn()
         {
-            Send(new TableInfoCommand(m_Game.Table, m_Player));
+            TableInfoCommand cmd = new TableInfoCommand(m_Game.Table, m_Player);
+            Send(cmd);
             m_Game.SitInGame(m_Player);
         }
 

@@ -15,7 +15,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
     public class PokerTable : TableInfo
     {
         #region Fields
-        protected readonly Stack<int> m_RemainingSeats = new Stack<int>(); // LIFO with the unused seats
         protected readonly List<int> m_AllInCaps = new List<int>(); // All the distincts ALL_IN CAPS of the ROUND
         protected readonly Dictionary<PlayerInfo, int> m_BlindNeeded = new Dictionary<PlayerInfo, int>();
         protected int m_CurrPotId;
@@ -39,7 +38,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
         public PokerTable(TableParams parms)
             :base(parms)
         {
-            Enumerable.Range(1, parms.MaxPlayers).ToList().ForEach(i => m_RemainingSeats.Push(parms.MaxPlayers - i));
         }
 
         public override void InitTable()
@@ -114,7 +112,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public bool AskToSitIn(PlayerInfo p)
         {
-            if (m_RemainingSeats.Count == 0)
+            if (RemainingSeats.Count() == 0)
             {
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Not enough seats to join!");
                 return false;
@@ -125,7 +123,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone seated with the same name! Is this you ?");
                 return false;
             }
-            return SitInToTable(p, m_RemainingSeats.Pop());
+            return SitInToTable(p, RemainingSeats.First());
         }
 
         /// <summary>
@@ -140,8 +138,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             if (!base.LeaveTable(p))
                 return false;
-
-            m_RemainingSeats.Push(seat);
 
             return true;
         }
@@ -227,6 +223,15 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         #region Private Methods
 
+        private IEnumerable<int> RemainingSeats
+        {
+            get
+            {
+                for (int i = 0; i < m_Seats.Length; ++i)
+                    if (m_Seats[i] == null)
+                        yield return i;
+            }
+        }
         private void AddBet(PlayerInfo p, MoneyPot pot, int bet)
         {
             p.MoneyBetAmnt -= bet;
