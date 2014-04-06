@@ -10,7 +10,6 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Net.Protocol.JSON;
-using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
@@ -50,7 +49,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         }
 
-        public GameServer(int id, PokerGame game, Com.Ericmas001.Game.Poker.Persistance.UserInfo userInfo)
+        public GameServer(int id, PokerGame game, UserInfo userInfo)
         {
             m_ID = id;
             m_Game = game;

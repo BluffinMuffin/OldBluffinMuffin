@@ -8,11 +8,11 @@ using Com.Ericmas001.Net;
 using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
-using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Newtonsoft.Json.Linq;
+using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
