@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public partial class TableForm : TableViewerForm
     {

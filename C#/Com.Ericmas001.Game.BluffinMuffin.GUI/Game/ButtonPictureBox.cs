@@ -6,7 +6,7 @@ using EricUtility.Games.CardGame;
 using System.Drawing;
 using EricUtility.Games.Windows.Forms;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public class ButtonPictureBox : PictureBox
     {

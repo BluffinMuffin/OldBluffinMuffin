@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LobbyTrainingForm));
             this.lblTitle = new System.Windows.Forms.Label();
-            this.tableList = new Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby.PokerTableList();
+            this.tableList = new Com.Ericmas001.Game.Poker.GUI.Lobby.PokerTableList();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.btnLeaveTable = new VIBlend.WinForms.Controls.vButton();
@@ -220,7 +220,7 @@
         #endregion
 
         private System.Windows.Forms.Label lblTitle;
-        private Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby.PokerTableList tableList;
+        private Com.Ericmas001.Game.Poker.GUI.Lobby.PokerTableList tableList;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private VIBlend.WinForms.Controls.vButton btnLeaveTable;

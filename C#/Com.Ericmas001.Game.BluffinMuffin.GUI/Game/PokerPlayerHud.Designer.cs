@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+﻿namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     partial class PlayerHud
     {
@@ -32,10 +32,10 @@
             this.lblName = new System.Windows.Forms.Label();
             this.lblAction = new System.Windows.Forms.Label();
             this.pnlCenter = new System.Windows.Forms.Panel();
-            this.picBlind = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.ButtonPictureBox();
-            this.picDealer = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.ButtonPictureBox();
-            this.picCard2 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
-            this.picCard1 = new Com.Ericmas001.Game.BluffinMuffin.GUI.Game.CardPictureBox();
+            this.picBlind = new Com.Ericmas001.Game.Poker.GUI.Game.ButtonPictureBox();
+            this.picDealer = new Com.Ericmas001.Game.Poker.GUI.Game.ButtonPictureBox();
+            this.picCard2 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
+            this.picCard1 = new Com.Ericmas001.Game.Poker.GUI.Game.CardPictureBox();
             this.pnlCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBlind)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDealer)).BeginInit();
@@ -93,7 +93,7 @@
             // picBlind
             // 
             this.picBlind.BackColor = System.Drawing.Color.Transparent;
-            this.picBlind.Button = Com.Ericmas001.Game.BluffinMuffin.GUI.Game.ButtonPictureBox.ButtonType.None;
+            this.picBlind.Button = Com.Ericmas001.Game.Poker.GUI.Game.ButtonPictureBox.ButtonType.None;
             this.picBlind.Location = new System.Drawing.Point(90, 28);
             this.picBlind.Name = "picBlind";
             this.picBlind.Size = new System.Drawing.Size(30, 30);
@@ -103,7 +103,7 @@
             // picDealer
             // 
             this.picDealer.BackColor = System.Drawing.Color.Transparent;
-            this.picDealer.Button = Com.Ericmas001.Game.BluffinMuffin.GUI.Game.ButtonPictureBox.ButtonType.None;
+            this.picDealer.Button = Com.Ericmas001.Game.Poker.GUI.Game.ButtonPictureBox.ButtonType.None;
             this.picDealer.Location = new System.Drawing.Point(90, 0);
             this.picDealer.Name = "picDealer";
             this.picDealer.Size = new System.Drawing.Size(30, 30);

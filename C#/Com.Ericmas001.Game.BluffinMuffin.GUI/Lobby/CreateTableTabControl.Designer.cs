@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby
+﻿namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     partial class CreateTableTabControl
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI
+namespace Com.Ericmas001.Game.Poker.GUI
 {
     public class IntEventArgs : EventArgs
     {

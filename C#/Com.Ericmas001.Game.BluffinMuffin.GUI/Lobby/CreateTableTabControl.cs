@@ -11,7 +11,7 @@ using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
-namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby
+namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class CreateTableTabControl : UserControl
     {

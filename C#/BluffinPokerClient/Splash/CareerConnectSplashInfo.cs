@@ -1,4 +1,4 @@
-﻿using Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby;
+﻿using Com.Ericmas001.Game.Poker.GUI.Lobby;
 using EricUtility.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
 using System;

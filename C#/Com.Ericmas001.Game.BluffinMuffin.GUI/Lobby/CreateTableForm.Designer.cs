@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Lobby
+﻿namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     partial class CreateTableForm
     {
@@ -72,7 +72,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddTable.BackColor = System.Drawing.Color.Transparent;
             this.btnAddTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddTable.Image = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.cards;
+            this.btnAddTable.Image = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.cards;
             this.btnAddTable.Location = new System.Drawing.Point(12, 326);
             this.btnAddTable.Name = "btnAddTable";
             this.btnAddTable.RoundedCornersMask = ((byte)(15));

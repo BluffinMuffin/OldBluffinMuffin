@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI.Game
+﻿namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     partial class TableForm
     {
@@ -56,7 +56,7 @@
             this.btnFold.BackColor = System.Drawing.Color.Transparent;
             this.btnFold.Enabled = false;
             this.btnFold.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFold.Image = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.leave;
+            this.btnFold.Image = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.leave;
             this.btnFold.Location = new System.Drawing.Point(5, 5);
             this.btnFold.Margin = new System.Windows.Forms.Padding(5);
             this.btnFold.Name = "btnFold";
@@ -75,7 +75,7 @@
             this.btnCall.BackColor = System.Drawing.Color.Transparent;
             this.btnCall.Enabled = false;
             this.btnCall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCall.Image = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.cards_mini;
+            this.btnCall.Image = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.cards_mini;
             this.btnCall.Location = new System.Drawing.Point(5, 38);
             this.btnCall.Margin = new System.Windows.Forms.Padding(5);
             this.btnCall.Name = "btnCall";
@@ -94,7 +94,7 @@
             this.btnRaise.BackColor = System.Drawing.Color.Transparent;
             this.btnRaise.Enabled = false;
             this.btnRaise.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRaise.Image = global::Com.Ericmas001.Game.BluffinMuffin.GUI.Properties.Resources.money;
+            this.btnRaise.Image = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.money;
             this.btnRaise.Location = new System.Drawing.Point(5, 71);
             this.btnRaise.Margin = new System.Windows.Forms.Padding(5);
             this.btnRaise.Name = "btnRaise";

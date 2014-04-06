@@ -1,4 +1,4 @@
-﻿namespace Com.Ericmas001.Game.BluffinMuffin.GUI
+﻿namespace Com.Ericmas001.Game.Poker.GUI
 {
     partial class LogConsole
     {
