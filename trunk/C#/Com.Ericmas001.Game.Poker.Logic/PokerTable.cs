@@ -104,8 +104,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone with the same name!");
                 return false;
             }
-            base.JoinTable(p);
-            return true;
+            bool ok = base.JoinTable(p);
+            if(ok)
+                ok = AskToSitIn(p);
+            if(!ok)
+                base.LeaveTable(p);
+            return ok;
         }
 
         public bool AskToSitIn(PlayerInfo p)
