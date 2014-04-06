@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using EricUtility.Networking;
 using EricUtility.Networking.Commands;
-using PokerWorld.Game;
 using System.Net.Sockets;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
 using EricUtility.Games.CardGame;

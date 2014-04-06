@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
-using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
 using EricUtility.Games.CardGame;
@@ -16,6 +15,7 @@ using EricUtility;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.Logic;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {

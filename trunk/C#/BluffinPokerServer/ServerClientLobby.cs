@@ -6,7 +6,6 @@ using Com.Ericmas001.Game.Poker.Protocol.Server;
 using System.Net.Sockets;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using System.IO;
-using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;

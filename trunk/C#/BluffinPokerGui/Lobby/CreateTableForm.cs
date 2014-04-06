@@ -1,5 +1,4 @@
-﻿using PokerWorld.Game;
-using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+﻿using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using System;
 using System.Collections.Generic;

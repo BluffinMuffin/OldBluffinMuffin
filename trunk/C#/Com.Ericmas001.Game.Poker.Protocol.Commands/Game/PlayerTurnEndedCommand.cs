@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using EricUtility;
 using EricUtility.Networking.Commands;
-using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game

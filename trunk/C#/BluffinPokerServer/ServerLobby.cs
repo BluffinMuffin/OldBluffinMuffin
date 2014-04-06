@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
-using PokerWorld.Game;
 using System.Threading;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using Com.Ericmas001.Game.Poker.Protocol.Server;
