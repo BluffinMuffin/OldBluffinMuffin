@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using EricUtility;
-using EricUtility.Collections;
-using EricUtility.Networking;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001;
+using Com.Ericmas001.Collections;
+using Com.Ericmas001.Net;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Persistance;

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;

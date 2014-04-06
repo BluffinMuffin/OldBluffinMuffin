@@ -8,7 +8,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Server;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using System.Net;
-using EricUtility;
+using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;

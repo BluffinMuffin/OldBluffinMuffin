@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using EricUtility.Games.CardGame;
+using Com.Ericmas001.Games;
 using System.Drawing;
-using EricUtility.Games.Windows.Forms;
+using Com.Ericmas001.Games.Windows.Forms;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Game
 {

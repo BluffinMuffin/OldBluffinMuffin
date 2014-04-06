@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using EricUtility;
+using Com.Ericmas001;
 using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 

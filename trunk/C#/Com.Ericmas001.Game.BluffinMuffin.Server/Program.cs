@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility;
+using Com.Ericmas001.Util;
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Server
 {

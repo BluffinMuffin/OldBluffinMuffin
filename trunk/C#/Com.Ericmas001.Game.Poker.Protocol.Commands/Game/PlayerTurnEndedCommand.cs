@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using EricUtility;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game

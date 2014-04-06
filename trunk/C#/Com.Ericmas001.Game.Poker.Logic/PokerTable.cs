@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EricUtility.Games.CardGame;
-using EricUtility;
+using Com.Ericmas001.Games;
+using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.HandEval;
+using Com.Ericmas001.Util;
 
 namespace Com.Ericmas001.Game.Poker.Logic
 {

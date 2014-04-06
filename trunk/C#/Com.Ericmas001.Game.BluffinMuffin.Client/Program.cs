@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using EricUtility;
+using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.BluffinMuffin.Client.Menu;
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Client

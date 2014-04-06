@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTableForm));
-            this.tabControl1 = new EricUtility.Windows.Forms.CustomTabControl();
+            this.tabControl1 = new Com.Ericmas001.Windows.Forms.CustomTabControl();
             this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
             this.SuspendLayout();
             // 
@@ -38,7 +38,7 @@
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.DisplayStyle = EricUtility.Windows.Forms.TabStyle.Rounded;
+            this.tabControl1.DisplayStyle = Com.Ericmas001.Windows.Forms.TabStyle.Rounded;
             // 
             // 
             // 
@@ -103,7 +103,7 @@
 
         #endregion
 
-        private EricUtility.Windows.Forms.CustomTabControl tabControl1;
+        private Com.Ericmas001.Windows.Forms.CustomTabControl tabControl1;
         private VIBlend.WinForms.Controls.vButton btnAddTable;
     }
 }

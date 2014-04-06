@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Linq;
-using EricUtility;
-using EricUtility.Collections;
-using EricUtility.Networking;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001.Collections;
+using Com.Ericmas001.Net;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
@@ -20,6 +19,8 @@ using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Runtime.Serialization.Formatters;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
+using Com.Ericmas001.Util;
+using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {

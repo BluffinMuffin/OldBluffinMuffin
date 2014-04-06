@@ -1,11 +1,12 @@
 ﻿using System;
-using EricUtility;
-using EricUtility.Networking.Commands;
+using Com.Ericmas001;
+using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using System.Reflection;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
+using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
