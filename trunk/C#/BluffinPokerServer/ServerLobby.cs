@@ -14,6 +14,7 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.Logic;
 
 namespace BluffinPokerServer
 {

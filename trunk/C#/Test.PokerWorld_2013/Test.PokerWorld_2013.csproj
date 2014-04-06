@@ -59,6 +59,10 @@
       <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
       <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Logic\Com.Ericmas001.Game.Poker.Logic.csproj">
+      <Project>{27a8b599-cd12-415a-b20f-4f1e718a1a0b}</Project>
+      <Name>Com.Ericmas001.Game.Poker.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PokerWorld\PokerWorld_2013.csproj">
       <Project>{fbaa74eb-22ce-4c30-9d10-0214b605578a}</Project>
       <Name>PokerWorld_2013</Name>

@@ -62,6 +62,8 @@
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />
     <Compile Include="GameRule.cs" />
+    <Compile Include="IPokerGame.cs" />
+    <Compile Include="IPokerViewer.cs" />
     <Compile Include="LobbyOptions.cs" />
     <Compile Include="LobbyOptionsCareer.cs" />
     <Compile Include="LobbyOptionsTraining.cs" />
