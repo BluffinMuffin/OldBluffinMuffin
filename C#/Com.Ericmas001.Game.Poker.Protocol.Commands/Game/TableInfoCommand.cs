@@ -26,7 +26,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         {
         }
 
-        public TableInfoCommand(PokerTable table, PokerPlayer playerSendingTo)
+        public TableInfoCommand(PokerTable table, PlayerInfo playerSendingTo)
         {
             BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
             Seats = new List<SeatInfo>();
@@ -44,15 +44,15 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
                 SeatInfo si = new SeatInfo() { NoSeat = i };
                 Seats.Add(si);
 
-                PokerPlayer p = table.GetPlayer(i);
+                PlayerInfo p = table.GetPlayer(i).Info;
 
                 si.IsEmpty = (p == null);
                 if (si.IsEmpty)
                     continue;
-                si.Player = p.Info.Clone();
+                si.Player = p.Clone();
 
                 //If we are not sending the info about the player who is receiving, don't show the cards unless you can
-                if (i != playerSendingTo.Info.NoSeat)
+                if (i != playerSendingTo.NoSeat)
                     si.Player.HoleCards = p.RelativeCards.ToList();
 
                 if (si.Player.HoleCards.Count != 2)

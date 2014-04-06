@@ -57,8 +57,8 @@ namespace Test.PokerWorld
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should now wait for blinds");
 
             //Get the amount needed from both players
-            int needed1 = game.Table.GetBlindNeeded(p1);
-            int needed2 = game.Table.GetBlindNeeded(p2);
+            int needed1 = game.Table.GetBlindNeeded(p1.Info);
+            int needed2 = game.Table.GetBlindNeeded(p2.Info);
 
             Assert.AreNotEqual(0, needed1, "The game should need a blind from p1");
             Assert.AreNotEqual(0, needed2, "The game should need a blind from p2");
@@ -74,8 +74,8 @@ namespace Test.PokerWorld
 
 
             //Get the amount still needed from both players
-            needed1 = game.Table.GetBlindNeeded(p1);
-            needed2 = game.Table.GetBlindNeeded(p2);
+            needed1 = game.Table.GetBlindNeeded(p1.Info);
+            needed2 = game.Table.GetBlindNeeded(p2.Info);
             Assert.AreEqual(0, needed1, "The game should not need a blind from p1 anymore");
             Assert.AreNotEqual(0, needed2, "The game should still need a blind from p2");
 
@@ -254,7 +254,7 @@ namespace Test.PokerWorld
 
         private void PutBlinds(PokerGame game, PokerPlayer p)
         {
-            int b = game.Table.GetBlindNeeded(p);
+            int b = game.Table.GetBlindNeeded(p.Info);
             game.PlayMoney(p, b);
         }
 

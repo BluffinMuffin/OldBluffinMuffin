@@ -17,7 +17,7 @@ namespace PokerWorld.Game
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
         protected readonly Stack<int> m_RemainingSeats = new Stack<int>(); // LIFO with the unused seats
         protected readonly List<int> m_AllInCaps = new List<int>(); // All the distincts ALL_IN CAPS of the ROUND
-        protected readonly Dictionary<PokerPlayer, int> m_BlindNeeded = new Dictionary<PokerPlayer, int>();
+        protected readonly Dictionary<PlayerInfo, int> m_BlindNeeded = new Dictionary<PlayerInfo, int>();
         protected int m_CurrPotId;
         #endregion Fields
 
@@ -277,7 +277,7 @@ namespace PokerWorld.Game
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
                 int j = (seat + 1 + i) % Rules.MaxPlayers;
-                if (m_Players[j] != null && m_Players[j].IsPlaying)
+                if (m_Players[j] != null && m_Players[j].Info.IsPlaying)
                 {
                     return m_Players[j];
                 }
@@ -305,7 +305,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Sets how much money is still needed from a specific player as Blind
         /// </summary>
-        public void SetBlindNeeded(PokerPlayer p, int amnt)
+        public void SetBlindNeeded(PlayerInfo p, int amnt)
         {
             if (m_BlindNeeded.ContainsKey(p))
                 m_BlindNeeded[p] = amnt;
@@ -316,7 +316,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// How much money a player needs to put as Blind
         /// </summary>
-        public int GetBlindNeeded(PokerPlayer p)
+        public int GetBlindNeeded(PlayerInfo p)
         {
             if (m_BlindNeeded.ContainsKey(p))
                 return m_BlindNeeded[p];
@@ -329,8 +329,8 @@ namespace PokerWorld.Game
         /// </summary>
         public bool ForceJoinTable(PokerPlayer p, int seat)
         {
-            p.IsZombie = false;
-            p.IsPlaying = false;
+            p.Info.IsZombie = false;
+            p.Info.IsPlaying = false;
             p.Info.NoSeat = seat;
             m_Players[seat] = p;
             return true;
@@ -366,8 +366,8 @@ namespace PokerWorld.Game
                 return false;
 
             int seat = p.Info.NoSeat;
-            p.IsPlaying = false;
-            p.IsZombie = true;
+            p.Info.IsPlaying = false;
+            p.Info.IsZombie = true;
             m_Players[seat] = null;
             m_RemainingSeats.Push(seat);
             return true;
@@ -416,14 +416,14 @@ namespace PokerWorld.Game
             {
                 MoneyPot pot = m_Pots[i];
                 uint bestHand = 0;
-                List<PokerPlayer> infos = new List<PokerPlayer>(pot.AttachedPlayers);
+                List<PlayerInfo> infos = new List<PlayerInfo>(pot.AttachedPlayers);
 
                 //If there is more than one player attach to the pot, we need to choose who will split it !
                 if (infos.Count > 1)
                 {
-                    foreach (PokerPlayer p in infos)
+                    foreach (PlayerInfo p in infos)
                     {
-                        uint handValue = p.EvaluateCards(Cards);
+                        uint handValue = GetPlayer(p.NoSeat).EvaluateCards(Cards);
                         if (handValue > bestHand)
                         {
                             pot.DetachAllPlayers();
@@ -483,11 +483,11 @@ namespace PokerWorld.Game
         #region Private Methods
         private List<PokerPlayer> PlayingPlayersFrom(int seat)
         {
-            return m_Players.Where(p => (p != null && p.IsPlaying)).ToList();
+            return m_Players.Where(p => (p != null && p.Info.IsPlaying)).ToList();
         }
         private List<PokerPlayer> PlayingAndAllInPlayersFrom(int seat)
         {
-            return m_Players.Where(p => (p != null && (p.IsPlaying || p.IsAllIn))).ToList();
+            return m_Players.Where(p => (p != null && (p.Info.IsPlaying || p.Info.IsAllIn))).ToList();
         }
 
         private bool ContainsPlayer(PokerPlayer p)
@@ -500,8 +500,8 @@ namespace PokerWorld.Game
             p.Info.MoneyBetAmnt -= bet;
             pot.AddAmount(bet);
 
-            if (bet >= 0 && (p.IsPlaying || p.IsAllIn))
-                pot.AttachPlayer(p);
+            if (bet >= 0 && (p.Info.IsPlaying || p.Info.IsAllIn))
+                pot.AttachPlayer(p.Info);
         }
         private void PlaceButtons()
         {
@@ -509,8 +509,8 @@ namespace PokerWorld.Game
             NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).Info.NoSeat;
             NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).Info.NoSeat;
             m_BlindNeeded.Clear();
-            m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
-            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Rules.BlindAmount);
+            m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind).Info, SmallBlindAmnt);
+            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind).Info, Rules.BlindAmount);
         }
         #endregion Private Methods
     }

@@ -154,7 +154,7 @@ namespace PokerWorld.Game
         public bool LeaveGame(PokerPlayer p)
         {
             bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
-            int blindNeeded = Table.GetBlindNeeded(p);
+            int blindNeeded = Table.GetBlindNeeded(p.Info);
 
             if (Table.LeaveTable(p))
             {
@@ -290,7 +290,7 @@ namespace PokerWorld.Game
             if (amnt < amntNeeded)
             {
                 //Validation: Can the player bet more ? If yes, this is not fair.
-                if (p.CanBet(amnt + 1))
+                if (p.Info.CanBet(amnt + 1))
                 {
                     LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} needed to play at least {1} and tried {2}", p.Info.Name, amntNeeded, amnt);
                     return false;
@@ -307,7 +307,7 @@ namespace PokerWorld.Game
             }
 
             //Let's hope the player has enough money ! Time to Bet!
-            if (!p.TryBet(amnt))
+            if (!p.Info.TryBet(amnt))
             {
                 LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just put more money than he actually have ({1} > {2})", p.Info.Name, amnt, p.Info.MoneySafeAmnt);
                 return false;
@@ -323,7 +323,7 @@ namespace PokerWorld.Game
             if (p.Info.MoneySafeAmnt == 0)
             {
                 LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
-                p.IsAllIn = true;
+                p.Info.IsAllIn = true;
                 Table.NbAllIn++;
                 Table.AddAllInCap(p.Info.MoneyBetAmnt);
             }
@@ -354,16 +354,16 @@ namespace PokerWorld.Game
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "{0} is putting blind of {1}", p.Info.Name, amnt);
 
             //What is the need Blind from the player ?
-            int needed = Table.GetBlindNeeded(p);
+            int needed = Table.GetBlindNeeded(p.Info);
 
             //If the player isn't giving what we expected from him
             if (amnt != needed)
             {
                 //If the player isn't playing enough but it's all he got, time to go All-In
-                if( amnt < needed && !p.CanBet(amnt+1))
+                if (amnt < needed && !p.Info.CanBet(amnt + 1))
                 {
                     LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
-                    p.IsAllIn = true;
+                    p.Info.IsAllIn = true;
                     Table.NbAllIn++;
                     Table.AddAllInCap(p.Info.MoneyBetAmnt + amnt);
                 }
@@ -375,7 +375,7 @@ namespace PokerWorld.Game
             }
 
             //Let's hope the player has enough money ! Time to put the blinds !
-            if (!p.TryBet(amnt))
+            if (!p.Info.TryBet(amnt))
             {
                 LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just put more money than he actually have ({1} > {2})", p.Info.Name, amnt, p.Info.MoneySafeAmnt);
                 return false;
@@ -388,7 +388,7 @@ namespace PokerWorld.Game
             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p.Info));
 
             //Take note of the given Blind Amount for the player.
-            Table.SetBlindNeeded(p, 0);
+            Table.SetBlindNeeded(p.Info, 0);
 
             //Take note of the action
             bool isPostingSmallBlind = (needed == Table.SmallBlindAmnt);
@@ -484,23 +484,23 @@ namespace PokerWorld.Game
         {
             foreach (PokerPlayer p in Table.PlayingAndAllInPlayers)
             {
-                p.Cards = m_Dealer.DealHoles();
+                p.Info.Cards = m_Dealer.DealHoles();
                 PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
             }
         }
         private void ShowAllCards()
         {
             foreach (PokerPlayer p in Table.Players)
-                if (p.IsPlaying || p.IsAllIn)
+                if (p.Info.IsPlaying || p.Info.IsAllIn)
                 {
-                    p.IsShowingCards = true;
+                    p.Info.IsShowingCards = true;
                     PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
                 }
             AdvanceToNextGameState(); //Advancing to DecideWinners State
         }
         private void FoldPlayer(PokerPlayer p)
         {
-            p.IsPlaying = false;
+            p.Info.IsPlaying = false;
 
             WaitALittle(Rules.WaitingTimes.AfterPlayerAction);
 
@@ -519,7 +519,7 @@ namespace PokerWorld.Game
             // Since every raise "restart" the round, 
             // the number of players who played is the number of AllIn players plus the raising player
             Table.NbPlayed = Table.NbAllIn;
-            if (!p.IsAllIn)
+            if (!p.Info.IsAllIn)
                 Table.NbPlayed++;
 
             Table.NoSeatLastRaise = p.Info.NoSeat;
@@ -548,7 +548,7 @@ namespace PokerWorld.Game
 
             PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next.Info,Table.CurrentPlayer.Info));
 
-            if (next.IsZombie)
+            if (next.Info.IsZombie)
             {
                 if (Table.CanCheck(next.Info))
                     PlayMoney(next, 0);
@@ -560,17 +560,17 @@ namespace PokerWorld.Game
         {
             foreach (MoneyPot pot in Table.Pots)
             {
-                PokerPlayer[] players = pot.AttachedPlayers;
+                PlayerInfo[] players = pot.AttachedPlayers;
                 if (players.Length > 0)
                 {
                     int wonAmount = pot.Amount / players.Length;
                     if (wonAmount > 0)
                     {
-                        foreach (PokerPlayer p in players)
+                        foreach (PlayerInfo p in players)
                         {
-                            p.Info.MoneySafeAmnt += wonAmount;
-                            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p.Info));
-                            PlayerWonPot(this, new PotWonEventArgs(p.Info, pot.Id, wonAmount));
+                            p.MoneySafeAmnt += wonAmount;
+                            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+                            PlayerWonPot(this, new PotWonEventArgs(p, pot.Id, wonAmount));
                             WaitALittle(Rules.WaitingTimes.AfterPotWon);
                         }
                     }
@@ -590,15 +590,15 @@ namespace PokerWorld.Game
         {
             foreach (PokerPlayer p in Table.Players)
             {
-                if (p.IsZombie)
+                if (p.Info.IsZombie)
                     LeaveGame(p);
-                else if (p.CanPlay)
+                else if (p.Info.CanPlay)
                 {
-                    p.IsPlaying = true;
-                    p.IsShowingCards = false;
+                    p.Info.IsPlaying = true;
+                    p.Info.IsShowingCards = false;
                 }
                 else
-                    p.IsPlaying = false;
+                    p.Info.IsPlaying = false;
             }
 
             if (Table.NbPlaying >= Table.Rules.MinPlayersToStart)
