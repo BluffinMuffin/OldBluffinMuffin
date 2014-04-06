@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Logic.Test
 {
@@ -14,7 +15,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         [TestMethod]
         public void JoinAndLeaveTest()
         {
-            PokerGame game = new PokerGame( new PokerTable(new GameRule() { MaxPlayers = 2}));
+            PokerGame game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
             PlayerInfo p1 = new PlayerInfo("p1", 5000);
             PlayerInfo p1Dup = new PlayerInfo("p1", 5000);
             PlayerInfo p2 = new PlayerInfo("p2", 5000);
@@ -47,7 +48,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         public void BlindsTest()
         {
             //start the game with p1 and p2
-            PokerGame game = new PokerGame( new PokerTable(new GameRule() { MaxPlayers = 2}));
+            PokerGame game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
             game.Start();
             PlayerInfo p1 = new PlayerInfo("p1", 5000);
             SitInGame(game, p1);
@@ -90,7 +91,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         [TestMethod]
         public void StatesTest()
         {
-            PokerGame game = new PokerGame(new PokerTable(new GameRule() { MaxPlayers = 2 }));
+            PokerGame game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
 
             Assert.AreEqual(GameStateEnum.Init, game.State, "The game should not be started");
 
@@ -181,7 +182,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         public void BettingTest()
         {
             //start the game
-            PokerGame game = new PokerGame(new PokerTable(new GameRule() { MaxPlayers = 2 }));
+            PokerGame game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
             game.Start();
 
             //make p1 join the game

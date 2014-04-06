@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDealer.cs" />
-    <Compile Include="ConfigurableWaitingTimes.cs" />
+    <Compile Include="Parameters\ConfigurableWaitingTimes.cs" />
     <Compile Include="Enums\BlindTypeEnum.cs" />
     <Compile Include="Enums\GameActionEnum.cs" />
     <Compile Include="Enums\PlayerStateEnum.cs" />
@@ -61,12 +61,12 @@
     <Compile Include="EventHandling\PlayerInfoEventArgs.cs" />
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />
-    <Compile Include="GameRule.cs" />
+    <Compile Include="Parameters\TableParams.cs" />
     <Compile Include="IPokerGame.cs" />
     <Compile Include="IPokerViewer.cs" />
-    <Compile Include="LobbyOptions.cs" />
-    <Compile Include="LobbyOptionsCareer.cs" />
-    <Compile Include="LobbyOptionsTraining.cs" />
+    <Compile Include="Parameters\LobbyOptions.cs" />
+    <Compile Include="Parameters\LobbyOptionsCareer.cs" />
+    <Compile Include="Parameters\LobbyOptionsTraining.cs" />
     <Compile Include="MoneyPot.cs" />
     <Compile Include="TableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

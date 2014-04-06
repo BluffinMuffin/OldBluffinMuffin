@@ -96,7 +96,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             List<MoneyPot> pots = m_Game.Table.Pots;
             List<int> amounts = pots.Select(p => p.Amount).ToList();
 
-            for (int i = pots.Count; i < m_Game.Table.Rules.MaxPlayers; i++)
+            for (int i = pots.Count; i < m_Game.Table.Params.MaxPlayers; i++)
                 amounts.Add(0);
 
             Send(new BetTurnEndedCommand() 
@@ -226,7 +226,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
-            if (m_UserInfo != null && m_Game.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Career)
+            if (m_UserInfo != null && m_Game.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Career)
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
 
             LeftTable(this, new KeyEventArgs<int>(m_ID));
@@ -235,7 +235,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_Player.State = PlayerStateEnum.Zombie;
 
             TableInfo t = m_Game.Table;
-            LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Rules.TableName, m_ID);
+            LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Params.TableName, m_ID);
 
             if (m_Game.State == GameStateEnum.WaitForPlayers)
                 m_Game.LeaveGame(m_Player);

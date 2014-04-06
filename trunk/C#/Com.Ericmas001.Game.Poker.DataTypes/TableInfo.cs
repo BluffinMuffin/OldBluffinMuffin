@@ -6,6 +6,7 @@ using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {
@@ -21,7 +22,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// Contains all the rules of the current game
         /// </summary>
-        public GameRule Rules { get; set; }
+        public TableParams Params { get; set; }
 
         /// <summary>
         /// Cards on the Board
@@ -55,7 +56,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// Amount of the Small Blind
         /// </summary>
-        public int SmallBlindAmnt { get { return Rules.BlindAmount / 2; } }
+        public int SmallBlindAmnt { get { return Params.BlindAmount / 2; } }
 
         /// <summary>
         /// Minimum amount to Raise
@@ -188,14 +189,14 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         #region Ctors & Init
         public TableInfo()
-            : this(new GameRule())
+            : this(new TableParams())
         {
         }
 
-        public TableInfo(GameRule rules)
+        public TableInfo(TableParams parms)
         {
-            Rules = rules;
-            m_Players = new PlayerInfo[rules.MaxPlayers];
+            Params = parms;
+            m_Players = new PlayerInfo[parms.MaxPlayers];
             NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
@@ -236,9 +237,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public PlayerInfo GetPlayerNextTo(int seat)
         {
-            for (int i = 0; i < Rules.MaxPlayers; ++i)
+            for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                int j = (seat + 1 + i) % Rules.MaxPlayers;
+                int j = (seat + 1 + i) % Params.MaxPlayers;
                 if (m_Players[j] != null)
                 {
                     return m_Players[j];
@@ -252,9 +253,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public PlayerInfo GetPlayingPlayerNextTo(int seat)
         {
-            for (int i = 0; i < Rules.MaxPlayers; ++i)
+            for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                int j = (seat + 1 + i) % Rules.MaxPlayers;
+                int j = (seat + 1 + i) % Params.MaxPlayers;
                 if (m_Players[j] != null && m_Players[j].IsPlaying)
                 {
                     return m_Players[j];

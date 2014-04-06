@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Com.Ericmas001.Game.Poker.DataTypes
+namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
-    public class GameRule
+    public class TableParams
     {
         //Important: have to be set to have a defaut value;
         private LobbyOptions m_Lobby;// = new LobbyOptionsTraining();
@@ -31,7 +31,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         [JsonIgnore]
         public LobbyOptions CurrentLobby { get { return m_Lobby == null ? new LobbyOptionsTraining() : m_Lobby; } }
 
-        public GameRule()
+        public TableParams()
         {
             TableName = "Anonymous Table";
             GameType = GameTypeEnum.Holdem;

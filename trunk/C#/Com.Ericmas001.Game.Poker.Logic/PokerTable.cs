@@ -8,6 +8,7 @@ using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.HandEval;
 using Com.Ericmas001.Util;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Logic
 {
@@ -35,10 +36,10 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
         }
 
-        public PokerTable(GameRule rules)
-            :base(rules)
+        public PokerTable(TableParams parms)
+            :base(parms)
         {
-            Enumerable.Range(1, rules.MaxPlayers).ToList().ForEach(i => m_RemainingSeats.Push(rules.MaxPlayers - i));
+            Enumerable.Range(1, parms.MaxPlayers).ToList().ForEach(i => m_RemainingSeats.Push(parms.MaxPlayers - i));
         }
 
         public override void InitTable()
@@ -225,7 +226,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             base.PlaceButtons();
             m_BlindNeeded.Clear();
             m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
-            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Rules.BlindAmount);
+            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Params.BlindAmount);
         }
         #endregion Private Methods
     }

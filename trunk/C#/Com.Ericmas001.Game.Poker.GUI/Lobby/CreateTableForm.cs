@@ -10,15 +10,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class CreateTableForm : Form
     {
-        public GameRule GameRules { get; private set; }
+        public TableParams Params { get; private set; }
         public CreateTableForm(string playerName, int minPlayers, LobbyTypeEnum lobby, List<RuleInfo> rules)
         {
-            GameRules = null;
+            Params = null;
             InitializeComponent();
             IEnumerable<RuleInfo> availablesRules = rules.Where(r => r.AvailableLobbys.Contains(lobby));
 
@@ -34,7 +35,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         private void btnAddTable_Click(object sender, EventArgs e)
         {
             CreateTableTabControl cttc = tabControl1.SelectedTab.Controls.OfType<CreateTableTabControl>().First();
-            GameRules = tabControl1.SelectedTab.Controls.OfType<CreateTableTabControl>().First().GameRules;
+            Params = tabControl1.SelectedTab.Controls.OfType<CreateTableTabControl>().First().Params;
             Close();
         }
     }

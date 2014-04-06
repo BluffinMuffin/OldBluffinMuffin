@@ -7,6 +7,7 @@ using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
 {
@@ -14,7 +15,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
     {
         public static string COMMAND_NAME = "gameTABLE_INFO";
 
-        public GameRule Rules { get; set; }
+        public TableParams Params { get; set; }
         public int TotalPotAmount { get; set; }
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
@@ -30,15 +31,15 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
             BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
             Seats = new List<TupleSeat>();
 
-            Rules = table.Rules;
+            Params = table.Params;
 
             TotalPotAmount = table.TotalPotAmnt;
-            NbPlayers = Rules.MaxPlayers;
+            NbPlayers = Params.MaxPlayers;
 
             PotsAmount = table.Pots.Select(pot => pot.Amount).ToList();
-            PotsAmount.AddRange(Enumerable.Repeat(0, Rules.MaxPlayers - table.Pots.Count));
+            PotsAmount.AddRange(Enumerable.Repeat(0, Params.MaxPlayers - table.Pots.Count));
 
-            for (int i = 0; i < Rules.MaxPlayers; ++i)
+            for (int i = 0; i < Params.MaxPlayers; ++i)
             {
                 TupleSeat si = new TupleSeat() { NoSeat = i };
                 Seats.Add(si);
