@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Com.Ericmas001.Game.BluffinMuffin.Server</RootNamespace>
-    <AssemblyName>Com.Ericmas001.Game.BluffinMuffin.Server</AssemblyName>
+    <AssemblyName>BluffinMuffin.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
