@@ -45,7 +45,11 @@ namespace PokerWorld.Game
         /// <summary>
         /// The Table Entity
         /// </summary>
-        public PokerTable Table { get; private set; }
+        public TableInfo Table { get; private set; }
+        /// <summary>
+        /// The PokerTable Entity
+        /// </summary>
+        public PokerTable GameTable { get { return (PokerTable)Table; } }
 
         /// <summary>
         /// The Rules Entity
@@ -134,7 +138,7 @@ namespace PokerWorld.Game
                 return false;
             }
 
-            return Table.JoinTable(p);
+            return GameTable.JoinTable(p);
         }
 
 
@@ -155,7 +159,7 @@ namespace PokerWorld.Game
         public bool LeaveGame(PlayerInfo p)
         {
             bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
-            int blindNeeded = Table.GetBlindNeeded(p);
+            int blindNeeded = GameTable.GetBlindNeeded(p);
 
             if (Table.LeaveTable(p))
             {
@@ -326,7 +330,7 @@ namespace PokerWorld.Game
                 LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                 p.IsAllIn = true;
                 Table.NbAllIn++;
-                Table.AddAllInCap(p.MoneyBetAmnt);
+                GameTable.AddAllInCap(p.MoneyBetAmnt);
             }
 
             //Hmmm ... More Money !! 
@@ -351,11 +355,11 @@ namespace PokerWorld.Game
         }
         private bool PlayBlinds(PlayerInfo p, int amnt)
         {
-            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds needed is {0}", Table.TotalBlindNeeded);
+            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds needed is {0}", GameTable.TotalBlindNeeded);
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "{0} is putting blind of {1}", p.Name, amnt);
 
             //What is the need Blind from the player ?
-            int needed = Table.GetBlindNeeded(p);
+            int needed = GameTable.GetBlindNeeded(p);
 
             //If the player isn't giving what we expected from him
             if (amnt != needed)
@@ -366,7 +370,7 @@ namespace PokerWorld.Game
                     LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Player now All-In !");
                     p.IsAllIn = true;
                     Table.NbAllIn++;
-                    Table.AddAllInCap(p.MoneyBetAmnt + amnt);
+                    GameTable.AddAllInCap(p.MoneyBetAmnt + amnt);
                 }
                 else //well, it's just not fair to play that
                 {
@@ -389,7 +393,7 @@ namespace PokerWorld.Game
             PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
 
             //Take note of the given Blind Amount for the player.
-            Table.SetBlindNeeded(p, 0);
+            GameTable.SetBlindNeeded(p, 0);
 
             //Take note of the action
             bool isPostingSmallBlind = (needed == Table.SmallBlindAmnt);
@@ -400,10 +404,10 @@ namespace PokerWorld.Game
             if (amnt > Table.HigherBet)
                 Table.HigherBet = amnt;
 
-            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds still needed is {0}", Table.TotalBlindNeeded);
+            LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Total blinds still needed is {0}", GameTable.TotalBlindNeeded);
 
             //If we got all the blinds, what are we waiting for ?!
-            if (Table.TotalBlindNeeded == 0)
+            if (GameTable.TotalBlindNeeded == 0)
                 AdvanceToNextGameState(); //Advancing to Playing State
             return true;
         }
@@ -424,7 +428,7 @@ namespace PokerWorld.Game
         }
         private void StartCumulRound()
         {
-            Table.ManagePotsRoundEnd();
+            GameTable.ManagePotsRoundEnd();
 
             GameBettingRoundEnded(this, new RoundEventArgs(Table.Round));
 
@@ -471,15 +475,15 @@ namespace PokerWorld.Game
         }
         private void DealRiver()
         {
-            Table.AddCards(m_Dealer.DealRiver());
+            GameTable.AddCards(m_Dealer.DealRiver());
         }
         private void DealTurn()
         {
-            Table.AddCards(m_Dealer.DealTurn());
+            GameTable.AddCards(m_Dealer.DealTurn());
         }
         private void DealFlop()
         {
-            Table.AddCards(m_Dealer.DealFlop());
+            GameTable.AddCards(m_Dealer.DealFlop());
         }
         private void DealHole()
         {
@@ -580,7 +584,7 @@ namespace PokerWorld.Game
         }
         private void DecideWinners()
         {
-            Table.CleanPotsForWinning();
+            GameTable.CleanPotsForWinning();
             AdvanceToNextGameState(); //Advancing to DistributeMoney State
         }
         private void WaitALittle(int waitingTime)

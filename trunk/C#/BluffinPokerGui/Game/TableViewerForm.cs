@@ -141,7 +141,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded), new object[] { sender, e });
                 return;
             }
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             foreach( MoneyPot p in table.Pots)
             {
                 int i = p.Id;
@@ -164,7 +164,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted), new object[] { sender, e });
                 return;
             }
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
                 huds[p.NoSeat].Alive = true;
             int i = 0;
@@ -182,7 +182,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameBlindNeeded), new object[] { sender, e });
                 return;
             }
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             lblTotalPot.Text = "$0";
             for(int i = 1; i < 10; ++i)
             {
@@ -208,7 +208,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameEnded), new object[] { sender, e });
                 return;
             }
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
             {
                 if (p != null)
@@ -257,7 +257,7 @@ namespace BluffinPokerGui.Game
             potTitles[0].Visible = true;
             potValues[0].Visible = true;
             potValues[0].Text = "$0";
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
             {
                 PlayerHud php = huds[p.NoSeat];
@@ -290,7 +290,7 @@ namespace BluffinPokerGui.Game
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             Label bet = bets[p.NoSeat];
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             php.SetMoney(p.MoneySafeAmnt);
             php.SetSleeping();
             php.DoAction(e.Action, e.AmountPlayed);
@@ -400,7 +400,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted_Console), new object[] { sender, e });
                 return;
             }
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             WriteLine("==> Beginning of " + e.Round.ToString());
             if (e.Round != RoundTypeEnum.Preflop)
             {
@@ -421,7 +421,7 @@ namespace BluffinPokerGui.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameBlindNeeded_Console), new object[] { sender, e });
                 return;
             }
-            PokerTable table = m_Game.Table;
+            TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
             PlayerInfo d = table.Seats[table.NoSeatDealer];
             PlayerInfo sb = table.Seats[table.NoSeatSmallBlind];
