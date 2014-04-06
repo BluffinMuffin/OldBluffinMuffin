@@ -13,12 +13,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     public class PlayerInfo
     {
         public int NoSeat { get; set; }
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Initial Money Amount of the Player when he sits at the table
         /// </summary>
-        public int MoneyInitAmnt { get; private set; }
+        public int MoneyInitAmnt { get; set; }
 
         /// <summary>
         /// Current Money Amount of the player that he isn't playing with
@@ -40,7 +40,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         public PlayerInfo()
         {
-            HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD }; ;
+            HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
 
             Name = "Anonymous Player";
             NoSeat = -1;
