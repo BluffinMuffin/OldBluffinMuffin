@@ -9,7 +9,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 
-namespace PokerWorld.Game
+namespace Com.Ericmas001.Game.Poker.Logic
 {
     /// <summary>
     /// This represent only one "Game" of Poker. This means from Putting Blinds to preflop, flop, turn, river and then declaring the winner.

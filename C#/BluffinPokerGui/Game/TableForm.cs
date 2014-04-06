@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 

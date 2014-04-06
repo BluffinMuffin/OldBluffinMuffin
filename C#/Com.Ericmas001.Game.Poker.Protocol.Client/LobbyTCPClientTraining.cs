@@ -7,7 +7,6 @@ using EricUtility.Collections;
 using EricUtility.Networking;
 using EricUtility.Networking.Commands;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
-using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;

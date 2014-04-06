@@ -7,7 +7,6 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
 using Newtonsoft.Json.Linq;
-using PokerWorld.Game;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
