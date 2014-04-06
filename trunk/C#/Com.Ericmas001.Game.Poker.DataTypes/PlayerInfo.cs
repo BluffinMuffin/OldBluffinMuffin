@@ -6,6 +6,7 @@ using EricUtility;
 using Newtonsoft.Json.Linq;
 using EricUtility.Games.CardGame;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using Newtonsoft.Json;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {
@@ -31,6 +32,11 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public List<GameCard> HoleCards { get; set; }
 
         public PlayerStateEnum State { get; set; }
+
+        /// <summary>
+        /// Montre-il ses cartes ? Vrai si showdown
+        /// </summary>
+        public bool IsShowingCards { get; set; }
 
         public PlayerInfo()
         {
@@ -71,9 +77,102 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 MoneyBetAmnt = this.MoneyBetAmnt,
                 MoneySafeAmnt = this.MoneySafeAmnt,
                 HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToList(),
+                IsShowingCards = this.IsShowingCards,
                 State = this.State,
             };
         }
 
+        /// <summary>
+        /// Check if the player has enough money to bet some amount
+        /// </summary>
+        public bool CanBet(int amnt)
+        {
+            return amnt <= MoneySafeAmnt;
+        }
+
+        /// <summary>
+        /// Tries to put some money on the table
+        /// </summary>
+        /// <returns>True if the money has been successfully played</returns>
+        public bool TryBet(int amnt)
+        {
+            if (!CanBet(amnt))
+            {
+                return false;
+            }
+
+            MoneySafeAmnt -= amnt;
+            MoneyBetAmnt += amnt;
+            return true;
+        }
+
+        /// <summary>
+        /// Player Cards as viewed by himself
+        /// </summary>
+        [JsonIgnore]
+        public GameCard[] Cards
+        {
+            get { return HoleCards.Select(c => (c == null || !(State >= PlayerStateEnum.AllIn)) ? GameCard.NO_CARD : c).ToArray(); }
+            set
+            {
+                if (value != null && value.Length == 2)
+                    HoleCards = value.ToList();
+            }
+        }
+
+        /// <summary>
+        /// Player Cards as viewed by the other players
+        /// </summary>
+        [JsonIgnore]
+        public GameCard[] RelativeCards
+        {
+            get
+            {
+                if (!IsShowingCards)
+                    return new GameCard[2] { GameCard.HIDDEN, GameCard.HIDDEN };
+                return Cards;
+            }
+        }
+
+        /// <summary>
+        /// Is the player Playing ? False if Folded, AllIn or NotPlaying
+        /// If set to true, IsAllIn must be false
+        /// </summary>
+        [JsonIgnore]
+        public bool IsPlaying
+        {
+            get { return State == PlayerStateEnum.Playing; }
+            set { State = value ? PlayerStateEnum.Playing : PlayerStateEnum.SitIn; }
+        }
+
+        /// <summary>
+        /// Is the player AllIn ?
+        /// If set to true, IsPlaying must be false
+        /// </summary>
+        [JsonIgnore]
+        public bool IsAllIn
+        {
+            get { return State == PlayerStateEnum.AllIn; }
+            set { State = value ? PlayerStateEnum.AllIn : PlayerStateEnum.SitIn; }
+        }
+
+        /// <summary>
+        /// A player who was playing but disconnected is a Zombie. He will remain in place and put blinds / check / fold
+        /// </summary>
+        [JsonIgnore]
+        public bool IsZombie
+        {
+            get { return State == PlayerStateEnum.Zombie; }
+            set { State = value ? PlayerStateEnum.Zombie : PlayerStateEnum.SitIn; }
+        }
+
+        /// <summary>
+        /// A player who can play has money and is seated !
+        /// </summary>
+        [JsonIgnore]
+        public bool CanPlay
+        {
+            get { return NoSeat >= 0 && MoneySafeAmnt > 0; }
+        }
     }
 }

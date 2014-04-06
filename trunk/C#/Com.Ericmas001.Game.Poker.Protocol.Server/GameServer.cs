@@ -109,8 +109,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
-            PokerPlayer pp = m_Game.Table.GetPlayer(p.NoSeat);
-            GameCard[] holeCards = p.NoSeat == m_Player.Info.NoSeat ? pp.Cards : pp.RelativeCards;
+            GameCard[] holeCards = p.NoSeat == m_Player.Info.NoSeat ? p.Cards : p.RelativeCards;
 
             Send(new PlayerHoleCardsChangedCommand() 
             {
@@ -233,7 +232,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             LeftTable(this, new KeyEventArgs<int>(m_ID));
 
             m_IsConnected = false;
-            m_Player.IsZombie = true;
+            m_Player.Info.IsZombie = true;
 
             PokerTable t = m_Game.Table;
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Info.Name, t.Rules.TableName, m_ID);
@@ -260,12 +259,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             get
             {
-                return m_IsConnected && m_Player.CanPlay;
+                return m_IsConnected && m_Player.Info.CanPlay;
             }
         }
         public void SitIn()
         {
-            Send(new TableInfoCommand(m_Game.Table, m_Player));
+            Send(new TableInfoCommand(m_Game.Table, m_Player.Info));
             m_Game.SitInGame(m_Player.Info);
         }
 
