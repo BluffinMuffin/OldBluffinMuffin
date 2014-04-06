@@ -20,7 +20,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
         public int NbPlayers { get; set; }
-        public List<SeatInfo> Seats { get; set; }
+        public List<TupleSeat> Seats { get; set; }
 
         public TableInfoCommand()
         {
@@ -29,7 +29,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public TableInfoCommand(PokerTable table, PlayerInfo playerSendingTo)
         {
             BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
-            Seats = new List<SeatInfo>();
+            Seats = new List<TupleSeat>();
 
             Rules = table.Rules;
 
@@ -41,15 +41,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
 
             for (int i = 0; i < Rules.MaxPlayers; ++i)
             {
-                SeatInfo si = new SeatInfo() { NoSeat = i };
+                TupleSeat si = new TupleSeat() { NoSeat = i };
                 Seats.Add(si);
 
-                PokerPlayer pp = table.GetPlayer(i);
+                PlayerInfo p = table.GetPlayer(i);
 
-                si.IsEmpty = (pp == null);
+                si.IsEmpty = (p == null);
                 if (si.IsEmpty)
                     continue;
-                PlayerInfo p = pp.Info;
                 si.Player = p.Clone();
 
                 //If we are not sending the info about the player who is receiving, don't show the cards unless you can

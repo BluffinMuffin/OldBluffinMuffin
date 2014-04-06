@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="Game\IPokerGame.cs" />
     <Compile Include="Game\IPokerViewer.cs" />
-    <Compile Include="Game\PokerPlayer.cs" />
     <Compile Include="Game\PokerGame.cs" />
     <Compile Include="Game\PokerTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

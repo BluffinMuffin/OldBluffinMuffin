@@ -46,8 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisconnectCommand.cs" />
-    <Compile Include="Entities\SeatInfo.cs" />
-    <Compile Include="Entities\TableInfo.cs" />
+    <Compile Include="Entities\TupleSeat.cs" />
+    <Compile Include="Entities\TupleTable.cs" />
     <Compile Include="Game\BetTurnEndedCommand.cs" />
     <Compile Include="Game\BetTurnStartedCommand.cs" />
     <Compile Include="Game\GameEndedCommand.cs" />

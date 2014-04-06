@@ -126,7 +126,7 @@ namespace PokerWorld.Game
         /// <summary>
         /// Add a player to the table
         /// </summary>
-        public bool JoinGame(PokerPlayer p)
+        public bool JoinGame(PlayerInfo p)
         {
             if (m_State == GameStateEnum.Init || m_State == GameStateEnum.End)
             {
@@ -154,11 +154,10 @@ namespace PokerWorld.Game
         /// </summary>
         public bool LeaveGame(PlayerInfo p)
         {
-            PokerPlayer pp = Table.GetPlayer(p.NoSeat);
-            bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == pp);
+            bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
             int blindNeeded = Table.GetBlindNeeded(p);
 
-            if (Table.LeaveTable(pp))
+            if (Table.LeaveTable(p))
             {
                 if (wasPlaying)
                     PlayMoney(p, -1);
@@ -439,7 +438,7 @@ namespace PokerWorld.Game
             GameBettingRoundStarted(this, new RoundEventArgs(Table.Round));
 
             Table.NbPlayed = 0;
-            Table.NoSeatLastRaise = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).Info.NoSeat;
+            Table.NoSeatLastRaise = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).NoSeat;
             Table.MinimumRaiseAmount = Table.Rules.BlindAmount;
 
             WaitALittle(Rules.WaitingTimes.AfterBoardDealed);
@@ -484,19 +483,19 @@ namespace PokerWorld.Game
         }
         private void DealHole()
         {
-            foreach (PokerPlayer p in Table.PlayingAndAllInPlayers)
+            foreach (PlayerInfo p in Table.PlayingAndAllInPlayers)
             {
-                p.Info.Cards = m_Dealer.DealHoles();
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
+                p.Cards = m_Dealer.DealHoles();
+                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
             }
         }
         private void ShowAllCards()
         {
-            foreach (PokerPlayer p in Table.Players)
-                if (p.Info.IsPlaying || p.Info.IsAllIn)
+            foreach (PlayerInfo p in Table.Players)
+                if (p.IsPlaying || p.IsAllIn)
                 {
-                    p.Info.IsShowingCards = true;
-                    PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p.Info));
+                    p.IsShowingCards = true;
+                    PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
                 }
             AdvanceToNextGameState(); //Advancing to DecideWinners State
         }
@@ -544,11 +543,11 @@ namespace PokerWorld.Game
         }
         private void ChooseNextPlayer()
         {
-            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).Info;
+            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer);
 
             Table.NoSeatCurrPlayer = next.NoSeat;
 
-            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,Table.CurrentPlayer.Info));
+            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,Table.CurrentPlayer));
 
             if (next.IsZombie)
             {
@@ -590,7 +589,7 @@ namespace PokerWorld.Game
         }
         private void TryToBegin()
         {
-            foreach (PlayerInfo p in Table.Players.Select(x => x.Info))
+            foreach (PlayerInfo p in Table.Players)
             {
                 if (p.IsZombie)
                     LeaveGame(p);

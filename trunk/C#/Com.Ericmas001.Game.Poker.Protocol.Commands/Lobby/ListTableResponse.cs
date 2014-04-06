@@ -13,7 +13,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyLIST_TABLES_RESPONSE";
 
-        public List<TableInfo> Tables { get; set; }
+        public List<TupleTable> Tables { get; set; }
 
         public ListTableResponse()
             : base()

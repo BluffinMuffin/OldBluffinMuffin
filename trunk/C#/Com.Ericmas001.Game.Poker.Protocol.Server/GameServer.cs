@@ -22,7 +22,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
     public class GameServer : CommandQueueCommunicator<GameServerCommandObserver>
     {
         #region Fields
-        private readonly PokerPlayer m_Player;
+        private readonly PlayerInfo m_Player;
         private readonly PokerGame m_Game;
         private readonly int m_ID;
         private readonly UserInfo m_UserInfo;
@@ -34,7 +34,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         #region Properties
         public int ID { get { return m_ID; } }
-        public PokerPlayer Player { get { return m_Player; } }
+        public PlayerInfo Player { get { return m_Player; } }
         public PokerGame Game { get { return m_Game; } }
         #endregion Properties
 
@@ -43,7 +43,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             m_ID = id;
             m_Game = game;
-            m_Player = new PokerPlayer(name, money);
+            m_Player = new PlayerInfo(name, money);
             m_UserInfo = null;
             base.SendedSomething += new EventHandler<EricUtility.KeyEventArgs<string>>(GameServer_SendedSomething);
 
@@ -56,7 +56,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_UserInfo = userInfo;
             int money = (int)m_UserInfo.TotalMoney;
             m_UserInfo.TotalMoney -= money;
-            m_Player = new PokerPlayer(m_UserInfo.DisplayName, money);
+            m_Player = new PlayerInfo(m_UserInfo.DisplayName, money);
         }
 
         private void InitializePokerObserver()
@@ -86,7 +86,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         #region GameServer Event Handling
         void GameServer_SendedSomething(object sender, EricUtility.KeyEventArgs<string> e)
         {
-            LogManager.Log(LogLevel.MessageLow, "GameServer.GameServer_SendedSomething", "<Game:{0}> SEND [{1}]", m_Player.Info.Name, e.Key);
+            LogManager.Log(LogLevel.MessageLow, "GameServer.GameServer_SendedSomething", "<Game:{0}> SEND [{1}]", m_Player.Name, e.Key);
         }
         #endregion GameServer Event Handling
 
@@ -109,7 +109,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
-            GameCard[] holeCards = p.NoSeat == m_Player.Info.NoSeat ? p.Cards : p.RelativeCards;
+            GameCard[] holeCards = p.NoSeat == m_Player.NoSeat ? p.Cards : p.RelativeCards;
 
             Send(new PlayerHoleCardsChangedCommand() 
             {
@@ -221,36 +221,36 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         #region CommandObserver Event Handling
         void m_CommandObserver_PlayMoneyCommandReceived(object sender, CommandEventArgs<PlayerPlayMoneyCommand> e)
         {
-            m_Game.PlayMoney(m_Player.Info, e.Command.Played);
+            m_Game.PlayMoney(m_Player, e.Command.Played);
         }
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
             if (m_UserInfo != null && m_Game.Rules.CurrentLobby.LobbyType == LobbyTypeEnum.Career)
-                m_UserInfo.TotalMoney += m_Player.Info.MoneySafeAmnt;
+                m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
 
             LeftTable(this, new KeyEventArgs<int>(m_ID));
 
             m_IsConnected = false;
-            m_Player.Info.IsZombie = true;
+            m_Player.IsZombie = true;
 
             PokerTable t = m_Game.Table;
-            LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Info.Name, t.Rules.TableName, m_ID);
+            LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Rules.TableName, m_ID);
 
             if (m_Game.State == GameStateEnum.WaitForPlayers)
-                m_Game.LeaveGame(m_Player.Info);
-            else if (t.NoSeatCurrPlayer == m_Player.Info.NoSeat)
+                m_Game.LeaveGame(m_Player);
+            else if (t.NoSeatCurrPlayer == m_Player.NoSeat)
             {
-                if (t.CanCheck(m_Player.Info))
-                    m_Game.PlayMoney(m_Player.Info, 0);
+                if (t.CanCheck(m_Player))
+                    m_Game.PlayMoney(m_Player, 0);
                 else
-                    m_Game.PlayMoney(m_Player.Info, -1);
+                    m_Game.PlayMoney(m_Player, -1);
             }
         }
 
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
-            LogManager.Log(LogLevel.MessageLow, "GameServer.m_CommandObserver_CommandReceived", "<Game:{0}> RECV [{1}]", m_Player.Info.Name, e.Str);
+            LogManager.Log(LogLevel.MessageLow, "GameServer.m_CommandObserver_CommandReceived", "<Game:{0}> RECV [{1}]", m_Player.Name, e.Str);
         }
         #endregion CommandObserver Event Handling
 
@@ -259,13 +259,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             get
             {
-                return m_IsConnected && m_Player.Info.CanPlay;
+                return m_IsConnected && m_Player.CanPlay;
             }
         }
         public void SitIn()
         {
-            Send(new TableInfoCommand(m_Game.Table, m_Player.Info));
-            m_Game.SitInGame(m_Player.Info);
+            Send(new TableInfoCommand(m_Game.Table, m_Player));
+            m_Game.SitInGame(m_Player);
         }
 
         public bool JoinGame()
