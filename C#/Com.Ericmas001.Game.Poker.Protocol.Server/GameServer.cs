@@ -72,15 +72,17 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_Game.GameBlindNeeded += new EventHandler(m_Game_GameBlindNeeded);
             m_Game.GameBettingRoundStarted += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted);
             m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined);
-            m_Game.PlayerSatIn += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn);
+            m_Game.SeatUpdated += new EventHandler<SeatEventArgs>(m_Game_SeatUpdated);
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
         }
 
         protected override void InitializeCommandObserver()
         {
-            m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
-            m_CommandObserver.DisconnectCommandReceived += new EventHandler<CommandEventArgs<DisconnectCommand>>(m_CommandObserver_DisconnectCommandReceived);
-            m_CommandObserver.PlayMoneyCommandReceived += new EventHandler<CommandEventArgs<PlayerPlayMoneyCommand>>(m_CommandObserver_PlayMoneyCommandReceived);
+            m_CommandObserver.CommandReceived += m_CommandObserver_CommandReceived;
+            m_CommandObserver.DisconnectCommandReceived += m_CommandObserver_DisconnectCommandReceived;
+            m_CommandObserver.PlayMoneyCommandReceived += m_CommandObserver_PlayMoneyCommandReceived;
+            m_CommandObserver.SitInCommandReceived += m_CommandObserver_SitInCommandReceived;
+            m_CommandObserver.SitOutCommandReceived += m_CommandObserver_SitOutCommandReceived;
         }
         #endregion Ctors & Init
 
@@ -207,14 +209,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_PlayerSatIn(object sender, PlayerInfoEventArgs e)
+        void m_Game_SeatUpdated(object sender, SeatEventArgs e)
         {
-            PlayerInfo p = e.Player;
-            Send(new PlayerSatInCommand()
+            if (m_Player.NoSeat != e.Seat.NoSeat)
+                e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards.ToList();
+
+            Send(new SeatUpdatedCommand()
             {
-                PlayerPos = p.NoSeat,
-                PlayerName = p.Name,
-                PlayerMoney = p.MoneySafeAmnt,
+                Seat = e.Seat,
             });
         }
 
@@ -232,6 +234,17 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         void m_CommandObserver_PlayMoneyCommandReceived(object sender, CommandEventArgs<PlayerPlayMoneyCommand> e)
         {
             m_Game.PlayMoney(m_Player, e.Command.Played);
+        }
+
+        void m_CommandObserver_SitOutCommandReceived(object sender, CommandEventArgs<PlayerSitOutCommand> e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void m_CommandObserver_SitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
+        {
+            m_Game.GameTable.AskToSitIn(m_Player);
+            m_Game.SitInGame(m_Player);
         }
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
@@ -272,11 +285,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                 return m_IsConnected && m_Player.CanPlay;
             }
         }
-        public void SitIn()
+        public void SendTableInfo()
         {
             TableInfoCommand cmd = new TableInfoCommand(m_Game.Table, m_Player);
             Send(cmd);
-            m_Game.SitInGame(m_Player);
         }
 
         public bool JoinGame()

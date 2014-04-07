@@ -4,7 +4,7 @@ using System.Text;
 using System.Linq;
 using Com.Ericmas001;
 using Com.Ericmas001.Net.Protocol.JSON;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
+using Com.Ericmas001.Game.Poker.DataTypes;
 using Newtonsoft.Json.Linq;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby

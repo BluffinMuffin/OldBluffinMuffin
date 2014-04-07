@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDealer.cs" />
+    <Compile Include="EventHandling\SeatEventArgs.cs" />
     <Compile Include="Parameters\ConfigurableWaitingTimes.cs" />
     <Compile Include="Enums\BlindTypeEnum.cs" />
     <Compile Include="Enums\GameActionEnum.cs" />
@@ -76,6 +77,8 @@
     <Compile Include="Rules\LimitInfo.cs" />
     <Compile Include="Rules\RuleInfo.cs" />
     <Compile Include="PlayerInfo.cs" />
+    <Compile Include="TupleSeat.cs" />
+    <Compile Include="TupleTable.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <ItemGroup>

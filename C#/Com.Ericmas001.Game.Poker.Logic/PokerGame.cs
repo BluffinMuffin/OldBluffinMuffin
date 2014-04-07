@@ -35,7 +35,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
         public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerSatIn = delegate { };
+        public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
         public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
@@ -151,7 +151,18 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public void SitInGame(PlayerInfo p)
         {
-            PlayerSatIn(this, new PlayerInfoEventArgs(p));
+            PlayerInfo pi = p.Clone();
+            TupleSeat seat = new TupleSeat()
+            {
+                Player = p.Clone(),
+                NoSeat = p.NoSeat,
+                IsSmallBlind = Table.NoSeatSmallBlind == p.NoSeat,
+                IsEmpty = false,
+                IsDealer = Table.NoSeatDealer == p.NoSeat,
+                IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
+                IsBigBlind = Table.NoSeatBigBlind == p.NoSeat
+            };
+            SeatUpdated(this, new SeatEventArgs(seat));
 
             if (m_State == GameStateEnum.WaitForPlayers)
                 TryToBegin();

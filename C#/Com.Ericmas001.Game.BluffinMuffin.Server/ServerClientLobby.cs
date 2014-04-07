@@ -152,7 +152,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
                     LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Params.TableName, e.Command.TableID, client.Player.NoSeat);
                     Send(e.Command.EncodeResponse(client.Player.NoSeat));
 
-                    client.SitIn();
+                    client.SendTableInfo();
                 }
             }
             else

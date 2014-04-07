@@ -6,7 +6,7 @@ using Com.Ericmas001;
 using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
-namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public class TupleSeat
     {

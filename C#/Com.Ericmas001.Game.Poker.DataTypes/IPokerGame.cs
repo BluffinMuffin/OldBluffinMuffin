@@ -15,7 +15,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         event EventHandler<RoundEventArgs> GameBettingRoundEnded;
 
         event EventHandler<PlayerInfoEventArgs> PlayerJoined;
-        event EventHandler<PlayerInfoEventArgs> PlayerSatIn;
+        event EventHandler<SeatEventArgs> SeatUpdated;
         event EventHandler<PlayerInfoEventArgs> PlayerLeaved;
         event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded;
         event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged;
