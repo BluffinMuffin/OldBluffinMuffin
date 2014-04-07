@@ -8,10 +8,9 @@ using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
 using Com.Ericmas001.Game.Poker.GUI.Game;
 using Com.Ericmas001.Util;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
+using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Lobby

@@ -82,9 +82,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             new HandStrengthForm().Show();
         }
 
-        public override void SetGame(IPokerGame c, int s)
+        public override void SetGame(IPokerGame c, string n)
         {
-            base.SetGame(c, s);
+            base.SetGame(c, n);
             InitializePokerObserverForGUI();
             InitializePokerObserverForConsole();
         }
@@ -110,7 +110,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken);
             m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged);
             m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined);
-            m_Game.PlayerSatIn += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn);
+            m_Game.SeatUpdated += new EventHandler<SeatEventArgs>(m_Game_SeatUpdated);
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
             m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged);
             m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot);
@@ -128,7 +128,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console);
             m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged_Console);
             m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console);
-            m_Game.PlayerSatIn += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn_Console);
+            m_Game.SeatUpdated += new EventHandler<SeatEventArgs>(m_Game_SeatUpdated_Console);
             m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console);
             m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console);
             m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console);
@@ -329,17 +329,18 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             //PlayerInfo p = e.Player;
         }
 
-        void m_Game_PlayerSatIn(object sender, PlayerInfoEventArgs e)
+        void m_Game_SeatUpdated(object sender, SeatEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined), new object[] { sender, e });
+                BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated), new object[] { sender, e });
                 return;
             }
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
-            InstallPlayer(php, p);
+            if( e.Seat.IsEmpty)
+                huds[e.Seat.NoSeat].Visible = false;
+            else
+                InstallPlayer(huds[e.Seat.NoSeat], e.Seat.Player);
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
@@ -511,15 +512,19 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             WriteLine(e.Player.Name + " joined the table");
         }
 
-        void m_Game_PlayerSatIn_Console(object sender, PlayerInfoEventArgs e)
+        void m_Game_SeatUpdated_Console(object sender, SeatEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerSatIn_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated_Console), new object[] { sender, e });
                 return;
             }
-            WriteLine(e.Player.Name + " sat in at seat #" + e.Player.NoSeat);
+            TupleSeat s = e.Seat;
+            if(e.Seat.IsEmpty)
+                WriteLine("The seat #" + s.NoSeat + " is now inoccupied");
+            else
+                WriteLine(s.Player.Name + " sat in at seat #" + s.NoSeat);
         }
 
         void m_Game_PlayerLeaved_Console(object sender, PlayerInfoEventArgs e)

@@ -48,10 +48,23 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             btnFold.Enabled = false;
             nudRaise.Enabled = false;
         }
-        public override void SetGame(IPokerGame c, int s)
+        public override void SetGame(IPokerGame c, string n)
         {
-            base.SetGame(c, s);
+            base.SetGame(c, n);
+            m_Game.SeatUpdated += m_Game_SeatUpdated;
             m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);
+        }
+
+        void m_Game_SeatUpdated(object sender, SeatEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated), new object[] { sender, e });
+                return;
+            }
+            if (m_PlayerName == e.Seat.Player.Name)
+                m_NoSeat = e.Seat.NoSeat;
         }
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)

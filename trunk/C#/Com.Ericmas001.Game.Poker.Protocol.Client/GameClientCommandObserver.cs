@@ -17,7 +17,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public event EventHandler<CommandEventArgs<GameStartedCommand>> GameStartedCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerHoleCardsChangedCommand>> PlayerHoleCardsChangedCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerJoinedCommand>> PlayerJoinedCommandReceived = delegate { };
-        public event EventHandler<CommandEventArgs<PlayerSatInCommand>> PlayerSatInCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<SeatUpdatedCommand>> SeatUpdatedCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerLeftCommand>> PlayerLeftCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerMoneyChangedCommand>> PlayerMoneyChangedCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerTurnBeganCommand>> PlayerTurnBeganCommandReceived = delegate { };

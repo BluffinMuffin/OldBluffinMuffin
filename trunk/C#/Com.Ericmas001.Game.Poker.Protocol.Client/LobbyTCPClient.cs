@@ -14,10 +14,9 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
+using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Runtime.Serialization.Formatters;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
@@ -137,27 +136,28 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return null;
         }
 
-        public GameClient JoinTable(int p_noPort, string p_tableName, IPokerViewer gui)
+        public GameClient JoinTable(int idTable, string p_tableName, IPokerViewer gui)
         {
-            int noSeat = GetJoinedSeat(p_noPort, m_PlayerName);
-            if (noSeat == -1)
-            {
-                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.JoinTable", "Cannot sit at this table: {0}", p_tableName);
-                return null;
-            }
+            int noSeat = GetJoinedSeat(idTable, m_PlayerName);
+            //if (noSeat == -1)
+            //{
+            //    LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.JoinTable", "Cannot sit at this table: {0}", p_tableName);
+            //    return null;
+            //}
 
-            GameClient client = new GameClient(noSeat, m_PlayerName, p_noPort);
+            GameClient client = new GameClient(noSeat, m_PlayerName, idTable);
             client.SendedSomething += new EventHandler<KeyEventArgs<string>>(client_SendedSomething);
 
             if (gui != null)
             {
-                gui.SetGame(client, client.NoSeat);
+                gui.SetGame(client, m_PlayerName);
                 gui.Start();
             }
 
             client.Start();
+            client.SitIn(noSeat);
 
-            m_Clients.Add(p_noPort, client);
+            m_Clients.Add(idTable, client);
 
             return client;
         }
@@ -223,11 +223,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return line;
         }
 
-        protected virtual int GetJoinedSeat(int p_noPort, string player)
+        protected virtual int GetJoinedSeat(int idTable, string player)
         {
             Send(new JoinTableCommand()
             {
-                TableID = p_noPort,
+                TableID = idTable,
                 PlayerName = player,
             });
 

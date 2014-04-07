@@ -14,16 +14,17 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
     {
         private bool m_IsBeingKilled = false;
         protected IPokerGame m_Game;
-        protected int m_NoSeat;
+        protected string m_PlayerName;
+        protected int m_NoSeat = -1;
         public AbstractTableForm()
         {
             InitializeComponent();
         }
 
-        public virtual void SetGame(IPokerGame c, int s)
+        public virtual void SetGame(IPokerGame c, string n)
         {
             m_Game = c;
-            m_NoSeat = s;
+            m_PlayerName = n;
         }
 
         public virtual void Start()

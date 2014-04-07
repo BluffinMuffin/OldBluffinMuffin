@@ -11,6 +11,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
     public class GameServerCommandObserver : JsonCommandObserver
     {
+        public event EventHandler<CommandEventArgs<PlayerSitInCommand>> SitInCommandReceived = delegate { };
+        public event EventHandler<CommandEventArgs<PlayerSitOutCommand>> SitOutCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerPlayMoneyCommand>> PlayMoneyCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
     }

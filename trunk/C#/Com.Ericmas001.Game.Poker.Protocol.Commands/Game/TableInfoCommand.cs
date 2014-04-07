@@ -2,11 +2,10 @@
 using System.Text;
 using Com.Ericmas001;
 using Com.Ericmas001.Net.Protocol.JSON;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
+using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Games;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game

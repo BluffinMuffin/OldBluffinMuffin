@@ -9,10 +9,9 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
 using Com.Ericmas001.Games;
 using System.IO;
 using Com.Ericmas001;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Entities;
+using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
@@ -23,7 +22,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
     {
         #region Fields
         private readonly TableInfo m_PokerTable = new TableInfo();
-        private readonly int m_TablePosition;
+        private int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
         #endregion Fields
@@ -36,7 +35,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
         public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerSatIn = delegate { };
+        public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
         public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
@@ -80,7 +79,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_CommandObserver.GameStartedCommandReceived += new EventHandler<CommandEventArgs<GameStartedCommand>>(m_CommandObserver_GameStartedCommandReceived);
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += new EventHandler<CommandEventArgs<PlayerHoleCardsChangedCommand>>(m_CommandObserver_PlayerHoleCardsChangedCommandReceived);
             m_CommandObserver.PlayerJoinedCommandReceived += new EventHandler<CommandEventArgs<PlayerJoinedCommand>>(m_CommandObserver_PlayerJoinedCommandReceived);
-            m_CommandObserver.PlayerSatInCommandReceived += new EventHandler<CommandEventArgs<PlayerSatInCommand>>(m_CommandObserver_PlayerSatInCommandReceived);
+            m_CommandObserver.SeatUpdatedCommandReceived += new EventHandler<CommandEventArgs<SeatUpdatedCommand>>(m_CommandObserver_SeatUpdatedCommandReceived);
             m_CommandObserver.PlayerLeftCommandReceived += new EventHandler<CommandEventArgs<PlayerLeftCommand>>(m_CommandObserver_PlayerLeftCommandReceived);
             m_CommandObserver.PlayerMoneyChangedCommandReceived += new EventHandler<CommandEventArgs<PlayerMoneyChangedCommand>>(m_CommandObserver_PlayerMoneyChangedCommandReceived);
             m_CommandObserver.PlayerTurnBeganCommandReceived += new EventHandler<CommandEventArgs<PlayerTurnBeganCommand>>(m_CommandObserver_PlayerTurnBeganCommandReceived);
@@ -168,14 +167,17 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         }
 
-        void m_CommandObserver_PlayerSatInCommandReceived(object sender, CommandEventArgs<PlayerSatInCommand> e)
+        void m_CommandObserver_SeatUpdatedCommandReceived(object sender, CommandEventArgs<SeatUpdatedCommand> e)
         {
-            PlayerSatInCommand cmd = e.Command;
-            PlayerInfo p = new PlayerInfo(cmd.PlayerName, cmd.PlayerMoney) { NoSeat = cmd.PlayerPos };
+            TupleSeat s = e.Command.Seat;
+            if (!s.IsEmpty)
+            {
+                m_PokerTable.SitInToTable(s.Player, s.NoSeat);
+                if (m_PlayerName == s.Player.Name)
+                    m_TablePosition = s.NoSeat;
+            }
 
-            m_PokerTable.SitInToTable(p, cmd.PlayerPos);
-
-            PlayerSatIn(this, new PlayerInfoEventArgs(p));
+            SeatUpdated(this, new SeatEventArgs(s));
 
         }
 
@@ -313,6 +315,18 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public bool PlayMoney(PlayerInfo p, int amnt)
         {
             Send(new PlayerPlayMoneyCommand() { Played = amnt });
+            return true;
+        }
+
+        public bool SitIn(int noSeat)
+        {
+            Send(new PlayerSitInCommand() { NoSeat = noSeat });
+            return true;
+        }
+
+        public bool SitOut()
+        {
+            Send(new PlayerSitOutCommand());
             return true;
         }
 

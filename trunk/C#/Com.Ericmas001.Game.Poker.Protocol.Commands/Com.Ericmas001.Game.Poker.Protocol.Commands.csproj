@@ -46,14 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisconnectCommand.cs" />
-    <Compile Include="Entities\TupleSeat.cs" />
-    <Compile Include="Entities\TupleTable.cs" />
     <Compile Include="Game\BetTurnEndedCommand.cs" />
     <Compile Include="Game\BetTurnStartedCommand.cs" />
     <Compile Include="Game\GameEndedCommand.cs" />
     <Compile Include="Game\GameStartedCommand.cs" />
     <Compile Include="Game\PlayerHoleCardsChangedCommand.cs" />
-    <Compile Include="Game\PlayerSatInCommand.cs" />
+    <Compile Include="Game\PlayerSitOutCommand.cs" />
+    <Compile Include="Game\PlayerSitInCommand.cs" />
+    <Compile Include="Game\SeatUpdatedCommand.cs" />
     <Compile Include="Game\PlayerJoinedCommand.cs" />
     <Compile Include="Game\PlayerLeftCommand.cs" />
     <Compile Include="Game\PlayerMoneyChangedCommand.cs" />

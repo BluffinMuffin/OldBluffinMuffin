@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
-namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Entities
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public class TupleTable : IComparable<TupleTable>
     {
