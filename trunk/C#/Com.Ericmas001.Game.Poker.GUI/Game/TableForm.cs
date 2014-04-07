@@ -9,6 +9,7 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using System.Threading;
 using Com.Ericmas001.Util;
+using VIBlend.WinForms.Controls;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
@@ -55,6 +56,13 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             base.SetGame(c, n);
             m_Game.PlayerActionNeeded += m_Game_PlayerActionNeeded;
             m_Game.SitInResponseReceived += m_Game_SitInResponseReceived;
+            m_Game.SeatUpdated += m_Game_GameGenerallyUpdated;
+            m_Game.GameGenerallyUpdated += m_Game_GameGenerallyUpdated;
+        }
+
+        void m_Game_GameGenerallyUpdated(object sender, EventArgs e)
+        {
+            SitInButtonsShowing(m_NoSeat == -1);
         }
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
@@ -98,26 +106,42 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         private void btnSitIn_Click(object sender, EventArgs e)
         {
-            SitInButtonsEnabling(false);
-            m_Game.SitIn(null, 5);
+            SitInButtonsShowing(false);
+            string name = ((Control)sender).Name;
+            int seatWanted = int.Parse(name.Substring(name.Length-1));
+            m_Game.SitIn(null, seatWanted);
         }
 
         void m_Game_SitInResponseReceived(int noSeat)
         {
             m_NoSeat = noSeat;
             if (noSeat == -1)
-                SitInButtonsEnabling(true);
+                SitInButtonsShowing(true);
+            else
+                SitInButtonsShowing(false);
         }
 
-        private void SitInButtonsEnabling(bool enable)
+        private void SitInButtonsShowing(bool visible)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new BooleanHandler(SitInButtonsEnabling), enable);
+                BeginInvoke(new BooleanHandler(SitInButtonsShowing), visible);
                 return;
             }
-            btnSitIn.Enabled = enable;
+            for (int i = 0; i < 10; ++i )
+            {
+                vButton btnSitIn = Controls["btnSitIn" + i] as vButton;
+                if (i < m_Game.Table.Seats.Count && m_Game.Table.Seats[i] == null)
+                    btnSitIn.Visible = visible;
+                else
+                    btnSitIn.Visible = false;
+            }
+        }
+
+        private void btnSitOut_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

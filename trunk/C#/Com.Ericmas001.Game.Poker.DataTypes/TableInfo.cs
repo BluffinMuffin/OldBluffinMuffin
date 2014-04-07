@@ -14,16 +14,28 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     {
         #region Fields
         protected readonly GameCard[] m_Cards = new GameCard[5];
-        protected readonly PlayerInfo[] m_Seats;
+        protected PlayerInfo[] m_Seats;
         private readonly List<PlayerInfo> m_People = new List<PlayerInfo>();
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
+        protected TableParams m_Params;
         #endregion Fields
 
         #region Properties
         /// <summary>
         /// Contains all the rules of the current game
         /// </summary>
-        public TableParams Params { get; set; }
+        public TableParams Params
+        {
+            get
+            {
+                return m_Params;
+            }
+            set
+            {
+                m_Params = value;
+                m_Seats = new PlayerInfo[value.MaxPlayers];
+            }
+        }
         /// <summary>
         /// Contains all the People that are watching anbd playing the game. Everybody in the room.
         /// </summary>

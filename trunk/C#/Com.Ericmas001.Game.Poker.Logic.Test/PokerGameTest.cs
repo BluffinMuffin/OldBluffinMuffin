@@ -31,21 +31,21 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
 
             Assert.AreEqual(false, game.JoinGame(p1Dup), "You should not be able to enter a game with the same name as another player");
 
-            Assert.AreEqual(true, game.SitIn(p1), "You should be able to sit in a game with all the seats available");
+            Assert.AreNotEqual(-1, game.SitIn(p1), "You should be able to sit in a game with all the seats available");
 
-            Assert.AreEqual(false, game.SitIn(p1), "You should not be able to sit in twice");
+            Assert.AreEqual(-1, game.SitIn(p1), "You should not be able to sit in twice");
 
             Assert.AreEqual(true, game.JoinGame(p2), "You should be able to enter a started game with only 1 player");
 
-            Assert.AreEqual(true, game.SitIn(p2), "You should be able to sit in a game with only 1 seated player");
+            Assert.AreNotEqual(-1, game.SitIn(p2), "You should be able to sit in a game with only 1 seated player");
 
             Assert.AreEqual(true, game.JoinGame(p3), "You should always be able to enter a started game even if full (MaxSeats=2)");
 
-            Assert.AreEqual(false, game.SitIn(p3), "You should not be able to sit in a game that is full (MaxSeats=2)");
+            Assert.AreEqual(-1, game.SitIn(p3), "You should not be able to sit in a game that is full (MaxSeats=2)");
 
             game.LeaveGame(p2);
 
-            Assert.AreEqual(true, game.SitIn(p3), "You should be able to sit in a game that is now with only 1 seated player");
+            Assert.AreNotEqual(-1, game.SitIn(p3), "You should be able to sit in a game that is now with only 1 seated player");
 
             game.LeaveGame(p1);
             game.LeaveGame(p3);
