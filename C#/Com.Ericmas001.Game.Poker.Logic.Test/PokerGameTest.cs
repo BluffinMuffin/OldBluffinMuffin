@@ -31,12 +31,21 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
 
             Assert.AreEqual(false, game.JoinGame(p1Dup), "You should not be able to enter a game with the same name as another player");
 
+            Assert.AreEqual(true, game.GameTable.AskToSitIn(p1), "You should be able to sit in a game with all the seats available");
+
+            Assert.AreEqual(false, game.GameTable.AskToSitIn(p1), "You should not be able to sit in twice");
+
             Assert.AreEqual(true, game.JoinGame(p2), "You should be able to enter a started game with only 1 player");
 
-            Assert.AreEqual(false, game.JoinGame(p3), "You should not be able to enter a started game with already 2 players (MaxSeats=2)");
+            Assert.AreEqual(true, game.GameTable.AskToSitIn(p2), "You should be able to sit in a game with only 1 seated player");
+
+            Assert.AreEqual(true, game.JoinGame(p3), "You should always be able to enter a started game even if full (MaxSeats=2)");
+
+            Assert.AreEqual(false, game.GameTable.AskToSitIn(p3), "You should not be able to sit in a game that is full (MaxSeats=2)");
 
             game.LeaveGame(p2);
-            Assert.AreEqual(true, game.JoinGame(p3), "You should be able take the place of a player that left");
+
+            Assert.AreEqual(true, game.GameTable.AskToSitIn(p3), "You should be able to sit in a game that is now with only 1 seated player");
 
             game.LeaveGame(p1);
             game.LeaveGame(p3);
@@ -262,6 +271,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         private static void SitInGame(PokerGame game, PlayerInfo p1)
         {
             game.JoinGame(p1);
+            game.GameTable.AskToSitIn(p1);
             game.SitInGame(p1);
         }
     }
