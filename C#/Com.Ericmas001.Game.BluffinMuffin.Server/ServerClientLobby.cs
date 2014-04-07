@@ -134,7 +134,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
 
             if (!game.IsRunning)
             {
-                Send(e.Command.EncodeErrorResponse());
+                Send(e.Command.EncodeResponse(false));
                 return;
             }
 
@@ -143,21 +143,21 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
             {
                 bool ok = client.JoinGame();
                 if (!ok)
-                    Send(e.Command.EncodeErrorResponse());
+                    Send(e.Command.EncodeResponse(false));
                 else
                 {
                     m_Tables.Add(e.Command.TableID, client);
                     client.Start();
 
-                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' seated ({3}) at table: {2}:{1}", m_PlayerName, table.Params.TableName, e.Command.TableID, client.Player.NoSeat);
-                    Send(e.Command.EncodeResponse(client.Player.NoSeat));
+                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' joined {2}:{1}", m_PlayerName, table.Params.TableName, e.Command.TableID, client.Player.NoSeat);
+                    Send(e.Command.EncodeResponse(true));
 
                     client.SendTableInfo();
                 }
             }
             else
             {
-                Send(e.Command.EncodeErrorResponse());
+                Send(e.Command.EncodeResponse(false));
             }
         }
 

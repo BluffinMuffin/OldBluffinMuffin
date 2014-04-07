@@ -27,7 +27,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
         }
 
-        protected override int GetJoinedSeat(int p_noPort, string player)
+        protected override bool GetJoinedSeat(int p_noPort, string player)
         {
             return base.GetJoinedSeat(p_noPort, m_User.Username);
         }

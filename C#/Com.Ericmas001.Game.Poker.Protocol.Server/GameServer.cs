@@ -243,7 +243,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_CommandObserver_SitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
-            m_Game.SitIn(m_Player, e.Command.NoSeat);
+            Send(e.Command.EncodeResponse(m_Game.SitIn(m_Player, e.Command.NoSeat)));
         }
 
         void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)

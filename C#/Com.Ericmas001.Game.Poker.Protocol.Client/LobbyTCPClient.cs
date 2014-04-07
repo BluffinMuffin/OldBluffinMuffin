@@ -136,16 +136,16 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return null;
         }
 
-        public GameClient JoinTable(int idTable, string p_tableName, IPokerViewer gui)
+        public GameClient JoinTable(int idTable, string tableName, IPokerViewer gui)
         {
-            int noSeat = GetJoinedSeat(idTable, m_PlayerName);
-            //if (noSeat == -1)
-            //{
-            //    LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.JoinTable", "Cannot sit at this table: {0}", p_tableName);
-            //    return null;
-            //}
+            bool ok = GetJoinedSeat(idTable, m_PlayerName);
+            if (!ok)
+            {
+                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.JoinTable", "Cannot join the table: {0}:{1}", tableName, idTable);
+                return null;
+            }
 
-            GameClient client = new GameClient(noSeat, m_PlayerName, idTable);
+            GameClient client = new GameClient(m_PlayerName, idTable);
             client.SendedSomething += new EventHandler<KeyEventArgs<string>>(client_SendedSomething);
 
             if (gui != null)
@@ -222,7 +222,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return line;
         }
 
-        protected virtual int GetJoinedSeat(int idTable, string player)
+        protected virtual bool GetJoinedSeat(int idTable, string player)
         {
             Send(new JoinTableCommand()
             {
@@ -230,7 +230,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 PlayerName = player,
             });
 
-            return WaitAndReceive<JoinTableResponse>().NoSeat;
+            return WaitAndReceive<JoinTableResponse>().Success;
         }
 
         public List<RuleInfo> GetSupportedRules()

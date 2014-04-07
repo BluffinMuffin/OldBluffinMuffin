@@ -9,5 +9,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public static string COMMAND_NAME = "gameSIT_IN";
 
         public int NoSeat { get; set; }
+
+        public string EncodeResponse(int noSeat)
+        {
+            return new PlayerSitInResponse(this) { NoSeat = noSeat }.Encode();
+        }
     }
 }

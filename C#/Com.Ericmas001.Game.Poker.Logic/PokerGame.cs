@@ -42,6 +42,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
         public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
         public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
+
+        public event IntHandler SitInResponseReceived = delegate { };
         #endregion
 
         #region Properties
@@ -145,7 +147,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return GameTable.JoinTable(p);
         }
 
-        public bool SitIn(PlayerInfo p, int noSeat = -1)
+        public int SitIn(PlayerInfo p, int noSeat = -1)
         {
             bool ok = GameTable.AskToSitIn(p, noSeat);
             if (ok)
@@ -164,8 +166,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
                 if (m_State == GameStateEnum.WaitForPlayers)
                     TryToBegin();
+                return p.NoSeat;
             }
-            return ok;
+            return -1;
         }
 
         /// <summary>

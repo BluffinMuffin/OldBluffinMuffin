@@ -1,16 +1,4 @@
-﻿
-TODO on the JAVA version to stay up to date:
--> Add the big Blind Amount to the TableInfoCommand (r416)
--> Correction between Players & Seats (Crash when people sits out) (r418)
--> Adding the MinimumPlayersToStart! This will only affect the first round, the game then continues if people loose or quit ! :) (r418)
--> Better support of the betting rules of the no-limit game 
-	:- Once a bet has been made, the minimum you can raise is the size of the last bet. (r420)
--> Convert Commands to JSON (r421-422-423-424-425-426)
--> Receive available gametypes from server (List of variant, default and available values for each) (r427)
--> Redo the "Create Table" Interface on the client
-
-
-TODO:
+﻿TODO:
 -> SitIn / SitOut System
 	(done) When a Player Join a game, he is not automatically seated, he is standing up, at no specific seat
 	:- He may choose to sit at wathever empty seat he desires (supported, but the GUI picks seat #5 if available)
@@ -18,7 +6,6 @@ TODO:
 	:- He can sit-out and go back to his watcher state
 	:- Bugs:
 		- When you open a game already playing, player hubs are not initialized correctly in the screen of the new arrival
-		- When you try to sit in in a full game, it will not work, but you will not get your "sit in" button back
 -> Better support of the betting rules of the no-limit game 
 	:- Generally the minimum buy-in will be 20 big blinds (so $40 in our example), and the maximum will be 100 big blinds ($200), though there are some casinos that spread games with no maximum buy-in.
 	:- http://www.pokerlistings.com/texas-holdem-betting-rules

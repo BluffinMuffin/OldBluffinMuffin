@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+using System.Threading;
+using Com.Ericmas001.Util;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
@@ -51,20 +53,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         public override void SetGame(IPokerGame c, string n)
         {
             base.SetGame(c, n);
-            m_Game.SeatUpdated += m_Game_SeatUpdated;
-            m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);
-        }
-
-        void m_Game_SeatUpdated(object sender, SeatEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated), new object[] { sender, e });
-                return;
-            }
-            if (m_PlayerName == e.Seat.Player.Name)
-                m_NoSeat = e.Seat.NoSeat;
+            m_Game.PlayerActionNeeded += m_Game_PlayerActionNeeded;
+            m_Game.SitInResponseReceived += m_Game_SitInResponseReceived;
         }
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
@@ -108,8 +98,26 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         private void btnSitIn_Click(object sender, EventArgs e)
         {
-            m_Game.SitIn(null,5);
-            btnSitIn.Enabled = false;
+            SitInButtonsEnabling(false);
+            m_Game.SitIn(null, 5);
+        }
+
+        void m_Game_SitInResponseReceived(int noSeat)
+        {
+            m_NoSeat = noSeat;
+            if (noSeat == -1)
+                SitInButtonsEnabling(true);
+        }
+
+        private void SitInButtonsEnabling(bool enable)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new BooleanHandler(SitInButtonsEnabling), enable);
+                return;
+            }
+            btnSitIn.Enabled = enable;
         }
     }
 }
