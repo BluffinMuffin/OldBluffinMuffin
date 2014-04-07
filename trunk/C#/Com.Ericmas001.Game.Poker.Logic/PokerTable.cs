@@ -110,7 +110,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return ok;
         }
 
-        public bool AskToSitIn(PlayerInfo p)
+        public bool AskToSitIn(PlayerInfo p, int PreferedSeat)
         {
             if (RemainingSeats.Count() == 0)
             {
@@ -123,7 +123,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone seated with the same name! Is this you ?");
                 return false;
             }
-            return SitInToTable(p, RemainingSeats.First());
+
+            int seat = PreferedSeat;
+
+            if (PreferedSeat < 0 || PreferedSeat >= m_Seats.Length || m_Seats[PreferedSeat] != null)
+                seat = RemainingSeats.First();
+            return SitInToTable(p, seat);
         }
 
         /// <summary>
