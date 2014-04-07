@@ -29,6 +29,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         bool PlayMoney(PlayerInfo p, int amnt);
         bool LeaveGame(PlayerInfo p);
+        bool SitIn(PlayerInfo p, int noSeat);
 
         string Encode { get; }
     }

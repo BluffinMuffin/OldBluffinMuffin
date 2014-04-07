@@ -145,6 +145,10 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return GameTable.JoinTable(p);
         }
 
+        public bool SitIn(PlayerInfo p, int noSeat)
+        {
+            return GameTable.AskToSitIn(p);
+        }
 
         /// <summary>
         /// The player will play the next game
