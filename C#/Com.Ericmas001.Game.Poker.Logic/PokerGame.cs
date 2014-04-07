@@ -145,9 +145,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return GameTable.JoinTable(p);
         }
 
-        public bool SitIn(PlayerInfo p, int noSeat)
+        public bool SitIn(PlayerInfo p, int noSeat = -1)
         {
-            bool ok = GameTable.AskToSitIn(p);
+            bool ok = GameTable.AskToSitIn(p, noSeat);
             if (ok)
             {
                 TupleSeat seat = new TupleSeat()

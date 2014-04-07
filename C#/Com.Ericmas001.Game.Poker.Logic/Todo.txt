@@ -13,7 +13,7 @@ TODO on the JAVA version to stay up to date:
 TODO:
 -> SitIn / SitOut System
 	(done) When a Player Join a game, he is not automatically seated, he is standing up, at no specific seat
-	:- He may choose to sit at wathever empty seat he desires
+	:- He may choose to sit at wathever empty seat he desires (supported, but the GUI picks seat #5 if available)
 	:- Should any player sitting a the table be the big blind, unless it is the first round !
 	:- He can sit-out and go back to his watcher state
 	:- Bugs:

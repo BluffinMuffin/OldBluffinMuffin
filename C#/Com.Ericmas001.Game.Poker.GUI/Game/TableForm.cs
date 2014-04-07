@@ -108,7 +108,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         private void btnSitIn_Click(object sender, EventArgs e)
         {
-            m_Game.SitIn(null, -1);
+            m_Game.SitIn(null,5);
             btnSitIn.Enabled = false;
         }
     }
