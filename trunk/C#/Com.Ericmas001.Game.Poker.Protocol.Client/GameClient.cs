@@ -318,7 +318,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return true;
         }
 
-        public bool SitIn(int noSeat)
+        public bool SitIn(PlayerInfo p, int noSeat)
         {
             Send(new PlayerSitInCommand() { NoSeat = noSeat });
             return true;

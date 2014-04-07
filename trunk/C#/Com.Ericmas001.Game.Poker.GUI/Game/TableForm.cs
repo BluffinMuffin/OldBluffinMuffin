@@ -105,5 +105,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 s = "ALL-IN";
             btnCall.Text = s;
         }
+
+        private void btnSitIn_Click(object sender, EventArgs e)
+        {
+            m_Game.SitIn(null, -1);
+            btnSitIn.Enabled = false;
+        }
     }
 }

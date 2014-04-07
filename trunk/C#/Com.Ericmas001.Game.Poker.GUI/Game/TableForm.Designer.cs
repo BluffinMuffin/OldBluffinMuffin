@@ -34,6 +34,7 @@
             this.btnCall = new VIBlend.WinForms.Controls.vButton();
             this.btnRaise = new VIBlend.WinForms.Controls.vButton();
             this.nudRaise = new System.Windows.Forms.NumericUpDown();
+            this.btnSitIn = new VIBlend.WinForms.Controls.vButton();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRaise)).BeginInit();
             this.SuspendLayout();
@@ -44,6 +45,7 @@
             this.flowLayoutPanel1.Controls.Add(this.btnCall);
             this.flowLayoutPanel1.Controls.Add(this.btnRaise);
             this.flowLayoutPanel1.Controls.Add(this.nudRaise);
+            this.flowLayoutPanel1.Controls.Add(this.btnSitIn);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(874, 52);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -116,6 +118,24 @@
             this.nudRaise.Size = new System.Drawing.Size(135, 20);
             this.nudRaise.TabIndex = 3;
             // 
+            // btnSitIn
+            // 
+            this.btnSitIn.AllowAnimations = true;
+            this.btnSitIn.BackColor = System.Drawing.Color.Transparent;
+            this.btnSitIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSitIn.Image = global::Com.Ericmas001.Game.Poker.GUI.Properties.Resources.sit_in;
+            this.btnSitIn.Location = new System.Drawing.Point(5, 134);
+            this.btnSitIn.Margin = new System.Windows.Forms.Padding(5);
+            this.btnSitIn.Name = "btnSitIn";
+            this.btnSitIn.RoundedCornersMask = ((byte)(15));
+            this.btnSitIn.Size = new System.Drawing.Size(135, 23);
+            this.btnSitIn.TabIndex = 4;
+            this.btnSitIn.Text = "SIT IN";
+            this.btnSitIn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnSitIn.UseVisualStyleBackColor = true;
+            this.btnSitIn.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROGREEN;
+            this.btnSitIn.Click += new System.EventHandler(this.btnSitIn_Click);
+            // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -139,6 +159,7 @@
         private VIBlend.WinForms.Controls.vButton btnCall;
         private VIBlend.WinForms.Controls.vButton btnRaise;
         private System.Windows.Forms.NumericUpDown nudRaise;
+        private VIBlend.WinForms.Controls.vButton btnSitIn;
 
 
     }

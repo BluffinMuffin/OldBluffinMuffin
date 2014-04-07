@@ -153,6 +153,26 @@ namespace Com.Ericmas001.Game.Poker.GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap sit_in {
+            get {
+                object obj = ResourceManager.GetObject("sit-in", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sit_out {
+            get {
+                object obj = ResourceManager.GetObject("sit-out", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap small_blind {
             get {
                 object obj = ResourceManager.GetObject("small_blind", resourceCulture);

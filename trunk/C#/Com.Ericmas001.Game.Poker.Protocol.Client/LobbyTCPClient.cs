@@ -155,7 +155,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             }
 
             client.Start();
-            client.SitIn(noSeat);
 
             m_Clients.Add(idTable, client);
 

@@ -164,6 +164,8 @@
     <Content Include="Resources\big_blind.png" />
     <Content Include="Resources\dealer.png" />
     <Content Include="Resources\hands_strength.png" />
+    <None Include="Resources\sit-in.png" />
+    <None Include="Resources\sit-out.png" />
     <Content Include="Resources\small_blind.png" />
     <Content Include="Resources\table.png" />
     <None Include="Resources\money.png" />
