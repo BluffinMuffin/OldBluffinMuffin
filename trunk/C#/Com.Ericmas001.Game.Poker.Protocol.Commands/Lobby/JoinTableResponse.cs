@@ -11,7 +11,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
     {
         public static string COMMAND_NAME = "lobbyJOIN_TABLE_RESPONSE";
 
-        public int NoSeat { get; set; }
+        public bool Success { get; set; }
 
         public JoinTableResponse()
             : base()

@@ -15,6 +15,10 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
+using Newtonsoft.Json.Linq;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters;
+using Newtonsoft.Json;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
@@ -42,6 +46,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
         public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
+
+        public event IntHandler SitInResponseReceived = delegate { };
         #endregion Events
 
         #region Properties
@@ -63,30 +69,37 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         #endregion Properties
 
         #region Ctors & Init
-        public GameClient(int pos, string name, int port)
+        public GameClient(string name, int port)
         {
-            m_TablePosition = pos;
+            m_TablePosition = -1;
             m_PlayerName = name;
             m_NoPort = port;
         }
 
         protected override void InitializeCommandObserver()
         {
-            m_CommandObserver.CommandReceived += new EventHandler<StringEventArgs>(m_CommandObserver_CommandReceived);
-            m_CommandObserver.BetTurnEndedCommandReceived += new EventHandler<CommandEventArgs<BetTurnEndedCommand>>(m_CommandObserver_BetTurnEndedCommandReceived);
-            m_CommandObserver.BetTurnStartedCommandReceived += new EventHandler<CommandEventArgs<BetTurnStartedCommand>>(m_CommandObserver_BetTurnStartedCommandReceived);
-            m_CommandObserver.GameEndedCommandReceived += new EventHandler<CommandEventArgs<GameEndedCommand>>(m_CommandObserver_GameEndedCommandReceived);
-            m_CommandObserver.GameStartedCommandReceived += new EventHandler<CommandEventArgs<GameStartedCommand>>(m_CommandObserver_GameStartedCommandReceived);
-            m_CommandObserver.PlayerHoleCardsChangedCommandReceived += new EventHandler<CommandEventArgs<PlayerHoleCardsChangedCommand>>(m_CommandObserver_PlayerHoleCardsChangedCommandReceived);
-            m_CommandObserver.PlayerJoinedCommandReceived += new EventHandler<CommandEventArgs<PlayerJoinedCommand>>(m_CommandObserver_PlayerJoinedCommandReceived);
-            m_CommandObserver.SeatUpdatedCommandReceived += new EventHandler<CommandEventArgs<SeatUpdatedCommand>>(m_CommandObserver_SeatUpdatedCommandReceived);
-            m_CommandObserver.PlayerLeftCommandReceived += new EventHandler<CommandEventArgs<PlayerLeftCommand>>(m_CommandObserver_PlayerLeftCommandReceived);
-            m_CommandObserver.PlayerMoneyChangedCommandReceived += new EventHandler<CommandEventArgs<PlayerMoneyChangedCommand>>(m_CommandObserver_PlayerMoneyChangedCommandReceived);
-            m_CommandObserver.PlayerTurnBeganCommandReceived += new EventHandler<CommandEventArgs<PlayerTurnBeganCommand>>(m_CommandObserver_PlayerTurnBeganCommandReceived);
-            m_CommandObserver.PlayerTurnEndedCommandReceived += new EventHandler<CommandEventArgs<PlayerTurnEndedCommand>>(m_CommandObserver_PlayerTurnEndedCommandReceived);
-            m_CommandObserver.PlayerWonPotCommandReceived += new EventHandler<CommandEventArgs<PlayerWonPotCommand>>(m_CommandObserver_PlayerWonPotCommandReceived);
-            m_CommandObserver.TableClosedCommandReceived += new EventHandler<CommandEventArgs<TableClosedCommand>>(m_CommandObserver_TableClosedCommandReceived);
-            m_CommandObserver.TableInfoCommandReceived += new EventHandler<CommandEventArgs<TableInfoCommand>>(m_CommandObserver_TableInfoCommandReceived);
+            m_CommandObserver.CommandReceived += m_CommandObserver_CommandReceived;
+            m_CommandObserver.BetTurnEndedCommandReceived += m_CommandObserver_BetTurnEndedCommandReceived;
+            m_CommandObserver.BetTurnStartedCommandReceived += m_CommandObserver_BetTurnStartedCommandReceived;
+            m_CommandObserver.GameEndedCommandReceived += m_CommandObserver_GameEndedCommandReceived;
+            m_CommandObserver.GameStartedCommandReceived += m_CommandObserver_GameStartedCommandReceived;
+            m_CommandObserver.PlayerHoleCardsChangedCommandReceived += m_CommandObserver_PlayerHoleCardsChangedCommandReceived;
+            m_CommandObserver.PlayerJoinedCommandReceived += m_CommandObserver_PlayerJoinedCommandReceived;
+            m_CommandObserver.SeatUpdatedCommandReceived += m_CommandObserver_SeatUpdatedCommandReceived;
+            m_CommandObserver.PlayerLeftCommandReceived += m_CommandObserver_PlayerLeftCommandReceived;
+            m_CommandObserver.PlayerMoneyChangedCommandReceived += m_CommandObserver_PlayerMoneyChangedCommandReceived;
+            m_CommandObserver.PlayerTurnBeganCommandReceived += m_CommandObserver_PlayerTurnBeganCommandReceived;
+            m_CommandObserver.PlayerTurnEndedCommandReceived += m_CommandObserver_PlayerTurnEndedCommandReceived;
+            m_CommandObserver.PlayerWonPotCommandReceived += m_CommandObserver_PlayerWonPotCommandReceived;
+            m_CommandObserver.TableClosedCommandReceived += m_CommandObserver_TableClosedCommandReceived;
+            m_CommandObserver.TableInfoCommandReceived += m_CommandObserver_TableInfoCommandReceived;
+
+            m_CommandObserver.PlayerSitInResponseReceived += m_CommandObserver_PlayerSitInResponseReceived;
+        }
+
+        void m_CommandObserver_PlayerSitInResponseReceived(object sender, CommandEventArgs<PlayerSitInResponse> e)
+        {
+            SitInResponseReceived(e.Command.NoSeat);
         }
 
         #endregion Ctors & Init
@@ -318,10 +331,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return true;
         }
 
-        public bool SitIn(PlayerInfo p, int noSeat = -1)
+        public int SitIn(PlayerInfo p, int noSeat = -1)
         {
             Send(new PlayerSitInCommand() { NoSeat = noSeat });
-            return true;
+            return -1;
         }
 
         public bool SitOut()
@@ -361,6 +374,24 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             p.State = pState;
             p.Cards = cards.ToArray();
         }
+        //protected T WaitAndReceive<T>() where T : AbstractCommand
+        //{
+        //    string expected = (string)typeof(T).GetField(AbstractCommand.CommandNameField, (BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)).GetValue(null);
+        //    string s;
+        //    string commandName;
+
+        //    JObject jObj;
+
+        //    do
+        //    {
+        //        s = m_Incoming.Dequeue();
+        //        jObj = JsonConvert.DeserializeObject<dynamic>(s);
+        //        commandName = (string)jObj["CommandName"];
+        //    }
+        //    while (s != null && commandName != expected);
+
+        //    return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
+        //}
         #endregion Private Methods
     }
 }

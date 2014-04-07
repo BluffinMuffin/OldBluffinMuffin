@@ -16,14 +16,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
         public int TableID { get; set; }
         public string PlayerName { get; set; }
 
-        public string EncodeResponse(int seat)
+        public string EncodeResponse(bool success)
         {
-            return new JoinTableResponse(this) { NoSeat = seat }.Encode();
-        }
-
-        public string EncodeErrorResponse()
-        {
-            return new JoinTableResponse(this) { NoSeat = JoinTableCommand.NOT_SEATED }.Encode();
+            return new JoinTableResponse(this) { Success = success }.Encode();
         }
     }
 }

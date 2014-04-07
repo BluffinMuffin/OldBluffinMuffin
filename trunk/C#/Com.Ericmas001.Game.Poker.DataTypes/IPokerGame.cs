@@ -1,4 +1,5 @@
 ﻿using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+using Com.Ericmas001.Util;
 using System;
 using System.Collections.Generic;
 
@@ -25,11 +26,13 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         event EventHandler<PotWonEventArgs> PlayerWonPot;
 
+        event IntHandler SitInResponseReceived;
+
         TableInfo Table { get; }
 
         bool PlayMoney(PlayerInfo p, int amnt);
         bool LeaveGame(PlayerInfo p);
-        bool SitIn(PlayerInfo p, int noSeat = -1);
+        int SitIn(PlayerInfo p, int noSeat = -1);
 
         string Encode { get; }
     }
