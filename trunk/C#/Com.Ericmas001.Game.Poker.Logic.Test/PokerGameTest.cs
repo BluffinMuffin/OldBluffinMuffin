@@ -271,8 +271,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         private static void SitInGame(PokerGame game, PlayerInfo p1)
         {
             game.JoinGame(p1);
-            game.GameTable.AskToSitIn(p1);
-            game.SitInGame(p1);
+            game.SitIn(p1, -1);
         }
     }
 }

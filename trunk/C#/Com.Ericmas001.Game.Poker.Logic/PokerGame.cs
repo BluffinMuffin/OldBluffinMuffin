@@ -147,29 +147,25 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public bool SitIn(PlayerInfo p, int noSeat)
         {
-            return GameTable.AskToSitIn(p);
-        }
-
-        /// <summary>
-        /// The player will play the next game
-        /// </summary>
-        public void SitInGame(PlayerInfo p)
-        {
-            PlayerInfo pi = p.Clone();
-            TupleSeat seat = new TupleSeat()
+            bool ok = GameTable.AskToSitIn(p);
+            if (ok)
             {
-                Player = p.Clone(),
-                NoSeat = p.NoSeat,
-                IsSmallBlind = Table.NoSeatSmallBlind == p.NoSeat,
-                IsEmpty = false,
-                IsDealer = Table.NoSeatDealer == p.NoSeat,
-                IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
-                IsBigBlind = Table.NoSeatBigBlind == p.NoSeat
-            };
-            SeatUpdated(this, new SeatEventArgs(seat));
+                TupleSeat seat = new TupleSeat()
+                {
+                    Player = p.Clone(),
+                    NoSeat = p.NoSeat,
+                    IsSmallBlind = Table.NoSeatSmallBlind == p.NoSeat,
+                    IsEmpty = false,
+                    IsDealer = Table.NoSeatDealer == p.NoSeat,
+                    IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
+                    IsBigBlind = Table.NoSeatBigBlind == p.NoSeat
+                };
+                SeatUpdated(this, new SeatEventArgs(seat));
 
-            if (m_State == GameStateEnum.WaitForPlayers)
-                TryToBegin();
+                if (m_State == GameStateEnum.WaitForPlayers)
+                    TryToBegin();
+            }
+            return ok;
         }
 
         /// <summary>
