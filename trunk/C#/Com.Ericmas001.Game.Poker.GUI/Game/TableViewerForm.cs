@@ -142,6 +142,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             TableInfo table = m_Game.Table;
             foreach( MoneyPot p in table.Pots)
             {
@@ -155,6 +156,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 huds[i].DoAction(GameActionEnum.DoNothing, 0);
                 bets[i].Text = "";
             }
+            ResumeLayout();
         }
 
         void m_Game_GameBettingRoundStarted(object sender, RoundEventArgs e)
@@ -165,6 +167,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
                 huds[p.NoSeat].Alive = true;
@@ -173,6 +176,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 board[i].Card = table.Cards[i];
             for (; i < 5; ++i)
                 board[i].Card = GameCard.HIDDEN;
+            ResumeLayout();
         }
 
         void m_Game_GameBlindNeeded(object sender, EventArgs e)
@@ -183,6 +187,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameBlindNeeded), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             TableInfo table = m_Game.Table;
             lblTotalPot.Text = "$0";
             for(int i = 1; i < 10; ++i)
@@ -199,6 +204,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             huds[table.NoSeatBigBlind].SetBigBlind();
             for (int i = 0; i < 5; ++i)
                 board[i].Card = GameCard.HIDDEN;
+            ResumeLayout();
         }
 
         void m_Game_GameEnded(object sender, EventArgs e)
@@ -209,6 +215,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameEnded), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             TableInfo table = m_Game.Table;
             foreach (PlayerInfo p in table.Players)
             {
@@ -238,6 +245,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                     php.DoAction(GameActionEnum.DoNothing);
                 }
             }
+            ResumeLayout();
         }
 
         void m_Game_GameGenerallyUpdated(object sender, EventArgs e)
@@ -248,6 +256,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<EventArgs>(m_Game_GameGenerallyUpdated), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             lblTotalPot.Text = "$0";
             for (int i = 1; i < 10; ++i)
             {
@@ -264,6 +273,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 PlayerHud php = huds[p.NoSeat];
                 InstallPlayer(php, p);
             }
+            ResumeLayout();
         }
 
         void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
@@ -274,10 +284,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             php.DoAction(GameActionEnum.DoNothing, 0);
             php.SetPlaying();
+            ResumeLayout();
         }
 
         void m_Game_PlayerActionTaken(object sender, PlayerActionEventArgs e)
@@ -288,6 +300,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             Label bet = bets[p.NoSeat];
@@ -300,6 +313,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
             if (p.MoneyBetAmnt > 0)
                 bet.Text = "$" + p.MoneyBetAmnt;
+            ResumeLayout();
         }
 
         void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
@@ -310,12 +324,14 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             if(p.HoleCards.Count == 2)
                 php.SetCards (p.HoleCards[0], p.HoleCards[1]);
             else
-                php.SetCards(null,null);
+                php.SetCards(null, null);
+            ResumeLayout();
         }
 
         void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
@@ -337,10 +353,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             if( e.Seat.IsEmpty)
                 huds[e.Seat.NoSeat].Visible = false;
             else
                 InstallPlayer(huds[e.Seat.NoSeat], e.Seat.Player);
+            ResumeLayout();
         }
 
         void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
@@ -351,9 +369,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             php.Visible = false;
+            ResumeLayout();
         }
 
         void m_Game_PlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
@@ -364,9 +384,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged), new object[] { sender, e });
                 return;
             }
+            SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
+            ResumeLayout();
         }
 
         void m_Game_PlayerWonPot(object sender, PotWonEventArgs e)
@@ -377,10 +399,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot), new object[] { sender,e });
                 return;
             }
+            SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
             php.SetWinning();
+            ResumeLayout();
         }
 
 

@@ -129,6 +129,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new BooleanHandler(SitInButtonsShowing), visible);
                 return;
             }
+            SuspendLayout();
             for (int i = 0; i < 10; ++i )
             {
                 vButton btnSitIn = Controls["btnSitIn" + i] as vButton;
@@ -137,6 +138,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 else
                     btnSitIn.Visible = false;
             }
+            ResumeLayout();
         }
 
         private void btnSitOut_Click(object sender, EventArgs e)
