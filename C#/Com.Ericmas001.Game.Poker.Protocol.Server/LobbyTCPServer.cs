@@ -21,11 +21,11 @@ using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
-    public class LobbyTCPServer : CommandTCPCommunicator<LobbyServerCommandObserver>
+    public class LobbyTCPServer : CommandTCPCommunicator<LobbyObserver>
     {
         private string m_PlayerName = "?";
         private readonly IServerLobby m_Lobby;
-        Dictionary<int, GameServer> m_Tables = new Dictionary<int, GameServer>();
+        Dictionary<int, GameTCPServer> m_Tables = new Dictionary<int, GameTCPServer>();
 
         public LobbyTCPServer(TcpClient client, IServerLobby lobby)
             : base(client)
@@ -120,14 +120,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)
         {
-            GameServer client = null;
+            GameTCPServer client = null;
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
-            TableInfo table = game.Table;
+            PokerTable table = game.GameTable;
 
             if (game.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Training)
-                client = new GameServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Params.CurrentLobby).StartingAmount);
+                client = new GameTCPServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Params.CurrentLobby).StartingAmount);
             else
-                client = new GameServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
+                client = new GameTCPServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
 
             client.LeftTable += new EventHandler<Com.Ericmas001.Util.KeyEventArgs<int>>(client_LeftTable);
             client.SendedSomething += new EventHandler<Com.Ericmas001.Util.KeyEventArgs<string>>(client_SendedSomething);
@@ -168,7 +168,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void client_SendedSomething(object sender, Com.Ericmas001.Util.KeyEventArgs<string> e)
         {
-            GameServer client = (GameServer)sender;
+            GameTCPServer client = (GameTCPServer)sender;
             Send(new GameCommand() { TableID = client.ID, EncodedCommand = e.Key });
         }
         public override void OnReceiveCrashed(Exception e)

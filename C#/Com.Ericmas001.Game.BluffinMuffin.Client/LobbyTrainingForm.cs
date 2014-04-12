@@ -42,7 +42,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
         public void AllowJoinOrLeave()
         {
             bool selected = tableList.SomethingSelected;
-            GameClient client = tableList.FindClient();
+            GameTCPClient client = tableList.FindClient();
             btnJoinTable.Enabled = selected && (client == null);
             btnLeaveTable.Enabled = selected && (client != null);
         }

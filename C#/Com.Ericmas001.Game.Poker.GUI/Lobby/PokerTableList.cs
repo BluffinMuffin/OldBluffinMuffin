@@ -162,7 +162,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         private bool JoinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
         {
             AbstractTableForm gui = new TableForm();
-            GameClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
+            GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
             if (guis.ContainsKey(p_noPort))
                 guis[p_noPort] = gui;
             else
@@ -175,7 +175,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             return true;
         }
 
-        public GameClient FindClient()
+        public GameTCPClient FindClient()
         {
             return m_Server.FindClient(FindClientId());
         }

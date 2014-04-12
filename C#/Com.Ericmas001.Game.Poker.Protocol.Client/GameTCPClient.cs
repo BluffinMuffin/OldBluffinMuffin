@@ -22,10 +22,10 @@ using Newtonsoft.Json;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
-    public class GameClient : CommandQueueCommunicator<GameClientCommandObserver>, IPokerGame
+    public class GameTCPClient : CommandQueueCommunicator<GameObserver>, IPokerGame
     {
         #region Fields
-        private readonly TableInfo m_PokerTable = new TableInfo();
+        private readonly DummyTable m_PokerTable = new DummyTable();
         private int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
@@ -70,7 +70,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         #endregion Properties
 
         #region Ctors & Init
-        public GameClient(string name, int port)
+        public GameTCPClient(string name, int port)
         {
             m_TablePosition = -1;
             m_PlayerName = name;

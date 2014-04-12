@@ -232,36 +232,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         #endregion
 
         #region Public Methods
-        /// <summary>
-        /// Sets the cards on the table (Used by the client)
-        /// </summary>
-        public void SetCards(GameCard c1, GameCard c2, GameCard c3, GameCard c4, GameCard c5)
-        {
-            Cards = new GameCard[5] { c1, c2, c3, c4, c5 };
-        }
 
         /// <summary>
         /// Who is the player for this seat number ?
         /// </summary>
         public PlayerInfo GetPlayer(int seat)
         {
-            return m_Seats[seat];
-        }
-
-
-        /// <summary>
-        /// Return the next playing player next to a seat numberr (Any player is included, GamingStatus Invariant)
-        /// </summary>
-        public PlayerInfo GetPlayerNextTo(int seat)
-        {
-            for (int i = 0; i < Params.MaxPlayers; ++i)
-            {
-                int j = (seat + 1 + i) % Params.MaxPlayers;
-                if (m_Seats[j] != null)
-                {
-                    return m_Seats[j];
-                }
-            }
             return m_Seats[seat];
         }
 
@@ -279,14 +255,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 }
             }
             return m_Seats[seat];
-        }
-
-        /// <summary>
-        /// Is there already a player of that name, seated at the table ?
-        /// </summary>
-        public bool ContainsPlayer(String name)
-        {
-            return Players.Any(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public virtual bool JoinTable(PlayerInfo p)
@@ -329,19 +297,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             p.NoSeat = -1;
             m_Seats[seat] = null;
             return true;
-        }
-
-        public void ClearSeat(int noSeat)
-        {
-            m_Seats[noSeat] = null;
-        }
-
-        /// <summary>
-        /// Can this user RAISE ?
-        /// </summary>
-        public bool CanRaise(PlayerInfo p)
-        {
-            return HigherBet < p.MoneyAmnt;
         }
 
         /// <summary>

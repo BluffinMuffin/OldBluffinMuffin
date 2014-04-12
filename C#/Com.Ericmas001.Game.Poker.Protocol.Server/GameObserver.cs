@@ -9,7 +9,7 @@ using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
-    public class GameServerCommandObserver : JsonCommandObserver
+    class GameObserver : JsonCommandObserver
     {
         public event EventHandler<CommandEventArgs<PlayerSitInCommand>> SitInCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<PlayerSitOutCommand>> SitOutCommandReceived = delegate { };
