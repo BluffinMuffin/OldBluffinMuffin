@@ -50,6 +50,14 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         #region Public Methods
 
+
+        /// <summary>
+        /// Is there already a player of that name, seated at the table ?
+        /// </summary>
+        public bool ContainsPlayer(String name)
+        {
+            return Players.Any(p => p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+        }
         /// <summary>
         /// Add cards to the board
         /// </summary>

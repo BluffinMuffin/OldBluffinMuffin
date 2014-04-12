@@ -19,7 +19,7 @@ using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
-    public class GameServer : CommandQueueCommunicator<GameServerCommandObserver>
+    public class GameTCPServer : CommandQueueCommunicator<GameObserver>
     {
         #region Fields
         private readonly PlayerInfo m_Player;
@@ -39,7 +39,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         #endregion Properties
 
         #region Ctors & Init
-        public GameServer(int id, PokerGame game, string name, int money)
+        public GameTCPServer(int id, PokerGame game, string name, int money)
         {
             m_ID = id;
             m_Game = game;
@@ -49,7 +49,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         }
 
-        public GameServer(int id, PokerGame game, UserInfo userInfo)
+        public GameTCPServer(int id, PokerGame game, UserInfo userInfo)
         {
             m_ID = id;
             m_Game = game;
@@ -286,7 +286,45 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         }
         public void SendTableInfo()
         {
-            TableInfoCommand cmd = new TableInfoCommand(m_Game.Table, m_Player);
+            TableInfoCommand cmd = new TableInfoCommand();//(m_Game.Table, m_Player);
+            PokerTable table = m_Game.GameTable;
+            PlayerInfo playerSendingTo = m_Player;
+
+            cmd.BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
+            cmd.Seats = new List<TupleSeat>();
+
+            cmd.Params = table.Params;
+
+            cmd.TotalPotAmount = table.TotalPotAmnt;
+            cmd.NbPlayers = cmd.Params.MaxPlayers;
+
+            cmd.PotsAmount = table.Pots.Select(pot => pot.Amount).ToList();
+            cmd.PotsAmount.AddRange(Enumerable.Repeat(0, cmd.Params.MaxPlayers - table.Pots.Count));
+
+            for (int i = 0; i < cmd.Params.MaxPlayers; ++i)
+            {
+                TupleSeat si = new TupleSeat() { NoSeat = i };
+                cmd.Seats.Add(si);
+
+                PlayerInfo p = table.GetPlayer(i);
+
+                si.IsEmpty = (p == null);
+                if (si.IsEmpty)
+                    continue;
+                si.Player = p.Clone();
+
+                //If we are not sending the info about the player who is receiving, don't show the cards unless you can
+                if (i != playerSendingTo.NoSeat)
+                    si.Player.HoleCards = p.RelativeCards.ToList();
+
+                if (si.Player.HoleCards.Count != 2)
+                    si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
+
+                si.IsDealer = table.NoSeatDealer == i;
+                si.IsSmallBlind = table.NoSeatSmallBlind == i;
+                si.IsBigBlind = table.NoSeatBigBlind == i;
+                si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
+            }
             Send(cmd);
         }
 

@@ -31,7 +31,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         protected string m_PlayerName;
         protected string m_ServerAddress;
         protected int m_ServerPort;
-        protected Dictionary<int, GameClient> m_Clients = new Dictionary<int, GameClient>();
+        protected Dictionary<int, GameTCPClient> m_Clients = new Dictionary<int, GameTCPClient>();
         protected BlockingQueue<string> m_Incoming = new BlockingQueue<string>();
         #endregion Fields
 
@@ -57,7 +57,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         #region GameClient Event Handler
         protected void client_SendedSomething(object sender, KeyEventArgs<string> e)
         {
-            Send(new GameCommand() { TableID = ((GameClient)sender).NoPort, EncodedCommand = e.Key });
+            Send(new GameCommand() { TableID = ((GameTCPClient)sender).NoPort, EncodedCommand = e.Key });
         }
 
         #endregion GameClient Event Handler
@@ -72,7 +72,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             if (m_Clients.ContainsKey(idGame))
             {
-                GameClient client = m_Clients[idGame];
+                GameTCPClient client = m_Clients[idGame];
 
                 m_Clients.Remove(idGame);
 
@@ -116,7 +116,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         public void Disconnect()
         {
-            foreach (GameClient client in m_Clients.Values)
+            foreach (GameTCPClient client in m_Clients.Values)
                 client.Disconnect();
 
             m_Clients.Clear();
@@ -128,7 +128,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             }
         }
 
-        public GameClient FindClient(int noPort)
+        public GameTCPClient FindClient(int noPort)
         {
             if (m_Clients.ContainsKey(noPort))
                 return m_Clients[noPort];
@@ -136,7 +136,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return null;
         }
 
-        public GameClient JoinTable(int idTable, string tableName, IPokerViewer gui)
+        public GameTCPClient JoinTable(int idTable, string tableName, IPokerViewer gui)
         {
             bool ok = GetJoinedSeat(idTable, m_PlayerName);
             if (!ok)
@@ -145,7 +145,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 return null;
             }
 
-            GameClient client = new GameClient(m_PlayerName, idTable);
+            GameTCPClient client = new GameTCPClient(m_PlayerName, idTable);
             client.SendedSomething += new EventHandler<KeyEventArgs<string>>(client_SendedSomething);
 
             if (gui != null)

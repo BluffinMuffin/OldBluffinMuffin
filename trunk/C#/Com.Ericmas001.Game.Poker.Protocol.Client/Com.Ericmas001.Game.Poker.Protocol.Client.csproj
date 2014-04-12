@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameClient.cs" />
-    <Compile Include="GameClientCommandObserver.cs" />
+    <Compile Include="DummyTable.cs" />
+    <Compile Include="GameTCPClient.cs" />
+    <Compile Include="GameObserver.cs" />
     <Compile Include="LobbyTCPClient.cs" />
     <Compile Include="LobbyTCPClientCareer.cs" />
     <Compile Include="LobbyTCPClientTraining.cs" />
