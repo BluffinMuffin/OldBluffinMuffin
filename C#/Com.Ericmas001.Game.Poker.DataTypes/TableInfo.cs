@@ -95,7 +95,17 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// Where is the Big Blind
         /// </summary>
-        public int NoSeatBigBlind { get; set; }
+        public int NoSeatBigBlind { private get; set; }
+        public IEnumerable<SeatInfo> BigBlinds 
+        { 
+            get
+            {
+                if (NoSeatBigBlind == -1)
+                    return new SeatInfo[0];
+                else
+                    return new SeatInfo[] { m_Seats[NoSeatBigBlind] };
+            }
+        }
 
         /// <summary>
         /// Where is the current player

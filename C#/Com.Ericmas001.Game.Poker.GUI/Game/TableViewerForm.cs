@@ -201,7 +201,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             potValues[0].Text = "$0";
             huds[table.NoSeatDealer].SetDealer();
             huds[table.NoSeatSmallBlind].SetSmallBlind();
-            huds[table.NoSeatBigBlind].SetBigBlind();
+            foreach(SeatInfo si in table.BigBlinds)
+                huds[si.NoSeat].SetBigBlind();
             for (int i = 0; i < 5; ++i)
                 board[i].Card = GameCard.HIDDEN;
             ResumeLayout();
@@ -460,12 +461,13 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
-            PlayerInfo d = table.Seats[table.NoSeatDealer].Player;
-            PlayerInfo sb = table.Seats[table.NoSeatSmallBlind].Player;
-            PlayerInfo bb = table.Seats[table.NoSeatBigBlind].Player;
-            WriteLine("==> " + d.Name + " is the Dealer");
-            WriteLine("==> " + sb.Name + " is the SmallBlind");
-            WriteLine("==> " + bb.Name + " is the BigBlind");
+
+            WriteLine("==> " + table.Seats[table.NoSeatDealer].Player.Name + " is the Dealer");
+
+            WriteLine("==> " + table.Seats[table.NoSeatSmallBlind].Player.Name + " is the SmallBlind");
+
+            foreach( SeatInfo si in table.BigBlinds )
+                WriteLine("==> " + si.Player.Name + " is the BigBlind");
         }
 
         void OnGameEnded_Console(object sender, EventArgs e)

@@ -142,7 +142,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             for (int i = 0; i < 10; ++i )
             {
                 vButton btnSitIn = Controls["btnSitIn" + i] as vButton;
-                if (i < m_Game.Table.Seats.Count && m_Game.Table.Seats[i] == null)
+                if (i < m_Game.Table.Seats.Count && m_Game.Table.Seats[i].IsEmpty)
                     btnSitIn.Visible = visible;
                 else
                     btnSitIn.Visible = false;
