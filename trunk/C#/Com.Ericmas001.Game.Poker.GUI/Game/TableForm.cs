@@ -54,14 +54,14 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         public override void SetGame(IPokerGame c, string n)
         {
             base.SetGame(c, n);
-            m_Game.PlayerActionNeeded += m_Game_PlayerActionNeeded;
-            m_Game.SitInResponseReceived += m_Game_SitInResponseReceived;
-            m_Game.SitOutResponseReceived += m_Game_SitOutResponseReceived;
-            m_Game.SeatUpdated += m_Game_GameGenerallyUpdated;
-            m_Game.GameGenerallyUpdated += m_Game_GameGenerallyUpdated;
+            m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
+            m_Game.Observer.SitInResponseReceived += OnSitInResponseReceived;
+            m_Game.Observer.SitOutResponseReceived += OnSitOutResponseReceived;
+            m_Game.Observer.SeatUpdated += OnGameGenerallyUpdated;
+            m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
         }
 
-        void m_Game_SitOutResponseReceived(bool success)
+        void OnSitOutResponseReceived(bool success)
         {
             SitOutEnabled(!success);
             if (success)
@@ -71,17 +71,17 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
         }
 
-        void m_Game_GameGenerallyUpdated(object sender, EventArgs e)
+        void OnGameGenerallyUpdated(object sender, EventArgs e)
         {
             SitInButtonsShowing(m_NoSeat == -1);
         }
 
-        void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
+        void OnPlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new object[] { sender, e });
                 return;
             }
             PlayerInfo p = e.Player;
@@ -123,7 +123,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             m_Game.SitIn(null, seatWanted);
         }
 
-        void m_Game_SitInResponseReceived(int noSeat)
+        void OnSitInResponseReceived(int noSeat)
         {
             m_NoSeat = noSeat;
             SitOutEnabled(noSeat != -1);

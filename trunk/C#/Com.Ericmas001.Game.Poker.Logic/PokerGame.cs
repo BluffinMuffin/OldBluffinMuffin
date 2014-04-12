@@ -27,27 +27,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
         protected RoundStateEnum m_RoundState; // L'etat de la game pour chaque round
         #endregion Fields
 
-        #region Events
-        public event EventHandler EverythingEnded = delegate { };
-        public event EventHandler GameBlindNeeded = delegate { };
-        public event EventHandler GameEnded = delegate { };
-        public event EventHandler GameGenerallyUpdated = delegate { };
-        public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
-        public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
-        public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
-        public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
-        public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
-        public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
-
-        public event IntHandler SitInResponseReceived = delegate { };
-        public event BooleanHandler SitOutResponseReceived = delegate { };
-        #endregion
-
         #region Properties
+        public PokerGameObserver Observer { get; private set; }
+
         /// <summary>
         /// The Table Entity
         /// </summary>
@@ -115,6 +97,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public PokerGame(AbstractDealer dealer, PokerTable table)
         {
+            Observer = new PokerGameObserver(this);
             m_Dealer = dealer;
             Table = table;
             Params = table.Params;
@@ -144,7 +127,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 return false;
             }
 
-            PlayerJoined(this, new PlayerInfoEventArgs(p));
+            Observer.RaisePlayerJoined(p);
             return GameTable.JoinTable(p);
         }
 
@@ -163,7 +146,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
                     IsBigBlind = Table.NoSeatBigBlind == p.NoSeat
                 };
-                SeatUpdated(this, new SeatEventArgs(seat));
+                Observer.RaiseSeatUpdated(seat);
 
                 if (m_State == GameStateEnum.WaitForPlayers)
                     TryToBegin();
@@ -197,7 +180,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     IsCurrentPlayer = false,
                     IsBigBlind = false
                 };
-                SeatUpdated(this, new SeatEventArgs(seat));
+                Observer.RaiseSeatUpdated(seat);
                 return true;
             }
             return false;
@@ -212,7 +195,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             if (sitOutOk && Table.LeaveTable(p))
             {
-                PlayerLeaved(this, new PlayerInfoEventArgs(p));
+                Observer.RaisePlayerLeft(p);
 
                 if (Table.Players.Count == 0)
                     m_State = GameStateEnum.End;
@@ -278,13 +261,13 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     StartANewGame();
                     break;
                 case GameStateEnum.End:
-                    EverythingEnded(this, new EventArgs());
+                    Observer.RaiseEverythingEnded();
                     break;
             }
         }
         private void StartANewGame()
         {
-            GameEnded(this, new EventArgs());
+            Observer.RaiseGameEnded();
             m_State = GameStateEnum.WaitForPlayers;
             TryToBegin();
         }
@@ -367,7 +350,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             Table.MinimumRaiseAmount = Math.Max(Table.MinimumRaiseAmount, p.MoneyBetAmnt);
 
             //Notify the change in the player's account
-            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+            Observer.RaisePlayerMoneyChanged(p);
 
             //Is the player All-In?
             if (p.MoneySafeAmnt == 0)
@@ -435,7 +418,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             Table.TotalPotAmnt += amnt;
 
             //Notify the change in the player's account
-            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+            Observer.RaisePlayerMoneyChanged(p);
 
             //Take note of the given Blind Amount for the player.
             GameTable.SetBlindNeeded(p, 0);
@@ -443,7 +426,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             //Take note of the action
             bool isPostingSmallBlind = (needed == Table.SmallBlindAmnt);
             LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED {1} BLIND", p.Name, isPostingSmallBlind ? "SMALL" : "BIG");
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt));
+            Observer.RaisePlayerActionTaken(p, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt);
 
             //Let's set the HigherBet
             if (amnt > Table.HigherBet)
@@ -475,7 +458,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             GameTable.ManagePotsRoundEnd();
 
-            GameBettingRoundEnded(this, new RoundEventArgs(Table.Round));
+            Observer.RaiseGameBettingRoundEnded(Table.Round);
 
             if (Table.NbPlayingAndAllIn <= 1)
                 AdvanceToNextGameState(); //Advancing to Showdown State
@@ -484,7 +467,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void StartBettingRound()
         {
-            GameBettingRoundStarted(this, new RoundEventArgs(Table.Round));
+            Observer.RaiseGameBettingRoundStarted(Table.Round);
 
             Table.NbPlayed = 0;
             Table.NoSeatLastRaise = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).NoSeat;
@@ -535,7 +518,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             foreach (PlayerInfo p in Table.PlayingAndAllInPlayers)
             {
                 p.Cards = m_Dealer.DealHoles();
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                Observer.RaisePlayerHoleCardsChanged(p);
             }
         }
         private void ShowAllCards()
@@ -544,7 +527,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 if (p.IsPlaying || p.IsAllIn)
                 {
                     p.IsShowingCards = true;
-                    PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                    Observer.RaisePlayerHoleCardsChanged(p);
                 }
             AdvanceToNextGameState(); //Advancing to DecideWinners State
         }
@@ -554,7 +537,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Fold, -1));
+            Observer.RaisePlayerActionTaken(p, GameActionEnum.Fold, -1);
         }
         private void CallPlayer(PlayerInfo p, int played)
         {
@@ -562,7 +545,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Call, played));
+            Observer.RaisePlayerActionTaken(p, GameActionEnum.Call, played);
         }
         private void RaisePlayer(PlayerInfo p, int played)
         {
@@ -577,7 +560,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
-            PlayerActionTaken(this, new PlayerActionEventArgs(p, GameActionEnum.Raise, played));
+            Observer.RaisePlayerActionTaken(p, GameActionEnum.Raise, played);
         }
         private void ContinueBettingRound()
         {
@@ -596,7 +579,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             Table.NoSeatCurrPlayer = next.NoSeat;
 
-            PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(next,Table.CurrentPlayer));
+            Observer.RaisePlayerActionNeeded(next, Table.CurrentPlayer);
 
             if (next.IsZombie)
             {
@@ -619,8 +602,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
                         foreach (PlayerInfo p in players)
                         {
                             p.MoneySafeAmnt += wonAmount;
-                            PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
-                            PlayerWonPot(this, new PotWonEventArgs(p, pot.Id, wonAmount));
+                            Observer.RaisePlayerMoneyChanged(p);
+                            Observer.RaisePlayerWonPot(p, pot.Id, wonAmount);
                             WaitALittle(Params.WaitingTimes.AfterPotWon);
                         }
                     }
@@ -657,7 +640,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 Table.InitTable();
                 m_Dealer.FreshDeck();
                 AdvanceToNextGameState(); //Advancing to WaitForBlinds State
-                GameBlindNeeded(this, new EventArgs());
+                Observer.RaiseGameBlindNeeded();
             }
             else
             {

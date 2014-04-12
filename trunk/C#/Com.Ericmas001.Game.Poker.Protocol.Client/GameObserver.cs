@@ -9,7 +9,7 @@ using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
-    class GameObserver : JsonCommandObserver
+    public class GameObserver : JsonCommandObserver
     {
         public event EventHandler<CommandEventArgs<BetTurnEndedCommand>> BetTurnEndedCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<BetTurnStartedCommand>> BetTurnStartedCommandReceived = delegate { };

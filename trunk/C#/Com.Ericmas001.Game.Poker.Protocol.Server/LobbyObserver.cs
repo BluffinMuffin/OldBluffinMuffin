@@ -10,7 +10,7 @@ using Com.Ericmas001.Net.Protocol;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
-    class LobbyObserver : JsonCommandObserver
+    public class LobbyObserver : JsonCommandObserver
     {
         public event EventHandler<CommandEventArgs<DisconnectCommand>> DisconnectCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<ListTableCommand>> ListTableCommandReceived = delegate { };
@@ -20,7 +20,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         public event EventHandler<CommandEventArgs<CreateTableCommand>> CreateTableCommandReceived = delegate { };
 
         //Training
-        //public event EventHandler<CommandEventArgs<CreateTrainingTableCommand>> CreateTrainingTableCommandReceived = delegate { };
         public event EventHandler<CommandEventArgs<IdentifyCommand>> IdentifyCommandReceived = delegate { };
 
         //Career
