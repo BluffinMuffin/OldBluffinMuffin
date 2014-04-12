@@ -259,10 +259,10 @@ namespace Com.Ericmas001.Game.Poker.Logic
             if (DealerSeat != null)
             {
                 previousNoSeatDealer = DealerSeat.NoSeat;
-                DealerSeat.IsDealer = false;
+                DealerSeat.Attributes.Remove(SeatAttributeEnum.Dealer);
             }
             PlayerInfo nextDealer = GetPlayingPlayerNextTo(previousNoSeatDealer);
-            Seats[nextDealer.NoSeat].IsDealer = true;
+            Seats[nextDealer.NoSeat].Attributes.Add(SeatAttributeEnum.Dealer);
 
             base.PlaceButtons();
 

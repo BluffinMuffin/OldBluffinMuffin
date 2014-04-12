@@ -5,6 +5,7 @@ using System.Linq;
 using Com.Ericmas001;
 using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
+using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {
@@ -12,15 +13,17 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     {
         public bool IsEmpty { get { return Player == null; } }
 
+
         public int NoSeat { get; set; }
         public PlayerInfo Player { get; set; }
-        public bool IsDealer { get; set; }
+        public HashSet<SeatAttributeEnum> Attributes { get; set; }
         public bool IsSmallBlind { get; set; }
         public bool IsBigBlind { get; set; }
         public bool IsCurrentPlayer { get; set; }
 
         public SeatInfo()
         {
+            Attributes = new HashSet<SeatAttributeEnum>();
         }
 
         public SeatInfo Clone()
@@ -33,9 +36,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                     Player = this.Player.Clone(),
                     NoSeat = this.NoSeat,
                     IsSmallBlind = this.IsSmallBlind,
-                    IsDealer = this.IsDealer,
                     IsCurrentPlayer = this.IsCurrentPlayer,
-                    IsBigBlind = this.IsBigBlind
+                    IsBigBlind = this.IsBigBlind,
+                    Attributes = new HashSet<SeatAttributeEnum>(this.Attributes),
                 };
         }
     }

@@ -133,13 +133,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             foreach(SeatInfo si in m_PokerTable.Seats)
             {
-                si.IsDealer = false;
+                si.Attributes.Remove(SeatAttributeEnum.Dealer);
                 si.IsSmallBlind = false;
                 si.IsBigBlind = false;
                 si.IsCurrentPlayer = false;
             }
 
-            m_PokerTable.Seats[cmd.NoSeatD].IsDealer = true;
+            m_PokerTable.Seats[cmd.NoSeatD].Attributes.Add(SeatAttributeEnum.Dealer);
             m_PokerTable.NoSeatSmallBlind = cmd.NoSeatSB;
             m_PokerTable.NoSeatBigBlind = cmd.NoSeatBB;
 
@@ -296,7 +296,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                 SetPlayerVisibility(p, p.State, seat.Player.HoleCards);
 
-                m_PokerTable.Seats[i].IsDealer = seat.IsDealer;
+                m_PokerTable.Seats[i].Attributes = seat.Attributes;
 
                 if (seat.IsSmallBlind)
                     m_PokerTable.NoSeatSmallBlind = noSeat;

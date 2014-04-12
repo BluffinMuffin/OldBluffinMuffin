@@ -317,7 +317,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                 if (si.Player.HoleCards.Count != 2)
                     si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
 
-                si.IsDealer = gameSeat.IsDealer;
+                si.Attributes = gameSeat.Attributes;
                 si.IsSmallBlind = table.NoSeatSmallBlind == i;
                 si.IsBigBlind = table.BigBlinds.Any(x => x.NoSeat == i);
                 si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
