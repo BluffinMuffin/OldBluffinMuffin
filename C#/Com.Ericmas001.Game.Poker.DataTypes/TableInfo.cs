@@ -89,7 +89,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             get
             {
-                return m_Seats.FirstOrDefault(s => s.IsDealer);
+                return m_Seats.FirstOrDefault(s => s.Attributes.Contains(SeatAttributeEnum.Dealer));
             }
         }
         public int NoSeatDealer

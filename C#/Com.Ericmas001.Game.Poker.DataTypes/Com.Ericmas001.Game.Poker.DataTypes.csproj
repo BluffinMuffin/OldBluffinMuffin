@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDealer.cs" />
+    <Compile Include="Enums\SeatAttributeEnum.cs" />
     <Compile Include="EventHandling\PokerGameObserver.cs" />
     <Compile Include="EventHandling\SeatEventArgs.cs" />
     <Compile Include="Parameters\ConfigurableWaitingTimes.cs" />

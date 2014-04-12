@@ -165,7 +165,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     Player = null,
                     NoSeat = oldSeat,
                     IsSmallBlind = false,
-                    IsDealer = false,
                     IsCurrentPlayer = false,
                     IsBigBlind = false
                 };
@@ -634,7 +633,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             else
             {
                 if (Table.DealerSeat != null)
-                    Table.DealerSeat.IsDealer = false;
+                    Table.DealerSeat.Attributes.Remove(SeatAttributeEnum.Dealer);
                 Table.NoSeatSmallBlind = -1;
                 Table.NoSeatSmallBlind = -1;
             }
