@@ -258,7 +258,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
             base.PlaceButtons();
             m_BlindNeeded.Clear();
             m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
-            m_BlindNeeded.Add(GetPlayer(NoSeatBigBlind), Params.BlindAmount);
+            foreach(SeatInfo si in BigBlinds)
+                m_BlindNeeded.Add(GetPlayer(si.NoSeat), Params.BlindAmount);
         }
         #endregion Private Methods
     }

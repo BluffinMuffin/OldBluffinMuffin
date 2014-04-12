@@ -143,7 +143,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     IsSmallBlind = Table.NoSeatSmallBlind == p.NoSeat,
                     IsDealer = Table.NoSeatDealer == p.NoSeat,
                     IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
-                    IsBigBlind = Table.NoSeatBigBlind == p.NoSeat
+                    IsBigBlind = Table.BigBlinds.Any(x => x.NoSeat == p.NoSeat)
                 };
                 Observer.RaiseSeatUpdated(seat);
 
@@ -483,7 +483,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             switch (Table.Round)
             {
                 case RoundTypeEnum.Preflop:
-                    Table.NoSeatCurrPlayer = Table.NoSeatBigBlind;
+                    Table.NoSeatCurrPlayer = Table.GetPlayingPlayerNextTo(Table.NoSeatSmallBlind).NoSeat;
                     DealHole();
                     break;
                 case RoundTypeEnum.Flop:

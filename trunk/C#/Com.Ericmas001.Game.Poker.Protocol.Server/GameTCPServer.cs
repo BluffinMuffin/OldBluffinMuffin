@@ -187,7 +187,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             {
                 NoSeatD = t.NoSeatDealer,
                 NoSeatSB = t.NoSeatSmallBlind,
-                NoSeatBB = t.NoSeatBigBlind,
+                NoSeatBB = t.BigBlinds.First().NoSeat,
             });
         }
 
@@ -286,7 +286,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         }
         public void SendTableInfo()
         {
-            TableInfoCommand cmd = new TableInfoCommand();//(m_Game.Table, m_Player);
+            TableInfoCommand cmd = new TableInfoCommand();
             PokerTable table = m_Game.GameTable;
             PlayerInfo playerSendingTo = m_Player;
 
@@ -305,22 +305,21 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             {
                 SeatInfo si = new SeatInfo() { NoSeat = i };
                 cmd.Seats.Add(si);
-
-                PlayerInfo p = table.GetPlayer(i);
-                if (si.IsEmpty)
+                SeatInfo gameSeat = table.Seats[i];
+                if (gameSeat.IsEmpty)
                     continue;
-                si.Player = p.Clone();
+                si.Player = gameSeat.Player.Clone();
 
                 //If we are not sending the info about the player who is receiving, don't show the cards unless you can
                 if (i != playerSendingTo.NoSeat)
-                    si.Player.HoleCards = p.RelativeCards.ToList();
+                    si.Player.HoleCards = gameSeat.Player.RelativeCards.ToList();
 
                 if (si.Player.HoleCards.Count != 2)
                     si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
 
                 si.IsDealer = table.NoSeatDealer == i;
                 si.IsSmallBlind = table.NoSeatSmallBlind == i;
-                si.IsBigBlind = table.NoSeatBigBlind == i;
+                si.IsBigBlind = table.BigBlinds.Any(x => x.NoSeat == i);
                 si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
             }
             Send(cmd);

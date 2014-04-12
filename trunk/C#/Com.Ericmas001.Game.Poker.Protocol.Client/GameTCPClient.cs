@@ -115,7 +115,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             BetTurnStartedCommand cmd = e.Command;
             SetCards(cmd.CardsID);
             m_PokerTable.Round = cmd.Round;
-            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundTypeEnum.Preflop ? m_PokerTable.NoSeatBigBlind : m_PokerTable.NoSeatDealer).NoSeat;
+            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundTypeEnum.Preflop ? m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.NoSeatSmallBlind).NoSeat : m_PokerTable.NoSeatDealer).NoSeat;
 
             Observer.RaiseGameBettingRoundStarted(cmd.Round);
         }
@@ -138,7 +138,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             if (m_PokerTable.NoSeatSmallBlind == m_TablePosition)
                 Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.SmallBlindAmnt });
 
-            if (m_PokerTable.NoSeatBigBlind == m_TablePosition)
+            if (m_PokerTable.BigBlinds.Any(x => x.NoSeat == m_TablePosition))
                 Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
 
             Observer.RaiseGameBlindNeeded();
