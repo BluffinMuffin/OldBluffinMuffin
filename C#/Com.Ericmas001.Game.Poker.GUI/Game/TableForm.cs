@@ -56,8 +56,19 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             base.SetGame(c, n);
             m_Game.PlayerActionNeeded += m_Game_PlayerActionNeeded;
             m_Game.SitInResponseReceived += m_Game_SitInResponseReceived;
+            m_Game.SitOutResponseReceived += m_Game_SitOutResponseReceived;
             m_Game.SeatUpdated += m_Game_GameGenerallyUpdated;
             m_Game.GameGenerallyUpdated += m_Game_GameGenerallyUpdated;
+        }
+
+        void m_Game_SitOutResponseReceived(bool success)
+        {
+            SitOutEnabled(!success);
+            if (success)
+            {
+                m_NoSeat = -1;
+                SitInButtonsShowing(true);
+            }
         }
 
         void m_Game_GameGenerallyUpdated(object sender, EventArgs e)
@@ -115,10 +126,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         void m_Game_SitInResponseReceived(int noSeat)
         {
             m_NoSeat = noSeat;
-            if (noSeat == -1)
-                SitInButtonsShowing(true);
-            else
-                SitInButtonsShowing(false);
+            SitOutEnabled(noSeat != -1);
+            SitInButtonsShowing(noSeat == -1);
         }
 
         private void SitInButtonsShowing(bool visible)
@@ -141,9 +150,23 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
+        private void SitOutEnabled(bool enable)
+        {
+            if (InvokeRequired)
+            {
+                // We're not in the UI thread, so we need to call BeginInvoke
+                BeginInvoke(new BooleanHandler(SitOutEnabled), enable);
+                return;
+            }
+            SuspendLayout();
+            btnSitOut.Enabled = enable;
+            ResumeLayout();
+        }
+
         private void btnSitOut_Click(object sender, EventArgs e)
         {
-
+            SitOutEnabled(false);
+            m_Game.SitOut(null);
         }
     }
 }

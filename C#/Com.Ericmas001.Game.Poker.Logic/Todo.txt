@@ -3,7 +3,7 @@
 	(done) When a Player Join a game, he is not automatically seated, he is standing up, at no specific seat
 	(done) He may choose to sit at wathever empty seat he desires
 	:- Should any player sitting a the table be the big blind, unless it is the first round !
-	:- He can sit-out and go back to his watcher state
+	(done) He can sit-out and go back to his watcher state
 	:- Bugs:
 		- When you open a game already playing, player hubs are not initialized correctly in the screen of the new arrival
 -> Better support of the betting rules of the no-limit game 
