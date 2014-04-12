@@ -21,7 +21,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
                     int port = 4242;
                     if (map.ContainsKey("-p"))
                         port = int.Parse(map["-p"]);
-                    ServerLobby server = new ServerLobby(port);
+                    BluffinServerLobby server = new BluffinServerLobby(port);
                     server.Start();
                     LogManager.Log(LogLevel.Message, "BluffinMuffin.Server", "Server started on port {0}", port);
                 }
