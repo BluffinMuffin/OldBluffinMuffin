@@ -33,8 +33,10 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Menu
             {
                 txtPassword.Text = "";
                 new LobbyCareerForm(info.Server).ShowDialog();
+                Close();
             }
-            Show();
+            else
+                Show();
         }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)

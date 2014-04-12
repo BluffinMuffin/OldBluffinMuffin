@@ -118,18 +118,18 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return ok;
         }
 
-        public bool AskToSitIn(PlayerInfo p, int PreferedSeat)
+        public SeatInfo AskToSitIn(PlayerInfo p, int PreferedSeat)
         {
             if (RemainingSeats.Count() == 0)
             {
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Not enough seats to join!");
-                return false;
+                return null;
             }
 
             if (SeatsContainsPlayer(p))
             {
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone seated with the same name! Is this you ?");
-                return false;
+                return null;
             }
 
             int seat = PreferedSeat;
@@ -255,7 +255,17 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         protected override void PlaceButtons()
         {
+            int previousNoSeatDealer = -1;
+            if (DealerSeat != null)
+            {
+                previousNoSeatDealer = DealerSeat.NoSeat;
+                DealerSeat.IsDealer = false;
+            }
+            PlayerInfo nextDealer = GetPlayingPlayerNextTo(previousNoSeatDealer);
+            Seats[nextDealer.NoSeat].IsDealer = true;
+
             base.PlaceButtons();
+
             m_BlindNeeded.Clear();
             m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
             foreach(SeatInfo si in BigBlinds)

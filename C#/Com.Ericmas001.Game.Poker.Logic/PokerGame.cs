@@ -133,19 +133,10 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public int SitIn(PlayerInfo p, int noSeat = -1)
         {
-            bool ok = GameTable.AskToSitIn(p, noSeat);
-            if (ok)
+            SeatInfo seat = GameTable.AskToSitIn(p, noSeat);
+            if (seat != null)
             {
-                SeatInfo seat = new SeatInfo()
-                {
-                    Player = p.Clone(),
-                    NoSeat = p.NoSeat,
-                    IsSmallBlind = Table.NoSeatSmallBlind == p.NoSeat,
-                    IsDealer = Table.NoSeatDealer == p.NoSeat,
-                    IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
-                    IsBigBlind = Table.BigBlinds.Any(x => x.NoSeat == p.NoSeat)
-                };
-                Observer.RaiseSeatUpdated(seat);
+                Observer.RaiseSeatUpdated(seat.Clone());
 
                 if (m_State == GameStateEnum.WaitForPlayers)
                     TryToBegin();
@@ -642,7 +633,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
             }
             else
             {
-                Table.NoSeatDealer = -1;
+                if (Table.DealerSeat != null)
+                    Table.DealerSeat.IsDealer = false;
                 Table.NoSeatSmallBlind = -1;
                 Table.NoSeatSmallBlind = -1;
             }
