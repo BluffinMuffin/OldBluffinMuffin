@@ -47,8 +47,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerClientLobby.cs" />
-    <Compile Include="ServerLobby.cs" />
+    <Compile Include="BluffinServerLobby.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -64,10 +63,6 @@
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Logic\Com.Ericmas001.Game.Poker.Logic.csproj">
       <Project>{27a8b599-cd12-415a-b20f-4f1e718a1a0b}</Project>
       <Name>Com.Ericmas001.Game.Poker.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Persistance\Com.Ericmas001.Game.Poker.Persistance.csproj">
-      <Project>{032c04ff-5c33-4be2-ad7f-bed27134c8df}</Project>
-      <Name>Com.Ericmas001.Game.Poker.Persistance</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Commands\Com.Ericmas001.Game.Poker.Protocol.Commands.csproj">
       <Project>{d19c48c3-3af0-4323-8479-0c4f21eab104}</Project>

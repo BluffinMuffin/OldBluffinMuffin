@@ -19,15 +19,15 @@ using Com.Ericmas001.Game.Poker.Persistance;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 
-namespace Com.Ericmas001.Game.BluffinMuffin.Server
+namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
-    public class ServerClientLobby : CommandTCPCommunicator<LobbyServerCommandObserver>
+    public class LobbyTCPServer : CommandTCPCommunicator<LobbyServerCommandObserver>
     {
         private string m_PlayerName = "?";
-        private readonly ServerLobby m_Lobby;
+        private readonly IServerLobby m_Lobby;
         Dictionary<int, GameServer> m_Tables = new Dictionary<int, GameServer>();
 
-        public ServerClientLobby(TcpClient client, ServerLobby lobby)
+        public LobbyTCPServer(TcpClient client, IServerLobby lobby)
             : base(client)
         {
             m_Lobby = lobby;

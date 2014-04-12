@@ -16,7 +16,7 @@ using Com.Ericmas001.Game.Poker.Logic;
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Server
 {
-    public class ServerLobby
+    public class BluffinServerLobby : IServerLobby
     {
         private readonly int m_NoPort;
         private readonly TcpListener m_SocketServer;
@@ -31,7 +31,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
             return m_Games[id];
         }
 
-        public ServerLobby(int port)
+        public BluffinServerLobby(int port)
         {
             m_NoPort = port;
             m_SocketServer = new TcpListener(IPAddress.Any,port);
@@ -68,7 +68,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
                 try
                 {
                     TcpClient client = m_SocketServer.AcceptTcpClient();
-                    ServerClientLobby lobby = new ServerClientLobby(client, this);
+                    LobbyTCPServer lobby = new LobbyTCPServer(client, this);
                     lobby.Start();
                 }
                 catch (Exception e)
