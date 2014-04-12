@@ -115,8 +115,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             BetTurnStartedCommand cmd = e.Command;
             SetCards(cmd.CardsID);
             m_PokerTable.Round = cmd.Round;
-            m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundTypeEnum.Preflop ? m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.NoSeatSmallBlind).NoSeat : m_PokerTable.NoSeatDealer).NoSeat;
-
+           
             Observer.RaiseGameBettingRoundStarted(cmd.Round);
         }
 
@@ -244,9 +243,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             if (p != null)
             {
-                if (cmd.ActionType == GameActionEnum.Raise)
-                    m_PokerTable.NoSeatLastRaise = p.NoSeat;
-
                 p.MoneyBetAmnt = cmd.PlayerBet;
                 p.MoneySafeAmnt = cmd.PlayerMoney;
                 p.State = cmd.State;

@@ -71,6 +71,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
             m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded;
             m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
+            m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
             m_Game.Observer.PlayerJoined += OnPlayerJoined;
             m_Game.Observer.SeatUpdated += OnSeatUpdated;
             m_Game.Observer.PlayerLeft += OnPlayerLeft;
@@ -198,6 +199,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                 Round = e.Round,
                 CardsID = m_Game.Table.Cards.Select(x => x.Id).ToList()
             });
+        }
+
+        private void OnGameGenerallyUpdated(object sender, EventArgs e)
+        {
+            SendTableInfo();
         }
 
         void OnPlayerJoined(object sender, PlayerInfoEventArgs e)
