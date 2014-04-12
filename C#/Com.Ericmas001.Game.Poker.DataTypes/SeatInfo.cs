@@ -8,19 +8,19 @@ using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {
-    public class TupleSeat
+    public class SeatInfo
     {
+        public bool IsEmpty { get { return Player == null; } }
+
         public int NoSeat { get; set; }
         public PlayerInfo Player { get; set; }
-        public bool IsEmpty { get; set; }
         public bool IsDealer { get; set; }
         public bool IsSmallBlind { get; set; }
         public bool IsBigBlind { get; set; }
         public bool IsCurrentPlayer { get; set; }
 
-        public TupleSeat()
+        public SeatInfo()
         {
-            IsEmpty = true;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     {
         #region Fields
         protected readonly GameCard[] m_Cards = new GameCard[5];
-        protected PlayerInfo[] m_Seats;
+        private SeatInfo[] m_Seats;
         private readonly List<PlayerInfo> m_People = new List<PlayerInfo>();
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
         protected TableParams m_Params;
@@ -33,7 +33,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             set
             {
                 m_Params = value;
-                m_Seats = new PlayerInfo[value.MaxPlayers];
+                m_Seats = new SeatInfo[value.MaxPlayers];
+                for (int i = 0; i < value.MaxPlayers; ++i)
+                    m_Seats[i] = new SeatInfo() { NoSeat = i };
             }
         }
         /// <summary>
@@ -143,12 +145,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// List of the Players currently seated
         /// </summary>
-        public List<PlayerInfo> Players { get { return m_Seats.Where(p => p != null).ToList(); } }
+        public List<PlayerInfo> Players { get { return m_Seats.Where(s => !s.IsEmpty).Select(s => s.Player).ToList(); } }
 
         /// <summary>
         /// List of the Seats
         /// </summary>
-        public List<PlayerInfo> Seats { get { return m_Seats.ToList(); } }
+        public List<SeatInfo> Seats { get { return m_Seats.ToList(); } }
 
         /// <summary>
         /// List of the playing Players in order starting from the first seat
@@ -213,7 +215,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public TableInfo(TableParams parms)
         {
             Params = parms;
-            m_Seats = new PlayerInfo[parms.MaxPlayers];
             NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
@@ -238,7 +239,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public PlayerInfo GetPlayer(int seat)
         {
-            return m_Seats[seat];
+            return m_Seats[seat].Player;
         }
 
         /// <summary>
@@ -248,13 +249,11 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                int j = (seat + 1 + i) % Params.MaxPlayers;
-                if (m_Seats[j] != null && m_Seats[j].IsPlaying)
-                {
-                    return m_Seats[j];
-                }
+                SeatInfo si = m_Seats[(seat + 1 + i) % Params.MaxPlayers];
+                if (!si.IsEmpty && si.Player.IsPlaying)
+                    return si.Player;
             }
-            return m_Seats[seat];
+            return m_Seats[seat].Player;
         }
 
         public virtual bool JoinTable(PlayerInfo p)
@@ -271,7 +270,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             p.State = PlayerStateEnum.SitIn;
             p.NoSeat = seat;
-            m_Seats[seat] = p;
+            m_Seats[seat].Player = p;
             return true;
         }
 
@@ -295,7 +294,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             int seat = p.NoSeat;
             p.State = PlayerStateEnum.Zombie;
             p.NoSeat = -1;
-            m_Seats[seat] = null;
+            m_Seats[seat].Player = null;
             return true;
         }
 
@@ -337,11 +336,11 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         #region Protected Methods
         protected List<PlayerInfo> PlayingPlayersFrom(int seat)
         {
-            return m_Seats.Where(p => (p != null && p.IsPlaying)).ToList();
+            return m_Seats.Where(s => (!s.IsEmpty && s.Player.IsPlaying)).Select(s => s.Player).ToList();
         }
         protected List<PlayerInfo> PlayingAndAllInPlayersFrom(int seat)
         {
-            return m_Seats.Where(p => (p != null && (p.IsPlaying || p.IsAllIn))).ToList();
+            return m_Seats.Where(s => (!s.IsEmpty && (s.Player.IsPlaying || s.Player.IsAllIn))).Select(s => s.Player).ToList();
         }
 
         protected bool SeatsContainsPlayer(PlayerInfo p)

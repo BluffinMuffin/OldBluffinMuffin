@@ -134,7 +134,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             int seat = PreferedSeat;
 
-            if (PreferedSeat < 0 || PreferedSeat >= m_Seats.Length || m_Seats[PreferedSeat] != null)
+            if (PreferedSeat < 0 || PreferedSeat >= Seats.Count || !Seats[PreferedSeat].IsEmpty)
                 seat = RemainingSeats.First();
             return SitInToTable(p, seat);
         }
@@ -240,8 +240,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             get
             {
-                for (int i = 0; i < m_Seats.Length; ++i)
-                    if (m_Seats[i] == null)
+                for (int i = 0; i < Seats.Count; ++i)
+                    if (Seats[i].IsEmpty)
                         yield return i;
             }
         }

@@ -9,6 +9,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
     {
         public static string COMMAND_NAME = "gameSEAT_UPDATED";
 
-        public TupleSeat Seat { get; set; }
+        public SeatInfo Seat { get; set; }
     }
 }

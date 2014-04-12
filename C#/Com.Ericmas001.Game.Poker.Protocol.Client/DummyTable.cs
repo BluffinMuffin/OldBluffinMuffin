@@ -20,7 +20,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         public void ClearSeat(int noSeat)
         {
-            m_Seats[noSeat] = null;
+            Seats[noSeat].Player = null;
         }
     }
 }
