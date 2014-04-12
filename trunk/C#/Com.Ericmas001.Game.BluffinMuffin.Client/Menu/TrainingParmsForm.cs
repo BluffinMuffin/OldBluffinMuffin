@@ -30,8 +30,12 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Menu
             Hide();
             TrainingSplashInfo info = new TrainingSplashInfo(txtUsername.Text, m_ServerAdress, m_ServerPort);
             if (new StepSplashForm(info).ShowDialog() == DialogResult.OK)
+            {
                 new LobbyTrainingForm(info.Server).ShowDialog();
-            Show();
+                Close();
+            }
+            else
+                Show();
         }
 
         private void txtUsername_TextChanged(object sender, EventArgs e)

@@ -131,7 +131,15 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             GameStartedCommand cmd = e.Command;
 
-            m_PokerTable.NoSeatDealer = cmd.NoSeatD;
+            foreach(SeatInfo si in m_PokerTable.Seats)
+            {
+                si.IsDealer = false;
+                si.IsSmallBlind = false;
+                si.IsBigBlind = false;
+                si.IsCurrentPlayer = false;
+            }
+
+            m_PokerTable.Seats[cmd.NoSeatD].IsDealer = true;
             m_PokerTable.NoSeatSmallBlind = cmd.NoSeatSB;
             m_PokerTable.NoSeatBigBlind = cmd.NoSeatBB;
 
@@ -288,8 +296,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                 SetPlayerVisibility(p, p.State, seat.Player.HoleCards);
 
-                if (seat.IsDealer)
-                    m_PokerTable.NoSeatDealer = noSeat;
+                m_PokerTable.Seats[i].IsDealer = seat.IsDealer;
 
                 if (seat.IsSmallBlind)
                     m_PokerTable.NoSeatSmallBlind = noSeat;

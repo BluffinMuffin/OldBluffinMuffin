@@ -22,5 +22,21 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public SeatInfo()
         {
         }
+
+        public SeatInfo Clone()
+        {
+            if (IsEmpty)
+                return new SeatInfo();
+            else
+                return new SeatInfo()
+                {
+                    Player = this.Player.Clone(),
+                    NoSeat = this.NoSeat,
+                    IsSmallBlind = this.IsSmallBlind,
+                    IsDealer = this.IsDealer,
+                    IsCurrentPlayer = this.IsCurrentPlayer,
+                    IsBigBlind = this.IsBigBlind
+                };
+        }
     }
 }

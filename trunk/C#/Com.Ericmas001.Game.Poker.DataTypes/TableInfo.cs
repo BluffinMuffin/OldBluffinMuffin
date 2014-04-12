@@ -85,7 +85,20 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// Where is the Dealer
         /// </summary>
-        public int NoSeatDealer { get; set; }
+        public SeatInfo DealerSeat
+        {
+            get
+            {
+                return m_Seats.FirstOrDefault(s => s.IsDealer);
+            }
+        }
+        public int NoSeatDealer
+        {
+            get
+            {
+                return DealerSeat == null ? -1 : DealerSeat.NoSeat;
+            }
+        }
 
         /// <summary>
         /// Where is the Small Blind
@@ -225,7 +238,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public TableInfo(TableParams parms)
         {
             Params = parms;
-            NoSeatDealer = -1;
             NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
         }
@@ -276,12 +288,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// <summary>
         /// Sit a player without the validations. This is used here after validation, or on the client side when the game is telling the client where a player is seated
         /// </summary>
-        public bool SitInToTable(PlayerInfo p, int seat)
+        public SeatInfo SitInToTable(PlayerInfo p, int seat)
         {
             p.State = PlayerStateEnum.SitIn;
             p.NoSeat = seat;
             m_Seats[seat].Player = p;
-            return true;
+            return m_Seats[seat];
         }
 
         /// <summary>
@@ -363,7 +375,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         }
         protected virtual void PlaceButtons()
         {
-            NoSeatDealer = GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
             NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
             NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
         }
