@@ -45,7 +45,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_Game = game;
             m_Player = new PlayerInfo(name, money);
             m_UserInfo = null;
-            base.SendedSomething += new EventHandler<KeyEventArgs<string>>(GameServer_SendedSomething);
+            base.SendedSomething += OnServerSendedSomething;
 
         }
 
@@ -61,40 +61,40 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         private void InitializePokerObserver()
         {
-            m_Game.GameBettingRoundEnded += m_Game_GameBettingRoundEnded;
-            m_Game.PlayerHoleCardsChanged += m_Game_PlayerHoleCardsChanged;
-            m_Game.GameEnded += m_Game_GameEnded;
-            m_Game.PlayerWonPot += m_Game_PlayerWonPot;
-            m_Game.PlayerActionTaken += m_Game_PlayerActionTaken;
-            m_Game.PlayerMoneyChanged += m_Game_PlayerMoneyChanged;
-            m_Game.EverythingEnded += m_Game_EverythingEnded;
-            m_Game.PlayerActionNeeded += m_Game_PlayerActionNeeded;
-            m_Game.GameBlindNeeded += m_Game_GameBlindNeeded;
-            m_Game.GameBettingRoundStarted += m_Game_GameBettingRoundStarted;
-            m_Game.PlayerJoined +=m_Game_PlayerJoined;
-            m_Game.SeatUpdated += m_Game_SeatUpdated;
-            m_Game.PlayerLeaved += m_Game_PlayerLeaved;
+            m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
+            m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
+            m_Game.Observer.GameEnded += OnGameEnded;
+            m_Game.Observer.PlayerWonPot += OnPlayerWonPot;
+            m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
+            m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
+            m_Game.Observer.EverythingEnded += OnEverythingEnded;
+            m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
+            m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded;
+            m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
+            m_Game.Observer.PlayerJoined += OnPlayerJoined;
+            m_Game.Observer.SeatUpdated += OnSeatUpdated;
+            m_Game.Observer.PlayerLeft += OnPlayerLeft;
         }
 
         protected override void InitializeCommandObserver()
         {
-            m_CommandObserver.CommandReceived += m_CommandObserver_CommandReceived;
-            m_CommandObserver.DisconnectCommandReceived += m_CommandObserver_DisconnectCommandReceived;
-            m_CommandObserver.PlayMoneyCommandReceived += m_CommandObserver_PlayMoneyCommandReceived;
-            m_CommandObserver.SitInCommandReceived += m_CommandObserver_SitInCommandReceived;
-            m_CommandObserver.SitOutCommandReceived += m_CommandObserver_SitOutCommandReceived;
+            m_CommandObserver.CommandReceived += OnCommandReceived;
+            m_CommandObserver.DisconnectCommandReceived += OnDisconnectCommandReceived;
+            m_CommandObserver.PlayMoneyCommandReceived += OnPlayMoneyCommandReceived;
+            m_CommandObserver.SitInCommandReceived += OnSitInCommandReceived;
+            m_CommandObserver.SitOutCommandReceived += OnSitOutCommandReceived;
         }
         #endregion Ctors & Init
 
         #region GameServer Event Handling
-        void GameServer_SendedSomething(object sender, KeyEventArgs<string> e)
+        void OnServerSendedSomething(object sender, KeyEventArgs<string> e)
         {
-            LogManager.Log(LogLevel.MessageLow, "GameServer.GameServer_SendedSomething", "<Game:{0}> SEND [{1}]", m_Player.Name, e.Key);
+            LogManager.Log(LogLevel.MessageLow, "OnServerSendedSomething", "<Game:{0}> SEND [{1}]", m_Player.Name, e.Key);
         }
         #endregion GameServer Event Handling
 
         #region PokerObserver Event Handling
-        void m_Game_GameBettingRoundEnded(object sender, RoundEventArgs e)
+        void OnGameBettingRoundEnded(object sender, RoundEventArgs e)
         {
             List<MoneyPot> pots = m_Game.Table.Pots;
             List<int> amounts = pots.Select(p => p.Amount).ToList();
@@ -109,7 +109,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
+        void OnPlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
             GameCard[] holeCards = p.NoSeat == m_Player.NoSeat ? p.Cards : p.RelativeCards;
@@ -122,12 +122,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_GameEnded(object sender, EventArgs e)
+        void OnGameEnded(object sender, EventArgs e)
         {
             Send(new GameEndedCommand());
         }
 
-        void m_Game_PlayerWonPot(object sender, PotWonEventArgs e)
+        void OnPlayerWonPot(object sender, PotWonEventArgs e)
         {
             PlayerInfo p = e.Player;
             Send(new PlayerWonPotCommand()
@@ -139,7 +139,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_PlayerActionTaken(object sender, PlayerActionEventArgs e)
+        void OnPlayerActionTaken(object sender, PlayerActionEventArgs e)
         {
             PlayerInfo p = e.Player;
             Send(new PlayerTurnEndedCommand()
@@ -154,7 +154,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_PlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
+        void OnPlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
             Send(new PlayerMoneyChangedCommand()
@@ -164,13 +164,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_EverythingEnded(object sender, EventArgs e)
+        void OnEverythingEnded(object sender, EventArgs e)
         {
             Send(new TableClosedCommand());
             m_IsConnected = false;
         }
 
-        void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
+        void OnPlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
             Send(new PlayerTurnBeganCommand()
             {
@@ -180,7 +180,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_GameBlindNeeded(object sender, EventArgs e)
+        void OnGameBlindNeeded(object sender, EventArgs e)
         {
             TableInfo t = m_Game.Table;
             Send(new GameStartedCommand()
@@ -191,7 +191,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_GameBettingRoundStarted(object sender, RoundEventArgs e)
+        void OnGameBettingRoundStarted(object sender, RoundEventArgs e)
         {
             Send(new BetTurnStartedCommand()
             {
@@ -200,7 +200,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
+        void OnPlayerJoined(object sender, PlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
             Send(new PlayerJoinedCommand()
@@ -209,7 +209,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_SeatUpdated(object sender, SeatEventArgs e)
+        void OnSeatUpdated(object sender, SeatEventArgs e)
         {
             if (!e.Seat.IsEmpty && m_Player.NoSeat != e.Seat.NoSeat)
                 e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards.ToList();
@@ -220,7 +220,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             });
         }
 
-        void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
+        void OnPlayerLeft(object sender, PlayerInfoEventArgs e)
         {
             PlayerInfo p = e.Player;
             Send(new PlayerLeftCommand()
@@ -231,22 +231,22 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         #endregion PokerObserver Event Handling
 
         #region CommandObserver Event Handling
-        void m_CommandObserver_PlayMoneyCommandReceived(object sender, CommandEventArgs<PlayerPlayMoneyCommand> e)
+        void OnPlayMoneyCommandReceived(object sender, CommandEventArgs<PlayerPlayMoneyCommand> e)
         {
             m_Game.PlayMoney(m_Player, e.Command.Played);
         }
 
-        void m_CommandObserver_SitOutCommandReceived(object sender, CommandEventArgs<PlayerSitOutCommand> e)
+        void OnSitOutCommandReceived(object sender, CommandEventArgs<PlayerSitOutCommand> e)
         {
             Send(e.Command.EncodeResponse(m_Game.SitOut(m_Player)));
         }
 
-        void m_CommandObserver_SitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
+        void OnSitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
             Send(e.Command.EncodeResponse(m_Game.SitIn(m_Player, e.Command.NoSeat)));
         }
 
-        void m_CommandObserver_DisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
+        void OnDisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
             if (m_UserInfo != null && m_Game.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Career)
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
@@ -270,9 +270,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             }
         }
 
-        void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
+        void OnCommandReceived(object sender, StringEventArgs e)
         {
-            LogManager.Log(LogLevel.MessageLow, "GameServer.m_CommandObserver_CommandReceived", "<Game:{0}> RECV [{1}]", m_Player.Name, e.Str);
+            LogManager.Log(LogLevel.MessageLow, "OnCommandReceived", "<Game:{0}> RECV [{1}]", m_Player.Name, e.Str);
         }
         #endregion CommandObserver Event Handling
 

@@ -69,10 +69,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             potValues[7] = lblPot7;
             potValues[8] = lblPot8;
             potValues[9] = lblPot9;
-            logConsole.RelativeSizeChanged += new EventHandler<IntEventArgs>(logConsole_RelativeSizeChanged);
+            logConsole.RelativeSizeChanged += OnConsoleRelativeSizeChanged;
         }
 
-        void logConsole_RelativeSizeChanged(object sender, IntEventArgs e)
+        void OnConsoleRelativeSizeChanged(object sender, IntEventArgs e)
         {
             Height += e.Value;
         }
@@ -101,45 +101,45 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         private void InitializePokerObserverForGUI()
         {
-            m_Game.GameBettingRoundEnded += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded);
-            m_Game.GameBettingRoundStarted += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted);
-            m_Game.GameBlindNeeded += new EventHandler(m_Game_GameBlindNeeded);
-            m_Game.GameEnded += new EventHandler(m_Game_GameEnded);
-            m_Game.GameGenerallyUpdated += new EventHandler(m_Game_GameGenerallyUpdated);
-            m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);
-            m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken);
-            m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged);
-            m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined);
-            m_Game.SeatUpdated += new EventHandler<SeatEventArgs>(m_Game_SeatUpdated);
-            m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
-            m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged);
-            m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot);
+            m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
+            m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
+            m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded;
+            m_Game.Observer.GameEnded += OnGameEnded;
+            m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
+            m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
+            m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
+            m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
+            m_Game.Observer.PlayerJoined += OnPlayerJoined;
+            m_Game.Observer.SeatUpdated += OnSeatUpdated;
+            m_Game.Observer.PlayerLeft += OnPlayerLeft;
+            m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
+            m_Game.Observer.PlayerWonPot += OnPlayerWonPot;
         }
 
         private void InitializePokerObserverForConsole()
         {
-            m_Game.EverythingEnded += new EventHandler(m_Game_EverythingEnded_Console);
-            m_Game.GameBettingRoundEnded += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded_Console);
-            m_Game.GameBettingRoundStarted += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted_Console);
-            m_Game.GameBlindNeeded += new EventHandler(m_Game_GameBlindNeeded_Console);
-            m_Game.GameEnded += new EventHandler(m_Game_GameEnded_Console);
-            m_Game.GameGenerallyUpdated += new EventHandler(m_Game_GameGenerallyUpdated_Console);
-            m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded_Console);
-            m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console);
-            m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged_Console);
-            m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console);
-            m_Game.SeatUpdated += new EventHandler<SeatEventArgs>(m_Game_SeatUpdated_Console);
-            m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console);
-            m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console);
-            m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console);
+            m_Game.Observer.EverythingEnded += OnEverythingEnded_Console;
+            m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded_Console;
+            m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted_Console;
+            m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded_Console;
+            m_Game.Observer.GameEnded += OnGameEnded_Console;
+            m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated_Console;
+            m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded_Console;
+            m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken_Console;
+            m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged_Console;
+            m_Game.Observer.PlayerJoined += OnPlayerJoined_Console;
+            m_Game.Observer.SeatUpdated += OnSeatUpdated_Console;
+            m_Game.Observer.PlayerLeft += OnPlayerLeft_Console;
+            m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged_Console;
+            m_Game.Observer.PlayerWonPot += OnPlayerWonPot_Console;
         }
 
-        void m_Game_GameBettingRoundEnded(object sender, RoundEventArgs e)
+        void OnGameBettingRoundEnded(object sender, RoundEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundEnded), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -159,12 +159,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_GameBettingRoundStarted(object sender, RoundEventArgs e)
+        void OnGameBettingRoundStarted(object sender, RoundEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundStarted), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -179,12 +179,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_GameBlindNeeded(object sender, EventArgs e)
+        void OnGameBlindNeeded(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameBlindNeeded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameBlindNeeded), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -207,12 +207,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_GameEnded(object sender, EventArgs e)
+        void OnGameEnded(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameEnded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameEnded), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -248,12 +248,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_GameGenerallyUpdated(object sender, EventArgs e)
+        void OnGameGenerallyUpdated(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameGenerallyUpdated), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -276,12 +276,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
+        void OnPlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -292,12 +292,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerActionTaken(object sender, PlayerActionEventArgs e)
+        void OnPlayerActionTaken(object sender, PlayerActionEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerActionEventArgs>(OnPlayerActionTaken), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -316,12 +316,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
+        void OnPlayerHoleCardsChanged(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerHoleCardsChanged), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -334,23 +334,23 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerJoined(object sender, PlayerInfoEventArgs e)
+        void OnPlayerJoined(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined), new object[] { sender, e });
                 return;
             }
             //PlayerInfo p = e.Player;
         }
 
-        void m_Game_SeatUpdated(object sender, SeatEventArgs e)
+        void OnSeatUpdated(object sender, SeatEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated), new object[] { sender, e });
+                BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -361,12 +361,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerLeaved(object sender, PlayerInfoEventArgs e)
+        void OnPlayerLeft(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -376,12 +376,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
+        void OnPlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerMoneyChanged), new object[] { sender, e });
                 return;
             }
             SuspendLayout();
@@ -391,12 +391,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             ResumeLayout();
         }
 
-        void m_Game_PlayerWonPot(object sender, PotWonEventArgs e)
+        void OnPlayerWonPot(object sender, PotWonEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot), new object[] { sender,e });
+                BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot), new object[] { sender,e });
                 return;
             }
             SuspendLayout();
@@ -408,33 +408,33 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         }
 
 
-        void m_Game_EverythingEnded_Console(object sender, EventArgs e)
+        void OnEverythingEnded_Console(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_EverythingEnded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnEverythingEnded_Console), new object[] { sender, e });
                 return;
             }
             WriteLine("==> Table closed");
         }
-        void m_Game_GameBettingRoundEnded_Console(object sender, RoundEventArgs e)
+        void OnGameBettingRoundEnded_Console(object sender, RoundEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundEnded_Console), new object[] { sender, e });
                 return;
             }
             //WriteLine("==> End of " + e.Round.ToString());
         }
 
-        void m_Game_GameBettingRoundStarted_Console(object sender, RoundEventArgs e)
+        void OnGameBettingRoundStarted_Console(object sender, RoundEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundStarted_Console), new object[] { sender, e });
                 return;
             }
             TableInfo table = m_Game.Table;
@@ -450,12 +450,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
         }
 
-        void m_Game_GameBlindNeeded_Console(object sender, EventArgs e)
+        void OnGameBlindNeeded_Console(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameBlindNeeded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameBlindNeeded_Console), new object[] { sender, e });
                 return;
             }
             TableInfo table = m_Game.Table;
@@ -468,56 +468,56 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             WriteLine("==> " + bb.Name + " is the BigBlind");
         }
 
-        void m_Game_GameEnded_Console(object sender, EventArgs e)
+        void OnGameEnded_Console(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameEnded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameEnded_Console), new object[] { sender, e });
                 return;
             }
             WriteLine("==> End of the Game");
         }
 
-        void m_Game_GameGenerallyUpdated_Console(object sender, EventArgs e)
+        void OnGameGenerallyUpdated_Console(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(m_Game_GameGenerallyUpdated_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated_Console), new object[] { sender, e });
                 return;
             }
             WriteLine("==> Table info received");
         }
 
-        void m_Game_PlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
+        void OnPlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded_Console), new object[] { sender, e });
                 return;
             }
             //WriteLine("Player turn began (" + e.Player.Info.Name + ")");
         }
 
-        void m_Game_PlayerActionTaken_Console(object sender, PlayerActionEventArgs e)
+        void OnPlayerActionTaken_Console(object sender, PlayerActionEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerActionEventArgs>(OnPlayerActionTaken_Console), new object[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " did [" + e.Action.ToString() + "]");
         }
 
-        void m_Game_PlayerHoleCardsChanged_Console(object sender, PlayerInfoEventArgs e)
+        void OnPlayerHoleCardsChanged_Console(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerHoleCardsChanged_Console), new object[] { sender, e });
                 return;
             }
             PlayerInfo p = e.Player;
@@ -525,23 +525,23 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 WriteLine("==> Hole Card changed for " + p.Name + ": " + p.HoleCards[0].ToString() + " " + p.HoleCards[1].ToString());
         }
 
-        void m_Game_PlayerJoined_Console(object sender, PlayerInfoEventArgs e)
+        void OnPlayerJoined_Console(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined_Console), new object[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " joined the table");
         }
 
-        void m_Game_SeatUpdated_Console(object sender, SeatEventArgs e)
+        void OnSeatUpdated_Console(object sender, SeatEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<SeatEventArgs>(m_Game_SeatUpdated_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated_Console), new object[] { sender, e });
                 return;
             }
             TupleSeat s = e.Seat;
@@ -551,35 +551,35 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 WriteLine(s.Player.Name + " sat in at seat #" + s.NoSeat);
         }
 
-        void m_Game_PlayerLeaved_Console(object sender, PlayerInfoEventArgs e)
+        void OnPlayerLeft_Console(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft_Console), new object[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " left the table");
         }
 
-        void m_Game_PlayerMoneyChanged_Console(object sender, PlayerInfoEventArgs e)
+        void OnPlayerMoneyChanged_Console(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerMoneyChanged_Console), new object[] { sender, e });
                 return;
             }
             PlayerInfo p = e.Player;
             //WriteLine(p.Name + " money changed to " + p.MoneySafeAmnt);
         }
 
-        void m_Game_PlayerWonPot_Console(object sender, PotWonEventArgs e)
+        void OnPlayerWonPot_Console(object sender, PotWonEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot_Console), new object[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ")");

@@ -31,27 +31,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         private readonly int m_NoPort;
         #endregion Fields
 
-        #region Events
-        public event EventHandler EverythingEnded = delegate { };
-        public event EventHandler GameBlindNeeded = delegate { };
-        public event EventHandler GameEnded = delegate { };
-        public event EventHandler GameGenerallyUpdated = delegate { };
-        public event EventHandler<RoundEventArgs> GameBettingRoundStarted = delegate { };
-        public event EventHandler<RoundEventArgs> GameBettingRoundEnded = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerJoined = delegate { };
-        public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerLeaved = delegate { };
-        public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerMoneyChanged = delegate { };
-        public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
-        public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
-        public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
-
-        public event IntHandler SitInResponseReceived = delegate { };
-        public event BooleanHandler SitOutResponseReceived = delegate { };
-        #endregion Events
-
         #region Properties
+        public PokerGameObserver Observer { get; private set; }
         public TableInfo Table { get { return m_PokerTable; } }
         public int NoSeat { get { return m_TablePosition; } }
         public int NoPort { get { return m_NoPort; } }
@@ -72,6 +53,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         #region Ctors & Init
         public GameTCPClient(string name, int port)
         {
+            Observer = new PokerGameObserver(this);
             m_TablePosition = -1;
             m_PlayerName = name;
             m_NoPort = port;
@@ -99,19 +81,19 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_CommandObserver.PlayerSitOutResponseReceived += m_CommandObserver_PlayerSitOutResponseReceived;
         }
 
+        #endregion Ctors & Init
+
+        #region CommandObserver Event Handling
+
         void m_CommandObserver_PlayerSitOutResponseReceived(object sender, CommandEventArgs<PlayerSitOutResponse> e)
         {
-            SitOutResponseReceived(e.Command.Success);
+            Observer.RaiseSitOutResponseReceived(e.Command.Success);
         }
 
         void m_CommandObserver_PlayerSitInResponseReceived(object sender, CommandEventArgs<PlayerSitInResponse> e)
         {
-            SitInResponseReceived(e.Command.NoSeat);
+            Observer.RaiseSitInResponseReceived(e.Command.NoSeat);
         }
-
-        #endregion Ctors & Init
-
-        #region CommandObserver Event Handling
         void m_CommandObserver_CommandReceived(object sender, StringEventArgs e)
         {
             LogManager.Log(LogLevel.MessageLow, "GameClient.m_CommandObserver_CommandReceived", "{0} RECV -={1}=-", m_PlayerName, e.Str);
@@ -125,7 +107,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_PokerTable.HigherBet = 0;
             m_PokerTable.Players.ForEach(p => p.MoneyBetAmnt = 0);
 
-            GameBettingRoundEnded(this, new RoundEventArgs(cmd.Round));
+            Observer.RaiseGameBettingRoundEnded(cmd.Round);
         }
 
         void m_CommandObserver_BetTurnStartedCommandReceived(object sender, CommandEventArgs<BetTurnStartedCommand> e)
@@ -135,14 +117,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_PokerTable.Round = cmd.Round;
             m_PokerTable.NoSeatLastRaise = m_PokerTable.GetPlayingPlayerNextTo(m_PokerTable.Round == RoundTypeEnum.Preflop ? m_PokerTable.NoSeatBigBlind : m_PokerTable.NoSeatDealer).NoSeat;
 
-            GameBettingRoundStarted(this, new RoundEventArgs(cmd.Round));
+            Observer.RaiseGameBettingRoundStarted(cmd.Round);
         }
 
         void m_CommandObserver_GameEndedCommandReceived(object sender, CommandEventArgs<GameEndedCommand> e)
         {
             m_PokerTable.TotalPotAmnt = 0;
 
-            GameEnded(this, new EventArgs());
+            Observer.RaiseGameEnded();
         }
 
         void m_CommandObserver_GameStartedCommandReceived(object sender, CommandEventArgs<GameStartedCommand> e)
@@ -159,7 +141,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             if (m_PokerTable.NoSeatBigBlind == m_TablePosition)
                 Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
 
-            GameBlindNeeded(this, new EventArgs());
+            Observer.RaiseGameBlindNeeded();
         }
 
         void m_CommandObserver_PlayerHoleCardsChangedCommandReceived(object sender, CommandEventArgs<PlayerHoleCardsChangedCommand> e)
@@ -171,7 +153,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 SetPlayerVisibility(p, cmd.State, cmd.CardsID.Select(id => new GameCard(id)).ToList());
 
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                Observer.RaisePlayerHoleCardsChanged(p);
             }
         }
 
@@ -183,7 +165,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             m_PokerTable.JoinTable(p);
 
-            PlayerJoined(this, new PlayerInfoEventArgs(p));
+            Observer.RaisePlayerJoined(p);
 
         }
 
@@ -199,7 +181,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             else
                 m_PokerTable.ClearSeat(s.NoSeat);
 
-            SeatUpdated(this, new SeatEventArgs(s));
+            Observer.RaiseSeatUpdated(s);
 
         }
 
@@ -212,7 +194,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 m_PokerTable.LeaveTable(p);
 
-                PlayerLeaved(this, new PlayerInfoEventArgs(p));
+                Observer.RaisePlayerLeft(p);
             }
         }
 
@@ -225,7 +207,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 p.MoneySafeAmnt = cmd.PlayerMoney;
 
-                PlayerMoneyChanged(this, new PlayerInfoEventArgs(p));
+                Observer.RaisePlayerMoneyChanged(p);
             }
         }
 
@@ -240,7 +222,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 m_PokerTable.NoSeatCurrPlayer = cmd.PlayerPos;
                 m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
 
-                PlayerActionNeeded(this, new HistoricPlayerInfoEventArgs(p, l));
+                Observer.RaisePlayerActionNeeded(p, l);
             }
         }
 
@@ -261,7 +243,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 p.MoneySafeAmnt = cmd.PlayerMoney;
                 p.State = cmd.State;
 
-                PlayerActionTaken(this, new PlayerActionEventArgs(p, cmd.ActionType, cmd.ActionAmount));
+                Observer.RaisePlayerActionTaken(p, cmd.ActionType, cmd.ActionAmount);
             }
         }
 
@@ -274,13 +256,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 p.MoneySafeAmnt = cmd.PlayerMoney;
 
-                PlayerWonPot(this, new PotWonEventArgs(p, cmd.PotID, cmd.Shared));
+                Observer.RaisePlayerWonPot(p, cmd.PotID, cmd.Shared);
             }
         }
 
         void m_CommandObserver_TableClosedCommandReceived(object sender, CommandEventArgs<TableClosedCommand> e)
         {
-            EverythingEnded(this, e);
+            Observer.RaiseEverythingEnded();
         }
 
         void m_CommandObserver_TableInfoCommandReceived(object sender, CommandEventArgs<TableInfoCommand> e)
@@ -318,10 +300,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 if (seat.IsCurrentPlayer)
                     m_PokerTable.NoSeatCurrPlayer = noSeat;
 
-                PlayerHoleCardsChanged(this, new PlayerInfoEventArgs(p));
+                Observer.RaisePlayerHoleCardsChanged(p);
 
             }
-            GameGenerallyUpdated(this, new EventArgs());
+            Observer.RaiseGameGenerallyUpdated();
         }
         #endregion CommandObserver Event Handling
 
