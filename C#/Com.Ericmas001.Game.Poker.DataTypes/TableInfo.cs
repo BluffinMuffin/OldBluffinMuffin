@@ -131,11 +131,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public PlayerInfo CurrentPlayer { get { return GetPlayer(NoSeatCurrPlayer); } }
 
         /// <summary>
-        /// Where is the one who setted the current Bet Amount
-        /// </summary>
-        public int NoSeatLastRaise { get; set; }
-
-        /// <summary>
         /// How many player have played this round and are ready to play the next one
         /// </summary>
         public int NbPlayed { get; set; }
@@ -207,24 +202,33 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             get { return PlayingPlayersFrom(NoSeatCurrPlayer); }
         }
 
-        /// <summary>
-        /// List of the playing Players in order starting from the last raising player
-        /// </summary>
-        public List<PlayerInfo> PlayingPlayersFromLastRaise
-        {
-            get { return PlayingPlayersFrom(NoSeatLastRaise); }
-        }
-
         // List of the playing Players in order starting from the one who started the round
         public List<PlayerInfo> PlayingPlayersFromFirst
         {
             get
             {
-                if (Round == RoundTypeEnum.Preflop)
+                return PlayingPlayersFrom(SeatOfTheFirstPlayer.NoSeat);
+            }
+        }
+
+        public SeatInfo SeatOfTheFirstPlayer
+        {
+            get
+            {
+                int noSeat = GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
+
+                if (Round == RoundTypeEnum.Preflop && Params.BlindType == BlindTypeEnum.Blinds)
                 {
-                    return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatBigBlind).NoSeat);
+                    //Ad B : A      A
+                    //Ad B C: A     A->B->C->A
+                    //Ad B C D: D   A->B->C->D
+                    if (NbPlayingAndAllIn < 3)
+                        noSeat = NoSeatDealer;
+                    else
+                        noSeat = GetPlayingPlayerNextTo(GetPlayingPlayerNextTo(GetPlayingPlayerNextTo(NoSeatDealer).NoSeat).NoSeat).NoSeat;
                 }
-                return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatDealer).NoSeat);
+
+                return Seats[noSeat];
             }
         }
         #endregion Properties
@@ -246,7 +250,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             Cards = new GameCard[5];
             NbPlayed = 0;
-            PlaceButtons();
             TotalPotAmnt = 0;
             m_Pots.Clear();
             m_Pots.Add(new MoneyPot(0));
@@ -272,6 +275,19 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
                 SeatInfo si = m_Seats[(seat + 1 + i) % Params.MaxPlayers];
+                if (!si.IsEmpty && si.Player.IsPlaying)
+                    return si.Player;
+            }
+            return m_Seats[seat].Player;
+        }
+        public PlayerInfo GetPlayingPlayerJustBefore(int seat)
+        {
+            for (int i = 0; i < Params.MaxPlayers; ++i)
+            {
+                int id = (seat - 1 - i) % Params.MaxPlayers;
+                if (id < 0)
+                    id = Params.MaxPlayers + id;
+                SeatInfo si = m_Seats[id];
                 if (!si.IsEmpty && si.Player.IsPlaying)
                     return si.Player;
             }
@@ -372,11 +388,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         protected bool PeopleContainsPlayer(PlayerInfo p)
         {
             return People.Contains(p) || People.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
-        }
-        protected virtual void PlaceButtons()
-        {
-            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
-            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
         }
         #endregion Protected Methods
     }

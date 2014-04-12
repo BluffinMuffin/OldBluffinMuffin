@@ -43,6 +43,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         public override void InitTable()
         {
             base.InitTable();
+            InitPokerTable();
             m_AllInCaps.Clear();
             m_CurrPotId = 0;
         }
@@ -253,18 +254,17 @@ namespace Com.Ericmas001.Game.Poker.Logic
             if (bet >= 0 && (p.IsPlaying || p.IsAllIn))
                 pot.AttachPlayer(p);
         }
-        protected override void PlaceButtons()
+        private void InitPokerTable()
         {
-            int previousNoSeatDealer = -1;
-            if (DealerSeat != null)
-            {
-                previousNoSeatDealer = DealerSeat.NoSeat;
-                DealerSeat.Attributes.Remove(SeatAttributeEnum.Dealer);
-            }
+            int previousNoSeatDealer = NoSeatDealer;
+
+            Seats.ForEach(s => s.Attributes.Clear());
+
             PlayerInfo nextDealer = GetPlayingPlayerNextTo(previousNoSeatDealer);
             Seats[nextDealer.NoSeat].Attributes.Add(SeatAttributeEnum.Dealer);
 
-            base.PlaceButtons();
+            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
+            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
 
             m_BlindNeeded.Clear();
             m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);

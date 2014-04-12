@@ -457,8 +457,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             Observer.RaiseGameBettingRoundStarted(Table.Round);
 
+            //We Put the current player just before the starting player, then we will take the next player and he will be the first
+            Table.NoSeatCurrPlayer = Table.GetPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer.NoSeat).NoSeat;
             Table.NbPlayed = 0;
-            Table.NoSeatLastRaise = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer).NoSeat;
             Table.MinimumRaiseAmount = Table.Params.BlindAmount;
 
             WaitALittle(Params.WaitingTimes.AfterBoardDealed);
@@ -473,7 +474,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
             switch (Table.Round)
             {
                 case RoundTypeEnum.Preflop:
-                    Table.NoSeatCurrPlayer = Table.GetPlayingPlayerNextTo(Table.NoSeatSmallBlind).NoSeat;
                     DealHole();
                     break;
                 case RoundTypeEnum.Flop:
@@ -543,7 +543,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
             if (!p.IsAllIn)
                 Table.NbPlayed++;
 
-            Table.NoSeatLastRaise = p.NoSeat;
             Table.HigherBet = p.MoneyBetAmnt;
 
             WaitALittle(Params.WaitingTimes.AfterPlayerAction);
@@ -628,6 +627,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 Table.InitTable();
                 m_Dealer.FreshDeck();
                 AdvanceToNextGameState(); //Advancing to WaitForBlinds State
+                Observer.RaiseGameGenerallyUpdated();
                 Observer.RaiseGameBlindNeeded();
             }
             else
