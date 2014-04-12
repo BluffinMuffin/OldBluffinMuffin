@@ -61,19 +61,19 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         private void InitializePokerObserver()
         {
-            m_Game.GameBettingRoundEnded += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundEnded);
-            m_Game.PlayerHoleCardsChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerHoleCardsChanged);
-            m_Game.GameEnded += new EventHandler(m_Game_GameEnded);
-            m_Game.PlayerWonPot += new EventHandler<PotWonEventArgs>(m_Game_PlayerWonPot);
-            m_Game.PlayerActionTaken += new EventHandler<PlayerActionEventArgs>(m_Game_PlayerActionTaken);
-            m_Game.PlayerMoneyChanged += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerMoneyChanged);
-            m_Game.EverythingEnded += new EventHandler(m_Game_EverythingEnded);
-            m_Game.PlayerActionNeeded += new EventHandler<HistoricPlayerInfoEventArgs>(m_Game_PlayerActionNeeded);
-            m_Game.GameBlindNeeded += new EventHandler(m_Game_GameBlindNeeded);
-            m_Game.GameBettingRoundStarted += new EventHandler<RoundEventArgs>(m_Game_GameBettingRoundStarted);
-            m_Game.PlayerJoined += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerJoined);
-            m_Game.SeatUpdated += new EventHandler<SeatEventArgs>(m_Game_SeatUpdated);
-            m_Game.PlayerLeaved += new EventHandler<PlayerInfoEventArgs>(m_Game_PlayerLeaved);
+            m_Game.GameBettingRoundEnded += m_Game_GameBettingRoundEnded;
+            m_Game.PlayerHoleCardsChanged += m_Game_PlayerHoleCardsChanged;
+            m_Game.GameEnded += m_Game_GameEnded;
+            m_Game.PlayerWonPot += m_Game_PlayerWonPot;
+            m_Game.PlayerActionTaken += m_Game_PlayerActionTaken;
+            m_Game.PlayerMoneyChanged += m_Game_PlayerMoneyChanged;
+            m_Game.EverythingEnded += m_Game_EverythingEnded;
+            m_Game.PlayerActionNeeded += m_Game_PlayerActionNeeded;
+            m_Game.GameBlindNeeded += m_Game_GameBlindNeeded;
+            m_Game.GameBettingRoundStarted += m_Game_GameBettingRoundStarted;
+            m_Game.PlayerJoined +=m_Game_PlayerJoined;
+            m_Game.SeatUpdated += m_Game_SeatUpdated;
+            m_Game.PlayerLeaved += m_Game_PlayerLeaved;
         }
 
         protected override void InitializeCommandObserver()
@@ -211,7 +211,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_Game_SeatUpdated(object sender, SeatEventArgs e)
         {
-            if (m_Player.NoSeat != e.Seat.NoSeat)
+            if (!e.Seat.IsEmpty && m_Player.NoSeat != e.Seat.NoSeat)
                 e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards.ToList();
 
             Send(new SeatUpdatedCommand()
@@ -238,7 +238,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void m_CommandObserver_SitOutCommandReceived(object sender, CommandEventArgs<PlayerSitOutCommand> e)
         {
-            throw new NotImplementedException();
+            Send(e.Command.EncodeResponse(m_Game.SitOut(m_Player)));
         }
 
         void m_CommandObserver_SitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)

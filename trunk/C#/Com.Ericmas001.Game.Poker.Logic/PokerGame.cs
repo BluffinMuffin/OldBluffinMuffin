@@ -44,6 +44,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
 
         public event IntHandler SitInResponseReceived = delegate { };
+        public event BooleanHandler SitOutResponseReceived = delegate { };
         #endregion
 
         #region Properties
@@ -171,20 +172,46 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return -1;
         }
 
-        /// <summary>
-        /// The player is leaving the game
-        /// </summary>
-        public bool LeaveGame(PlayerInfo p)
+        public bool SitOut(PlayerInfo p)
         {
+            int oldSeat = p.NoSeat;
+            if (oldSeat == -1)
+                return true;
+
             bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
             int blindNeeded = GameTable.GetBlindNeeded(p);
 
-            if (Table.LeaveTable(p))
+            if (Table.SitOut(p))
             {
                 if (wasPlaying)
                     PlayMoney(p, -1);
                 if (blindNeeded > 0)
                     PlayMoney(p, blindNeeded);
+                TupleSeat seat = new TupleSeat()
+                {
+                    Player = null,
+                    NoSeat = oldSeat,
+                    IsSmallBlind = false,
+                    IsEmpty = true,
+                    IsDealer = false,
+                    IsCurrentPlayer = false,
+                    IsBigBlind = false
+                };
+                SeatUpdated(this, new SeatEventArgs(seat));
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// The player is leaving the game
+        /// </summary>
+        public bool LeaveGame(PlayerInfo p)
+        {
+            bool sitOutOk = SitOut(p);
+
+            if (sitOutOk && Table.LeaveTable(p))
+            {
                 PlayerLeaved(this, new PlayerInfoEventArgs(p));
 
                 if (Table.Players.Count == 0)

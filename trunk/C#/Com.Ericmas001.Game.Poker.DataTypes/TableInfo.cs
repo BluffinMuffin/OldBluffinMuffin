@@ -316,13 +316,24 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 return false;
             People.Remove(p);
 
+            return SitOut(p);
+        }
+
+        public virtual bool SitOut(PlayerInfo p)
+        {
             if (!SeatsContainsPlayer(p))
                 return true;
 
             int seat = p.NoSeat;
             p.State = PlayerStateEnum.Zombie;
+            p.NoSeat = -1;
             m_Seats[seat] = null;
             return true;
+        }
+
+        public void ClearSeat(int noSeat)
+        {
+            m_Seats[noSeat] = null;
         }
 
         /// <summary>

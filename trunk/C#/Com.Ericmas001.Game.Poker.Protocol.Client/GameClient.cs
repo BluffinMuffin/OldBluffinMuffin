@@ -48,6 +48,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
 
         public event IntHandler SitInResponseReceived = delegate { };
+        public event BooleanHandler SitOutResponseReceived = delegate { };
         #endregion Events
 
         #region Properties
@@ -95,6 +96,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_CommandObserver.TableInfoCommandReceived += m_CommandObserver_TableInfoCommandReceived;
 
             m_CommandObserver.PlayerSitInResponseReceived += m_CommandObserver_PlayerSitInResponseReceived;
+            m_CommandObserver.PlayerSitOutResponseReceived += m_CommandObserver_PlayerSitOutResponseReceived;
+        }
+
+        void m_CommandObserver_PlayerSitOutResponseReceived(object sender, CommandEventArgs<PlayerSitOutResponse> e)
+        {
+            SitOutResponseReceived(e.Command.Success);
         }
 
         void m_CommandObserver_PlayerSitInResponseReceived(object sender, CommandEventArgs<PlayerSitInResponse> e)
@@ -189,6 +196,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 if (m_PlayerName == s.Player.Name)
                     m_TablePosition = s.NoSeat;
             }
+            else
+                m_PokerTable.ClearSeat(s.NoSeat);
 
             SeatUpdated(this, new SeatEventArgs(s));
 
@@ -337,7 +346,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return -1;
         }
 
-        public bool SitOut()
+        public bool SitOut(PlayerInfo p)
         {
             Send(new PlayerSitOutCommand());
             return true;

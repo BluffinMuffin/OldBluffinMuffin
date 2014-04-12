@@ -27,5 +27,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         public event EventHandler<CommandEventArgs<TableInfoCommand>> TableInfoCommandReceived = delegate { };
 
         public event EventHandler<CommandEventArgs<PlayerSitInResponse>> PlayerSitInResponseReceived = delegate { };
+        public event EventHandler<CommandEventArgs<PlayerSitOutResponse>> PlayerSitOutResponseReceived = delegate { };
     }
 }

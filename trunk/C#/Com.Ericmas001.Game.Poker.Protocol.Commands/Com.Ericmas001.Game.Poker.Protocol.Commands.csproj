@@ -50,6 +50,7 @@
     <Compile Include="Game\BetTurnStartedCommand.cs" />
     <Compile Include="Game\GameEndedCommand.cs" />
     <Compile Include="Game\GameStartedCommand.cs" />
+    <Compile Include="Game\PlayerSitOutResponse.cs" />
     <Compile Include="Game\PlayerSitInResponse.cs" />
     <Compile Include="Game\PlayerHoleCardsChangedCommand.cs" />
     <Compile Include="Game\PlayerSitOutCommand.cs" />

@@ -27,12 +27,14 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         event EventHandler<PotWonEventArgs> PlayerWonPot;
 
         event IntHandler SitInResponseReceived;
+        event BooleanHandler SitOutResponseReceived;
 
         TableInfo Table { get; }
 
         bool PlayMoney(PlayerInfo p, int amnt);
         bool LeaveGame(PlayerInfo p);
         int SitIn(PlayerInfo p, int noSeat = -1);
+        bool SitOut(PlayerInfo p);
 
         string Encode { get; }
     }
