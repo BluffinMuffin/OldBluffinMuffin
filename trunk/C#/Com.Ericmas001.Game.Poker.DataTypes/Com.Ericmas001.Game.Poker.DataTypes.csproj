@@ -78,7 +78,7 @@
     <Compile Include="Rules\LimitInfo.cs" />
     <Compile Include="Rules\RuleInfo.cs" />
     <Compile Include="PlayerInfo.cs" />
-    <Compile Include="TupleSeat.cs" />
+    <Compile Include="SeatInfo.cs" />
     <Compile Include="TupleTable.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>

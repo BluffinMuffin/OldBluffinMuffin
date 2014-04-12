@@ -171,7 +171,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         void m_CommandObserver_SeatUpdatedCommandReceived(object sender, CommandEventArgs<SeatUpdatedCommand> e)
         {
-            TupleSeat s = e.Command.Seat;
+            SeatInfo s = e.Command.Seat;
             if (!s.IsEmpty)
             {
                 m_PokerTable.SitInToTable(s.Player, s.NoSeat);
@@ -276,7 +276,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             for (int i = 0; i < cmd.NbPlayers; ++i)
             {
-                TupleSeat seat = cmd.Seats[i];
+                SeatInfo seat = cmd.Seats[i];
                 if (seat.IsEmpty)
                 {
                     continue;

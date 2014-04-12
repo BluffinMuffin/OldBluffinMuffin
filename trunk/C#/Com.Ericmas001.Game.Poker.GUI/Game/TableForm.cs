@@ -24,7 +24,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         {
             DisableButtons();
             TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat];
+            PlayerInfo p = table.Seats[m_NoSeat].Player;
             m_Game.PlayMoney(p, -1);
         }
 
@@ -32,7 +32,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         {
             DisableButtons();
             TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat];
+            PlayerInfo p = table.Seats[m_NoSeat].Player;
             m_Game.PlayMoney(p, table.CallAmnt(p));
         }
 
@@ -40,7 +40,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         {
             DisableButtons();
             TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat];
+            PlayerInfo p = table.Seats[m_NoSeat].Player;
             m_Game.PlayMoney(p, (int)nudRaise.Value - p.MoneyBetAmnt);
         }
 

@@ -291,7 +291,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             PlayerInfo playerSendingTo = m_Player;
 
             cmd.BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
-            cmd.Seats = new List<TupleSeat>();
+            cmd.Seats = new List<SeatInfo>();
 
             cmd.Params = table.Params;
 
@@ -303,12 +303,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
             for (int i = 0; i < cmd.Params.MaxPlayers; ++i)
             {
-                TupleSeat si = new TupleSeat() { NoSeat = i };
+                SeatInfo si = new SeatInfo() { NoSeat = i };
                 cmd.Seats.Add(si);
 
                 PlayerInfo p = table.GetPlayer(i);
-
-                si.IsEmpty = (p == null);
                 if (si.IsEmpty)
                     continue;
                 si.Player = p.Clone();

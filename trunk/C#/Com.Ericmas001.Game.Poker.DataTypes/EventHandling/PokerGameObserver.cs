@@ -75,7 +75,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.EventHandling
         {
             PlayerLeft(m_Game, new PlayerInfoEventArgs(p));
         }
-        public void RaiseSeatUpdated(TupleSeat s)
+        public void RaiseSeatUpdated(SeatInfo s)
         {
             SeatUpdated(m_Game, new SeatEventArgs(s));
         }

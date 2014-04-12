@@ -460,9 +460,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
-            PlayerInfo d = table.Seats[table.NoSeatDealer];
-            PlayerInfo sb = table.Seats[table.NoSeatSmallBlind];
-            PlayerInfo bb = table.Seats[table.NoSeatBigBlind];
+            PlayerInfo d = table.Seats[table.NoSeatDealer].Player;
+            PlayerInfo sb = table.Seats[table.NoSeatSmallBlind].Player;
+            PlayerInfo bb = table.Seats[table.NoSeatBigBlind].Player;
             WriteLine("==> " + d.Name + " is the Dealer");
             WriteLine("==> " + sb.Name + " is the SmallBlind");
             WriteLine("==> " + bb.Name + " is the BigBlind");
@@ -544,7 +544,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated_Console), new object[] { sender, e });
                 return;
             }
-            TupleSeat s = e.Seat;
+            SeatInfo s = e.Seat;
             if(e.Seat.IsEmpty)
                 WriteLine("The seat #" + s.NoSeat + " is now inoccupied");
             else

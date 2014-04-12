@@ -136,12 +136,11 @@ namespace Com.Ericmas001.Game.Poker.Logic
             bool ok = GameTable.AskToSitIn(p, noSeat);
             if (ok)
             {
-                TupleSeat seat = new TupleSeat()
+                SeatInfo seat = new SeatInfo()
                 {
                     Player = p.Clone(),
                     NoSeat = p.NoSeat,
                     IsSmallBlind = Table.NoSeatSmallBlind == p.NoSeat,
-                    IsEmpty = false,
                     IsDealer = Table.NoSeatDealer == p.NoSeat,
                     IsCurrentPlayer = Table.NoSeatCurrPlayer == p.NoSeat,
                     IsBigBlind = Table.NoSeatBigBlind == p.NoSeat
@@ -170,12 +169,11 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     PlayMoney(p, -1);
                 if (blindNeeded > 0)
                     PlayMoney(p, blindNeeded);
-                TupleSeat seat = new TupleSeat()
+                SeatInfo seat = new SeatInfo()
                 {
                     Player = null,
                     NoSeat = oldSeat,
                     IsSmallBlind = false,
-                    IsEmpty = true,
                     IsDealer = false,
                     IsCurrentPlayer = false,
                     IsBigBlind = false

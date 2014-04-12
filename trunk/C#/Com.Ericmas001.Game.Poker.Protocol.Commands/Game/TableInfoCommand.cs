@@ -19,7 +19,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public List<int> PotsAmount { get; set; }
         public List<int> BoardCardIDs { get; set; }
         public int NbPlayers { get; set; }
-        public List<TupleSeat> Seats { get; set; }
+        public List<SeatInfo> Seats { get; set; }
 
         public TableInfoCommand()
         {
@@ -28,7 +28,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public TableInfoCommand(TableInfo table, PlayerInfo playerSendingTo)
         {
             BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
-            Seats = new List<TupleSeat>();
+            Seats = new List<SeatInfo>();
 
             Params = table.Params;
 
@@ -40,12 +40,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
 
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                TupleSeat si = new TupleSeat() { NoSeat = i };
+                SeatInfo si = new SeatInfo() { NoSeat = i };
                 Seats.Add(si);
 
                 PlayerInfo p = table.GetPlayer(i);
-
-                si.IsEmpty = (p == null);
                 if (si.IsEmpty)
                     continue;
                 si.Player = p.Clone();
