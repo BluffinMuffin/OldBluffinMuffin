@@ -120,15 +120,31 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             }
         }
 
-        /// <summary>
-        /// Where is the current player
-        /// </summary>
-        public int NoSeatCurrPlayer { get; set; }
+        public SeatInfo CurrentPlayerSeat
+        {
+            get
+            {
+                return m_Seats.FirstOrDefault(s => s.Attributes.Contains(SeatAttributeEnum.CurrentPlayer));
+            }
+        }
+        public int NoSeatCurrentPlayer
+        {
+            get
+            {
+                return CurrentPlayerSeat == null ? -1 : CurrentPlayerSeat.NoSeat;
+            }
+        }
 
         /// <summary>
         /// Who is the current player
         /// </summary>
-        public PlayerInfo CurrentPlayer { get { return GetPlayer(NoSeatCurrPlayer); } }
+        public PlayerInfo CurrentPlayer
+        {
+            get
+            {
+                return CurrentPlayerSeat == null ? null : CurrentPlayerSeat.Player;
+            }
+        }
 
         /// <summary>
         /// How many player have played this round and are ready to play the next one
@@ -191,7 +207,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public List<PlayerInfo> PlayingPlayersFromNext
         {
-            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrPlayer).NoSeat); }
+            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrentPlayer).NoSeat); }
         }
 
         /// <summary>
@@ -199,7 +215,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public List<PlayerInfo> PlayingPlayersFromCurrent
         {
-            get { return PlayingPlayersFrom(NoSeatCurrPlayer); }
+            get { return PlayingPlayersFrom(NoSeatCurrentPlayer); }
         }
 
         // List of the playing Players in order starting from the one who started the round
@@ -368,6 +384,14 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public int CallAmnt(PlayerInfo p)
         {
             return HigherBet - p.MoneyBetAmnt;
+        }
+
+        public void ChangeCurrentPlayerTo(int noSeat)
+        {
+            SeatInfo oldPlayerSeat = CurrentPlayerSeat;
+            if (oldPlayerSeat != null)
+                oldPlayerSeat.Attributes.Remove(SeatAttributeEnum.CurrentPlayer);
+            Seats[noSeat].Attributes.Add(SeatAttributeEnum.CurrentPlayer);
         }
         #endregion Public Methods
 
