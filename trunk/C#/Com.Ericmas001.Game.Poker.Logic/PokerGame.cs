@@ -229,6 +229,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     break;
                 case GameStateEnum.WaitForBlinds:
                     Table.HigherBet = 0;
+                    //If we got all the blinds, what are we waiting for ?!
+                    if (GameTable.TotalBlindNeeded == 0)
+                        AdvanceToNextGameState(); //Advancing to Playing State
                     break;
                 case GameStateEnum.Playing:
                     Table.Round = RoundTypeEnum.Preflop;
