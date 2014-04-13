@@ -14,7 +14,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     {
         #region Fields
         protected readonly GameCard[] m_Cards = new GameCard[5];
-        private SeatInfo[] m_Seats;
+        protected SeatInfo[] m_Seats;
         private readonly List<PlayerInfo> m_People = new List<PlayerInfo>();
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
         protected TableParams m_Params;

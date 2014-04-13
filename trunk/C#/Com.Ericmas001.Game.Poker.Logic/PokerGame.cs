@@ -634,6 +634,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             {
                 if (Table.DealerSeat != null)
                     Table.DealerSeat.Attributes.Remove(SeatAttributeEnum.Dealer);
+                Table.PlayingPlayers.ForEach(x => x.State = PlayerStateEnum.SitIn);
             }
         }
         #endregion Private Methods

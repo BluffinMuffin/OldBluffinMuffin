@@ -12,9 +12,7 @@
 	:- The game never Starts if you select "None" as a Blind Type
 -> Bug: Visual glitches
 	:- When a player is waiting for player for an already played games, he stays with his cards
-	:- When starting, if minimum players > 2, waiting players show dealed cards in other hands
 	:- it's not clear that the "raise amount" is how much money you want to put on the table (Call + Amount To raise) in the GUI
-		- When you open a game already playing, player hubs are not initialized correctly in the screen of the new arrival
 -> Support the Fixed-Limit (http://www.pokerlistings.com/texas-holdem-betting-rules)
 -> Support the Pot-Limit (http://www.pokerlistings.com/texas-holdem-betting-rules)
 -> Add a "Five-card Draw" variant (http://en.wikipedia.org/wiki/Five-card_draw)
