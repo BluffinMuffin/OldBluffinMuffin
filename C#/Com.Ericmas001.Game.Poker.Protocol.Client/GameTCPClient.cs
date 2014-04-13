@@ -151,11 +151,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 GameStartedCommand cmd = e.Command;
                 
-                if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.SmallBlind))
-                    Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.SmallBlindAmnt });
+                if (m_TablePosition >= 0 && cmd.NeededBlind > 0)
+                    Send(new PlayerPlayMoneyCommand() { Played = cmd.NeededBlind });
 
-                if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.BigBlind))
-                    Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
+                //if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.BigBlind))
+                //    Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
 
                 Observer.RaiseGameBlindNeeded();
             }

@@ -233,9 +233,10 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public SeatInfo GetSeatOfPlayingPlayerNextTo(SeatInfo seat)
         {
+            int noSeat = seat == null ? -1 : seat.NoSeat;
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                SeatInfo si = m_Seats[(seat.NoSeat + 1 + i) % Params.MaxPlayers];
+                SeatInfo si = m_Seats[(noSeat + 1 + i) % Params.MaxPlayers];
                 if (!si.IsEmpty && si.Player.IsPlaying)
                     return si;
             }
@@ -243,9 +244,10 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         }
         public SeatInfo GetSeatOfPlayingPlayerJustBefore(SeatInfo seat)
         {
+            int noSeat = seat == null ? -1 : seat.NoSeat;
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                int id = (seat.NoSeat - 1 - i) % Params.MaxPlayers;
+                int id = (noSeat - 1 - i) % Params.MaxPlayers;
                 if (id < 0)
                     id = Params.MaxPlayers + id;
                 SeatInfo si = m_Seats[id];

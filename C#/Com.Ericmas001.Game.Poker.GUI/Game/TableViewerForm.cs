@@ -104,13 +104,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         {
             m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
             m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
-            m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded;
             m_Game.Observer.GameEnded += OnGameEnded;
             m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
             m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
             m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
-            m_Game.Observer.PlayerJoined += OnPlayerJoined;
             m_Game.Observer.SeatUpdated += OnSeatUpdated;
             m_Game.Observer.PlayerLeft += OnPlayerLeft;
             m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
@@ -120,18 +118,15 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         private void InitializePokerObserverForConsole()
         {
             m_Game.Observer.EverythingEnded += OnEverythingEnded_Console;
-            m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded_Console;
             m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted_Console;
             m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded_Console;
             m_Game.Observer.GameEnded += OnGameEnded_Console;
             m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated_Console;
-            m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded_Console;
             m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken_Console;
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged_Console;
             m_Game.Observer.PlayerJoined += OnPlayerJoined_Console;
             m_Game.Observer.SeatUpdated += OnSeatUpdated_Console;
             m_Game.Observer.PlayerLeft += OnPlayerLeft_Console;
-            m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged_Console;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot_Console;
         }
 
@@ -176,32 +171,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             for (; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
                 board[i].Card = table.Cards[i];
             for (; i < 5; ++i)
-                board[i].Card = GameCard.HIDDEN;
-            ResumeLayout();
-        }
-
-        void OnGameBlindNeeded(object sender, EventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnGameBlindNeeded), new object[] { sender, e });
-                return;
-            }
-            SuspendLayout();
-            TableInfo table = m_Game.Table;
-            lblTotalPot.Text = "$0";
-            for(int i = 1; i < 10; ++i)
-            {
-                potTitles[i].Visible = false;
-                potValues[i].Visible = false;
-                potValues[i].Text = "$0";
-            }
-            potTitles[0].Visible = true;
-            potValues[0].Visible = true;
-            potValues[0].Text = "$0";
-
-            for (int i = 0; i < 5; ++i)
                 board[i].Card = GameCard.HIDDEN;
             ResumeLayout();
         }
@@ -257,6 +226,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             lock (m_Game.Table)
             {
+
                 SuspendLayout();
                 lblTotalPot.Text = "$0";
                 for (int i = 1; i < 10; ++i)
@@ -268,7 +238,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 potTitles[0].Visible = true;
                 potValues[0].Visible = true;
                 potValues[0].Text = "$0";
+
                 TableInfo table = m_Game.Table;
+
+                for (int i = 0; i < 5; ++i)
+                    board[i].Card = m_Game.Table.Cards[i];
+
                 foreach (SeatInfo si in table.Seats)
                 {
                     PlayerHud php = huds[si.NoSeat];
@@ -341,17 +316,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             else
                 php.SetCards(null, null);
             ResumeLayout();
-        }
-
-        void OnPlayerJoined(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined), new object[] { sender, e });
-                return;
-            }
-            //PlayerInfo p = e.Player;
         }
 
         void OnSeatUpdated(object sender, SeatEventArgs e)
@@ -427,16 +391,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             WriteLine("==> Table closed");
         }
-        void OnGameBettingRoundEnded_Console(object sender, RoundEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundEnded_Console), new object[] { sender, e });
-                return;
-            }
-            //WriteLine("==> End of " + e.Round.ToString());
-        }
 
         void OnGameBettingRoundStarted_Console(object sender, RoundEventArgs e)
         {
@@ -498,17 +452,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the BigBlind"));
         }
 
-        void OnPlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded_Console), new object[] { sender, e });
-                return;
-            }
-            //WriteLine("Player turn began (" + e.Player.Info.Name + ")");
-        }
-
         void OnPlayerActionTaken_Console(object sender, PlayerActionEventArgs e)
         {
             if (InvokeRequired)
@@ -568,18 +511,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 return;
             }
             WriteLine(e.Player.Name + " left the table");
-        }
-
-        void OnPlayerMoneyChanged_Console(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerMoneyChanged_Console), new object[] { sender, e });
-                return;
-            }
-            PlayerInfo p = e.Player;
-            //WriteLine(p.Name + " money changed to " + p.MoneySafeAmnt);
         }
 
         void OnPlayerWonPot_Console(object sender, PotWonEventArgs e)

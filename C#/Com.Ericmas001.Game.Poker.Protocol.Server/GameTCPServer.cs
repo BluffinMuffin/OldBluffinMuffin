@@ -183,8 +183,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void OnGameBlindNeeded(object sender, EventArgs e)
         {
-            TableInfo t = m_Game.Table;
-            Send(new GameStartedCommand());
+            Send(new GameStartedCommand() { NeededBlind = m_Game.GameTable.GetBlindNeeded(m_Player) });
         }
 
         void OnGameBettingRoundStarted(object sender, RoundEventArgs e)

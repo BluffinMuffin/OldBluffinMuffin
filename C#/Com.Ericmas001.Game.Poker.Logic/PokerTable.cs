@@ -265,16 +265,21 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             m_BlindNeeded.Clear();
 
-            if (Params.BlindType == BlindTypeEnum.Blinds)
+            switch(Params.BlindType)
             {
-                SeatInfo smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
-                smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
+                case BlindTypeEnum.Blinds:
+                    SeatInfo smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
+                    smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
 
-                SeatInfo bigSeat = GetSeatOfPlayingPlayerNextTo(smallSeat);
-                bigSeat.Attributes.Add(SeatAttributeEnum.BigBlind);
+                    SeatInfo bigSeat = GetSeatOfPlayingPlayerNextTo(smallSeat);
+                    bigSeat.Attributes.Add(SeatAttributeEnum.BigBlind);
 
-                m_BlindNeeded.Add(smallSeat.Player, SmallBlindAmnt);
-                Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_BlindNeeded.Add(x.Player, Params.BlindAmount));
+                    m_BlindNeeded.Add(smallSeat.Player, SmallBlindAmnt);
+                    Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_BlindNeeded.Add(x.Player, Params.BlindAmount));
+                    break;
+                case BlindTypeEnum.Antes:
+                    PlayingPlayers.ForEach(x => m_BlindNeeded.Add(x, Params.BlindAmount));
+                    break;
             }
         }
         #endregion Private Methods
