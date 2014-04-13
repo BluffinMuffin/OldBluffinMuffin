@@ -314,23 +314,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
                 SetCards(cmd.BoardCardIDs);
                 m_PokerTable.Params = cmd.Params;
-                m_PokerTable.Players.ForEach(p => m_PokerTable.LeaveTable(p));
+                m_PokerTable.People.Clear();
 
                 for (int i = 0; i < cmd.NbPlayers; ++i)
                 {
-                    SeatInfo seat = cmd.Seats[i];
-                    if (seat.IsEmpty)
-                    {
-                        continue;
-                    }
-                    int noSeat = seat.NoSeat;
-                    PlayerInfo p = seat.Player;
-                    m_PokerTable.JoinTable(p);
-                    m_PokerTable.SitInToTable(p, noSeat);
-
-                    SetPlayerVisibility(p, p.State, seat.Player.HoleCards);
-
-                    m_PokerTable.Seats[i].Attributes = seat.Attributes;
+                    m_PokerTable.SetSeat(cmd.Seats[i]);
+                    m_PokerTable.People.Add(m_PokerTable.Seats[i].Player);
 
                 }
                 Observer.RaiseGameGenerallyUpdated();

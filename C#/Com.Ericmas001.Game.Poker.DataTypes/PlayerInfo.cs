@@ -12,6 +12,8 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public class PlayerInfo
     {
+        private List<GameCard> m_HoleCards;
+
         public int NoSeat { get; set; }
         public string Name { get; set; }
 
@@ -29,7 +31,20 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// Current Money Amount of the player that he played this round
         /// </summary>
         public int MoneyBetAmnt { get; set; }
-        public List<GameCard> HoleCards { get; set; }
+
+        public GameCard[] HoleCards
+        {
+            get
+            {
+                if (m_HoleCards == null || m_HoleCards.Count != 2)
+                    return new GameCard[] { GameCard.NO_CARD, GameCard.NO_CARD };
+                return m_HoleCards.ToArray();
+            }
+            set
+            {
+                m_HoleCards = value.ToList();
+            }
+        }
 
         public PlayerStateEnum State { get; set; }
 
@@ -40,8 +55,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         public PlayerInfo()
         {
-            HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
-
             Name = "Anonymous Player";
             NoSeat = -1;
             MoneySafeAmnt = 0;
@@ -76,7 +89,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 MoneyInitAmnt = this.MoneyInitAmnt,
                 MoneyBetAmnt = this.MoneyBetAmnt,
                 MoneySafeAmnt = this.MoneySafeAmnt,
-                HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToList(),
+                HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToArray(),
                 IsShowingCards = this.IsShowingCards,
                 State = this.State,
             };
@@ -116,7 +129,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             set
             {
                 if (value != null && value.Length == 2)
-                    HoleCards = value.ToList();
+                    HoleCards = value;
             }
         }
 

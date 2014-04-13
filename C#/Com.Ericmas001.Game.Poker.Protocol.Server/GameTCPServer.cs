@@ -212,7 +212,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         void OnSeatUpdated(object sender, SeatEventArgs e)
         {
             if (!e.Seat.IsEmpty && m_Player.NoSeat != e.Seat.NoSeat)
-                e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards.ToList();
+                e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards;
 
             Send(new SeatUpdatedCommand()
             {
@@ -313,11 +313,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                     si.Player = gameSeat.Player.Clone();
 
                     //If we are not sending the info about the player who is receiving, don't show the cards unless you can
-                    if (i != playerSendingTo.NoSeat)
-                        si.Player.HoleCards = gameSeat.Player.RelativeCards.ToList();
+                    if (i != playerSendingTo.NoSeat && si.Player.IsPlaying)
+                        si.Player.HoleCards = gameSeat.Player.RelativeCards;
 
-                    if (si.Player.HoleCards.Count != 2)
-                        si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
+                    if (si.Player.HoleCards.Length != 2)
+                        si.Player.HoleCards = new GameCard[] { GameCard.NO_CARD, GameCard.NO_CARD };
 
                     si.Attributes = gameSeat.Attributes;
                 }

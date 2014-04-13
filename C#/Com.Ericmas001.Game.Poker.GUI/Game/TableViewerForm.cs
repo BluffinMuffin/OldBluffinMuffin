@@ -226,9 +226,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             lock (m_Game.Table)
             {
+                
 
+                TableInfo table = m_Game.Table;
                 SuspendLayout();
-                lblTotalPot.Text = "$0";
+                lblTotalPot.Text = "$" + table.TotalPotAmnt;
                 for (int i = 1; i < 10; ++i)
                 {
                     potTitles[i].Visible = false;
@@ -239,7 +241,13 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 potValues[0].Visible = true;
                 potValues[0].Text = "$0";
 
-                TableInfo table = m_Game.Table;
+                foreach (MoneyPot p in table.Pots)
+                {
+                    int i = p.Id;
+                    potTitles[i].Visible = (i == 0 || p.Amount > 0);
+                    potValues[i].Visible = (i == 0 || p.Amount > 0);
+                    potValues[i].Text = "$" + p.Amount;
+                }
 
                 for (int i = 0; i < 5; ++i)
                     board[i].Card = m_Game.Table.Cards[i];
@@ -249,12 +257,21 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                     PlayerHud php = huds[si.NoSeat];
                     InstallPlayer(php, si);
                 }
+                for (int i = 0; i < huds.Length; ++i)
+                {
+                    huds[i].DoAction(GameActionEnum.DoNothing, 0);
+                    bets[i].Text = table.Seats[i].IsEmpty || table.Seats[i].Player.MoneyBetAmnt == 0 ? "" : "$" + table.Seats[i].Player.MoneyBetAmnt;
+                }
 
                 //Set Small Blind Icon
-                m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => huds[x.NoSeat].SetSmallBlind());
+                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => huds[x.NoSeat].SetSmallBlind());
 
                 //Set Big Blind Icon
-                m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => huds[x.NoSeat].SetBigBlind());
+                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => huds[x.NoSeat].SetBigBlind());
+
+                if (table.CurrentPlayerSeat != null)
+                    huds[table.NoSeatCurrentPlayer].SetPlaying();
+
 
                 ResumeLayout();
             }
@@ -311,7 +328,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             SuspendLayout();
             PlayerInfo p = e.Player;
             PlayerHud php = huds[p.NoSeat];
-            if(p.HoleCards.Count == 2)
+            if(p.HoleCards.Length == 2)
                 php.SetCards (p.HoleCards[0], p.HoleCards[1]);
             else
                 php.SetCards(null, null);
@@ -534,11 +551,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 php.PlayerName = player.Name;
                 php.DoAction(GameActionEnum.DoNothing);
                 GameCard[] cards = player.HoleCards.ToArray();
-                php.SetCards(cards[0], cards[1]);
                 php.SetMoney(player.MoneySafeAmnt);
                 php.SetSleeping();
                 php.Main = (m_NoSeat == player.NoSeat);
                 php.Alive = player.State == PlayerStateEnum.Playing;
+                if (php.Alive)
+                    php.SetCards(cards[0], cards[1]);
                 php.Visible = true;
                 php.SetDealerButtonVisible(seat.Attributes.Contains(SeatAttributeEnum.Dealer));
             }

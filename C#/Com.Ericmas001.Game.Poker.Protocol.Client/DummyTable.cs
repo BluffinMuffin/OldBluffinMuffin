@@ -22,5 +22,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             Seats[noSeat].Player = null;
         }
+
+        public void SetSeat(SeatInfo seat)
+        {
+            m_Seats[seat.NoSeat] = seat;
+        }
     }
 }

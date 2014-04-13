@@ -220,7 +220,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 {
                     foreach (PlayerInfo p in infos)
                     {
-                        uint handValue = EvaluateCards(p.HoleCards);
+                        uint handValue = EvaluateCards(p.HoleCards.ToList());
                         if (handValue > bestHand)
                         {
                             pot.DetachAllPlayers();
