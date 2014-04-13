@@ -186,7 +186,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             TableInfo t = m_Game.Table;
             Send(new GameStartedCommand()
             {
-                NoSeatSB = t.NoSeatSmallBlind,
+                NoSeatSB = t.Seats.Where(s => s.Attributes.Contains(SeatAttributeEnum.SmallBlind)).First().NoSeat,
                 NoSeatBB = t.BigBlinds.First().NoSeat,
             });
         }
@@ -325,7 +325,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                         si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
 
                     si.Attributes = gameSeat.Attributes;
-                    si.IsSmallBlind = table.NoSeatSmallBlind == i;
                     si.IsBigBlind = table.BigBlinds.Any(x => x.NoSeat == i);
                 }
             }

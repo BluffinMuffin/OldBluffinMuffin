@@ -164,7 +164,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 {
                     Player = null,
                     NoSeat = oldSeat,
-                    IsSmallBlind = false,
                     IsBigBlind = false
                 };
                 Observer.RaiseSeatUpdated(seat);
@@ -633,8 +632,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             {
                 if (Table.DealerSeat != null)
                     Table.DealerSeat.Attributes.Remove(SeatAttributeEnum.Dealer);
-                Table.NoSeatSmallBlind = -1;
-                Table.NoSeatSmallBlind = -1;
+                Table.NoSeatBigBlind = -1;
             }
         }
         #endregion Private Methods

@@ -101,11 +101,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         }
 
         /// <summary>
-        /// Where is the Small Blind
-        /// </summary>
-        public int NoSeatSmallBlind { get; set; }
-
-        /// <summary>
         /// Where is the Big Blind
         /// </summary>
         public int NoSeatBigBlind { private get; set; }
@@ -258,7 +253,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public TableInfo(TableParams parms)
         {
             Params = parms;
-            NoSeatSmallBlind = -1;
             NoSeatBigBlind = -1;
         }
 

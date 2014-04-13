@@ -200,9 +200,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             potTitles[0].Visible = true;
             potValues[0].Visible = true;
             potValues[0].Text = "$0";
-            huds[table.NoSeatSmallBlind].SetSmallBlind();
-            foreach(SeatInfo si in table.BigBlinds)
-                huds[si.NoSeat].SetBigBlind();
+
+            //Set Big Blind Icon
+            table.BigBlinds.ToList().ForEach(x => huds[x.NoSeat].SetBigBlind());
+
             for (int i = 0; i < 5; ++i)
                 board[i].Card = GameCard.HIDDEN;
             ResumeLayout();
@@ -276,6 +277,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                     PlayerHud php = huds[si.NoSeat];
                     InstallPlayer(php, si);
                 }
+
+                //Set Small Blind Icon
+                m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => huds[x.NoSeat].SetSmallBlind());
+
                 ResumeLayout();
             }
         }
@@ -465,8 +470,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
 
-            WriteLine("==> " + table.Seats[table.NoSeatSmallBlind].Player.Name + " is the SmallBlind");
-
             foreach( SeatInfo si in table.BigBlinds )
                 WriteLine("==> " + si.Player.Name + " is the BigBlind");
         }
@@ -493,6 +496,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             WriteLine("==> Table info received");
             if (m_Game.Table.NoSeatDealer >= 0)
                 WriteLine("==> " + m_Game.Table.Seats[m_Game.Table.NoSeatDealer].Player.Name + " is the Dealer");
+
+            m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the SmallBlind"));
         }
 
         void OnPlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
