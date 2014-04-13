@@ -30,6 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LobbyCareerForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnLeaveTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnJoinTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnRefresh = new VIBlend.WinForms.Controls.vButton();
+            this.btnLogOut = new VIBlend.WinForms.Controls.vButton();
             this.lblServer = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblMoney = new System.Windows.Forms.Label();
@@ -38,13 +45,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.tableList = new Com.Ericmas001.Game.Poker.GUI.Lobby.PokerTableList();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnLeaveTable = new VIBlend.WinForms.Controls.vButton();
-            this.btnJoinTable = new VIBlend.WinForms.Controls.vButton();
-            this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
-            this.btnRefresh = new VIBlend.WinForms.Controls.vButton();
-            this.btnLogOut = new VIBlend.WinForms.Controls.vButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -88,89 +88,6 @@
             this.splitContainer1.SplitterDistance = 160;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // lblServer
-            // 
-            this.lblServer.AutoSize = true;
-            this.lblServer.Location = new System.Drawing.Point(76, 86);
-            this.lblServer.Name = "lblServer";
-            this.lblServer.Size = new System.Drawing.Size(79, 13);
-            this.lblServer.TabIndex = 7;
-            this.lblServer.Text = "127.0.0.1:4242";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 86);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Server:";
-            // 
-            // lblMoney
-            // 
-            this.lblMoney.AutoSize = true;
-            this.lblMoney.Location = new System.Drawing.Point(76, 63);
-            this.lblMoney.Name = "lblMoney";
-            this.lblMoney.Size = new System.Drawing.Size(31, 13);
-            this.lblMoney.TabIndex = 5;
-            this.lblMoney.Text = "7500";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 63);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Money:";
-            // 
-            // lblAccount
-            // 
-            this.lblAccount.AutoSize = true;
-            this.lblAccount.Location = new System.Drawing.Point(76, 38);
-            this.lblAccount.Name = "lblAccount";
-            this.lblAccount.Size = new System.Drawing.Size(174, 13);
-            this.lblAccount.TabIndex = 3;
-            this.lblAccount.Text = "DisplayName ( username, e@ma.il )";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Account:";
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(58, 0);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(355, 38);
-            this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "Bluffin Muffin Poker Client";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableList
-            // 
-            this.tableList.BackColor = System.Drawing.Color.White;
-            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableList.Location = new System.Drawing.Point(0, 0);
-            this.tableList.Name = "tableList";
-            this.tableList.ShowCareer = true;
-            this.tableList.ShowTraining = false;
-            this.tableList.Size = new System.Drawing.Size(477, 131);
-            this.tableList.TabIndex = 8;
-            this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
-            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
-            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
             // 
             // pictureBox2
             // 
@@ -278,6 +195,90 @@
             this.btnLogOut.UseVisualStyleBackColor = false;
             this.btnLogOut.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
             this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
+            // 
+            // lblServer
+            // 
+            this.lblServer.AutoSize = true;
+            this.lblServer.Location = new System.Drawing.Point(76, 86);
+            this.lblServer.Name = "lblServer";
+            this.lblServer.Size = new System.Drawing.Size(79, 13);
+            this.lblServer.TabIndex = 7;
+            this.lblServer.Text = "127.0.0.1:4242";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(12, 86);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Server:";
+            // 
+            // lblMoney
+            // 
+            this.lblMoney.AutoSize = true;
+            this.lblMoney.Location = new System.Drawing.Point(76, 63);
+            this.lblMoney.Name = "lblMoney";
+            this.lblMoney.Size = new System.Drawing.Size(31, 13);
+            this.lblMoney.TabIndex = 5;
+            this.lblMoney.Text = "7500";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(12, 63);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Money:";
+            // 
+            // lblAccount
+            // 
+            this.lblAccount.AutoSize = true;
+            this.lblAccount.Location = new System.Drawing.Point(76, 38);
+            this.lblAccount.Name = "lblAccount";
+            this.lblAccount.Size = new System.Drawing.Size(174, 13);
+            this.lblAccount.TabIndex = 3;
+            this.lblAccount.Text = "DisplayName ( username, e@ma.il )";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Account:";
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(58, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(355, 38);
+            this.lblTitle.TabIndex = 1;
+            this.lblTitle.Text = "Bluffin Muffin Poker Client";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableList
+            // 
+            this.tableList.BackColor = System.Drawing.Color.White;
+            this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableList.LobbyType = Com.Ericmas001.Game.Poker.DataTypes.Enums.LobbyTypeEnum.Career;
+            this.tableList.Location = new System.Drawing.Point(0, 0);
+            this.tableList.Name = "tableList";
+            this.tableList.ShowCareer = true;
+            this.tableList.ShowTraining = false;
+            this.tableList.Size = new System.Drawing.Size(477, 131);
+            this.tableList.TabIndex = 8;
+            this.tableList.OnListRefreshed += new System.EventHandler(this.tableList_OnListRefreshed);
+            this.tableList.OnSelectionChanged += new System.EventHandler(this.tableList_OnSelectionChanged);
+            this.tableList.OnChoiceMade += new System.EventHandler(this.tableList_OnChoiceMade);
             // 
             // LobbyCareerForm
             // 

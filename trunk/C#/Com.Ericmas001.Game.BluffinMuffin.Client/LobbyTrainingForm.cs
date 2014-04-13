@@ -10,10 +10,11 @@ using Com.Ericmas001.Game.Poker.GUI.Lobby;
 using Com.Ericmas001.Game.Poker.GUI;
 using Com.Ericmas001.Game.Poker.GUI.Game;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using Com.Ericmas001.Game.BluffinMuffin.Client.Game;
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Client
 {
-    public partial class LobbyTrainingForm : Form
+    public partial class LobbyTrainingForm : Form, ITableFormFactory
     {
         private LobbyTCPClient m_Server;
         public LobbyTrainingForm(LobbyTCPClient server)
@@ -21,6 +22,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
             m_Server = server;
             m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
             InitializeComponent();
+            tableList.TableFormFactory = this;
             tableList.setServer(m_Server);
             Text = server.PlayerName + " ~ " + lblTitle.Text;
             lblPlayerName.Text = server.PlayerName;
@@ -54,7 +56,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
 
         private void btnAddTable_Click(object sender, EventArgs e)
         {
-            tableList.AddTable(LobbyTypeEnum.Training);
+            tableList.AddTable();
         }
 
         private void btnJoinTable_Click(object sender, EventArgs e)
@@ -95,7 +97,12 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
         private void LobbyTrainingForm_Load(object sender, EventArgs e)
         {
             if (tableList.NbTables == 0)
-                tableList.AddTable(LobbyTypeEnum.Training);
+                tableList.AddTable();
+        }
+
+        public AbstractTableForm ObtainGUI()
+        {
+            return new TrainingTableForm();
         }
     }
 }

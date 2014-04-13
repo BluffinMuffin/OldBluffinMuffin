@@ -18,11 +18,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public string Name { get; set; }
 
         /// <summary>
-        /// Initial Money Amount of the Player when he sits at the table
-        /// </summary>
-        public int MoneyInitAmnt { get; set; }
-
-        /// <summary>
         /// Current Money Amount of the player that he isn't playing with
         /// </summary>
         public int MoneySafeAmnt { get; set; }
@@ -59,7 +54,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             NoSeat = -1;
             MoneySafeAmnt = 0;
             MoneyBetAmnt = 0;
-            MoneyInitAmnt = 0;
             State = PlayerStateEnum.Zombie;
         }
 
@@ -69,7 +63,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
             Name = name;
             MoneySafeAmnt = money;
-            MoneyInitAmnt = money;
         }
 
         /// <summary>
@@ -86,7 +79,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             {
                 NoSeat = this.NoSeat,
                 Name = this.Name,
-                MoneyInitAmnt = this.MoneyInitAmnt,
                 MoneyBetAmnt = this.MoneyBetAmnt,
                 MoneySafeAmnt = this.MoneySafeAmnt,
                 HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToArray(),

@@ -18,20 +18,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
     public partial class PokerTableList : UserControl
     {
         private LobbyTCPClient m_Server;
-        private bool m_ShowTraining = true;
-        private bool m_ShowCareer = false;
 
-        public bool ShowTraining
-        {
-            get { return m_ShowTraining; }
-            set { m_ShowTraining = value; }
-        }
-
-        public bool ShowCareer
-        {
-            get { return m_ShowCareer; }
-            set { m_ShowCareer = value; }
-        }
+        public bool ShowTraining { get; set; }
+        public bool ShowCareer { get; set; }
+        public LobbyTypeEnum LobbyType { get; set; }
+        public ITableFormFactory TableFormFactory { get; set; }
 
         public PokerTableList()
         {
@@ -86,9 +77,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             }
             OnListRefreshed(this, new EventArgs());
         }
-        public void AddTable(LobbyTypeEnum lobby)
+        public void AddTable()
         {
-            CreateTableForm ctf = new CreateTableForm(m_Server.PlayerName, 1, lobby, m_Server.GetSupportedRules());
+            CreateTableForm ctf = new CreateTableForm(m_Server.PlayerName, 1, LobbyType, m_Server.GetSupportedRules());
             ctf.ShowDialog();
             TableParams parms = ctf.Params;
             if(parms != null)
@@ -161,7 +152,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         }
         private bool JoinTable(int p_noPort, String p_tableName)
         {
-            AbstractTableForm gui = new TableForm();
+            AbstractTableForm gui = TableFormFactory.ObtainGUI();
             GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);
             if (guis.ContainsKey(p_noPort))
                 guis[p_noPort] = gui;

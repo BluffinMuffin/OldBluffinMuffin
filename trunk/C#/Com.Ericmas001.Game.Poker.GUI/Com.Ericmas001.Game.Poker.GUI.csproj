@@ -63,6 +63,7 @@
     <Compile Include="Game\CardPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Game\ITableFormFactory.cs" />
     <Compile Include="Game\PokerPlayerHud.cs">
       <SubType>UserControl</SubType>
     </Compile>

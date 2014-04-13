@@ -343,9 +343,13 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             return true;
         }
 
-        public int SitIn(PlayerInfo p, int noSeat = -1)
+        public int SitIn(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500)
         {
-            Send(new PlayerSitInCommand() { NoSeat = noSeat });
+            Send(new PlayerSitInCommand()
+            {
+                MoneyAmount = moneyAmount,
+                NoSeat = noSeat
+            });
             return -1;
         }
 
