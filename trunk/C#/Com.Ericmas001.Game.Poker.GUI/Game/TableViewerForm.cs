@@ -201,9 +201,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             potValues[0].Visible = true;
             potValues[0].Text = "$0";
 
-            //Set Big Blind Icon
-            table.BigBlinds.ToList().ForEach(x => huds[x.NoSeat].SetBigBlind());
-
             for (int i = 0; i < 5; ++i)
                 board[i].Card = GameCard.HIDDEN;
             ResumeLayout();
@@ -280,6 +277,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
                 //Set Small Blind Icon
                 m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => huds[x.NoSeat].SetSmallBlind());
+
+                //Set Big Blind Icon
+                m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => huds[x.NoSeat].SetBigBlind());
 
                 ResumeLayout();
             }
@@ -469,9 +469,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
-
-            foreach( SeatInfo si in table.BigBlinds )
-                WriteLine("==> " + si.Player.Name + " is the BigBlind");
         }
 
         void OnGameEnded_Console(object sender, EventArgs e)
@@ -498,6 +495,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 WriteLine("==> " + m_Game.Table.Seats[m_Game.Table.NoSeatDealer].Player.Name + " is the Dealer");
 
             m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the SmallBlind"));
+            m_Game.Table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => WriteLine("==> " + x.Player.Name + " is the BigBlind"));
         }
 
         void OnPlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
