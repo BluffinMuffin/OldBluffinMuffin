@@ -16,5 +16,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         {
             InitializeComponent();
         }
+
+        public void SetAnte( int ante )
+        {
+            lblAnte.Text = String.Format("${0}", ante);
+        }
     }
 }

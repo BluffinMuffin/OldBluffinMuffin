@@ -9,8 +9,8 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
     public class BlindOptionsAnte : BlindOptions
     {
         public override BlindTypeEnum BlindType { get { return BlindTypeEnum.Antes; } }
-        public int AnteAmount { get; set; }
+        public int AnteAmount { get { return MoneyUnit; } }
 
-        public override int MinimumRaiseAmount { get { return AnteAmount; } }
+        public BlindOptionsAnte(int moneyUnit) : base(moneyUnit) { }
     }
 }

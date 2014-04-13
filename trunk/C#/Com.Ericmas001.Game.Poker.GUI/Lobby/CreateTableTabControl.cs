@@ -28,9 +28,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             m_Rules = rules;
             InitializeComponent();
             txtTableName.Text = playerName + " Table";
-            ucBlinds.nudBlind.Increment = ucBlinds.nudBlind.Value = BlindFactory.GetInfos(BlindTypeEnum.Blinds).ConfigurableDefaultValue;
-            ucAnte.nudAnte.Increment = ucAnte.nudAnte.Value = BlindFactory.GetInfos(BlindTypeEnum.Antes).ConfigurableDefaultValue;
             InitVariants();
+            RefreshNumbers();
             grpTraining.Visible = lobby == LobbyTypeEnum.Training;
         }
 
@@ -133,44 +132,31 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         lobby = new LobbyOptionsCareer();
                         break;
                 }
-                BlindOptions blind = new BlindOptionsNone();
+                int moneyUnit = (int)nudMoneyUnit.Value;
+                BlindOptions blind = new BlindOptionsNone(moneyUnit);
                 switch (((BlindInfo)lstBlinds.SelectedItem).Type)
                 {
                     case BlindTypeEnum.Blinds:
-                        blind = new BlindOptionsBlinds()
-                        {
-                            BigBlindAmount = (int)ucBlinds.nudBlind.Value,
-                        };
+                        blind = new BlindOptionsBlinds(moneyUnit);
                         break;
 
                     case BlindTypeEnum.Antes:
-                        blind = new BlindOptionsAnte()
-                        {
-                            AnteAmount = (int)ucAnte.nudAnte.Value,
-                        };
+                        blind = new BlindOptionsAnte(moneyUnit);
                         break;
                 }
                 LimitOptions limit = null;
                 switch (((LimitInfo)lstBetLimit.SelectedItem).Type)
                 {
                     case LimitTypeEnum.NoLimit:
-                        limit = new LimitOptionsNoLimit()
-                        {
-                            MaximumBuyIn = false, //TODO
-                            BuyInIncrement = blind.MinimumRaiseAmount,
-                        };
+                        limit = new LimitOptionsNoLimit();
                         break;
 
                     case LimitTypeEnum.FixedLimit:
-                        limit = new LimitOptionsFixed()
-                        {
-                        };
+                        limit = new LimitOptionsFixed();;
                         break;
 
                     case LimitTypeEnum.PotLimit:
-                        limit = new LimitOptionsPot()
-                        {
-                        };
+                        limit = new LimitOptionsPot();
                         break;
                 }
                 return new TableParams()
@@ -189,8 +175,29 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                     Lobby = lobby,
                     Blind = blind,
                     Limit = limit,
+                    MoneyUnit = moneyUnit,
+                    LimitMaximumBuyIn = rdBuyInLimited.Checked,
                 };
             }
+        }
+
+        private void NeedToRefreshNumbers(object sender, EventArgs e)
+        {
+            RefreshNumbers();
+        }
+        private void RefreshNumbers()
+        {
+            int moneyUnit = (int)nudMoneyUnit.Value;
+            int minBuyIn = moneyUnit * 20;
+            int maxBuyIn = moneyUnit * 100;
+            lblGameSize.Text = String.Format("${0} / ${1}", moneyUnit, moneyUnit * 2);
+            lblMinimumBuyIn.Text = String.Format("${0}", minBuyIn);
+            lblMaximumBuyIn.Text = String.Format("(${0})", maxBuyIn);
+            ucAnte.SetAnte(moneyUnit);
+            ucBlinds.SetBlinds(moneyUnit);
+            nudStartingAmount.Minimum = minBuyIn;
+            nudStartingAmount.Maximum = rdBuyInLimited.Checked ? maxBuyIn : int.MaxValue;
+            nudStartingAmount.Increment = moneyUnit;
         }
     }
 }

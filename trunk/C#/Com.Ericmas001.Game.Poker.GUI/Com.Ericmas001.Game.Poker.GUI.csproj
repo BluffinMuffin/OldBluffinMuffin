@@ -88,17 +88,17 @@
     <Compile Include="HandStrengthForm.Designer.cs">
       <DependentUpon>HandStrengthForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Lobby\BlindUCAnte.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Lobby\BlindUCAnte.Designer.cs">
-      <DependentUpon>BlindUCAnte.cs</DependentUpon>
-    </Compile>
     <Compile Include="Lobby\BlindUCBlinds.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Lobby\BlindUCBlinds.Designer.cs">
       <DependentUpon>BlindUCBlinds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lobby\BlindUCAnte.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lobby\BlindUCAnte.Designer.cs">
+      <DependentUpon>BlindUCAnte.cs</DependentUpon>
     </Compile>
     <Compile Include="Lobby\CreateTableForm.cs">
       <SubType>Form</SubType>
@@ -153,11 +153,11 @@
     <EmbeddedResource Include="HandStrengthForm.resx">
       <DependentUpon>HandStrengthForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Lobby\BlindUCAnte.resx">
-      <DependentUpon>BlindUCAnte.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Lobby\BlindUCBlinds.resx">
       <DependentUpon>BlindUCBlinds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lobby\BlindUCAnte.resx">
+      <DependentUpon>BlindUCAnte.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Lobby\CreateTableForm.resx">
       <DependentUpon>CreateTableForm.cs</DependentUpon>

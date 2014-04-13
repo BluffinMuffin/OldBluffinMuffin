@@ -8,8 +8,14 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
     public abstract class BlindOptions
     {
+        protected int MoneyUnit { get; private set; }
         public abstract BlindTypeEnum BlindType { get; }
 
-        public abstract int MinimumRaiseAmount { get; }
+        public BlindOptions( int moneyUnit )
+        {
+            MoneyUnit = moneyUnit;
+        }
+
+        
     }
 }

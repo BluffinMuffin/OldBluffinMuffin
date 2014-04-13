@@ -16,5 +16,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         {
             InitializeComponent();
         }
+
+        public void SetBlinds( int bigblind )
+        {
+            lblSmallBlind.Text = String.Format("${0}", bigblind / 2);
+            lblBigBlind.Text = String.Format("${0}", bigblind);
+        }
     }
 }

@@ -28,58 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nudBlind = new System.Windows.Forms.NumericUpDown();
-            this.lblBlind = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudBlind)).BeginInit();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblSmallBlind = new System.Windows.Forms.Label();
+            this.lblBigBlind = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // nudBlind
+            // label2
             // 
-            this.nudBlind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.nudBlind.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.nudBlind.Location = new System.Drawing.Point(3, 3);
-            this.nudBlind.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nudBlind.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.nudBlind.Name = "nudBlind";
-            this.nudBlind.Size = new System.Drawing.Size(52, 23);
-            this.nudBlind.TabIndex = 31;
-            this.nudBlind.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.label2.Location = new System.Drawing.Point(5, 1);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(93, 17);
+            this.label2.TabIndex = 30;
+            this.label2.Text = "Small Blind:";
             // 
-            // lblBlind
+            // lblSmallBlind
             // 
-            this.lblBlind.AutoSize = true;
-            this.lblBlind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblBlind.Location = new System.Drawing.Point(61, 5);
-            this.lblBlind.Name = "lblBlind";
-            this.lblBlind.Size = new System.Drawing.Size(73, 17);
-            this.lblBlind.TabIndex = 30;
-            this.lblBlind.Text = "(Big Blind)";
+            this.lblSmallBlind.AutoSize = true;
+            this.lblSmallBlind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblSmallBlind.Location = new System.Drawing.Point(104, 1);
+            this.lblSmallBlind.Name = "lblSmallBlind";
+            this.lblSmallBlind.Size = new System.Drawing.Size(24, 17);
+            this.lblSmallBlind.TabIndex = 31;
+            this.lblSmallBlind.Text = "$5";
+            // 
+            // lblBigBlind
+            // 
+            this.lblBigBlind.AutoSize = true;
+            this.lblBigBlind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblBigBlind.Location = new System.Drawing.Point(104, 21);
+            this.lblBigBlind.Name = "lblBigBlind";
+            this.lblBigBlind.Size = new System.Drawing.Size(32, 17);
+            this.lblBigBlind.TabIndex = 33;
+            this.lblBigBlind.Text = "$10";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.label3.Location = new System.Drawing.Point(21, 21);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 17);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "Big Blind:";
             // 
             // BlindUCBlinds
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.nudBlind);
-            this.Controls.Add(this.lblBlind);
+            this.Controls.Add(this.lblBigBlind);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblSmallBlind);
+            this.Controls.Add(this.label2);
             this.Name = "BlindUCBlinds";
-            this.Size = new System.Drawing.Size(146, 33);
-            ((System.ComponentModel.ISupportInitialize)(this.nudBlind)).EndInit();
+            this.Size = new System.Drawing.Size(180, 42);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -87,7 +91,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblBlind;
-        internal System.Windows.Forms.NumericUpDown nudBlind;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblSmallBlind;
+        private System.Windows.Forms.Label lblBigBlind;
+        private System.Windows.Forms.Label label3;
     }
 }
