@@ -166,7 +166,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 PlayerHoleCardsChangedCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -215,7 +215,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 PlayerLeftCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -231,7 +231,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 PlayerMoneyChangedCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -247,15 +247,15 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 PlayerTurnBeganCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
-                PlayerInfo l = m_PokerTable.GetPlayer(cmd.LastPlayerNoSeat);
+                SeatInfo ps = m_PokerTable.Seats[cmd.PlayerPos];
+                PlayerInfo l = m_PokerTable.Seats[cmd.LastPlayerNoSeat].Player;
 
-                if (p != null)
+                if (!ps.IsEmpty)
                 {
-                    m_PokerTable.ChangeCurrentPlayerTo(cmd.PlayerPos);
+                    m_PokerTable.ChangeCurrentPlayerTo(ps);
                     m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
 
-                    Observer.RaisePlayerActionNeeded(p, l);
+                    Observer.RaisePlayerActionNeeded(ps.Player, l);
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 PlayerTurnEndedCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 m_PokerTable.HigherBet = Math.Max(m_PokerTable.HigherBet, cmd.PlayerBet);
                 m_PokerTable.TotalPotAmnt = cmd.TotalPot;
@@ -286,7 +286,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 PlayerWonPotCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.GetPlayer(cmd.PlayerPos);
+                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {

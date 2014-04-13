@@ -182,36 +182,11 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             get { return PlayingAndAllInPlayersFrom(0); }
         }
 
-        /// <summary>
-        /// List of the playing Players in order starting from the next player that will have to play
-        /// </summary>
-        public List<PlayerInfo> PlayingPlayersFromNext
-        {
-            get { return PlayingPlayersFrom(GetPlayingPlayerNextTo(NoSeatCurrentPlayer).NoSeat); }
-        }
-
-        /// <summary>
-        /// List of the playing Players in order starting from the current playing player
-        /// </summary>
-        public List<PlayerInfo> PlayingPlayersFromCurrent
-        {
-            get { return PlayingPlayersFrom(NoSeatCurrentPlayer); }
-        }
-
-        // List of the playing Players in order starting from the one who started the round
-        public List<PlayerInfo> PlayingPlayersFromFirst
-        {
-            get
-            {
-                return PlayingPlayersFrom(SeatOfTheFirstPlayer.NoSeat);
-            }
-        }
-
         public SeatInfo SeatOfTheFirstPlayer
         {
             get
             {
-                int noSeat = GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
+                SeatInfo seat = GetSeatOfPlayingPlayerNextTo(DealerSeat);
 
                 if (Round == RoundTypeEnum.Preflop && Params.BlindType == BlindTypeEnum.Blinds)
                 {
@@ -219,12 +194,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                     //Ad B C: A     A->B->C->A
                     //Ad B C D: D   A->B->C->D
                     if (NbPlayingAndAllIn < 3)
-                        noSeat = NoSeatDealer;
+                        seat = DealerSeat;
                     else
-                        noSeat = GetPlayingPlayerNextTo(GetPlayingPlayerNextTo(GetPlayingPlayerNextTo(NoSeatDealer).NoSeat).NoSeat).NoSeat;
+                        seat = GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(DealerSeat)));
                 }
 
-                return Seats[noSeat];
+                return seat;
             }
         }
         #endregion Properties
@@ -254,38 +229,30 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         #region Public Methods
 
         /// <summary>
-        /// Who is the player for this seat number ?
-        /// </summary>
-        public PlayerInfo GetPlayer(int seat)
-        {
-            return m_Seats[seat].Player;
-        }
-
-        /// <summary>
         /// Return the next playing player next to a seat number (All-In not included)
         /// </summary>
-        public PlayerInfo GetPlayingPlayerNextTo(int seat)
+        public SeatInfo GetSeatOfPlayingPlayerNextTo(SeatInfo seat)
         {
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                SeatInfo si = m_Seats[(seat + 1 + i) % Params.MaxPlayers];
+                SeatInfo si = m_Seats[(seat.NoSeat + 1 + i) % Params.MaxPlayers];
                 if (!si.IsEmpty && si.Player.IsPlaying)
-                    return si.Player;
+                    return si;
             }
-            return m_Seats[seat].Player;
+            return seat;
         }
-        public PlayerInfo GetPlayingPlayerJustBefore(int seat)
+        public SeatInfo GetSeatOfPlayingPlayerJustBefore(SeatInfo seat)
         {
             for (int i = 0; i < Params.MaxPlayers; ++i)
             {
-                int id = (seat - 1 - i) % Params.MaxPlayers;
+                int id = (seat.NoSeat - 1 - i) % Params.MaxPlayers;
                 if (id < 0)
                     id = Params.MaxPlayers + id;
                 SeatInfo si = m_Seats[id];
                 if (!si.IsEmpty && si.Player.IsPlaying)
-                    return si.Player;
+                    return si;
             }
-            return m_Seats[seat].Player;
+            return seat;
         }
 
         public virtual bool JoinTable(PlayerInfo p)
@@ -364,12 +331,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             return HigherBet - p.MoneyBetAmnt;
         }
 
-        public void ChangeCurrentPlayerTo(int noSeat)
+        public void ChangeCurrentPlayerTo(SeatInfo seat)
         {
             SeatInfo oldPlayerSeat = CurrentPlayerSeat;
             if (oldPlayerSeat != null)
                 oldPlayerSeat.Attributes.Remove(SeatAttributeEnum.CurrentPlayer);
-            Seats[noSeat].Attributes.Add(SeatAttributeEnum.CurrentPlayer);
+            seat.Attributes.Add(SeatAttributeEnum.CurrentPlayer);
         }
         #endregion Public Methods
 

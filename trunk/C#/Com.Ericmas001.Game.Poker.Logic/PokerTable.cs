@@ -220,7 +220,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 {
                     foreach (PlayerInfo p in infos)
                     {
-                        uint handValue = EvaluateCards(GetPlayer(p.NoSeat).HoleCards);
+                        uint handValue = EvaluateCards(p.HoleCards);
                         if (handValue > bestHand)
                         {
                             pot.DetachAllPlayers();
@@ -256,21 +256,21 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void InitPokerTable()
         {
-            int previousNoSeatDealer = NoSeatDealer;
+            SeatInfo previousDealer = DealerSeat;
 
             Seats.ForEach(s => s.Attributes.Clear());
 
-            PlayerInfo nextDealer = GetPlayingPlayerNextTo(previousNoSeatDealer);
-            Seats[nextDealer.NoSeat].Attributes.Add(SeatAttributeEnum.Dealer);
+            SeatInfo nextDealerSeat = GetSeatOfPlayingPlayerNextTo(previousDealer);
+            nextDealerSeat.Attributes.Add(SeatAttributeEnum.Dealer);
 
             m_BlindNeeded.Clear();
 
             if (Params.BlindType == BlindTypeEnum.Blinds)
             {
-                SeatInfo smallSeat = Seats[NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat];
+                SeatInfo smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
                 smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
 
-                SeatInfo bigSeat = Seats[GetPlayingPlayerNextTo(smallSeat.NoSeat).NoSeat];
+                SeatInfo bigSeat = GetSeatOfPlayingPlayerNextTo(smallSeat);
                 bigSeat.Attributes.Add(SeatAttributeEnum.BigBlind);
 
                 m_BlindNeeded.Add(smallSeat.Player, SmallBlindAmnt);
