@@ -14,3 +14,10 @@
 -> Have a overall better Tests project(s) (TDD)
 -> Validate email and passwords on career registering
 -> Persistance system for CareerMode, not only memory :)
+
+
+Links: 
+http://www.cardschat.com/texas-holdem-poker-rules.php
+http://www.pokerlistings.com/texas-holdem-betting-rules
+http://texas-holdem-rules.flopturnriver.com
+http://www.texasholdem-poker.com/roberts_rules_of_poker/

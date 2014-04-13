@@ -123,7 +123,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
 
         public AbstractTableForm ObtainGUI()
         {
-            return new CareerTableForm();
+            return new CareerTableForm(m_Server.User);
         }
     }
 }

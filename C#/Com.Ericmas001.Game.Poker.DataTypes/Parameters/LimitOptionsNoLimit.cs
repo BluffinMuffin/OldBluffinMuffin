@@ -9,7 +9,5 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
     public class LimitOptionsNoLimit : LimitOptions
     {
         public override LimitTypeEnum LimitType { get { return LimitTypeEnum.NoLimit; } }
-        public bool MaximumBuyIn { get; set; }
-        public int BuyInIncrement { get; set; }
     }
 }

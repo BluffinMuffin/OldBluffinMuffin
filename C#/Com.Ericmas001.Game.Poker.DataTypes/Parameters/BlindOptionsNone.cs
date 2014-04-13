@@ -10,6 +10,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
     {
         public override BlindTypeEnum BlindType { get { return BlindTypeEnum.None; } }
 
-        public override int MinimumRaiseAmount { get { return 1; } }
+        public BlindOptionsNone(int moneyUnit) : base(moneyUnit) { }
     }
 }

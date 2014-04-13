@@ -9,9 +9,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
     public class BlindOptionsBlinds : BlindOptions
     {
         public override BlindTypeEnum BlindType { get { return BlindTypeEnum.Blinds; } }
-        public int BigBlindAmount { get; set; }
-        public int SmallBlindAmount { get { return BigBlindAmount / 2; } }
+        public int BigBlindAmount { get { return MoneyUnit; } }
+        public int SmallBlindAmount { get { return MoneyUnit / 2; } }
 
-        public override int MinimumRaiseAmount { get { return BigBlindAmount; } }
+        public BlindOptionsBlinds(int moneyUnit) : base(moneyUnit) { }
     }
 }

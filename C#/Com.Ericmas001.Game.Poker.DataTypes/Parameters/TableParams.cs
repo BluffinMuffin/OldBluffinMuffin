@@ -35,13 +35,18 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
         public int MinPlayersToStart { get; set; }
         public int MaxPlayers { get; set; }
         public ConfigurableWaitingTimes WaitingTimes { get; set; }
+        public bool LimitMaximumBuyIn { get; set; }
+        public int MoneyUnit { get; set; }
 
         [JsonIgnore]
         public LobbyOptions Lobby { get { return m_Lobby == null ? new LobbyOptionsTraining() : m_Lobby; } set { m_Lobby = value; } }
         [JsonIgnore]
-        public BlindOptions Blind { get { return m_Blind == null ? new BlindOptionsNone() : m_Blind; } set { m_Blind = value; } }
+        public BlindOptions Blind { get { return m_Blind == null ? new BlindOptionsNone(MoneyUnit) : m_Blind; } set { m_Blind = value; } }
         [JsonIgnore]
         public LimitOptions Limit { get { return m_Limit == null ? new LimitOptionsPot() : m_Limit; } set { m_Limit = value; } }
+
+        public int LimitedMinimumBuyIn { get { return 20 * MoneyUnit; } }
+        public int LimitedMaximumBuyIn { get { return 100 * MoneyUnit; } }
 
         public TableParams()
         {
@@ -51,6 +56,8 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
             MinPlayersToStart = 2;
             MaxPlayers = 10;
             WaitingTimes = new ConfigurableWaitingTimes();
+            LimitMaximumBuyIn = false;
+            MoneyUnit = 10;
         }
 
     }

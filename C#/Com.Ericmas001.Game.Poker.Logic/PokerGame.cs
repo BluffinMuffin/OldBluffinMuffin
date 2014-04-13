@@ -478,7 +478,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             //We Put the current player just before the starting player, then we will take the next player and he will be the first
             Table.ChangeCurrentPlayerTo(Table.GetSeatOfPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer));
             Table.NbPlayed = 0;
-            Table.MinimumRaiseAmount = Table.Params.Blind.MinimumRaiseAmount;
+            Table.MinimumRaiseAmount = Table.Params.MoneyUnit;
 
             WaitALittle(Params.WaitingTimes.AfterBoardDealed);
 
