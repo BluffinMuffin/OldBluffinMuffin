@@ -140,6 +140,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
                 if (m_State == GameStateEnum.WaitForPlayers)
                     TryToBegin();
+                else if (m_State > GameStateEnum.WaitForPlayers)
+                    GameTable.NewArrivals.Add(p);
                 return p.NoSeat;
             }
             return -1;

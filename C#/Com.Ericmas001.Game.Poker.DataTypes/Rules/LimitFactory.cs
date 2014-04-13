@@ -20,10 +20,10 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Rules
                         Type = limitType,
                     };
 
-                case LimitTypeEnum.BetLimit:
+                case LimitTypeEnum.FixedLimit:
                     return new LimitInfo()
                     {
-                        Name = "Bet Limit",
+                        Name = "Fixed Limit",
                         Type = limitType,
                     };
 
