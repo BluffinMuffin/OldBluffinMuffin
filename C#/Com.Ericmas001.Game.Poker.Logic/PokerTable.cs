@@ -269,11 +269,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
             {
                 SeatInfo smallSeat = Seats[NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat];
                 smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
-                NoSeatBigBlind = GetPlayingPlayerNextTo(smallSeat.NoSeat).NoSeat;
+
+                SeatInfo bigSeat = Seats[GetPlayingPlayerNextTo(smallSeat.NoSeat).NoSeat];
+                bigSeat.Attributes.Add(SeatAttributeEnum.BigBlind);
 
                 m_BlindNeeded.Add(smallSeat.Player, SmallBlindAmnt);
-                foreach (SeatInfo si in BigBlinds)
-                    m_BlindNeeded.Add(GetPlayer(si.NoSeat), Params.BlindAmount);
+                Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_BlindNeeded.Add(x.Player, Params.BlindAmount));
             }
         }
         #endregion Private Methods

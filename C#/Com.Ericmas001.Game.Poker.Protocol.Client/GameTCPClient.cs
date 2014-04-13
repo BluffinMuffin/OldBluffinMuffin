@@ -150,15 +150,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 GameStartedCommand cmd = e.Command;
-
-                //m_PokerTable.Seats[cmd.NoSeatD].Attributes.Add(SeatAttributeEnum.Dealer);
-                //m_PokerTable.NoSeatSmallBlind = cmd.NoSeatSB;
-                m_PokerTable.NoSeatBigBlind = cmd.NoSeatBB;
-
+                
                 if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.SmallBlind))
                     Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.SmallBlindAmnt });
 
-                if (m_PokerTable.BigBlinds.Any(x => x.NoSeat == m_TablePosition))
+                if (m_TablePosition >= 0 && m_PokerTable.Seats[m_TablePosition].Attributes.Contains(SeatAttributeEnum.BigBlind))
                     Send(new PlayerPlayMoneyCommand() { Played = m_PokerTable.Params.BlindAmount });
 
                 Observer.RaiseGameBlindNeeded();
@@ -335,9 +331,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                     SetPlayerVisibility(p, p.State, seat.Player.HoleCards);
 
                     m_PokerTable.Seats[i].Attributes = seat.Attributes;
-
-                    if (seat.IsBigBlind)
-                        m_PokerTable.NoSeatBigBlind = noSeat;
 
                 }
                 Observer.RaiseGameGenerallyUpdated();

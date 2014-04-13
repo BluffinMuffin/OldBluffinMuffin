@@ -37,7 +37,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 value.ToList().ForEach(x => Attributes.Add(x));
             }
         }
-        public bool IsBigBlind { get; set; }
 
         public SeatInfo()
         {
@@ -53,7 +52,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                 {
                     Player = this.Player.Clone(),
                     NoSeat = this.NoSeat,
-                    IsBigBlind = this.IsBigBlind,
                     Attributes = new ConcurrentList<SeatAttributeEnum>(this.Attributes),
                 };
         }
