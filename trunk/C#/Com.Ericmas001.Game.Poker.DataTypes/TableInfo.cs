@@ -73,11 +73,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         public int TotalPotAmnt{ get; set; }
 
         /// <summary>
-        /// Amount of the Small Blind
-        /// </summary>
-        public int SmallBlindAmnt { get { return Params.BlindAmount / 2; } }
-
-        /// <summary>
         /// Minimum amount to Raise
         /// </summary>
         public int MinimumRaiseAmount { get; set; }
@@ -188,7 +183,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             {
                 SeatInfo seat = GetSeatOfPlayingPlayerNextTo(DealerSeat);
 
-                if (Round == RoundTypeEnum.Preflop && Params.BlindType == BlindTypeEnum.Blinds)
+                if (Round == RoundTypeEnum.Preflop && Params.Blind.BlindType == BlindTypeEnum.Blinds)
                 {
                     //Ad B : A      A
                     //Ad B C: A     A->B->C->A

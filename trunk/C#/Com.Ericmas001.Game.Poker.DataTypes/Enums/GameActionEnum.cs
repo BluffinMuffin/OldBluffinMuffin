@@ -11,6 +11,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Enums
         Raise,
         PostSmallBlind,
         PostBigBlind,
+        PostAnte,
         DoNothing
     }
 }
