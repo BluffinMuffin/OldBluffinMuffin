@@ -139,7 +139,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return GameTable.JoinTable(p);
         }
 
-        public int SitIn(PlayerInfo p, int noSeat = -1)
+        public int SitIn(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500)
         {
             SeatInfo seat = p.NoSeat == -1 ? null : Table.Seats[p.NoSeat];
             if (seat != null && !seat.IsEmpty)

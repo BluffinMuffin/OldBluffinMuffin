@@ -15,6 +15,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public partial class TableForm : TableViewerForm
     {
+        protected virtual int GetSitInMoneyAmount() { return 1500; }
         public TableForm()
         {
             InitializeComponent();
@@ -118,9 +119,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         private void btnSitIn_Click(object sender, EventArgs e)
         {
             SitInButtonsShowing(false);
+            int money = GetSitInMoneyAmount();
             string name = ((Control)sender).Name;
             int seatWanted = int.Parse(name.Substring(name.Length-1));
-            m_Game.SitIn(null, seatWanted);
+            m_Game.SitIn(null, seatWanted, money);
         }
 
         void OnSitInResponseReceived(int noSeat)

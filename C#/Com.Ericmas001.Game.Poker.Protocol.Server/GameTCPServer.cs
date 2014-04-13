@@ -16,6 +16,7 @@ using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Net.Protocol;
+using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Server
 {
@@ -43,7 +44,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             m_ID = id;
             m_Game = game;
-            m_Player = new PlayerInfo(name, money);
+            m_Player = new PlayerInfo(name, 0);
             m_UserInfo = null;
             base.SendedSomething += OnServerSendedSomething;
 
@@ -54,9 +55,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             m_ID = id;
             m_Game = game;
             m_UserInfo = userInfo;
-            int money = (int)m_UserInfo.TotalMoney;
-            m_UserInfo.TotalMoney -= money;
-            m_Player = new PlayerInfo(m_UserInfo.DisplayName, money);
+            m_Player = new PlayerInfo(m_UserInfo.DisplayName, 0);
         }
 
         private void InitializePokerObserver()
@@ -243,9 +242,25 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void OnSitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
+            int money;
+            if(m_Game.Table.Params.Lobby.LobbyType == LobbyTypeEnum.Training)
+                money = ((LobbyOptionsTraining)m_Game.Table.Params.Lobby).StartingAmount;
+            else
+            {
+                money = e.Command.MoneyAmount;
+                if (m_UserInfo == null || m_UserInfo.TotalMoney < money)
+                {
+                    Send(e.Command.EncodeResponse(-1));
+                    return;
+                }
+                m_UserInfo.TotalMoney -= money;
+            }
+
+            m_Player.MoneySafeAmnt = money;
             SeatInfo seat = m_Game.GameTable.AskToSitIn(m_Player, e.Command.NoSeat);
             Send(e.Command.EncodeResponse(seat == null ? -1 : seat.NoSeat));
-            m_Game.SitIn(m_Player);
+            if( seat != null)
+                m_Game.SitIn(m_Player);
         }
 
         void OnDisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
