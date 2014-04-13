@@ -173,7 +173,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
             PutBlinds(game, p2);
 
             cp = game.Table.CurrentPlayer;
-            PlayerInfo np = game.Table.GetPlayingPlayerNextTo(cp.NoSeat);
+            PlayerInfo np = game.Table.GetSeatOfPlayingPlayerNextTo(game.Table.Seats[cp.NoSeat]).Player;
             game.LeaveGame(np);
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should be still in playing mode since it wasn't the playing player.");
 

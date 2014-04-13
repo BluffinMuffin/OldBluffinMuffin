@@ -266,7 +266,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             else
             {
                 m_RoundState = RoundStateEnum.Cards;
-                Table.ChangeCurrentPlayerTo(Table.NoSeatDealer);
+                Table.ChangeCurrentPlayerTo(Table.DealerSeat);
                 Table.Round = (RoundTypeEnum)(((int)Table.Round) + 1);
                 StartRound();
             }
@@ -455,7 +455,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             Observer.RaiseGameBettingRoundStarted(Table.Round);
 
             //We Put the current player just before the starting player, then we will take the next player and he will be the first
-            Table.ChangeCurrentPlayerTo(Table.GetPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer.NoSeat).NoSeat);
+            Table.ChangeCurrentPlayerTo(Table.GetSeatOfPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer));
             Table.NbPlayed = 0;
             Table.MinimumRaiseAmount = Table.Params.BlindAmount;
 
@@ -559,18 +559,18 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void ChooseNextPlayer()
         {
-            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrentPlayer);
+            SeatInfo next = Table.GetSeatOfPlayingPlayerNextTo(Table.CurrentPlayerSeat);
 
-            Table.ChangeCurrentPlayerTo(next.NoSeat);
+            Table.ChangeCurrentPlayerTo(next);
 
-            Observer.RaisePlayerActionNeeded(next, Table.CurrentPlayer);
+            Observer.RaisePlayerActionNeeded(next.Player, Table.CurrentPlayer);
 
-            if (next.IsZombie)
+            if (next.Player.IsZombie)
             {
-                if (Table.CanCheck(next))
-                    PlayMoney(next, 0);
+                if (Table.CanCheck(next.Player))
+                    PlayMoney(next.Player, 0);
                 else
-                    PlayMoney(next, -1);
+                    PlayMoney(next.Player, -1);
             }
         }
         private void DistributeMoney()
