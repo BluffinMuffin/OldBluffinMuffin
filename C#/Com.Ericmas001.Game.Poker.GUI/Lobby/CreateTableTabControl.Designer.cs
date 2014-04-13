@@ -50,8 +50,8 @@
             this.grpTraining = new System.Windows.Forms.GroupBox();
             this.nudStartingAmount = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
-            this.nudBlind = new System.Windows.Forms.NumericUpDown();
-            this.lblBlind = new System.Windows.Forms.Label();
+            this.ucBlinds = new Com.Ericmas001.Game.Poker.GUI.Lobby.BlindUCBlinds();
+            this.ucAnte = new Com.Ericmas001.Game.Poker.GUI.Lobby.BlindUCAnte();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayersMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayersMax)).BeginInit();
             this.grpTimes.SuspendLayout();
@@ -60,7 +60,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPlayerAction)).BeginInit();
             this.grpTraining.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudBlind)).BeginInit();
             this.SuspendLayout();
             // 
             // lstVariant
@@ -374,50 +373,28 @@
             this.label12.TabIndex = 20;
             this.label12.Text = "Starting Amount:";
             // 
-            // nudBlind
+            // ucBlinds
             // 
-            this.nudBlind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.nudBlind.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.nudBlind.Location = new System.Drawing.Point(285, 102);
-            this.nudBlind.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.nudBlind.Minimum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.nudBlind.Name = "nudBlind";
-            this.nudBlind.Size = new System.Drawing.Size(52, 23);
-            this.nudBlind.TabIndex = 29;
-            this.nudBlind.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            this.ucBlinds.Location = new System.Drawing.Point(285, 100);
+            this.ucBlinds.Name = "ucBlinds";
+            this.ucBlinds.Size = new System.Drawing.Size(146, 33);
+            this.ucBlinds.TabIndex = 28;
+            this.ucBlinds.Visible = false;
             // 
-            // lblBlind
+            // ucAnte
             // 
-            this.lblBlind.AutoSize = true;
-            this.lblBlind.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblBlind.Location = new System.Drawing.Point(343, 104);
-            this.lblBlind.Name = "lblBlind";
-            this.lblBlind.Size = new System.Drawing.Size(73, 17);
-            this.lblBlind.TabIndex = 28;
-            this.lblBlind.Text = "(Big Blind)";
+            this.ucAnte.Location = new System.Drawing.Point(285, 100);
+            this.ucAnte.Name = "ucAnte";
+            this.ucAnte.Size = new System.Drawing.Size(146, 33);
+            this.ucAnte.TabIndex = 29;
+            this.ucAnte.Visible = false;
             // 
             // CreateTableTabControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.nudBlind);
-            this.Controls.Add(this.lblBlind);
+            this.Controls.Add(this.ucAnte);
+            this.Controls.Add(this.ucBlinds);
             this.Controls.Add(this.grpTraining);
             this.Controls.Add(this.grpTimes);
             this.Controls.Add(this.label6);
@@ -444,7 +421,6 @@
             this.grpTraining.ResumeLayout(false);
             this.grpTraining.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudBlind)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -474,7 +450,7 @@
         private System.Windows.Forms.GroupBox grpTraining;
         private System.Windows.Forms.NumericUpDown nudStartingAmount;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.NumericUpDown nudBlind;
-        private System.Windows.Forms.Label lblBlind;
+        private BlindUCBlinds ucBlinds;
+        private BlindUCAnte ucAnte;
     }
 }

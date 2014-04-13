@@ -20,6 +20,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Game
         public List<int> BoardCardIDs { get; set; }
         public int NbPlayers { get; set; }
         public List<SeatInfo> Seats { get; set; }
+        public bool GameHasStarted { get; set; }
 
         public TableInfoCommand()
         {
