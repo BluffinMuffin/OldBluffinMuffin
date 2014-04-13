@@ -171,5 +171,10 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             get { return NoSeat >= 0 && MoneySafeAmnt > 0; }
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

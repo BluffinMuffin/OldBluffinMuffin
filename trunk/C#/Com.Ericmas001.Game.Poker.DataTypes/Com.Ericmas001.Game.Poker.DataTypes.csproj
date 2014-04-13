@@ -84,6 +84,10 @@
     <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Com.Ericmas001.Collections\Com.Ericmas001.Collections.csproj">
+      <Project>{48bed84d-b03c-4708-bf68-21bd4922a51c}</Project>
+      <Name>Com.Ericmas001.Collections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Games\Com.Ericmas001.Games.csproj">
       <Project>{64d407d1-1119-42a6-86f2-a98a31fdb3b2}</Project>
       <Name>Com.Ericmas001.Games</Name>
