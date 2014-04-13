@@ -263,13 +263,18 @@ namespace Com.Ericmas001.Game.Poker.Logic
             PlayerInfo nextDealer = GetPlayingPlayerNextTo(previousNoSeatDealer);
             Seats[nextDealer.NoSeat].Attributes.Add(SeatAttributeEnum.Dealer);
 
-            NoSeatSmallBlind = NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat;
-            NoSeatBigBlind = GetPlayingPlayerNextTo(NoSeatSmallBlind).NoSeat;
-
             m_BlindNeeded.Clear();
-            m_BlindNeeded.Add(GetPlayer(NoSeatSmallBlind), SmallBlindAmnt);
-            foreach(SeatInfo si in BigBlinds)
-                m_BlindNeeded.Add(GetPlayer(si.NoSeat), Params.BlindAmount);
+
+            if (Params.BlindType == BlindTypeEnum.Blinds)
+            {
+                SeatInfo smallSeat = Seats[NbPlaying == 2 ? NoSeatDealer : GetPlayingPlayerNextTo(NoSeatDealer).NoSeat];
+                smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
+                NoSeatBigBlind = GetPlayingPlayerNextTo(smallSeat.NoSeat).NoSeat;
+
+                m_BlindNeeded.Add(smallSeat.Player, SmallBlindAmnt);
+                foreach (SeatInfo si in BigBlinds)
+                    m_BlindNeeded.Add(GetPlayer(si.NoSeat), Params.BlindAmount);
+            }
         }
         #endregion Private Methods
     }
