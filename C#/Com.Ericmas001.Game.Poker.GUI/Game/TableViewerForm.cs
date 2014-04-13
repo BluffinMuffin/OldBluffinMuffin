@@ -10,6 +10,7 @@ using Com.Ericmas001.Games;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
+using Com.Ericmas001.Util;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
@@ -199,7 +200,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             potTitles[0].Visible = true;
             potValues[0].Visible = true;
             potValues[0].Text = "$0";
-            huds[table.NoSeatDealer].SetDealer();
             huds[table.NoSeatSmallBlind].SetSmallBlind();
             foreach(SeatInfo si in table.BigBlinds)
                 huds[si.NoSeat].SetBigBlind();
@@ -235,7 +235,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                     potValues[0].Visible = true;
                     potValues[0].Text = "$0";
                     php.SetMoney(p.MoneySafeAmnt);
-                    php.SetNotDealer();
+                    php.SetDealerButtonVisible(false);
                     php.SetNoBlind();
                     php.SetSleeping();
                     if (p.MoneySafeAmnt == 0)
@@ -257,24 +257,27 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated), new object[] { sender, e });
                 return;
             }
-            SuspendLayout();
-            lblTotalPot.Text = "$0";
-            for (int i = 1; i < 10; ++i)
+            lock (m_Game.Table)
             {
-                potTitles[i].Visible = false;
-                potValues[i].Visible = false;
-                potValues[i].Text = "$0";
+                SuspendLayout();
+                lblTotalPot.Text = "$0";
+                for (int i = 1; i < 10; ++i)
+                {
+                    potTitles[i].Visible = false;
+                    potValues[i].Visible = false;
+                    potValues[i].Text = "$0";
+                }
+                potTitles[0].Visible = true;
+                potValues[0].Visible = true;
+                potValues[0].Text = "$0";
+                TableInfo table = m_Game.Table;
+                foreach (SeatInfo si in table.Seats)
+                {
+                    PlayerHud php = huds[si.NoSeat];
+                    InstallPlayer(php, si);
+                }
+                ResumeLayout();
             }
-            potTitles[0].Visible = true;
-            potValues[0].Visible = true;
-            potValues[0].Text = "$0";
-            TableInfo table = m_Game.Table;
-            foreach (PlayerInfo p in table.Players)
-            {
-                PlayerHud php = huds[p.NoSeat];
-                InstallPlayer(php, p);
-            }
-            ResumeLayout();
         }
 
         void OnPlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
@@ -358,7 +361,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if( e.Seat.IsEmpty)
                 huds[e.Seat.NoSeat].Visible = false;
             else
-                InstallPlayer(huds[e.Seat.NoSeat], e.Seat.Player);
+                InstallPlayer(huds[e.Seat.NoSeat], e.Seat);
             ResumeLayout();
         }
 
@@ -462,8 +465,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
 
-            WriteLine("==> " + table.Seats[table.NoSeatDealer].Player.Name + " is the Dealer");
-
             WriteLine("==> " + table.Seats[table.NoSeatSmallBlind].Player.Name + " is the SmallBlind");
 
             foreach( SeatInfo si in table.BigBlinds )
@@ -490,6 +491,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 return;
             }
             WriteLine("==> Table info received");
+            if (m_Game.Table.NoSeatDealer >= 0)
+                WriteLine("==> " + m_Game.Table.Seats[m_Game.Table.NoSeatDealer].Player.Name + " is the Dealer");
         }
 
         void OnPlayerActionNeeded_Console(object sender, HistoricPlayerInfoEventArgs e)
@@ -587,17 +590,24 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ")");
         }
 
-        private void InstallPlayer(PlayerHud php, PlayerInfo player)
+        private void InstallPlayer(PlayerHud php, SeatInfo seat)
         {
-            php.PlayerName = player.Name;
-            php.DoAction(GameActionEnum.DoNothing);
-            GameCard[] cards = player.HoleCards.ToArray();
-            php.SetCards(cards[0], cards[1]);
-            php.SetMoney(player.MoneySafeAmnt);
-            php.SetSleeping();
-            php.Main = (m_NoSeat == player.NoSeat);
-            php.Alive = player.State == PlayerStateEnum.Playing;
-            php.Visible = true;
+            if (seat.IsEmpty)
+                php.Visible = false;
+            else
+            {
+                PlayerInfo player = seat.Player;
+                php.PlayerName = player.Name;
+                php.DoAction(GameActionEnum.DoNothing);
+                GameCard[] cards = player.HoleCards.ToArray();
+                php.SetCards(cards[0], cards[1]);
+                php.SetMoney(player.MoneySafeAmnt);
+                php.SetSleeping();
+                php.Main = (m_NoSeat == player.NoSeat);
+                php.Alive = player.State == PlayerStateEnum.Playing;
+                php.Visible = true;
+                php.SetDealerButtonVisible(seat.Attributes.Contains(SeatAttributeEnum.Dealer));
+            }
         }
     }
 }

@@ -102,14 +102,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             lblStatus.Text = "$" + money;
         }
 
-        public void SetDealer()
+        public void SetDealerButtonVisible(bool visible)
         {
-            picDealer.Button = ButtonPictureBox.ButtonType.Dealer;
-        }
-
-        public void SetNotDealer()
-        {
-            picDealer.Button = ButtonPictureBox.ButtonType.None;
+            picDealer.Button = visible ? ButtonPictureBox.ButtonType.Dealer : ButtonPictureBox.ButtonType.None;
         }
 
         public void SetSmallBlind()

@@ -6,6 +6,9 @@ using Com.Ericmas001;
 using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
+using System.Collections.Concurrent;
+using Com.Ericmas001.Collections;
+using Newtonsoft.Json;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {
@@ -13,17 +16,35 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     {
         public bool IsEmpty { get { return Player == null; } }
 
-
         public int NoSeat { get; set; }
         public PlayerInfo Player { get; set; }
-        public HashSet<SeatAttributeEnum> Attributes { get; set; }
+
+        [JsonIgnore]
+        public ConcurrentList<SeatAttributeEnum> Attributes
+        {
+            get;
+            set;
+        }
+
+        public SeatAttributeEnum[] SerializableAttributes
+        {
+            get
+            {
+                return Attributes.ToList().ToArray();
+            }
+            set
+            {
+                value.ToList().ForEach(x => Attributes.Add(x));
+            }
+        }
+
         public bool IsSmallBlind { get; set; }
         public bool IsBigBlind { get; set; }
         public bool IsCurrentPlayer { get; set; }
 
         public SeatInfo()
         {
-            Attributes = new HashSet<SeatAttributeEnum>();
+            Attributes = new ConcurrentList<SeatAttributeEnum>();
         }
 
         public SeatInfo Clone()
@@ -38,7 +59,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                     IsSmallBlind = this.IsSmallBlind,
                     IsCurrentPlayer = this.IsCurrentPlayer,
                     IsBigBlind = this.IsBigBlind,
-                    Attributes = new HashSet<SeatAttributeEnum>(this.Attributes),
+                    Attributes = new ConcurrentList<SeatAttributeEnum>(this.Attributes),
                 };
         }
     }

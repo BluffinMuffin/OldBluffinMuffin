@@ -48,6 +48,10 @@
     <Compile Include="LobbyTCPServer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Com.Ericmas001.Collections\Com.Ericmas001.Collections.csproj">
+      <Project>{48bed84d-b03c-4708-bf68-21bd4922a51c}</Project>
+      <Name>Com.Ericmas001.Collections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
       <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
       <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>

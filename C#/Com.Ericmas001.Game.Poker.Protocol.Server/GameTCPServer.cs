@@ -186,7 +186,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             TableInfo t = m_Game.Table;
             Send(new GameStartedCommand()
             {
-                NoSeatD = t.NoSeatDealer,
                 NoSeatSB = t.NoSeatSmallBlind,
                 NoSeatBB = t.BigBlinds.First().NoSeat,
             });
@@ -294,39 +293,42 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             TableInfoCommand cmd = new TableInfoCommand();
             PokerTable table = m_Game.GameTable;
-            PlayerInfo playerSendingTo = m_Player;
-
-            cmd.BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
-            cmd.Seats = new List<SeatInfo>();
-
-            cmd.Params = table.Params;
-
-            cmd.TotalPotAmount = table.TotalPotAmnt;
-            cmd.NbPlayers = cmd.Params.MaxPlayers;
-
-            cmd.PotsAmount = table.Pots.Select(pot => pot.Amount).ToList();
-            cmd.PotsAmount.AddRange(Enumerable.Repeat(0, cmd.Params.MaxPlayers - table.Pots.Count));
-
-            for (int i = 0; i < cmd.Params.MaxPlayers; ++i)
+            lock (table)
             {
-                SeatInfo si = new SeatInfo() { NoSeat = i };
-                cmd.Seats.Add(si);
-                SeatInfo gameSeat = table.Seats[i];
-                if (gameSeat.IsEmpty)
-                    continue;
-                si.Player = gameSeat.Player.Clone();
+                PlayerInfo playerSendingTo = m_Player;
 
-                //If we are not sending the info about the player who is receiving, don't show the cards unless you can
-                if (i != playerSendingTo.NoSeat)
-                    si.Player.HoleCards = gameSeat.Player.RelativeCards.ToList();
+                cmd.BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
+                cmd.Seats = new List<SeatInfo>();
 
-                if (si.Player.HoleCards.Count != 2)
-                    si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
+                cmd.Params = table.Params;
 
-                si.Attributes = gameSeat.Attributes;
-                si.IsSmallBlind = table.NoSeatSmallBlind == i;
-                si.IsBigBlind = table.BigBlinds.Any(x => x.NoSeat == i);
-                si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
+                cmd.TotalPotAmount = table.TotalPotAmnt;
+                cmd.NbPlayers = cmd.Params.MaxPlayers;
+
+                cmd.PotsAmount = table.Pots.Select(pot => pot.Amount).ToList();
+                cmd.PotsAmount.AddRange(Enumerable.Repeat(0, cmd.Params.MaxPlayers - table.Pots.Count));
+
+                for (int i = 0; i < cmd.Params.MaxPlayers; ++i)
+                {
+                    SeatInfo si = new SeatInfo() { NoSeat = i };
+                    cmd.Seats.Add(si);
+                    SeatInfo gameSeat = table.Seats[i];
+                    if (gameSeat.IsEmpty)
+                        continue;
+                    si.Player = gameSeat.Player.Clone();
+
+                    //If we are not sending the info about the player who is receiving, don't show the cards unless you can
+                    if (i != playerSendingTo.NoSeat)
+                        si.Player.HoleCards = gameSeat.Player.RelativeCards.ToList();
+
+                    if (si.Player.HoleCards.Count != 2)
+                        si.Player.HoleCards = new List<GameCard>() { GameCard.NO_CARD, GameCard.NO_CARD };
+
+                    si.Attributes = gameSeat.Attributes;
+                    si.IsSmallBlind = table.NoSeatSmallBlind == i;
+                    si.IsBigBlind = table.BigBlinds.Any(x => x.NoSeat == i);
+                    si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
+                }
             }
             Send(cmd);
         }
