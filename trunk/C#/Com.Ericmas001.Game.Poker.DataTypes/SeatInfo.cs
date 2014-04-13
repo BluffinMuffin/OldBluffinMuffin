@@ -40,7 +40,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         public bool IsSmallBlind { get; set; }
         public bool IsBigBlind { get; set; }
-        public bool IsCurrentPlayer { get; set; }
 
         public SeatInfo()
         {
@@ -57,7 +56,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
                     Player = this.Player.Clone(),
                     NoSeat = this.NoSeat,
                     IsSmallBlind = this.IsSmallBlind,
-                    IsCurrentPlayer = this.IsCurrentPlayer,
                     IsBigBlind = this.IsBigBlind,
                     Attributes = new ConcurrentList<SeatAttributeEnum>(this.Attributes),
                 };

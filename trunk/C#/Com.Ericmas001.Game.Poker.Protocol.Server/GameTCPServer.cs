@@ -266,7 +266,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
             if (m_Game.State == GameStateEnum.WaitForPlayers)
                 m_Game.LeaveGame(m_Player);
-            else if (t.NoSeatCurrPlayer == m_Player.NoSeat)
+            else if (t.NoSeatCurrentPlayer == m_Player.NoSeat)
             {
                 if (t.CanCheck(m_Player))
                     m_Game.PlayMoney(m_Player, 0);
@@ -327,7 +327,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
                     si.Attributes = gameSeat.Attributes;
                     si.IsSmallBlind = table.NoSeatSmallBlind == i;
                     si.IsBigBlind = table.BigBlinds.Any(x => x.NoSeat == i);
-                    si.IsCurrentPlayer = table.NoSeatCurrPlayer == i;
                 }
             }
             Send(cmd);

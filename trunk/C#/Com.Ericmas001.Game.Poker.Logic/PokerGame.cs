@@ -165,7 +165,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     Player = null,
                     NoSeat = oldSeat,
                     IsSmallBlind = false,
-                    IsCurrentPlayer = false,
                     IsBigBlind = false
                 };
                 Observer.RaiseSeatUpdated(seat);
@@ -269,7 +268,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             else
             {
                 m_RoundState = RoundStateEnum.Cards;
-                Table.NoSeatCurrPlayer = Table.NoSeatDealer;
+                Table.ChangeCurrentPlayerTo(Table.NoSeatDealer);
                 Table.Round = (RoundTypeEnum)(((int)Table.Round) + 1);
                 StartRound();
             }
@@ -290,7 +289,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "Currently, we need {0} minimum money from this player", Table.CallAmnt(p));
 
             //Validation: Is it the player's turn to play ?
-            if (p.NoSeat != Table.NoSeatCurrPlayer)
+            if (p.NoSeat != Table.NoSeatCurrentPlayer)
             {
                 LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} just played but it wasn't his turn", p.Name); 
                 return false;
@@ -458,7 +457,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             Observer.RaiseGameBettingRoundStarted(Table.Round);
 
             //We Put the current player just before the starting player, then we will take the next player and he will be the first
-            Table.NoSeatCurrPlayer = Table.GetPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer.NoSeat).NoSeat;
+            Table.ChangeCurrentPlayerTo(Table.GetPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer.NoSeat).NoSeat);
             Table.NbPlayed = 0;
             Table.MinimumRaiseAmount = Table.Params.BlindAmount;
 
@@ -562,9 +561,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void ChooseNextPlayer()
         {
-            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrPlayer);
+            PlayerInfo next = Table.GetPlayingPlayerNextTo(Table.NoSeatCurrentPlayer);
 
-            Table.NoSeatCurrPlayer = next.NoSeat;
+            Table.ChangeCurrentPlayerTo(next.NoSeat);
 
             Observer.RaisePlayerActionNeeded(next, Table.CurrentPlayer);
 

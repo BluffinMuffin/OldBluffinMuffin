@@ -154,9 +154,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 foreach (SeatInfo si in m_PokerTable.Seats)
                 {
                     si.Attributes.Remove(SeatAttributeEnum.Dealer);
+                    si.Attributes.Remove(SeatAttributeEnum.CurrentPlayer);
                     si.IsSmallBlind = false;
                     si.IsBigBlind = false;
-                    si.IsCurrentPlayer = false;
                 }
 
                 //m_PokerTable.Seats[cmd.NoSeatD].Attributes.Add(SeatAttributeEnum.Dealer);
@@ -264,7 +264,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                 if (p != null)
                 {
-                    m_PokerTable.NoSeatCurrPlayer = cmd.PlayerPos;
+                    m_PokerTable.ChangeCurrentPlayerTo(cmd.PlayerPos);
                     m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
 
                     Observer.RaisePlayerActionNeeded(p, l);
@@ -349,11 +349,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                     if (seat.IsBigBlind)
                         m_PokerTable.NoSeatBigBlind = noSeat;
-
-                    if (seat.IsCurrentPlayer)
-                        m_PokerTable.NoSeatCurrPlayer = noSeat;
-
-                    //Observer.RaisePlayerHoleCardsChanged(p);
 
                 }
                 Observer.RaiseGameGenerallyUpdated();
