@@ -414,9 +414,17 @@ namespace Com.Ericmas001.Game.Poker.Logic
             GameTable.SetBlindNeeded(p, 0);
 
             //Take note of the action
-            bool isPostingSmallBlind = (needed == Table.SmallBlindAmnt);
-            LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED {1} BLIND", p.Name, isPostingSmallBlind ? "SMALL" : "BIG");
-            Observer.RaisePlayerActionTaken(p, isPostingSmallBlind ? GameActionEnum.PostSmallBlind : GameActionEnum.PostBigBlind, amnt);
+            GameActionEnum whatAmIDoing = GameActionEnum.PostAnte;
+            if(Table.Params.Blind.BlindType == BlindTypeEnum.Blinds)
+            {
+                BlindOptionsBlinds bob = Table.Params.Blind as BlindOptionsBlinds;
+                if (needed == bob.SmallBlindAmount)
+                    whatAmIDoing = GameActionEnum.PostSmallBlind;
+                else
+                    whatAmIDoing = GameActionEnum.PostBigBlind;
+            }
+            LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} POSTED BLIND ({1})", p.Name, whatAmIDoing);
+            Observer.RaisePlayerActionTaken(p, whatAmIDoing, amnt);
 
             //Let's set the HigherBet
             if (amnt > Table.HigherBet)
@@ -462,7 +470,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             //We Put the current player just before the starting player, then we will take the next player and he will be the first
             Table.ChangeCurrentPlayerTo(Table.GetSeatOfPlayingPlayerJustBefore(Table.SeatOfTheFirstPlayer));
             Table.NbPlayed = 0;
-            Table.MinimumRaiseAmount = Table.Params.BlindAmount;
+            Table.MinimumRaiseAmount = Table.Params.Blind.MinimumRaiseAmount;
 
             WaitALittle(Params.WaitingTimes.AfterBoardDealed);
 

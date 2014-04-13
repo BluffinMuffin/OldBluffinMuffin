@@ -248,7 +248,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void OnDisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
-            if (m_UserInfo != null && m_Game.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Career)
+            if (m_UserInfo != null && m_Game.Params.Lobby.LobbyType == LobbyTypeEnum.Career)
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
 
             LeftTable(this, new KeyEventArgs<int>(m_ID));

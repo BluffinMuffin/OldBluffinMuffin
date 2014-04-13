@@ -137,6 +137,46 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         lobby = new LobbyOptionsCareer();
                         break;
                 }
+                BlindOptions blind = new BlindOptionsNone();
+                switch (((BlindInfo)lstBlinds.SelectedItem).Type)
+                {
+                    case BlindTypeEnum.Blinds:
+                        blind = new BlindOptionsBlinds()
+                        {
+                            BigBlindAmount = (int)nudBlind.Value,
+                        };
+                        break;
+
+                    case BlindTypeEnum.Antes:
+                        blind = new BlindOptionsAnte()
+                        {
+                            AnteAmount = (int)nudBlind.Value,
+                        };
+                        break;
+                }
+                LimitOptions limit = null;
+                switch (((LimitInfo)lstBetLimit.SelectedItem).Type)
+                {
+                    case LimitTypeEnum.NoLimit:
+                        limit = new LimitOptionsNoLimit()
+                        {
+                            MaximumBuyIn = false, //TODO
+                            BuyInIncrement = blind.MinimumRaiseAmount,
+                        };
+                        break;
+
+                    case LimitTypeEnum.FixedLimit:
+                        limit = new LimitOptionsFixed()
+                        {
+                        };
+                        break;
+
+                    case LimitTypeEnum.PotLimit:
+                        limit = new LimitOptionsPot()
+                        {
+                        };
+                        break;
+                }
                 return new TableParams()
                 {
                     TableName = txtTableName.Text,
@@ -144,9 +184,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                     Variant = lstVariant.SelectedItem.ToString(),
                     MinPlayersToStart = (int)nudNbPlayersMin.Value,
                     MaxPlayers = (int)nudNbPlayersMax.Value,
-                    LimitType = ((LimitInfo)lstBetLimit.SelectedItem).Type,
-                    BlindType = ((BlindInfo)lstBlinds.SelectedItem).Type,
-                    BlindAmount = (int)nudBlind.Value,
                     WaitingTimes = new ConfigurableWaitingTimes()
                     {
                         AfterPlayerAction = (int)nudWTAPlayerAction.Value,
@@ -154,6 +191,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         AfterPotWon = (int)nudWTAPotWon.Value,
                     },
                     Lobby = lobby,
+                    Blind = blind,
+                    Limit = limit,
                 };
             }
         }

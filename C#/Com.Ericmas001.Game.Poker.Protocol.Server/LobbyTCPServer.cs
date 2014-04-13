@@ -66,7 +66,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         private int CreateTable(CreateTableCommand c)
         {
             int res = m_Lobby.CreateTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.Params.TableName, res, c.Params.CurrentLobby.LobbyType);
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", m_PlayerName, c.Params.TableName, res, c.Params.Lobby.LobbyType);
             return res;
         }
 
@@ -124,8 +124,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
             PokerGame game = m_Lobby.GetGame(e.Command.TableID);
             PokerTable table = game.GameTable;
 
-            if (game.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Training)
-                client = new GameTCPServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Params.CurrentLobby).StartingAmount);
+            if (game.Params.Lobby.LobbyType == LobbyTypeEnum.Training)
+                client = new GameTCPServer(e.Command.TableID, game, m_PlayerName, ((LobbyOptionsTraining)game.Params.Lobby).StartingAmount);
             else
                 client = new GameTCPServer(e.Command.TableID, game, DataManager.Persistance.Get(e.Command.PlayerName));
 

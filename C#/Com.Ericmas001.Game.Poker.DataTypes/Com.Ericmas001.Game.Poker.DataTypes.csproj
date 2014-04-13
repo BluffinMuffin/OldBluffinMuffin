@@ -48,6 +48,13 @@
     <Compile Include="Enums\SeatAttributeEnum.cs" />
     <Compile Include="EventHandling\PokerGameObserver.cs" />
     <Compile Include="EventHandling\SeatEventArgs.cs" />
+    <Compile Include="Parameters\BlindOptionsNone.cs" />
+    <Compile Include="Parameters\LimitOptionsPot.cs" />
+    <Compile Include="Parameters\LimitOptionsFixed.cs" />
+    <Compile Include="Parameters\LimitOptionsNoLimit.cs" />
+    <Compile Include="Parameters\LimitOptions.cs" />
+    <Compile Include="Parameters\BlindOptionsAnte.cs" />
+    <Compile Include="Parameters\BlindOptionsBlinds.cs" />
     <Compile Include="Parameters\ConfigurableWaitingTimes.cs" />
     <Compile Include="Enums\BlindTypeEnum.cs" />
     <Compile Include="Enums\GameActionEnum.cs" />
@@ -64,6 +71,7 @@
     <Compile Include="EventHandling\PlayerInfoEventArgs.cs" />
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />
+    <Compile Include="Parameters\BlindOptions.cs" />
     <Compile Include="Parameters\TableParams.cs" />
     <Compile Include="IPokerGame.cs" />
     <Compile Include="IPokerViewer.cs" />

@@ -71,11 +71,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             for (int i = 0; i < lst.Count; ++i)
             {
                 TupleTable info = lst[i];
-                string type = info.Params.CurrentLobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
+                string type = info.Params.Lobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
                 datTables.Rows[i].Cells[1].Value = info.Params.TableName;
-                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Params.LimitType).Name;
+                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Params.Limit.LimitType).Name;
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Params.MaxPlayers;
             }
@@ -96,7 +96,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                 int id = m_Server.CreateTable(parms);
                 if (id != -1)
                 {
-                    JoinTable(id, parms.TableName, parms.BlindAmount);
+                    JoinTable(id, parms.TableName);
                     RefreshList();
                 }
                 else
@@ -153,13 +153,13 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                 if (o3 == null)
                     return;
                 int bigBlind = (int)o3;
-                if (!JoinTable(noPort, tableName, bigBlind))
+                if (!JoinTable(noPort, tableName))
                     LogManager.Log(LogLevel.Error, "PokerTableList.JoinSelected", "Table '{0}' does not exist anymore.", tableName);
                 RefreshList();
 
             }
         }
-        private bool JoinTable(int p_noPort, String p_tableName, int p_bigBlindAmount)
+        private bool JoinTable(int p_noPort, String p_tableName)
         {
             AbstractTableForm gui = new TableForm();
             GameTCPClient tcpGame = m_Server.JoinTable(p_noPort, p_tableName, gui);

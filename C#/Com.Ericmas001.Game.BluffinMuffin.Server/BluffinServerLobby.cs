@@ -104,7 +104,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Server
             foreach (KeyValuePair<int, PokerGame> kvp in m_Games.Where(kvp => kvp.Value.IsRunning))
             {
                 TableInfo t = kvp.Value.Table;
-                if (lobbyTypes.Length == 0 || lobbyTypes.Contains(t.Params.CurrentLobby.LobbyType))
+                if (lobbyTypes.Length == 0 || lobbyTypes.Contains(t.Params.Lobby.LobbyType))
                     tables.Add(new TupleTable()
                     {
                         IdTable = kvp.Key,
