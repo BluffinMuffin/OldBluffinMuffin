@@ -1,10 +1,4 @@
-﻿TODO:
--> SitIn / SitOut System
-	(done) When a Player Join a game, he is not automatically seated, he is standing up, at no specific seat
-	(done) He may choose to sit at wathever empty seat he desires
-	(done) He can sit-out and go back to his watcher state
-	:- Should any player sitting a the table be the big blind, unless it is the first round !
--> Better support of the betting rules of the no-limit game 
+﻿-> Better support of the betting rules of the no-limit game 
 	:- Generally the minimum buy-in will be 20 big blinds (so $40 in our example), and the maximum will be 100 big blinds ($200), though there are some casinos that spread games with no maximum buy-in.
 	:- http://www.pokerlistings.com/texas-holdem-betting-rules
 -> Bug: Game Problems

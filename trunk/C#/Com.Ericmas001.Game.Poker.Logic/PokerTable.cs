@@ -27,17 +27,21 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public int TotalBlindNeeded { get { return m_BlindNeeded.Values.Sum(); } }
 
+        public List<PlayerInfo> NewArrivals { get; set; }
+
         #endregion Properties
 
         #region Ctors & Init
         public PokerTable()
             : base()
         {
+            NewArrivals = new List<PlayerInfo>();
         }
 
         public PokerTable(TableParams parms)
             :base(parms)
         {
+            NewArrivals = new List<PlayerInfo>();
         }
 
         public override void InitTable()
@@ -269,12 +273,17 @@ namespace Com.Ericmas001.Game.Poker.Logic
             {
                 case BlindTypeEnum.Blinds:
                     SeatInfo smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
-                    smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
+                    if (!NewArrivals.Any(x => x.NoSeat == smallSeat.NoSeat))
+                    {
+                        smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
+                    }
 
                     SeatInfo bigSeat = GetSeatOfPlayingPlayerNextTo(smallSeat);
                     bigSeat.Attributes.Add(SeatAttributeEnum.BigBlind);
 
-                    m_BlindNeeded.Add(smallSeat.Player, SmallBlindAmnt);
+                    NewArrivals.ForEach(x => Seats[x.NoSeat].Attributes.Add(SeatAttributeEnum.BigBlind));
+                    NewArrivals.Clear();
+
                     Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_BlindNeeded.Add(x.Player, Params.BlindAmount));
                     break;
                 case BlindTypeEnum.Antes:

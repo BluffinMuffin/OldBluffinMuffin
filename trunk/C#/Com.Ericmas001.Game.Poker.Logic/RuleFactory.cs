@@ -23,12 +23,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
                         GameType = GameTypeEnum.Holdem,
                         MinPlayers = 2,
                         MaxPlayers = 10,
-                        AvailableLimits = new List<LimitTypeEnum>(){LimitTypeEnum.NoLimit,LimitTypeEnum.PotLimit,LimitTypeEnum.BetLimit},
+                        AvailableLimits = new List<LimitTypeEnum>(){LimitTypeEnum.NoLimit/*,LimitTypeEnum.FixedLimit,LimitTypeEnum.PotLimit*/ },
                         DefaultLimit = LimitTypeEnum.NoLimit,
-                        AvailableBlinds = new List<BlindTypeEnum>(){BlindTypeEnum.Blinds,BlindTypeEnum.Antes,BlindTypeEnum.None},
+                        AvailableBlinds = new List<BlindTypeEnum>(){BlindTypeEnum.Blinds, BlindTypeEnum.Antes, BlindTypeEnum.None},
                         DefaultBlind = BlindTypeEnum.Blinds,
                         CanConfigWaitingTime = true,
-                        AvailableLobbys = new List<LobbyTypeEnum>(){LobbyTypeEnum.Training,LobbyTypeEnum.Career},
+                        AvailableLobbys = new List<LobbyTypeEnum>(){LobbyTypeEnum.Training, LobbyTypeEnum.Career},
                     },
                 };
             }
