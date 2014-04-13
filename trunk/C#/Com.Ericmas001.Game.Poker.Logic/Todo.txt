@@ -10,6 +10,7 @@
 -> Bug: Game Problems
 	:- It crashes if you select "None" as a Blind Type
 	:- The game never Starts if you select "None" as a Blind Type
+	:- SitOut and Leaving is slightly buggy ... as in A lot!
 -> Bug: Visual glitches
 	:- When a player is waiting for player for an already played games, he stays with his cards
 	:- it's not clear that the "raise amount" is how much money you want to put on the table (Call + Amount To raise) in the GUI
