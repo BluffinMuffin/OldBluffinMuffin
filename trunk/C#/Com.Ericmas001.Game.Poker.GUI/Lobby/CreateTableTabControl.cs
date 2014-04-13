@@ -28,6 +28,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             m_Rules = rules;
             InitializeComponent();
             txtTableName.Text = playerName + " Table";
+            ucBlinds.nudBlind.Increment = ucBlinds.nudBlind.Value = BlindFactory.GetInfos(BlindTypeEnum.Blinds).ConfigurableDefaultValue;
+            ucAnte.nudAnte.Increment = ucAnte.nudAnte.Value = BlindFactory.GetInfos(BlindTypeEnum.Antes).ConfigurableDefaultValue;
             InitVariants();
             grpTraining.Visible = lobby == LobbyTypeEnum.Training;
         }
@@ -86,14 +88,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         private void SetBlindRules()
         {
             BlindInfo blind = lstBlinds.SelectedItem as BlindInfo;
-            lblBlind.Visible = nudBlind.Visible = blind.HasConfigurableAmount;
-            if( blind.HasConfigurableAmount )
-            { 
-                nudBlind.Value = blind.ConfigurableDefaultValue;
-                lblBlind.Text = String.Format("({0})", blind.ConfigurableAmountName);
-            }
-            else
-                nudBlind.Value = 0;
+            ucAnte.Visible = blind.Type == BlindTypeEnum.Antes;
+            ucBlinds.Visible = blind.Type == BlindTypeEnum.Blinds;
         }
 
         private void SetWaitingTimes()
@@ -143,14 +139,14 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                     case BlindTypeEnum.Blinds:
                         blind = new BlindOptionsBlinds()
                         {
-                            BigBlindAmount = (int)nudBlind.Value,
+                            BigBlindAmount = (int)ucBlinds.nudBlind.Value,
                         };
                         break;
 
                     case BlindTypeEnum.Antes:
                         blind = new BlindOptionsAnte()
                         {
-                            AnteAmount = (int)nudBlind.Value,
+                            AnteAmount = (int)ucAnte.nudAnte.Value,
                         };
                         break;
                 }

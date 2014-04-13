@@ -30,6 +30,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         private int m_TablePosition;
         private readonly string m_PlayerName;
         private readonly int m_NoPort;
+        private bool m_IsGameStarted;
         #endregion Fields
 
         #region Properties
@@ -310,7 +311,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             lock (m_PokerTable)
             {
                 TableInfoCommand cmd = e.Command;
-
+                m_IsGameStarted = cmd.GameHasStarted;
                 InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
                 SetCards(cmd.BoardCardIDs);
                 m_PokerTable.Params = cmd.Params;
@@ -385,24 +386,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             p.State = pState;
             p.Cards = cards.ToArray();
         }
-        //protected T WaitAndReceive<T>() where T : AbstractCommand
-        //{
-        //    string expected = (string)typeof(T).GetField(AbstractCommand.CommandNameField, (BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)).GetValue(null);
-        //    string s;
-        //    string commandName;
-
-        //    JObject jObj;
-
-        //    do
-        //    {
-        //        s = m_Incoming.Dequeue();
-        //        jObj = JsonConvert.DeserializeObject<dynamic>(s);
-        //        commandName = (string)jObj["CommandName"];
-        //    }
-        //    while (s != null && commandName != expected);
-
-        //    return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
-        //}
         #endregion Private Methods
+
+
+        public bool IsPlaying
+        {
+            get { return m_IsGameStarted; }
+        }
     }
 }

@@ -61,6 +61,14 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
 
         /// <summary>
+        /// Is the Game currently Running ? (Not Ended)
+        /// </summary>
+        public bool IsPlaying
+        {
+            get { return IsRunning && m_State >= GameStateEnum.WaitForBlinds; }
+        }
+
+        /// <summary>
         /// Current State of the Game
         /// </summary>
         public GameStateEnum State
@@ -133,8 +141,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public int SitIn(PlayerInfo p, int noSeat = -1)
         {
-            SeatInfo seat = GameTable.AskToSitIn(p, noSeat);
-            if (seat != null)
+            SeatInfo seat = p.NoSeat == -1 ? null : Table.Seats[p.NoSeat];
+            if (seat != null && !seat.IsEmpty)
             {
                 Observer.RaiseSeatUpdated(seat.Clone());
 

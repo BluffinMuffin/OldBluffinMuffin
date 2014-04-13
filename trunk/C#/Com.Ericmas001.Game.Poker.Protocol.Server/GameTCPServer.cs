@@ -243,7 +243,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void OnSitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
-            Send(e.Command.EncodeResponse(m_Game.SitIn(m_Player, e.Command.NoSeat)));
+            SeatInfo seat = m_Game.GameTable.AskToSitIn(m_Player, e.Command.NoSeat);
+            Send(e.Command.EncodeResponse(seat == null ? -1 : seat.NoSeat));
+            m_Game.SitIn(m_Player);
         }
 
         void OnDisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
@@ -287,6 +289,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         public void SendTableInfo()
         {
             TableInfoCommand cmd = new TableInfoCommand();
+            cmd.GameHasStarted = m_Game.IsPlaying;
             PokerTable table = m_Game.GameTable;
             lock (table)
             {

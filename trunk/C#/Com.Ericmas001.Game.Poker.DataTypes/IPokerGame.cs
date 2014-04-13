@@ -17,5 +17,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         bool SitOut(PlayerInfo p);
 
         string Encode { get; }
+
+        bool IsPlaying { get; }
     }
 }

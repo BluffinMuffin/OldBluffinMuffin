@@ -226,7 +226,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             }
             lock (m_Game.Table)
             {
-                
+
 
                 TableInfo table = m_Game.Table;
                 SuspendLayout();
@@ -249,8 +249,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                     potValues[i].Text = "$" + p.Amount;
                 }
 
-                for (int i = 0; i < 5; ++i)
-                    board[i].Card = m_Game.Table.Cards[i];
+                int j = 0;
+                for (; j < 5 && table.Cards[j].Id != GameCard.NO_CARD.Id; ++j)
+                    board[j].Card = table.Cards[j];
+                for (; j < 5; ++j)
+                    board[j].Card = m_Game.IsPlaying ? GameCard.HIDDEN : GameCard.NO_CARD;
 
                 foreach (SeatInfo si in table.Seats)
                 {

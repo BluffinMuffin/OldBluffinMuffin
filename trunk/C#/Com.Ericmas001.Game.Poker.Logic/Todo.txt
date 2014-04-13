@@ -2,8 +2,6 @@
 	:- Generally the minimum buy-in will be 20 big blinds (so $40 in our example), and the maximum will be 100 big blinds ($200), though there are some casinos that spread games with no maximum buy-in.
 	:- http://www.pokerlistings.com/texas-holdem-betting-rules
 -> Bug: Game Problems
-	:- It crashes if you select "None" as a Blind Type
-	:- The game never Starts if you select "None" as a Blind Type
 	:- SitOut and Leaving is slightly buggy ... as in A lot!
 -> Bug: Visual glitches
 	:- When a player is waiting for player for an already played games, he stays with his cards
