@@ -25,17 +25,14 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Game
 
         protected override int GetSitInMoneyAmount()
         {
-            StringWriter sw = new StringWriter();
             TableParams parms = m_Game.Table.Params;
-            sw.WriteLine("Your account have ${0}", User.TotalMoney);
-            sw.WriteLine("Current Money Unit is ${0}", parms.MoneyUnit);
-            sw.WriteLine("Minimum amount is ${0}", parms.LimitedMinimumBuyIn);
-            sw.WriteLine("If limited, Maximum amount would ${0}", parms.LimitedMaximumBuyIn);
-            sw.WriteLine("The maximum buy-in is currently {0}limited !!", parms.LimitMaximumBuyIn ? "" : "un");
-            sw.WriteLine("");
-            sw.WriteLine("TODO: Ask for amount. Currently putting 1542");
-            MessageBox.Show(sw.ToString());
-            return 1542;
+            if (User.TotalMoney < parms.LimitedMinimumBuyIn)
+                return -1;
+            BuyInForm bif = new BuyInForm(User, m_Game.Table.Params);
+            bif.ShowDialog();
+            if (bif.OK)
+                return bif.BuyIn;
+            return -1;
         }
     }
 }

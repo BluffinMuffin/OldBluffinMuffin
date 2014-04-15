@@ -59,6 +59,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\BuyInForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Game\BuyInForm.Designer.cs">
+      <DependentUpon>BuyInForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Game\CareerTableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,9 @@
     <Compile Include="Splash\CareerConnectSplashInfo.cs" />
     <Compile Include="Splash\CareerRegisterSplashInfo.cs" />
     <Compile Include="Splash\TrainingSplashInfo.cs" />
+    <EmbeddedResource Include="Game\BuyInForm.resx">
+      <DependentUpon>BuyInForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LobbyCareerForm.resx">
       <DependentUpon>LobbyCareerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -180,6 +189,7 @@
   <ItemGroup>
     <Content Include="cards.ico" />
     <Content Include="chips2.ico" />
+    <None Include="Resources\sit-in.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
