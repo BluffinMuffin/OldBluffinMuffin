@@ -242,13 +242,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void OnSitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
+            TableParams parms = m_Game.Table.Params;
             int money;
-            if(m_Game.Table.Params.Lobby.LobbyType == LobbyTypeEnum.Training)
-                money = ((LobbyOptionsTraining)m_Game.Table.Params.Lobby).StartingAmount;
+            if(parms.Lobby.LobbyType == LobbyTypeEnum.Training)
+                money = ((LobbyOptionsTraining)parms.Lobby).StartingAmount;
             else
             {
                 money = e.Command.MoneyAmount;
-                if (m_UserInfo == null || m_UserInfo.TotalMoney < money)
+                if (m_UserInfo == null || m_UserInfo.TotalMoney < money || money < parms.LimitedMinimumBuyIn || (parms.LimitMaximumBuyIn && money > parms.LimitedMaximumBuyIn))
                 {
                     Send(e.Command.EncodeResponse(-1));
                     return;
