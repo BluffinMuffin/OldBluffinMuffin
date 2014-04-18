@@ -204,6 +204,10 @@
       <Project>{a5be76d4-ec5f-4285-b713-9c0a7947bf72}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Net.JSON\Com.Ericmas001.Net.JSON.csproj">
+      <Project>{50fdad8f-01c6-4b41-9547-8e212bbeb9b4}</Project>
+      <Name>Com.Ericmas001.Net.JSON</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
       <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
       <Name>Com.Ericmas001.Net.Protocol</Name>

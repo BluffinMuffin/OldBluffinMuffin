@@ -49,9 +49,6 @@
     <Compile Include="EventHandling\PokerGameObserver.cs" />
     <Compile Include="EventHandling\SeatEventArgs.cs" />
     <Compile Include="Parameters\BlindOptionsNone.cs" />
-    <Compile Include="Parameters\FactoryLimitOptions.cs" />
-    <Compile Include="Parameters\FactoryBlindOptions.cs" />
-    <Compile Include="Parameters\IOption.cs" />
     <Compile Include="Parameters\LimitOptionsPot.cs" />
     <Compile Include="Parameters\LimitOptionsFixed.cs" />
     <Compile Include="Parameters\LimitOptionsNoLimit.cs" />
@@ -75,7 +72,6 @@
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />
     <Compile Include="Parameters\BlindOptions.cs" />
-    <Compile Include="Parameters\FactoryLobbyOptions.cs" />
     <Compile Include="Parameters\TableParams.cs" />
     <Compile Include="IPokerGame.cs" />
     <Compile Include="IPokerViewer.cs" />
