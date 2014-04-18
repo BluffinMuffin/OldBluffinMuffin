@@ -103,14 +103,10 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 base.OnSendCrashed(e);
         }
 
-        public void Send(StreamWriter writer, AbstractCommand command)
-        {
-            writer.WriteLine(command.Encode());
-        }
-
         public void Send(AbstractCommand command)
         {
             string encode = command.Encode();
+            LogManager.Log(LogLevel.MessageVeryLow, "LobbyTCPClient.Receive", "{0} SENT [{1}]", m_PlayerName, encode);
             base.Send(encode);
         }
 
@@ -213,7 +209,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             try
             {
                 line = reader.ReadLine();
-                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.Receive", "{0} RECV [{1}]", m_PlayerName, line);
+                LogManager.Log(LogLevel.MessageVeryLow, "LobbyTCPClient.Receive", "{0} RECV [{1}]", m_PlayerName, line);
             }
             catch
             {
@@ -254,7 +250,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                     return;
                 }
 
-                LogManager.Log(LogLevel.MessageLow, "LobbyTCPClient.Run", "{0} RECV [{1}]", m_PlayerName, line);
+                LogManager.Log(LogLevel.MessageVeryLow, "LobbyTCPClient.Run", "{0} RECV [{1}]", m_PlayerName, line);
 
                 JObject jObj = JsonConvert.DeserializeObject<dynamic>(line);
                 String cmdName = (string)jObj["CommandName"];

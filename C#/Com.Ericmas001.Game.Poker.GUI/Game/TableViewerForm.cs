@@ -92,11 +92,13 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         public void WriteLine(string line)
         {
+            LogManager.Log(LogLevel.Message, "Game", line);
             logConsole.WriteLine(line);
         }
 
         public void Write(string msg)
         {
+            LogManager.Log(LogLevel.Message, "Game", msg);
             logConsole.Write(msg);
         }
 
