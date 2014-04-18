@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Com.Ericmas001.Net.Protocol.Json;
+using Com.Ericmas001.Util.Options;
+using Com.Ericmas001.Net.JSON;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
@@ -21,12 +22,18 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
         public bool LimitMaximumBuyIn { get; set; }
         public int MoneyUnit { get; set; }
 
-        [JsonConverter(typeof(LobbyJsonConverter))]
+
+        [JsonConverter(typeof(OptionJsonConverter<LobbyOptions, LobbyTypeEnum>))]
         public LobbyOptions Lobby { get; set; }
-        [JsonConverter(typeof(BlindJsonConverter))]
+
+
+        [JsonConverter(typeof(OptionJsonConverter<BlindOptions, BlindTypeEnum>))]
         public BlindOptions Blind { get; set; }
-        [JsonConverter(typeof(LimitJsonConverter))]
+
+
+        [JsonConverter(typeof(OptionJsonConverter<LimitOptions, LimitTypeEnum>))]
         public LimitOptions Limit { get; set; }
+
 
         public int LimitedMinimumBuyIn { get { return 20 * MoneyUnit; } }
         public int LimitedMaximumBuyIn { get { return 100 * MoneyUnit; } }
@@ -47,26 +54,26 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
         }
 
 
-        public class LobbyJsonConverter : AbstractCustomJsonConverter<LobbyOptions>
-        {
-            public override LobbyOptions ObtainCustomObject(JObject jObject)
-            {
-                return FactoryLobbyOptions.GenerateOptions((LobbyTypeEnum)((int)jObject.GetValue("OptionType")));
-            }
-        }
-        public class BlindJsonConverter : AbstractCustomJsonConverter<BlindOptions>
-        {
-            public override BlindOptions ObtainCustomObject(JObject jObject)
-            {
-                return FactoryBlindOptions.GenerateOptions((BlindTypeEnum)((int)jObject.GetValue("OptionType")));
-            }
-        }
-        public class LimitJsonConverter : AbstractCustomJsonConverter<LimitOptions>
-        {
-            public override LimitOptions ObtainCustomObject(JObject jObject)
-            {
-                return FactoryLimitOptions.GenerateOptions((LimitTypeEnum)((int)jObject.GetValue("OptionType")));
-            }
-        }
+        //public class LobbyJsonConverter : AbstractCustomJsonConverter<LobbyOptions>
+        //{
+        //    public override LobbyOptions ObtainCustomObject(JObject jObject)
+        //    {
+        //        return FactoryOption<LobbyOptions, LobbyTypeEnum>.GenerateOption((LobbyTypeEnum)((int)jObject.GetValue("OptionType")));
+        //    }
+        //}
+        //public class BlindJsonConverter : AbstractCustomJsonConverter<BlindOptions>
+        //{
+        //    public override BlindOptions ObtainCustomObject(JObject jObject)
+        //    {
+        //        return FactoryOption<BlindOptions, BlindTypeEnum>.GenerateOption((BlindTypeEnum)((int)jObject.GetValue("OptionType")));
+        //    }
+        //}
+        //public class LimitJsonConverter : AbstractCustomJsonConverter<LimitOptions>
+        //{
+        //    public override LimitOptions ObtainCustomObject(JObject jObject)
+        //    {
+        //        return FactoryOption<LimitOptions, LimitTypeEnum>.GenerateOption((LimitTypeEnum)((int)jObject.GetValue("OptionType")));
+        //    }
+        //}
     }
 }
