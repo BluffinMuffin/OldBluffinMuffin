@@ -64,6 +64,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         protected override void InitializeCommandObserver()
         {
             m_CommandObserver.CommandReceived += OnCommandReceived;
+            SendedSomething += OnCommandSended;
             m_CommandObserver.BetTurnEndedCommandReceived += OnBetTurnEndedCommandReceived;
             m_CommandObserver.BetTurnStartedCommandReceived += OnBetTurnStartedCommandReceived;
             m_CommandObserver.GameEndedCommandReceived += OnGameEndedCommandReceived;
@@ -81,6 +82,11 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
             m_CommandObserver.PlayerSitInResponseReceived += OnPlayerSitInResponseReceived;
             m_CommandObserver.PlayerSitOutResponseReceived += OnPlayerSitOutResponseReceived;
+        }
+
+        private void OnCommandSended(object sender, KeyEventArgs<string> e)
+        {
+            LogManager.Log(LogLevel.MessageLow, "GameClient.m_CommandObserver_CommandReceived", "{0} SENT -={1}=-", m_PlayerName, e.Key);
         }
 
         #endregion Ctors & Init
