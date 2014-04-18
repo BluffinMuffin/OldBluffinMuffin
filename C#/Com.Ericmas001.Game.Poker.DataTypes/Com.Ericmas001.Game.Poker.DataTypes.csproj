@@ -104,9 +104,9 @@
       <Project>{64d407d1-1119-42a6-86f2-a98a31fdb3b2}</Project>
       <Name>Com.Ericmas001.Games</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
-      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
-      <Name>Com.Ericmas001.Net.Protocol</Name>
+    <ProjectReference Include="..\Com.Ericmas001.Net.JSON\Com.Ericmas001.Net.JSON.csproj">
+      <Project>{50fdad8f-01c6-4b41-9547-8e212bbeb9b4}</Project>
+      <Name>Com.Ericmas001.Net.JSON</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
       <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
