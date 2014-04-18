@@ -269,7 +269,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             m_BlindNeeded.Clear();
 
-            switch(Params.Blind.BlindType)
+            switch(Params.Blind.OptionType)
             {
                 case BlindTypeEnum.Blinds:
                     BlindOptionsBlinds bob = Params.Blind as BlindOptionsBlinds;

@@ -177,7 +177,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             do
             {
                 s = m_Incoming.Dequeue();
-                jObj = JsonConvert.DeserializeObject<dynamic>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
+                jObj = JsonConvert.DeserializeObject<dynamic>(s);
                 commandName = (string)jObj["CommandName"];
             }
             while (s != null && commandName != expected);
@@ -200,7 +200,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             }
             while (s != null && commandName != expected);
 
-            return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
+            return JsonConvert.DeserializeObject<T>(s);
         }
 
         protected string Receive(StreamReader reader)
@@ -257,7 +257,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
                 if (cmdName == GameCommand.COMMAND_NAME)
                 {
-                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple });
+                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line);
                     int count = 0;
 
                     //Be patient

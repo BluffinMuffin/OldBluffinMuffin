@@ -62,11 +62,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             for (int i = 0; i < lst.Count; ++i)
             {
                 TupleTable info = lst[i];
-                string type = info.Params.Lobby.LobbyType == LobbyTypeEnum.Training ? "Training" : "Real";
+                string type = info.Params.Lobby.OptionType == LobbyTypeEnum.Training ? "Training" : "Real";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
                 datTables.Rows[i].Cells[1].Value = info.Params.TableName;
-                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Params.Limit.LimitType).Name;
+                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Params.Limit.OptionType).Name;
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Params.MaxPlayers;
             }

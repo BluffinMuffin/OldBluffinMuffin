@@ -8,7 +8,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
     public class LobbyOptionsCareer : LobbyOptions
     {
-        public override LobbyTypeEnum LobbyType
+        public override LobbyTypeEnum OptionType
         {
             get { return LobbyTypeEnum.Career; }
         }

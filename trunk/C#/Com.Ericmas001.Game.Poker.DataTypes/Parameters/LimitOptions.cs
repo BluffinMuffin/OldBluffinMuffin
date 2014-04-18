@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
-    public abstract class LimitOptions
+    public abstract class LimitOptions : IOption<LimitTypeEnum>
     {
-        public abstract LimitTypeEnum LimitType { get; }
+        public abstract LimitTypeEnum OptionType { get; }
     }
 }

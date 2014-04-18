@@ -423,7 +423,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
             //Take note of the action
             GameActionEnum whatAmIDoing = GameActionEnum.PostAnte;
-            if(Table.Params.Blind.BlindType == BlindTypeEnum.Blinds)
+            if(Table.Params.Blind.OptionType == BlindTypeEnum.Blinds)
             {
                 BlindOptionsBlinds bob = Table.Params.Blind as BlindOptionsBlinds;
                 if (needed == bob.SmallBlindAmount)

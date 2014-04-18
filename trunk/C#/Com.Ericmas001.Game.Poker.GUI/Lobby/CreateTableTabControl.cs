@@ -133,15 +133,15 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         break;
                 }
                 int moneyUnit = (int)nudMoneyUnit.Value;
-                BlindOptions blind = new BlindOptionsNone(moneyUnit);
+                BlindOptions blind = new BlindOptionsNone() { MoneyUnit = moneyUnit };
                 switch (((BlindInfo)lstBlinds.SelectedItem).Type)
                 {
                     case BlindTypeEnum.Blinds:
-                        blind = new BlindOptionsBlinds(moneyUnit);
+                        blind = new BlindOptionsBlinds() { MoneyUnit = moneyUnit };
                         break;
 
                     case BlindTypeEnum.Antes:
-                        blind = new BlindOptionsAnte(moneyUnit);
+                        blind = new BlindOptionsAnte() { MoneyUnit = moneyUnit };
                         break;
                 }
                 LimitOptions limit = null;

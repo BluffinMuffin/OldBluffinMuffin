@@ -183,7 +183,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             {
                 SeatInfo seat = GetSeatOfPlayingPlayerNextTo(DealerSeat);
 
-                if (Round == RoundTypeEnum.Preflop && Params.Blind.BlindType == BlindTypeEnum.Blinds)
+                if (Round == RoundTypeEnum.Preflop && Params.Blind.OptionType == BlindTypeEnum.Blinds)
                 {
                     //Ad B : A      A
                     //Ad B C: A     A->B->C->A
