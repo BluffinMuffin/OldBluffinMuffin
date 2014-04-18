@@ -8,6 +8,6 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
     public class LimitOptionsNoLimit : LimitOptions
     {
-        public override LimitTypeEnum LimitType { get { return LimitTypeEnum.NoLimit; } }
+        public override LimitTypeEnum OptionType { get { return LimitTypeEnum.NoLimit; } }
     }
 }

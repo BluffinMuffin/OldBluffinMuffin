@@ -5,30 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Com.Ericmas001.Net.Protocol.Json;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
     public class TableParams
-    {
-        //Important: leave it blank as default value to have a good JSON.Net serialization
-        private LobbyOptions m_Lobby;
-        private BlindOptions m_Blind;
-        private LimitOptions m_Limit;
-
-        /// <summary>
-        /// Only used by JSON.Net to Serialize / Deserialize
-        /// </summary>
-        public LobbyOptions SerializableLobby { get { return m_Lobby; } set { m_Lobby = value; } }
-        /// <summary>
-        /// Only used by JSON.Net to Serialize / Deserialize
-        /// </summary>
-        public BlindOptions SerializableBlind { get { return m_Blind; } set { m_Blind = value; } }
-        /// <summary>
-        /// Only used by JSON.Net to Serialize / Deserialize
-        /// </summary>
-        public LimitOptions SerializableLimit { get { return m_Limit; } set { m_Limit = value; } }
-
-        
+    {        
         public string TableName { get; set; }
         public GameTypeEnum GameType { get; set; }
         public string Variant { get; set; }
@@ -38,12 +21,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
         public bool LimitMaximumBuyIn { get; set; }
         public int MoneyUnit { get; set; }
 
-        [JsonIgnore]
-        public LobbyOptions Lobby { get { return m_Lobby == null ? new LobbyOptionsTraining() : m_Lobby; } set { m_Lobby = value; } }
-        [JsonIgnore]
-        public BlindOptions Blind { get { return m_Blind == null ? new BlindOptionsNone(MoneyUnit) : m_Blind; } set { m_Blind = value; } }
-        [JsonIgnore]
-        public LimitOptions Limit { get { return m_Limit == null ? new LimitOptionsPot() : m_Limit; } set { m_Limit = value; } }
+        [JsonConverter(typeof(LobbyJsonConverter))]
+        public LobbyOptions Lobby { get; set; }
+        [JsonConverter(typeof(BlindJsonConverter))]
+        public BlindOptions Blind { get; set; }
+        [JsonConverter(typeof(LimitJsonConverter))]
+        public LimitOptions Limit { get; set; }
 
         public int LimitedMinimumBuyIn { get { return 20 * MoneyUnit; } }
         public int LimitedMaximumBuyIn { get { return 100 * MoneyUnit; } }
@@ -58,7 +41,32 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
             WaitingTimes = new ConfigurableWaitingTimes();
             LimitMaximumBuyIn = false;
             MoneyUnit = 10;
+            Lobby = new LobbyOptionsTraining();
+            Blind = new BlindOptionsNone() { MoneyUnit = this.MoneyUnit };
+            Limit = new LimitOptionsPot();
         }
 
+
+        public class LobbyJsonConverter : AbstractCustomJsonConverter<LobbyOptions>
+        {
+            public override LobbyOptions ObtainCustomObject(JObject jObject)
+            {
+                return FactoryLobbyOptions.GenerateOptions((LobbyTypeEnum)((int)jObject.GetValue("OptionType")));
+            }
+        }
+        public class BlindJsonConverter : AbstractCustomJsonConverter<BlindOptions>
+        {
+            public override BlindOptions ObtainCustomObject(JObject jObject)
+            {
+                return FactoryBlindOptions.GenerateOptions((BlindTypeEnum)((int)jObject.GetValue("OptionType")));
+            }
+        }
+        public class LimitJsonConverter : AbstractCustomJsonConverter<LimitOptions>
+        {
+            public override LimitOptions ObtainCustomObject(JObject jObject)
+            {
+                return FactoryLimitOptions.GenerateOptions((LimitTypeEnum)((int)jObject.GetValue("OptionType")));
+            }
+        }
     }
 }

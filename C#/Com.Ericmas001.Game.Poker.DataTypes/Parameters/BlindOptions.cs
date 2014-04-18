@@ -6,14 +6,17 @@ using System.Text;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
-    public abstract class BlindOptions
+    public abstract class BlindOptions : IOption<BlindTypeEnum>
     {
-        protected int MoneyUnit { get; private set; }
-        public abstract BlindTypeEnum BlindType { get; }
+        public int MoneyUnit { get; set; }
+        public abstract BlindTypeEnum OptionType { get; }
 
-        public BlindOptions( int moneyUnit )
+        public BlindOptions(int moneyUnit)
         {
             MoneyUnit = moneyUnit;
+        }
+        public BlindOptions()
+        {
         }
 
         

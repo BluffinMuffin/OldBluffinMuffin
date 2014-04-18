@@ -244,7 +244,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
         {
             TableParams parms = m_Game.Table.Params;
             int money;
-            if(parms.Lobby.LobbyType == LobbyTypeEnum.Training)
+            if(parms.Lobby.OptionType == LobbyTypeEnum.Training)
                 money = ((LobbyOptionsTraining)parms.Lobby).StartingAmount;
             else
             {
@@ -266,7 +266,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Server
 
         void OnDisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
-            if (m_UserInfo != null && m_Game.Params.Lobby.LobbyType == LobbyTypeEnum.Career)
+            if (m_UserInfo != null && m_Game.Params.Lobby.OptionType == LobbyTypeEnum.Career)
                 m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
 
             LeftTable(this, new KeyEventArgs<int>(m_ID));

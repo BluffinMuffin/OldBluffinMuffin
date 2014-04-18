@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 {
-    public abstract class LobbyOptions
+    public abstract class LobbyOptions : IOption<LobbyTypeEnum>
     {
-        public abstract LobbyTypeEnum LobbyType { get; }
+        public abstract LobbyTypeEnum OptionType { get; }
     }
 }

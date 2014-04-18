@@ -49,6 +49,9 @@
     <Compile Include="EventHandling\PokerGameObserver.cs" />
     <Compile Include="EventHandling\SeatEventArgs.cs" />
     <Compile Include="Parameters\BlindOptionsNone.cs" />
+    <Compile Include="Parameters\FactoryLimitOptions.cs" />
+    <Compile Include="Parameters\FactoryBlindOptions.cs" />
+    <Compile Include="Parameters\IOption.cs" />
     <Compile Include="Parameters\LimitOptionsPot.cs" />
     <Compile Include="Parameters\LimitOptionsFixed.cs" />
     <Compile Include="Parameters\LimitOptionsNoLimit.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="EventHandling\PotWonEventArgs.cs" />
     <Compile Include="EventHandling\RoundEventArgs.cs" />
     <Compile Include="Parameters\BlindOptions.cs" />
+    <Compile Include="Parameters\FactoryLobbyOptions.cs" />
     <Compile Include="Parameters\TableParams.cs" />
     <Compile Include="IPokerGame.cs" />
     <Compile Include="IPokerViewer.cs" />
@@ -99,6 +103,10 @@
     <ProjectReference Include="..\Com.Ericmas001.Games\Com.Ericmas001.Games.csproj">
       <Project>{64d407d1-1119-42a6-86f2-a98a31fdb3b2}</Project>
       <Name>Com.Ericmas001.Games</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
+      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
+      <Name>Com.Ericmas001.Net.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
       <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
