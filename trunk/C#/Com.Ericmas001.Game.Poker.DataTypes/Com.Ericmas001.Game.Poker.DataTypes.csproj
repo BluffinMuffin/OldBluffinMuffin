@@ -81,11 +81,7 @@
     <Compile Include="MoneyPot.cs" />
     <Compile Include="TableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rules\BlindFactory.cs" />
-    <Compile Include="Rules\BlindInfo.cs" />
-    <Compile Include="Rules\LimitFactory.cs" />
-    <Compile Include="Rules\LimitInfo.cs" />
-    <Compile Include="Rules\RuleInfo.cs" />
+    <Compile Include="RuleInfo.cs" />
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="SeatInfo.cs" />
     <Compile Include="TupleTable.cs" />

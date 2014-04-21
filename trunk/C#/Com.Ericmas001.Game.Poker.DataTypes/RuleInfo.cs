@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Com.Ericmas001.Game.Poker.DataTypes.Rules
+namespace Com.Ericmas001.Game.Poker.DataTypes
 {
     public class RuleInfo
     {

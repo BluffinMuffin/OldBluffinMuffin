@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Com.Ericmas001.Game.Poker.DataTypes.Rules;
+using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
@@ -71,24 +71,24 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         {
             RuleInfo rule = CurrentRule;
             lstBetLimit.Items.Clear();
-            lstBetLimit.Items.AddRange(rule.AvailableLimits.Select(l => LimitFactory.GetInfos(l)).ToArray());
-            lstBetLimit.SelectedIndex = lstBetLimit.FindStringExact(LimitFactory.GetInfos(rule.DefaultLimit).ToString());
+            lstBetLimit.Items.AddRange(rule.AvailableLimits.Select(l => EnumFactory<LimitTypeEnum>.ToString(l)).ToArray());
+            lstBetLimit.SelectedIndex = lstBetLimit.FindStringExact(EnumFactory<LimitTypeEnum>.ToString(rule.DefaultLimit));
         }
 
         private void SetBlindTypes()
         {
             RuleInfo rule = CurrentRule;
             lstBlinds.Items.Clear();
-            lstBlinds.Items.AddRange(rule.AvailableBlinds.Select(b => BlindFactory.GetInfos(b)).ToArray());
-            lstBlinds.SelectedIndex = lstBlinds.FindStringExact(BlindFactory.GetInfos(rule.DefaultBlind).ToString());
+            lstBlinds.Items.AddRange(rule.AvailableBlinds.Select(b => EnumFactory<BlindTypeEnum>.ToString(b)).ToArray());
+            lstBlinds.SelectedIndex = lstBlinds.FindStringExact(EnumFactory<BlindTypeEnum>.ToString(rule.DefaultBlind));
             SetBlindRules();
         }
 
         private void SetBlindRules()
         {
-            BlindInfo blind = lstBlinds.SelectedItem as BlindInfo;
-            ucAnte.Visible = blind.Type == BlindTypeEnum.Antes;
-            ucBlinds.Visible = blind.Type == BlindTypeEnum.Blinds;
+            BlindTypeEnum blind = EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem);
+            ucAnte.Visible = blind == BlindTypeEnum.Antes;
+            ucBlinds.Visible = blind == BlindTypeEnum.Blinds;
         }
 
         private void SetWaitingTimes()
@@ -134,7 +134,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                 }
                 int moneyUnit = (int)nudMoneyUnit.Value;
                 BlindOptions blind = new BlindOptionsNone() { MoneyUnit = moneyUnit };
-                switch (((BlindInfo)lstBlinds.SelectedItem).Type)
+                switch (EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem))
                 {
                     case BlindTypeEnum.Blinds:
                         blind = new BlindOptionsBlinds() { MoneyUnit = moneyUnit };
@@ -145,7 +145,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         break;
                 }
                 LimitOptions limit = null;
-                switch (((LimitInfo)lstBetLimit.SelectedItem).Type)
+                switch (EnumFactory<LimitTypeEnum>.Parse((string)lstBetLimit.SelectedItem))
                 {
                     case LimitTypeEnum.NoLimit:
                         limit = new LimitOptionsNoLimit();
