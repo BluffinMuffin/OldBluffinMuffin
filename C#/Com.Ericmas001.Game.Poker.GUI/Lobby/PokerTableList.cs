@@ -10,7 +10,6 @@ using Com.Ericmas001.Game.Poker.GUI.Game;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Lobby
@@ -66,7 +65,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
                 datTables.Rows[i].Cells[1].Value = info.Params.TableName;
-                datTables.Rows[i].Cells[2].Value = type + " - " + LimitFactory.GetInfos(info.Params.Limit.OptionType).Name;
+                datTables.Rows[i].Cells[2].Value = type + " - " + EnumFactory<LimitTypeEnum>.ToString(info.Params.Limit.OptionType);
                 datTables.Rows[i].Cells[3].Value = info.BigBlind;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Params.MaxPlayers;
             }

@@ -17,7 +17,6 @@ using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Runtime.Serialization.Formatters;
-using Com.Ericmas001.Game.Poker.DataTypes.Rules;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
