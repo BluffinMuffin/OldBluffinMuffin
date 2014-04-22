@@ -1,6 +1,6 @@
 ﻿namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
-    partial class BlindUCBlinds
+    partial class BlindUcBlinds
     {
         /// <summary> 
         /// Required designer variable.
@@ -81,7 +81,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.lblSmallBlind);
             this.Controls.Add(this.label2);
-            this.Name = "BlindUCBlinds";
+            this.Name = "BlindUcBlinds";
             this.Size = new System.Drawing.Size(180, 42);
             this.ResumeLayout(false);
             this.PerformLayout();

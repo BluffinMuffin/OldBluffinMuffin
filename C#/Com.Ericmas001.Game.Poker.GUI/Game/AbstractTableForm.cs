@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Com.Ericmas001.Util;
+﻿using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public partial class AbstractTableForm : Form, IPokerViewer
     {
-        private bool m_IsBeingKilled = false;
+        private bool m_IsBeingKilled;
         protected IPokerGame m_Game;
         protected string m_PlayerName;
         protected int m_NoSeat = -1;

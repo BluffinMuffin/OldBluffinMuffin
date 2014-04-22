@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Com.Ericmas001;
-using Com.Ericmas001.Net.Protocol.JSON;
-using Newtonsoft.Json.Linq;
-
-namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career
+﻿namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career
 {
     public class CreateUserCommand : AbstractLobbyCommand
     {
-        public static string COMMAND_NAME = "lobbyCAREER_CREATE_USER";
-
         public string Username { get;  set; }
         public string Password { get;  set; }
         public string Email { get;  set; }

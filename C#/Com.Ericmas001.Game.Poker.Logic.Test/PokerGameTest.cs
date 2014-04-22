@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
-using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.Logic.Test
@@ -15,11 +13,11 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         [TestMethod]
         public void JoinAndLeaveTest()
         {
-            PokerGame game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
-            PlayerInfo p1 = new PlayerInfo("p1", 5000);
-            PlayerInfo p1Dup = new PlayerInfo("p1", 5000);
-            PlayerInfo p2 = new PlayerInfo("p2", 5000);
-            PlayerInfo p3 = new PlayerInfo("p3", 5000);
+            var game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
+            var p1 = new PlayerInfo("p1", 5000);
+            var p1Dup = new PlayerInfo("p1", 5000);
+            var p2 = new PlayerInfo("p2", 5000);
+            var p3 = new PlayerInfo("p3", 5000);
 
             Assert.AreEqual(false, game.JoinGame(p1), "You should not enter a non-started game");
 
@@ -57,18 +55,18 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         public void BlindsTest()
         {
             //start the game with p1 and p2
-            PokerGame game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
+            var game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
             game.Start();
-            PlayerInfo p1 = new PlayerInfo("p1", 5000);
+            var p1 = new PlayerInfo("p1", 5000);
             SitInGame(game, p1);
-            PlayerInfo p2 = new PlayerInfo("p2", 2);
+            var p2 = new PlayerInfo("p2", 2);
             SitInGame(game, p2);
 
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should now wait for blinds");
 
             //Get the amount needed from both players
-            int needed1 = game.GameTable.GetBlindNeeded(p1);
-            int needed2 = game.GameTable.GetBlindNeeded(p2);
+            var needed1 = game.GameTable.GetBlindNeeded(p1);
+            var needed2 = game.GameTable.GetBlindNeeded(p2);
 
             Assert.AreNotEqual(0, needed1, "The game should need a blind from p1");
             Assert.AreNotEqual(0, needed2, "The game should need a blind from p2");
@@ -100,7 +98,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         [TestMethod]
         public void StatesTest()
         {
-            PokerGame game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
+            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
 
             Assert.AreEqual(GameStateEnum.Init, game.State, "The game should not be started");
 
@@ -110,13 +108,13 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should wait for players");
 
             //make p1 join the game
-            PlayerInfo p1 = new PlayerInfo("p1", 5000);
+            var p1 = new PlayerInfo("p1", 5000);
             SitInGame(game, p1);
 
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should still wait for players to sit in when only 1 is seated");
 
             //make p2 join the game
-            PlayerInfo p2 = new PlayerInfo("p2", 5000);
+            var p2 = new PlayerInfo("p2", 5000);
             SitInGame(game, p2);
 
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should now wait for blinds");
@@ -141,7 +139,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
             PutBlinds(game, p2);
 
             //Make the playing player leave the game without taking any actions
-            PlayerInfo cp = game.Table.CurrentPlayer;
+            var cp = game.Table.CurrentPlayer;
             game.LeaveGame(cp);
 
             Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since only one player is left");
@@ -152,7 +150,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
             Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should be back waiting for blinds since enough players are there to play");
 
             //let's leave before putting the blind now
-            int safeMoneyBefore = p1.MoneySafeAmnt;
+            var safeMoneyBefore = p1.MoneySafeAmnt;
             game.LeaveGame(p1);
 
             Assert.AreEqual(true, p1.MoneySafeAmnt < safeMoneyBefore, "The player should have less money then before, since blinds have been posted before he left");
@@ -173,7 +171,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
             PutBlinds(game, p2);
 
             cp = game.Table.CurrentPlayer;
-            PlayerInfo np = game.Table.GetSeatOfPlayingPlayerNextTo(game.Table.Seats[cp.NoSeat]).Player;
+            var np = game.Table.GetSeatOfPlayingPlayerNextTo(game.Table.Seats[cp.NoSeat]).Player;
             game.LeaveGame(np);
             Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should be still in playing mode since it wasn't the playing player.");
 
@@ -191,15 +189,15 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
         public void BettingTest()
         {
             //start the game
-            PokerGame game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
+            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
             game.Start();
 
             //make p1 join the game
-            PlayerInfo p1 = new PlayerInfo("p1", 100);
+            var p1 = new PlayerInfo("p1", 100);
             SitInGame(game, p1);
 
             //make p2 join the game
-            PlayerInfo p2 = new PlayerInfo("p2", 1000);
+            var p2 = new PlayerInfo("p2", 1000);
             SitInGame(game, p2);
 
             //Post needed blinds
@@ -264,7 +262,7 @@ namespace Com.Ericmas001.Game.Poker.Logic.Test
 
         private void PutBlinds(PokerGame game, PlayerInfo p)
         {
-            int b = game.GameTable.GetBlindNeeded(p);
+            var b = game.GameTable.GetBlindNeeded(p);
             game.PlayMoney(p, b);
         }
 

@@ -7,16 +7,16 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
 {
     public class CareerRegisterSplashInfo : StepSplashInfo
     {
-        private string m_ServerAddress;
-        private int m_ServerPort;
+        private readonly string m_ServerAddress;
+        private readonly int m_ServerPort;
         private string m_Username;
-        private string m_Password;
-        private string m_Email;
+        private readonly string m_Password;
+        private readonly string m_Email;
         private string m_DisplayName;
 
-        private LobbyTCPClientCareer m_Server;
+        private LobbyTcpClientCareer m_Server;
 
-        public LobbyTCPClientCareer Server
+        public LobbyTcpClientCareer Server
         {
             get { return m_Server; }
         }
@@ -30,7 +30,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
         {
             get
             {
-                return new Tuple<BoolEmptyHandler, string>[]
+                return new[]
                 {
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep1ReachingServer, "Reaching the server ..."),
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep2CheckUsernameAvailability, "Availability of Username ..."),
@@ -60,31 +60,31 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
         private bool ExecuteStep2CheckUsernameAvailability()
         {
             m_Server.Start();
-            bool step2OK = m_Server.CheckUsernameAvailable(m_Username);
-            bool step2Retry = true;
-            while (!step2OK && step2Retry)
+            var step2Ok = m_Server.CheckUsernameAvailable(m_Username);
+            var step2Retry = true;
+            while (!step2Ok && step2Retry)
             {
-                NameUsedForm form2 = new NameUsedForm(m_Username);
+                var form2 = new NameUsedForm(m_Username);
                 form2.ShowDialog();
                 step2Retry = form2.OK;
                 m_Username = form2.PlayerName;
-                step2OK = m_Server.CheckUsernameAvailable(m_Username);
+                step2Ok = m_Server.CheckUsernameAvailable(m_Username);
             }
-            return step2OK;
+            return step2Ok;
         }
         private bool ExecuteStep3CheckDisplaynameAvailability()
         {
-            bool step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
-            bool step3Retry = true;
-            while (!step3OK && step3Retry)
+            var step3Ok = m_Server.CheckDisplayNameAvailable(m_DisplayName);
+            var step3Retry = true;
+            while (!step3Ok && step3Retry)
             {
-                NameUsedForm form3 = new NameUsedForm(m_DisplayName);
+                var form3 = new NameUsedForm(m_DisplayName);
                 form3.ShowDialog();
                 step3Retry = form3.OK;
                 m_DisplayName = form3.PlayerName;
-                step3OK = m_Server.CheckDisplayNameAvailable(m_DisplayName);
+                step3Ok = m_Server.CheckDisplayNameAvailable(m_DisplayName);
             }
-            return step3OK;
+            return step3Ok;
         }
         private bool ExecuteStep4CreatingUser()
         {
@@ -104,7 +104,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
 
         public override void Init()
         {
-            m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
+            m_Server = new LobbyTcpClientCareer(m_ServerAddress, m_ServerPort);
         }
     }
 }

@@ -61,8 +61,8 @@
             this.lblMaximumBuyIn = new System.Windows.Forms.Label();
             this.rdBuyInLimited = new System.Windows.Forms.RadioButton();
             this.rdBuyInUnlimited = new System.Windows.Forms.RadioButton();
-            this.ucBlinds = new Com.Ericmas001.Game.Poker.GUI.Lobby.BlindUCBlinds();
-            this.ucAnte = new Com.Ericmas001.Game.Poker.GUI.Lobby.BlindUCAnte();
+            this.ucBlinds = new Com.Ericmas001.Game.Poker.GUI.Lobby.BlindUcBlinds();
+            this.ucAnte = new Com.Ericmas001.Game.Poker.GUI.Lobby.BlindUcAnte();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayersMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNbPlayersMax)).BeginInit();
             this.grpTimes.SuspendLayout();
@@ -621,7 +621,7 @@
         private System.Windows.Forms.Label lblMaximumBuyIn;
         private System.Windows.Forms.RadioButton rdBuyInLimited;
         private System.Windows.Forms.RadioButton rdBuyInUnlimited;
-        private BlindUCAnte ucAnte;
-        private BlindUCBlinds ucBlinds;
+        private BlindUcAnte ucAnte;
+        private BlindUcBlinds ucBlinds;
     }
 }

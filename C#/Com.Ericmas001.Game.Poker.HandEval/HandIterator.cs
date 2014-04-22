@@ -19,10 +19,7 @@
 
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -1199,9 +1196,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             // Fill in dictionary
             if (pocketdict.Count == 0)
             {
-                for (int i = 0; i < Pocket169Table.Length; i++)
+                for (var i = 0; i < Pocket169Table.Length; i++)
                 {
-                    foreach (ulong tmask in Pocket169Table[i])
+                    foreach (var tmask in Pocket169Table[i])
                     {
                         pocketdict.Add(tmask, (PocketHand169Enum)i);
                     }
@@ -1244,8 +1241,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </example>
         public static IEnumerable<ulong> Hands(int numberOfCards)
         {
-            int a, b, c, d, e, f, g;
-            ulong _card1, _n2, _n3, _n4, _n5, _n6;
+            int a, b, c, d, e, f;
+            ulong card1, n2, n3, n4, n5;
 
 #if DEBUG
             // We only support 0-7 cards
@@ -1258,25 +1255,26 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 7:
                     for (a = 0; a < CardMasksTableSize - 6; a++)
                     {
-                        _card1 = CardMasksTable[a];
+                        card1 = CardMasksTable[a];
                         for (b = a + 1; b < CardMasksTableSize - 5; b++)
                         {
-                            _n2 = _card1 | CardMasksTable[b];
+                            n2 = card1 | CardMasksTable[b];
                             for (c = b + 1; c < CardMasksTableSize - 4; c++)
                             {
-                                _n3 = _n2 | CardMasksTable[c];
+                                n3 = n2 | CardMasksTable[c];
                                 for (d = c + 1; d < CardMasksTableSize - 3; d++)
                                 {
-                                    _n4 = _n3 | CardMasksTable[d];
+                                    n4 = n3 | CardMasksTable[d];
                                     for (e = d + 1; e < CardMasksTableSize - 2; e++)
                                     {
-                                        _n5 = _n4 | CardMasksTable[e];
+                                        n5 = n4 | CardMasksTable[e];
                                         for (f = e + 1; f < CardMasksTableSize - 1; f++)
                                         {
-                                            _n6 = _n5 | CardMasksTable[f];
+                                            ulong n6 = n5 | CardMasksTable[f];
+                                            int g;
                                             for (g = f + 1; g < CardMasksTableSize; g++)
                                             {
-                                                yield return _n6 | CardMasksTable[g];
+                                                yield return n6 | CardMasksTable[g];
                                             }
                                         }
                                     }
@@ -1288,22 +1286,22 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 6:
                     for (a = 0; a < CardMasksTableSize - 5; a++)
                     {
-                        _card1 = CardMasksTable[a];
+                        card1 = CardMasksTable[a];
                         for (b = a + 1; b < CardMasksTableSize - 4; b++)
                         {
-                            _n2 = _card1 | CardMasksTable[b];
+                            n2 = card1 | CardMasksTable[b];
                             for (c = b + 1; c < CardMasksTableSize - 3; c++)
                             {
-                                _n3 = _n2 | CardMasksTable[c];
+                                n3 = n2 | CardMasksTable[c];
                                 for (d = c + 1; d < CardMasksTableSize - 2; d++)
                                 {
-                                    _n4 = _n3 | CardMasksTable[d];
+                                    n4 = n3 | CardMasksTable[d];
                                     for (e = d + 1; e < CardMasksTableSize - 1; e++)
                                     {
-                                        _n5 = _n4 | CardMasksTable[e];
+                                        n5 = n4 | CardMasksTable[e];
                                         for (f = e + 1; f < CardMasksTableSize; f++)
                                         {
-                                            yield return _n5 | CardMasksTable[f];
+                                            yield return n5 | CardMasksTable[f];
                                         }
                                     }
                                 }
@@ -1314,19 +1312,19 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 5:
                     for (a = 0; a < CardMasksTableSize - 4; a++)
                     {
-                        _card1 = CardMasksTable[a];
+                        card1 = CardMasksTable[a];
                         for (b = a + 1; b < CardMasksTableSize - 3; b++)
                         {
-                            _n2 = _card1 | CardMasksTable[b];
+                            n2 = card1 | CardMasksTable[b];
                             for (c = b + 1; c < CardMasksTableSize - 2; c++)
                             {
-                                _n3 = _n2 | CardMasksTable[c];
+                                n3 = n2 | CardMasksTable[c];
                                 for (d = c + 1; d < CardMasksTableSize - 1; d++)
                                 {
-                                    _n4 = _n3 | CardMasksTable[d];
+                                    n4 = n3 | CardMasksTable[d];
                                     for (e = d + 1; e < CardMasksTableSize; e++)
                                     {
-                                        yield return _n4 | CardMasksTable[e];
+                                        yield return n4 | CardMasksTable[e];
                                     }
                                 }
                             }
@@ -1336,16 +1334,16 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 4:
                     for (a = 0; a < CardMasksTableSize - 3; a++)
                     {
-                        _card1 = CardMasksTable[a];
+                        card1 = CardMasksTable[a];
                         for (b = a + 1; b < CardMasksTableSize - 2; b++)
                         {
-                            _n2 = _card1 | CardMasksTable[b];
+                            n2 = card1 | CardMasksTable[b];
                             for (c = b + 1; c < CardMasksTableSize - 1; c++)
                             {
-                                _n3 = _n2 | CardMasksTable[c];
+                                n3 = n2 | CardMasksTable[c];
                                 for (d = c + 1; d < CardMasksTableSize; d++)
                                 {
-                                    yield return _n3 | CardMasksTable[d];
+                                    yield return n3 | CardMasksTable[d];
                                 }
                             }
                         }
@@ -1354,13 +1352,13 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 3:
                     for (a = 0; a < CardMasksTableSize - 2; a++)
                     {
-                        _card1 = CardMasksTable[a];
+                        card1 = CardMasksTable[a];
                         for (b = a + 1; b < CardMasksTableSize - 1; b++)
                         {
-                            _n2 = _card1 | CardMasksTable[b];
+                            n2 = card1 | CardMasksTable[b];
                             for (c = b + 1; c < CardMasksTableSize; c++)
                             {
-                                yield return _n2 | CardMasksTable[c];
+                                yield return n2 | CardMasksTable[c];
                             }
                         }
                     }
@@ -1413,9 +1411,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </example>
         public static IEnumerable<ulong> Hands(ulong shared, ulong dead, int numberOfCards)
         {
-            int a, b, c, d, e, f, g;
-            ulong _card1, _card2, _card3, _card4, _card5, _card6, _card7;
-            ulong _n2, _n3, _n4, _n5, _n6;
+            int a, b, c, d, e, f;
+            ulong card1, card2, card3, card4, card5, card6;
+            ulong n2, n3, n4, n5;
 
             dead |= shared;
 
@@ -1424,38 +1422,39 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 7:
                     for (a = 0; a < CardMasksTableSize - 6; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
                         for (b = a + 1; b < CardMasksTableSize - 5; b++)
                         {
-                            _card2 = CardMasksTable[b];
-                            if ((dead & _card2) != 0) continue;
-                            _n2 = _card1 | _card2;
+                            card2 = CardMasksTable[b];
+                            if ((dead & card2) != 0) continue;
+                            n2 = card1 | card2;
                             for (c = b + 1; c < CardMasksTableSize - 4; c++)
                             {
-                                _card3 = CardMasksTable[c];
-                                if ((dead & _card3) != 0) continue;
-                                _n3 = _n2 | _card3;
+                                card3 = CardMasksTable[c];
+                                if ((dead & card3) != 0) continue;
+                                n3 = n2 | card3;
                                 for (d = c + 1; d < CardMasksTableSize - 3; d++)
                                 {
-                                    _card4 = CardMasksTable[d];
-                                    if ((dead & _card4) != 0) continue;
-                                    _n4 = _n3 | _card4;
+                                    card4 = CardMasksTable[d];
+                                    if ((dead & card4) != 0) continue;
+                                    n4 = n3 | card4;
                                     for (e = d + 1; e < CardMasksTableSize - 2; e++)
                                     {
-                                        _card5 = CardMasksTable[e];
-                                        if ((dead & _card5) != 0) continue;
-                                        _n5 = _n4 | _card5;
+                                        card5 = CardMasksTable[e];
+                                        if ((dead & card5) != 0) continue;
+                                        n5 = n4 | card5;
                                         for (f = e + 1; f < CardMasksTableSize - 1; f++)
                                         {
-                                            _card6 = CardMasksTable[f];
-                                            if ((dead & _card6) != 0) continue;
-                                            _n6 = _n5 | _card6;
+                                            card6 = CardMasksTable[f];
+                                            if ((dead & card6) != 0) continue;
+                                            ulong n6 = n5 | card6;
+                                            int g;
                                             for (g = f + 1; g < CardMasksTableSize; g++)
                                             {
-                                                _card7 = CardMasksTable[g];
-                                                if ((dead & _card7) != 0) continue;
-                                                yield return _n6 | _card7 | shared;
+                                                ulong card7 = CardMasksTable[g];
+                                                if ((dead & card7) != 0) continue;
+                                                yield return n6 | card7 | shared;
                                             }
                                         }
                                     }
@@ -1467,33 +1466,33 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 6:
                     for (a = 0; a < CardMasksTableSize - 5; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
                         for (b = a + 1; b < CardMasksTableSize - 4; b++)
                         {
-                            _card2 = CardMasksTable[b];
-                            if ((dead & _card2) != 0) continue;
-                            _n2 = _card1 | _card2;
+                            card2 = CardMasksTable[b];
+                            if ((dead & card2) != 0) continue;
+                            n2 = card1 | card2;
                             for (c = b + 1; c < CardMasksTableSize - 3; c++)
                             {
-                                _card3 = CardMasksTable[c];
-                                if ((dead & _card3) != 0) continue;
-                                _n3 = _n2 | _card3;
+                                card3 = CardMasksTable[c];
+                                if ((dead & card3) != 0) continue;
+                                n3 = n2 | card3;
                                 for (d = c + 1; d < CardMasksTableSize - 2; d++)
                                 {
-                                    _card4 = CardMasksTable[d];
-                                    if ((dead & _card4) != 0) continue;
-                                    _n4 = _n3 | _card4;
+                                    card4 = CardMasksTable[d];
+                                    if ((dead & card4) != 0) continue;
+                                    n4 = n3 | card4;
                                     for (e = d + 1; e < CardMasksTableSize - 1; e++)
                                     {
-                                        _card5 = CardMasksTable[e];
-                                        if ((dead & _card5) != 0) continue;
-                                        _n5 = _n4 | _card5;
+                                        card5 = CardMasksTable[e];
+                                        if ((dead & card5) != 0) continue;
+                                        n5 = n4 | card5;
                                         for (f = e + 1; f < CardMasksTableSize; f++)
                                         {
-                                            _card6 = CardMasksTable[f];
-                                            if ((dead & _card6) != 0) continue;
-                                            yield return _n5 | _card6 | shared;
+                                            card6 = CardMasksTable[f];
+                                            if ((dead & card6) != 0) continue;
+                                            yield return n5 | card6 | shared;
                                         }
                                     }
                                 }
@@ -1504,28 +1503,28 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 5:
                     for (a = 0; a < CardMasksTableSize - 4; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
                         for (b = a + 1; b < CardMasksTableSize - 3; b++)
                         {
-                            _card2 = CardMasksTable[b];
-                            if ((dead & _card2) != 0) continue;
-                            _n2 = _card1 | _card2;
+                            card2 = CardMasksTable[b];
+                            if ((dead & card2) != 0) continue;
+                            n2 = card1 | card2;
                             for (c = b + 1; c < CardMasksTableSize - 2; c++)
                             {
-                                _card3 = CardMasksTable[c];
-                                if ((dead & _card3) != 0) continue;
-                                _n3 = _n2 | _card3;
+                                card3 = CardMasksTable[c];
+                                if ((dead & card3) != 0) continue;
+                                n3 = n2 | card3;
                                 for (d = c + 1; d < CardMasksTableSize - 1; d++)
                                 {
-                                    _card4 = CardMasksTable[d];
-                                    if ((dead & _card4) != 0) continue;
-                                    _n4 = _n3 | _card4;
+                                    card4 = CardMasksTable[d];
+                                    if ((dead & card4) != 0) continue;
+                                    n4 = n3 | card4;
                                     for (e = d + 1; e < CardMasksTableSize; e++)
                                     {
-                                        _card5 = CardMasksTable[e];
-                                        if ((dead & _card5) != 0) continue;
-                                        yield return _n4 | _card5 | shared;
+                                        card5 = CardMasksTable[e];
+                                        if ((dead & card5) != 0) continue;
+                                        yield return n4 | card5 | shared;
                                     }
                                 }
                             }
@@ -1535,23 +1534,23 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 4:
                     for (a = 0; a < CardMasksTableSize - 3; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
                         for (b = a + 1; b < CardMasksTableSize - 2; b++)
                         {
-                            _card2 = CardMasksTable[b];
-                            if ((dead & _card2) != 0) continue;
-                            _n2 = _card1 | _card2;
+                            card2 = CardMasksTable[b];
+                            if ((dead & card2) != 0) continue;
+                            n2 = card1 | card2;
                             for (c = b + 1; c < CardMasksTableSize - 1; c++)
                             {
-                                _card3 = CardMasksTable[c];
-                                if ((dead & _card3) != 0) continue;
-                                _n3 = _n2 | _card3;
+                                card3 = CardMasksTable[c];
+                                if ((dead & card3) != 0) continue;
+                                n3 = n2 | card3;
                                 for (d = c + 1; d < CardMasksTableSize; d++)
                                 {
-                                    _card4 = CardMasksTable[d];
-                                    if ((dead & _card4) != 0) continue;
-                                    yield return _n3 | _card4 | shared;
+                                    card4 = CardMasksTable[d];
+                                    if ((dead & card4) != 0) continue;
+                                    yield return n3 | card4 | shared;
                                 }
                             }
                         }
@@ -1561,18 +1560,18 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 3:
                     for (a = 0; a < CardMasksTableSize - 2; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
                         for (b = a + 1; b < CardMasksTableSize - 1; b++)
                         {
-                            _card2 = CardMasksTable[b];
-                            if ((dead & _card2) != 0) continue;
-                            _n2 = _card1 | _card2;
+                            card2 = CardMasksTable[b];
+                            if ((dead & card2) != 0) continue;
+                            n2 = card1 | card2;
                             for (c = b + 1; c < CardMasksTableSize; c++)
                             {
-                                _card3 = CardMasksTable[c];
-                                if ((dead & _card3) != 0) continue;
-                                yield return _n2 | _card3 | shared;
+                                card3 = CardMasksTable[c];
+                                if ((dead & card3) != 0) continue;
+                                yield return n2 | card3 | shared;
                             }
                         }
                     }
@@ -1580,22 +1579,22 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 case 2:
                     for (a = 0; a < CardMasksTableSize - 1; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
                         for (b = a + 1; b < CardMasksTableSize; b++)
                         {
-                            _card2 = CardMasksTable[b];
-                            if ((dead & _card2) != 0) continue;
-                            yield return _card1 | _card2 | shared;
+                            card2 = CardMasksTable[b];
+                            if ((dead & card2) != 0) continue;
+                            yield return card1 | card2 | shared;
                         }
                     }
                     break;
                 case 1:
                     for (a = 0; a < CardMasksTableSize; a++)
                     {
-                        _card1 = CardMasksTable[a];
-                        if ((dead & _card1) != 0) continue;
-                        yield return _card1 | shared;
+                        card1 = CardMasksTable[a];
+                        if ((dead & card1) != 0) continue;
+                        yield return card1 | shared;
                     }
                     break;
                 case 0:
@@ -1618,7 +1617,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public static IEnumerable<string> Cards(ulong mask)
         {
-            for (int i = 51; i >= 0; i--)
+            for (var i = 51; i >= 0; i--)
             {
                 if (((1UL << i) & mask) != 0)
                 {
@@ -1659,7 +1658,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                long current = 0;
+                long current;
 
                 if (QueryFrequency < 0)
                 {
@@ -1668,7 +1667,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
                 QueryPerformanceCounter(out current);
 
-                return ((double)current) / ((double)QueryFrequency);
+                return current / ((double)QueryFrequency);
             }
         }
         #endregion
@@ -1678,7 +1677,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// 
         /// </summary>
-        static private Random srand = new Random();
+        static private readonly Random srand = new Random();
 
         /// <summary>
         /// This method randomly picks from a list of possible masks.
@@ -1705,7 +1704,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public ulong RandomHand(Random rand, ulong[] list, ulong dead, int ncards)
         {
-            ulong mask = 0UL;
+            ulong mask;
 #if DEBUG
             if (list == null || list.Length == 0) throw new ArgumentException("list");
             if (ncards <= 1 || ncards > 7) throw new ArgumentException("ncards");
@@ -1732,16 +1731,16 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public ulong RandomHand(ulong shared, ulong dead, int ncards)
         {
             // Return a random mask.
-            ulong mask = shared;
-            ulong card;
-            int count = ncards - BitCount(shared);
+            var mask = shared;
+            var count = ncards - BitCount(shared);
 
             // Random is not thread safe,
             // this should fix that
             lock (srand)
             {
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
+                    ulong card;
                     do
                     {
                         card = (1UL << srand.Next(52));
@@ -1765,12 +1764,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public ulong RandomHand(Random rand, ulong shared, ulong dead, int ncards)
         {
             // Return a random mask.
-            ulong mask = shared;
-            ulong card;
-            int count = ncards - BitCount(shared);
+            var mask = shared;
+            var count = ncards - BitCount(shared);
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
+                ulong card;
                 do
                 {
                     card = (1UL << rand.Next(52));
@@ -1835,11 +1834,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             if (ncards < 0 || ncards > 7)
                 throw new ArgumentOutOfRangeException("ncards");
 #endif
-            Random rand = new Random();
-            ulong deadmask = dead | shared;
-            int cardcount = ncards - Hand.BitCount(shared);
+            var rand = new Random();
+            var deadmask = dead | shared;
+            var cardcount = ncards - BitCount(shared);
 
-            for (int count = 0; count < trials; count++)
+            for (var count = 0; count < trials; count++)
             {
                 yield return RandomHand(rand, deadmask, cardcount) | shared;
             }
@@ -1867,8 +1866,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public static IEnumerable<ulong> RandomHands(ulong[] list, ulong dead, int ncards, double duration)
         {
-            double start = CurrentTime;
-            Random rand = new Random();
+            var start = CurrentTime;
+            var rand = new Random();
 
 #if DEBUG
             // Check Preconditions
@@ -1897,8 +1896,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>A mask mask</returns>
         public static IEnumerable<ulong> RandomHands(ulong shared, ulong dead, int ncards, double duration)
         {
-            double start = CurrentTime;
-            Random rand = new Random();
+            var start = CurrentTime;
+            var rand = new Random();
 #if DEBUG
             // Check Preconditions
             if (ncards < 0 || ncards > 7) throw new ArgumentOutOfRangeException("ncards");

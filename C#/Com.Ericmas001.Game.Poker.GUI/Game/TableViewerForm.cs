@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Linq;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.Poker.GUI.Properties;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
@@ -16,60 +12,60 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public partial class TableViewerForm : AbstractTableForm
     {
-        protected readonly PlayerHud[] huds = new PlayerHud[10];
-        protected readonly Label[] bets = new Label[10];
-        protected readonly Label[] potTitles = new Label[10];
-        protected readonly Label[] potValues = new Label[10];
-        protected readonly CardPictureBox[] board = new CardPictureBox[5];
+        protected readonly PlayerHud[] m_Huds = new PlayerHud[10];
+        protected readonly Label[] m_Bets = new Label[10];
+        protected readonly Label[] m_PotTitles = new Label[10];
+        protected readonly Label[] m_PotValues = new Label[10];
+        protected readonly CardPictureBox[] m_Board = new CardPictureBox[5];
 
         public TableViewerForm()
         {
             InitializeComponent();
-            huds[0] = playerHud1;
-            huds[1] = playerHud2;
-            huds[2] = playerHud3;
-            huds[3] = playerHud4;
-            huds[4] = playerHud5;
-            huds[5] = playerHud6;
-            huds[6] = playerHud7;
-            huds[7] = playerHud8;
-            huds[8] = playerHud9;
-            huds[9] = playerHud10;
-            bets[0] = label1;
-            bets[1] = label2;
-            bets[2] = label3;
-            bets[3] = label4;
-            bets[4] = label5;
-            bets[5] = label6;
-            bets[6] = label7;
-            bets[7] = label8;
-            bets[8] = label9;
-            bets[9] = label10;
-            board[0] = cardPictureBox1;
-            board[1] = cardPictureBox2;
-            board[2] = cardPictureBox3;
-            board[3] = cardPictureBox4;
-            board[4] = cardPictureBox5;
-            potTitles[0] = lblPot0Title;
-            potTitles[1] = lblPot1Title;
-            potTitles[2] = lblPot2Title;
-            potTitles[3] = lblPot3Title;
-            potTitles[4] = lblPot4Title;
-            potTitles[5] = lblPot5Title;
-            potTitles[6] = lblPot6Title;
-            potTitles[7] = lblPot7Title;
-            potTitles[8] = lblPot8Title;
-            potTitles[9] = lblPot9Title;
-            potValues[0] = lblPot0;
-            potValues[1] = lblPot1;
-            potValues[2] = lblPot2;
-            potValues[3] = lblPot3;
-            potValues[4] = lblPot4;
-            potValues[5] = lblPot5;
-            potValues[6] = lblPot6;
-            potValues[7] = lblPot7;
-            potValues[8] = lblPot8;
-            potValues[9] = lblPot9;
+            m_Huds[0] = playerHud1;
+            m_Huds[1] = playerHud2;
+            m_Huds[2] = playerHud3;
+            m_Huds[3] = playerHud4;
+            m_Huds[4] = playerHud5;
+            m_Huds[5] = playerHud6;
+            m_Huds[6] = playerHud7;
+            m_Huds[7] = playerHud8;
+            m_Huds[8] = playerHud9;
+            m_Huds[9] = playerHud10;
+            m_Bets[0] = label1;
+            m_Bets[1] = label2;
+            m_Bets[2] = label3;
+            m_Bets[3] = label4;
+            m_Bets[4] = label5;
+            m_Bets[5] = label6;
+            m_Bets[6] = label7;
+            m_Bets[7] = label8;
+            m_Bets[8] = label9;
+            m_Bets[9] = label10;
+            m_Board[0] = cardPictureBox1;
+            m_Board[1] = cardPictureBox2;
+            m_Board[2] = cardPictureBox3;
+            m_Board[3] = cardPictureBox4;
+            m_Board[4] = cardPictureBox5;
+            m_PotTitles[0] = lblPot0Title;
+            m_PotTitles[1] = lblPot1Title;
+            m_PotTitles[2] = lblPot2Title;
+            m_PotTitles[3] = lblPot3Title;
+            m_PotTitles[4] = lblPot4Title;
+            m_PotTitles[5] = lblPot5Title;
+            m_PotTitles[6] = lblPot6Title;
+            m_PotTitles[7] = lblPot7Title;
+            m_PotTitles[8] = lblPot8Title;
+            m_PotTitles[9] = lblPot9Title;
+            m_PotValues[0] = lblPot0;
+            m_PotValues[1] = lblPot1;
+            m_PotValues[2] = lblPot2;
+            m_PotValues[3] = lblPot3;
+            m_PotValues[4] = lblPot4;
+            m_PotValues[5] = lblPot5;
+            m_PotValues[6] = lblPot6;
+            m_PotValues[7] = lblPot7;
+            m_PotValues[8] = lblPot8;
+            m_PotValues[9] = lblPot9;
             logConsole.RelativeSizeChanged += OnConsoleRelativeSizeChanged;
         }
 
@@ -86,7 +82,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         public override void SetGame(IPokerGame c, string n)
         {
             base.SetGame(c, n);
-            InitializePokerObserverForGUI();
+            InitializePokerObserverForGui();
             InitializePokerObserverForConsole();
         }
 
@@ -102,7 +98,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             logConsole.Write(msg);
         }
 
-        private void InitializePokerObserverForGUI()
+        private void InitializePokerObserverForGui()
         {
             m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
             m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
@@ -137,22 +133,22 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundEnded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundEnded), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            TableInfo table = m_Game.Table;
-            foreach( MoneyPot p in table.Pots)
+            var table = m_Game.Table;
+            foreach( var p in table.Pots)
             {
-                int i = p.Id;
-                potTitles[i].Visible = (i == 0 || p.Amount > 0);
-                potValues[i].Visible = (i == 0 || p.Amount > 0);
-                potValues[i].Text = "$" + p.Amount;
+                var i = p.Id;
+                m_PotTitles[i].Visible = (i == 0 || p.Amount > 0);
+                m_PotValues[i].Visible = (i == 0 || p.Amount > 0);
+                m_PotValues[i].Text = Resources.PlayerHud_SetMoney_Dollar + p.Amount;
             }
-            for (int i = 0; i < huds.Length; ++i)
+            for (var i = 0; i < m_Huds.Length; ++i)
             {
-                huds[i].DoAction(GameActionEnum.DoNothing, 0);
-                bets[i].Text = "";
+                m_Huds[i].DoAction(GameActionEnum.DoNothing, 0);
+                m_Bets[i].Text = "";
             }
             ResumeLayout();
         }
@@ -162,18 +158,18 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundStarted), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundStarted), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            TableInfo table = m_Game.Table;
-            foreach (PlayerInfo p in table.Players)
-                huds[p.NoSeat].Alive = true;
-            int i = 0;
-            for (; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
-                board[i].Card = table.Cards[i];
+            var table = m_Game.Table;
+            foreach (var p in table.Players)
+                m_Huds[p.NoSeat].Alive = true;
+            var i = 0;
+            for (; i < 5 && table.Cards[i].Id != GameCard.NoCard.Id; ++i)
+                m_Board[i].Card = table.Cards[i];
             for (; i < 5; ++i)
-                board[i].Card = GameCard.HIDDEN;
+                m_Board[i].Card = GameCard.Hidden;
             ResumeLayout();
         }
 
@@ -182,34 +178,34 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnGameEnded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameEnded), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            TableInfo table = m_Game.Table;
-            foreach (PlayerInfo p in table.Players)
+            var table = m_Game.Table;
+            foreach (var p in table.Players)
             {
                 if (p != null)
                 {
-                    PlayerHud php = huds[p.NoSeat];
-                    Label bet = bets[p.NoSeat];
+                    var php = m_Huds[p.NoSeat];
+                    var bet = m_Bets[p.NoSeat];
                     bet.Text = "";
-                    for (int i = 1; i < 10; ++i)
+                    for (var i = 1; i < 10; ++i)
                     {
-                        potTitles[i].Visible = false;
-                        potValues[i].Visible = false;
-                        potValues[i].Text = "$0";
+                        m_PotTitles[i].Visible = false;
+                        m_PotValues[i].Visible = false;
+                        m_PotValues[i].Text = Resources.TableViewerForm_OnGameEnded_ZeroMoney;
                     }
-                    potTitles[0].Visible = true;
-                    potValues[0].Visible = true;
-                    potValues[0].Text = "$0";
+                    m_PotTitles[0].Visible = true;
+                    m_PotValues[0].Visible = true;
+                    m_PotValues[0].Text = Resources.TableViewerForm_OnGameEnded_ZeroMoney;
                     php.SetMoney(p.MoneySafeAmnt);
                     php.SetDealerButtonVisible(false);
                     php.SetNoBlind();
                     php.SetSleeping();
                     if (p.MoneySafeAmnt == 0)
                     {
-                        php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
+                        php.SetCards(GameCard.NoCard, GameCard.NoCard);
                         php.Alive = false;
                     }
                     php.DoAction(GameActionEnum.DoNothing);
@@ -223,59 +219,59 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated), new[] { sender, e });
                 return;
             }
             lock (m_Game.Table)
             {
 
 
-                TableInfo table = m_Game.Table;
+                var table = m_Game.Table;
                 SuspendLayout();
-                lblTotalPot.Text = "$" + table.TotalPotAmnt;
-                for (int i = 1; i < 10; ++i)
+                lblTotalPot.Text = Resources.PlayerHud_SetMoney_Dollar + table.TotalPotAmnt;
+                for (var i = 1; i < 10; ++i)
                 {
-                    potTitles[i].Visible = false;
-                    potValues[i].Visible = false;
-                    potValues[i].Text = "$0";
+                    m_PotTitles[i].Visible = false;
+                    m_PotValues[i].Visible = false;
+                    m_PotValues[i].Text = Resources.TableViewerForm_OnGameEnded_ZeroMoney;
                 }
-                potTitles[0].Visible = true;
-                potValues[0].Visible = true;
-                potValues[0].Text = "$0";
+                m_PotTitles[0].Visible = true;
+                m_PotValues[0].Visible = true;
+                m_PotValues[0].Text = Resources.TableViewerForm_OnGameEnded_ZeroMoney;
 
-                foreach (MoneyPot p in table.Pots)
+                foreach (var p in table.Pots)
                 {
-                    int i = p.Id;
-                    potTitles[i].Visible = (i == 0 || p.Amount > 0);
-                    potValues[i].Visible = (i == 0 || p.Amount > 0);
-                    potValues[i].Text = "$" + p.Amount;
+                    var i = p.Id;
+                    m_PotTitles[i].Visible = (i == 0 || p.Amount > 0);
+                    m_PotValues[i].Visible = (i == 0 || p.Amount > 0);
+                    m_PotValues[i].Text = Resources.PlayerHud_SetMoney_Dollar + p.Amount;
                 }
 
-                int j = 0;
-                for (; j < 5 && table.Cards[j].Id != GameCard.NO_CARD.Id; ++j)
-                    board[j].Card = table.Cards[j];
+                var j = 0;
+                for (; j < 5 && table.Cards[j].Id != GameCard.NoCard.Id; ++j)
+                    m_Board[j].Card = table.Cards[j];
                 for (; j < 5; ++j)
-                    board[j].Card = m_Game.IsPlaying ? GameCard.HIDDEN : GameCard.NO_CARD;
+                    m_Board[j].Card = m_Game.IsPlaying ? GameCard.Hidden : GameCard.NoCard;
 
-                foreach (SeatInfo si in table.Seats)
+                foreach (var si in table.Seats)
                 {
-                    PlayerHud php = huds[si.NoSeat];
+                    var php = m_Huds[si.NoSeat];
                     InstallPlayer(php, si);
                 }
-                for (int i = 0; i < huds.Length; ++i)
+                for (var i = 0; i < m_Huds.Length; ++i)
                 {
-                    huds[i].DoAction(GameActionEnum.DoNothing, 0);
-                    bets[i].Text = table.Seats[i].IsEmpty || table.Seats[i].Player.MoneyBetAmnt == 0 ? "" : "$" + table.Seats[i].Player.MoneyBetAmnt;
+                    m_Huds[i].DoAction(GameActionEnum.DoNothing, 0);
+                    m_Bets[i].Text = table.Seats[i].IsEmpty || table.Seats[i].Player.MoneyBetAmnt == 0 ? "" : "$" + table.Seats[i].Player.MoneyBetAmnt;
                 }
 
                 //Set Small Blind Icon
-                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => huds[x.NoSeat].SetSmallBlind());
+                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.SmallBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetSmallBlind());
 
                 //Set Big Blind Icon
-                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => huds[x.NoSeat].SetBigBlind());
+                table.Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_Huds[x.NoSeat].SetBigBlind());
 
                 if (table.CurrentPlayerSeat != null)
-                    huds[table.NoSeatCurrentPlayer].SetPlaying();
+                    m_Huds[table.NoSeatCurrentPlayer].SetPlaying();
 
 
                 ResumeLayout();
@@ -287,12 +283,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
+            var p = e.Player;
+            var php = m_Huds[p.NoSeat];
             php.DoAction(GameActionEnum.DoNothing, 0);
             php.SetPlaying();
             ResumeLayout();
@@ -303,22 +299,22 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerActionEventArgs>(OnPlayerActionTaken), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerActionEventArgs>(OnPlayerActionTaken), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
-            Label bet = bets[p.NoSeat];
-            TableInfo table = m_Game.Table;
+            var p = e.Player;
+            var php = m_Huds[p.NoSeat];
+            var bet = m_Bets[p.NoSeat];
+            var table = m_Game.Table;
             php.SetMoney(p.MoneySafeAmnt);
             php.SetSleeping();
             php.DoAction(e.Action, e.AmountPlayed);
-            lblTotalPot.Text = "$" + table.TotalPotAmnt;
+            lblTotalPot.Text = Resources.PlayerHud_SetMoney_Dollar + table.TotalPotAmnt;
             if (e.Action == GameActionEnum.Fold)
-                php.SetCards(GameCard.NO_CARD, GameCard.NO_CARD);
+                php.SetCards(GameCard.NoCard, GameCard.NoCard);
             if (p.MoneyBetAmnt > 0)
-                bet.Text = "$" + p.MoneyBetAmnt;
+                bet.Text = Resources.PlayerHud_SetMoney_Dollar + p.MoneyBetAmnt;
             ResumeLayout();
         }
 
@@ -327,12 +323,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerHoleCardsChanged), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerHoleCardsChanged), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
+            var p = e.Player;
+            var php = m_Huds[p.NoSeat];
             if(p.HoleCards.Length == 2)
                 php.SetCards (p.HoleCards[0], p.HoleCards[1]);
             else
@@ -345,14 +341,14 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated), new object[] { sender, e });
+                BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated), new[] { sender, e });
                 return;
             }
             SuspendLayout();
             if( e.Seat.IsEmpty)
-                huds[e.Seat.NoSeat].Visible = false;
+                m_Huds[e.Seat.NoSeat].Visible = false;
             else
-                InstallPlayer(huds[e.Seat.NoSeat], e.Seat);
+                InstallPlayer(m_Huds[e.Seat.NoSeat], e.Seat);
             ResumeLayout();
         }
 
@@ -361,12 +357,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
+            var p = e.Player;
+            var php = m_Huds[p.NoSeat];
             php.Visible = false;
             ResumeLayout();
         }
@@ -376,12 +372,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerMoneyChanged), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerMoneyChanged), new[] { sender, e });
                 return;
             }
             SuspendLayout();
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
+            var p = e.Player;
+            var php = m_Huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
             ResumeLayout();
         }
@@ -391,12 +387,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot), new object[] { sender,e });
+                BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot), new[] { sender,e });
                 return;
             }
             SuspendLayout();
-            PlayerInfo p = e.Player;
-            PlayerHud php = huds[p.NoSeat];
+            var p = e.Player;
+            var php = m_Huds[p.NoSeat];
             php.SetMoney(p.MoneySafeAmnt);
             php.SetWinning();
             ResumeLayout();
@@ -408,7 +404,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnEverythingEnded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnEverythingEnded_Console), new[] { sender, e });
                 return;
             }
             WriteLine("==> Table closed");
@@ -419,17 +415,17 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundStarted_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<RoundEventArgs>(OnGameBettingRoundStarted_Console), new[] { sender, e });
                 return;
             }
-            TableInfo table = m_Game.Table;
-            WriteLine("==> Beginning of " + e.Round.ToString());
+            var table = m_Game.Table;
+            WriteLine("==> Beginning of " + e.Round);
             if (e.Round != RoundTypeEnum.Preflop)
             {
                 Write("==> Current board cards:");
-                for (int i = 0; i < 5 && table.Cards[i].Id != GameCard.NO_CARD.Id; ++i)
+                for (var i = 0; i < 5 && table.Cards[i].Id != GameCard.NoCard.Id; ++i)
                 {
-                    Write(" " + table.Cards[i].ToString());
+                    Write(" " + table.Cards[i]);
                 }
                 WriteLine("");
             }
@@ -440,10 +436,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnGameBlindNeeded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameBlindNeeded_Console), new[] { sender, e });
                 return;
             }
-            TableInfo table = m_Game.Table;
             WriteLine("==> Game started");
         }
 
@@ -452,7 +447,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnGameEnded_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameEnded_Console), new[] { sender, e });
                 return;
             }
             WriteLine("==> End of the Game");
@@ -463,7 +458,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<EventArgs>(OnGameGenerallyUpdated_Console), new[] { sender, e });
                 return;
             }
             WriteLine("==> Table info received");
@@ -479,7 +474,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerActionEventArgs>(OnPlayerActionTaken_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerActionEventArgs>(OnPlayerActionTaken_Console), new[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " did [" + e.Action.ToString() + "]");
@@ -490,12 +485,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerHoleCardsChanged_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerHoleCardsChanged_Console), new[] { sender, e });
                 return;
             }
-            PlayerInfo p = e.Player;
+            var p = e.Player;
             if (p.HoleCards[0].Id >= 0)
-                WriteLine("==> Hole Card changed for " + p.Name + ": " + p.HoleCards[0].ToString() + " " + p.HoleCards[1].ToString());
+                WriteLine("==> Hole Card changed for " + p.Name + ": " + p.HoleCards[0] + " " + p.HoleCards[1]);
         }
 
         void OnPlayerJoined_Console(object sender, PlayerInfoEventArgs e)
@@ -503,7 +498,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerJoined_Console), new[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " joined the table");
@@ -514,10 +509,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<SeatEventArgs>(OnSeatUpdated_Console), new[] { sender, e });
                 return;
             }
-            SeatInfo s = e.Seat;
+            var s = e.Seat;
             if(e.Seat.IsEmpty)
                 WriteLine("The seat #" + s.NoSeat + " is now inoccupied");
             else
@@ -529,7 +524,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft_Console), new[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " left the table");
@@ -540,7 +535,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot_Console), new object[] { sender, e });
+                BeginInvoke(new EventHandler<PotWonEventArgs>(OnPlayerWonPot_Console), new[] { sender, e });
                 return;
             }
             WriteLine(e.Player.Name + " won pot ($" + e.AmountWon + ")");
@@ -552,10 +547,10 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 php.Visible = false;
             else
             {
-                PlayerInfo player = seat.Player;
+                var player = seat.Player;
                 php.PlayerName = player.Name;
                 php.DoAction(GameActionEnum.DoNothing);
-                GameCard[] cards = player.HoleCards.ToArray();
+                var cards = player.HoleCards.ToArray();
                 php.SetMoney(player.MoneySafeAmnt);
                 php.SetSleeping();
                 php.Main = (m_NoSeat == player.NoSeat);

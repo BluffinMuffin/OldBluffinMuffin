@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.Poker.GUI.Properties;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 
@@ -12,8 +8,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
     public partial class PlayerHud : UserControl
     {
-        private bool m_Main = false;
-        private bool m_Alive = false;
+        private bool m_Main;
+        private bool m_Alive;
 
         public string PlayerName
         {
@@ -69,7 +65,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         public void DoAction(GameActionEnum action, int amnt)
         {
-            string s = "";
+            var s = "";
             switch (action)
             {
                 case GameActionEnum.Call:
@@ -99,7 +95,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         public void SetMoney(int money)
         {
-            lblStatus.Text = "$" + money;
+            lblStatus.Text = Resources.PlayerHud_SetMoney_Dollar + money;
         }
 
         public void SetDealerButtonVisible(bool visible)
@@ -127,7 +123,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (m_Alive)
             {
                 lblAction.BackColor = Color.Orange;
-                lblAction.Text = "Thinking ...";
+                lblAction.Text = Resources.PlayerHud_SetPlaying_Thinking;
             }
         }
 
@@ -136,7 +132,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (m_Alive)
             {
                 lblAction.BackColor = Color.FromArgb(42, 186, 229);
-                lblAction.Text = "WIN";
+                lblAction.Text = Resources.PlayerHud_SetWinning_WIN;
             }
         }
 

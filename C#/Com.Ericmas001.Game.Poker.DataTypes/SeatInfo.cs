@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Com.Ericmas001;
-using Newtonsoft.Json.Linq;
-using Com.Ericmas001.Game.Poker.DataTypes;
+﻿using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using System.Collections.Concurrent;
 using Com.Ericmas001.Collections;
 using Newtonsoft.Json;
 
@@ -30,7 +23,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             get
             {
-                return Attributes.ToList().ToArray();
+                return Attributes.ToArray();
             }
             set
             {
@@ -47,13 +40,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             if (IsEmpty)
                 return new SeatInfo();
-            else
-                return new SeatInfo()
-                {
-                    Player = this.Player.Clone(),
-                    NoSeat = this.NoSeat,
-                    Attributes = new ConcurrentList<SeatAttributeEnum>(this.Attributes),
-                };
+            return new SeatInfo()
+            {
+                Player = Player.Clone(),
+                NoSeat = NoSeat,
+                SerializableAttributes = SerializableAttributes,
+            };
         }
     }
 }

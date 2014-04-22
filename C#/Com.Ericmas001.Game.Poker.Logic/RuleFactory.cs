@@ -1,10 +1,6 @@
 ﻿using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Com.Ericmas001.Game.Poker.Logic
 {
@@ -15,7 +11,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             get
             {
                 //The order here is important! The most important game should be at the top, and so on.
-                return new RuleInfo[]
+                return new[]
                 {
                     new RuleInfo()
                     {
@@ -29,7 +25,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                         DefaultBlind = BlindTypeEnum.Blinds,
                         CanConfigWaitingTime = true,
                         AvailableLobbys = new List<LobbyTypeEnum>(){LobbyTypeEnum.Training, LobbyTypeEnum.Career},
-                    },
+                    }
                 };
             }
         }
