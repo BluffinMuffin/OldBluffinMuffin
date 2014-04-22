@@ -11,7 +11,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class PokerTableList : UserControl
     {
-        private LobbyTcpClient m_Server;
+        private LobbyTcpClient1 m_Server;
 
         public bool ShowTraining { get; set; }
         public bool ShowCareer { get; set; }
@@ -23,7 +23,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             InitializeComponent();
         }
 
-        public void SetServer(LobbyTcpClient server)
+        public void SetServer(LobbyTcpClient1 server)
         {
             m_Server = server;
             m_Server.ServerLost += m_Server_ServerLost;
@@ -159,7 +159,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
             return true;
         }
 
-        public GameTcpClient FindClient()
+        public GameTcpClient1 FindClient()
         {
             return m_Server.FindClient(FindClientId());
         }
