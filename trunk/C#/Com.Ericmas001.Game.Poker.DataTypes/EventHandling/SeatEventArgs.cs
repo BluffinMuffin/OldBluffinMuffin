@@ -1,7 +1,4 @@
-﻿using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.EventHandling
 {

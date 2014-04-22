@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Com.Ericmas001.Games;
-using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
@@ -34,7 +31,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             {
                 m_Params = value;
                 m_Seats = new SeatInfo[value.MaxPlayers];
-                for (int i = 0; i < value.MaxPlayers; ++i)
+                for (var i = 0; i < value.MaxPlayers; ++i)
                     m_Seats[i] = new SeatInfo() { NoSeat = i };
             }
         }
@@ -48,12 +45,12 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public GameCard[] Cards
         {
-            get { return m_Cards.Select(c => c == null ? GameCard.NO_CARD : c).ToArray(); }
+            get { return m_Cards.Select(c => c == null ? GameCard.NoCard : c).ToArray(); }
             set
             {
                 if (value != null && value.Length == 5)
                 {
-                    for (int i = 0; i < 5; ++i)
+                    for (var i = 0; i < 5; ++i)
                         m_Cards[i] = value[i];
                 }
             }
@@ -181,7 +178,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             get
             {
-                SeatInfo seat = GetSeatOfPlayingPlayerNextTo(DealerSeat);
+                var seat = GetSeatOfPlayingPlayerNextTo(DealerSeat);
 
                 if (Round == RoundTypeEnum.Preflop && Params.Blind.OptionType == BlindTypeEnum.Blinds)
                 {
@@ -228,10 +225,10 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         /// </summary>
         public SeatInfo GetSeatOfPlayingPlayerNextTo(SeatInfo seat)
         {
-            int noSeat = seat == null ? -1 : seat.NoSeat;
-            for (int i = 0; i < Params.MaxPlayers; ++i)
+            var noSeat = seat == null ? -1 : seat.NoSeat;
+            for (var i = 0; i < Params.MaxPlayers; ++i)
             {
-                SeatInfo si = m_Seats[(noSeat + 1 + i) % Params.MaxPlayers];
+                var si = m_Seats[(noSeat + 1 + i) % Params.MaxPlayers];
                 if (!si.IsEmpty && si.Player.IsPlaying)
                     return si;
             }
@@ -239,13 +236,13 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         }
         public SeatInfo GetSeatOfPlayingPlayerJustBefore(SeatInfo seat)
         {
-            int noSeat = seat == null ? -1 : seat.NoSeat;
-            for (int i = 0; i < Params.MaxPlayers; ++i)
+            var noSeat = seat == null ? -1 : seat.NoSeat;
+            for (var i = 0; i < Params.MaxPlayers; ++i)
             {
-                int id = (noSeat - 1 - i) % Params.MaxPlayers;
+                var id = (noSeat - 1 - i) % Params.MaxPlayers;
                 if (id < 0)
                     id = Params.MaxPlayers + id;
-                SeatInfo si = m_Seats[id];
+                var si = m_Seats[id];
                 if (!si.IsEmpty && si.Player.IsPlaying)
                     return si;
             }
@@ -287,7 +284,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             if (!SeatsContainsPlayer(p))
                 return true;
 
-            int seat = p.NoSeat;
+            var seat = p.NoSeat;
             p.State = PlayerStateEnum.Zombie;
             p.NoSeat = -1;
             m_Seats[seat].Player = null;
@@ -330,7 +327,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
 
         public void ChangeCurrentPlayerTo(SeatInfo seat)
         {
-            SeatInfo oldPlayerSeat = CurrentPlayerSeat;
+            var oldPlayerSeat = CurrentPlayerSeat;
             if (oldPlayerSeat != null)
                 oldPlayerSeat.Attributes.Remove(SeatAttributeEnum.CurrentPlayer);
             seat.Attributes.Add(SeatAttributeEnum.CurrentPlayer);

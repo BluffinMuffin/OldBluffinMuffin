@@ -1,4 +1,6 @@
-﻿namespace Com.Ericmas001.Game.Poker.GUI.Lobby
+﻿using Com.Ericmas001.Windows.Forms.CustomTabControl;
+
+namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     partial class CreateTableForm
     {
@@ -29,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTableForm));
-            this.tabControl1 = new Com.Ericmas001.Windows.Forms.CustomTabControl();
+            this.tabControl1 = new CustomTabControl();
             this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
             this.SuspendLayout();
             // 
@@ -38,7 +40,7 @@
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.DisplayStyle = Com.Ericmas001.Windows.Forms.TabStyle.Rounded;
+            this.tabControl1.DisplayStyle = TabStyle.Rounded;
             // 
             // 
             // 
@@ -103,7 +105,7 @@
 
         #endregion
 
-        private Com.Ericmas001.Windows.Forms.CustomTabControl tabControl1;
+        private CustomTabControl tabControl1;
         private VIBlend.WinForms.Controls.vButton btnAddTable;
     }
 }

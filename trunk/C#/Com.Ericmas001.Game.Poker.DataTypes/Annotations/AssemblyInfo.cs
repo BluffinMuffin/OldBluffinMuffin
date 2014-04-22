@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Com.Ericmas001.Game.Poker.GUI")]
+[assembly: AssemblyTitle("Com.Ericmas001.Game.Poker.DataTypes")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Com.Ericmas001.Game.Poker.GUI")]
+[assembly: AssemblyProduct("Com.Ericmas001.Game.Poker.DataTypes")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d8a68bcd-600f-4652-8d38-7a0c6e2eef9d")]
+[assembly: Guid("5a63d650-ccc4-4fa4-8fda-17ff5ba61c5c")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Com.Ericmas001.Games;
-using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using System.Linq;
 using Com.Ericmas001.Game.Poker.DataTypes;
@@ -33,7 +31,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         #region Ctors & Init
         public PokerTable()
-            : base()
         {
             NewArrivals = new List<PlayerInfo>();
         }
@@ -68,8 +65,8 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public void AddCards(params GameCard[] c)
         {
-            int firstUnused =  Enumerable.Range(0,m_Cards.Length).First(i => m_Cards[i] == null || m_Cards[i].ToString() == GameCard.NO_CARD.ToString());
-            for (int j = firstUnused; j < Math.Min(5, c.Length + firstUnused); ++j)
+            var firstUnused =  Enumerable.Range(0,m_Cards.Length).First(i => m_Cards[i] == null || m_Cards[i].ToString() == GameCard.NoCard.ToString());
+            for (var j = firstUnused; j < Math.Min(5, c.Length + firstUnused); ++j)
                 m_Cards[j] = c[j - firstUnused];
         }
 
@@ -100,8 +97,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             if (m_BlindNeeded.ContainsKey(p))
                 return m_BlindNeeded[p];
-            else
-                return 0;
+            return 0;
         }
 
         /// <summary>
@@ -115,7 +111,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Already someone with the same name!");
                 return false;
             }
-            bool ok = base.JoinTable(p);
+            var ok = base.JoinTable(p);
             //if(ok)
             //    ok = AskToSitIn(p);
             //if(!ok)
@@ -123,7 +119,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             return ok;
         }
 
-        public SeatInfo AskToSitIn(PlayerInfo p, int PreferedSeat)
+        public SeatInfo AskToSitIn(PlayerInfo p, int preferedSeat)
         {
             if (RemainingSeats.Count() == 0)
             {
@@ -137,9 +133,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 return null;
             }
 
-            int seat = PreferedSeat;
+            var seat = preferedSeat;
 
-            if (PreferedSeat < 0 || PreferedSeat >= Seats.Count || !Seats[PreferedSeat].IsEmpty)
+            if (preferedSeat < 0 || preferedSeat >= Seats.Count || !Seats[preferedSeat].IsEmpty)
                 seat = RemainingSeats.First();
             return SitInToTable(p, seat);
         }
@@ -151,8 +147,6 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             if (!PeopleContainsPlayer(p))
                 return false;
-
-            int seat = p.NoSeat;
 
             if (!base.LeaveTable(p))
                 return false;
@@ -171,7 +165,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             if (Cards == null || Cards.Length != 5 || playerCards == null || playerCards.Count != 2)
                 return 0;
 
-            return new Hand(String.Join<GameCard>(" ", playerCards), String.Join<GameCard>(" ", Cards)).HandValue;
+            return new Hand(String.Join(" ", playerCards), String.Join<GameCard>(" ", Cards)).HandValue;
         }
 
         /// <summary>
@@ -180,19 +174,19 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public void ManagePotsRoundEnd()
         {
-            int currentTaken = 0;
+            var currentTaken = 0;
             m_AllInCaps.Sort();
 
             while (m_AllInCaps.Count > 0)
             {
-                MoneyPot pot = m_Pots[m_CurrPotId];
+                var pot = m_Pots[m_CurrPotId];
                 pot.DetachAllPlayers();
 
-                int aicf = m_AllInCaps[0];
+                var aicf = m_AllInCaps[0];
                 m_AllInCaps.RemoveAt(0);
 
-                int cap = aicf - currentTaken;
-                foreach (PlayerInfo p in Players)
+                var cap = aicf - currentTaken;
+                foreach (var p in Players)
                     AddBet(p, pot, Math.Min(p.MoneyBetAmnt, cap));
 
                 currentTaken += cap;
@@ -200,9 +194,9 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 m_Pots.Add(new MoneyPot(m_CurrPotId));
             }
 
-            MoneyPot curPot = m_Pots[m_CurrPotId];
+            var curPot = m_Pots[m_CurrPotId];
             curPot.DetachAllPlayers();
-            foreach (PlayerInfo p in Players)
+            foreach (var p in Players)
                 AddBet(p, curPot, p.MoneyBetAmnt);
 
             HigherBet = 0;
@@ -213,18 +207,18 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public void CleanPotsForWinning()
         {
-            for (int i = 0; i <= m_CurrPotId; ++i)
+            for (var i = 0; i <= m_CurrPotId; ++i)
             {
-                MoneyPot pot = m_Pots[i];
+                var pot = m_Pots[i];
                 uint bestHand = 0;
-                List<PlayerInfo> infos = new List<PlayerInfo>(pot.AttachedPlayers);
+                var infos = new List<PlayerInfo>(pot.AttachedPlayers);
 
                 //If there is more than one player attach to the pot, we need to choose who will split it !
                 if (infos.Count > 1)
                 {
-                    foreach (PlayerInfo p in infos)
+                    foreach (var p in infos)
                     {
-                        uint handValue = EvaluateCards(p.HoleCards.ToList());
+                        var handValue = EvaluateCards(p.HoleCards.ToList());
                         if (handValue > bestHand)
                         {
                             pot.DetachAllPlayers();
@@ -245,7 +239,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             get
             {
-                for (int i = 0; i < Seats.Count; ++i)
+                for (var i = 0; i < Seats.Count; ++i)
                     if (Seats[i].IsEmpty)
                         yield return i;
             }
@@ -260,11 +254,11 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void InitPokerTable()
         {
-            SeatInfo previousDealer = DealerSeat;
+            var previousDealer = DealerSeat;
 
             Seats.ForEach(s => s.Attributes.Clear());
 
-            SeatInfo nextDealerSeat = GetSeatOfPlayingPlayerNextTo(previousDealer);
+            var nextDealerSeat = GetSeatOfPlayingPlayerNextTo(previousDealer);
             nextDealerSeat.Attributes.Add(SeatAttributeEnum.Dealer);
 
             m_BlindNeeded.Clear();
@@ -272,26 +266,26 @@ namespace Com.Ericmas001.Game.Poker.Logic
             switch(Params.Blind.OptionType)
             {
                 case BlindTypeEnum.Blinds:
-                    BlindOptionsBlinds bob = Params.Blind as BlindOptionsBlinds;
+                    var bob = Params.Blind as BlindOptionsBlinds;
 
-                    SeatInfo smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
+                    var smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
                     if (!NewArrivals.Any(x => x.NoSeat == smallSeat.NoSeat))
                     {
                         smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
-                        m_BlindNeeded.Add(smallSeat.Player, bob.SmallBlindAmount);
+                        if (bob != null) m_BlindNeeded.Add(smallSeat.Player, bob.SmallBlindAmount);
                     }
 
-                    SeatInfo bigSeat = GetSeatOfPlayingPlayerNextTo(smallSeat);
+                    var bigSeat = GetSeatOfPlayingPlayerNextTo(smallSeat);
                     bigSeat.Attributes.Add(SeatAttributeEnum.BigBlind);
 
                     NewArrivals.ForEach(x => Seats[x.NoSeat].Attributes.Add(SeatAttributeEnum.BigBlind));
                     NewArrivals.Clear();
 
-                    Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x => m_BlindNeeded.Add(x.Player, bob.BigBlindAmount));
+                    Seats.Where(x => x.Attributes.Contains(SeatAttributeEnum.BigBlind)).ToList().ForEach(x =>{ if (bob != null) m_BlindNeeded.Add(x.Player, bob.BigBlindAmount); });
                     break;
                 case BlindTypeEnum.Antes:
-                    BlindOptionsAnte boa = Params.Blind as BlindOptionsAnte;
-                    PlayingPlayers.ForEach(x => m_BlindNeeded.Add(x, boa.AnteAmount));
+                    var boa = Params.Blind as BlindOptionsAnte;
+                    PlayingPlayers.ForEach(x => { if (boa != null) m_BlindNeeded.Add(x, boa.AnteAmount); });
                     break;
             }
         }

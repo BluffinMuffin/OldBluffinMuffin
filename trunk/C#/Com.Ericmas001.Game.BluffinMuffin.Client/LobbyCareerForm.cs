@@ -1,30 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.BluffinMuffin.Client.Properties;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
-using Com.Ericmas001.Game.Poker.GUI.Lobby;
 using Com.Ericmas001.Game.Poker.GUI.Game;
-using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.BluffinMuffin.Client.Game;
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Client
 {
     public partial class LobbyCareerForm : Form, ITableFormFactory
     {
-        private LobbyTCPClientCareer m_Server;
-        public LobbyCareerForm(LobbyTCPClientCareer server)
+        private LobbyTcpClientCareer m_Server;
+        public LobbyCareerForm(LobbyTcpClientCareer server)
         {
             m_Server = server;
-            m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
+            m_Server.ServerLost += m_Server_ServerLost;
             InitializeComponent();
             tableList.TableFormFactory = this;
-            tableList.setServer(m_Server);
-            Text = server.User.DisplayName + " ~ " + lblTitle.Text;
+            tableList.SetServer(m_Server);
+            Text = server.User.DisplayName + Resources.LobbyCareerForm_LobbyCareerForm_Tild + lblTitle.Text;
             lblServer.Text = String.Format("{0} on port {1}", m_Server.ServerAddress, m_Server.ServerPort);
         }
 
@@ -45,7 +38,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
 
         private void RefreshInfo()
         {
-            UserInfo u = m_Server.User;
+            var u = m_Server.User;
             m_Server.RefreshUserInfo(u.Username);
             lblAccount.Text = String.Format("{0} ( {1}, {2} )", u.DisplayName, u.Username, u.Email);
             lblMoney.Text = String.Format("{0}", (int)u.TotalMoney);
@@ -53,8 +46,8 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
 
         public void AllowJoinOrLeave()
         {
-            bool selected = tableList.SomethingSelected;
-            GameTCPClient client = tableList.FindClient();
+            var selected = tableList.SomethingSelected;
+            var client = tableList.FindClient();
             btnJoinTable.Enabled = selected && (client == null);
             btnLeaveTable.Enabled = selected && (client != null);
         }
@@ -121,7 +114,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
                 tableList.AddTable();
         }
 
-        public AbstractTableForm ObtainGUI()
+        public AbstractTableForm ObtainGui()
         {
             return new CareerTableForm(m_Server.User);
         }

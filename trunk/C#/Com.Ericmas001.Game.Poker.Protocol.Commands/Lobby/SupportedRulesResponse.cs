@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Com.Ericmas001;
-using Com.Ericmas001.Net.Protocol.JSON;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
+﻿using System.Collections.Generic;
 using Com.Ericmas001.Game.Poker.DataTypes;
-using Newtonsoft.Json.Linq;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby
 {
     public class SupportedRulesResponse : AbstractLobbyResponse<SupportedRulesCommand>
     {
-        public static string COMMAND_NAME = "lobbySUPPORTED_RULES_RESPONSE";
-
         public List<RuleInfo> Rules { get; set; }
 
         public SupportedRulesResponse()
-            : base()
         {
         }
         public SupportedRulesResponse(SupportedRulesCommand command)

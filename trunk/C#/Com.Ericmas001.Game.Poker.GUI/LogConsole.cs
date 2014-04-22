@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.Poker.GUI.Properties;
 
 namespace Com.Ericmas001.Game.Poker.GUI
 {
@@ -12,8 +8,8 @@ namespace Com.Ericmas001.Game.Poker.GUI
     {
         public event EventHandler<IntEventArgs> RelativeSizeChanged = delegate { };
 
-        private bool locked = false;
-        private bool collapsed = false;
+        private bool m_Locked;
+        private bool m_Collapsed;
         public LogConsole()
         {
             InitializeComponent();
@@ -21,31 +17,31 @@ namespace Com.Ericmas001.Game.Poker.GUI
 
         private void btnLock_Click(object sender, EventArgs e)
         {
-            if (locked)
+            if (m_Locked)
             {
                 //Unlock
-                locked = false;
-                btnLock.Text = "Lock";
+                m_Locked = false;
+                btnLock.Text = Resources.LogConsole_btnLock_Click_Lock;
             }
             else
             {
-                if (!collapsed)
+                if (!m_Collapsed)
                 {
                     //Lock
-                    locked = true;
-                    btnLock.Text = "Unlock";
+                    m_Locked = true;
+                    btnLock.Text = Resources.LogConsole_btnLock_Click_Unlock;
                 }
             }
         }
 
         private void btnCollapse_Click(object sender, EventArgs e)
         {
-            int old = Height;
-            if (collapsed)
+            var old = Height;
+            if (m_Collapsed)
             {
                 //UnCollapse
-                collapsed = false;
-                btnCollapse.Text = "^";
+                m_Collapsed = false;
+                btnCollapse.Text = Resources.LogConsole_btnCollapse_Click_Up;
                 txtLog.Visible = true;
                 Height += txtLog.Height;
                 txtLog.SelectionStart = txtLog.TextLength;
@@ -55,12 +51,12 @@ namespace Com.Ericmas001.Game.Poker.GUI
             else
             {
                 //Collapse
-                collapsed = true;
-                btnCollapse.Text = "v";
+                m_Collapsed = true;
+                btnCollapse.Text = Resources.LogConsole_btnCollapse_Click_Down;
                 txtLog.Visible = false;
                 Height -= txtLog.Height;
-                locked = false;
-                btnLock.Text = "Lock";
+                m_Locked = false;
+                btnLock.Text = Resources.LogConsole_btnLock_Click_Lock;
             }
             RelativeSizeChanged(this, new IntEventArgs(Height - old));
         }
@@ -78,14 +74,14 @@ namespace Com.Ericmas001.Game.Poker.GUI
         private delegate void DelegateWrite(string s);
         public void Write(string msg)
         {
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke(new DelegateWrite(Write), new object[] { msg });
+                Invoke(new DelegateWrite(Write), new object[] { msg });
                 return;
             }
-            int old = txtLog.SelectionStart;
+            var old = txtLog.SelectionStart;
             txtLog.Text += msg;
-            if (!locked)
+            if (!m_Locked)
             {
                 txtLog.SelectionStart = txtLog.TextLength;
             }

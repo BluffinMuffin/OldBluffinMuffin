@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Com.Ericmas001;
+using Com.Ericmas001.Game.Poker.DataTypes.Annotations;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using Newtonsoft.Json.Linq;
-using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
@@ -12,9 +8,9 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
     public class TupleTable : IComparable<TupleTable>
     {
         public int IdTable { get; set; }
-        public int BigBlind { get; set; }
+        public int BigBlind { get; [UsedImplicitly] set; }
         public int NbPlayers { get; set; }
-        public LobbyActionEnum PossibleAction { get; set; }
+        public LobbyActionEnum PossibleAction { [UsedImplicitly] get; set; }
         public TableParams Params { get; set; }
 
         public int CompareTo(TupleTable other)

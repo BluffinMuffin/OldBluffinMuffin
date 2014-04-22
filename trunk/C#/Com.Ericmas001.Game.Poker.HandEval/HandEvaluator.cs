@@ -60,7 +60,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
     /// <summary>
     /// Represents a Texas Holdem Hand
     /// </summary>
-    public partial class Hand : IComparable
+    public partial class Hand
     {
         #region HandTypes Enumeration
         /// <summary>
@@ -189,11 +189,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <exclude/>
         private static readonly int TOP_CARD_SHIFT = 16;
         /// <exclude/>
-        private static readonly System.UInt32 TOP_CARD_MASK = 0x000F0000;
+        private static readonly UInt32 TOP_CARD_MASK = 0x000F0000;
         /// <exclude/>
         private static readonly int SECOND_CARD_SHIFT = 12;
         /// <exclude/>
-        private static readonly System.UInt32 SECOND_CARD_MASK = 0x0000F000;
+        private static readonly UInt32 SECOND_CARD_MASK = 0x0000F000;
         /// <exclude/>
         private static readonly int THIRD_CARD_SHIFT = 8;
         /// <exclude/>
@@ -201,31 +201,31 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <exclude/>
         private static readonly int FIFTH_CARD_SHIFT = 0;
         /// <exclude/>
-        private static readonly System.UInt32 FIFTH_CARD_MASK = 0x0000000F;
+        private static readonly UInt32 FIFTH_CARD_MASK = 0x0000000F;
         /// <exclude/>
         private static readonly int CARD_WIDTH = 4;
         /// <exclude/>
-        private static readonly System.UInt32 CARD_MASK = 0x0F;
+        private static readonly UInt32 CARD_MASK = 0x0F;
         #endregion
 
         #region Private Fields
         /// <summary>
         /// Hand mask for the current card set
         /// </summary>
-        private System.UInt64 handmask;
+        private UInt64 m_Handmask;
         /// <summary>
         /// Contains string representing the pocket cards
         /// </summary>
-        private string pocket;
+        private string m_Pocket;
         /// <summary>
         /// Contains a string representing the board (common cards)
         /// </summary>
-        private string board;
+        private string m_Board;
         /// <summary>
         /// The value of the current had. This value allows hands to be 
         /// compared using a normal arithmitic compare function.
         /// </summary>
-        private System.UInt32 handval;
+        private UInt32 m_Handval;
         #endregion
 
         #region Constructor
@@ -234,7 +234,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         public Hand()
         {
-            pocket = board = "";
+            m_Pocket = m_Board = "";
         }
 
         /// <example>
@@ -299,13 +299,13 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             if (hand == null) return false;
 #endif
 
-            int index = 0;
-            ulong handmask = 0UL;
-            int cards = 0;
-            int card = 0;
+            var index = 0;
+            var handmask = 0UL;
+            var cards = 0;
 
             try
             {
+                int card;
                 for (card = NextCard(hand, ref index); card >= 0; card = NextCard(hand, ref index))
                 {
                     if ((handmask & (1UL << card)) != 0)
@@ -363,7 +363,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>a mask mask representing the mask</returns>
         public static ulong ParseHand(string mask)
         {
-            int cards = 0;
+            var cards = 0;
             return ParseHand(mask, ref cards);
         }
 
@@ -375,8 +375,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public static ulong ParseHand(string hand, ref int cards)
         {
-            int index = 0;
-            ulong handmask = 0UL;
+            var index = 0;
+            var handmask = 0UL;
 
 #if DEBUG
             if (hand == null) throw new ArgumentNullException("hand");
@@ -391,11 +391,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
 #if DEBUG
             // Hand contains either invalid strings or duplicate entries
-            if (!Hand.ValidateHand(hand)) throw new ArgumentException("Bad hand definition");
+            if (!ValidateHand(hand)) throw new ArgumentException("Bad hand definition");
 #endif
             // Parse the mask
             cards = 0;
-            for (int card = NextCard(hand, ref index); card >= 0; card = NextCard(hand, ref index))
+            for (var card = NextCard(hand, ref index); card >= 0; card = NextCard(hand, ref index))
             {
                 handmask |= (1UL << card);
                 cards++;
@@ -427,7 +427,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             if (card == null)
                 throw new ArgumentNullException("card");
 #endif
-            int index = 0;
+            var index = 0;
             return NextCard(card, ref index);
         }
 
@@ -439,7 +439,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         private static int NextCard(string cards, ref int index)
         {
-            int rank = 0, suit = 0;
+            int rank, suit;
 #if DEBUG
             if (cards == null) throw new ArgumentNullException("cards");
 #endif
@@ -592,7 +592,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <exclude/>
         public static string DescriptionFromHandValueInternal(uint handValue)
         {
-            StringBuilder b = new StringBuilder();
+            var b = new StringBuilder();
 
             switch ((HandTypes)HandType(handValue))
             {
@@ -653,7 +653,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public static string DescriptionFromMask(ulong cards)
         {
-            int numberOfCards = BitCount(cards);
+            var numberOfCards = BitCount(cards);
 
 #if DEBUG
             // This functions supports 1-7 cards
@@ -661,12 +661,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 throw new ArgumentOutOfRangeException("numberOfCards");
 #endif
             // Seperate out by suit
-            uint sc = (uint)((cards >> (CLUB_OFFSET)) & 0x1fffUL);
-            uint sd = (uint)((cards >> (DIAMOND_OFFSET)) & 0x1fffUL);
-            uint sh = (uint)((cards >> (HEART_OFFSET)) & 0x1fffUL);
-            uint ss = (uint)((cards >> (SPADE_OFFSET)) & 0x1fffUL);
+            var sc = (uint)((cards >> (ClubOffset)) & 0x1fffUL);
+            var sd = (uint)((cards >> (DiamondOffset)) & 0x1fffUL);
+            var sh = (uint)((cards >> (HeartOffset)) & 0x1fffUL);
+            var ss = (uint)((cards >> (SpadeOffset)) & 0x1fffUL);
 
-            uint handvalue = Evaluate(cards, numberOfCards);
+            var handvalue = Evaluate(cards, numberOfCards);
 
             switch ((HandTypes)HandType(handvalue))
             {
@@ -683,15 +683,15 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                     {
                         return "Flush (Spades) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
-                    else if (nBitsTable[sc] >= 5)
+                    if (nBitsTable[sc] >= 5)
                     {
                         return "Flush (Clubs) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
-                    else if (nBitsTable[sd] >= 5)
+                    if (nBitsTable[sd] >= 5)
                     {
                         return "Flush (Diamonds) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
-                    else if (nBitsTable[sh] >= 5)
+                    if (nBitsTable[sh] >= 5)
                     {
                         return "Flush (Hearts) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
@@ -701,15 +701,15 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                     {
                         return "Straight Flush (Spades) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
-                    else if (nBitsTable[sc] >= 5)
+                    if (nBitsTable[sc] >= 5)
                     {
                         return "Straight (Clubs) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
-                    else if (nBitsTable[sd] >= 5)
+                    if (nBitsTable[sd] >= 5)
                     {
                         return "Straight (Diamonds) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
-                    else if (nBitsTable[sh] >= 5)
+                    if (nBitsTable[sh] >= 5)
                     {
                         return "Straight  (Hearts) with " + ranktbl[TopCard(handvalue)] + " high";
                     }
@@ -732,7 +732,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </example>
         public static string DescriptionFromHand(string mask)
         {
-            int cards = 0;
+            var cards = 0;
 #if DEBUG
             // Must not be null string
             if (mask == null)
@@ -746,9 +746,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         private void UpdateHandMask()
         {
-            int cards = 0;
-            handmask = Hand.ParseHand(PocketCards, Board, ref cards);
-            handval = Hand.Evaluate(handmask, cards);
+            var cards = 0;
+            m_Handmask = ParseHand(PocketCards, Board, ref cards);
+            m_Handval = Evaluate(m_Handmask, cards);
         }
 
         #endregion
@@ -761,22 +761,22 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public override string ToString()
         {
-            return PocketCards + " " + Board; ;
+            return PocketCards + " " + Board;
         }
 
         /// <summary>
         /// Returns mask mask value
         /// </summary>
-        public System.UInt64 MaskValue
+        public UInt64 MaskValue
         {
-            get { return handmask; }
+            get { return m_Handmask; }
         }
 
         /// <summary>
         /// Represents the Mask of the Pocket cards for this instance
         /// of Hand
         /// </summary>
-        public System.UInt64 PocketMask
+        public UInt64 PocketMask
         {
             set
             {
@@ -793,7 +793,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// Represents the Mask of the Board cards for this instance
         /// of Hand
         /// </summary>
-        public System.UInt64 BoardMask
+        public UInt64 BoardMask
         {
             set
             {
@@ -811,18 +811,18 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         public string PocketCards
         {
-            get { return pocket; }
+            get { return m_Pocket; }
             set
             {
 #if DEBUG
                 if (value == null)
                     throw new ArgumentNullException("value");
 
-                if (value.Trim().Length <= 0 || !Hand.ValidateHand(value))
+                if (value.Trim().Length <= 0 || !ValidateHand(value))
                     throw new ArgumentNullException("value");
 #endif
 
-                pocket = value.Trim();
+                m_Pocket = value.Trim();
                 UpdateHandMask();
             }
         }
@@ -832,14 +832,14 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         public string Board
         {
-            get { return board; }
+            get { return m_Board; }
             set
             {
 #if DEBUG
-                if (value == null || value.Trim().Length <= 0 || !Hand.ValidateHand(value))
+                if (value == null || value.Trim().Length <= 0 || !ValidateHand(value))
                     throw new ArgumentNullException("value");
 #endif
-                board = value;
+                m_Board = value;
                 UpdateHandMask();
             }
         }
@@ -851,7 +851,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         public uint HandValue
         {
-            get { return handval; }
+            get { return m_Handval; }
         }
 
         /// <summary>
@@ -904,31 +904,31 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         //}
 
         /// <exclude/>
-        public static uint TopCard(System.UInt32 hv)
+        public static uint TopCard(UInt32 hv)
         {
             return ((hv >> TOP_CARD_SHIFT) & CARD_MASK);
         }
 
         /// <exclude/>
-        private static uint SECOND_CARD(System.UInt32 hv)
+        private static uint SECOND_CARD(UInt32 hv)
         {
             return (((hv) >> SECOND_CARD_SHIFT) & CARD_MASK);
         }
 
         /// <exclude/>
-        private static uint THIRD_CARD(System.UInt32 hv)
+        private static uint THIRD_CARD(UInt32 hv)
         {
             return (((hv) >> THIRD_CARD_SHIFT) & CARD_MASK);
         }
 
         /// <exclude/>
-        private static uint FOURTH_CARD(System.UInt32 hv)
+        private static uint FOURTH_CARD(UInt32 hv)
         {
             return (((hv) >> FOURTH_CARD_SHIFT) & CARD_MASK);
         }
 
         /// <exclude/>
-        private static uint FIFTH_CARD(System.UInt32 hv)
+        private static uint FIFTH_CARD(UInt32 hv)
         {
             return (((hv) >> FIFTH_CARD_SHIFT) & CARD_MASK);
         }
@@ -946,19 +946,19 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         //}
 
         /// <exclude/>
-        private static uint TOP_CARD_VALUE(System.UInt32 c)
+        private static uint TOP_CARD_VALUE(UInt32 c)
         {
             return ((c) << TOP_CARD_SHIFT);
         }
 
         /// <exclude/>
-        private static uint SECOND_CARD_VALUE(System.UInt32 c)
+        private static uint SECOND_CARD_VALUE(UInt32 c)
         {
             return ((c) << SECOND_CARD_SHIFT);
         }
 
         /// <exclude/>
-        private static uint THIRD_CARD_VALUE(System.UInt32 c)
+        private static uint THIRD_CARD_VALUE(UInt32 c)
         {
             return ((c) << THIRD_CARD_SHIFT);
         }
@@ -992,10 +992,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>human readable string that is equivalent to the mask represented by the mask</returns>
         public static string MaskToString(ulong mask)
         {
-            StringBuilder builder = new StringBuilder();
-            int count = 0;
+            var builder = new StringBuilder();
+            var count = 0;
 
-            foreach (string s in Cards(mask))
+            foreach (var s in Cards(mask))
             {
                 if (count != 0)
                 {
@@ -1046,7 +1046,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         public static HandTypes EvaluateType(ulong mask)
         {
 #if DEBUG
-            int cards = BitCount(mask);
+            var cards = BitCount(mask);
             if (cards <= 0 || cards > 7) throw new ArgumentException("mask");
             return EvaluateType(mask, cards);
 #else
@@ -1062,37 +1062,36 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>HandType enum that describes the rank of the mask</returns>
         public static HandTypes EvaluateType(ulong mask, int cards)
         {
-            HandTypes is_st_or_fl = HandTypes.HighCard;
+            var isStOrFl = HandTypes.HighCard;
 
-            uint ss = (uint)((mask >> (SPADE_OFFSET)) & 0x1fffUL);
-            uint sc = (uint)((mask >> (CLUB_OFFSET)) & 0x1fffUL);
-            uint sd = (uint)((mask >> (DIAMOND_OFFSET)) & 0x1fffUL);
-            uint sh = (uint)((mask >> (HEART_OFFSET)) & 0x1fffUL);
+            var ss = (uint)((mask >> (SpadeOffset)) & 0x1fffUL);
+            var sc = (uint)((mask >> (ClubOffset)) & 0x1fffUL);
+            var sd = (uint)((mask >> (DiamondOffset)) & 0x1fffUL);
+            var sh = (uint)((mask >> (HeartOffset)) & 0x1fffUL);
 
-            uint ranks = sc | sd | sh | ss;
+            var ranks = sc | sd | sh | ss;
             uint rankinfo = nBitsAndStrTable[ranks];
-            uint n_dups = (uint)(cards - (rankinfo >> 2));
+            var nDups = (uint)(cards - (rankinfo >> 2));
 
             if ((rankinfo & 0x01U) != 0U)
             {
                 if ((rankinfo & 0x02) != 0U)
-                    is_st_or_fl = HandTypes.Straight;
+                    isStOrFl = HandTypes.Straight;
 
-                uint t = (uint)(nBitsAndStrTable[ss] | nBitsAndStrTable[sc] | nBitsAndStrTable[sd] | nBitsAndStrTable[sh]);
+                var t = (uint)(nBitsAndStrTable[ss] | nBitsAndStrTable[sc] | nBitsAndStrTable[sd] | nBitsAndStrTable[sh]);
 
                 if ((t & 0x01u) != 0U)
                 {
                     if ((t & 0x02u) != 0U)
                         return HandTypes.StraightFlush;
-                    else
-                        is_st_or_fl = HandTypes.Flush;
+                    isStOrFl = HandTypes.Flush;
                 }
 
-                if (is_st_or_fl != 0 && n_dups < 3)
-                    return is_st_or_fl;
+                if (isStOrFl != 0 && nDups < 3)
+                    return isStOrFl;
             }
 
-            switch (n_dups)
+            switch (nDups)
             {
                 case 0:
                     return HandTypes.HighCard;
@@ -1102,9 +1101,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                     return ((ranks ^ (sc ^ sd ^ sh ^ ss)) != 0) ? HandTypes.TwoPair : HandTypes.Trips;
                 default:
                     if (((sc & sd) & (sh & ss)) != 0) return HandTypes.FourOfAKind;
-                    else if ((((sc & sd) | (sh & ss)) & ((sc & sh) | (sd & ss))) != 0) return HandTypes.FullHouse;
-                    else if (is_st_or_fl != 0) return is_st_or_fl;
-                    else return HandTypes.TwoPair;
+                    if ((((sc & sd) | (sh & ss)) & ((sc & sh) | (sd & ss))) != 0) return HandTypes.FullHouse;
+                    if (isStOrFl != 0) return isStOrFl;
+                    return HandTypes.TwoPair;
             }
         }
 
@@ -1129,35 +1128,35 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>Hnad Value bit field</returns>
         public static uint Evaluate(string mask)
         {
-            return Evaluate(Hand.ParseHand(mask));
+            return Evaluate(ParseHand(mask));
         }
 
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_STRAIGHTFLUSH = (((uint)HandTypes.StraightFlush) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueStraightflush = (((uint)HandTypes.StraightFlush) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_STRAIGHT = (((uint)HandTypes.Straight) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueStraight = (((uint)HandTypes.Straight) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_FLUSH = (((uint)HandTypes.Flush) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueFlush = (((uint)HandTypes.Flush) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_FULLHOUSE = (((uint)HandTypes.FullHouse) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueFullhouse = (((uint)HandTypes.FullHouse) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_FOUR_OF_A_KIND = (((uint)HandTypes.FourOfAKind) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueFourOfAKind = (((uint)HandTypes.FourOfAKind) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_TRIPS = (((uint)HandTypes.Trips) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueTrips = (((uint)HandTypes.Trips) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_TWOPAIR = (((uint)HandTypes.TwoPair) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueTwopair = (((uint)HandTypes.TwoPair) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_PAIR = (((uint)HandTypes.Pair) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValuePair = (((uint)HandTypes.Pair) << HANDTYPE_SHIFT);
         /// <exclude/>
-        private static readonly uint HANDTYPE_VALUE_HIGHCARD = (((uint)HandTypes.HighCard) << HANDTYPE_SHIFT);
+        private static readonly uint m_HandtypeValueHighcard = (((uint)HandTypes.HighCard) << HANDTYPE_SHIFT);
         /// <exclude/>
-        public static readonly int SPADE_OFFSET = 13 * Spades;
+        public static readonly int SpadeOffset = 13 * Spades;
         /// <exclude/>
-        public static readonly int CLUB_OFFSET = 13 * Clubs;
+        public static readonly int ClubOffset = 13 * Clubs;
         /// <exclude/>
-        public static readonly int DIAMOND_OFFSET = 13 * Diamonds;
+        public static readonly int DiamondOffset = 13 * Diamonds;
         /// <exclude/>
-        public static readonly int HEART_OFFSET = 13 * Hearts;
+        public static readonly int HeartOffset = 13 * Hearts;
 
         /// <summary>
         /// Evaluates a mask (passed as a mask mask) and returns a mask value.
@@ -1187,7 +1186,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </example>
         public static uint Evaluate(ulong cards, int nCards)
         {
-            uint retval = 0, four_mask, three_mask, two_mask;
+            uint retval = 0;
+            uint three_mask, two_mask;
 
 #if DEBUG
             // This functions supports 1-7 cards
@@ -1195,14 +1195,14 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 throw new ArgumentOutOfRangeException("numberOfCards");
 #endif
             // Seperate out by suit
-            uint sc = (uint)((cards >> (CLUB_OFFSET)) & 0x1fffUL);
-            uint sd = (uint)((cards >> (DIAMOND_OFFSET)) & 0x1fffUL);
-            uint sh = (uint)((cards >> (HEART_OFFSET)) & 0x1fffUL);
-            uint ss = (uint)((cards >> (SPADE_OFFSET)) & 0x1fffUL);
+            var sc = (uint)((cards >> (ClubOffset)) & 0x1fffUL);
+            var sd = (uint)((cards >> (DiamondOffset)) & 0x1fffUL);
+            var sh = (uint)((cards >> (HeartOffset)) & 0x1fffUL);
+            var ss = (uint)((cards >> (SpadeOffset)) & 0x1fffUL);
 
-            uint ranks = sc | sd | sh | ss;
+            var ranks = sc | sd | sh | ss;
             uint n_ranks = nBitsTable[ranks];
-            uint n_dups = ((uint)(nCards - n_ranks));
+            var n_dups = ((uint)(nCards - n_ranks));
 
             /* Check for straight, flush, or straight flush, and return if we can
                determine immediately that this is the best possible mask 
@@ -1212,36 +1212,32 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 if (nBitsTable[ss] >= 5)
                 {
                     if (straightTable[ss] != 0)
-                        return HANDTYPE_VALUE_STRAIGHTFLUSH + (uint)(straightTable[ss] << TOP_CARD_SHIFT);
-                    else
-                        retval = HANDTYPE_VALUE_FLUSH + topFiveCardsTable[ss];
+                        return m_HandtypeValueStraightflush + (uint)(straightTable[ss] << TOP_CARD_SHIFT);
+                    retval = m_HandtypeValueFlush + topFiveCardsTable[ss];
                 }
                 else if (nBitsTable[sc] >= 5)
                 {
                     if (straightTable[sc] != 0)
-                        return HANDTYPE_VALUE_STRAIGHTFLUSH + (uint)(straightTable[sc] << TOP_CARD_SHIFT);
-                    else
-                        retval = HANDTYPE_VALUE_FLUSH + topFiveCardsTable[sc];
+                        return m_HandtypeValueStraightflush + (uint)(straightTable[sc] << TOP_CARD_SHIFT);
+                    retval = m_HandtypeValueFlush + topFiveCardsTable[sc];
                 }
                 else if (nBitsTable[sd] >= 5)
                 {
                     if (straightTable[sd] != 0)
-                        return HANDTYPE_VALUE_STRAIGHTFLUSH + (uint)(straightTable[sd] << TOP_CARD_SHIFT);
-                    else
-                        retval = HANDTYPE_VALUE_FLUSH + topFiveCardsTable[sd];
+                        return m_HandtypeValueStraightflush + (uint)(straightTable[sd] << TOP_CARD_SHIFT);
+                    retval = m_HandtypeValueFlush + topFiveCardsTable[sd];
                 }
                 else if (nBitsTable[sh] >= 5)
                 {
                     if (straightTable[sh] != 0)
-                        return HANDTYPE_VALUE_STRAIGHTFLUSH + (uint)(straightTable[sh] << TOP_CARD_SHIFT);
-                    else
-                        retval = HANDTYPE_VALUE_FLUSH + topFiveCardsTable[sh];
+                        return m_HandtypeValueStraightflush + (uint)(straightTable[sh] << TOP_CARD_SHIFT);
+                    retval = m_HandtypeValueFlush + topFiveCardsTable[sh];
                 }
                 else
                 {
                     uint st = straightTable[ranks];
                     if (st != 0)
-                        retval = HANDTYPE_VALUE_STRAIGHT + (st << TOP_CARD_SHIFT);
+                        retval = m_HandtypeValueStraight + (st << TOP_CARD_SHIFT);
                 }
 
                 /* 
@@ -1260,11 +1256,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                2) there's a flush or straight, but we know that there are enough
                   duplicates to make a full house / quads possible.  
              */
+            uint second;
             switch (n_dups)
             {
                 case 0:
                     /* It's a no-pair mask */
-                    return HANDTYPE_VALUE_HIGHCARD + topFiveCardsTable[ranks];
+                    return m_HandtypeValueHighcard + topFiveCardsTable[ranks];
                 case 1:
                     {
                         /* It's a one-pair mask */
@@ -1272,7 +1269,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
                         two_mask = ranks ^ (sc ^ sd ^ sh ^ ss);
 
-                        retval = (uint)(HANDTYPE_VALUE_PAIR + (topCardTable[two_mask] << TOP_CARD_SHIFT));
+                        retval = (uint)(m_HandtypeValuePair + (topCardTable[two_mask] << TOP_CARD_SHIFT));
                         t = ranks ^ two_mask;      /* Only one bit set in two_mask */
                         /* Get the top five cards in what is left, drop all but the top three 
                          * cards, and shift them by one to get the three desired kickers */
@@ -1286,8 +1283,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                     two_mask = ranks ^ (sc ^ sd ^ sh ^ ss);
                     if (two_mask != 0)
                     {
-                        uint t = ranks ^ two_mask; /* Exactly two bits set in two_mask */
-                        retval = (uint)(HANDTYPE_VALUE_TWOPAIR
+                        var t = ranks ^ two_mask; /* Exactly two bits set in two_mask */
+                        retval = (uint)(m_HandtypeValueTwopair
                             + (topFiveCardsTable[two_mask]
                             & (TOP_CARD_MASK | SECOND_CARD_MASK))
                             + (topCardTable[t] << THIRD_CARD_SHIFT));
@@ -1296,9 +1293,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                     }
                     else
                     {
-                        uint t, second;
+                        uint t;
                         three_mask = ((sc & sd) | (sh & ss)) & ((sc & sh) | (sd & ss));
-                        retval = (uint)(HANDTYPE_VALUE_TRIPS + (topCardTable[three_mask] << TOP_CARD_SHIFT));
+                        retval = (uint)(m_HandtypeValueTrips + (topCardTable[three_mask] << TOP_CARD_SHIFT));
                         t = ranks ^ three_mask; /* Only one bit set in three_mask */
                         second = topCardTable[t];
                         retval += (second << SECOND_CARD_SHIFT);
@@ -1309,11 +1306,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
                 default:
                     /* Possible quads, fullhouse, straight or flush, or two pair */
-                    four_mask = sh & sd & sc & ss;
-                    if (four_mask != 0)
+                    uint fourMask = sh & sd & sc & ss;
+                    if (fourMask != 0)
                     {
-                        uint tc = topCardTable[four_mask];
-                        retval = (uint)(HANDTYPE_VALUE_FOUR_OF_A_KIND
+                        uint tc = topCardTable[fourMask];
+                        retval = (uint)(m_HandtypeValueFourOfAKind
                             + (tc << TOP_CARD_SHIFT)
                             + ((topCardTable[ranks ^ (1U << (int)tc)]) << SECOND_CARD_SHIFT));
                         return retval;
@@ -1332,7 +1329,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                            full house since n_dups >= 3 */
                         uint tc, t;
                         three_mask = ((sc & sd) | (sh & ss)) & ((sc & sh) | (sd & ss));
-                        retval = HANDTYPE_VALUE_FULLHOUSE;
+                        retval = m_HandtypeValueFullhouse;
                         tc = topCardTable[three_mask];
                         retval += (tc << TOP_CARD_SHIFT);
                         t = (two_mask | three_mask) ^ (1U << (int)tc);
@@ -1342,19 +1339,16 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
                     if (retval != 0) /* flush and straight */
                         return retval;
-                    else
-                    {
-                        /* Must be two pair */
-                        uint top, second;
+                    /* Must be two pair */
+                    uint top;
 
-                        retval = HANDTYPE_VALUE_TWOPAIR;
-                        top = topCardTable[two_mask];
-                        retval += (top << TOP_CARD_SHIFT);
-                        second = topCardTable[two_mask ^ (1 << (int)top)];
-                        retval += (second << SECOND_CARD_SHIFT);
-                        retval += (uint)((topCardTable[ranks ^ (1U << (int)top) ^ (1 << (int)second)]) << THIRD_CARD_SHIFT);
-                        return retval;
-                    }
+                    retval = m_HandtypeValueTwopair;
+                    top = topCardTable[two_mask];
+                    retval += (top << TOP_CARD_SHIFT);
+                    second = topCardTable[two_mask ^ (1 << (int)top)];
+                    retval += (second << SECOND_CARD_SHIFT);
+                    retval += (uint)((topCardTable[ranks ^ (1U << (int)top) ^ (1 << (int)second)]) << THIRD_CARD_SHIFT);
+                    return retval;
             }
         }
 
@@ -1370,7 +1364,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            Hand h = obj as Hand;
+            var h = obj as Hand;
             if (h == null) return -1;
             return ((int)HandValue) - ((int)h.HandValue);
         }
@@ -1382,7 +1376,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>returns true if equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            return handval == ((Hand)obj).handval;
+            return m_Handval == ((Hand)obj).m_Handval;
         }
 
         /// <summary>
@@ -1391,7 +1385,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            return (int)handval;
+            return (int)m_Handval;
         }
 
         /// <summary>
@@ -1416,10 +1410,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public bool operator ==(Hand op1, Hand op2)
         {
 #if DEBUG
-            if (object.ReferenceEquals(op1, null) || object.ReferenceEquals(op2, null))
+            if (ReferenceEquals(op1, null) || ReferenceEquals(op2, null))
                 throw new ArgumentNullException();
 #endif
-            return op1.handval == op2.handval;
+            return op1.m_Handval == op2.m_Handval;
         }
 
         /// <summary>
@@ -1442,10 +1436,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public bool operator !=(Hand op1, Hand op2)
         {
 #if DEBUG
-            if (object.ReferenceEquals(op1, null) || object.ReferenceEquals(op2, null))
+            if (ReferenceEquals(op1, null) || ReferenceEquals(op2, null))
                 throw new ArgumentNullException();
 #endif
-            return op1.handval != op2.handval;
+            return op1.m_Handval != op2.m_Handval;
         }
 
         /// <summary>
@@ -1468,10 +1462,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public bool operator >(Hand op1, Hand op2)
         {
 #if DEBUG
-            if (object.ReferenceEquals(op1, null) || object.ReferenceEquals(op2, null))
+            if (ReferenceEquals(op1, null) || ReferenceEquals(op2, null))
                 throw new ArgumentNullException();
 #endif
-            return op1.handval > op2.handval;
+            return op1.m_Handval > op2.m_Handval;
         }
 
         /// <summary>
@@ -1494,10 +1488,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public bool operator >=(Hand op1, Hand op2)
         {
 #if DEBUG
-            if (object.ReferenceEquals(op1, null) || object.ReferenceEquals(op2, null))
+            if (ReferenceEquals(op1, null) || ReferenceEquals(op2, null))
                 throw new ArgumentNullException();
 #endif
-            return op1.handval >= op2.handval;
+            return op1.m_Handval >= op2.m_Handval;
         }
 
         /// <summary>
@@ -1509,10 +1503,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public bool operator <(Hand op1, Hand op2)
         {
 #if DEBUG
-            if (object.ReferenceEquals(op1, null) || object.ReferenceEquals(op2, null))
+            if (ReferenceEquals(op1, null) || ReferenceEquals(op2, null))
                 throw new ArgumentNullException();
 #endif
-            return op1.handval < op2.handval;
+            return op1.m_Handval < op2.m_Handval;
         }
 
         /// <summary>
@@ -1524,10 +1518,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static public bool operator <=(Hand op1, Hand op2)
         {
 #if DEBUG
-            if (object.ReferenceEquals(op1, null) || object.ReferenceEquals(op2, null))
+            if (ReferenceEquals(op1, null) || ReferenceEquals(op2, null))
                 throw new ArgumentNullException();
 #endif
-            return op1.handval <= op2.handval;
+            return op1.m_Handval <= op2.m_Handval;
         }
 
         #endregion
@@ -1970,7 +1964,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         #region nBitsTable
         // A table representing the bit count for a 13 bit integer.
         /// <exclude/>
-        private static readonly System.UInt16[] nBitsTable = 
+        private static readonly UInt16[] nBitsTable = 
 		{ 
             0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3,
             4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4,
@@ -2525,7 +2519,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         #region StraightTable
         // This table returns a straights starting card (0 if not a straight)
         /// <exclude/>
-        private static readonly System.UInt16[] straightTable = 
+        private static readonly UInt16[] straightTable = 
 		{ 
 			0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 
             0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 
@@ -2942,7 +2936,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
         #region Top Five Card Table
         /// <exclude/>
-        private static readonly System.UInt32[] topFiveCardsTable = 
+        private static readonly UInt32[] topFiveCardsTable = 
 		{ 
 			0x0, 0x0, 0x10000, 0x10000, 0x20000, 0x20000, 0x21000, 0x21000, 0x30000, 0x30000, 
             0x31000, 0x31000, 0x32000, 0x32000, 0x32100, 0x32100, 0x40000, 0x40000, 0x41000, 0x41000, 
@@ -3769,7 +3763,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
         #region Top Card Table
         /// <exclude/>
-        private static readonly System.UInt16[] topCardTable = 
+        private static readonly UInt16[] topCardTable = 
 		{ 
 			0x0, 0x0, 0x1, 0x1, 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 
             0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x4, 0x4, 0x4, 0x4, 
@@ -4653,7 +4647,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 			0x1000000000000,
 			0x2000000000000,
 			0x4000000000000,
-			0x8000000000000,
+			0x8000000000000
 		};
         /// <exclude/>
         //public static readonly int CardMasksTableSize = 52; //CardMasksTable.Length;
@@ -4668,7 +4662,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 			"2c", "3c", "4c", "5c", "6c", "7c", "8c", "9c", "Tc", "Jc", "Qc", "Kc", "Ac",
 			"2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d", "Td", "Jd", "Qd", "Kd", "Ad",
 			"2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "Th", "Jh", "Qh", "Kh", "Ah",
-			"2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As",
+			"2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "Ts", "Js", "Qs", "Ks", "As"
 		};
 
         // Converts card number into the card rank text string
@@ -4688,7 +4682,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 			"Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs", "Clubs",
 			"Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds", "Diamonds",
 			"Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts", "Hearts",
-			"Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades",
+			"Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades", "Spades"
 		};
 
         // Converts card number into the card rank char
@@ -4698,7 +4692,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 			'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A',
 			'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A',
 			'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A',
-			'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A',
+			'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'
 		};
 
         // Converts card number into the card suit text string
@@ -4708,7 +4702,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 			'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c', 'c',
 			'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd', 'd',
 			'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h', 'h',
-			's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's',
+			's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's', 's'
 		};
         #endregion
 

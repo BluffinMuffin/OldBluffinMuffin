@@ -1,30 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.BluffinMuffin.Client.Properties;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
-using Com.Ericmas001.Game.Poker.GUI.Lobby;
-using Com.Ericmas001.Game.Poker.GUI;
 using Com.Ericmas001.Game.Poker.GUI.Game;
-using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.BluffinMuffin.Client.Game;
 
 namespace Com.Ericmas001.Game.BluffinMuffin.Client
 {
     public partial class LobbyTrainingForm : Form, ITableFormFactory
     {
-        private LobbyTCPClient m_Server;
-        public LobbyTrainingForm(LobbyTCPClient server)
+        private LobbyTcpClient m_Server;
+        public LobbyTrainingForm(LobbyTcpClient server)
         {
             m_Server = server;
-            m_Server.ServerLost += new DisconnectDelegate(m_Server_ServerLost);
+            m_Server.ServerLost += m_Server_ServerLost;
             InitializeComponent();
             tableList.TableFormFactory = this;
-            tableList.setServer(m_Server);
-            Text = server.PlayerName + " ~ " + lblTitle.Text;
+            tableList.SetServer(m_Server);
+            Text = server.PlayerName + Resources.LobbyCareerForm_LobbyCareerForm_Tild + lblTitle.Text;
             lblPlayerName.Text = server.PlayerName;
             tableList.RefreshList();
         }
@@ -43,8 +36,8 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
         }
         public void AllowJoinOrLeave()
         {
-            bool selected = tableList.SomethingSelected;
-            GameTCPClient client = tableList.FindClient();
+            var selected = tableList.SomethingSelected;
+            var client = tableList.FindClient();
             btnJoinTable.Enabled = selected && (client == null);
             btnLeaveTable.Enabled = selected && (client != null);
         }
@@ -100,7 +93,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client
                 tableList.AddTable();
         }
 
-        public AbstractTableForm ObtainGUI()
+        public AbstractTableForm ObtainGui()
         {
             return new TrainingTableForm();
         }

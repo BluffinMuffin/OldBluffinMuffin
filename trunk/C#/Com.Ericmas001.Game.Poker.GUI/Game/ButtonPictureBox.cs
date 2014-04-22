@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using Com.Ericmas001.Games;
+﻿using System.Windows.Forms;
 using System.Drawing;
-using Com.Ericmas001.Games.Windows.Forms;
+using Com.Ericmas001.Game.Poker.GUI.Properties;
 
 namespace Com.Ericmas001.Game.Poker.GUI.Game
 {
@@ -32,7 +28,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         }
 
         public ButtonPictureBox()
-            : base()
         {
             Size = new Size(30, 30);
             BackColor = Color.Transparent;
@@ -43,9 +38,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             switch (m_Button)
             {
                 case ButtonType.None: Image = null; break;
-                case ButtonType.Dealer: Image = Properties.Resources.dealer; break;
-                case ButtonType.SmallBlind: Image = Properties.Resources.small_blind; break;
-                case ButtonType.BigBlind: Image = Properties.Resources.big_blind; break;
+                case ButtonType.Dealer: Image = Resources.dealer; break;
+                case ButtonType.SmallBlind: Image = Resources.small_blind; break;
+                case ButtonType.BigBlind: Image = Resources.big_blind; break;
             }
         }
     }

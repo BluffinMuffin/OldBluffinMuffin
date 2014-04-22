@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Com.Ericmas001.Game.Poker.GUI.Properties;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
@@ -16,18 +12,18 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
     public partial class CreateTableTabControl : UserControl
     {
-        LobbyTypeEnum m_LobbyType;
-        GameTypeEnum m_GameType;
-        IEnumerable<RuleInfo> m_Rules;
+        readonly LobbyTypeEnum m_LobbyType;
+        readonly GameTypeEnum m_GameType;
+        readonly IEnumerable<RuleInfo> m_Rules;
         String CurrentVariant { get { return lstVariant.SelectedItem.ToString(); } }
         RuleInfo CurrentRule { get { return m_Rules.First(r => r.Name == CurrentVariant); } }
-        public CreateTableTabControl(string playerName, int minPlayers, LobbyTypeEnum lobby, GameTypeEnum gameType, IEnumerable<RuleInfo> rules)
+        public CreateTableTabControl(string playerName, LobbyTypeEnum lobby, GameTypeEnum gameType, IEnumerable<RuleInfo> rules)
         {
             m_LobbyType = lobby;
             m_GameType = gameType;
             m_Rules = rules;
             InitializeComponent();
-            txtTableName.Text = playerName + " Table";
+            txtTableName.Text = playerName + Resources.CreateTableTabControl_CreateTableTabControl__Table;
             InitVariants();
             RefreshNumbers();
             grpTraining.Visible = lobby == LobbyTypeEnum.Training;
@@ -35,7 +31,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 
         private void InitVariants()
         {
-            string[] names = m_Rules.Select(r => r.Name).ToArray();
+            object[] names = m_Rules.Select(r => r.Name).ToArray();
             lstVariant.Items.AddRange(names);
             lstVariant.SelectedItem = names[0];
             VariantChoosen();
@@ -56,7 +52,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 
         private void SetMinMax()
         {
-            RuleInfo rule = CurrentRule;
+            var rule = CurrentRule;
 
             nudNbPlayersMin.Minimum = rule.MinPlayers;
             nudNbPlayersMin.Maximum = rule.MaxPlayers;
@@ -69,7 +65,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 
         private void SetBetLimits()
         {
-            RuleInfo rule = CurrentRule;
+            var rule = CurrentRule;
             lstBetLimit.Items.Clear();
             lstBetLimit.Items.AddRange(rule.AvailableLimits.Select(l => EnumFactory<LimitTypeEnum>.ToString(l)).ToArray());
             lstBetLimit.SelectedIndex = lstBetLimit.FindStringExact(EnumFactory<LimitTypeEnum>.ToString(rule.DefaultLimit));
@@ -77,7 +73,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 
         private void SetBlindTypes()
         {
-            RuleInfo rule = CurrentRule;
+            var rule = CurrentRule;
             lstBlinds.Items.Clear();
             lstBlinds.Items.AddRange(rule.AvailableBlinds.Select(b => EnumFactory<BlindTypeEnum>.ToString(b)).ToArray());
             lstBlinds.SelectedIndex = lstBlinds.FindStringExact(EnumFactory<BlindTypeEnum>.ToString(rule.DefaultBlind));
@@ -86,7 +82,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 
         private void SetBlindRules()
         {
-            BlindTypeEnum blind = EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem);
+            var blind = EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem);
             ucAnte.Visible = blind == BlindTypeEnum.Antes;
             ucBlinds.Visible = blind == BlindTypeEnum.Blinds;
         }
@@ -132,7 +128,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         lobby = new LobbyOptionsCareer();
                         break;
                 }
-                int moneyUnit = (int)nudMoneyUnit.Value;
+                var moneyUnit = (int)nudMoneyUnit.Value;
                 BlindOptions blind = new BlindOptionsNone() { MoneyUnit = moneyUnit };
                 switch (EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem))
                 {
@@ -152,7 +148,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
                         break;
 
                     case LimitTypeEnum.FixedLimit:
-                        limit = new LimitOptionsFixed();;
+                        limit = new LimitOptionsFixed();
                         break;
 
                     case LimitTypeEnum.PotLimit:
@@ -187,9 +183,9 @@ namespace Com.Ericmas001.Game.Poker.GUI.Lobby
         }
         private void RefreshNumbers()
         {
-            int moneyUnit = (int)nudMoneyUnit.Value;
-            int minBuyIn = moneyUnit * 20;
-            int maxBuyIn = moneyUnit * 100;
+            var moneyUnit = (int)nudMoneyUnit.Value;
+            var minBuyIn = moneyUnit * 20;
+            var maxBuyIn = moneyUnit * 100;
             lblGameSize.Text = String.Format("${0} / ${1}", moneyUnit, moneyUnit * 2);
             lblMinimumBuyIn.Text = String.Format("${0}", minBuyIn);
             lblMaximumBuyIn.Text = String.Format("(${0})", maxBuyIn);

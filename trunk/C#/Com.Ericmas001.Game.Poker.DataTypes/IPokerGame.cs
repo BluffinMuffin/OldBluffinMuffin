@@ -1,7 +1,4 @@
 ﻿using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
-using Com.Ericmas001.Util;
-using System;
-using System.Collections.Generic;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes
 {

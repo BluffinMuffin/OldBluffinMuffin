@@ -1,12 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Com.Ericmas001.Game.Poker.DataTypes.Annotations;
+using Newtonsoft.Json;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using Com.Ericmas001.Util.Options;
 using Com.Ericmas001.Net.JSON;
 
 namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
@@ -14,8 +8,8 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
     public class TableParams
     {        
         public string TableName { get; set; }
-        public GameTypeEnum GameType { get; set; }
-        public string Variant { get; set; }
+        public GameTypeEnum GameType { [UsedImplicitly] get; set; }
+        public string Variant { [UsedImplicitly] get; set; }
         public int MinPlayersToStart { get; set; }
         public int MaxPlayers { get; set; }
         public ConfigurableWaitingTimes WaitingTimes { get; set; }
@@ -28,11 +22,11 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
 
 
         [JsonConverter(typeof(OptionJsonConverter<BlindOptions, BlindTypeEnum>))]
-        public BlindOptions Blind { get; set; }
+        public BlindOptions Blind { [UsedImplicitly] get; set; }
 
 
         [JsonConverter(typeof(OptionJsonConverter<LimitOptions, LimitTypeEnum>))]
-        public LimitOptions Limit { get; set; }
+        public LimitOptions Limit { [UsedImplicitly] get; set; }
 
 
         public int LimitedMinimumBuyIn { get { return 20 * MoneyUnit; } }
@@ -49,7 +43,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes.Parameters
             LimitMaximumBuyIn = false;
             MoneyUnit = 10;
             Lobby = new LobbyOptionsTraining();
-            Blind = new BlindOptionsNone() { MoneyUnit = this.MoneyUnit };
+            Blind = new BlindOptionsNone() { MoneyUnit = MoneyUnit };
             Limit = new LimitOptionsPot();
         }
 

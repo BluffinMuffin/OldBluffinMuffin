@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Com.Ericmas001;
-using Newtonsoft.Json.Linq;
 using Com.Ericmas001.Games;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Newtonsoft.Json;
@@ -32,7 +29,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             get
             {
                 if (m_HoleCards == null || m_HoleCards.Count != 2)
-                    return new GameCard[] { GameCard.NO_CARD, GameCard.NO_CARD };
+                    return new[] { GameCard.NoCard, GameCard.NoCard };
                 return m_HoleCards.ToArray();
             }
             set
@@ -77,13 +74,13 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         {
             return new PlayerInfo()
             {
-                NoSeat = this.NoSeat,
-                Name = this.Name,
-                MoneyBetAmnt = this.MoneyBetAmnt,
-                MoneySafeAmnt = this.MoneySafeAmnt,
-                HoleCards = this.HoleCards.Select(hc => new GameCard(hc.Id)).ToArray(),
-                IsShowingCards = this.IsShowingCards,
-                State = this.State,
+                NoSeat = NoSeat,
+                Name = Name,
+                MoneyBetAmnt = MoneyBetAmnt,
+                MoneySafeAmnt = MoneySafeAmnt,
+                HoleCards = HoleCards.Select(hc => new GameCard(hc.Id)).ToArray(),
+                IsShowingCards = IsShowingCards,
+                State = State,
             };
         }
 
@@ -117,7 +114,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
         [JsonIgnore]
         public GameCard[] Cards
         {
-            get { return HoleCards.Select(c => (c == null || !(State >= PlayerStateEnum.AllIn)) ? GameCard.NO_CARD : c).ToArray(); }
+            get { return HoleCards.Select(c => (c == null || !(State >= PlayerStateEnum.AllIn)) ? GameCard.NoCard : c).ToArray(); }
             set
             {
                 if (value != null && value.Length == 2)
@@ -134,7 +131,7 @@ namespace Com.Ericmas001.Game.Poker.DataTypes
             get
             {
                 if (!IsShowingCards)
-                    return new GameCard[2] { GameCard.HIDDEN, GameCard.HIDDEN };
+                    return new[] { GameCard.Hidden, GameCard.Hidden };
                 return Cards;
             }
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Com.Ericmas001.Games;
 using System.Drawing;
 using Com.Ericmas001.Games.Windows.Forms;
@@ -25,7 +22,6 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         }
 
         public CardPictureBox()
-            : base()
         {
             Size = new Size(40, 56);
             BackColor = Color.Transparent;

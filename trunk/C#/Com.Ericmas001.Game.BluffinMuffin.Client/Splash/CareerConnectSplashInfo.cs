@@ -1,5 +1,4 @@
-﻿using Com.Ericmas001.Game.Poker.GUI.Lobby;
-using Com.Ericmas001.Windows.Forms;
+﻿using Com.Ericmas001.Windows.Forms;
 using Com.Ericmas001.Game.Poker.Protocol.Client;
 using System;
 
@@ -7,14 +6,14 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
 {
     public class CareerConnectSplashInfo : StepSplashInfo
     {
-        private string m_ServerAddress;
-        private int m_ServerPort;
-        private string m_Username;
-        private string m_Password;
+        private readonly string m_ServerAddress;
+        private readonly int m_ServerPort;
+        private readonly string m_Username;
+        private readonly string m_Password;
 
-        private LobbyTCPClientCareer m_Server;
+        private LobbyTcpClientCareer m_Server;
 
-        public LobbyTCPClientCareer Server
+        public LobbyTcpClientCareer Server
         {
             get { return m_Server; }
         }
@@ -28,12 +27,12 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
         {
             get
             {
-                return new Tuple<BoolEmptyHandler, string>[]
+                return new[]
                 {
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep1ReachingServer, "Reaching the server ..."),
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep2CheckUsernameExistence, "Existence of Username ..."),
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep3Authenticate, "Authenticating Player ..."),
-                    new Tuple<BoolEmptyHandler, string>(ExecuteStep4RetrieveUserInfo, "Retrieving User Info ..."),
+                    new Tuple<BoolEmptyHandler, string>(ExecuteStep4RetrieveUserInfo, "Retrieving User Info ...")
                 };
             }
         }
@@ -70,7 +69,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
 
         public override void Init()
         {
-            m_Server = new LobbyTCPClientCareer(m_ServerAddress, m_ServerPort);
+            m_Server = new LobbyTcpClientCareer(m_ServerAddress, m_ServerPort);
         }
     }
 }

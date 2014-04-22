@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using System.Linq;
-using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.DataTypes;
-using Com.Ericmas001.Game.Poker.Logic;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
@@ -94,7 +89,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
         }
         public PokerGame(AbstractDealer dealer) :
-            this(new TexasHoldemDealer(), new PokerTable())
+            this(dealer, new PokerTable())
         {
         }
 
@@ -141,7 +136,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public int SitIn(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500)
         {
-            SeatInfo seat = p.NoSeat == -1 ? null : Table.Seats[p.NoSeat];
+            var seat = p.NoSeat == -1 ? null : Table.Seats[p.NoSeat];
             if (seat != null && !seat.IsEmpty)
             {
                 Observer.RaiseSeatUpdated(seat.Clone());
@@ -157,12 +152,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
 
         public bool SitOut(PlayerInfo p)
         {
-            int oldSeat = p.NoSeat;
+            var oldSeat = p.NoSeat;
             if (oldSeat == -1)
                 return true;
 
-            bool wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
-            int blindNeeded = GameTable.GetBlindNeeded(p);
+            var wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
+            var blindNeeded = GameTable.GetBlindNeeded(p);
 
             if (Table.SitOut(p))
             {
@@ -170,7 +165,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                     PlayMoney(p, -1);
                 if (blindNeeded > 0)
                     PlayMoney(p, blindNeeded);
-                SeatInfo seat = new SeatInfo()
+                var seat = new SeatInfo()
                 {
                     Player = null,
                     NoSeat = oldSeat,
@@ -186,7 +181,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         /// </summary>
         public bool LeaveGame(PlayerInfo p)
         {
-            bool sitOutOk = SitOut(p);
+            var sitOutOk = SitOut(p);
 
             if (sitOutOk && Table.LeaveTable(p))
             {
@@ -207,12 +202,12 @@ namespace Com.Ericmas001.Game.Poker.Logic
         {
             lock(Table)
             {
-                int amnt = Math.Min(amount, p.MoneySafeAmnt);
+                var amnt = Math.Min(amount, p.MoneySafeAmnt);
                 LogManager.Log(LogLevel.MessageLow, "PokerGame.PlayMoney", "{0} is playing {1} money on state: {2}", p.Name, amnt, m_State);
 
                 if (m_State == GameStateEnum.WaitForBlinds)
                     return PlayBlinds(p, amnt);
-                else if (m_State == GameStateEnum.Playing && m_RoundState == RoundStateEnum.Betting)
+                if (m_State == GameStateEnum.Playing && m_RoundState == RoundStateEnum.Betting)
                     return BetMoney(p, amnt);
 
                 LogManager.Log(LogLevel.Warning, "PokerGame.PlayMoney", "{0} played money but the game is not in the right state", p.Name);
@@ -315,7 +310,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
                 return true;
             }
 
-            int amntNeeded = Table.CallAmnt(p);
+            var amntNeeded = Table.CallAmnt(p);
 
             //Validation: Is the player betting under what he needs to Call ?
             if (amnt < amntNeeded)
@@ -385,7 +380,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
             LogManager.Log(LogLevel.MessageVeryLow, "PokerGame.PlayMoney", "{0} is putting blind of {1}", p.Name, amnt);
 
             //What is the need Blind from the player ?
-            int needed = GameTable.GetBlindNeeded(p);
+            var needed = GameTable.GetBlindNeeded(p);
 
             //If the player isn't giving what we expected from him
             if (amnt != needed)
@@ -422,11 +417,11 @@ namespace Com.Ericmas001.Game.Poker.Logic
             GameTable.SetBlindNeeded(p, 0);
 
             //Take note of the action
-            GameActionEnum whatAmIDoing = GameActionEnum.PostAnte;
+            var whatAmIDoing = GameActionEnum.PostAnte;
             if(Table.Params.Blind.OptionType == BlindTypeEnum.Blinds)
             {
-                BlindOptionsBlinds bob = Table.Params.Blind as BlindOptionsBlinds;
-                if (needed == bob.SmallBlindAmount)
+                var bob = Table.Params.Blind as BlindOptionsBlinds;
+                if (bob != null && needed == bob.SmallBlindAmount)
                     whatAmIDoing = GameActionEnum.PostSmallBlind;
                 else
                     whatAmIDoing = GameActionEnum.PostBigBlind;
@@ -521,7 +516,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void DealHole()
         {
-            foreach (PlayerInfo p in Table.PlayingAndAllInPlayers)
+            foreach (var p in Table.PlayingAndAllInPlayers)
             {
                 p.Cards = m_Dealer.DealHoles();
                 Observer.RaisePlayerHoleCardsChanged(p);
@@ -529,7 +524,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void ShowAllCards()
         {
-            foreach (PlayerInfo p in Table.Players)
+            foreach (var p in Table.Players)
                 if (p.IsPlaying || p.IsAllIn)
                 {
                     p.IsShowingCards = true;
@@ -580,7 +575,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void ChooseNextPlayer()
         {
-            SeatInfo next = Table.GetSeatOfPlayingPlayerNextTo(Table.CurrentPlayerSeat);
+            var next = Table.GetSeatOfPlayingPlayerNextTo(Table.CurrentPlayerSeat);
 
             Table.ChangeCurrentPlayerTo(next);
 
@@ -596,15 +591,15 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void DistributeMoney()
         {
-            foreach (MoneyPot pot in Table.Pots)
+            foreach (var pot in Table.Pots)
             {
-                PlayerInfo[] players = pot.AttachedPlayers;
+                var players = pot.AttachedPlayers;
                 if (players.Length > 0)
                 {
-                    int wonAmount = pot.Amount / players.Length;
+                    var wonAmount = pot.Amount / players.Length;
                     if (wonAmount > 0)
                     {
-                        foreach (PlayerInfo p in players)
+                        foreach (var p in players)
                         {
                             p.MoneySafeAmnt += wonAmount;
                             Observer.RaisePlayerMoneyChanged(p);
@@ -626,7 +621,7 @@ namespace Com.Ericmas001.Game.Poker.Logic
         }
         private void TryToBegin()
         {
-            foreach (PlayerInfo p in Table.Players)
+            foreach (var p in Table.Players)
             {
                 if (p.IsZombie)
                     LeaveGame(p);

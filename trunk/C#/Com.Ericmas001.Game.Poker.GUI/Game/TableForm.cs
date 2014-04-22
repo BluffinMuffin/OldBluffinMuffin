@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
-using System.Threading;
 using Com.Ericmas001.Util;
 using VIBlend.WinForms.Controls;
 
@@ -24,24 +18,24 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
         private void btnFold_Click(object sender, EventArgs e)
         {
             DisableButtons();
-            TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat].Player;
+            var table = m_Game.Table;
+            var p = table.Seats[m_NoSeat].Player;
             m_Game.PlayMoney(p, -1);
         }
 
         private void btnCall_Click(object sender, EventArgs e)
         {
             DisableButtons();
-            TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat].Player;
+            var table = m_Game.Table;
+            var p = table.Seats[m_NoSeat].Player;
             m_Game.PlayMoney(p, table.CallAmnt(p));
         }
 
         private void btnRaise_Click(object sender, EventArgs e)
         {
             DisableButtons();
-            TableInfo table = m_Game.Table;
-            PlayerInfo p = table.Seats[m_NoSeat].Player;
+            var table = m_Game.Table;
+            var p = table.Seats[m_NoSeat].Player;
             m_Game.PlayMoney(p, (int)nudRaise.Value - p.MoneyBetAmnt);
         }
 
@@ -82,11 +76,11 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new object[] { sender, e });
+                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new[] { sender, e });
                 return;
             }
-            PlayerInfo p = e.Player;
-            TableInfo table = m_Game.Table;
+            var p = e.Player;
+            var table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
                 btnFold.Enabled = true;
@@ -94,7 +88,7 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 btnCall.Enabled = true;
                 if (table.HigherBet < p.MoneyAmnt)
                 {
-                    int min = table.MinRaiseAmnt(p) + p.MoneyBetAmnt;
+                    var min = table.MinRaiseAmnt(p) + p.MoneyBetAmnt;
                     btnRaise.Enabled = true;
                     nudRaise.Enabled = true;
                     nudRaise.Minimum = min;
@@ -107,8 +101,8 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         private void SetCallButtonName(PlayerInfo p)
         {
-            TableInfo table = m_Game.Table;
-            string s = "CALL";
+            var table = m_Game.Table;
+            var s = "CALL";
             if (table.CanCheck(p))
                 s = "CHECK";
             else if (table.HigherBet >= p.MoneyAmnt)
@@ -118,12 +112,12 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
 
         private void btnSitIn_Click(object sender, EventArgs e)
         {
-            int money = GetSitInMoneyAmount();
+            var money = GetSitInMoneyAmount();
             if (money >= 0)
             {
                 SitInButtonsShowing(false);
-                string name = ((Control)sender).Name;
-                int seatWanted = int.Parse(name.Substring(name.Length - 1));
+                var name = ((Control)sender).Name;
+                var seatWanted = int.Parse(name.Substring(name.Length - 1));
                 m_Game.SitIn(null, seatWanted, money);
             }
         }
@@ -144,13 +138,14 @@ namespace Com.Ericmas001.Game.Poker.GUI.Game
                 return;
             }
             SuspendLayout();
-            for (int i = 0; i < 10; ++i )
+            for (var i = 0; i < 10; ++i )
             {
-                vButton btnSitIn = Controls["btnSitIn" + i] as vButton;
+                var btnSitIn = Controls["btnSitIn" + i] as vButton;
                 if (i < m_Game.Table.Seats.Count && m_Game.Table.Seats[i].IsEmpty)
-                    btnSitIn.Visible = visible;
-                else
-                    btnSitIn.Visible = false;
+                {
+                    if (btnSitIn != null) btnSitIn.Visible = visible;
+                }
+                else if (btnSitIn != null) btnSitIn.Visible = false;
             }
             ResumeLayout();
         }

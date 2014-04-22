@@ -45,11 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyTable.cs" />
-    <Compile Include="GameTCPClient.cs" />
+    <Compile Include="GameTcpClient.cs" />
     <Compile Include="GameObserver.cs" />
-    <Compile Include="LobbyTCPClient.cs" />
-    <Compile Include="LobbyTCPClientCareer.cs" />
-    <Compile Include="LobbyTCPClientTraining.cs" />
+    <Compile Include="LobbyTcpClient.cs" />
+    <Compile Include="LobbyTcpClientCareer.cs" />
+    <Compile Include="LobbyTcpClientTraining.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

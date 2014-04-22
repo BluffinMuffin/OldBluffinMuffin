@@ -21,7 +21,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
 namespace Com.Ericmas001.Game.Poker.HandEval
 {
@@ -35,7 +35,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// Contains a list of the masks contains in this hole card collection.
         /// </summary>
-        private List<ulong> list = new List<ulong>();
+        private readonly List<ulong> m_List = new List<ulong>();
         #endregion
 
         #region PreCalculated Tables
@@ -45,7 +45,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// Sklansky groupings 
         /// </summary>
-        internal static readonly ulong[][] _PocketGroupings = {
+        internal static readonly ulong[][] PocketGroupings = {
             new ulong [] {
 	            0x8004000000000, 0x8000002000000, 0x8000000001000, 0x4002000000, 0x4000001000, 
 	            0x2001000, 0x4002000000000, 0x4000001000000, 0x4000000000800, 0x2001000000, 
@@ -341,7 +341,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// The card masked of pocket card sets that are connected such as 23o
         /// </summary>
-        static internal readonly ulong[] _connectedTable = 
+        static internal readonly ulong[] ConnectedTable = 
         {
             0xc000000000000, 0x8008000000000, 0x8002000000000, 0x8000004000000, 0x8000001000000, 
             0x8000000002000, 0x8000000000800, 0x8000000000001, 0x6000000000000, 0x4004000000000, 
@@ -392,7 +392,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// The list of all pocket hands that are suited.
         /// </summary>
-        static internal readonly ulong[] _suitedTable = 
+        static internal readonly ulong[] SuitedTable = 
         {
             	0xc000000000000,	0x6000000000,	    0x3000000,	        0x1800,	            0xa000000000000,
 	            0x5000000000,	    0x2800000,	        0x1400,	            0x9000000000000,	0x4800000000,
@@ -464,7 +464,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// A list of all pocket cards combinations that represent pairs
         /// </summary>
-        static internal readonly ulong[] _pairTable = 
+        static internal readonly ulong[] PairTable = 
         {
             	0x8004000000000,	0x8000002000000,	0x8000000001000,	0x4002000000,	0x4000001000,
 	            0x2001000,	0x4002000000000,	0x4000001000000,	0x4000000000800,	0x2001000000,
@@ -489,7 +489,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// A list of all pocket card combintations such as 42o that have a gap of 1 cards.
         /// </summary>
-        static internal ulong[] _gap1Table = {
+        static internal ulong[] m_Gap1Table = {
 		    0xa000000000000,0x8010000000000,0x8001000000000,0x8000008000000,0x8000000800000,
             0x8000000004000,0x8000000000400,0x8000000000002,0x5000000000000,0x4000800000000,
             0x4000000400000,0x4000000000200,0x2800000000000,0x2004000000000,0x2000400000000,
@@ -536,7 +536,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// A list of all pocket card combintations such as 52o that have a gap of 2 cards.
         /// </summary>
-        static internal ulong[] _gap2Table = {
+        static internal ulong[] m_Gap2Table = {
 		    0x9000000000000,0x8020000000000,0x8000800000000,0x8000010000000,0x8000000400000,
             0x8000000008000,0x8000000000200,0x8000000000004,0x4800000000000,0x4000400000000,
             0x4000000200000,0x4000000000100,0x2400000000000,0x2000200000000,0x2000000100000,
@@ -580,7 +580,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// A list of all pocket card combintations such as 62o that have a gap of 3 cards.
         /// </summary>
-        static internal ulong[] _gap3Table = {
+        static internal ulong[] m_Gap3Table = {
 		    0x8800000000000,0x8040000000000,0x8000400000000,0x8000020000000,0x8000000200000,
             0x8000000010000,0x8000000000100,0x8000000000008,0x4400000000000,0x4000200000000,
             0x4000000100000,0x4000000000080,0x2200000000000,0x2000100000000,0x2000000080000,
@@ -621,7 +621,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// The 1326 pocket card combinations.
         /// </summary>
-        internal static readonly ulong[] _PocketTableMasks =
+        internal static readonly ulong[] PocketTableMasks =
         {
 		    0xc000000000000, 0xa000000000000, 0x9000000000000, 0x8800000000000, 0x8400000000000, 
             0x8200000000000, 0x8100000000000, 0x8080000000000, 0x8040000000000, 0x8020000000000, 
@@ -899,7 +899,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// Pocket Card Groupings (Group1 is best, None is worst). 
         /// </summary>
-        public enum GroupTypeEnum : int
+        public enum GroupTypeEnum
         {
             /// <summary>
             /// Strongest
@@ -944,7 +944,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         #region Pocket Grouping Enumerators
 
         ///<exclude/>
-        static private Dictionary<ulong, GroupTypeEnum> groupTypeDict = new Dictionary<ulong, GroupTypeEnum>();
+        static private readonly Dictionary<ulong, GroupTypeEnum> m_GroupTypeDict = new Dictionary<ulong, GroupTypeEnum>();
 
         /// <summary>
         /// Returns pocket grouping info for a given pocket cards. This is similar to but 
@@ -962,18 +962,18 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 #endif
 
             // Fill in dictionary
-            if (groupTypeDict.Count == 0)
+            if (m_GroupTypeDict.Count == 0)
             {
-                for (int i = 0; i < _PocketGroupings.Length; i++)
+                for (var i = 0; i < PocketGroupings.Length; i++)
                 {
-                    foreach (ulong tmask in _PocketGroupings[i])
+                    foreach (var tmask in PocketGroupings[i])
                     {
-                        groupTypeDict.Add(tmask, (GroupTypeEnum)i);
+                        m_GroupTypeDict.Add(tmask, (GroupTypeEnum)i);
                     }
                 }
             }
 
-            return groupTypeDict[mask];
+            return m_GroupTypeDict[mask];
         }
         #endregion
 
@@ -983,7 +983,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// This table contains the gap count for each of the 169 mask types. The index cooresponds PocketHand169Enum.
         /// </summary>
-        static internal readonly int[] _PocketCards169Gap = {
+        static internal readonly int[] PocketCards169Gap = {
 		    -1, -1, -1, -1, -1, 
             -1, -1, -1, -1, -1, 
             -1, -1, -1, 0, 0, 
@@ -1023,7 +1023,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// This table is true for entries in the PocketCards169 table that are connected.
         /// </summary>
-        static internal readonly bool[] _PocketCards169Connected = {
+        static internal readonly bool[] PocketCards169Connected = {
 		    false, false, false, false, false, 
             false, false, false, false, false, 
             false, false, false, true, true, 
@@ -1063,7 +1063,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// This table contains the suited boolean value for each of the 169 mask types. The index cooresponds PocketHand169Enum.
         /// </summary>
-        static internal readonly bool[] _PocketCards169Suited = {
+        static internal readonly bool[] PocketCards169Suited = {
 		    false, false, false, false, false, false, false, false, false, false, false, false, false, 
 		    true, false, true, false, true, false, true, false, true, false, 
             true, false, true, false, true, false, true, false, true, false,
@@ -1091,7 +1091,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// The 1326 possible pocket cards ordered by the 169 unique holdem combinations. The
         /// index is equivalent to the number value of Hand.PocketHand169Enum.
         /// </summary>
-        internal static readonly ulong[][] _Pocket169Combinations = {
+        internal static readonly ulong[][] Pocket169Combinations = {
 	        new ulong [] {0x8004000000000, 0x8000002000000, 0x8000000001000, 0x4002000000, 0x4000001000, 0x2001000},
 	        new ulong [] {0x4002000000000, 0x4000001000000, 0x4000000000800, 0x2001000000, 0x2000000800, 0x1000800},
 	        new ulong [] {0x2001000000000, 0x2000000800000, 0x2000000000400, 0x1000800000, 0x1000000400, 0x800400},
@@ -1266,7 +1266,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// The 1326 pocket card combinations.
         /// </summary>
-        internal static ulong[] PocketTableMasks =
+        internal static ulong[] m_PocketTableMasks =
         {
 		    0xA000000000000,
 		    0x9000000000000,
@@ -2623,7 +2623,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         };
 
         /// <exclude/>
-        static private Dictionary<string, int> pocket169StringToEnum = new Dictionary<string, int>();
+        static private readonly Dictionary<string, int> m_Pocket169StringToEnum = new Dictionary<string, int>();
 
         /// <summary>
         /// Takes as Pocket Card 169 string definition and returns the cooresponding PocketHand169Enum enum
@@ -2633,20 +2633,20 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>The equivalent enum value in PocketHand169Enum</returns>
         static public Hand.PocketHand169Enum PocketCard169StringToEnum(string s)
         {
-            if (pocket169StringToEnum.Count == 0)
+            if (m_Pocket169StringToEnum.Count == 0)
             {
-                for (int i = 0; i < PocketCards169Strings.Length; i++)
+                for (var i = 0; i < PocketCards169Strings.Length; i++)
                 {
-                    pocket169StringToEnum.Add(PocketCards169Strings[i].ToLower(), i);
+                    m_Pocket169StringToEnum.Add(PocketCards169Strings[i].ToLower(), i);
                 }
             }
 
 #if DEBUG
-            if (!pocket169StringToEnum.ContainsKey(s.ToLower()))
+            if (!m_Pocket169StringToEnum.ContainsKey(s.ToLower()))
                 throw new ArgumentException("Passed string is illegal value");
 #endif
 
-            return (Hand.PocketHand169Enum)pocket169StringToEnum[s.ToLower()];
+            return (Hand.PocketHand169Enum)m_Pocket169StringToEnum[s.ToLower()];
         }
 
         #endregion
@@ -2657,7 +2657,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// Probablity of beating one other random player with
         /// This pocket card combination.
         /// </summary>
-        static internal readonly double[] _Pocket169ProbTable = {
+        static internal readonly double[] Pocket169ProbTable = {
             /* 0 */	    0.85203713302101,
             /* 1 */	    0.823956797867859,
             /* 2 */	    0.799251640610832,
@@ -2839,7 +2839,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 #if DEBUG
             if (Hand.BitCount(mask) != 2) throw new ArgumentOutOfRangeException("mask");
 #endif
-            return _Pocket169ProbTable[(int)Hand.PocketHand169Type(mask)];
+            return Pocket169ProbTable[(int)Hand.PocketHand169Type(mask)];
         }
         #endregion
 
@@ -2853,7 +2853,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public long PocketHand169TypeCount(ulong mask)
         {
-            return _Pocket169Combinations[(int)Hand.PocketHand169Type(mask)].Length;
+            return Pocket169Combinations[(int)Hand.PocketHand169Type(mask)].Length;
         }
 
         /// <summary>
@@ -2864,7 +2864,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public bool IsConnected(ulong mask)
         {
-            return _PocketCards169Connected[(int)Hand.PocketHand169Type(mask)];
+            return PocketCards169Connected[(int)Hand.PocketHand169Type(mask)];
         }
 
         /// <summary>
@@ -2875,7 +2875,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public bool IsSuited(ulong mask)
         {
-            return _PocketCards169Suited[(int)Hand.PocketHand169Type(mask)];
+            return PocketCards169Suited[(int)Hand.PocketHand169Type(mask)];
         }
 
         /// <summary>
@@ -2887,7 +2887,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public int GapCount(ulong mask)
         {
-            return _PocketCards169Gap[(int)Hand.PocketHand169Type(mask)];
+            return PocketCards169Gap[(int)Hand.PocketHand169Type(mask)];
         }
 
         #endregion
@@ -2896,7 +2896,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
         #region PocketCard169
         /// <exclude/>
-        static internal Dictionary<string, Hand.PocketHand169Enum> _card169ToTypeTable = new Dictionary<string, Hand.PocketHand169Enum>();
+        static internal readonly Dictionary<string, Hand.PocketHand169Enum> Card169ToTypeTable = new Dictionary<string, Hand.PocketHand169Enum>();
 
         /// <summary>
         /// Given a string, the corresponding PocketHand169Enum is returned.
@@ -2905,20 +2905,20 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static internal Hand.PocketHand169Enum Pocket169(string s)
         {
-            if (_card169ToTypeTable.Count == 0)
+            if (Card169ToTypeTable.Count == 0)
             {
-                for (int i = 0; i < PocketCards169Strings.Length; i++)
+                for (var i = 0; i < PocketCards169Strings.Length; i++)
                 {
-                    _card169ToTypeTable.Add(PocketCards169Strings[i].ToLower(), (Hand.PocketHand169Enum)i);
+                    Card169ToTypeTable.Add(PocketCards169Strings[i].ToLower(), (Hand.PocketHand169Enum)i);
                 }
             }
-            return _card169ToTypeTable[FixCard169(s)];
+            return Card169ToTypeTable[FixCard169(s)];
         }
         #endregion
 
         #region Card169 Fix
         /// <exclude/>
-        static internal Dictionary<string, string> _card169fixtable = new Dictionary<string, string>();
+        static internal readonly Dictionary<string, string> Card169Fixtable = new Dictionary<string, string>();
 
         /// <summary>
         /// I goofed up the text description of the 169 card hands. I originally
@@ -2932,7 +2932,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static internal bool FindFixCard169(string s)
         {
             BuildFix169Table();
-            return _card169fixtable.ContainsKey(s.ToLower());
+            return Card169Fixtable.ContainsKey(s.ToLower());
         }
 
         /// <summary>
@@ -2943,7 +2943,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static internal string FixCard169(string s)
         {
             BuildFix169Table();
-            return _card169fixtable[s.ToLower()];
+            return Card169Fixtable[s.ToLower()];
         }
 
         /// <summary>
@@ -2952,645 +2952,645 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         static internal void BuildFix169Table()
         {
             // Should only fill the Dictionary once.
-            if (_card169fixtable.Count == 0)
+            if (Card169Fixtable.Count == 0)
             {
-                _card169fixtable.Add("aa", "aa");
-                _card169fixtable.Add("kk", "kk");
-                _card169fixtable.Add("qq", "qq");
-                _card169fixtable.Add("jj", "jj");
-                _card169fixtable.Add("tt", "tt");
-                _card169fixtable.Add("99", "99");
-                _card169fixtable.Add("88", "88");
-                _card169fixtable.Add("77", "77");
-                _card169fixtable.Add("66", "66");
-                _card169fixtable.Add("55", "55");
-                _card169fixtable.Add("44", "44");
-                _card169fixtable.Add("33", "33");
-                _card169fixtable.Add("22", "22");
-                _card169fixtable.Add("ak", "ako");
-                _card169fixtable.Add("ka", "ako");
-                _card169fixtable.Add("ako", "ako");
-                _card169fixtable.Add("kao", "ako");
-                _card169fixtable.Add("aks", "aks");
-                _card169fixtable.Add("kas", "aks");
-                _card169fixtable.Add("ak*", "ak");
-                _card169fixtable.Add("ka*", "ak");
-                _card169fixtable.Add("aq", "aqo");
-                _card169fixtable.Add("qa", "aqo");
-                _card169fixtable.Add("aqo", "aqo");
-                _card169fixtable.Add("qao", "aqo");
-                _card169fixtable.Add("aqs", "aqs");
-                _card169fixtable.Add("qas", "aqs");
-                _card169fixtable.Add("aq*", "aq");
-                _card169fixtable.Add("qa*", "aq");
-                _card169fixtable.Add("aj", "ajo");
-                _card169fixtable.Add("ja", "ajo");
-                _card169fixtable.Add("ajo", "ajo");
-                _card169fixtable.Add("jao", "ajo");
-                _card169fixtable.Add("ajs", "ajs");
-                _card169fixtable.Add("jas", "ajs");
-                _card169fixtable.Add("aj*", "aj");
-                _card169fixtable.Add("ja*", "aj");
-                _card169fixtable.Add("at", "ato");
-                _card169fixtable.Add("ta", "ato");
-                _card169fixtable.Add("ato", "ato");
-                _card169fixtable.Add("tao", "ato");
-                _card169fixtable.Add("ats", "ats");
-                _card169fixtable.Add("tas", "ats");
-                _card169fixtable.Add("at*", "at");
-                _card169fixtable.Add("ta*", "at");
-                _card169fixtable.Add("a9", "a9o");
-                _card169fixtable.Add("9a", "a9o");
-                _card169fixtable.Add("a9o", "a9o");
-                _card169fixtable.Add("9ao", "a9o");
-                _card169fixtable.Add("a9s", "a9s");
-                _card169fixtable.Add("9as", "a9s");
-                _card169fixtable.Add("a9*", "a9");
-                _card169fixtable.Add("9a*", "a9");
-                _card169fixtable.Add("a8", "a8o");
-                _card169fixtable.Add("8a", "a8o");
-                _card169fixtable.Add("a8o", "a8o");
-                _card169fixtable.Add("8ao", "a8o");
-                _card169fixtable.Add("a8s", "a8s");
-                _card169fixtable.Add("8as", "a8s");
-                _card169fixtable.Add("a8*", "a8");
-                _card169fixtable.Add("8a*", "a8");
-                _card169fixtable.Add("a7", "a7o");
-                _card169fixtable.Add("7a", "a7o");
-                _card169fixtable.Add("a7o", "a7o");
-                _card169fixtable.Add("7ao", "a7o");
-                _card169fixtable.Add("a7s", "a7s");
-                _card169fixtable.Add("7as", "a7s");
-                _card169fixtable.Add("a7*", "a7");
-                _card169fixtable.Add("7a*", "a7");
-                _card169fixtable.Add("a6", "a6o");
-                _card169fixtable.Add("6a", "a6o");
-                _card169fixtable.Add("a6o", "a6o");
-                _card169fixtable.Add("6ao", "a6o");
-                _card169fixtable.Add("a6s", "a6s");
-                _card169fixtable.Add("6as", "a6s");
-                _card169fixtable.Add("a6*", "a6");
-                _card169fixtable.Add("6a*", "a6");
-                _card169fixtable.Add("a5", "a5o");
-                _card169fixtable.Add("5a", "a5o");
-                _card169fixtable.Add("a5o", "a5o");
-                _card169fixtable.Add("5ao", "a5o");
-                _card169fixtable.Add("a5s", "a5s");
-                _card169fixtable.Add("5as", "a5s");
-                _card169fixtable.Add("a5*", "a5");
-                _card169fixtable.Add("5a*", "a5");
-                _card169fixtable.Add("a4", "a4o");
-                _card169fixtable.Add("4a", "a4o");
-                _card169fixtable.Add("a4o", "a4o");
-                _card169fixtable.Add("4ao", "a4o");
-                _card169fixtable.Add("a4s", "a4s");
-                _card169fixtable.Add("4as", "a4s");
-                _card169fixtable.Add("a4*", "a4");
-                _card169fixtable.Add("4a*", "a4");
-                _card169fixtable.Add("a3", "a3o");
-                _card169fixtable.Add("3a", "a3o");
-                _card169fixtable.Add("a3o", "a3o");
-                _card169fixtable.Add("3ao", "a3o");
-                _card169fixtable.Add("a3s", "a3s");
-                _card169fixtable.Add("3as", "a3s");
-                _card169fixtable.Add("a3*", "a3");
-                _card169fixtable.Add("3a*", "a3");
-                _card169fixtable.Add("a2", "a2o");
-                _card169fixtable.Add("2a", "a2o");
-                _card169fixtable.Add("a2o", "a2o");
-                _card169fixtable.Add("2ao", "a2o");
-                _card169fixtable.Add("a2s", "a2s");
-                _card169fixtable.Add("2as", "a2s");
-                _card169fixtable.Add("a2*", "a2");
-                _card169fixtable.Add("2a*", "a2");
-                _card169fixtable.Add("kq", "kqo");
-                _card169fixtable.Add("qk", "kqo");
-                _card169fixtable.Add("kqo", "kqo");
-                _card169fixtable.Add("qko", "kqo");
-                _card169fixtable.Add("kqs", "kqs");
-                _card169fixtable.Add("qks", "kqs");
-                _card169fixtable.Add("kq*", "kq");
-                _card169fixtable.Add("qk*", "kq");
-                _card169fixtable.Add("kj", "kjo");
-                _card169fixtable.Add("jk", "kjo");
-                _card169fixtable.Add("kjo", "kjo");
-                _card169fixtable.Add("jko", "kjo");
-                _card169fixtable.Add("kjs", "kjs");
-                _card169fixtable.Add("jks", "kjs");
-                _card169fixtable.Add("kj*", "kj");
-                _card169fixtable.Add("jk*", "kj");
-                _card169fixtable.Add("kt", "kto");
-                _card169fixtable.Add("tk", "kto");
-                _card169fixtable.Add("kto", "kto");
-                _card169fixtable.Add("tko", "kto");
-                _card169fixtable.Add("kts", "kts");
-                _card169fixtable.Add("tks", "kts");
-                _card169fixtable.Add("kt*", "kt");
-                _card169fixtable.Add("tk*", "kt");
-                _card169fixtable.Add("k9", "k9o");
-                _card169fixtable.Add("9k", "k9o");
-                _card169fixtable.Add("k9o", "k9o");
-                _card169fixtable.Add("9ko", "k9o");
-                _card169fixtable.Add("k9s", "k9s");
-                _card169fixtable.Add("9ks", "k9s");
-                _card169fixtable.Add("k9*", "k9");
-                _card169fixtable.Add("9k*", "k9");
-                _card169fixtable.Add("k8", "k8o");
-                _card169fixtable.Add("8k", "k8o");
-                _card169fixtable.Add("k8o", "k8o");
-                _card169fixtable.Add("8ko", "k8o");
-                _card169fixtable.Add("k8s", "k8s");
-                _card169fixtable.Add("8ks", "k8s");
-                _card169fixtable.Add("k8*", "k8");
-                _card169fixtable.Add("8k*", "k8");
-                _card169fixtable.Add("k7", "k7o");
-                _card169fixtable.Add("7k", "k7o");
-                _card169fixtable.Add("k7o", "k7o");
-                _card169fixtable.Add("7ko", "k7o");
-                _card169fixtable.Add("k7s", "k7s");
-                _card169fixtable.Add("7ks", "k7s");
-                _card169fixtable.Add("k7*", "k7");
-                _card169fixtable.Add("7k*", "k7");
-                _card169fixtable.Add("k6", "k6o");
-                _card169fixtable.Add("6k", "k6o");
-                _card169fixtable.Add("k6o", "k6o");
-                _card169fixtable.Add("6ko", "k6o");
-                _card169fixtable.Add("k6s", "k6s");
-                _card169fixtable.Add("6ks", "k6s");
-                _card169fixtable.Add("k6*", "k6");
-                _card169fixtable.Add("6k*", "k6");
-                _card169fixtable.Add("k5", "k5o");
-                _card169fixtable.Add("5k", "k5o");
-                _card169fixtable.Add("k5o", "k5o");
-                _card169fixtable.Add("5ko", "k5o");
-                _card169fixtable.Add("k5s", "k5s");
-                _card169fixtable.Add("5ks", "k5s");
-                _card169fixtable.Add("k5*", "k5");
-                _card169fixtable.Add("5k*", "k5");
-                _card169fixtable.Add("k4", "k4o");
-                _card169fixtable.Add("4k", "k4o");
-                _card169fixtable.Add("k4o", "k4o");
-                _card169fixtable.Add("4ko", "k4o");
-                _card169fixtable.Add("k4s", "k4s");
-                _card169fixtable.Add("4ks", "k4s");
-                _card169fixtable.Add("k4*", "k4");
-                _card169fixtable.Add("4k*", "k4");
-                _card169fixtable.Add("k3", "k3o");
-                _card169fixtable.Add("3k", "k3o");
-                _card169fixtable.Add("k3o", "k3o");
-                _card169fixtable.Add("3ko", "k3o");
-                _card169fixtable.Add("k3s", "k3s");
-                _card169fixtable.Add("3ks", "k3s");
-                _card169fixtable.Add("k3*", "k3");
-                _card169fixtable.Add("3k*", "k3");
-                _card169fixtable.Add("k2", "k2o");
-                _card169fixtable.Add("2k", "k2o");
-                _card169fixtable.Add("k2o", "k2o");
-                _card169fixtable.Add("2ko", "k2o");
-                _card169fixtable.Add("k2s", "k2s");
-                _card169fixtable.Add("2ks", "k2s");
-                _card169fixtable.Add("k2*", "k2");
-                _card169fixtable.Add("2k*", "k2");
-                _card169fixtable.Add("qj", "qjo");
-                _card169fixtable.Add("jq", "qjo");
-                _card169fixtable.Add("qjo", "qjo");
-                _card169fixtable.Add("jqo", "qjo");
-                _card169fixtable.Add("qjs", "qjs");
-                _card169fixtable.Add("jqs", "qjs");
-                _card169fixtable.Add("qj*", "qj");
-                _card169fixtable.Add("jq*", "qj");
-                _card169fixtable.Add("qt", "qto");
-                _card169fixtable.Add("tq", "qto");
-                _card169fixtable.Add("qto", "qto");
-                _card169fixtable.Add("tqo", "qto");
-                _card169fixtable.Add("qts", "qts");
-                _card169fixtable.Add("tqs", "qts");
-                _card169fixtable.Add("qt*", "qt");
-                _card169fixtable.Add("tq*", "qt");
-                _card169fixtable.Add("q9", "q9o");
-                _card169fixtable.Add("9q", "q9o");
-                _card169fixtable.Add("q9o", "q9o");
-                _card169fixtable.Add("9qo", "q9o");
-                _card169fixtable.Add("q9s", "q9s");
-                _card169fixtable.Add("9qs", "q9s");
-                _card169fixtable.Add("q9*", "q9");
-                _card169fixtable.Add("9q*", "q9");
-                _card169fixtable.Add("q8", "q8o");
-                _card169fixtable.Add("8q", "q8o");
-                _card169fixtable.Add("q8o", "q8o");
-                _card169fixtable.Add("8qo", "q8o");
-                _card169fixtable.Add("q8s", "q8s");
-                _card169fixtable.Add("8qs", "q8s");
-                _card169fixtable.Add("q8*", "q8");
-                _card169fixtable.Add("8q*", "q8");
-                _card169fixtable.Add("q7", "q7o");
-                _card169fixtable.Add("7q", "q7o");
-                _card169fixtable.Add("q7o", "q7o");
-                _card169fixtable.Add("7qo", "q7o");
-                _card169fixtable.Add("q7s", "q7s");
-                _card169fixtable.Add("7qs", "q7s");
-                _card169fixtable.Add("q7*", "q7");
-                _card169fixtable.Add("7q*", "q7");
-                _card169fixtable.Add("q6", "q6o");
-                _card169fixtable.Add("6q", "q6o");
-                _card169fixtable.Add("q6o", "q6o");
-                _card169fixtable.Add("6qo", "q6o");
-                _card169fixtable.Add("q6s", "q6s");
-                _card169fixtable.Add("6qs", "q6s");
-                _card169fixtable.Add("q6*", "q6");
-                _card169fixtable.Add("6q*", "q6");
-                _card169fixtable.Add("q5", "q5o");
-                _card169fixtable.Add("5q", "q5o");
-                _card169fixtable.Add("q5o", "q5o");
-                _card169fixtable.Add("5qo", "q5o");
-                _card169fixtable.Add("q5s", "q5s");
-                _card169fixtable.Add("5qs", "q5s");
-                _card169fixtable.Add("q5*", "q5");
-                _card169fixtable.Add("5q*", "q5");
-                _card169fixtable.Add("q4", "q4o");
-                _card169fixtable.Add("4q", "q4o");
-                _card169fixtable.Add("q4o", "q4o");
-                _card169fixtable.Add("4qo", "q4o");
-                _card169fixtable.Add("q4s", "q4s");
-                _card169fixtable.Add("4qs", "q4s");
-                _card169fixtable.Add("q4*", "q4");
-                _card169fixtable.Add("4q*", "q4");
-                _card169fixtable.Add("q3", "q3o");
-                _card169fixtable.Add("3q", "q3o");
-                _card169fixtable.Add("q3o", "q3o");
-                _card169fixtable.Add("3qo", "q3o");
-                _card169fixtable.Add("q3s", "q3s");
-                _card169fixtable.Add("3qs", "q3s");
-                _card169fixtable.Add("q3*", "q3");
-                _card169fixtable.Add("3q*", "q3");
-                _card169fixtable.Add("q2", "q2o");
-                _card169fixtable.Add("2q", "q2o");
-                _card169fixtable.Add("q2o", "q2o");
-                _card169fixtable.Add("2qo", "q2o");
-                _card169fixtable.Add("q2s", "q2s");
-                _card169fixtable.Add("2qs", "q2s");
-                _card169fixtable.Add("q2*", "q2");
-                _card169fixtable.Add("2q*", "q2");
-                _card169fixtable.Add("jt", "jto");
-                _card169fixtable.Add("tj", "jto");
-                _card169fixtable.Add("jto", "jto");
-                _card169fixtable.Add("tjo", "jto");
-                _card169fixtable.Add("jts", "jts");
-                _card169fixtable.Add("tjs", "jts");
-                _card169fixtable.Add("jt*", "jt");
-                _card169fixtable.Add("tj*", "jt");
-                _card169fixtable.Add("j9", "j9o");
-                _card169fixtable.Add("9j", "j9o");
-                _card169fixtable.Add("j9o", "j9o");
-                _card169fixtable.Add("9jo", "j9o");
-                _card169fixtable.Add("j9s", "j9s");
-                _card169fixtable.Add("9js", "j9s");
-                _card169fixtable.Add("j9*", "j9");
-                _card169fixtable.Add("9j*", "j9");
-                _card169fixtable.Add("j8", "j8o");
-                _card169fixtable.Add("8j", "j8o");
-                _card169fixtable.Add("j8o", "j8o");
-                _card169fixtable.Add("8jo", "j8o");
-                _card169fixtable.Add("j8s", "j8s");
-                _card169fixtable.Add("8js", "j8s");
-                _card169fixtable.Add("j8*", "j8");
-                _card169fixtable.Add("8j*", "j8");
-                _card169fixtable.Add("j7", "j7o");
-                _card169fixtable.Add("7j", "j7o");
-                _card169fixtable.Add("j7o", "j7o");
-                _card169fixtable.Add("7jo", "j7o");
-                _card169fixtable.Add("j7s", "j7s");
-                _card169fixtable.Add("7js", "j7s");
-                _card169fixtable.Add("j7*", "j7");
-                _card169fixtable.Add("7j*", "j7");
-                _card169fixtable.Add("j6", "j6o");
-                _card169fixtable.Add("6j", "j6o");
-                _card169fixtable.Add("j6o", "j6o");
-                _card169fixtable.Add("6jo", "j6o");
-                _card169fixtable.Add("j6s", "j6s");
-                _card169fixtable.Add("6js", "j6s");
-                _card169fixtable.Add("j6*", "j6");
-                _card169fixtable.Add("6j*", "j6");
-                _card169fixtable.Add("j5", "j5o");
-                _card169fixtable.Add("5j", "j5o");
-                _card169fixtable.Add("j5o", "j5o");
-                _card169fixtable.Add("5jo", "j5o");
-                _card169fixtable.Add("j5s", "j5s");
-                _card169fixtable.Add("5js", "j5s");
-                _card169fixtable.Add("j5*", "j5");
-                _card169fixtable.Add("5j*", "j5");
-                _card169fixtable.Add("j4", "j4o");
-                _card169fixtable.Add("4j", "j4o");
-                _card169fixtable.Add("j4o", "j4o");
-                _card169fixtable.Add("4jo", "j4o");
-                _card169fixtable.Add("j4s", "j4s");
-                _card169fixtable.Add("4js", "j4s");
-                _card169fixtable.Add("j4*", "j4");
-                _card169fixtable.Add("4j*", "j4");
-                _card169fixtable.Add("j3", "j3o");
-                _card169fixtable.Add("3j", "j3o");
-                _card169fixtable.Add("j3o", "j3o");
-                _card169fixtable.Add("3jo", "j3o");
-                _card169fixtable.Add("j3s", "j3s");
-                _card169fixtable.Add("3js", "j3s");
-                _card169fixtable.Add("j3*", "j3");
-                _card169fixtable.Add("3j*", "j3");
-                _card169fixtable.Add("j2", "j2o");
-                _card169fixtable.Add("2j", "j2o");
-                _card169fixtable.Add("j2o", "j2o");
-                _card169fixtable.Add("2jo", "j2o");
-                _card169fixtable.Add("j2s", "j2s");
-                _card169fixtable.Add("2js", "j2s");
-                _card169fixtable.Add("j2*", "j2");
-                _card169fixtable.Add("2j*", "j2");
-                _card169fixtable.Add("t9", "t9o");
-                _card169fixtable.Add("9t", "t9o");
-                _card169fixtable.Add("t9o", "t9o");
-                _card169fixtable.Add("9to", "t9o");
-                _card169fixtable.Add("t9s", "t9s");
-                _card169fixtable.Add("9ts", "t9s");
-                _card169fixtable.Add("t9*", "t9");
-                _card169fixtable.Add("9t*", "t9");
-                _card169fixtable.Add("t8", "t8o");
-                _card169fixtable.Add("8t", "t8o");
-                _card169fixtable.Add("t8o", "t8o");
-                _card169fixtable.Add("8to", "t8o");
-                _card169fixtable.Add("t8s", "t8s");
-                _card169fixtable.Add("8ts", "t8s");
-                _card169fixtable.Add("t8*", "t8");
-                _card169fixtable.Add("8t*", "t8");
-                _card169fixtable.Add("t7", "t7o");
-                _card169fixtable.Add("7t", "t7o");
-                _card169fixtable.Add("t7o", "t7o");
-                _card169fixtable.Add("7to", "t7o");
-                _card169fixtable.Add("t7s", "t7s");
-                _card169fixtable.Add("7ts", "t7s");
-                _card169fixtable.Add("t7*", "t7");
-                _card169fixtable.Add("7t*", "t7");
-                _card169fixtable.Add("t6", "t6o");
-                _card169fixtable.Add("6t", "t6o");
-                _card169fixtable.Add("t6o", "t6o");
-                _card169fixtable.Add("6to", "t6o");
-                _card169fixtable.Add("t6s", "t6s");
-                _card169fixtable.Add("6ts", "t6s");
-                _card169fixtable.Add("t6*", "t6");
-                _card169fixtable.Add("6t*", "t6");
-                _card169fixtable.Add("t5", "t5o");
-                _card169fixtable.Add("5t", "t5o");
-                _card169fixtable.Add("t5o", "t5o");
-                _card169fixtable.Add("5to", "t5o");
-                _card169fixtable.Add("t5s", "t5s");
-                _card169fixtable.Add("5ts", "t5s");
-                _card169fixtable.Add("t5*", "t5");
-                _card169fixtable.Add("5t*", "t5");
-                _card169fixtable.Add("t4", "t4o");
-                _card169fixtable.Add("4t", "t4o");
-                _card169fixtable.Add("t4o", "t4o");
-                _card169fixtable.Add("4to", "t4o");
-                _card169fixtable.Add("t4s", "t4s");
-                _card169fixtable.Add("4ts", "t4s");
-                _card169fixtable.Add("t4*", "t4");
-                _card169fixtable.Add("4t*", "t4");
-                _card169fixtable.Add("t3", "t3o");
-                _card169fixtable.Add("3t", "t3o");
-                _card169fixtable.Add("t3o", "t3o");
-                _card169fixtable.Add("3to", "t3o");
-                _card169fixtable.Add("t3s", "t3s");
-                _card169fixtable.Add("3ts", "t3s");
-                _card169fixtable.Add("t3*", "t3");
-                _card169fixtable.Add("3t*", "t3");
-                _card169fixtable.Add("t2", "t2o");
-                _card169fixtable.Add("2t", "t2o");
-                _card169fixtable.Add("t2o", "t2o");
-                _card169fixtable.Add("2to", "t2o");
-                _card169fixtable.Add("t2s", "t2s");
-                _card169fixtable.Add("2ts", "t2s");
-                _card169fixtable.Add("t2*", "t2");
-                _card169fixtable.Add("2t*", "t2");
-                _card169fixtable.Add("98", "98o");
-                _card169fixtable.Add("89", "98o");
-                _card169fixtable.Add("98o", "98o");
-                _card169fixtable.Add("89o", "98o");
-                _card169fixtable.Add("98s", "98s");
-                _card169fixtable.Add("89s", "98s");
-                _card169fixtable.Add("98*", "98");
-                _card169fixtable.Add("89*", "98");
-                _card169fixtable.Add("97", "97o");
-                _card169fixtable.Add("79", "97o");
-                _card169fixtable.Add("97o", "97o");
-                _card169fixtable.Add("79o", "97o");
-                _card169fixtable.Add("97s", "97s");
-                _card169fixtable.Add("79s", "97s");
-                _card169fixtable.Add("97*", "97");
-                _card169fixtable.Add("79*", "97");
-                _card169fixtable.Add("96", "96o");
-                _card169fixtable.Add("69", "96o");
-                _card169fixtable.Add("96o", "96o");
-                _card169fixtable.Add("69o", "96o");
-                _card169fixtable.Add("96s", "96s");
-                _card169fixtable.Add("69s", "96s");
-                _card169fixtable.Add("96*", "96");
-                _card169fixtable.Add("69*", "96");
-                _card169fixtable.Add("95", "95o");
-                _card169fixtable.Add("59", "95o");
-                _card169fixtable.Add("95o", "95o");
-                _card169fixtable.Add("59o", "95o");
-                _card169fixtable.Add("95s", "95s");
-                _card169fixtable.Add("59s", "95s");
-                _card169fixtable.Add("95*", "95");
-                _card169fixtable.Add("59*", "95");
-                _card169fixtable.Add("94", "94o");
-                _card169fixtable.Add("49", "94o");
-                _card169fixtable.Add("94o", "94o");
-                _card169fixtable.Add("49o", "94o");
-                _card169fixtable.Add("94s", "94s");
-                _card169fixtable.Add("49s", "94s");
-                _card169fixtable.Add("94*", "94");
-                _card169fixtable.Add("49*", "94");
-                _card169fixtable.Add("93", "93o");
-                _card169fixtable.Add("39", "93o");
-                _card169fixtable.Add("93o", "93o");
-                _card169fixtable.Add("39o", "93o");
-                _card169fixtable.Add("93s", "93s");
-                _card169fixtable.Add("39s", "93s");
-                _card169fixtable.Add("93*", "93");
-                _card169fixtable.Add("39*", "93");
-                _card169fixtable.Add("92", "92o");
-                _card169fixtable.Add("29", "92o");
-                _card169fixtable.Add("92o", "92o");
-                _card169fixtable.Add("29o", "92o");
-                _card169fixtable.Add("92s", "92s");
-                _card169fixtable.Add("29s", "92s");
-                _card169fixtable.Add("92*", "92");
-                _card169fixtable.Add("29*", "92");
-                _card169fixtable.Add("87", "87o");
-                _card169fixtable.Add("78", "87o");
-                _card169fixtable.Add("87o", "87o");
-                _card169fixtable.Add("78o", "87o");
-                _card169fixtable.Add("87s", "87s");
-                _card169fixtable.Add("78s", "87s");
-                _card169fixtable.Add("87*", "87");
-                _card169fixtable.Add("78*", "87");
-                _card169fixtable.Add("86", "86o");
-                _card169fixtable.Add("68", "86o");
-                _card169fixtable.Add("86o", "86o");
-                _card169fixtable.Add("68o", "86o");
-                _card169fixtable.Add("86s", "86s");
-                _card169fixtable.Add("68s", "86s");
-                _card169fixtable.Add("86*", "86");
-                _card169fixtable.Add("68*", "86");
-                _card169fixtable.Add("85", "85o");
-                _card169fixtable.Add("58", "85o");
-                _card169fixtable.Add("85o", "85o");
-                _card169fixtable.Add("58o", "85o");
-                _card169fixtable.Add("85s", "85s");
-                _card169fixtable.Add("58s", "85s");
-                _card169fixtable.Add("85*", "85");
-                _card169fixtable.Add("58*", "85");
-                _card169fixtable.Add("84", "84o");
-                _card169fixtable.Add("48", "84o");
-                _card169fixtable.Add("84o", "84o");
-                _card169fixtable.Add("48o", "84o");
-                _card169fixtable.Add("84s", "84s");
-                _card169fixtable.Add("48s", "84s");
-                _card169fixtable.Add("84*", "84");
-                _card169fixtable.Add("48*", "84");
-                _card169fixtable.Add("83", "83o");
-                _card169fixtable.Add("38", "83o");
-                _card169fixtable.Add("83o", "83o");
-                _card169fixtable.Add("38o", "83o");
-                _card169fixtable.Add("83s", "83s");
-                _card169fixtable.Add("38s", "83s");
-                _card169fixtable.Add("83*", "83");
-                _card169fixtable.Add("38*", "83");
-                _card169fixtable.Add("82", "82o");
-                _card169fixtable.Add("28", "82o");
-                _card169fixtable.Add("82o", "82o");
-                _card169fixtable.Add("28o", "82o");
-                _card169fixtable.Add("82s", "82s");
-                _card169fixtable.Add("28s", "82s");
-                _card169fixtable.Add("82*", "82");
-                _card169fixtable.Add("28*", "82");
-                _card169fixtable.Add("76", "76o");
-                _card169fixtable.Add("67", "76o");
-                _card169fixtable.Add("76o", "76o");
-                _card169fixtable.Add("67o", "76o");
-                _card169fixtable.Add("76s", "76s");
-                _card169fixtable.Add("67s", "76s");
-                _card169fixtable.Add("76*", "76");
-                _card169fixtable.Add("67*", "76");
-                _card169fixtable.Add("75", "75o");
-                _card169fixtable.Add("57", "75o");
-                _card169fixtable.Add("75o", "75o");
-                _card169fixtable.Add("57o", "75o");
-                _card169fixtable.Add("75s", "75s");
-                _card169fixtable.Add("57s", "75s");
-                _card169fixtable.Add("75*", "75");
-                _card169fixtable.Add("57*", "75");
-                _card169fixtable.Add("74", "74o");
-                _card169fixtable.Add("47", "74o");
-                _card169fixtable.Add("74o", "74o");
-                _card169fixtable.Add("47o", "74o");
-                _card169fixtable.Add("74s", "74s");
-                _card169fixtable.Add("47s", "74s");
-                _card169fixtable.Add("74*", "74");
-                _card169fixtable.Add("47*", "74");
-                _card169fixtable.Add("73", "73o");
-                _card169fixtable.Add("37", "73o");
-                _card169fixtable.Add("73o", "73o");
-                _card169fixtable.Add("37o", "73o");
-                _card169fixtable.Add("73s", "73s");
-                _card169fixtable.Add("37s", "73s");
-                _card169fixtable.Add("73*", "73");
-                _card169fixtable.Add("37*", "73");
-                _card169fixtable.Add("72", "72o");
-                _card169fixtable.Add("27", "72o");
-                _card169fixtable.Add("72o", "72o");
-                _card169fixtable.Add("27o", "72o");
-                _card169fixtable.Add("72s", "72s");
-                _card169fixtable.Add("27s", "72s");
-                _card169fixtable.Add("72*", "72");
-                _card169fixtable.Add("27*", "72");
-                _card169fixtable.Add("65", "65o");
-                _card169fixtable.Add("56", "65o");
-                _card169fixtable.Add("65o", "65o");
-                _card169fixtable.Add("56o", "65o");
-                _card169fixtable.Add("65s", "65s");
-                _card169fixtable.Add("56s", "65s");
-                _card169fixtable.Add("65*", "65");
-                _card169fixtable.Add("56*", "65");
-                _card169fixtable.Add("64", "64o");
-                _card169fixtable.Add("46", "64o");
-                _card169fixtable.Add("64o", "64o");
-                _card169fixtable.Add("46o", "64o");
-                _card169fixtable.Add("64s", "64s");
-                _card169fixtable.Add("46s", "64s");
-                _card169fixtable.Add("64*", "64");
-                _card169fixtable.Add("46*", "64");
-                _card169fixtable.Add("63", "63o");
-                _card169fixtable.Add("36", "63o");
-                _card169fixtable.Add("63o", "63o");
-                _card169fixtable.Add("36o", "63o");
-                _card169fixtable.Add("63s", "63s");
-                _card169fixtable.Add("36s", "63s");
-                _card169fixtable.Add("63*", "63");
-                _card169fixtable.Add("36*", "63");
-                _card169fixtable.Add("62", "62o");
-                _card169fixtable.Add("26", "62o");
-                _card169fixtable.Add("62o", "62o");
-                _card169fixtable.Add("26o", "62o");
-                _card169fixtable.Add("62s", "62s");
-                _card169fixtable.Add("26s", "62s");
-                _card169fixtable.Add("62*", "62");
-                _card169fixtable.Add("26*", "62");
-                _card169fixtable.Add("54", "54o");
-                _card169fixtable.Add("45", "54o");
-                _card169fixtable.Add("54o", "54o");
-                _card169fixtable.Add("45o", "54o");
-                _card169fixtable.Add("54s", "54s");
-                _card169fixtable.Add("45s", "54s");
-                _card169fixtable.Add("54*", "54");
-                _card169fixtable.Add("45*", "54");
-                _card169fixtable.Add("53", "53o");
-                _card169fixtable.Add("35", "53o");
-                _card169fixtable.Add("53o", "53o");
-                _card169fixtable.Add("35o", "53o");
-                _card169fixtable.Add("53s", "53s");
-                _card169fixtable.Add("35s", "53s");
-                _card169fixtable.Add("53*", "53");
-                _card169fixtable.Add("35*", "53");
-                _card169fixtable.Add("52", "52o");
-                _card169fixtable.Add("25", "52o");
-                _card169fixtable.Add("52o", "52o");
-                _card169fixtable.Add("25o", "52o");
-                _card169fixtable.Add("52s", "52s");
-                _card169fixtable.Add("25s", "52s");
-                _card169fixtable.Add("52*", "52");
-                _card169fixtable.Add("25*", "52");
-                _card169fixtable.Add("43", "43o");
-                _card169fixtable.Add("34", "43o");
-                _card169fixtable.Add("43o", "43o");
-                _card169fixtable.Add("34o", "43o");
-                _card169fixtable.Add("43s", "43s");
-                _card169fixtable.Add("34s", "43s");
-                _card169fixtable.Add("43*", "43");
-                _card169fixtable.Add("34*", "43");
-                _card169fixtable.Add("42", "42o");
-                _card169fixtable.Add("24", "42o");
-                _card169fixtable.Add("42o", "42o");
-                _card169fixtable.Add("24o", "42o");
-                _card169fixtable.Add("42s", "42s");
-                _card169fixtable.Add("24s", "42s");
-                _card169fixtable.Add("42*", "42");
-                _card169fixtable.Add("24*", "42");
-                _card169fixtable.Add("32", "32o");
-                _card169fixtable.Add("23", "32o");
-                _card169fixtable.Add("32o", "32o");
-                _card169fixtable.Add("23o", "32o");
-                _card169fixtable.Add("32s", "32s");
-                _card169fixtable.Add("23s", "32s");
-                _card169fixtable.Add("32*", "32");
-                _card169fixtable.Add("23*", "32");
+                Card169Fixtable.Add("aa", "aa");
+                Card169Fixtable.Add("kk", "kk");
+                Card169Fixtable.Add("qq", "qq");
+                Card169Fixtable.Add("jj", "jj");
+                Card169Fixtable.Add("tt", "tt");
+                Card169Fixtable.Add("99", "99");
+                Card169Fixtable.Add("88", "88");
+                Card169Fixtable.Add("77", "77");
+                Card169Fixtable.Add("66", "66");
+                Card169Fixtable.Add("55", "55");
+                Card169Fixtable.Add("44", "44");
+                Card169Fixtable.Add("33", "33");
+                Card169Fixtable.Add("22", "22");
+                Card169Fixtable.Add("ak", "ako");
+                Card169Fixtable.Add("ka", "ako");
+                Card169Fixtable.Add("ako", "ako");
+                Card169Fixtable.Add("kao", "ako");
+                Card169Fixtable.Add("aks", "aks");
+                Card169Fixtable.Add("kas", "aks");
+                Card169Fixtable.Add("ak*", "ak");
+                Card169Fixtable.Add("ka*", "ak");
+                Card169Fixtable.Add("aq", "aqo");
+                Card169Fixtable.Add("qa", "aqo");
+                Card169Fixtable.Add("aqo", "aqo");
+                Card169Fixtable.Add("qao", "aqo");
+                Card169Fixtable.Add("aqs", "aqs");
+                Card169Fixtable.Add("qas", "aqs");
+                Card169Fixtable.Add("aq*", "aq");
+                Card169Fixtable.Add("qa*", "aq");
+                Card169Fixtable.Add("aj", "ajo");
+                Card169Fixtable.Add("ja", "ajo");
+                Card169Fixtable.Add("ajo", "ajo");
+                Card169Fixtable.Add("jao", "ajo");
+                Card169Fixtable.Add("ajs", "ajs");
+                Card169Fixtable.Add("jas", "ajs");
+                Card169Fixtable.Add("aj*", "aj");
+                Card169Fixtable.Add("ja*", "aj");
+                Card169Fixtable.Add("at", "ato");
+                Card169Fixtable.Add("ta", "ato");
+                Card169Fixtable.Add("ato", "ato");
+                Card169Fixtable.Add("tao", "ato");
+                Card169Fixtable.Add("ats", "ats");
+                Card169Fixtable.Add("tas", "ats");
+                Card169Fixtable.Add("at*", "at");
+                Card169Fixtable.Add("ta*", "at");
+                Card169Fixtable.Add("a9", "a9o");
+                Card169Fixtable.Add("9a", "a9o");
+                Card169Fixtable.Add("a9o", "a9o");
+                Card169Fixtable.Add("9ao", "a9o");
+                Card169Fixtable.Add("a9s", "a9s");
+                Card169Fixtable.Add("9as", "a9s");
+                Card169Fixtable.Add("a9*", "a9");
+                Card169Fixtable.Add("9a*", "a9");
+                Card169Fixtable.Add("a8", "a8o");
+                Card169Fixtable.Add("8a", "a8o");
+                Card169Fixtable.Add("a8o", "a8o");
+                Card169Fixtable.Add("8ao", "a8o");
+                Card169Fixtable.Add("a8s", "a8s");
+                Card169Fixtable.Add("8as", "a8s");
+                Card169Fixtable.Add("a8*", "a8");
+                Card169Fixtable.Add("8a*", "a8");
+                Card169Fixtable.Add("a7", "a7o");
+                Card169Fixtable.Add("7a", "a7o");
+                Card169Fixtable.Add("a7o", "a7o");
+                Card169Fixtable.Add("7ao", "a7o");
+                Card169Fixtable.Add("a7s", "a7s");
+                Card169Fixtable.Add("7as", "a7s");
+                Card169Fixtable.Add("a7*", "a7");
+                Card169Fixtable.Add("7a*", "a7");
+                Card169Fixtable.Add("a6", "a6o");
+                Card169Fixtable.Add("6a", "a6o");
+                Card169Fixtable.Add("a6o", "a6o");
+                Card169Fixtable.Add("6ao", "a6o");
+                Card169Fixtable.Add("a6s", "a6s");
+                Card169Fixtable.Add("6as", "a6s");
+                Card169Fixtable.Add("a6*", "a6");
+                Card169Fixtable.Add("6a*", "a6");
+                Card169Fixtable.Add("a5", "a5o");
+                Card169Fixtable.Add("5a", "a5o");
+                Card169Fixtable.Add("a5o", "a5o");
+                Card169Fixtable.Add("5ao", "a5o");
+                Card169Fixtable.Add("a5s", "a5s");
+                Card169Fixtable.Add("5as", "a5s");
+                Card169Fixtable.Add("a5*", "a5");
+                Card169Fixtable.Add("5a*", "a5");
+                Card169Fixtable.Add("a4", "a4o");
+                Card169Fixtable.Add("4a", "a4o");
+                Card169Fixtable.Add("a4o", "a4o");
+                Card169Fixtable.Add("4ao", "a4o");
+                Card169Fixtable.Add("a4s", "a4s");
+                Card169Fixtable.Add("4as", "a4s");
+                Card169Fixtable.Add("a4*", "a4");
+                Card169Fixtable.Add("4a*", "a4");
+                Card169Fixtable.Add("a3", "a3o");
+                Card169Fixtable.Add("3a", "a3o");
+                Card169Fixtable.Add("a3o", "a3o");
+                Card169Fixtable.Add("3ao", "a3o");
+                Card169Fixtable.Add("a3s", "a3s");
+                Card169Fixtable.Add("3as", "a3s");
+                Card169Fixtable.Add("a3*", "a3");
+                Card169Fixtable.Add("3a*", "a3");
+                Card169Fixtable.Add("a2", "a2o");
+                Card169Fixtable.Add("2a", "a2o");
+                Card169Fixtable.Add("a2o", "a2o");
+                Card169Fixtable.Add("2ao", "a2o");
+                Card169Fixtable.Add("a2s", "a2s");
+                Card169Fixtable.Add("2as", "a2s");
+                Card169Fixtable.Add("a2*", "a2");
+                Card169Fixtable.Add("2a*", "a2");
+                Card169Fixtable.Add("kq", "kqo");
+                Card169Fixtable.Add("qk", "kqo");
+                Card169Fixtable.Add("kqo", "kqo");
+                Card169Fixtable.Add("qko", "kqo");
+                Card169Fixtable.Add("kqs", "kqs");
+                Card169Fixtable.Add("qks", "kqs");
+                Card169Fixtable.Add("kq*", "kq");
+                Card169Fixtable.Add("qk*", "kq");
+                Card169Fixtable.Add("kj", "kjo");
+                Card169Fixtable.Add("jk", "kjo");
+                Card169Fixtable.Add("kjo", "kjo");
+                Card169Fixtable.Add("jko", "kjo");
+                Card169Fixtable.Add("kjs", "kjs");
+                Card169Fixtable.Add("jks", "kjs");
+                Card169Fixtable.Add("kj*", "kj");
+                Card169Fixtable.Add("jk*", "kj");
+                Card169Fixtable.Add("kt", "kto");
+                Card169Fixtable.Add("tk", "kto");
+                Card169Fixtable.Add("kto", "kto");
+                Card169Fixtable.Add("tko", "kto");
+                Card169Fixtable.Add("kts", "kts");
+                Card169Fixtable.Add("tks", "kts");
+                Card169Fixtable.Add("kt*", "kt");
+                Card169Fixtable.Add("tk*", "kt");
+                Card169Fixtable.Add("k9", "k9o");
+                Card169Fixtable.Add("9k", "k9o");
+                Card169Fixtable.Add("k9o", "k9o");
+                Card169Fixtable.Add("9ko", "k9o");
+                Card169Fixtable.Add("k9s", "k9s");
+                Card169Fixtable.Add("9ks", "k9s");
+                Card169Fixtable.Add("k9*", "k9");
+                Card169Fixtable.Add("9k*", "k9");
+                Card169Fixtable.Add("k8", "k8o");
+                Card169Fixtable.Add("8k", "k8o");
+                Card169Fixtable.Add("k8o", "k8o");
+                Card169Fixtable.Add("8ko", "k8o");
+                Card169Fixtable.Add("k8s", "k8s");
+                Card169Fixtable.Add("8ks", "k8s");
+                Card169Fixtable.Add("k8*", "k8");
+                Card169Fixtable.Add("8k*", "k8");
+                Card169Fixtable.Add("k7", "k7o");
+                Card169Fixtable.Add("7k", "k7o");
+                Card169Fixtable.Add("k7o", "k7o");
+                Card169Fixtable.Add("7ko", "k7o");
+                Card169Fixtable.Add("k7s", "k7s");
+                Card169Fixtable.Add("7ks", "k7s");
+                Card169Fixtable.Add("k7*", "k7");
+                Card169Fixtable.Add("7k*", "k7");
+                Card169Fixtable.Add("k6", "k6o");
+                Card169Fixtable.Add("6k", "k6o");
+                Card169Fixtable.Add("k6o", "k6o");
+                Card169Fixtable.Add("6ko", "k6o");
+                Card169Fixtable.Add("k6s", "k6s");
+                Card169Fixtable.Add("6ks", "k6s");
+                Card169Fixtable.Add("k6*", "k6");
+                Card169Fixtable.Add("6k*", "k6");
+                Card169Fixtable.Add("k5", "k5o");
+                Card169Fixtable.Add("5k", "k5o");
+                Card169Fixtable.Add("k5o", "k5o");
+                Card169Fixtable.Add("5ko", "k5o");
+                Card169Fixtable.Add("k5s", "k5s");
+                Card169Fixtable.Add("5ks", "k5s");
+                Card169Fixtable.Add("k5*", "k5");
+                Card169Fixtable.Add("5k*", "k5");
+                Card169Fixtable.Add("k4", "k4o");
+                Card169Fixtable.Add("4k", "k4o");
+                Card169Fixtable.Add("k4o", "k4o");
+                Card169Fixtable.Add("4ko", "k4o");
+                Card169Fixtable.Add("k4s", "k4s");
+                Card169Fixtable.Add("4ks", "k4s");
+                Card169Fixtable.Add("k4*", "k4");
+                Card169Fixtable.Add("4k*", "k4");
+                Card169Fixtable.Add("k3", "k3o");
+                Card169Fixtable.Add("3k", "k3o");
+                Card169Fixtable.Add("k3o", "k3o");
+                Card169Fixtable.Add("3ko", "k3o");
+                Card169Fixtable.Add("k3s", "k3s");
+                Card169Fixtable.Add("3ks", "k3s");
+                Card169Fixtable.Add("k3*", "k3");
+                Card169Fixtable.Add("3k*", "k3");
+                Card169Fixtable.Add("k2", "k2o");
+                Card169Fixtable.Add("2k", "k2o");
+                Card169Fixtable.Add("k2o", "k2o");
+                Card169Fixtable.Add("2ko", "k2o");
+                Card169Fixtable.Add("k2s", "k2s");
+                Card169Fixtable.Add("2ks", "k2s");
+                Card169Fixtable.Add("k2*", "k2");
+                Card169Fixtable.Add("2k*", "k2");
+                Card169Fixtable.Add("qj", "qjo");
+                Card169Fixtable.Add("jq", "qjo");
+                Card169Fixtable.Add("qjo", "qjo");
+                Card169Fixtable.Add("jqo", "qjo");
+                Card169Fixtable.Add("qjs", "qjs");
+                Card169Fixtable.Add("jqs", "qjs");
+                Card169Fixtable.Add("qj*", "qj");
+                Card169Fixtable.Add("jq*", "qj");
+                Card169Fixtable.Add("qt", "qto");
+                Card169Fixtable.Add("tq", "qto");
+                Card169Fixtable.Add("qto", "qto");
+                Card169Fixtable.Add("tqo", "qto");
+                Card169Fixtable.Add("qts", "qts");
+                Card169Fixtable.Add("tqs", "qts");
+                Card169Fixtable.Add("qt*", "qt");
+                Card169Fixtable.Add("tq*", "qt");
+                Card169Fixtable.Add("q9", "q9o");
+                Card169Fixtable.Add("9q", "q9o");
+                Card169Fixtable.Add("q9o", "q9o");
+                Card169Fixtable.Add("9qo", "q9o");
+                Card169Fixtable.Add("q9s", "q9s");
+                Card169Fixtable.Add("9qs", "q9s");
+                Card169Fixtable.Add("q9*", "q9");
+                Card169Fixtable.Add("9q*", "q9");
+                Card169Fixtable.Add("q8", "q8o");
+                Card169Fixtable.Add("8q", "q8o");
+                Card169Fixtable.Add("q8o", "q8o");
+                Card169Fixtable.Add("8qo", "q8o");
+                Card169Fixtable.Add("q8s", "q8s");
+                Card169Fixtable.Add("8qs", "q8s");
+                Card169Fixtable.Add("q8*", "q8");
+                Card169Fixtable.Add("8q*", "q8");
+                Card169Fixtable.Add("q7", "q7o");
+                Card169Fixtable.Add("7q", "q7o");
+                Card169Fixtable.Add("q7o", "q7o");
+                Card169Fixtable.Add("7qo", "q7o");
+                Card169Fixtable.Add("q7s", "q7s");
+                Card169Fixtable.Add("7qs", "q7s");
+                Card169Fixtable.Add("q7*", "q7");
+                Card169Fixtable.Add("7q*", "q7");
+                Card169Fixtable.Add("q6", "q6o");
+                Card169Fixtable.Add("6q", "q6o");
+                Card169Fixtable.Add("q6o", "q6o");
+                Card169Fixtable.Add("6qo", "q6o");
+                Card169Fixtable.Add("q6s", "q6s");
+                Card169Fixtable.Add("6qs", "q6s");
+                Card169Fixtable.Add("q6*", "q6");
+                Card169Fixtable.Add("6q*", "q6");
+                Card169Fixtable.Add("q5", "q5o");
+                Card169Fixtable.Add("5q", "q5o");
+                Card169Fixtable.Add("q5o", "q5o");
+                Card169Fixtable.Add("5qo", "q5o");
+                Card169Fixtable.Add("q5s", "q5s");
+                Card169Fixtable.Add("5qs", "q5s");
+                Card169Fixtable.Add("q5*", "q5");
+                Card169Fixtable.Add("5q*", "q5");
+                Card169Fixtable.Add("q4", "q4o");
+                Card169Fixtable.Add("4q", "q4o");
+                Card169Fixtable.Add("q4o", "q4o");
+                Card169Fixtable.Add("4qo", "q4o");
+                Card169Fixtable.Add("q4s", "q4s");
+                Card169Fixtable.Add("4qs", "q4s");
+                Card169Fixtable.Add("q4*", "q4");
+                Card169Fixtable.Add("4q*", "q4");
+                Card169Fixtable.Add("q3", "q3o");
+                Card169Fixtable.Add("3q", "q3o");
+                Card169Fixtable.Add("q3o", "q3o");
+                Card169Fixtable.Add("3qo", "q3o");
+                Card169Fixtable.Add("q3s", "q3s");
+                Card169Fixtable.Add("3qs", "q3s");
+                Card169Fixtable.Add("q3*", "q3");
+                Card169Fixtable.Add("3q*", "q3");
+                Card169Fixtable.Add("q2", "q2o");
+                Card169Fixtable.Add("2q", "q2o");
+                Card169Fixtable.Add("q2o", "q2o");
+                Card169Fixtable.Add("2qo", "q2o");
+                Card169Fixtable.Add("q2s", "q2s");
+                Card169Fixtable.Add("2qs", "q2s");
+                Card169Fixtable.Add("q2*", "q2");
+                Card169Fixtable.Add("2q*", "q2");
+                Card169Fixtable.Add("jt", "jto");
+                Card169Fixtable.Add("tj", "jto");
+                Card169Fixtable.Add("jto", "jto");
+                Card169Fixtable.Add("tjo", "jto");
+                Card169Fixtable.Add("jts", "jts");
+                Card169Fixtable.Add("tjs", "jts");
+                Card169Fixtable.Add("jt*", "jt");
+                Card169Fixtable.Add("tj*", "jt");
+                Card169Fixtable.Add("j9", "j9o");
+                Card169Fixtable.Add("9j", "j9o");
+                Card169Fixtable.Add("j9o", "j9o");
+                Card169Fixtable.Add("9jo", "j9o");
+                Card169Fixtable.Add("j9s", "j9s");
+                Card169Fixtable.Add("9js", "j9s");
+                Card169Fixtable.Add("j9*", "j9");
+                Card169Fixtable.Add("9j*", "j9");
+                Card169Fixtable.Add("j8", "j8o");
+                Card169Fixtable.Add("8j", "j8o");
+                Card169Fixtable.Add("j8o", "j8o");
+                Card169Fixtable.Add("8jo", "j8o");
+                Card169Fixtable.Add("j8s", "j8s");
+                Card169Fixtable.Add("8js", "j8s");
+                Card169Fixtable.Add("j8*", "j8");
+                Card169Fixtable.Add("8j*", "j8");
+                Card169Fixtable.Add("j7", "j7o");
+                Card169Fixtable.Add("7j", "j7o");
+                Card169Fixtable.Add("j7o", "j7o");
+                Card169Fixtable.Add("7jo", "j7o");
+                Card169Fixtable.Add("j7s", "j7s");
+                Card169Fixtable.Add("7js", "j7s");
+                Card169Fixtable.Add("j7*", "j7");
+                Card169Fixtable.Add("7j*", "j7");
+                Card169Fixtable.Add("j6", "j6o");
+                Card169Fixtable.Add("6j", "j6o");
+                Card169Fixtable.Add("j6o", "j6o");
+                Card169Fixtable.Add("6jo", "j6o");
+                Card169Fixtable.Add("j6s", "j6s");
+                Card169Fixtable.Add("6js", "j6s");
+                Card169Fixtable.Add("j6*", "j6");
+                Card169Fixtable.Add("6j*", "j6");
+                Card169Fixtable.Add("j5", "j5o");
+                Card169Fixtable.Add("5j", "j5o");
+                Card169Fixtable.Add("j5o", "j5o");
+                Card169Fixtable.Add("5jo", "j5o");
+                Card169Fixtable.Add("j5s", "j5s");
+                Card169Fixtable.Add("5js", "j5s");
+                Card169Fixtable.Add("j5*", "j5");
+                Card169Fixtable.Add("5j*", "j5");
+                Card169Fixtable.Add("j4", "j4o");
+                Card169Fixtable.Add("4j", "j4o");
+                Card169Fixtable.Add("j4o", "j4o");
+                Card169Fixtable.Add("4jo", "j4o");
+                Card169Fixtable.Add("j4s", "j4s");
+                Card169Fixtable.Add("4js", "j4s");
+                Card169Fixtable.Add("j4*", "j4");
+                Card169Fixtable.Add("4j*", "j4");
+                Card169Fixtable.Add("j3", "j3o");
+                Card169Fixtable.Add("3j", "j3o");
+                Card169Fixtable.Add("j3o", "j3o");
+                Card169Fixtable.Add("3jo", "j3o");
+                Card169Fixtable.Add("j3s", "j3s");
+                Card169Fixtable.Add("3js", "j3s");
+                Card169Fixtable.Add("j3*", "j3");
+                Card169Fixtable.Add("3j*", "j3");
+                Card169Fixtable.Add("j2", "j2o");
+                Card169Fixtable.Add("2j", "j2o");
+                Card169Fixtable.Add("j2o", "j2o");
+                Card169Fixtable.Add("2jo", "j2o");
+                Card169Fixtable.Add("j2s", "j2s");
+                Card169Fixtable.Add("2js", "j2s");
+                Card169Fixtable.Add("j2*", "j2");
+                Card169Fixtable.Add("2j*", "j2");
+                Card169Fixtable.Add("t9", "t9o");
+                Card169Fixtable.Add("9t", "t9o");
+                Card169Fixtable.Add("t9o", "t9o");
+                Card169Fixtable.Add("9to", "t9o");
+                Card169Fixtable.Add("t9s", "t9s");
+                Card169Fixtable.Add("9ts", "t9s");
+                Card169Fixtable.Add("t9*", "t9");
+                Card169Fixtable.Add("9t*", "t9");
+                Card169Fixtable.Add("t8", "t8o");
+                Card169Fixtable.Add("8t", "t8o");
+                Card169Fixtable.Add("t8o", "t8o");
+                Card169Fixtable.Add("8to", "t8o");
+                Card169Fixtable.Add("t8s", "t8s");
+                Card169Fixtable.Add("8ts", "t8s");
+                Card169Fixtable.Add("t8*", "t8");
+                Card169Fixtable.Add("8t*", "t8");
+                Card169Fixtable.Add("t7", "t7o");
+                Card169Fixtable.Add("7t", "t7o");
+                Card169Fixtable.Add("t7o", "t7o");
+                Card169Fixtable.Add("7to", "t7o");
+                Card169Fixtable.Add("t7s", "t7s");
+                Card169Fixtable.Add("7ts", "t7s");
+                Card169Fixtable.Add("t7*", "t7");
+                Card169Fixtable.Add("7t*", "t7");
+                Card169Fixtable.Add("t6", "t6o");
+                Card169Fixtable.Add("6t", "t6o");
+                Card169Fixtable.Add("t6o", "t6o");
+                Card169Fixtable.Add("6to", "t6o");
+                Card169Fixtable.Add("t6s", "t6s");
+                Card169Fixtable.Add("6ts", "t6s");
+                Card169Fixtable.Add("t6*", "t6");
+                Card169Fixtable.Add("6t*", "t6");
+                Card169Fixtable.Add("t5", "t5o");
+                Card169Fixtable.Add("5t", "t5o");
+                Card169Fixtable.Add("t5o", "t5o");
+                Card169Fixtable.Add("5to", "t5o");
+                Card169Fixtable.Add("t5s", "t5s");
+                Card169Fixtable.Add("5ts", "t5s");
+                Card169Fixtable.Add("t5*", "t5");
+                Card169Fixtable.Add("5t*", "t5");
+                Card169Fixtable.Add("t4", "t4o");
+                Card169Fixtable.Add("4t", "t4o");
+                Card169Fixtable.Add("t4o", "t4o");
+                Card169Fixtable.Add("4to", "t4o");
+                Card169Fixtable.Add("t4s", "t4s");
+                Card169Fixtable.Add("4ts", "t4s");
+                Card169Fixtable.Add("t4*", "t4");
+                Card169Fixtable.Add("4t*", "t4");
+                Card169Fixtable.Add("t3", "t3o");
+                Card169Fixtable.Add("3t", "t3o");
+                Card169Fixtable.Add("t3o", "t3o");
+                Card169Fixtable.Add("3to", "t3o");
+                Card169Fixtable.Add("t3s", "t3s");
+                Card169Fixtable.Add("3ts", "t3s");
+                Card169Fixtable.Add("t3*", "t3");
+                Card169Fixtable.Add("3t*", "t3");
+                Card169Fixtable.Add("t2", "t2o");
+                Card169Fixtable.Add("2t", "t2o");
+                Card169Fixtable.Add("t2o", "t2o");
+                Card169Fixtable.Add("2to", "t2o");
+                Card169Fixtable.Add("t2s", "t2s");
+                Card169Fixtable.Add("2ts", "t2s");
+                Card169Fixtable.Add("t2*", "t2");
+                Card169Fixtable.Add("2t*", "t2");
+                Card169Fixtable.Add("98", "98o");
+                Card169Fixtable.Add("89", "98o");
+                Card169Fixtable.Add("98o", "98o");
+                Card169Fixtable.Add("89o", "98o");
+                Card169Fixtable.Add("98s", "98s");
+                Card169Fixtable.Add("89s", "98s");
+                Card169Fixtable.Add("98*", "98");
+                Card169Fixtable.Add("89*", "98");
+                Card169Fixtable.Add("97", "97o");
+                Card169Fixtable.Add("79", "97o");
+                Card169Fixtable.Add("97o", "97o");
+                Card169Fixtable.Add("79o", "97o");
+                Card169Fixtable.Add("97s", "97s");
+                Card169Fixtable.Add("79s", "97s");
+                Card169Fixtable.Add("97*", "97");
+                Card169Fixtable.Add("79*", "97");
+                Card169Fixtable.Add("96", "96o");
+                Card169Fixtable.Add("69", "96o");
+                Card169Fixtable.Add("96o", "96o");
+                Card169Fixtable.Add("69o", "96o");
+                Card169Fixtable.Add("96s", "96s");
+                Card169Fixtable.Add("69s", "96s");
+                Card169Fixtable.Add("96*", "96");
+                Card169Fixtable.Add("69*", "96");
+                Card169Fixtable.Add("95", "95o");
+                Card169Fixtable.Add("59", "95o");
+                Card169Fixtable.Add("95o", "95o");
+                Card169Fixtable.Add("59o", "95o");
+                Card169Fixtable.Add("95s", "95s");
+                Card169Fixtable.Add("59s", "95s");
+                Card169Fixtable.Add("95*", "95");
+                Card169Fixtable.Add("59*", "95");
+                Card169Fixtable.Add("94", "94o");
+                Card169Fixtable.Add("49", "94o");
+                Card169Fixtable.Add("94o", "94o");
+                Card169Fixtable.Add("49o", "94o");
+                Card169Fixtable.Add("94s", "94s");
+                Card169Fixtable.Add("49s", "94s");
+                Card169Fixtable.Add("94*", "94");
+                Card169Fixtable.Add("49*", "94");
+                Card169Fixtable.Add("93", "93o");
+                Card169Fixtable.Add("39", "93o");
+                Card169Fixtable.Add("93o", "93o");
+                Card169Fixtable.Add("39o", "93o");
+                Card169Fixtable.Add("93s", "93s");
+                Card169Fixtable.Add("39s", "93s");
+                Card169Fixtable.Add("93*", "93");
+                Card169Fixtable.Add("39*", "93");
+                Card169Fixtable.Add("92", "92o");
+                Card169Fixtable.Add("29", "92o");
+                Card169Fixtable.Add("92o", "92o");
+                Card169Fixtable.Add("29o", "92o");
+                Card169Fixtable.Add("92s", "92s");
+                Card169Fixtable.Add("29s", "92s");
+                Card169Fixtable.Add("92*", "92");
+                Card169Fixtable.Add("29*", "92");
+                Card169Fixtable.Add("87", "87o");
+                Card169Fixtable.Add("78", "87o");
+                Card169Fixtable.Add("87o", "87o");
+                Card169Fixtable.Add("78o", "87o");
+                Card169Fixtable.Add("87s", "87s");
+                Card169Fixtable.Add("78s", "87s");
+                Card169Fixtable.Add("87*", "87");
+                Card169Fixtable.Add("78*", "87");
+                Card169Fixtable.Add("86", "86o");
+                Card169Fixtable.Add("68", "86o");
+                Card169Fixtable.Add("86o", "86o");
+                Card169Fixtable.Add("68o", "86o");
+                Card169Fixtable.Add("86s", "86s");
+                Card169Fixtable.Add("68s", "86s");
+                Card169Fixtable.Add("86*", "86");
+                Card169Fixtable.Add("68*", "86");
+                Card169Fixtable.Add("85", "85o");
+                Card169Fixtable.Add("58", "85o");
+                Card169Fixtable.Add("85o", "85o");
+                Card169Fixtable.Add("58o", "85o");
+                Card169Fixtable.Add("85s", "85s");
+                Card169Fixtable.Add("58s", "85s");
+                Card169Fixtable.Add("85*", "85");
+                Card169Fixtable.Add("58*", "85");
+                Card169Fixtable.Add("84", "84o");
+                Card169Fixtable.Add("48", "84o");
+                Card169Fixtable.Add("84o", "84o");
+                Card169Fixtable.Add("48o", "84o");
+                Card169Fixtable.Add("84s", "84s");
+                Card169Fixtable.Add("48s", "84s");
+                Card169Fixtable.Add("84*", "84");
+                Card169Fixtable.Add("48*", "84");
+                Card169Fixtable.Add("83", "83o");
+                Card169Fixtable.Add("38", "83o");
+                Card169Fixtable.Add("83o", "83o");
+                Card169Fixtable.Add("38o", "83o");
+                Card169Fixtable.Add("83s", "83s");
+                Card169Fixtable.Add("38s", "83s");
+                Card169Fixtable.Add("83*", "83");
+                Card169Fixtable.Add("38*", "83");
+                Card169Fixtable.Add("82", "82o");
+                Card169Fixtable.Add("28", "82o");
+                Card169Fixtable.Add("82o", "82o");
+                Card169Fixtable.Add("28o", "82o");
+                Card169Fixtable.Add("82s", "82s");
+                Card169Fixtable.Add("28s", "82s");
+                Card169Fixtable.Add("82*", "82");
+                Card169Fixtable.Add("28*", "82");
+                Card169Fixtable.Add("76", "76o");
+                Card169Fixtable.Add("67", "76o");
+                Card169Fixtable.Add("76o", "76o");
+                Card169Fixtable.Add("67o", "76o");
+                Card169Fixtable.Add("76s", "76s");
+                Card169Fixtable.Add("67s", "76s");
+                Card169Fixtable.Add("76*", "76");
+                Card169Fixtable.Add("67*", "76");
+                Card169Fixtable.Add("75", "75o");
+                Card169Fixtable.Add("57", "75o");
+                Card169Fixtable.Add("75o", "75o");
+                Card169Fixtable.Add("57o", "75o");
+                Card169Fixtable.Add("75s", "75s");
+                Card169Fixtable.Add("57s", "75s");
+                Card169Fixtable.Add("75*", "75");
+                Card169Fixtable.Add("57*", "75");
+                Card169Fixtable.Add("74", "74o");
+                Card169Fixtable.Add("47", "74o");
+                Card169Fixtable.Add("74o", "74o");
+                Card169Fixtable.Add("47o", "74o");
+                Card169Fixtable.Add("74s", "74s");
+                Card169Fixtable.Add("47s", "74s");
+                Card169Fixtable.Add("74*", "74");
+                Card169Fixtable.Add("47*", "74");
+                Card169Fixtable.Add("73", "73o");
+                Card169Fixtable.Add("37", "73o");
+                Card169Fixtable.Add("73o", "73o");
+                Card169Fixtable.Add("37o", "73o");
+                Card169Fixtable.Add("73s", "73s");
+                Card169Fixtable.Add("37s", "73s");
+                Card169Fixtable.Add("73*", "73");
+                Card169Fixtable.Add("37*", "73");
+                Card169Fixtable.Add("72", "72o");
+                Card169Fixtable.Add("27", "72o");
+                Card169Fixtable.Add("72o", "72o");
+                Card169Fixtable.Add("27o", "72o");
+                Card169Fixtable.Add("72s", "72s");
+                Card169Fixtable.Add("27s", "72s");
+                Card169Fixtable.Add("72*", "72");
+                Card169Fixtable.Add("27*", "72");
+                Card169Fixtable.Add("65", "65o");
+                Card169Fixtable.Add("56", "65o");
+                Card169Fixtable.Add("65o", "65o");
+                Card169Fixtable.Add("56o", "65o");
+                Card169Fixtable.Add("65s", "65s");
+                Card169Fixtable.Add("56s", "65s");
+                Card169Fixtable.Add("65*", "65");
+                Card169Fixtable.Add("56*", "65");
+                Card169Fixtable.Add("64", "64o");
+                Card169Fixtable.Add("46", "64o");
+                Card169Fixtable.Add("64o", "64o");
+                Card169Fixtable.Add("46o", "64o");
+                Card169Fixtable.Add("64s", "64s");
+                Card169Fixtable.Add("46s", "64s");
+                Card169Fixtable.Add("64*", "64");
+                Card169Fixtable.Add("46*", "64");
+                Card169Fixtable.Add("63", "63o");
+                Card169Fixtable.Add("36", "63o");
+                Card169Fixtable.Add("63o", "63o");
+                Card169Fixtable.Add("36o", "63o");
+                Card169Fixtable.Add("63s", "63s");
+                Card169Fixtable.Add("36s", "63s");
+                Card169Fixtable.Add("63*", "63");
+                Card169Fixtable.Add("36*", "63");
+                Card169Fixtable.Add("62", "62o");
+                Card169Fixtable.Add("26", "62o");
+                Card169Fixtable.Add("62o", "62o");
+                Card169Fixtable.Add("26o", "62o");
+                Card169Fixtable.Add("62s", "62s");
+                Card169Fixtable.Add("26s", "62s");
+                Card169Fixtable.Add("62*", "62");
+                Card169Fixtable.Add("26*", "62");
+                Card169Fixtable.Add("54", "54o");
+                Card169Fixtable.Add("45", "54o");
+                Card169Fixtable.Add("54o", "54o");
+                Card169Fixtable.Add("45o", "54o");
+                Card169Fixtable.Add("54s", "54s");
+                Card169Fixtable.Add("45s", "54s");
+                Card169Fixtable.Add("54*", "54");
+                Card169Fixtable.Add("45*", "54");
+                Card169Fixtable.Add("53", "53o");
+                Card169Fixtable.Add("35", "53o");
+                Card169Fixtable.Add("53o", "53o");
+                Card169Fixtable.Add("35o", "53o");
+                Card169Fixtable.Add("53s", "53s");
+                Card169Fixtable.Add("35s", "53s");
+                Card169Fixtable.Add("53*", "53");
+                Card169Fixtable.Add("35*", "53");
+                Card169Fixtable.Add("52", "52o");
+                Card169Fixtable.Add("25", "52o");
+                Card169Fixtable.Add("52o", "52o");
+                Card169Fixtable.Add("25o", "52o");
+                Card169Fixtable.Add("52s", "52s");
+                Card169Fixtable.Add("25s", "52s");
+                Card169Fixtable.Add("52*", "52");
+                Card169Fixtable.Add("25*", "52");
+                Card169Fixtable.Add("43", "43o");
+                Card169Fixtable.Add("34", "43o");
+                Card169Fixtable.Add("43o", "43o");
+                Card169Fixtable.Add("34o", "43o");
+                Card169Fixtable.Add("43s", "43s");
+                Card169Fixtable.Add("34s", "43s");
+                Card169Fixtable.Add("43*", "43");
+                Card169Fixtable.Add("34*", "43");
+                Card169Fixtable.Add("42", "42o");
+                Card169Fixtable.Add("24", "42o");
+                Card169Fixtable.Add("42o", "42o");
+                Card169Fixtable.Add("24o", "42o");
+                Card169Fixtable.Add("42s", "42s");
+                Card169Fixtable.Add("24s", "42s");
+                Card169Fixtable.Add("42*", "42");
+                Card169Fixtable.Add("24*", "42");
+                Card169Fixtable.Add("32", "32o");
+                Card169Fixtable.Add("23", "32o");
+                Card169Fixtable.Add("32o", "32o");
+                Card169Fixtable.Add("23o", "32o");
+                Card169Fixtable.Add("32s", "32s");
+                Card169Fixtable.Add("23s", "32s");
+                Card169Fixtable.Add("32*", "32");
+                Card169Fixtable.Add("23*", "32");
             }
         }
 
@@ -3611,12 +3611,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         public PocketHands(PocketHands arg)
         {
-            foreach (ulong mask in arg.list)
+            foreach (var mask in arg.m_List)
             {
 #if DEBUG
-                System.Diagnostics.Debug.Assert(Hand.BitCount(mask) == 2 && !list.Contains(mask));
+                Debug.Assert(Hand.BitCount(mask) == 2 && !m_List.Contains(mask));
 #endif
-                list.Add(mask);
+                m_List.Add(mask);
             }
         }
 
@@ -3626,12 +3626,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         public PocketHands(ulong[] arg)
         {
-            foreach (ulong mask in arg)
+            foreach (var mask in arg)
             {
 #if DEBUG
-                System.Diagnostics.Debug.Assert(Hand.BitCount(mask) == 2 && !list.Contains(mask));
+                Debug.Assert(Hand.BitCount(mask) == 2 && !m_List.Contains(mask));
 #endif
-                list.Add(mask);
+                m_List.Add(mask);
             }
         }
 
@@ -3642,9 +3642,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         public PocketHands(ulong mask)
         {
 #if DEBUG
-            System.Diagnostics.Debug.Assert(Hand.BitCount(mask) == 2 && !list.Contains(mask));
+            Debug.Assert(Hand.BitCount(mask) == 2 && !m_List.Contains(mask));
 #endif
-            list.Add(mask);
+            m_List.Add(mask);
         }
 
         /// <summary>
@@ -3653,12 +3653,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         public PocketHands(List<ulong> arg)
         {
-            foreach (ulong mask in arg)
+            foreach (var mask in arg)
             {
 #if DEBUG
-                System.Diagnostics.Debug.Assert(Hand.BitCount(mask) == 2 && !list.Contains(mask));
+                Debug.Assert(Hand.BitCount(mask) == 2 && !m_List.Contains(mask));
 #endif
-                list.Add(mask);
+                m_List.Add(mask);
             }
         }
         #endregion
@@ -3666,7 +3666,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         #region Class Factories
 
         ///<exclude/>
-        static private readonly PocketHands _allhands = new PocketHands(_PocketTableMasks);
+        static private readonly PocketHands m_Allhands = new PocketHands(PocketTableMasks);
 
         /// <summary>
         /// Creates and instance of PocketHands with all 1326 possible pocket cards.
@@ -3676,12 +3676,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _allhands;
+                return m_Allhands;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _connected = new PocketHands(_connectedTable);
+        static private readonly PocketHands m_Connected = new PocketHands(ConnectedTable);
 
         /// <summary>
         /// Creates an instance of PocketHands which are connected.
@@ -3691,12 +3691,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _connected;
+                return m_Connected;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _suited = new PocketHands(_suitedTable);
+        static private readonly PocketHands m_Suited = new PocketHands(SuitedTable);
 
 
         /// <summary>
@@ -3707,12 +3707,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _suited;
+                return m_Suited;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _offsuit = !Suited;
+        static private readonly PocketHands m_Offsuit = !Suited;
 
 
         /// <summary>
@@ -3720,11 +3720,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         static public PocketHands Offsuit
         {
-            get { return _offsuit; }
+            get { return m_Offsuit; }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _pair = new PocketHands(_pairTable);
+        static private readonly PocketHands m_Pair = new PocketHands(PairTable);
 
 
         /// <summary>
@@ -3735,12 +3735,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _pair;
+                return m_Pair;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _gap1 = new PocketHands(_gap1Table);
+        static private readonly PocketHands m_Gap1 = new PocketHands(m_Gap1Table);
 
 
         /// <summary>
@@ -3751,12 +3751,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _gap1;
+                return m_Gap1;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _gap2 = new PocketHands(_gap2Table);
+        static private readonly PocketHands m_Gap2 = new PocketHands(m_Gap2Table);
 
         /// <summary>
         /// Creates an instance of PocketHands that contains all possible pocket hands with gap of two.
@@ -3766,12 +3766,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _gap2;
+                return m_Gap2;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _gap3 = new PocketHands(_gap3Table);
+        static private readonly PocketHands m_Gap3 = new PocketHands(m_Gap3Table);
 
 
         /// <summary>
@@ -3782,12 +3782,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _gap3;
+                return m_Gap3;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _gap = Gap1 | Gap2 | Gap3;
+        static private readonly PocketHands m_Gap = Gap1 | Gap2 | Gap3;
 
 
         /// <summary>
@@ -3798,12 +3798,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _gap;
+                return m_Gap;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group1 = new PocketHands(_PocketGroupings[0]);
+        static private readonly PocketHands m_Group1 = new PocketHands(PocketGroupings[0]);
 
 
         /// <summary>
@@ -3813,12 +3813,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group1;
+                return m_Group1;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group2 = new PocketHands(_PocketGroupings[1]);
+        static private readonly PocketHands m_Group2 = new PocketHands(PocketGroupings[1]);
 
 
         /// <summary>
@@ -3828,12 +3828,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group2;
+                return m_Group2;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group3 = new PocketHands(_PocketGroupings[2]);
+        static private readonly PocketHands m_Group3 = new PocketHands(PocketGroupings[2]);
 
 
         /// <summary>
@@ -3843,12 +3843,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group3;
+                return m_Group3;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group4 = new PocketHands(_PocketGroupings[3]);
+        static private readonly PocketHands m_Group4 = new PocketHands(PocketGroupings[3]);
 
 
         /// <summary>
@@ -3858,12 +3858,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group4;
+                return m_Group4;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group5 = new PocketHands(_PocketGroupings[4]);
+        static private readonly PocketHands m_Group5 = new PocketHands(PocketGroupings[4]);
 
 
         /// <summary>
@@ -3873,12 +3873,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group5;
+                return m_Group5;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group6 = new PocketHands(_PocketGroupings[5]);
+        static private readonly PocketHands m_Group6 = new PocketHands(PocketGroupings[5]);
 
 
         /// <summary>
@@ -3888,12 +3888,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group6;
+                return m_Group6;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group7 = new PocketHands(_PocketGroupings[6]);
+        static private readonly PocketHands m_Group7 = new PocketHands(PocketGroupings[6]);
 
 
         /// <summary>
@@ -3903,12 +3903,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group7;
+                return m_Group7;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _group8 = new PocketHands(_PocketGroupings[7]);
+        static private readonly PocketHands m_Group8 = new PocketHands(PocketGroupings[7]);
 
 
         /// <summary>
@@ -3918,12 +3918,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _group8;
+                return m_Group8;
             }
         }
 
         ///<exclude/>
-        static private readonly PocketHands _groupnone = new PocketHands(_PocketGroupings[8]);
+        static private readonly PocketHands m_GroupNone = new PocketHands(PocketGroupings[8]);
 
 
         /// <summary>
@@ -3933,7 +3933,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             get
             {
-                return _groupnone;
+                return m_GroupNone;
             }
         }
 
@@ -3959,16 +3959,16 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands PocketCards169(string pocket)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
             if (pocket.Length == 3 && pocket[2] == '*')
             {
 
-                retval |= _Pocket169Combinations[(int)Pocket169(string.Format("{0}{1}s", pocket[0], pocket[1]))];
-                retval |= _Pocket169Combinations[(int)Pocket169(string.Format("{0}{1}o", pocket[0], pocket[1]))];
+                retval |= Pocket169Combinations[(int)Pocket169(string.Format("{0}{1}s", pocket[0], pocket[1]))];
+                retval |= Pocket169Combinations[(int)Pocket169(string.Format("{0}{1}o", pocket[0], pocket[1]))];
             }
             else
             {
-                retval |= _Pocket169Combinations[(int)Pocket169(pocket)];
+                retval |= Pocket169Combinations[(int)Pocket169(pocket)];
             }
 
             return retval;
@@ -3982,11 +3982,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands Condense169(PocketHands hands)
         {
-            ulong[] pocket169 = new ulong[169];
+            var pocket169 = new ulong[169];
 
-            foreach (ulong mask in hands)
+            foreach (var mask in hands)
             {
-                int index = (int)Hand.PocketHand169Type(mask);
+                var index = (int)Hand.PocketHand169Type(mask);
                 if (pocket169[index] == 0)
                 {
                     pocket169[index] = mask;
@@ -4021,17 +4021,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             {
                 return (int)PocketCard169StringToEnum(arg);
             }
-            else
+            if (arg[0] == arg[1])
             {
-                if (arg[0] == arg[1])
-                {
-                    return (int)PocketCard169StringToEnum(arg);
-                }
-                else
-                {
-                    return (int)PocketCard169StringToEnum(arg + "o");
-                }
+                return (int)PocketCard169StringToEnum(arg);
             }
+            return (int)PocketCard169StringToEnum(arg + "o");
         }
 
         /// <summary>
@@ -4049,17 +4043,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             {
                 return (int)PocketCard169StringToEnum(arg);
             }
-            else
+            if (arg[0] == arg[1])
             {
-                if (arg[0] == arg[1])
-                {
-                    return (int)PocketCard169StringToEnum(arg);
-                }
-                else
-                {
-                    return (int)PocketCard169StringToEnum(arg + "s");
-                }
+                return (int)PocketCard169StringToEnum(arg);
             }
+            return (int)PocketCard169StringToEnum(arg + "s");
         }
 
         /// <summary>
@@ -4072,7 +4060,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             string[] cardTbl = { "A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2" };
             string[] ragTbl = { "9", "8", "7", "6", "5", "4", "3", "2" };
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
             if (arg.Length != 2 && arg.Length != 3)
                 throw new ArgumentOutOfRangeException("arg");
@@ -4080,12 +4068,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             switch (arg[1])
             {
                 case '?':
-                    foreach (string s in cardTbl)
+                    foreach (var s in cardTbl)
                     {
                         if (s == arg[0].ToString())
                         {
                             if ((arg.Length == 3 && arg[2] != 's' && arg[2] != 'S') || arg.Length == 2)
-                                retval |= PocketHands.PocketCards169(string.Format("{0}{1}", arg[0], s));
+                                retval |= PocketCards169(string.Format("{0}{1}", arg[0], s));
                         }
                         else if (arg.Length == 3)
                         {
@@ -4095,21 +4083,21 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                                 case 's':
                                 case 'O':
                                 case 'o':
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}{2}", arg[0], s, arg[2]));
+                                    retval |= PocketCards169(string.Format("{0}{1}{2}", arg[0], s, arg[2]));
                                     break;
                                 case '*':
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}o", arg[0], s));
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}s", arg[0], s));
+                                    retval |= PocketCards169(string.Format("{0}{1}o", arg[0], s));
+                                    retval |= PocketCards169(string.Format("{0}{1}s", arg[0], s));
                                     break;
                             }
                         }
                         else
-                            retval |= PocketHands.PocketCards169(string.Format("{0}{1}o", arg[0], s));
+                            retval |= PocketCards169(string.Format("{0}{1}o", arg[0], s));
                     }
                     break;
                 case 'x':
                 case 'X':
-                    foreach (string s in ragTbl)
+                    foreach (var s in ragTbl)
                     {
                         if (arg.Length == 3)
                         {
@@ -4119,11 +4107,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                                 case 's':
                                 case 'O':
                                 case 'o':
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}{2}", arg[0], s, arg[2]));
+                                    retval |= PocketCards169(string.Format("{0}{1}{2}", arg[0], s, arg[2]));
                                     break;
                                 case '*':
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}o", arg[0], s));
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}s", arg[0], s));
+                                    retval |= PocketCards169(string.Format("{0}{1}o", arg[0], s));
+                                    retval |= PocketCards169(string.Format("{0}{1}s", arg[0], s));
                                     break;
                             }
                         }
@@ -4131,9 +4119,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                         {
                             if (arg.Length == 2)
                                 if (arg[0] == s[0])
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}", arg[0], s));
+                                    retval |= PocketCards169(string.Format("{0}{1}", arg[0], s));
                                 else
-                                    retval |= PocketHands.PocketCards169(string.Format("{0}{1}o", arg[0], s));
+                                    retval |= PocketCards169(string.Format("{0}{1}o", arg[0], s));
                         }
                     }
                     break;
@@ -4177,11 +4165,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             {
                 return PocketCard169Range(emin, smax);
             }
-            else
-            {
-                return PocketCard169Range(smin, emax);
-            }
-
+            return PocketCard169Range(smin, emax);
         }
 
         /// <summary>
@@ -4194,20 +4178,20 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands PocketCard169Range(Hand.PocketHand169Enum s, Hand.PocketHand169Enum e)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
             int start = (int)s, end = (int)e;
             if (start > end)
             {
-                for (int i = end; i <= start; i++)
+                for (var i = end; i <= start; i++)
                 {
-                    retval |= _Pocket169Combinations[i];
+                    retval |= Pocket169Combinations[i];
                 }
             }
             else
             {
-                for (int i = start; i <= end; i++)
+                for (var i = start; i <= end; i++)
                 {
-                    retval |= _Pocket169Combinations[i];
+                    retval |= Pocket169Combinations[i];
                 }
             }
             return retval;
@@ -4221,7 +4205,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands Group(GroupTypeEnum rank)
         {
-            return new PocketHands(_PocketGroupings[(int)rank]);
+            return new PocketHands(PocketGroupings[(int)rank]);
         }
 
         /// <summary>
@@ -4233,20 +4217,20 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands GroupRange(GroupTypeEnum s, GroupTypeEnum e)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
             int start = (int)s, end = (int)e;
             if (start > end)
             {
-                for (int i = end; i <= start; i++)
+                for (var i = end; i <= start; i++)
                 {
-                    retval |= _PocketGroupings[i];
+                    retval |= PocketGroupings[i];
                 }
             }
             else
             {
-                for (int i = start; i <= end; i++)
+                for (var i = start; i <= end; i++)
                 {
-                    retval |= _PocketGroupings[i];
+                    retval |= PocketGroupings[i];
                 }
             }
             return retval;
@@ -4317,13 +4301,13 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator +(PocketHands arg1, PocketHands arg2)
         {
-            PocketHands retval = new PocketHands(arg1);
+            var retval = new PocketHands(arg1);
 
-            foreach (ulong mask in arg2)
+            foreach (var mask in arg2)
             {
                 if (!retval.Contains(mask))
                 {
-                    retval.list.Add(mask);
+                    retval.m_List.Add(mask);
                 }
             }
 
@@ -4413,12 +4397,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator &(PocketHands arg1, PocketHands arg2)
         {
-            PocketHands retval = new PocketHands();
-            for (int i = 0; i < arg1.Count; i++)
+            var retval = new PocketHands();
+            for (var i = 0; i < arg1.Count; i++)
             {
                 if (arg2.Contains(arg1[i]))
                 {
-                    retval.list.Add(arg1[i]);
+                    retval.m_List.Add(arg1[i]);
                 }
             }
             return retval;
@@ -4433,12 +4417,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator &(PocketHands arg1, ulong[] arg2)
         {
-            PocketHands retval = new PocketHands();
-            for (int i = 0; i < arg2.Length; i++)
+            var retval = new PocketHands();
+            for (var i = 0; i < arg2.Length; i++)
             {
                 if (arg1.Contains(arg2[i]))
                 {
-                    retval.list.Add(arg2[i]);
+                    retval.m_List.Add(arg2[i]);
                 }
             }
             return retval;
@@ -4453,12 +4437,12 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator &(ulong[] arg1, PocketHands arg2)
         {
-            PocketHands retval = new PocketHands();
-            for (int i = 0; i < arg1.Length; i++)
+            var retval = new PocketHands();
+            for (var i = 0; i < arg1.Length; i++)
             {
                 if (arg2.Contains(arg1[i]))
                 {
-                    retval.list.Add(arg1[i]);
+                    retval.m_List.Add(arg1[i]);
                 }
             }
             return retval;
@@ -4476,9 +4460,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator -(PocketHands arg, ulong dead)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg)
+            foreach (var mask in arg)
             {
                 if ((mask & dead) == 0)
                 {
@@ -4497,9 +4481,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator -(PocketHands arg1, List<ulong> arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
                 if (!arg2.Contains(mask))
                 {
@@ -4518,9 +4502,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator -(List<ulong> arg1, PocketHands arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
                 if (!arg2.Contains(mask))
                 {
@@ -4539,9 +4523,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator -(PocketHands arg1, PocketHands arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
                 if (!arg2.Contains(mask))
                 {
@@ -4560,10 +4544,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator -(PocketHands arg1, ulong[] arg2)
         {
-            PocketHands retval = new PocketHands();
-            PocketHands a2 = new PocketHands(arg2);
+            var retval = new PocketHands();
+            var a2 = new PocketHands(arg2);
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
                 if (!a2.Contains(mask))
                 {
@@ -4582,9 +4566,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator -(ulong[] arg1, PocketHands arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
                 if (!arg2.Contains(mask))
                 {
@@ -4606,7 +4590,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator !(PocketHands arg)
         {
-            return PocketHands.AllHands - arg;
+            return AllHands - arg;
         }
 
         /// <summary>
@@ -4620,7 +4604,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             if (arg1.Count != arg2.Count) return false;
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
                 if (!arg2.Contains(mask)) return false;
             }
@@ -4739,11 +4723,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>A PocketHands collection where each item has win odds less than arg2</returns>
         static public PocketHands operator <(PocketHands arg1, double arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
-                if (PocketHands.WinOdds(mask) < arg2)
+                if (WinOdds(mask) < arg2)
                     retval += mask;
             }
             return retval;
@@ -4758,11 +4742,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>A PocketHands collection where each item has win odds less than or equal to arg2</returns>
         static public PocketHands operator <=(PocketHands arg1, double arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
-                if (PocketHands.WinOdds(mask) <= arg2)
+                if (WinOdds(mask) <= arg2)
                     retval += mask;
             }
             return retval;
@@ -4777,11 +4761,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>A PocketHands collection where each item has win odds greater than arg2</returns>
         static public PocketHands operator >(PocketHands arg1, double arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
-                if (PocketHands.WinOdds(mask) > arg2)
+                if (WinOdds(mask) > arg2)
                     retval += mask;
             }
             return retval;
@@ -4796,11 +4780,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns>A PocketHands collection where each item has win odds greater than or equal arg2</returns>
         static public PocketHands operator >=(PocketHands arg1, double arg2)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            foreach (ulong mask in arg1)
+            foreach (var mask in arg1)
             {
-                if (PocketHands.WinOdds(mask) >= arg2)
+                if (WinOdds(mask) >= arg2)
                     retval += mask;
             }
             return retval;
@@ -4816,10 +4800,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator <=(PocketHands arg, Hand.PocketHand169Enum type)
         {
-            PocketHands retval = new PocketHands();
-            for (int i = (int)type; i < 169; i++)
+            var retval = new PocketHands();
+            for (var i = (int)type; i < 169; i++)
             {
-                retval += _Pocket169Combinations[i];
+                retval += Pocket169Combinations[i];
             }
             return arg & retval;
         }
@@ -4833,11 +4817,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator <(PocketHands arg1, Hand.PocketHand169Enum type)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = ((int)type) + 1; i < 169; i++)
+            for (var i = ((int)type) + 1; i < 169; i++)
             {
-                retval += _Pocket169Combinations[i];
+                retval += Pocket169Combinations[i];
             }
             return arg1 & retval;
         }
@@ -4852,11 +4836,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator >(PocketHands arg, Hand.PocketHand169Enum type)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = ((int)type) - 1; i >= 0; i--)
+            for (var i = ((int)type) - 1; i >= 0; i--)
             {
-                retval += _Pocket169Combinations[i];
+                retval += Pocket169Combinations[i];
             }
 
             return arg & retval;
@@ -4871,11 +4855,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator >=(PocketHands arg, Hand.PocketHand169Enum type)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = (int)type; i >= 0; i--)
+            for (var i = (int)type; i >= 0; i--)
             {
-                retval += _Pocket169Combinations[i];
+                retval += Pocket169Combinations[i];
             }
 
             return arg & retval;
@@ -4890,11 +4874,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator <(PocketHands arg, GroupTypeEnum rank)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = ((int)rank) + 1; i < (int)GroupTypeEnum.Group8; i++)
+            for (var i = ((int)rank) + 1; i < (int)GroupTypeEnum.Group8; i++)
             {
-                retval += _PocketGroupings[i];
+                retval += PocketGroupings[i];
             }
 
             return arg & retval;
@@ -4909,11 +4893,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator <=(PocketHands arg, GroupTypeEnum rank)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = (int)rank; i <= (int)GroupTypeEnum.Group8; i++)
+            for (var i = (int)rank; i <= (int)GroupTypeEnum.Group8; i++)
             {
-                retval += _PocketGroupings[i];
+                retval += PocketGroupings[i];
             }
 
             return arg & retval;
@@ -4928,11 +4912,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator >(PocketHands arg, GroupTypeEnum rank)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = ((int)rank) - 1; i >= (int)GroupTypeEnum.Group1; i--)
+            for (var i = ((int)rank) - 1; i >= (int)GroupTypeEnum.Group1; i--)
             {
-                retval += _PocketGroupings[i];
+                retval += PocketGroupings[i];
             }
 
             return arg & retval;
@@ -4947,11 +4931,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public PocketHands operator >=(PocketHands arg, GroupTypeEnum rank)
         {
-            PocketHands retval = new PocketHands();
+            var retval = new PocketHands();
 
-            for (int i = (int)rank; i >= (int)GroupTypeEnum.Group1; i--)
+            for (var i = (int)rank; i >= (int)GroupTypeEnum.Group1; i--)
             {
-                retval += _PocketGroupings[i];
+                retval += PocketGroupings[i];
             }
 
             return arg & retval;
@@ -4965,14 +4949,14 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        static internal PocketHands LT(PocketHands arg, string s)
+        static internal PocketHands Lt(PocketHands arg, string s)
         {
             if (FindFixCard169(s))
             {
                 return arg < (Hand.PocketHand169Enum)Card169Max(s);
             }
 
-            System.Diagnostics.Debug.Assert(false);
+            Debug.Assert(false);
             return null;
         }
 
@@ -4982,14 +4966,14 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        static internal PocketHands LE(PocketHands arg, string s)
+        static internal PocketHands Le(PocketHands arg, string s)
         {
             if (FindFixCard169(s))
             {
                 return arg <= (Hand.PocketHand169Enum)Card169Min(s);
             }
 
-            System.Diagnostics.Debug.Assert(false);
+            Debug.Assert(false);
             return null;
         }
 
@@ -4999,14 +4983,14 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        static internal PocketHands GT(PocketHands arg, string s)
+        static internal PocketHands Gt(PocketHands arg, string s)
         {
             if (FindFixCard169(s))
             {
                 return arg > (Hand.PocketHand169Enum)Card169Min(s);
             }
 
-            System.Diagnostics.Debug.Assert(false);
+            Debug.Assert(false);
             return null;
         }
 
@@ -5016,14 +5000,14 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <param name="arg"></param>
         /// <param name="s"></param>
         /// <returns></returns>
-        static internal PocketHands GE(PocketHands arg, string s)
+        static internal PocketHands Ge(PocketHands arg, string s)
         {
             if (FindFixCard169(s))
             {
                 return arg >= (Hand.PocketHand169Enum)Card169Max(s);
             }
 
-            System.Diagnostics.Debug.Assert(false);
+            Debug.Assert(false);
             return null;
         }
         #endregion
@@ -5064,9 +5048,9 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         static public IEnumerable<ulong> Hands169(ulong shared, ulong dead)
         {
-            foreach (ulong[] list in Hand.Pocket169Table)
+            foreach (var list in Hand.Pocket169Table)
             {
-                foreach (ulong mask in list)
+                foreach (var mask in list)
                 {
                     if ((mask & shared) == shared && (mask & dead) == 0)
                     {
@@ -5147,42 +5131,6 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         }
 
         /// <summary>
-        /// This method iterates through the all of the hands with the specified number of
-        /// cards that contain one of the sets of cards in the list array. 
-        /// </summary>
-        /// <param name="list">The list of cards sets (probably pocket hands) that one of which must be in the returned mask</param>
-        /// <param name="dead">A mask of the cards that must not be in the returned mask</param>
-        /// <param name="numberOfCards">The number of cards in the returned mask</param>
-        /// <returns></returns>
-        private static IEnumerable<ulong> Hands(ulong[] list, ulong dead, int numberOfCards)
-        {
-            ulong shared = 0UL;
-
-            if (list == null || list.Length == 0)
-                yield break;
-
-            foreach (ulong mask in list)
-            {
-                shared |= mask;
-            }
-
-            foreach (ulong mask in Hand.Hands(0UL, dead, numberOfCards))
-            {
-                if ((mask & shared) != 0)
-                {
-                    foreach (ulong pocket in list)
-                    {
-                        if ((pocket & mask) == pocket)
-                        {
-                            yield return mask;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// This method makes it possible to use the foreach statement
         /// on this class. This method has a typed return value so that 
         /// box/unbox is not needed while iterating.
@@ -5190,7 +5138,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public IEnumerator<ulong> GetEnumerator()
         {
-            foreach (ulong mask in list)
+            foreach (var mask in m_List)
                 yield return mask;
         }
 
@@ -5214,7 +5162,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public ulong[] ToArray()
         {
-            return list.ToArray();
+            return m_List.ToArray();
         }
 
         /// <summary>
@@ -5222,7 +5170,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// </summary>
         public int Count
         {
-            get { return list.Count; }
+            get { return m_List.Count; }
         }
 
         /// <summary>
@@ -5232,8 +5180,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public ulong this[int index]
         {
-            get { return list[index]; }
-            set { list[index] = value; }
+            get { return m_List[index]; }
+            set { m_List[index] = value; }
         }
 
         /// <summary>
@@ -5243,7 +5191,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public bool Contains(ulong mask)
         {
-            return list.Contains(mask);
+            return m_List.Contains(mask);
         }
 
         /// <summary>
@@ -5252,8 +5200,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <returns></returns>
         public override int GetHashCode()
         {
-            int hash = 0;
-            foreach (ulong mask in list)
+            var hash = 0;
+            foreach (var mask in m_List)
             {
                 hash += mask.GetHashCode();
             }
@@ -5270,10 +5218,10 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             if (!(obj is PocketHands)) return false;
 
-            PocketHands p = (PocketHands)obj;
+            var p = (PocketHands)obj;
             if (p.Count != Count) return false;
 
-            foreach (ulong mask in list)
+            foreach (var mask in m_List)
             {
                 if (!p.Contains(mask)) return false;
             }

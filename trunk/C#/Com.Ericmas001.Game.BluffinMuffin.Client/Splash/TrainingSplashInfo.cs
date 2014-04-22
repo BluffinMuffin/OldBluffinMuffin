@@ -8,12 +8,12 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
     public class TrainingSplashInfo : StepSplashInfo
     {
         private string m_PlayerName;
-        private string m_ServerAddress;
-        private int m_ServerPort;
+        private readonly string m_ServerAddress;
+        private readonly int m_ServerPort;
 
-        private LobbyTCPClientTraining m_Server;
+        private LobbyTcpClientTraining m_Server;
 
-        public LobbyTCPClientTraining Server
+        public LobbyTcpClientTraining Server
         {
             get { return m_Server; }
         }
@@ -27,7 +27,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
         {
             get
             {
-                return new Tuple<BoolEmptyHandler, string>[]
+                return new[]
                 {
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep1ReachingServer, "Reaching the server ..."),
                     new Tuple<BoolEmptyHandler, string>(ExecuteStep2Identifying, "Identifying the Player ...")
@@ -50,11 +50,11 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
         private bool ExecuteStep2Identifying()
         {
             m_Server.Start();
-            bool isOk = m_Server.Identify(m_PlayerName);
-            bool retry = true;
+            var isOk = m_Server.Identify(m_PlayerName);
+            var retry = true;
             while (!isOk && retry)
             {
-                NameUsedForm form2 = new NameUsedForm(m_PlayerName);
+                var form2 = new NameUsedForm(m_PlayerName);
                 form2.ShowDialog();
                 retry = form2.OK;
                 m_PlayerName = form2.PlayerName;
@@ -65,7 +65,7 @@ namespace Com.Ericmas001.Game.BluffinMuffin.Client.Splash
 
         public override void Init()
         {
-            m_Server = new LobbyTCPClientTraining(m_ServerAddress, m_ServerPort);
+            m_Server = new LobbyTcpClientTraining(m_ServerAddress, m_ServerPort);
         }
     }
 }

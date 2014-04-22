@@ -1,6 +1,6 @@
 ﻿namespace Com.Ericmas001.Game.Poker.GUI.Lobby
 {
-    partial class BlindUCAnte
+    partial class BlindUcAnte
     {
         /// <summary> 
         /// Required designer variable.
@@ -57,7 +57,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.lblAnte);
             this.Controls.Add(this.label2);
-            this.Name = "BlindUCAnte";
+            this.Name = "BlindUcAnte";
             this.Size = new System.Drawing.Size(146, 33);
             this.ResumeLayout(false);
             this.PerformLayout();

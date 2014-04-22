@@ -1,43 +1,41 @@
 ﻿using Com.Ericmas001.Game.Poker.DataTypes;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Com.Ericmas001.Game.Poker.Persistance
 {
     public class DummyPersistance : IDataPersistance
     {
-        private Dictionary<string, UserInfo> usersByUsername = new Dictionary<string, UserInfo>();
-        private Dictionary<string, UserInfo> usersByDisplayname = new Dictionary<string, UserInfo>();
+        private readonly Dictionary<string, UserInfo> m_UsersByUsername = new Dictionary<string, UserInfo>();
+        private readonly Dictionary<string, UserInfo> m_UsersByDisplayname = new Dictionary<string, UserInfo>();
 
         #region IDataPersistance Members
 
         public bool IsUsernameExist(string username)
         {
-            return usersByUsername.ContainsKey(username.ToLower());
+            return m_UsersByUsername.ContainsKey(username.ToLower());
         }
 
         public bool IsDisplayNameExist(string displayName)
         {
-            return usersByDisplayname.ContainsKey(displayName.ToLower());
+            return m_UsersByDisplayname.ContainsKey(displayName.ToLower());
         }
 
         public void Register(UserInfo u)
         {
-            usersByUsername.Add(u.Username.ToLower(), u);
-            usersByDisplayname.Add(u.DisplayName.ToLower(), u);
+            m_UsersByUsername.Add(u.Username.ToLower(), u);
+            m_UsersByDisplayname.Add(u.DisplayName.ToLower(), u);
         }
 
         public UserInfo Get(string username)
         {
             if (!IsUsernameExist(username))
                 return null;
-            return usersByUsername[username.ToLower()];
+            return m_UsersByUsername[username.ToLower()];
         }
 
         public UserInfo Authenticate(string username, string password)
         {
-            UserInfo u = Get(username);
+            var u = Get(username);
             if (u != null && u.Password == password)
                 return u;
             return null;
@@ -45,14 +43,14 @@ namespace Com.Ericmas001.Game.Poker.Persistance
 
         public void Update(UserInfo u)
         {
-            usersByUsername[u.Username.ToLower()] = u;
-            usersByDisplayname[u.DisplayName.ToLower()] = u;
+            m_UsersByUsername[u.Username.ToLower()] = u;
+            m_UsersByDisplayname[u.DisplayName.ToLower()] = u;
         }
 
         public void Delete(UserInfo u)
         {
-            usersByUsername.Remove(u.Username.ToLower());
-            usersByDisplayname.Remove(u.DisplayName.ToLower());
+            m_UsersByUsername.Remove(u.Username.ToLower());
+            m_UsersByDisplayname.Remove(u.DisplayName.ToLower());
         }
 
         #endregion
