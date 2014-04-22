@@ -40,12 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameTcpServer1.cs" />
+    <Compile Include="GameTcpServer.cs" />
     <Compile Include="GameObserver.cs" />
     <Compile Include="IServerLobby.cs" />
     <Compile Include="LobbyObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LobbyTcpServer1.cs" />
+    <Compile Include="LobbyTcpServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Com.Ericmas001.Collections\Com.Ericmas001.Collections.csproj">
