@@ -2,21 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using System.Linq;
 using Com.Ericmas001.Collections;
-using Com.Ericmas001.Net;
-using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Training;
-using Com.Ericmas001.Game.Poker.Protocol.Commands.Lobby.Career;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using System.Reflection;
-using System.Web;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
-using System.Runtime.Serialization.Formatters;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Game.Poker.DataTypes.Parameters;
@@ -44,7 +36,6 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         #region Ctors & Init
         public LobbyTcpClient(string serverAddress, int serverPort)
-            : base()
         {
             ServerAddress = serverAddress;
             ServerPort = serverPort;
@@ -69,7 +60,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             if (m_Clients.ContainsKey(idGame))
             {
-                GameTcpClient client = m_Clients[idGame];
+                var client = m_Clients[idGame];
 
                 m_Clients.Remove(idGame);
 
@@ -102,14 +93,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         public void Send(AbstractCommand command)
         {
-            string encode = command.Encode();
+            var encode = command.Encode();
             LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Receive", "{0} SENT [{1}]", PlayerName, encode);
             base.Send(encode);
         }
 
         public void Disconnect()
         {
-            foreach (GameTcpClient client in m_Clients.Values)
+            foreach (var client in m_Clients.Values)
                 client.Disconnect();
 
             m_Clients.Clear();
@@ -131,15 +122,15 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         public GameTcpClient JoinTable(int idTable, string tableName, IPokerViewer gui)
         {
-            bool ok = GetJoinedSeat(idTable, PlayerName);
+            var ok = GetJoinedSeat(idTable, PlayerName);
             if (!ok)
             {
                 LogManager.Log(LogLevel.MessageLow, "LobbyTcpClient.JoinTable", "Cannot join the table: {0}:{1}", tableName, idTable);
                 return null;
             }
 
-            GameTcpClient client = new GameTcpClient(PlayerName, idTable);
-            client.SendedSomething += new EventHandler<KeyEventArgs<string>>(client_SendedSomething);
+            var client = new GameTcpClient(PlayerName, idTable);
+            client.SendedSomething += client_SendedSomething;
 
             if (gui != null)
             {
@@ -183,16 +174,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         }
         protected T WaitAndReceive<T>() where T : AbstractCommand
         {
-            string expected = typeof (T).Name;
+            var expected = typeof (T).Name;
             string s;
             string commandName;
-
-            JObject jObj;
 
             do
             {
                 s = m_Incoming.Dequeue();
-                jObj = JsonConvert.DeserializeObject<dynamic>(s);
+                JObject jObj = JsonConvert.DeserializeObject<dynamic>(s);
                 commandName = (string)jObj["CommandName"];
             }
             while (s != null && commandName != expected);
@@ -228,7 +217,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
 
         public List<RuleInfo> GetSupportedRules()
         {
-            SupportedRulesCommand cmd = new SupportedRulesCommand();
+            var cmd = new SupportedRulesCommand();
             Send(cmd);
 
             return WaitAndReceive<SupportedRulesResponse>().Rules;
@@ -240,7 +229,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             {
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Run", "{0} IS WAITING", PlayerName);
 
-                string line = Receive();
+                var line = Receive();
                 if (line == null)
                 {
                     ServerLost();
@@ -250,12 +239,12 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Run", "{0} RECV [{1}]", PlayerName, line);
 
                 JObject jObj = JsonConvert.DeserializeObject<dynamic>(line);
-                String cmdName = (string)jObj["CommandName"];
+                var cmdName = (string)jObj["CommandName"];
 
                 if (cmdName == typeof(GameCommand).Name)
                 {
-                    GameCommand c = JsonConvert.DeserializeObject<GameCommand>(line);
-                    int count = 0;
+                    var c = JsonConvert.DeserializeObject<GameCommand>(line);
+                    var count = 0;
 
                     //Be patient
                     while (!m_Clients.ContainsKey(c.TableId) && (count++ < 5))

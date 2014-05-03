@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using Com.Ericmas001.Net;
-using Com.Ericmas001.Net.Protocol.JSON;
-using System.Net.Sockets;
 using Com.Ericmas001.Game.Poker.Protocol.Commands.Game;
 using Com.Ericmas001.Games;
-using System.IO;
-using Com.Ericmas001;
 using Com.Ericmas001.Game.Poker.DataTypes;
 using Com.Ericmas001.Game.Poker.DataTypes.Enums;
 using Com.Ericmas001.Game.Poker.Protocol.Commands;
 using Com.Ericmas001.Game.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
-using Newtonsoft.Json.Linq;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters;
-using Newtonsoft.Json;
-using System.Threading;
 
 namespace Com.Ericmas001.Game.Poker.Protocol.Client
 {
@@ -120,7 +109,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                BetTurnEndedCommand cmd = e.Command;
+                var cmd = e.Command;
 
                 InitPotAmounts(cmd.PotsAmounts, 0);
                 m_PokerTable.HigherBet = 0;
@@ -134,7 +123,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                BetTurnStartedCommand cmd = e.Command;
+                var cmd = e.Command;
                 SetCards(cmd.CardsId);
                 m_PokerTable.Round = cmd.Round;
 
@@ -156,7 +145,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                GameStartedCommand cmd = e.Command;
+                var cmd = e.Command;
                 
                 if (m_TablePosition >= 0 && cmd.NeededBlind > 0)
                     Send(new PlayerPlayMoneyCommand() { Played = cmd.NeededBlind });
@@ -172,8 +161,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerHoleCardsChangedCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var cmd = e.Command;
+                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -189,8 +178,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerJoinedCommand cmd = e.Command;
-                PlayerInfo p = new PlayerInfo() { Name = cmd.PlayerName };
+                var cmd = e.Command;
+                var p = new PlayerInfo() { Name = cmd.PlayerName };
 
                 m_PokerTable.JoinTable(p);
 
@@ -202,7 +191,7 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                SeatInfo s = e.Command.Seat;
+                var s = e.Command.Seat;
                 if (!s.IsEmpty)
                 {
                     m_PokerTable.SitInToTable(s.Player, s.NoSeat);
@@ -221,8 +210,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerLeftCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var cmd = e.Command;
+                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -237,8 +226,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerMoneyChangedCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var cmd = e.Command;
+                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -253,9 +242,9 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerTurnBeganCommand cmd = e.Command;
-                SeatInfo ps = m_PokerTable.Seats[cmd.PlayerPos];
-                PlayerInfo l = m_PokerTable.Seats[cmd.LastPlayerNoSeat].Player;
+                var cmd = e.Command;
+                var ps = m_PokerTable.Seats[cmd.PlayerPos];
+                var l = m_PokerTable.Seats[cmd.LastPlayerNoSeat].Player;
 
                 if (!ps.IsEmpty)
                 {
@@ -271,8 +260,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerTurnEndedCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var cmd = e.Command;
+                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 m_PokerTable.HigherBet = Math.Max(m_PokerTable.HigherBet, cmd.PlayerBet);
                 m_PokerTable.TotalPotAmnt = cmd.TotalPot;
@@ -292,8 +281,8 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                PlayerWonPotCommand cmd = e.Command;
-                PlayerInfo p = m_PokerTable.Seats[cmd.PlayerPos].Player;
+                var cmd = e.Command;
+                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
 
                 if (p != null)
                 {
@@ -316,14 +305,14 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
         {
             lock (m_PokerTable)
             {
-                TableInfoCommand cmd = e.Command;
+                var cmd = e.Command;
                 m_IsGameStarted = cmd.GameHasStarted;
                 InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
                 SetCards(cmd.BoardCardIDs);
                 m_PokerTable.Params = cmd.Params;
                 m_PokerTable.People.Clear();
 
-                for (int i = 0; i < cmd.NbPlayers; ++i)
+                for (var i = 0; i < cmd.NbPlayers; ++i)
                 {
                     m_PokerTable.SetSeat(cmd.Seats[i]);
                     m_PokerTable.People.Add(m_PokerTable.Seats[i].Player);
@@ -378,16 +367,16 @@ namespace Com.Ericmas001.Game.Poker.Protocol.Client
             m_PokerTable.Pots.Clear();
             m_PokerTable.TotalPotAmnt = totalPotAmnt;
 
-            for (int i = 0; i < amounts.Count && amounts[i] > 0; ++i)
+            for (var i = 0; i < amounts.Count && amounts[i] > 0; ++i)
             {
                 m_PokerTable.Pots.Add(new MoneyPot(i, amounts[i]));
                 m_PokerTable.TotalPotAmnt += amounts[i];
             }
         }
 
-        private void SetCards(List<int> cardsID)
+        private void SetCards(IEnumerable<int> cardsId)
         {
-            GameCard[] cards = cardsID.Select(c => new GameCard(c)).ToArray();
+            var cards = cardsId.Select(c => new GameCard(c)).ToArray();
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);
         }
 

@@ -489,7 +489,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         /// <summary>
         /// An enumeration value for each of the 169 possible types of pocket cards.
         /// </summary>
-        public enum PocketHand169Enum : int
+        public enum PocketHand169Enum
         {
             /// <summary>
             /// Not a PocketHand169Enum
@@ -1270,7 +1270,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                                         n5 = n4 | CardMasksTable[e];
                                         for (f = e + 1; f < CardMasksTableSize - 1; f++)
                                         {
-                                            ulong n6 = n5 | CardMasksTable[f];
+                                            var n6 = n5 | CardMasksTable[f];
                                             int g;
                                             for (g = f + 1; g < CardMasksTableSize; g++)
                                             {
@@ -1448,11 +1448,11 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                                         {
                                             card6 = CardMasksTable[f];
                                             if ((dead & card6) != 0) continue;
-                                            ulong n6 = n5 | card6;
+                                            var n6 = n5 | card6;
                                             int g;
                                             for (g = f + 1; g < CardMasksTableSize; g++)
                                             {
-                                                ulong card7 = CardMasksTable[g];
+                                                var card7 = CardMasksTable[g];
                                                 if ((dead & card7) != 0) continue;
                                                 yield return n6 | card7 | shared;
                                             }
