@@ -985,7 +985,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             var dict = new Dictionary<uint, long>();
             foreach (var mask in Hands(shared, 0UL, ncards))
             {
-                uint hv = Evaluate(mask);
+                var hv = Evaluate(mask);
                 if (!dict.ContainsKey(hv))
                     dict.Add(hv, 1);
             }
@@ -1930,8 +1930,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 // The order cards are dealt doesn't effect the resulting
                 // odds in a simulation like this. So for coding convienence
                 // we will draw the board cards before the opponents cards.
-                ulong boardmask = RandomHand(rand, board, pocket | dead, 5);
-                ulong deadmask = pocket | dead | boardmask;
+                var boardmask = RandomHand(rand, board, pocket | dead, 5);
+                var deadmask = pocket | dead | boardmask;
 
                 // Assign opponents their hands and calculate their
                 // mask value.
@@ -1949,7 +1949,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 Array.Sort(oppHandVal);
 
                 // Get the best opponent mask.
-                uint best = oppHandVal[playerCount - 1];
+                var best = oppHandVal[playerCount - 1];
 
                 // Update the results
                 if (handval > best)
@@ -2019,8 +2019,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 // The order cards are dealt doesn't effect the resulting
                 // odds in a simulation like this. So for coding convienence
                 // we will draw the board cards before the opponents cards.
-                ulong boardmask = RandomHand(rand, board, pocket | dead, 5);
-                ulong deadmask = pocket | dead | boardmask;
+                var boardmask = RandomHand(rand, board, pocket | dead, 5);
+                var deadmask = pocket | dead | boardmask;
 
                 for (var i = 0; i < playerCount; i++)
                 {
@@ -2031,7 +2031,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 var handval = Evaluate(pocket | boardmask, 7);
 
                 Array.Sort(oppHandVal);
-                uint best = oppHandVal[playerCount - 1];
+                var best = oppHandVal[playerCount - 1];
 
                 if (handval > best)
                 {
@@ -2217,8 +2217,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
             {
                 foreach (var handmask in Hands(board, ourcards | oppcards, 5))
                 {
-                    uint ourbest = Evaluate(ourcards | handmask, 7);
-                    uint oppbest = Evaluate(oppcards | handmask, 7);
+                    var ourbest = Evaluate(ourcards | handmask, 7);
+                    var oppbest = Evaluate(oppcards | handmask, 7);
                     if (ourbest > oppbest)
                     {
                         player[HandType(ourbest)] += 1.0;
@@ -2871,7 +2871,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
         {
             var pocketmasks = new ulong[pockets.Length];
             var pockethands = new ulong[pockets.Length];
-            int count = 0;
+            var count = 0;
             ulong deadcardsMask = 0UL, deadcards = ParseHand(dead, ref count);
 
             totalHands = 0;
@@ -2890,7 +2890,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
             // Read board cards
             count = 0;
-            ulong boardmask = ParseHand("", board, ref count);
+            var boardmask = ParseHand("", board, ref count);
 
 
 #if DEBUG
@@ -2923,7 +2923,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 // Evaluate all hands and determine the best mask
                 ulong bestpocket = Evaluate(pocketmasks[0] | boardhand, 7);
                 pockethands[0] = bestpocket;
-                int bestcount = 1;
+                var bestcount = 1;
                 for (var i = 1; i < pockets.Length; i++)
                 {
                     pockethands[i] = Evaluate(pocketmasks[i] | boardhand, 7);
@@ -3003,8 +3003,8 @@ namespace Com.Ericmas001.Game.Poker.HandEval
                 var index = (ourrank > opprank ? ahead : (ourrank == opprank ? tied : behind));
                 foreach (var boardmask in Hands(board, pocket | oppPocket, 5))
                 {
-                    uint ourbest = Evaluate(pocket | boardmask, 7);
-                    uint oppbest = Evaluate(oppPocket | boardmask, 7);
+                    var ourbest = Evaluate(pocket | boardmask, 7);
+                    var oppbest = Evaluate(oppPocket | boardmask, 7);
                     if (ourbest > oppbest)
                         hp[index, ahead]++;
                     else if (ourbest == oppbest)

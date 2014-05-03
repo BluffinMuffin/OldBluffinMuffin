@@ -1306,7 +1306,7 @@ namespace Com.Ericmas001.Game.Poker.HandEval
 
                 default:
                     /* Possible quads, fullhouse, straight or flush, or two pair */
-                    uint fourMask = sh & sd & sc & ss;
+                    var fourMask = sh & sd & sc & ss;
                     if (fourMask != 0)
                     {
                         uint tc = topCardTable[fourMask];
