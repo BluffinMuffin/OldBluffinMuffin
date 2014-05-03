@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyTable.cs" />
-    <Compile Include="GameTcpClient.cs" />
+    <Compile Include="GameTcpClient2.cs" />
     <Compile Include="GameObserver.cs" />
-    <Compile Include="LobbyTcpClient.cs" />
+    <Compile Include="LobbyTcpClient2.cs" />
     <Compile Include="LobbyTcpClientCareer.cs" />
     <Compile Include="LobbyTcpClientTraining.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
