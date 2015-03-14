@@ -10,7 +10,7 @@ The C# version is currently under developpement during spare time :)
 
 ----
 
-# [Beta 4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4): April 7th 2014
+# [Beta 4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4): April 2014
 
  * Compatibility
   * Beta4 Client works only with Beta4 Server
@@ -21,27 +21,27 @@ The C# version is currently under developpement during spare time :)
 
 ----
 
-# Beta 3: October 2010 (r396)
+# [Beta 3](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.3-beta.3): October 2010
 
  * Compatibility
   * Beta2b Client works only with Beta3 Servers
   * Beta3 Client works only with Beta3 Servers
   * Beta3 Servers works only with Beta2b and Beta3 Clients
  * Downloads
-  * [Java Beta2b Client](https://drive.google.com/file/d/0B2wUdLMFaj9JMVBfdkZuSS1WbFE/edit?usp=sharing)
-  * [Java Beta3 Server](https://drive.google.com/file/d/0B2wUdLMFaj9JSGFjS2lobzQ4N1E/edit?usp=sharing)
-  * [C# Beta3 Client](https://drive.google.com/file/d/0B2wUdLMFaj9JM1FWMTVoTG1nWEU/edit?usp=sharing)
-  * [C# Beta3 Server](https://drive.google.com/file/d/0B2wUdLMFaj9JMVI5bzBXSUY0RlE/edit?usp=sharing)
+  * [Java Beta2b Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.3-beta.3/BluffinMuffin.PokerClient.Java.B02b.zip)
+  * [Java Beta3 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.3-beta.3/BluffinMuffin.PokerServer.Java.B03.jar)
+  * [C# Beta3 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.3-beta.3/BluffinMuffin.PokerClient.Net.B03.zip)
+  * [C# Beta3 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.3-beta.3/BluffinMuffin.PokerServer.Net.B03.zip)
 
 ----
 
-# Beta 2: April 2010 (r328)==
+# [Beta 3](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.2-beta.2): April 2010
 
  * Compatibility
   * Beta2 Clients works only with Beta2 Servers
   * Beta2 Servers works only with Beta2 Clients
  * Downloads
-  * [Java Beta2 Client](https://drive.google.com/file/d/0B2wUdLMFaj9JS3FHSWd5anpLSEU/edit?usp=sharing)
-  * [Java Beta2 Server](https://drive.google.com/file/d/0B2wUdLMFaj9JTVRobW9obEdmaE0/edit?usp=sharing)
-  * [C# Beta2 Client](https://drive.google.com/file/d/0B2wUdLMFaj9JVU84TFFNOGtvNTQ/edit?usp=sharing)
-  * [C# Beta2 Server](https://drive.google.com/file/d/0B2wUdLMFaj9JaFVSM3B2UTNENUU/edit?usp=sharing)
+  * [Java Beta2 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.Client.zip)
+  * [Java Beta2 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.C.Server.zip)
+  * [C# Beta2 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.C.Client.zip)
+  * [C# Beta2 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.C.Server.zip)
