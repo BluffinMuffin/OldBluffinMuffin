@@ -4,7 +4,7 @@ The Java version hasn't change since 2010 (Beta3)
 
 The C# version is currently under developpement during spare time :)
 
-  * Current Version: [Beta4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4)
+  * Current Version: [Beta4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4) (2014-04-07)
 
 ![alt tag](https://googledrive.com/host/0B2wUdLMFaj9JX0pPakRnbWZkeTQ/Beta4.png)
 
@@ -14,7 +14,6 @@ The C# version is currently under developpement during spare time :)
 
   * Beta4 Client works only with Beta4 Server
   * Beta4 Server works only with Beta4 Client
-
 
   * [C# Beta4 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.4-beta.4/BluffinMuffinClient.Beta4.2014-04-07.zip)
   * [C# Beta4 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.4-beta.4/BluffinMuffinServer.Beta4.2014-04-07.zip)
@@ -26,8 +25,6 @@ The C# version is currently under developpement during spare time :)
   * Beta2b Client works only with Beta3 Servers
   * Beta3 Client works only with Beta3 Servers
   * Beta3 Servers works only with Beta2b and Beta3 Clients
-
-
   * [Java Beta2b Client](https://drive.google.com/file/d/0B2wUdLMFaj9JMVBfdkZuSS1WbFE/edit?usp=sharing)
   * [Java Beta3 Server](https://drive.google.com/file/d/0B2wUdLMFaj9JSGFjS2lobzQ4N1E/edit?usp=sharing)
   * [C# Beta3 Client](https://drive.google.com/file/d/0B2wUdLMFaj9JM1FWMTVoTG1nWEU/edit?usp=sharing)
@@ -39,8 +36,6 @@ The C# version is currently under developpement during spare time :)
 
   * Beta2 Clients works only with Beta2 Servers
   * Beta2 Servers works only with Beta2 Clients
-
-
   * [Java Beta2 Client](https://drive.google.com/file/d/0B2wUdLMFaj9JS3FHSWd5anpLSEU/edit?usp=sharing)
   * [Java Beta2 Server](https://drive.google.com/file/d/0B2wUdLMFaj9JTVRobW9obEdmaE0/edit?usp=sharing)
   * [C# Beta2 Client](https://drive.google.com/file/d/0B2wUdLMFaj9JVU84TFFNOGtvNTQ/edit?usp=sharing)
