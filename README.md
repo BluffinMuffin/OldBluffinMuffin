@@ -35,7 +35,7 @@ The C# version is currently under developpement during spare time :)
 
 ----
 
-# [Beta 3](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.2-beta.2): April 2010
+# [Beta 2](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.2-beta.2): April 2010
 
  * Compatibility
   * Beta2 Clients works only with Beta2 Servers
