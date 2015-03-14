@@ -42,6 +42,6 @@ The C# version is currently under developpement during spare time :)
   * Beta2 Servers works only with Beta2 Clients
  * Downloads
   * [Java Beta2 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.Client.zip)
-  * [Java Beta2 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.C.Server.zip)
+  * [Java Beta2 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.Server.jar)
   * [C# Beta2 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.C.Client.zip)
   * [C# Beta2 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.2-beta.2/Bluffin.Muffin.C.Server.zip)
