@@ -10,7 +10,7 @@ The C# version is currently under developpement during spare time :)
 
 ----
 
-# Beta 4: April 7th 2014 (r487)
+# [Beta 4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4): April 7th 2014
 
  * Compatibility
   * Beta4 Client works only with Beta4 Server
