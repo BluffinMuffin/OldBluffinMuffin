@@ -31,9 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -94,14 +97,6 @@
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
       <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
       <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Games\Com.Ericmas001.Games.csproj">
-      <Project>{64d407d1-1119-42a6-86f2-a98a31fdb3b2}</Project>
-      <Name>Com.Ericmas001.Games</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
-      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
-      <Name>Com.Ericmas001.Net.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

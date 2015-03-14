@@ -31,9 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Com.Ericmas001.Collections">
+      <HintPath>..\References\Com.Ericmas001.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Games">
+      <HintPath>..\References\Com.Ericmas001.Games.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Net.JSON">
+      <HintPath>..\References\Com.Ericmas001.Net.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Util">
+      <HintPath>..\References\Com.Ericmas001.Util.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,10 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Com.Ericmas001.Collections\Com.Ericmas001.Collections.csproj">
-      <Project>{48bed84d-b03c-4708-bf68-21bd4922a51c}</Project>
-      <Name>Com.Ericmas001.Collections</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.DataTypes\Com.Ericmas001.Game.Poker.DataTypes.csproj">
       <Project>{ae42a29b-0d01-44c8-b824-dca0471a7860}</Project>
       <Name>Com.Ericmas001.Game.Poker.DataTypes</Name>
@@ -64,18 +75,6 @@
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Commands\Com.Ericmas001.Game.Poker.Protocol.Commands.csproj">
       <Project>{d19c48c3-3af0-4323-8479-0c4f21eab104}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Games\Com.Ericmas001.Games.csproj">
-      <Project>{64d407d1-1119-42a6-86f2-a98a31fdb3b2}</Project>
-      <Name>Com.Ericmas001.Games</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
-      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
-      <Name>Com.Ericmas001.Net.Protocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
-      <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
-      <Name>Com.Ericmas001.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

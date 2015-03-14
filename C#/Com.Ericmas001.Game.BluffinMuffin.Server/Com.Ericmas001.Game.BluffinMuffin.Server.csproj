@@ -36,6 +36,12 @@
     <ApplicationIcon>server.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Util">
+      <HintPath>..\References\Com.Ericmas001.Util.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,18 +77,6 @@
     <ProjectReference Include="..\Com.Ericmas001.Game.Poker.Protocol.Server\Com.Ericmas001.Game.Poker.Protocol.Server.csproj">
       <Project>{d0973089-76fa-4361-9d10-79dc6e12ca11}</Project>
       <Name>Com.Ericmas001.Game.Poker.Protocol.Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Net.JSON\Com.Ericmas001.Net.JSON.csproj">
-      <Project>{50fdad8f-01c6-4b41-9547-8e212bbeb9b4}</Project>
-      <Name>Com.Ericmas001.Net.JSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Net.Protocol\Com.Ericmas001.Net.Protocol.csproj">
-      <Project>{74dff71c-67d4-4afc-9688-766eb32ad4f6}</Project>
-      <Name>Com.Ericmas001.Net.Protocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Com.Ericmas001.Util\Com.Ericmas001.Util.csproj">
-      <Project>{473a461c-a3ef-49a1-b4ef-0fdbe2304717}</Project>
-      <Name>Com.Ericmas001.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
