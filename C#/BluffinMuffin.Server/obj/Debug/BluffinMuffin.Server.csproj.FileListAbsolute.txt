@@ -21,3 +21,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Server\bin\
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Server\obj\Debug\BluffinMuffin.Server.csprojResolveAssemblyReference.cache
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Server\obj\Debug\BluffinMuffin.Server.exe
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Server\obj\Debug\BluffinMuffin.Server.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Server\bin\Debug\Com.Ericmas001.Net.JSON.dll
