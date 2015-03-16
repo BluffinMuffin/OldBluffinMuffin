@@ -158,6 +158,7 @@ namespace BluffinMuffin.Poker.Logic
 
             var blindNeeded = GameTable.GetBlindNeeded(p);
 
+            p.State = PlayerStateEnum.Zombie;
             if (State == GameStateEnum.Playing && Table.CurrentPlayer == p)
                 PlayMoney(p, -1);
             else if (blindNeeded > 0)
@@ -534,7 +535,8 @@ namespace BluffinMuffin.Poker.Logic
         }
         private void FoldPlayer(PlayerInfo p)
         {
-            p.State = PlayerStateEnum.SitIn;
+            if(p.State != PlayerStateEnum.Zombie)
+                p.State = PlayerStateEnum.SitIn;
 
             WaitALittle(Params.WaitingTimes.AfterPlayerAction);
 
