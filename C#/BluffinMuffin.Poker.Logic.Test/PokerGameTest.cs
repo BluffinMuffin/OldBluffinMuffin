@@ -13,7 +13,7 @@ namespace BluffinMuffin.Poker.Logic.Test
         [TestMethod]
         public void JoinAndLeaveTest()
         {
-            var game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
+            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2, Blind = new BlindOptionsBlinds() { MoneyUnit = 10 } }));
             var p1 = new PlayerInfo("p1", 5000);
             var p1Dup = new PlayerInfo("p1", 5000);
             var p2 = new PlayerInfo("p2", 5000);
@@ -29,19 +29,39 @@ namespace BluffinMuffin.Poker.Logic.Test
 
             Assert.AreEqual(false, game.JoinGame(p1Dup), "You should not be able to enter a game with the same name as another player");
 
+            SeatInfo s1 = game.GameTable.AskToSitIn(p1, -1);
+
+            Assert.AreNotEqual(null, s1, "You should be able to sit in a game with all the seats available");
+
             Assert.AreNotEqual(-1, game.SitIn(p1), "You should be able to sit in a game with all the seats available");
 
-            Assert.AreEqual(-1, game.SitIn(p1), "You should not be able to sit in twice");
+            SeatInfo s1b = game.GameTable.AskToSitIn(p1, -1);
+
+            Assert.AreEqual(null, s1b, "You should not be able to sit in twice");
+
+            //Assert.AreEqual(-1, game.SitIn(p1), "You should not be able to sit in twice");
 
             Assert.AreEqual(true, game.JoinGame(p2), "You should be able to enter a started game with only 1 player");
+
+            SeatInfo s2 = game.GameTable.AskToSitIn(p2, -1);
+
+            Assert.AreNotEqual(null, s2, "You should be able to sit in a game with only 1 seated player");
 
             Assert.AreNotEqual(-1, game.SitIn(p2), "You should be able to sit in a game with only 1 seated player");
 
             Assert.AreEqual(true, game.JoinGame(p3), "You should always be able to enter a started game even if full (MaxSeats=2)");
 
+            SeatInfo s3 = game.GameTable.AskToSitIn(p3, -1);
+
+            Assert.AreEqual(null, s3, "You should not be able to sit in a game that is full (MaxSeats=2)");
+
             Assert.AreEqual(-1, game.SitIn(p3), "You should not be able to sit in a game that is full (MaxSeats=2)");
 
             game.LeaveGame(p2);
+
+            SeatInfo s3b = game.GameTable.AskToSitIn(p3, -1);
+
+            Assert.AreNotEqual(null, s3b, "You should be able to sit in a game that is now with only 1 seated player");
 
             Assert.AreNotEqual(-1, game.SitIn(p3), "You should be able to sit in a game that is now with only 1 seated player");
 
@@ -55,7 +75,7 @@ namespace BluffinMuffin.Poker.Logic.Test
         public void BlindsTest()
         {
             //start the game with p1 and p2
-            var game = new PokerGame( new PokerTable(new TableParams() { MaxPlayers = 2}));
+            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2, Blind = new BlindOptionsBlinds() { MoneyUnit = 10 } }));
             game.Start();
             var p1 = new PlayerInfo("p1", 5000);
             SitInGame(game, p1);
@@ -98,7 +118,7 @@ namespace BluffinMuffin.Poker.Logic.Test
         [TestMethod]
         public void StatesTest()
         {
-            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
+            var game = new PokerGame(new PokerTable(new TableParams() {MaxPlayers = 2, Blind = new BlindOptionsBlinds() {MoneyUnit = 10}}));
 
             Assert.AreEqual(GameStateEnum.Init, game.State, "The game should not be started");
 
@@ -189,7 +209,7 @@ namespace BluffinMuffin.Poker.Logic.Test
         public void BettingTest()
         {
             //start the game
-            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2 }));
+            var game = new PokerGame(new PokerTable(new TableParams() { MaxPlayers = 2, Blind = new BlindOptionsBlinds() { MoneyUnit = 10 } }));
             game.Start();
 
             //make p1 join the game
@@ -269,6 +289,7 @@ namespace BluffinMuffin.Poker.Logic.Test
         private static void SitInGame(PokerGame game, PlayerInfo p1)
         {
             game.JoinGame(p1);
+            game.GameTable.AskToSitIn(p1, -1);
             game.SitIn(p1);
         }
     }
