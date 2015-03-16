@@ -156,15 +156,15 @@ namespace BluffinMuffin.Poker.Logic
             if (oldSeat == -1)
                 return true;
 
-            var wasPlaying = (State == GameStateEnum.Playing && Table.CurrentPlayer == p);
             var blindNeeded = GameTable.GetBlindNeeded(p);
+
+            if (State == GameStateEnum.Playing && Table.CurrentPlayer == p)
+                PlayMoney(p, -1);
+            else if (blindNeeded > 0)
+                PlayMoney(p, blindNeeded);
 
             if (Table.SitOut(p))
             {
-                if (wasPlaying)
-                    PlayMoney(p, -1);
-                if (blindNeeded > 0)
-                    PlayMoney(p, blindNeeded);
                 var seat = new SeatInfo()
                 {
                     Player = null,
