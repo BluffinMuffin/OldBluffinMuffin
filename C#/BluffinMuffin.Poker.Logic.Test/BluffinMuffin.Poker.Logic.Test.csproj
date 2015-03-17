@@ -55,7 +55,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PokerGameTests\BettingRoundsTests.cs" />
     <Compile Include="PokerGameTests\BlindsTests.cs" />
+    <Compile Include="PokerGameTests\DataTypes\GameInfo.cs" />
+    <Compile Include="PokerGameTests\Helpers\GameHelper.cs" />
     <Compile Include="PokerGameTests\Helpers\PlayerHelper.cs" />
     <Compile Include="PokerGameTests\GameStateTests.cs" />
     <Compile Include="PokerGameTests\BettingTests.cs" />

@@ -13,15 +13,15 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
     {
         public static PlayerInfo GenerateP1()
         {
-            return new PlayerInfo("p1", 5000);
+            return new PlayerInfo("p1", 100);
         }
         public static PlayerInfo GenerateP2()
         {
-            return new PlayerInfo("p2", 5000);
+            return new PlayerInfo("p2", 1000);
         }
         public static PlayerInfo GenerateP2Poor()
         {
-            return new PlayerInfo("p2", 5000);
+            return new PlayerInfo("p2", 2);
         }
         public static PlayerInfo GenerateP3()
         {

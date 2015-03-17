@@ -11,12 +11,20 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
     [TestClass]
     public class GameStateTests
     {
+        [TestMethod]
+        public void AfterBlindsGameStateIsPlaying()
+        {
+            var nfo = GameMock.Simple2PlayersBlindsGameBlindsPosted();
+
+            Assert.AreEqual(GameStateEnum.Playing, nfo.Game.State, "The game should now be in the playing state");
+        }
 
 
         [TestMethod]
         public void BigUglyTest()
         {
-            var game = GameMock.GenerateSimple2PlayersBlindsGame();
+            var nfo = GameMock.Simple2PlayersBlindsGameEmpty();
+            var game = nfo.Game;
 
             Assert.AreEqual(GameStateEnum.Init, game.State, "The game should not be started");
 
@@ -44,8 +52,6 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
 
             //Post need blinds for p2
             PlayerHelper.PutBlinds(game, p2);
-
-            Assert.AreEqual(GameStateEnum.Playing, game.State, "The game should now be in the playing state");
 
             //Make the player fold so the other one already win the pot
             game.PlayMoney(game.Table.CurrentPlayer, -1);

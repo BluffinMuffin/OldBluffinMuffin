@@ -13,86 +13,74 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void StartGameAndWaitForBlinds()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGameAndSitsP1P2();
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
 
-            Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should now wait for blinds");
+            Assert.AreEqual(GameStateEnum.WaitForBlinds, nfo.Game.State, "The game should now wait for blinds");
         }
 
         [TestMethod]
         public void StartGameAndCheckNeededBlindP1()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGame();
-            var p1 = PlayerMock.GenerateP1Seated(game);
-            PlayerMock.GenerateP2Seated(game);
-
-            Assert.AreNotEqual(0, game.GameTable.GetBlindNeeded(p1), "The game should need a blind from p1");
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            Assert.AreNotEqual(0, nfo.Game.GameTable.GetBlindNeeded(nfo.P1), "The game should need a blind from p1");
         }
 
         [TestMethod]
         public void StartGameAndCheckNeededBlindP2()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGameAndSitsP1();
-            var p2 = PlayerMock.GenerateP2Seated(game);
-
-            Assert.AreNotEqual(0, game.GameTable.GetBlindNeeded(p2), "The game should need a blind from p2");
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            Assert.AreNotEqual(0, nfo.Game.GameTable.GetBlindNeeded(nfo.P2), "The game should need a blind from p2");
         }
 
         [TestMethod]
         public void StartGameAndTryPutBlindMoreThanNeeded()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGameAndSitsP1P2();
-            var player = game.GameTable.Players.First();
-
-            Assert.AreEqual(false, game.PlayMoney(player, game.GameTable.GetBlindNeeded(player) + 1), "The game should not accept any blind that is over what is needed");
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            Assert.AreEqual(false, nfo.Game.PlayMoney(nfo.P1, nfo.Game.GameTable.GetBlindNeeded(nfo.P1) + 1), "The game should not accept any blind that is over what is needed");
         }
 
         [TestMethod]
         public void StartGameAndTryPutBlindLessThanNeeded()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGameAndSitsP1P2();
-            var player = game.GameTable.Players.First();
-
-            Assert.AreEqual(false, game.PlayMoney(player, game.GameTable.GetBlindNeeded(player) - 1), "The game should not accept any blind that is under what is needed unless that is all the player got");
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            Assert.AreEqual(false, nfo.Game.PlayMoney(nfo.P1, nfo.Game.GameTable.GetBlindNeeded(nfo.P1) - 1), "The game should not accept any blind that is under what is needed unless that is all the player got");
         }
 
         [TestMethod]
         public void StartGameAndTryPutBlindLessThanNeededWithPoorPlayer()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGameAndSitsP1();
-            var p2 = PlayerMock.GenerateP2PoorSeated(game);
+            var nfo = GameMock.Simple2PlayersBlindsGameWithP1Seated();
+            nfo.P2 = PlayerMock.GenerateP2PoorSeated(nfo.Game);
 
-            Assert.AreEqual(false, game.PlayMoney(p2, p2.MoneySafeAmnt), "The game should accept a blind that is under what is needed if that is all the player got");
+            Assert.AreEqual(true, nfo.Game.PlayMoney(nfo.P2, nfo.P2.MoneySafeAmnt), "The game should accept a blind that is under what is needed if that is all the player got");
         }
 
         [TestMethod]
         public void StartGameAndTryPutBlind()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGameAndSitsP1P2();
-            var player = game.GameTable.Players.First();
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
 
-            Assert.AreEqual(true, game.PlayMoney(player, game.GameTable.GetBlindNeeded(player)), "The game should accept a perfect blind");
+            Assert.AreEqual(true, nfo.Game.PlayMoney(nfo.P1, nfo.Game.GameTable.GetBlindNeeded(nfo.P1)), "The game should accept a perfect blind");
         }
 
         [TestMethod]
         public void StartGameAndCheckNeededBlindP1AfterP1PutHis()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGame();
-            var p1 = PlayerMock.GenerateP1Seated(game);
-            PlayerMock.GenerateP2Seated(game);
-            game.PlayMoney(p1, game.GameTable.GetBlindNeeded(p1));
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
 
-            Assert.AreEqual(0, game.GameTable.GetBlindNeeded(p1), "The game should not need a blind from p1 anymore");
+            nfo.Game.PlayMoney(nfo.P1, nfo.Game.GameTable.GetBlindNeeded(nfo.P1));
+
+            Assert.AreEqual(0, nfo.Game.GameTable.GetBlindNeeded(nfo.P1), "The game should not need a blind from p1 anymore");
         }
 
         [TestMethod]
         public void StartGameAndCheckNeededBlindP2AfterP1PutHis()
         {
-            var game = GameMock.StartSimple2PlayersBlindsGame();
-            var p1 = PlayerMock.GenerateP1Seated(game);
-            var p2 = PlayerMock.GenerateP2Seated(game);
-            game.PlayMoney(p1, game.GameTable.GetBlindNeeded(p1));
+            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
 
-            Assert.AreNotEqual(0, game.GameTable.GetBlindNeeded(p2), "The game should still need a blind from p2");
+            nfo.Game.PlayMoney(nfo.P1, nfo.Game.GameTable.GetBlindNeeded(nfo.P1));
+
+            Assert.AreNotEqual(0, nfo.Game.GameTable.GetBlindNeeded(nfo.P2), "The game should still need a blind from p2");
         }
     }
 }
