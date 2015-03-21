@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using BluffinMuffin.Poker.DataTypes;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes
@@ -9,9 +11,16 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes
         public PlayerInfo P1 { get; set; }
         public PlayerInfo P2 { get; set; }
         public PlayerInfo P3 { get; set; }
+        public PlayerInfo P4 { get; set; }
+        
 
+        public IEnumerable<PlayerInfo> Players{ get { return Game.GameTable.PlayingPlayers; }}
         public PlayerInfo CurrentPlayer { get { return Game.Table.CurrentPlayer; } }
-        public PlayerInfo PoorestPlayer { get { return Game.Table.Players.OrderBy(x => x.MoneySafeAmnt).First(); } }
+        public PlayerInfo PoorestPlayer { get { return Players.OrderBy(x => x.MoneySafeAmnt).First(); } }
+
+        public PlayerInfo CalculatedSmallBlind { get { return Players.Where(x => BlindNeeded(x) > 0).OrderBy(BlindNeeded).First(); } }
+        public PlayerInfo CalculatedBigBlind { get { return Players.Where(x => BlindNeeded(x) > 0).OrderBy(BlindNeeded).Last(); } }
+        public PlayerInfo Dealer { get { return Game.GameTable.DealerSeat.Player; } }
 
 
         public bool CurrentPlayerPlays(int amount)
@@ -49,6 +58,11 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes
         public void PutBlinds(PlayerInfo p)
         {
             Game.PlayMoney(p, BlindNeeded(p));
+        }
+
+        public PlayerInfo PlayerNextTo(PlayerInfo p)
+        {
+            return Game.GameTable.GetSeatOfPlayingPlayerNextTo(Game.GameTable.Seats.Single(x => x.Player == p)).Player;
         }
     }
 }

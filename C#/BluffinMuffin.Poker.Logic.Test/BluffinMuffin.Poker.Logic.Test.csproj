@@ -62,9 +62,15 @@
     <Compile Include="PokerGameTests\BettingTests.cs" />
     <Compile Include="PokerGameTests\JoiningSittingLeavingTests.cs" />
     <Compile Include="PokerGameTests\Mocks\PlayerMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple4PlayersBlindsGameMock.cs" />
     <Compile Include="PokerGameTests\Mocks\Simple3PlayersBlindsGameMock.cs" />
     <Compile Include="PokerGameTests\Mocks\Simple2PlayersBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\WhosWhoTests.cs" />
+    <Compile Include="PokerGameTests\WhoAreTheBlindsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PokerGameTests\WhoIsUnderTheGunTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

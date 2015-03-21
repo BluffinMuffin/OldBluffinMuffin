@@ -54,8 +54,8 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
         {
             var nfo = WithAllPlayersSeated();
 
-            nfo.PutBlinds(nfo.P1);
-            nfo.PutBlinds(nfo.P2);
+            nfo.PutBlinds(nfo.CalculatedSmallBlind);
+            nfo.PutBlinds(nfo.CalculatedBigBlind);
 
             return nfo;
         }

@@ -3,7 +3,7 @@ using BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 {
-    public static class Simple2PlayersBlindsGameMock
+    public static class Simple4PlayersBlindsGameMock
     {
         public static GameInfo Empty()
         {
@@ -13,7 +13,8 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                     new PokerTable(
                         new TableParams()
                         {
-                            MaxPlayers = 2,
+                            MaxPlayers = 4,
+                            MinPlayersToStart = 4,
                             Blind = new BlindOptionsBlinds()
                             {
                                 MoneyUnit = 10
@@ -35,16 +36,30 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 
             return nfo;
         }
-        public static GameInfo WithBothPlayersSeated()
+        public static GameInfo WithOnlyP1P2Seated()
         {
             var nfo = WithOnlyP1Seated();
             nfo.P2 = PlayerMock.GenerateP2Seated(nfo);
 
             return nfo;
         }
+        public static GameInfo WithOnlyP1P2P3Seated()
+        {
+            var nfo = WithOnlyP1P2Seated();
+            nfo.P3 = PlayerMock.GenerateP3Seated(nfo);
+
+            return nfo;
+        }
+        public static GameInfo WithAllPlayersSeated()
+        {
+            var nfo = WithOnlyP1P2P3Seated();
+            nfo.P4 = PlayerMock.GenerateP4Seated(nfo);
+
+            return nfo;
+        }
         public static GameInfo BlindsPosted()
         {
-            var nfo = WithBothPlayersSeated();
+            var nfo = WithAllPlayersSeated();
 
             nfo.PutBlinds(nfo.CalculatedSmallBlind);
             nfo.PutBlinds(nfo.CalculatedBigBlind);
@@ -57,6 +72,8 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 
             nfo.CurrentPlayerCalls();
             nfo.CurrentPlayerCalls();
+            nfo.CurrentPlayerCalls();
+            nfo.CurrentPlayerCalls();
 
             return nfo;
         }
@@ -66,6 +83,8 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 
             nfo.CurrentPlayerCalls();
             nfo.CurrentPlayerCalls();
+            nfo.CurrentPlayerCalls();
+            nfo.CurrentPlayerCalls();
 
             return nfo;
         }
@@ -73,6 +92,8 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
         {
             var nfo = AfterFlop();
 
+            nfo.CurrentPlayerCalls();
+            nfo.CurrentPlayerCalls();
             nfo.CurrentPlayerCalls();
             nfo.CurrentPlayerCalls();
 

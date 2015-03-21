@@ -25,6 +25,10 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
         {
             return new PlayerInfo("p3", 5000);
         }
+        public static PlayerInfo GenerateP4()
+        {
+            return new PlayerInfo("p4", 5000);
+        }
         public static PlayerInfo GenerateP1Seated(GameInfo nfo)
         {
             return nfo.SitInGame(GenerateP1());
@@ -40,7 +44,12 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 
         internal static PlayerInfo GenerateP3Seated(GameInfo nfo)
         {
-            throw new System.NotImplementedException();
+            return nfo.SitInGame(GenerateP3());
+        }
+
+        internal static PlayerInfo GenerateP4Seated(GameInfo nfo)
+        {
+            return nfo.SitInGame(GenerateP4());
         }
     }
 }
