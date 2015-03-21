@@ -62,7 +62,6 @@
     <Compile Include="PokerGameTests\Helpers\PlayerHelper.cs" />
     <Compile Include="PokerGameTests\GameStateTests.cs" />
     <Compile Include="PokerGameTests\BettingTests.cs" />
-    <Compile Include="PokerGameTests\SplittingPotsTests.cs" />
     <Compile Include="PokerGameTests\JoiningSittingLeavingTests.cs" />
     <Compile Include="PokerGameTests\Mocks\PlayerMock.cs" />
     <Compile Include="PokerGameTests\Mocks\GameMock.cs" />

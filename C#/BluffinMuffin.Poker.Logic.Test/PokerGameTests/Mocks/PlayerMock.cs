@@ -13,15 +13,19 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
     {
         public static PlayerInfo GenerateP1()
         {
-            return new PlayerInfo("p1", 100);
+            return new PlayerInfo("p1", 5000);
         }
         public static PlayerInfo GenerateP2()
         {
-            return new PlayerInfo("p2", 1000);
+            return new PlayerInfo("p2", 5000);
+        }
+        public static PlayerInfo GenerateP2ReallyReallyPoor()
+        {
+            return new PlayerInfo("p2", 2);
         }
         public static PlayerInfo GenerateP2Poor()
         {
-            return new PlayerInfo("p2", 2);
+            return new PlayerInfo("p2", 1000);
         }
         public static PlayerInfo GenerateP3()
         {
@@ -37,7 +41,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
         }
         public static PlayerInfo GenerateP2PoorSeated(PokerGame game)
         {
-            return PlayerHelper.SitInGame(game, GenerateP2Poor());
+            return PlayerHelper.SitInGame(game, GenerateP2ReallyReallyPoor());
         }
     }
 }

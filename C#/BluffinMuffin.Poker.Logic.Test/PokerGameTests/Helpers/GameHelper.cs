@@ -16,6 +16,10 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Helpers
         {
             return CurrentPlayerPlays(game, 0);
         }
+        public static bool CurrentPlayerFolds(PokerGame game)
+        {
+            return CurrentPlayerPlays(game, -1);
+        }
         public static bool CurrentPlayerCalls(PokerGame game)
         {
             return CurrentPlayerPlays(game, game.Table.CallAmnt(game.Table.CurrentPlayer));

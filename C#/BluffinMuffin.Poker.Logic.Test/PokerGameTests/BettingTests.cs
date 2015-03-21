@@ -73,29 +73,18 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             Assert.AreEqual(false, GameHelper.CurrentPlayerChecks(nfo.Game), "The player should not be able to check after a bet");
         }
 
-
         [TestMethod]
-        public void BigUglyTest()
+        public void AllIn()
         {
             var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
-            GameHelper.CurrentPlayerChecks(nfo.Game);
             var game = nfo.Game;
+            var poor = game.Table.Players.OrderBy(x => x.MoneySafeAmnt).First();
+            if (game.Table.CurrentPlayer == poor)
+                GameHelper.CurrentPlayerChecks(game);
 
-            //if this is the player with less money (p1), well just check, i want the other one :)
-            if (game.Table.CurrentPlayer == nfo.P1)
-                game.PlayMoney(nfo.P1, 0);
+            GameHelper.CurrentPlayerPlays(game, poor.MoneySafeAmnt + 10);
 
-            //make the second player put more than the first one can put
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, nfo.P1.MoneySafeAmnt + 10), "The second player should be allowed to play over what the other player have");
-
-            //make the first player call it, so allin
-            Assert.AreEqual(true, game.PlayMoney(game.Table.CurrentPlayer, game.Table.CallAmnt(game.Table.CurrentPlayer) - 1), "The first player should be allowed to go all-in");
-
-            //The pot is won, let's start over.
-            if (nfo.P1.MoneySafeAmnt == 0)
-                Assert.AreEqual(GameStateEnum.WaitForPlayers, game.State, "The game should be back waiting for players since the pot was won and there is only one player left with money");
-            else
-                Assert.AreEqual(GameStateEnum.WaitForBlinds, game.State, "The game should be back waiting for blinds since the pot was won and it's starting over");
+            Assert.AreEqual(true, GameHelper.CurrentPlayerCalls(game), "The first player should be allowed to go all-in");
         }
     }
 }
