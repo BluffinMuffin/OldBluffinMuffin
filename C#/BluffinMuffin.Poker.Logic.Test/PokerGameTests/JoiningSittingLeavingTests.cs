@@ -1,9 +1,5 @@
-﻿using System.Linq;
-using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
+﻿using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BluffinMuffin.Poker.DataTypes.Enums;
-using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
 {
@@ -14,7 +10,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterNonStartedGame()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameEmpty();
+            var nfo = Simple2PlayersBlindsGameMock.Empty();
             nfo.P1 = PlayerMock.GenerateP1();
 
             Assert.AreEqual(false, nfo.Game.JoinGame(nfo.P1), "You should not enter a non-started game");
@@ -23,7 +19,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterStartedGame()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameEmptyButStarted();
+            var nfo = Simple2PlayersBlindsGameMock.EmptyButStarted();
             nfo.P1 = PlayerMock.GenerateP1();
 
             Assert.AreEqual(true, nfo.Game.JoinGame(nfo.P1), "You should be able to enter a started game with no players");
@@ -32,7 +28,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterStartedGameTwice()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameEmptyButStarted();
+            var nfo = Simple2PlayersBlindsGameMock.EmptyButStarted();
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
 
@@ -42,7 +38,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterStartedGameWithPlayerThatHaveMyNameAlreadyInIt()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameEmptyButStarted();
+            var nfo = Simple2PlayersBlindsGameMock.EmptyButStarted();
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
             nfo.P2 = PlayerMock.GenerateP1();
@@ -53,7 +49,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void ObtainSeatWhenFirst()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameEmptyButStarted();
+            var nfo = Simple2PlayersBlindsGameMock.EmptyButStarted();
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
 
@@ -63,7 +59,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void SitWhenFirst()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameEmptyButStarted();
+            var nfo = Simple2PlayersBlindsGameMock.EmptyButStarted();
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
             nfo.Game.GameTable.AskToSitIn(nfo.P1, -1);
@@ -74,7 +70,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void ObtainSeatWhenAlreadySeated()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithP1Seated();
+            var nfo = Simple2PlayersBlindsGameMock.WithOnlyP1Seated();
 
             Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should not be able to obtain a seat in twice");
         }
@@ -82,7 +78,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterStartedGameWith1PSat()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithP1Seated();
+            var nfo = Simple2PlayersBlindsGameMock.WithOnlyP1Seated();
             nfo.P2 = PlayerMock.GenerateP2();
 
             Assert.AreEqual(true, nfo.Game.JoinGame(nfo.P2), "You should be able to enter a started game with only 1 player");
@@ -91,7 +87,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void ObtainSeatWhenOnly1P()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithP1Seated();
+            var nfo = Simple2PlayersBlindsGameMock.WithOnlyP1Seated();
             nfo.P2 = PlayerMock.GenerateP2();
             nfo.Game.JoinGame(nfo.P2);
 
@@ -101,7 +97,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void SitWhenOnly1P()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithP1Seated();
+            var nfo = Simple2PlayersBlindsGameMock.WithOnlyP1Seated();
             nfo.P2 = PlayerMock.GenerateP2();
             nfo.Game.JoinGame(nfo.P2);
             nfo.Game.GameTable.AskToSitIn(nfo.P2, -1);
@@ -112,7 +108,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterStartedGameWith2PSatWithMaxSeat2()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
 
             Assert.AreEqual(true, nfo.Game.JoinGame(nfo.P3), "You should always be able to enter a started game even if full (MaxSeats=2)");
@@ -121,7 +117,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void ObtainSeatWhen2PSatWithMaxSeat2()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.JoinGame(nfo.P3);
 
@@ -131,7 +127,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void SitWhen2PSatWithMaxSeat2()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.JoinGame(nfo.P3);
             nfo.Game.GameTable.AskToSitIn(nfo.P3, -1);
@@ -142,7 +138,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void ObtainSeatWhen2PSatWithMaxSeat2But1PLeft()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.JoinGame(nfo.P3);
             nfo.Game.LeaveGame(nfo.P1);
@@ -153,7 +149,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void ObtainSeatWhen2PSatWithMaxSeat2But1PSatOut()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.JoinGame(nfo.P3);
             nfo.Game.SitOut(nfo.P1);
@@ -164,7 +160,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void EnterStartedGameThatEverybodyLeft()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameWithBothSeated();
+            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.LeaveGame(nfo.P1);
             nfo.Game.LeaveGame(nfo.P2);

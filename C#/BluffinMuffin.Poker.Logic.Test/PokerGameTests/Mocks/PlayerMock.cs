@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Parameters;
-using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Helpers;
+﻿using BluffinMuffin.Poker.DataTypes;
+using BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 {
@@ -31,17 +25,22 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
         {
             return new PlayerInfo("p3", 5000);
         }
-        public static PlayerInfo GenerateP1Seated(PokerGame game)
+        public static PlayerInfo GenerateP1Seated(GameInfo nfo)
         {
-            return PlayerHelper.SitInGame(game, GenerateP1());
+            return nfo.SitInGame(GenerateP1());
         }
-        public static PlayerInfo GenerateP2Seated(PokerGame game)
+        public static PlayerInfo GenerateP2Seated(GameInfo nfo)
         {
-            return PlayerHelper.SitInGame(game, GenerateP2());
+            return nfo.SitInGame(GenerateP2());
         }
-        public static PlayerInfo GenerateP2PoorSeated(PokerGame game)
+        public static PlayerInfo GenerateP2PoorSeated(GameInfo nfo)
         {
-            return PlayerHelper.SitInGame(game, GenerateP2ReallyReallyPoor());
+            return nfo.SitInGame(GenerateP2ReallyReallyPoor());
+        }
+
+        internal static PlayerInfo GenerateP3Seated(GameInfo nfo)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

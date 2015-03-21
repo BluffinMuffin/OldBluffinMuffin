@@ -1,10 +1,6 @@
 ﻿using System.Linq;
-using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Helpers;
 using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BluffinMuffin.Poker.DataTypes.Enums;
-using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
 {
@@ -15,76 +11,73 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         [TestMethod]
         public void AfterBlindsFirstPlayerCanCall()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameBlindsPosted();
+            var nfo = Simple2PlayersBlindsGameMock.BlindsPosted();
 
-            Assert.AreEqual(true, GameHelper.CurrentPlayerCalls(nfo.Game), "The first player should be allowed to call");
+            Assert.AreEqual(true, nfo.CurrentPlayerCalls(), "The first player should be allowed to call");
         }
 
         [TestMethod]
         public void AfterFirstPlayerCallSecondPlayerCanCall()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameBlindsPosted();
-            GameHelper.CurrentPlayerCalls(nfo.Game);
+            var nfo = Simple2PlayersBlindsGameMock.BlindsPosted();
+            nfo.CurrentPlayerCalls();
 
-            Assert.AreEqual(true, GameHelper.CurrentPlayerCalls(nfo.Game), "The second player should be allowed to call");  
+            Assert.AreEqual(true, nfo.CurrentPlayerCalls(), "The second player should be allowed to call");  
         }
 
         [TestMethod]
         public void AtStartOfBettingFirstPlayerChecks()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
+            var nfo = Simple2PlayersBlindsGameMock.AfterPreflop();
 
-            Assert.AreEqual(true, GameHelper.CurrentPlayerChecks(nfo.Game), "The first player should be allowed to call");
+            Assert.AreEqual(true, nfo.CurrentPlayerChecks(), "The first player should be allowed to call");
         }
 
         [TestMethod]
         public void AtStartOfBettingFirstPlayerBetsUnderMinimum()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
+            var nfo = Simple2PlayersBlindsGameMock.AfterPreflop();
 
-            Assert.AreEqual(false, GameHelper.CurrentPlayerPlays(nfo.Game, nfo.Game.Table.MinRaiseAmnt(nfo.Game.Table.CurrentPlayer) - 1), "The player should not be able to raise under the minimum");
+            Assert.AreEqual(false, nfo.CurrentPlayerPlays(nfo.Game.Table.MinRaiseAmnt(nfo.CurrentPlayer) - 1), "The player should not be able to raise under the minimum");
         }
 
         [TestMethod]
         public void AtStartOfBettingFirstPlayerBetsMinimum()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
-            GameHelper.CurrentPlayerChecks(nfo.Game);
+            var nfo = Simple2PlayersBlindsGameMock.AfterPreflop();
+            nfo.CurrentPlayerChecks();
 
-            Assert.AreEqual(true, GameHelper.CurrentPlayerPlays(nfo.Game, nfo.Game.Table.MinRaiseAmnt(nfo.Game.Table.CurrentPlayer)), "The player should be able to raise with the minimum");
+            Assert.AreEqual(true, nfo.CurrentPlayerRaisesMinimum(), "The player should be able to raise with the minimum");
         }
 
         [TestMethod]
         public void AtStartOfBettingFirstPlayerBetsOverMinimum()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
-            GameHelper.CurrentPlayerChecks(nfo.Game);
+            var nfo = Simple2PlayersBlindsGameMock.AfterPreflop();
+            nfo.CurrentPlayerChecks();
 
-            Assert.AreEqual(true, GameHelper.CurrentPlayerPlays(nfo.Game, nfo.Game.Table.MinRaiseAmnt(nfo.Game.Table.CurrentPlayer) + 1), "The player should be able to raise with more than the minimum");
+            Assert.AreEqual(true, nfo.CurrentPlayerPlays(nfo.Game.Table.MinRaiseAmnt(nfo.CurrentPlayer) + 1), "The player should be able to raise with more than the minimum");
         }
 
         [TestMethod]
         public void AfterPlayerBetShouldNotBeAbleToCheck()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
-            GameHelper.CurrentPlayerPlays(nfo.Game, nfo.Game.Table.MinRaiseAmnt(nfo.Game.Table.CurrentPlayer));
-            GameHelper.CurrentPlayerChecks(nfo.Game);
+            var nfo = Simple2PlayersBlindsGameMock.AfterPreflop();
+            nfo.CurrentPlayerRaisesMinimum();
 
-            Assert.AreEqual(false, GameHelper.CurrentPlayerChecks(nfo.Game), "The player should not be able to check after a bet");
+            Assert.AreEqual(false, nfo.CurrentPlayerChecks(), "The player should not be able to check after a bet");
         }
 
         [TestMethod]
         public void AllIn()
         {
-            var nfo = GameMock.Simple2PlayersBlindsGameAfterPreflop();
-            var game = nfo.Game;
-            var poor = game.Table.Players.OrderBy(x => x.MoneySafeAmnt).First();
-            if (game.Table.CurrentPlayer == poor)
-                GameHelper.CurrentPlayerChecks(game);
+            var nfo = Simple2PlayersBlindsGameMock.AfterPreflop();
+            if (nfo.CurrentPlayer == nfo.PoorestPlayer)
+                nfo.CurrentPlayerChecks();
 
-            GameHelper.CurrentPlayerPlays(game, poor.MoneySafeAmnt + 10);
+            nfo.CurrentPlayerPlays(nfo.PoorestPlayer.MoneySafeAmnt + 10);
 
-            Assert.AreEqual(true, GameHelper.CurrentPlayerCalls(game), "The first player should be allowed to go all-in");
+            Assert.AreEqual(true, nfo.CurrentPlayerCalls(), "The first player should be allowed to go all-in");
         }
     }
 }
