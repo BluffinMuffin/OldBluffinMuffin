@@ -62,6 +62,12 @@
     <Compile Include="PokerGameTests\BettingTests.cs" />
     <Compile Include="PokerGameTests\JoiningSittingLeavingTests.cs" />
     <Compile Include="PokerGameTests\Mocks\PlayerMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple2PlayersAntesGameMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple2PlayersNoBlindsGameMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple3PlayersAntesGameMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple3PlayersNoBlindsGameMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple4PlayersAntesGameMock.cs" />
+    <Compile Include="PokerGameTests\Mocks\Simple4PlayersNoBlindsGameMock.cs" />
     <Compile Include="PokerGameTests\Mocks\Simple4PlayersBlindsGameMock.cs" />
     <Compile Include="PokerGameTests\Mocks\Simple3PlayersBlindsGameMock.cs" />
     <Compile Include="PokerGameTests\Mocks\Simple2PlayersBlindsGameMock.cs" />

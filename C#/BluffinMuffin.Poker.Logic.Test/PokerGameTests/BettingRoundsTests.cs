@@ -7,11 +7,26 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
     [TestClass]
     public class BettingRoundsTests
     {
+        [TestMethod]
+        public void AfterSeatedInNoBlindsRoundIsPreflop()
+        {
+            var nfo = Simple2PlayersNoBlindsGameMock.WithBothPlayersSeated();
+
+            Assert.AreEqual(RoundTypeEnum.Preflop, nfo.Game.Round, "The game should now be in the preflop round");
+        }
 
         [TestMethod]
         public void AfterBlindsRoundIsPreflop()
         {
             var nfo = Simple2PlayersBlindsGameMock.BlindsPosted();
+
+            Assert.AreEqual(RoundTypeEnum.Preflop, nfo.Game.Round, "The game should now be in the preflop round");
+        }
+
+        [TestMethod]
+        public void AfterAntesRoundIsPreflop()
+        {
+            var nfo = Simple2PlayersAntesGameMock.BlindsPosted();
 
             Assert.AreEqual(RoundTypeEnum.Preflop, nfo.Game.Round, "The game should now be in the preflop round");
         }

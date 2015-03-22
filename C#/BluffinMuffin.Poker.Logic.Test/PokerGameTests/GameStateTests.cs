@@ -29,9 +29,23 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             Assert.AreEqual(GameStateEnum.WaitForPlayers, nfo.Game.State, "The game should still wait for players to sit in when only 1 is seated");
         }
         [TestMethod]
+        public void AfterBothPlayerSeatedGameWithoutBlindsStateIsPlaying()
+        {
+            var nfo = Simple2PlayersNoBlindsGameMock.WithBothPlayersSeated();
+
+            Assert.AreEqual(GameStateEnum.Playing, nfo.Game.State, "The game should now be in the playing state");
+        }
+        [TestMethod]
         public void AfterBothPlayerSeatedStateIsWaitForBlinds()
         {
             var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
+
+            Assert.AreEqual(GameStateEnum.WaitForBlinds, nfo.Game.State, "The game should now wait for blinds");
+        }
+        [TestMethod]
+        public void AfterBothPlayerSeatedAntesStateIsWaitForBlinds()
+        {
+            var nfo = Simple2PlayersAntesGameMock.WithBothPlayersSeated();
 
             Assert.AreEqual(GameStateEnum.WaitForBlinds, nfo.Game.State, "The game should now wait for blinds");
         }

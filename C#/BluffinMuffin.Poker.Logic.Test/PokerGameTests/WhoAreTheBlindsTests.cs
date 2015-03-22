@@ -8,10 +8,31 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
     public class WhoAreTheBlindsTests
     {
         [TestMethod]
+        public void AnteGame2PEverybodyIsBlind()
+        {
+            var nfo = Simple2PlayersAntesGameMock.WithBothPlayersSeated();
+
+            Assert.AreEqual(2, nfo.Players.Count(x => nfo.BlindNeeded(x) > 0), "Dealer should be the small blind");
+        }
+        [TestMethod]
+        public void AnteGame3PEverybodyIsBlind()
+        {
+            var nfo = Simple3PlayersAntesGameMock.WithAllPlayersSeated();
+
+            Assert.AreEqual(3, nfo.Players.Count(x => nfo.BlindNeeded(x) > 0), "Dealer should be the small blind");
+        }
+        [TestMethod]
+        public void AnteGame4PEverybodyIsBlind()
+        {
+            var nfo = Simple4PlayersAntesGameMock.WithAllPlayersSeated();
+
+            Assert.AreEqual(4, nfo.Players.Count(x => nfo.BlindNeeded(x) > 0), "Dealer should be the small blind");
+        }
+        [TestMethod]
         public void Game2PSmallIsDealer()
         {
             var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
-            
+
             Assert.AreEqual(nfo.CalculatedSmallBlind, nfo.Dealer, "Dealer should be the small blind");
         }
         [TestMethod]

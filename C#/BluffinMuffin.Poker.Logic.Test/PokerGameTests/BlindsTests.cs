@@ -1,4 +1,5 @@
-﻿using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
+﻿using System.Linq;
+using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BluffinMuffin.Poker.DataTypes.Enums;
 
@@ -8,11 +9,10 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
     public class BlindsTests
     {
         [TestMethod]
-        public void StartGameAndWaitForBlinds()
+        public void AntesGameAllPlayerNeedsToPutTheSameBlind()
         {
-            var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
-
-            Assert.AreEqual(GameStateEnum.WaitForBlinds, nfo.Game.State, "The game should now wait for blinds");
+            var nfo = Simple4PlayersAntesGameMock.WithAllPlayersSeated();
+            Assert.AreEqual(true, nfo.Players.All(x => nfo.BlindNeeded(x) == nfo.Game.Params.MoneyUnit), "The game should need the same blind for everybody (Antes)");
         }
 
         [TestMethod]
