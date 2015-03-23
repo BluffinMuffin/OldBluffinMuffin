@@ -9,6 +9,10 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
         {
             return new PlayerInfo("p1", 5000);
         }
+        public static PlayerInfo GenerateP1ReallyPoor()
+        {
+            return new PlayerInfo("p1", 100);
+        }
         public static PlayerInfo GenerateP2()
         {
             return new PlayerInfo("p2", 5000);

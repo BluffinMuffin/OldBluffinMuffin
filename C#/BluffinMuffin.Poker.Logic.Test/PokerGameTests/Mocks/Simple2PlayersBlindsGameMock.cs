@@ -14,9 +14,37 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                         new TableParams()
                         {
                             MaxPlayers = 2,
+                            MoneyUnit = 10,
                             Blind = new BlindOptionsBlinds()
                             {
                                 MoneyUnit = 10
+                            },
+                            Lobby = new LobbyOptionsCareer()
+                            {
+                                IsMaximumBuyInLimited = false,
+                                MoneyUnit = 0 // Little trick to not get bothered.
+                            }
+                        }))
+            };
+        }
+        public static GameInfo EmptyWithBuyInsSetted()
+        {
+            return new GameInfo()
+            {
+                Game = new PokerGame(
+                    new PokerTable(
+                        new TableParams()
+                        {
+                            MaxPlayers = 2,
+                            MoneyUnit = 10,
+                            Blind = new BlindOptionsBlinds()
+                            {
+                                MoneyUnit = 10
+                            },
+                            Lobby = new LobbyOptionsCareer()
+                            {
+                                IsMaximumBuyInLimited = true,
+                                MoneyUnit=10
                             }
                         }))
             };

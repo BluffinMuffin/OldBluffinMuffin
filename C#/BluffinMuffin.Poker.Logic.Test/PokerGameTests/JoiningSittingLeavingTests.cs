@@ -8,6 +8,48 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
     {
 
         [TestMethod]
+        public void EnterGameThatRequiresMoreMoney()
+        {
+            var nfo = Simple2PlayersBlindsGameMock.EmptyWithBuyInsSetted();
+            nfo.Game.Start();
+            nfo.P1 = PlayerMock.GenerateP1ReallyPoor();
+
+            Assert.AreEqual(true, nfo.Game.JoinGame(nfo.P1), "You should be able to join a game without enough money");
+        }
+
+        [TestMethod]
+        public void ObtainASeatInGameThatRequiresMoreMoney()
+        {
+            var nfo = Simple2PlayersBlindsGameMock.EmptyWithBuyInsSetted();
+            nfo.Game.Start();
+            nfo.P1 = PlayerMock.GenerateP1ReallyPoor();
+            nfo.Game.JoinGame(nfo.P1);
+
+            Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should not be able to obtain a seat without enough money");
+        }
+
+        [TestMethod]
+        public void EnterGameThatIAmToRichToPlay()
+        {
+            var nfo = Simple2PlayersBlindsGameMock.EmptyWithBuyInsSetted();
+            nfo.Game.Start();
+            nfo.P1 = PlayerMock.GenerateP1();
+
+            Assert.AreEqual(true, nfo.Game.JoinGame(nfo.P1), "You should be able to join a game with too much money");
+        }
+
+        [TestMethod]
+        public void ObtainASeatInGameThatIAmToRichToPlay()
+        {
+            var nfo = Simple2PlayersBlindsGameMock.EmptyWithBuyInsSetted();
+            nfo.Game.Start();
+            nfo.P1 = PlayerMock.GenerateP1();
+            nfo.Game.JoinGame(nfo.P1);
+
+            Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should not be able to obtain a seat with too much money");
+        }
+
+        [TestMethod]
         public void EnterNonStartedGame()
         {
             var nfo = Simple2PlayersBlindsGameMock.Empty();

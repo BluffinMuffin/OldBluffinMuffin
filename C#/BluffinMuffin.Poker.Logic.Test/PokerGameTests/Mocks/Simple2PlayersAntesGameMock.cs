@@ -17,6 +17,11 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                             Blind = new BlindOptionsAnte()
                             {
                                 MoneyUnit = 10
+                            },
+                            Lobby = new LobbyOptionsCareer()
+                            {
+                                IsMaximumBuyInLimited = false,
+                                MoneyUnit = 0 // Little trick to not get bothered.
                             }
                         }))
             };

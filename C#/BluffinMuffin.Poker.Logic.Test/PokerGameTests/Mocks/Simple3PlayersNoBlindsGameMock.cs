@@ -15,7 +15,12 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                         {
                             MaxPlayers = 3,
                             MinPlayersToStart = 3,
-                            Blind = new BlindOptionsNone()
+                            Blind = new BlindOptionsNone(),
+                            Lobby = new LobbyOptionsCareer()
+                            {
+                                IsMaximumBuyInLimited = false,
+                                MoneyUnit = 0 // Little trick to not get bothered.
+                            }
                         }))
             };
         }
