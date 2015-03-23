@@ -231,7 +231,7 @@ namespace BluffinMuffin.Protocol.Server
         void OnSitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
             m_Player.MoneySafeAmnt = GetStartingMoney(e);
-            var seat = Game.GameTable.AskToSitIn(m_Player, e.Command.NoSeat);
+            var seat = Game.GameTable.SitIn(m_Player, e.Command.NoSeat);
             if (seat == null)
             {
                 Send(e.Command.EncodeResponse(-1));
@@ -240,7 +240,7 @@ namespace BluffinMuffin.Protocol.Server
             else
             {
                 Send(e.Command.EncodeResponse(seat.NoSeat));
-                Game.SitIn(m_Player);
+                Game.AfterPlayerSat(m_Player);
             }
         }
 

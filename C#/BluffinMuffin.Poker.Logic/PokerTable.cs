@@ -113,13 +113,13 @@ namespace BluffinMuffin.Poker.Logic
             }
             var ok = base.JoinTable(p);
             //if(ok)
-            //    ok = AskToSitIn(p);
+            //    ok = SitIn(p);
             //if(!ok)
             //    base.LeaveTable(p);
             return ok;
         }
 
-        public SeatInfo AskToSitIn(PlayerInfo p, int preferedSeat)
+        public SeatInfo SitIn(PlayerInfo p, int preferedSeat)
         {
             if (!RemainingSeats.Any())
             {

@@ -46,8 +46,8 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes
         public PlayerInfo SitInGame(PlayerInfo p)
         {
             Game.JoinGame(p);
-            Game.GameTable.AskToSitIn(p, -1);
-            Game.SitIn(p);
+            Game.GameTable.SitIn(p, -1);
+            Game.AfterPlayerSat(p);
             return p;
         }
 

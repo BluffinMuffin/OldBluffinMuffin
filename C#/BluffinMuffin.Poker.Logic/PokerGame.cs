@@ -134,7 +134,7 @@ namespace BluffinMuffin.Poker.Logic
             return GameTable.JoinTable(p);
         }
 
-        public int SitIn(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500)
+        public int AfterPlayerSat(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500)
         {
             var seat = p.NoSeat == -1 ? null : Table.Seats[p.NoSeat];
             if (seat != null && !seat.IsEmpty)

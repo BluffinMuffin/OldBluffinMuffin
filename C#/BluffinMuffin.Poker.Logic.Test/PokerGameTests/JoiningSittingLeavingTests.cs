@@ -25,7 +25,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.P1 = PlayerMock.GenerateP1ReallyPoor();
             nfo.Game.JoinGame(nfo.P1);
 
-            Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should not be able to obtain a seat without enough money");
+            Assert.AreEqual(null, nfo.Game.GameTable.SitIn(nfo.P1, -1), "You should not be able to obtain a seat without enough money");
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
 
-            Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should not be able to obtain a seat with too much money");
+            Assert.AreEqual(null, nfo.Game.GameTable.SitIn(nfo.P1, -1), "You should not be able to obtain a seat with too much money");
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
 
-            Assert.AreNotEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should be able to obtain a seat in a game with all the seats available");
+            Assert.AreNotEqual(null, nfo.Game.GameTable.SitIn(nfo.P1, -1), "You should be able to obtain a seat in a game with all the seats available");
         }
 
         [TestMethod]
@@ -104,9 +104,9 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             var nfo = Simple2PlayersBlindsGameMock.EmptyButStarted();
             nfo.P1 = PlayerMock.GenerateP1();
             nfo.Game.JoinGame(nfo.P1);
-            nfo.Game.GameTable.AskToSitIn(nfo.P1, -1);
+            nfo.Game.GameTable.SitIn(nfo.P1, -1);
 
-            Assert.AreNotEqual(-1, nfo.Game.SitIn(nfo.P1), "You should be able to sit in a game with all the seats available");
+            Assert.AreNotEqual(-1, nfo.Game.AfterPlayerSat(nfo.P1), "You should be able to sit in a game with all the seats available");
         }
 
         [TestMethod]
@@ -114,7 +114,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
         {
             var nfo = Simple2PlayersBlindsGameMock.WithOnlyP1Seated();
 
-            Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P1, -1), "You should not be able to obtain a seat in twice");
+            Assert.AreEqual(null, nfo.Game.GameTable.SitIn(nfo.P1, -1), "You should not be able to obtain a seat in twice");
         }
 
         [TestMethod]
@@ -133,7 +133,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.P2 = PlayerMock.GenerateP2();
             nfo.Game.JoinGame(nfo.P2);
 
-            Assert.AreNotEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P2, -1), "You should be able to obtain a seat in a game with only 1 seated player");
+            Assert.AreNotEqual(null, nfo.Game.GameTable.SitIn(nfo.P2, -1), "You should be able to obtain a seat in a game with only 1 seated player");
         }
 
         [TestMethod]
@@ -142,9 +142,9 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             var nfo = Simple2PlayersBlindsGameMock.WithOnlyP1Seated();
             nfo.P2 = PlayerMock.GenerateP2();
             nfo.Game.JoinGame(nfo.P2);
-            nfo.Game.GameTable.AskToSitIn(nfo.P2, -1);
+            nfo.Game.GameTable.SitIn(nfo.P2, -1);
 
-            Assert.AreNotEqual(-1, nfo.Game.SitIn(nfo.P2), "You should be able to sit in a game with only 1 seated player");
+            Assert.AreNotEqual(-1, nfo.Game.AfterPlayerSat(nfo.P2), "You should be able to sit in a game with only 1 seated player");
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.JoinGame(nfo.P3);
 
-            Assert.AreEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P3, -1), "You should not be able to obtain a seat in a game that is full (MaxSeats=2)");
+            Assert.AreEqual(null, nfo.Game.GameTable.SitIn(nfo.P3, -1), "You should not be able to obtain a seat in a game that is full (MaxSeats=2)");
         }
 
         [TestMethod]
@@ -172,9 +172,9 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             var nfo = Simple2PlayersBlindsGameMock.WithBothPlayersSeated();
             nfo.P3 = PlayerMock.GenerateP3();
             nfo.Game.JoinGame(nfo.P3);
-            nfo.Game.GameTable.AskToSitIn(nfo.P3, -1);
+            nfo.Game.GameTable.SitIn(nfo.P3, -1);
 
-            Assert.AreEqual(-1, nfo.Game.SitIn(nfo.P3), "You should not be able to sit in a game that is full (MaxSeats=2)");
+            Assert.AreEqual(-1, nfo.Game.AfterPlayerSat(nfo.P3), "You should not be able to sit in a game that is full (MaxSeats=2)");
         }
 
         [TestMethod]
@@ -185,7 +185,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.Game.JoinGame(nfo.P3);
             nfo.Game.LeaveGame(nfo.P1);
 
-            Assert.AreNotEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P3, -1), "You should be able to obtain a seat a game that is now with only 1 seated player");
+            Assert.AreNotEqual(null, nfo.Game.GameTable.SitIn(nfo.P3, -1), "You should be able to obtain a seat a game that is now with only 1 seated player");
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
             nfo.Game.JoinGame(nfo.P3);
             nfo.Game.SitOut(nfo.P1);
 
-            Assert.AreNotEqual(null, nfo.Game.GameTable.AskToSitIn(nfo.P3, -1), "You should be able to obtain a seat a game that is now with only 1 seated player");
+            Assert.AreNotEqual(null, nfo.Game.GameTable.SitIn(nfo.P3, -1), "You should be able to obtain a seat a game that is now with only 1 seated player");
         }
 
         [TestMethod]

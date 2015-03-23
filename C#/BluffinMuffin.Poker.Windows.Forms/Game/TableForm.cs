@@ -118,7 +118,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                 SitInButtonsShowing(false);
                 var name = ((Control)sender).Name;
                 var seatWanted = int.Parse(name.Substring(name.Length - 1));
-                m_Game.SitIn(null, seatWanted, money);
+                m_Game.AfterPlayerSat(null, seatWanted, money);
             }
         }
 

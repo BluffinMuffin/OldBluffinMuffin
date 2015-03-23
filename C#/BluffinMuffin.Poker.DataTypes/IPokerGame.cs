@@ -10,7 +10,7 @@ namespace BluffinMuffin.Poker.DataTypes
 
         bool PlayMoney(PlayerInfo p, int amnt);
         bool LeaveGame(PlayerInfo p);
-        int SitIn(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500);
+        int AfterPlayerSat(PlayerInfo p, int noSeat = -1, int moneyAmount = 1500);
         bool SitOut(PlayerInfo p);
 
         string Encode { get; }
