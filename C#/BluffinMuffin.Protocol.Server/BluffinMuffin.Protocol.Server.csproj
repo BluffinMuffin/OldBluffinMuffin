@@ -52,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations\Annotations.cs" />
     <Compile Include="GameObserver.cs" />
     <Compile Include="GameTcpServer.cs" />
+    <Compile Include="GameTcpServerCareer.cs" />
     <Compile Include="IServerLobby.cs" />
     <Compile Include="LobbyObserver.cs" />
     <Compile Include="LobbyTcpServer.cs" />

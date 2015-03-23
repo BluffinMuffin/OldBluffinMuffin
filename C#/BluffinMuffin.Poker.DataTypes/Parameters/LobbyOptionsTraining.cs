@@ -15,5 +15,15 @@ namespace BluffinMuffin.Poker.DataTypes.Parameters
         {
             StartingAmount = 1500;
         }
+
+        public override int MaximumAmountForBuyIn
+        {
+            get { return StartingAmount; }
+        }
+
+        public override int MinimumAmountForBuyIn
+        {
+            get { return StartingAmount; }
+        }
     }
 }

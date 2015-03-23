@@ -1,5 +1,5 @@
 ﻿using System;
-using BluffinMuffin.Poker.DataTypes.Annotations;
+using BluffinMuffin.Protocol.Server.Annotations;
 using Com.Ericmas001.Net.Protocol.JSON;
 using BluffinMuffin.Protocol.Commands.Lobby;
 using BluffinMuffin.Protocol.Commands.Lobby.Training;

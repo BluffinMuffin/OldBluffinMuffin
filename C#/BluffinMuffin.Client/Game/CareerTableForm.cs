@@ -15,7 +15,7 @@ namespace BluffinMuffin.Client.Game
         protected override int GetSitInMoneyAmount()
         {
             var parms = m_Game.Table.Params;
-            if (User.TotalMoney < parms.LimitedMinimumBuyIn)
+            if (User.TotalMoney < parms.Lobby.MinimumAmountForBuyIn)
                 return -1;
             var bif = new BuyInForm(User, m_Game.Table.Params);
             bif.ShowDialog();

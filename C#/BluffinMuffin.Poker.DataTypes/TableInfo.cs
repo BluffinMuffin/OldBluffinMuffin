@@ -64,6 +64,14 @@ namespace BluffinMuffin.Poker.DataTypes
             get { return m_Pots; }
         }
 
+        public IEnumerable<int> PotAmountsPadded
+        {
+            get
+            {
+                return Pots.Select(pot => pot.Amount).Union(Enumerable.Repeat(0, Params.MaxPlayers - Pots.Count));
+            }
+        }
+
         /// <summary>
         /// Contains all the money currently on the table (All Pots + Money currently played in front of the players)
         /// </summary>

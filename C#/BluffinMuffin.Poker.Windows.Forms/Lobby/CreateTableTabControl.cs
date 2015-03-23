@@ -114,6 +114,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
         {
             get
             {
+                var moneyUnit = (int)nudMoneyUnit.Value;
                 LobbyOptions lobby = null;
                 switch (m_LobbyType)
                 {
@@ -125,10 +126,13 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
                         break;
 
                     case LobbyTypeEnum.Career:
-                        lobby = new LobbyOptionsCareer();
+                        lobby = new LobbyOptionsCareer()
+                        {
+                            MoneyUnit = moneyUnit,
+                            IsMaximumBuyInLimited = rdBuyInLimited.Checked,
+                        };
                         break;
                 }
-                var moneyUnit = (int)nudMoneyUnit.Value;
                 BlindOptions blind = new BlindOptionsNone() { MoneyUnit = moneyUnit };
                 switch (EnumFactory<BlindTypeEnum>.Parse((string)lstBlinds.SelectedItem))
                 {
@@ -172,7 +176,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
                     Blind = blind,
                     Limit = limit,
                     MoneyUnit = moneyUnit,
-                    LimitMaximumBuyIn = rdBuyInLimited.Checked,
                 };
             }
         }

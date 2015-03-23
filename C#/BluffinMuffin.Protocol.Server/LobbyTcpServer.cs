@@ -113,47 +113,35 @@ namespace BluffinMuffin.Protocol.Server
             m_Tables[e.Command.TableId].Incoming(e.Command.DecodedCommand);
         }
 
-        void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)
+        private void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)
         {
-            GameTcpServer client;
             var game = m_Lobby.GetGame(e.Command.TableId);
             var table = game.GameTable;
 
-            if (game.Params.Lobby.OptionType == LobbyTypeEnum.Training)
-                client = new GameTcpServer(e.Command.TableId, game, m_PlayerName);
-            else
-                client = new GameTcpServer(e.Command.TableId, game, DataManager.Persistance.Get(e.Command.PlayerName));
-
-            client.LeftTable += client_LeftTable;
-            client.SendedSomething += client_SendedSomething;
-
-            if (!game.IsRunning)
+            if (!game.IsRunning || !table.ContainsPlayer(e.Command.PlayerName))
             {
                 Send(e.Command.EncodeResponse(false));
                 return;
             }
 
-            // Verify the player does not already playing on that table.
-            if (!table.ContainsPlayer(e.Command.PlayerName))
-            {
-                var ok = client.JoinGame();
-                if (!ok)
-                    Send(e.Command.EncodeResponse(false));
-                else
-                {
-                    m_Tables.Add(e.Command.TableId, client);
-                    client.Start();
+            GameTcpServer client = game.Params.Lobby.OptionType == LobbyTypeEnum.Training ? new GameTcpServer(e.Command.TableId, game, m_PlayerName) : new GameTcpServerCareer(e.Command.TableId, game, DataManager.Persistance.Get(e.Command.PlayerName));
 
-                    LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' joined {2}:{1}", m_PlayerName, table.Params.TableName, e.Command.TableId, client.Player.NoSeat);
-                    Send(e.Command.EncodeResponse(true));
+            client.LeftTable += client_LeftTable;
+            client.SendedSomething += client_SendedSomething;
 
-                    client.SendTableInfo();
-                }
-            }
-            else
+            if (!client.JoinGame())
             {
                 Send(e.Command.EncodeResponse(false));
+                return;
             }
+
+            m_Tables.Add(e.Command.TableId, client);
+            client.Start();
+
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_JoinTableCommandReceived", "> Client '{0}' joined {2}:{1}", m_PlayerName, table.Params.TableName, e.Command.TableId, client.Player.NoSeat);
+            Send(e.Command.EncodeResponse(true));
+
+            client.SendTableInfo();
         }
 
         void client_LeftTable(object sender, KeyEventArgs<int> e)

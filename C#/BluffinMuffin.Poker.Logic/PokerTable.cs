@@ -121,9 +121,15 @@ namespace BluffinMuffin.Poker.Logic
 
         public SeatInfo AskToSitIn(PlayerInfo p, int preferedSeat)
         {
-            if (RemainingSeats.Count() == 0)
+            if (!RemainingSeats.Any())
             {
                 LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Not enough seats to join!");
+                return null;
+            }
+
+            if (p.MoneyAmnt < Params.Lobby.MinimumAmountForBuyIn || p.MoneyAmnt > Params.Lobby.MaximumAmountForBuyIn)
+            {
+                LogManager.Log(LogLevel.Error, "TableInfo.JoinTable", "Player Money ({0}) is not between Minimum ({1}) and Maximum ({2})", p.MoneyAmnt, Params.Lobby.MinimumAmountForBuyIn, Params.Lobby.MaximumAmountForBuyIn);
                 return null;
             }
 

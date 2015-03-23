@@ -20,7 +20,6 @@ namespace BluffinMuffin.Protocol.Server
         private readonly PlayerInfo m_Player;
         private readonly PokerGame m_Game;
         private readonly int m_Id;
-        private readonly UserInfo m_UserInfo;
         #endregion Fields
 
         #region Events
@@ -30,7 +29,12 @@ namespace BluffinMuffin.Protocol.Server
         #region Properties
         public int Id { get { return m_Id; } }
         public PlayerInfo Player { get { return m_Player; } }
-        public PokerGame Game { get { return m_Game; } }
+
+        protected PokerGame Game
+        {
+            get { return m_Game; }
+        }
+
         #endregion Properties
 
         #region Ctors & Init
@@ -39,35 +43,26 @@ namespace BluffinMuffin.Protocol.Server
             m_Id = id;
             m_Game = game;
             m_Player = new PlayerInfo(name, 0);
-            m_UserInfo = null;
             SendedSomething += OnServerSendedSomething;
 
         }
 
-        public GameTcpServer(int id, PokerGame game, UserInfo userInfo)
-        {
-            m_Id = id;
-            m_Game = game;
-            m_UserInfo = userInfo;
-            m_Player = new PlayerInfo(m_UserInfo.DisplayName, 0);
-        }
-
         private void InitializePokerObserver()
         {
-            m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
-            m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
-            m_Game.Observer.GameEnded += OnGameEnded;
-            m_Game.Observer.PlayerWonPot += OnPlayerWonPot;
-            m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
-            m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
-            m_Game.Observer.EverythingEnded += OnEverythingEnded;
-            m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
-            m_Game.Observer.GameBlindNeeded += OnGameBlindNeeded;
-            m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
-            m_Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
-            m_Game.Observer.PlayerJoined += OnPlayerJoined;
-            m_Game.Observer.SeatUpdated += OnSeatUpdated;
-            m_Game.Observer.PlayerLeft += OnPlayerLeft;
+            Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
+            Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
+            Game.Observer.GameEnded += OnGameEnded;
+            Game.Observer.PlayerWonPot += OnPlayerWonPot;
+            Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
+            Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
+            Game.Observer.EverythingEnded += OnEverythingEnded;
+            Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
+            Game.Observer.GameBlindNeeded += OnGameBlindNeeded;
+            Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
+            Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
+            Game.Observer.PlayerJoined += OnPlayerJoined;
+            Game.Observer.SeatUpdated += OnSeatUpdated;
+            Game.Observer.PlayerLeft += OnPlayerLeft;
         }
 
         protected override void InitializeCommandObserver()
@@ -90,15 +85,9 @@ namespace BluffinMuffin.Protocol.Server
         #region PokerObserver Event Handling
         void OnGameBettingRoundEnded(object sender, RoundEventArgs e)
         {
-            var pots = m_Game.Table.Pots;
-            var amounts = pots.Select(p => p.Amount).ToList();
-
-            for (var i = pots.Count; i < m_Game.Table.Params.MaxPlayers; i++)
-                amounts.Add(0);
-
             Send(new BetTurnEndedCommand() 
-            { 
-                PotsAmounts = amounts, 
+            {
+                PotsAmounts = Game.Table.PotAmountsPadded.ToList(), 
                 Round = e.Round,
             });
         }
@@ -141,7 +130,7 @@ namespace BluffinMuffin.Protocol.Server
                 PlayerPos = p.NoSeat,
                 PlayerBet = p.MoneyBetAmnt,
                 PlayerMoney = p.MoneySafeAmnt,
-                TotalPot = m_Game.Table.TotalPotAmnt,
+                TotalPot = Game.Table.TotalPotAmnt,
                 ActionType = e.Action,
                 ActionAmount = e.AmountPlayed,
                 State = p.State,
@@ -170,13 +159,13 @@ namespace BluffinMuffin.Protocol.Server
             {
                 PlayerPos = e.Player.NoSeat,
                 LastPlayerNoSeat = e.Last.NoSeat,
-                MinimumRaise = m_Game.Table.MinimumRaiseAmount,
+                MinimumRaise = Game.Table.MinimumRaiseAmount,
             });
         }
 
         void OnGameBlindNeeded(object sender, EventArgs e)
         {
-            Send(new GameStartedCommand() { NeededBlind = m_Game.GameTable.GetBlindNeeded(m_Player) });
+            Send(new GameStartedCommand() { NeededBlind = Game.GameTable.GetBlindNeeded(m_Player) });
         }
 
         void OnGameBettingRoundStarted(object sender, RoundEventArgs e)
@@ -184,7 +173,7 @@ namespace BluffinMuffin.Protocol.Server
             Send(new BetTurnStartedCommand()
             {
                 Round = e.Round,
-                CardsId = m_Game.Table.Cards.Select(x => x.Id).ToList()
+                CardsId = Game.Table.Cards.Select(x => x.Id).ToList()
             });
         }
 
@@ -226,60 +215,52 @@ namespace BluffinMuffin.Protocol.Server
         #region CommandObserver Event Handling
         void OnPlayMoneyCommandReceived(object sender, CommandEventArgs<PlayerPlayMoneyCommand> e)
         {
-            m_Game.PlayMoney(m_Player, e.Command.Played);
+            Game.PlayMoney(m_Player, e.Command.Played);
         }
 
         void OnSitOutCommandReceived(object sender, CommandEventArgs<PlayerSitOutCommand> e)
         {
-            Send(e.Command.EncodeResponse(m_Game.SitOut(m_Player)));
+            Send(e.Command.EncodeResponse(Game.SitOut(m_Player)));
+        }
+
+        protected virtual int GetStartingMoney(CommandEventArgs<PlayerSitInCommand> e)
+        {
+            return ((LobbyOptionsTraining) Game.Params.Lobby).StartingAmount;
         }
 
         void OnSitInCommandReceived(object sender, CommandEventArgs<PlayerSitInCommand> e)
         {
-            var parms = m_Game.Table.Params;
-            int money;
-            if(parms.Lobby.OptionType == LobbyTypeEnum.Training)
-                money = ((LobbyOptionsTraining)parms.Lobby).StartingAmount;
+            m_Player.MoneySafeAmnt = GetStartingMoney(e);
+            var seat = Game.GameTable.AskToSitIn(m_Player, e.Command.NoSeat);
+            if (seat == null)
+            {
+                Send(e.Command.EncodeResponse(-1));
+                WhatToDoWithExtraMoneyWhenLeaving(m_Player.MoneySafeAmnt);
+            }
             else
             {
-                money = e.Command.MoneyAmount;
-                if (m_UserInfo == null || m_UserInfo.TotalMoney < money || money < parms.LimitedMinimumBuyIn || (parms.LimitMaximumBuyIn && money > parms.LimitedMaximumBuyIn))
-                {
-                    Send(e.Command.EncodeResponse(-1));
-                    return;
-                }
-                m_UserInfo.TotalMoney -= money;
+                Send(e.Command.EncodeResponse(seat.NoSeat));
+                Game.SitIn(m_Player);
             }
+        }
 
-            m_Player.MoneySafeAmnt = money;
-            var seat = m_Game.GameTable.AskToSitIn(m_Player, e.Command.NoSeat);
-            Send(e.Command.EncodeResponse(seat == null ? -1 : seat.NoSeat));
-            if( seat != null)
-                m_Game.SitIn(m_Player);
+        protected virtual void WhatToDoWithExtraMoneyWhenLeaving( int money)
+        {
         }
 
         void OnDisconnectCommandReceived(object sender, CommandEventArgs<DisconnectCommand> e)
         {
-            if (m_UserInfo != null && m_Game.Params.Lobby.OptionType == LobbyTypeEnum.Career)
-                m_UserInfo.TotalMoney += m_Player.MoneySafeAmnt;
+            WhatToDoWithExtraMoneyWhenLeaving(m_Player.MoneySafeAmnt);
 
             LeftTable(this, new KeyEventArgs<int>(m_Id));
 
             m_IsConnected = false;
             m_Player.State = PlayerStateEnum.Zombie;
 
-            var t = m_Game.Table;
+            var t = Game.Table;
             LogManager.Log(LogLevel.Message, "GameServer.m_CommandObserver_DisconnectCommandReceived", "> Client '{0}' left table: {2}:{1}", m_Player.Name, t.Params.TableName, m_Id);
 
-            if (m_Game.State == GameStateEnum.WaitForPlayers)
-                m_Game.LeaveGame(m_Player);
-            else if (t.NoSeatCurrentPlayer == m_Player.NoSeat)
-            {
-                if (t.CanCheck(m_Player))
-                    m_Game.PlayMoney(m_Player, 0);
-                else
-                    m_Game.PlayMoney(m_Player, -1);
-            }
+            Game.LeaveGame(m_Player);
         }
 
         void OnCommandReceived(object sender, StringEventArgs e)
@@ -289,18 +270,13 @@ namespace BluffinMuffin.Protocol.Server
         #endregion CommandObserver Event Handling
 
         #region Public Methods
-        public bool CanStartGame
-        {
-            get
-            {
-                return m_IsConnected && m_Player.CanPlay;
-            }
-        }
         public void SendTableInfo()
         {
-            var cmd = new TableInfoCommand();
-            cmd.GameHasStarted = m_Game.IsPlaying;
-            var table = m_Game.GameTable;
+            var cmd = new TableInfoCommand
+            {
+                GameHasStarted = Game.IsPlaying
+            };
+            var table = Game.GameTable;
             lock (table)
             {
                 var playerSendingTo = m_Player;
@@ -313,8 +289,7 @@ namespace BluffinMuffin.Protocol.Server
                 cmd.TotalPotAmount = table.TotalPotAmnt;
                 cmd.NbPlayers = cmd.Params.MaxPlayers;
 
-                cmd.PotsAmount = table.Pots.Select(pot => pot.Amount).ToList();
-                cmd.PotsAmount.AddRange(Enumerable.Repeat(0, cmd.Params.MaxPlayers - table.Pots.Count));
+                cmd.PotsAmount = table.PotAmountsPadded.ToList();
 
                 for (var i = 0; i < cmd.Params.MaxPlayers; ++i)
                 {
@@ -341,7 +316,7 @@ namespace BluffinMuffin.Protocol.Server
         public bool JoinGame()
         {
             InitializePokerObserver();
-            return m_Game.JoinGame(m_Player);
+            return Game.JoinGame(m_Player);
         }
         #endregion Public Methods
     }

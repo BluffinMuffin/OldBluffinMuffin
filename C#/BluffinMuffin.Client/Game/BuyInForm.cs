@@ -16,12 +16,12 @@ namespace BluffinMuffin.Client.Game
             InitializeComponent();
             lblAccountMoney.Text = Resources.BuyInForm_BuyInForm_Dollar + user.TotalMoney;
             lblMoneyUnit.Text = Resources.BuyInForm_BuyInForm_Dollar + parms.MoneyUnit;
-            lblMin.Text = Resources.BuyInForm_BuyInForm_Dollar + parms.LimitedMinimumBuyIn;
-            lblMax.Text = Resources.BuyInForm_BuyInForm_Dollar + Math.Min(parms.LimitMaximumBuyIn ? parms.LimitedMaximumBuyIn : int.MaxValue, user.TotalMoney);
-            nudBuyIn.Minimum = parms.LimitedMinimumBuyIn;
-            nudBuyIn.Maximum = (decimal)Math.Min(parms.LimitMaximumBuyIn ? parms.LimitedMaximumBuyIn : int.MaxValue, user.TotalMoney);
+            lblMin.Text = Resources.BuyInForm_BuyInForm_Dollar + parms.Lobby.MinimumAmountForBuyIn;
+            lblMax.Text = Resources.BuyInForm_BuyInForm_Dollar + Math.Min(parms.Lobby.MaximumAmountForBuyIn, user.TotalMoney);
+            nudBuyIn.Minimum = parms.Lobby.MinimumAmountForBuyIn;
+            nudBuyIn.Maximum = (decimal)Math.Min(parms.Lobby.MaximumAmountForBuyIn, user.TotalMoney);
             nudBuyIn.Increment = parms.MoneyUnit;
-            nudBuyIn.Value = parms.LimitedMinimumBuyIn;
+            nudBuyIn.Value = parms.Lobby.MinimumAmountForBuyIn;
         }
 
         private void btnSitIn_Click(object sender, EventArgs e)
