@@ -2,7 +2,7 @@
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class PlayerLeftCommand : AbstractJsonCommand
+    public class PlayerLeftCommand : AbstractGameCommand
     {
         public int PlayerPos { get; set; }
     }

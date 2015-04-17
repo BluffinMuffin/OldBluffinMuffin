@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
+using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Lobby;
 using BluffinMuffin.Protocol.Server;
 using System.Net;
@@ -13,8 +16,11 @@ using BluffinMuffin.Poker.Logic;
 
 namespace BluffinMuffin.Server
 {
-    public class BluffinServerLobby : IServerLobby
+    public class BluffinServerLobby : IServerLobby, IBluffinServer, IBluffinLobby
     {
+        private bool USE_OLD = false;
+
+        private readonly BluffinTcpServer m_TcpServer;
         private readonly TcpListener m_SocketServer;
 
         private readonly List<string> m_UsedNames = new List<string>();
@@ -29,10 +35,23 @@ namespace BluffinMuffin.Server
 
         public BluffinServerLobby(int port)
         {
-            m_SocketServer = new TcpListener(IPAddress.Any,port);
+            if (USE_OLD)
+                m_SocketServer = new TcpListener(IPAddress.Any, port);
+            else
+            {
+                LogManager.Log(LogLevel.Message, "BEST BLUFFIN SERVER EVER","Server started on port {0} !", port);
+                LobbyCommands = new BlockingCollection<CommandEntry<AbstractBluffinCommand>>();
+                var lobbyWorker = new BluffinLobbyWorker(this,this);
+                Task.Factory.StartNew(lobbyWorker.Start);
+                m_TcpServer = new BluffinTcpServer(port, this);
+            }
         }
 
         public bool NameUsed(string name)
+        {
+            return IsNameUsed(name);
+        }
+        public bool IsNameUsed(string name)
         {
             foreach (var s in m_UsedNames)
                 if (s.Equals(name, StringComparison.InvariantCultureIgnoreCase))
@@ -52,8 +71,13 @@ namespace BluffinMuffin.Server
 
         public void Start()
         {
-            m_SocketServer.Start();
-            new Thread(Run).Start();
+            if (USE_OLD)
+            {
+                m_SocketServer.Start();
+                new Thread(Run).Start();
+            }
+            else
+                m_TcpServer.Run().Wait();
         }
 
         private void Run()
@@ -110,6 +134,24 @@ namespace BluffinMuffin.Server
             }
 
             return tables;
+        }
+
+        public BlockingCollection<CommandEntry<AbstractBluffinCommand>> LobbyCommands { get; private set; }
+
+        public void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
+        {
+            var entry = new CommandEntry<AbstractBluffinCommand>() { Client = client, Command = command };
+            switch (command.CommandType)
+            {
+                case BluffinCommandEnum.General:
+                    LobbyCommands.Add(entry);
+                    break;
+                case BluffinCommandEnum.Lobby:
+                    LobbyCommands.Add(entry);
+                    break;
+                case BluffinCommandEnum.Game:
+                    break;
+            }
         }
     }
 }

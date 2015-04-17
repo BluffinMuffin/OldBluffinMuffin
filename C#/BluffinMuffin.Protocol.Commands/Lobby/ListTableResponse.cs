@@ -3,7 +3,7 @@ using BluffinMuffin.Poker.DataTypes;
 
 namespace BluffinMuffin.Protocol.Commands.Lobby
 {
-    public class ListTableResponse : AbstractLobbyResponse<ListTableCommand>
+    public class ListTableResponse : AbstractBluffinReponse<ListTableCommand>
     {
         public List<TupleTable> Tables { get; set; }
 

@@ -48,6 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractBluffinCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AbstractBluffinReponse.cs" />
+    <Compile Include="AbstractLobbyCommand.cs" />
+    <Compile Include="BluffinCommandEnum.cs" />
+    <Compile Include="AbstractGameCommand.cs" />
     <Compile Include="DisconnectCommand.cs" />
     <Compile Include="Game\BetTurnEndedCommand.cs" />
     <Compile Include="Game\BetTurnStartedCommand.cs" />
@@ -68,8 +75,6 @@
     <Compile Include="Game\SeatUpdatedCommand.cs" />
     <Compile Include="Game\TableClosedCommand.cs" />
     <Compile Include="Game\TableInfoCommand.cs" />
-    <Compile Include="Lobby\AbstractLobbyCommand.cs" />
-    <Compile Include="Lobby\AbstractLobbyResponse.cs" />
     <Compile Include="Lobby\Career\AuthenticateUserCommand.cs" />
     <Compile Include="Lobby\Career\AuthenticateUserResponse.cs" />
     <Compile Include="Lobby\Career\CheckDisplayExistCommand.cs" />

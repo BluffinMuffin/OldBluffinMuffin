@@ -43,6 +43,10 @@
     <Reference Include="Com.Ericmas001.Util">
       <HintPath>..\References\Com.Ericmas001.Util.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,13 +57,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations\Annotations.cs" />
+    <Compile Include="BluffinLobbyWorker.cs" />
+    <Compile Include="BluffinTcpServer.cs" />
+    <Compile Include="CommandEntry.cs" />
     <Compile Include="GameObserver.cs" />
     <Compile Include="GameTcpServer.cs" />
     <Compile Include="GameTcpServerCareer.cs" />
+    <Compile Include="IBluffinClient.cs" />
+    <Compile Include="IBluffinLobby.cs" />
+    <Compile Include="IBluffinServer.cs" />
     <Compile Include="IServerLobby.cs" />
     <Compile Include="LobbyObserver.cs" />
     <Compile Include="LobbyTcpServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteTcpClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BluffinMuffin.Poker.DataTypes\BluffinMuffin.Poker.DataTypes.csproj">

@@ -1,6 +1,6 @@
 ﻿namespace BluffinMuffin.Protocol.Commands.Lobby.Career
 {
-    public class AuthenticateUserResponse : AbstractLobbyResponse<AuthenticateUserCommand>
+    public class AuthenticateUserResponse : AbstractBluffinReponse<AuthenticateUserCommand>
     {
         public bool Success { get; set; }
 

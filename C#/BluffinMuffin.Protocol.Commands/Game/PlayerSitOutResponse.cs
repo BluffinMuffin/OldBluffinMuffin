@@ -2,7 +2,7 @@
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class PlayerSitOutResponse : AbstractJsonCommandResponse<PlayerSitOutCommand>
+    public class PlayerSitOutResponse : AbstractBluffinReponse<PlayerSitOutCommand>
     {
         public bool Success { get; set; }
 

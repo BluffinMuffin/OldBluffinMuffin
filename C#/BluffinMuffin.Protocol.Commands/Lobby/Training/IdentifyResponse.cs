@@ -1,6 +1,6 @@
 ﻿namespace BluffinMuffin.Protocol.Commands.Lobby.Training
 {
-    public class IdentifyResponse : AbstractLobbyResponse<IdentifyCommand>
+    public class IdentifyResponse : AbstractBluffinReponse<IdentifyCommand>
     {
         public bool Ok { get; set; }
 

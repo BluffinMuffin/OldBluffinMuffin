@@ -3,7 +3,7 @@ using BluffinMuffin.Poker.DataTypes;
 
 namespace BluffinMuffin.Protocol.Commands.Lobby
 {
-    public class SupportedRulesResponse : AbstractLobbyResponse<SupportedRulesCommand>
+    public class SupportedRulesResponse : AbstractBluffinReponse<SupportedRulesCommand>
     {
         public List<RuleInfo> Rules { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace BluffinMuffin.Protocol.Commands.Lobby.Career
 {
-    public class CheckDisplayExistResponse : AbstractLobbyResponse<CheckDisplayExistCommand>
+    public class CheckDisplayExistResponse : AbstractBluffinReponse<CheckDisplayExistCommand>
     {
         public bool Exist { get; set; }
 

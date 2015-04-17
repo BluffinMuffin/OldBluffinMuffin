@@ -2,11 +2,11 @@
 
 namespace BluffinMuffin.Protocol.Commands
 {
-    public class DisconnectCommand : AbstractBluffinCommand
+    public abstract class AbstractLobbyCommand : AbstractBluffinCommand
     {
         public override BluffinCommandEnum CommandType
         {
-            get { return BluffinCommandEnum.General; }
+            get { return BluffinCommandEnum.Lobby; }
         }
     }
 }

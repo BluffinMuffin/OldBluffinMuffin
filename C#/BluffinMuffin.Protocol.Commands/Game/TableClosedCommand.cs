@@ -2,7 +2,7 @@
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class TableClosedCommand : AbstractJsonCommand
+    public class TableClosedCommand : AbstractGameCommand
     {
     }
 }
