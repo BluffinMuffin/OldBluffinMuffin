@@ -3,7 +3,7 @@
     public abstract class AbstractBluffinReponse<T> : AbstractBluffinCommand
         where T : AbstractBluffinCommand
     {
-        public T Command { get; private set; }
+        public T Command { get; set; }
 
         public override BluffinCommandEnum CommandType
         {
