@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.Commands;
@@ -92,26 +93,49 @@ namespace BluffinMuffin.Protocol.Server
 
         private void OnGetUserCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            throw new NotImplementedException();
+            var c = (GetUserCommand)command;
+            var u = DataManager.Persistance.Get(c.Username);
+            client.SendCommand(c.Response(u == null ? String.Empty : u.Email, u == null ? String.Empty : u.DisplayName, u == null ? -1 : u.TotalMoney));
         }
 
         private void OnAuthenticateUserCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            throw new NotImplementedException();
+            var c = (AuthenticateUserCommand)command;
+            var u = DataManager.Persistance.Authenticate(c.Username, c.Password);
+
+            if (u != null)
+                client.PlayerName = u.DisplayName;
+
+            var ok = (u != null && !Lobby.IsNameUsed(client.PlayerName));
+            if (ok)
+                Lobby.AddName(client.PlayerName);
+
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_AuthenticateUserCommandReceived", "> Client authenticate to Career Server as : {0}. Success={1}", client.PlayerName, ok);
+            client.SendCommand(c.Response(ok));
         }
 
         private void OnCreateUserCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            throw new NotImplementedException();
+            var c = (CreateUserCommand)command;
+            var ok = !DataManager.Persistance.IsUsernameExist(c.Username) && !DataManager.Persistance.IsDisplayNameExist(c.DisplayName);
+
+            if (ok)
+                DataManager.Persistance.Register(new UserInfo(c.Username, c.Password, c.Email, c.DisplayName, 7500));
+
+            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateUserCommandReceived", "> Client register to Career Server as : {0}. Success={1}", c.Username, ok);
+            client.SendCommand(c.Response(ok));
         }
 
         private void OnCheckUserExistCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            throw new NotImplementedException();
+            var c = (CheckUserExistCommand)command;
+            client.SendCommand(c.Response(DataManager.Persistance.IsUsernameExist(c.Username)));
         }
 
         private void OnCheckDisplayExistCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
+            var c = (CheckDisplayExistCommand)command;
+            client.SendCommand(c.Response(Lobby.IsNameUsed(c.DisplayName) || DataManager.Persistance.IsDisplayNameExist(c.DisplayName)));
             throw new NotImplementedException();
         }
 
@@ -131,7 +155,7 @@ namespace BluffinMuffin.Protocol.Server
         private void OnJoinTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (JoinTableCommand)command;
-            client.SendCommand(c.Response(false));
+            throw new NotImplementedException();
         }
     }
 }
