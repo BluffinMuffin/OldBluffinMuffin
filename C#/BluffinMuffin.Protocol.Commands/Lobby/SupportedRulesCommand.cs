@@ -5,9 +5,13 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
 {
     public class SupportedRulesCommand : AbstractLobbyCommand
     {
+        public SupportedRulesResponse Response(RuleInfo[] rules)
+        {
+            return new SupportedRulesResponse(this) { Rules = rules.ToList() };
+        }
         public string EncodeResponse(RuleInfo[] rules)
         {
-            return new SupportedRulesResponse(this) { Rules = rules.ToList() }.Encode();
+            return Response(rules).Encode();
         }
     }
 }

@@ -18,3 +18,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Se
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Server\bin\Debug\BluffinMuffin.Poker.HandEval.pdb
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Server\obj\Debug\BluffinMuffin.Protocol.Server.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Server\obj\Debug\BluffinMuffin.Protocol.Server.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Server\bin\Debug\Com.Ericmas001.Net.JSON.dll

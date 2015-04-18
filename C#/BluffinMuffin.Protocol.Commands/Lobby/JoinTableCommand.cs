@@ -7,7 +7,12 @@
 
         public string EncodeResponse(bool success)
         {
-            return new JoinTableResponse(this) { Success = success }.Encode();
+            return Response(success).Encode();
+        }
+
+        public JoinTableResponse Response(bool success)
+        {
+            return new JoinTableResponse(this) { Success = success };
         }
     }
 }

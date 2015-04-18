@@ -7,7 +7,11 @@
 
         public string EncodeResponse(bool success)
         {
-            return new AuthenticateUserResponse(this) { Success = success }.Encode();
+            return Response(success).Encode();
+        }
+        public AuthenticateUserResponse Response(bool success)
+        {
+            return new AuthenticateUserResponse(this) { Success = success };
         }
     }
 }

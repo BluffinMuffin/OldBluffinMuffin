@@ -10,7 +10,11 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
 
         public string EncodeResponse(List<TupleTable> tables)
         {
-            return new ListTableResponse(this) { Tables = tables }.Encode();
+            return Response(tables).Encode();
+        }
+        public ListTableResponse Response(List<TupleTable> tables)
+        {
+            return new ListTableResponse(this) { Tables = tables };
         }
     }
 }

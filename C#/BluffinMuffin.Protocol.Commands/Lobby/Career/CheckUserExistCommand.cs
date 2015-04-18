@@ -6,7 +6,11 @@
 
         public string EncodeResponse(bool exist)
         {
-            return new CheckUserExistResponse(this) { Exist = exist }.Encode();
+            return Response(exist).Encode();
+        }
+        public CheckUserExistResponse Response(bool exist)
+        {
+            return new CheckUserExistResponse(this) { Exist = exist };
         }
     }
 }

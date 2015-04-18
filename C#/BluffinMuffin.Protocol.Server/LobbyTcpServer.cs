@@ -31,6 +31,7 @@ namespace BluffinMuffin.Protocol.Server
         {
             m_CommandObserver.CommandReceived += m_CommandObserver_CommandReceived;
             m_CommandObserver.DisconnectCommandReceived += m_CommandObserver_DisconnectCommandReceived;
+            
             m_CommandObserver.ListTableCommandReceived += m_CommandObserver_ListTableCommandReceived;
             m_CommandObserver.JoinTableCommandReceived += m_CommandObserver_JoinTableCommandReceived;
             m_CommandObserver.GameCommandReceived += m_CommandObserver_GameCommandReceived;

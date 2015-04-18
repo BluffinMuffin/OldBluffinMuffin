@@ -9,7 +9,11 @@
 
         public string EncodeResponse(bool success)
         {
-            return new CreateUserResponse(this) { Success = success }.Encode();
+            return Response(success).Encode();
+        }
+        public CreateUserResponse Response(bool success)
+        {
+            return new CreateUserResponse(this) { Success = success };
         }
     }
 }

@@ -8,7 +8,11 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
 
         public string EncodeResponse(int id)
         {
-            return new CreateTableResponse(this) { IdTable = id }.Encode();
+            return Response(id).Encode();
+        }
+        public CreateTableResponse Response(int id)
+        {
+            return new CreateTableResponse(this) { IdTable = id };
         }
     }
 }
