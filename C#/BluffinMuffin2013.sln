@@ -48,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3F31CF80
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinMuffin.Protocol.Server.Test", "BluffinMuffin.Protocol.Server.Test\BluffinMuffin.Protocol.Server.Test.csproj", "{C7106429-DDAA-43F9-8074-80631FACED26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluffinMuffin.Protocols.Test.DataTypes", "BluffinMuffin.Protocols.Test.DataTypes\BluffinMuffin.Protocols.Test.DataTypes.csproj", "{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -256,6 +258,21 @@ Global
 		{C7106429-DDAA-43F9-8074-80631FACED26}.TestLive|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C7106429-DDAA-43F9-8074-80631FACED26}.TestLive|Mixed Platforms.Build.0 = Release|Any CPU
 		{C7106429-DDAA-43F9-8074-80631FACED26}.TestLive|x86.ActiveCfg = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.TestLive|Any CPU.ActiveCfg = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.TestLive|Any CPU.Build.0 = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.TestLive|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.TestLive|Mixed Platforms.Build.0 = Release|Any CPU
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F}.TestLive|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -274,5 +291,6 @@ Global
 		{D91D132F-A54A-4010-A131-89875998A1CA} = {3F31CF80-3B6D-4A98-AF73-2CDE57926E9F}
 		{3F31CF80-3B6D-4A98-AF73-2CDE57926E9F} = {ECED27B5-29EC-4826-B9EC-8B7FCF915CA3}
 		{C7106429-DDAA-43F9-8074-80631FACED26} = {3F31CF80-3B6D-4A98-AF73-2CDE57926E9F}
+		{C3ED27A8-E9DE-4063-8729-7ADEA12A631F} = {3F31CF80-3B6D-4A98-AF73-2CDE57926E9F}
 	EndGlobalSection
 EndGlobal

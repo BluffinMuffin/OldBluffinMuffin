@@ -56,11 +56,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Mocking\ServerMock.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Mocking\ClientMock.cs" />
+    <Compile Include="Mocking\ServerMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LobbyCommandVsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BluffinMuffin.Poker.DataTypes\BluffinMuffin.Poker.DataTypes.csproj">
+      <Project>{fcdf88c3-ba2f-4c06-aa9a-6ace1355a37e}</Project>
+      <Name>BluffinMuffin.Poker.DataTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BluffinMuffin.Protocol.Commands\BluffinMuffin.Protocol.Commands.csproj">
       <Project>{1b8829c6-720d-4c98-8961-b234692f8f15}</Project>
       <Name>BluffinMuffin.Protocol.Commands</Name>
@@ -68,6 +75,10 @@
     <ProjectReference Include="..\BluffinMuffin.Protocol.Server\BluffinMuffin.Protocol.Server.csproj">
       <Project>{e079c15d-dbc4-4f3b-b9b2-1e1df9de0460}</Project>
       <Name>BluffinMuffin.Protocol.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Protocols.Test.DataTypes\BluffinMuffin.Protocols.Test.DataTypes.csproj">
+      <Project>{c3ed27a8-e9de-4063-8729-7adea12a631f}</Project>
+      <Name>BluffinMuffin.Protocols.Test.DataTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
