@@ -22,7 +22,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void IdentifyCommand()
         {
-            var c = CommandMock.IdentifyCommand();
+            var c = LobbyCommandMock.IdentifyCommand();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
             CompareIdentifyCommand(c, dc);
         }
@@ -30,7 +30,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void IdentifyResponse()
         {
-            var c = CommandMock.IdentifyResponse();
+            var c = LobbyCommandMock.IdentifyResponse();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
             Assert.AreEqual(c.Ok, dc.Ok);
             CompareIdentifyCommand(c.Command, dc.Command);

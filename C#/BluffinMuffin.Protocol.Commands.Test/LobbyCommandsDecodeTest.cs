@@ -14,7 +14,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void SupportedRulesCommand()
         {
-            var c = CommandMock.SupportedRulesCommand();
+            var c = LobbyCommandMock.SupportedRulesCommand();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
             CompareSupportedRulesCommand(c, dc);
         }
@@ -22,7 +22,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void SupportedRulesResponse()
         {
-            var c = CommandMock.SupportedRulesResponse();
+            var c = LobbyCommandMock.SupportedRulesResponse();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
 
             Assert.AreEqual(c.Rules.Count, dc.Rules.Count);
@@ -34,7 +34,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void ListTableCommand()
         {
-            var c = CommandMock.ListTableCommand();
+            var c = LobbyCommandMock.ListTableCommand();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
             CompareListTableCommand(c, dc);
         }
@@ -42,7 +42,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void ListTableResponse()
         {
-            var c = CommandMock.ListTableResponse();
+            var c = LobbyCommandMock.ListTableResponse();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
 
             Assert.AreEqual(c.Tables.Count, dc.Tables.Count);
@@ -54,7 +54,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void JoinTableCommand()
         {
-            var c = CommandMock.JoinTableCommand();
+            var c = LobbyCommandMock.JoinTableCommand();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
             CompareJoinTableCommand(c, dc);
         }
@@ -62,7 +62,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void JoinTableResponse()
         {
-            var c = CommandMock.JoinTableResponse();
+            var c = LobbyCommandMock.JoinTableResponse();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
 
             Assert.AreEqual(c.Success, dc.Success);
@@ -72,7 +72,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void CreateTableCommand()
         {
-            var c = CommandMock.CreateTableCommand();
+            var c = LobbyCommandMock.CreateTableCommand();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
             CompareCreateTableCommand(c, dc);
         }
@@ -80,7 +80,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void CreateTableResponse()
         {
-            var c = CommandMock.CreateTableResponse();
+            var c = LobbyCommandMock.CreateTableResponse();
             var dc = EncodeDecodeHelper.GetDecodedCommand(c);
 
             Assert.AreEqual(c.IdTable, dc.IdTable);
@@ -94,6 +94,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         private static void CompareListTableCommand(ListTableCommand c, ListTableCommand dc)
         {
             Assert.IsFalse(c.LobbyTypes.Except(dc.LobbyTypes).Any());
+            Assert.AreEqual(c.LobbyTypes.Length, dc.LobbyTypes.Length);
         }
 
         private static void CompareJoinTableCommand(JoinTableCommand c, JoinTableCommand dc)

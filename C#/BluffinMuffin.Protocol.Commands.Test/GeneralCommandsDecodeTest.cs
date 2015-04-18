@@ -21,7 +21,7 @@ namespace BluffinMuffin.Protocol.Commands.Test
         [TestMethod]
         public void DisconnectCommand()
         {
-            var c = CommandMock.DisconnectCommand();
+            var c = GeneralCommandMock.DisconnectCommand();
             var dc =EncodeDecodeHelper.GetDecodedCommand(c);
         }
     }

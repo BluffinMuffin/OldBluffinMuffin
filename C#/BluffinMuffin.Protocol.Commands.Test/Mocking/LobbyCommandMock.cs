@@ -6,12 +6,8 @@ using BluffinMuffin.Poker.DataTypes.Enums;
 
 namespace BluffinMuffin.Protocol.Commands.Test.Mocking
 {
-    public static class CommandMock
+    public static class LobbyCommandMock
     {
-        public static DisconnectCommand DisconnectCommand()
-        {
-            return new DisconnectCommand();
-        }
         public static SupportedRulesCommand SupportedRulesCommand()
         {
             return new SupportedRulesCommand();

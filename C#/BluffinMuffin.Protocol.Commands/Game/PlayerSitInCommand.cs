@@ -9,7 +9,11 @@ namespace BluffinMuffin.Protocol.Commands.Game
 
         public string EncodeResponse(int noSeat)
         {
-            return new PlayerSitInResponse(this) { NoSeat = noSeat }.Encode();
+            return Response(noSeat).Encode();
+        }
+        public PlayerSitInResponse Response(int noSeat)
+        {
+            return new PlayerSitInResponse(this) { NoSeat = noSeat };
         }
     }
 }

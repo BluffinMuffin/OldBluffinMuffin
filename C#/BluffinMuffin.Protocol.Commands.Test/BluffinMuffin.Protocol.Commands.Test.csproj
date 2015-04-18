@@ -36,6 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Com.Ericmas001.Games, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Com.Ericmas001.Games.dll</HintPath>
+    </Reference>
     <Reference Include="Com.Ericmas001.Net.JSON">
       <HintPath>..\References\Com.Ericmas001.Net.JSON.dll</HintPath>
     </Reference>
@@ -64,6 +68,9 @@
     <Compile Include="Comparing\CompareConfigurableWaitingTimes.cs" />
     <Compile Include="Comparing\CompareLobbyOptions.cs" />
     <Compile Include="Comparing\CompareLimitOptions.cs" />
+    <Compile Include="Comparing\CompareGameCard.cs" />
+    <Compile Include="Comparing\CompareSeatInfo.cs" />
+    <Compile Include="Comparing\ComparePlayerInfo.cs" />
     <Compile Include="Comparing\CompareTableParams.cs" />
     <Compile Include="Comparing\CompareBlindOptions.cs" />
     <Compile Include="Comparing\CompareTupleTable.cs" />
@@ -71,10 +78,18 @@
     <Compile Include="GeneralCommandsDecodeTest.cs" />
     <Compile Include="Helpers\EncodeDecodeHelper.cs" />
     <Compile Include="LobbyCareerCommandsDecodeTest.cs" />
+    <Compile Include="GameCommandsDecodeTest.cs" />
     <Compile Include="LobbyTrainingCommandsDecodeTest.cs" />
     <Compile Include="LobbyCommandsDecodeTest.cs" />
-    <Compile Include="Mocking\CommandMock.cs" />
+    <Compile Include="Mocking\GameCardMock.cs" />
+    <Compile Include="Mocking\GameCommandMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mocking\GeneralCommandMock.cs" />
+    <Compile Include="Mocking\LobbyCommandMock.cs" />
+    <Compile Include="Mocking\PlayerInfoMock.cs" />
     <Compile Include="Mocking\RuleInfoMock.cs" />
+    <Compile Include="Mocking\SeatInfoMock.cs" />
     <Compile Include="Mocking\TableParamsMock.cs" />
     <Compile Include="Mocking\TupleTableMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

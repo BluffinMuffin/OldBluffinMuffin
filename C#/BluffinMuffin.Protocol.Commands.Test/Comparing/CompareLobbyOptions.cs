@@ -26,10 +26,9 @@ namespace BluffinMuffin.Protocol.Commands.Test.Comparing
             }
             else if (l.GetType() == typeof(LobbyOptionsTraining))
             {
-                var lt = (LobbyOptionsCareer)l;
-                var dlt = (LobbyOptionsCareer)dl;
-                Assert.AreEqual(lt.IsMaximumBuyInLimited, dlt.IsMaximumBuyInLimited);
-                Assert.AreEqual(lt.MoneyUnit, dlt.MoneyUnit);
+                var lt = (LobbyOptionsTraining)l;
+                var dlt = (LobbyOptionsTraining)dl;
+                Assert.AreEqual(lt.StartingAmount, dlt.StartingAmount);
             }
         }
     }
