@@ -13,3 +13,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Cl
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Client\bin\Debug\BluffinMuffin.Protocol.Commands.pdb
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Client\obj\Debug\BluffinMuffin.Protocol.Client.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Client\obj\Debug\BluffinMuffin.Protocol.Client.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Protocol.Client\bin\Debug\Newtonsoft.Json.xml

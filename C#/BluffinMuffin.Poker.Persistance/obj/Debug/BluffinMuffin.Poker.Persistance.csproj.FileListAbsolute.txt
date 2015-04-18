@@ -9,3 +9,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persi
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\obj\Debug\BluffinMuffin.Poker.Persistance.csprojResolveAssemblyReference.cache
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\obj\Debug\BluffinMuffin.Poker.Persistance.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\obj\Debug\BluffinMuffin.Poker.Persistance.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\bin\Debug\Newtonsoft.Json.xml

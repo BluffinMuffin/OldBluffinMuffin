@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Client.Menu
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Client.Menu
 {
     partial class TrainingParmsForm
     {
@@ -29,26 +31,22 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainingParmsForm));
-            this.btnTraining = new VIBlend.WinForms.Controls.vButton();
+            this.btnTraining = new Button();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnTraining
             // 
-            this.btnTraining.AllowAnimations = true;
-            this.btnTraining.BackColor = System.Drawing.Color.Transparent;
             this.btnTraining.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTraining.Image = global::BluffinMuffin.Client.Properties.Resources.learn;
             this.btnTraining.Location = new System.Drawing.Point(14, 74);
             this.btnTraining.Name = "btnTraining";
-            this.btnTraining.RoundedCornersMask = ((byte)(15));
             this.btnTraining.Size = new System.Drawing.Size(353, 65);
             this.btnTraining.TabIndex = 0;
             this.btnTraining.Text = "Start Training";
             this.btnTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnTraining.UseVisualStyleBackColor = false;
-            this.btnTraining.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnTraining.Click += new System.EventHandler(this.btnTraining_Click);
             // 
             // txtUsername
@@ -91,7 +89,7 @@
             this.PerformLayout();
 
         }
-        private VIBlend.WinForms.Controls.vButton btnTraining;
+        private Button btnTraining;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Label label2;
         #endregion

@@ -27,7 +27,8 @@ namespace BluffinMuffin.Protocol.Server
 
         protected override void OnDataReceived(string data)
         {
-            m_BluffinServer.OnCommandReceived(AbstractBluffinCommand.DeserializeCommand(data), this);
+            if(!String.IsNullOrEmpty(data))
+                m_BluffinServer.OnCommandReceived(AbstractBluffinCommand.DeserializeCommand(data), this);
         }
 
         protected override void OnDataSent(string data)

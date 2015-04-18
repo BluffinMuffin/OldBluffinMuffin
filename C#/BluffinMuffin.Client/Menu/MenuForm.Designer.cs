@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Client.Menu
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Client.Menu
 {
     partial class MenuForm
     {
@@ -30,9 +32,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
             this.lblServerAddress = new System.Windows.Forms.Label();
-            this.btnTraining = new VIBlend.WinForms.Controls.vButton();
-            this.btnCareerConnect = new VIBlend.WinForms.Controls.vButton();
-            this.btnCareerRegister = new VIBlend.WinForms.Controls.vButton();
+            this.btnTraining = new Button();
+            this.btnCareerConnect = new Button();
+            this.btnCareerRegister = new Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nudServerPort = new System.Windows.Forms.NumericUpDown();
             this.clstServerName = new System.Windows.Forms.ComboBox();
@@ -51,53 +53,41 @@
             // 
             // btnTraining
             // 
-            this.btnTraining.AllowAnimations = true;
-            this.btnTraining.BackColor = System.Drawing.Color.Transparent;
             this.btnTraining.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTraining.Image = global::BluffinMuffin.Client.Properties.Resources.learn;
             this.btnTraining.Location = new System.Drawing.Point(14, 126);
             this.btnTraining.Name = "btnTraining";
-            this.btnTraining.RoundedCornersMask = ((byte)(15));
             this.btnTraining.Size = new System.Drawing.Size(353, 65);
             this.btnTraining.TabIndex = 0;
             this.btnTraining.Text = "Start Training";
             this.btnTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnTraining.UseVisualStyleBackColor = false;
-            this.btnTraining.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnTraining.Click += new System.EventHandler(this.btnTraining_Click);
             // 
             // btnCareerConnect
             // 
-            this.btnCareerConnect.AllowAnimations = true;
-            this.btnCareerConnect.BackColor = System.Drawing.Color.Transparent;
             this.btnCareerConnect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCareerConnect.Image = global::BluffinMuffin.Client.Properties.Resources.cards;
             this.btnCareerConnect.Location = new System.Drawing.Point(14, 197);
             this.btnCareerConnect.Name = "btnCareerConnect";
-            this.btnCareerConnect.RoundedCornersMask = ((byte)(15));
             this.btnCareerConnect.Size = new System.Drawing.Size(353, 65);
             this.btnCareerConnect.TabIndex = 1;
             this.btnCareerConnect.Text = "Continue Career";
             this.btnCareerConnect.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnCareerConnect.UseVisualStyleBackColor = false;
-            this.btnCareerConnect.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROGREEN;
             this.btnCareerConnect.Click += new System.EventHandler(this.btnCareerConnect_Click);
             // 
             // btnCareerRegister
             // 
-            this.btnCareerRegister.AllowAnimations = true;
-            this.btnCareerRegister.BackColor = System.Drawing.Color.Transparent;
             this.btnCareerRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCareerRegister.Image = global::BluffinMuffin.Client.Properties.Resources.add_user;
             this.btnCareerRegister.Location = new System.Drawing.Point(14, 268);
             this.btnCareerRegister.Name = "btnCareerRegister";
-            this.btnCareerRegister.RoundedCornersMask = ((byte)(15));
             this.btnCareerRegister.Size = new System.Drawing.Size(353, 65);
             this.btnCareerRegister.TabIndex = 2;
             this.btnCareerRegister.Text = "Create Career";
             this.btnCareerRegister.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnCareerRegister.UseVisualStyleBackColor = false;
-            this.btnCareerRegister.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
             this.btnCareerRegister.Click += new System.EventHandler(this.btnCareerRegister_Click);
             // 
             // label1
@@ -173,10 +163,10 @@
 
         #endregion
 
-        private VIBlend.WinForms.Controls.vButton btnTraining;
+        private Button btnTraining;
         private System.Windows.Forms.Label lblServerAddress;
-        private VIBlend.WinForms.Controls.vButton btnCareerConnect;
-        private VIBlend.WinForms.Controls.vButton btnCareerRegister;
+        private Button btnCareerConnect;
+        private Button btnCareerRegister;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown nudServerPort;
         private System.Windows.Forms.ComboBox clstServerName;

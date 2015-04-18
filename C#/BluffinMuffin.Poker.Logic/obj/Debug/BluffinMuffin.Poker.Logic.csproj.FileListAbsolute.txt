@@ -11,3 +11,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic\bin\Debug\BluffinMuffin.Poker.HandEval.pdb
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic\obj\Debug\BluffinMuffin.Poker.Logic.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic\obj\Debug\BluffinMuffin.Poker.Logic.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic\bin\Debug\Newtonsoft.Json.xml

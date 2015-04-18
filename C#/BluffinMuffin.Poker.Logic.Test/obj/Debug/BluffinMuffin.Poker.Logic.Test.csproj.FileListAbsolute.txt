@@ -13,3 +13,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic.Test\obj\Debug\BluffinMuffin.Poker.Logic.Test.csprojResolveAssemblyReference.cache
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic.Test\obj\Debug\BluffinMuffin.Poker.Logic.Test.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic.Test\obj\Debug\BluffinMuffin.Poker.Logic.Test.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Logic.Test\bin\Debug\Newtonsoft.Json.xml

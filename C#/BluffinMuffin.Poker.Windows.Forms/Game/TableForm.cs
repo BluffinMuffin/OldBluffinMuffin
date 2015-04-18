@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
-using VIBlend.WinForms.Controls;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Game
 {
@@ -140,7 +139,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             SuspendLayout();
             for (var i = 0; i < 10; ++i )
             {
-                var btnSitIn = Controls["btnSitIn" + i] as vButton;
+                var btnSitIn = Controls["btnSitIn" + i] as Button;
                 if (i < m_Game.Table.Seats.Count && m_Game.Table.Seats[i].IsEmpty)
                 {
                     if (btnSitIn != null) btnSitIn.Visible = visible;

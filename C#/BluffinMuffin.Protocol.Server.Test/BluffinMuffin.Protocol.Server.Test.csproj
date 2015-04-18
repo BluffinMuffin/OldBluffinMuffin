@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC89E53D-9130-4ED5-ACE6-82BE13E94479}</ProjectGuid>
+    <ProjectGuid>{C7106429-DDAA-43F9-8074-80631FACED26}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BluffinMuffin.Poker.Logic.Test</RootNamespace>
-    <AssemblyName>BluffinMuffin.Poker.Logic.Test</AssemblyName>
+    <RootNamespace>BluffinMuffin.Protocol.Server.Test</RootNamespace>
+    <AssemblyName>BluffinMuffin.Protocol.Server.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -16,7 +16,6 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,9 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Com.Ericmas001.Util, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Com.Ericmas001.Util.dll</HintPath>
+    <Reference Include="Com.Ericmas001.Net.JSON">
+      <HintPath>..\References\Com.Ericmas001.Net.JSON.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -55,41 +56,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="PokerGameTests\BettingRoundsTests.cs" />
-    <Compile Include="PokerGameTests\BlindsTests.cs" />
-    <Compile Include="PokerGameTests\DataTypes\GameInfo.cs" />
-    <Compile Include="PokerGameTests\GameStateTests.cs" />
-    <Compile Include="PokerGameTests\BettingTests.cs" />
-    <Compile Include="PokerGameTests\JoiningSittingLeavingTests.cs" />
-    <Compile Include="PokerGameTests\Mocks\PlayerMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple2PlayersAntesGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple2PlayersNoBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple3PlayersAntesGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple3PlayersNoBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple4PlayersAntesGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple4PlayersNoBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple4PlayersBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple3PlayersBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\Mocks\Simple2PlayersBlindsGameMock.cs" />
-    <Compile Include="PokerGameTests\WhoAreTheBlindsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PokerGameTests\WhoIsUnderTheGunTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Mocking\ServerMock.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BluffinMuffin.Poker.DataTypes\BluffinMuffin.Poker.DataTypes.csproj">
-      <Project>{fcdf88c3-ba2f-4c06-aa9a-6ace1355a37e}</Project>
-      <Name>BluffinMuffin.Poker.DataTypes</Name>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.Commands\BluffinMuffin.Protocol.Commands.csproj">
+      <Project>{1b8829c6-720d-4c98-8961-b234692f8f15}</Project>
+      <Name>BluffinMuffin.Protocol.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Poker.Logic\BluffinMuffin.Poker.Logic.csproj">
-      <Project>{c742e561-9daf-40f2-92d4-c2631bbdd253}</Project>
-      <Name>BluffinMuffin.Poker.Logic</Name>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.Server\BluffinMuffin.Protocol.Server.csproj">
+      <Project>{e079c15d-dbc4-4f3b-b9b2-1e1df9de0460}</Project>
+      <Name>BluffinMuffin.Protocol.Server</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -29,3 +29,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Client\bin\
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Client\obj\Debug\BluffinMuffin.Client.exe
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Client\obj\Debug\BluffinMuffin.Client.pdb
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Client\bin\Debug\Com.Ericmas001.Net.JSON.dll
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Client\bin\Debug\Newtonsoft.Json.xml

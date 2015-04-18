@@ -34,3 +34,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Windo
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Windows.Forms\bin\Debug\BluffinMuffin.Poker.HandEval.pdb
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Windows.Forms\obj\Debug\BluffinMuffin.Poker.Windows.Forms.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Windows.Forms\obj\Debug\BluffinMuffin.Poker.Windows.Forms.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Windows.Forms\bin\Debug\Newtonsoft.Json.xml

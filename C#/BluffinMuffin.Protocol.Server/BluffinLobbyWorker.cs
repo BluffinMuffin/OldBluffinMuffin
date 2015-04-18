@@ -75,7 +75,6 @@ namespace BluffinMuffin.Protocol.Server
             var c = (DisconnectCommand)command;
             LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_DisconnectCommandReceived", "> Client disconnected: {0}", client.PlayerName);
             Lobby.RemoveName(client.PlayerName);
-            Server.LobbyCommands.CompleteAdding();
         }
 
         void OnListTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)

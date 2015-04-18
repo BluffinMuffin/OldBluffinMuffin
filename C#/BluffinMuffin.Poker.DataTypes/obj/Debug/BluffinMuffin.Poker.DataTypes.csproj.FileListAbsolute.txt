@@ -7,4 +7,4 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.DataT
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.DataTypes\bin\Debug\Newtonsoft.Json.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.DataTypes\obj\Debug\BluffinMuffin.Poker.DataTypes.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.DataTypes\obj\Debug\BluffinMuffin.Poker.DataTypes.pdb
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.DataTypes\obj\Debug\BluffinMuffin.Poker.DataTypes.csprojResolveAssemblyReference.cache
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.DataTypes\bin\Debug\Newtonsoft.Json.xml

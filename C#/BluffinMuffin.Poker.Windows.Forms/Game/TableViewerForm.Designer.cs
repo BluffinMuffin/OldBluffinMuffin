@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Poker.Windows.Forms.Game
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Poker.Windows.Forms.Game
 {
     partial class TableViewerForm
     {
@@ -30,7 +32,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableViewerForm));
             this.logConsole = new BluffinMuffin.Poker.Windows.Forms.LogConsole();
-            this.btnHelp = new VIBlend.WinForms.Controls.vButton();
+            this.btnHelp = new Button();
             this.pnlTable = new System.Windows.Forms.Panel();
             this.lblPot9 = new System.Windows.Forms.Label();
             this.lblPot8 = new System.Windows.Forms.Label();
@@ -96,19 +98,15 @@
             // 
             // btnHelp
             // 
-            this.btnHelp.AllowAnimations = true;
-            this.btnHelp.BackColor = System.Drawing.Color.Transparent;
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHelp.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.help;
             this.btnHelp.Location = new System.Drawing.Point(880, 12);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.RoundedCornersMask = ((byte)(15));
             this.btnHelp.Size = new System.Drawing.Size(134, 23);
             this.btnHelp.TabIndex = 1;
             this.btnHelp.Text = "HELP";
             this.btnHelp.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.EXPRESSIONDARK;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // pnlTable
@@ -781,7 +779,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private VIBlend.WinForms.Controls.vButton btnHelp;
+        private Button btnHelp;
         private LogConsole logConsole;
         private System.Windows.Forms.Label lblPot9;
         private System.Windows.Forms.Label lblPot8;

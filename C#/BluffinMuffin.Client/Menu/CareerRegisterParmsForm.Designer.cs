@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Client.Menu
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Client.Menu
 {
     partial class CareerRegisterParmsForm
     {
@@ -29,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CareerRegisterParmsForm));
-            this.btnRegister = new VIBlend.WinForms.Controls.vButton();
+            this.btnRegister = new Button();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -46,20 +48,16 @@
             // 
             // btnRegister
             // 
-            this.btnRegister.AllowAnimations = true;
-            this.btnRegister.BackColor = System.Drawing.Color.Transparent;
             this.btnRegister.Enabled = false;
             this.btnRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegister.Image = global::BluffinMuffin.Client.Properties.Resources.add_user;
             this.btnRegister.Location = new System.Drawing.Point(14, 385);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.RoundedCornersMask = ((byte)(15));
             this.btnRegister.Size = new System.Drawing.Size(353, 65);
             this.btnRegister.TabIndex = 20;
             this.btnRegister.Text = "Create Career";
             this.btnRegister.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnRegister.UseVisualStyleBackColor = false;
-            this.btnRegister.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
             // txtUsername
@@ -216,7 +214,7 @@
 
         #endregion
 
-        private VIBlend.WinForms.Controls.vButton btnRegister;
+        private Button btnRegister;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPassword;

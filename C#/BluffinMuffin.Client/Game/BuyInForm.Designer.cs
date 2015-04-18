@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Client.Game
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Client.Game
 {
     partial class BuyInForm
     {
@@ -39,7 +41,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.nudBuyIn = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.btnSitIn = new VIBlend.WinForms.Controls.vButton();
+            this.btnSitIn = new Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudBuyIn)).BeginInit();
             this.SuspendLayout();
             // 
@@ -158,21 +160,17 @@
             // 
             // btnSitIn
             // 
-            this.btnSitIn.AllowAnimations = true;
             this.btnSitIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSitIn.BackColor = System.Drawing.Color.Transparent;
             this.btnSitIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn.Image = global::BluffinMuffin.Client.Properties.Resources.sit_in;
             this.btnSitIn.Location = new System.Drawing.Point(58, 175);
             this.btnSitIn.Name = "btnSitIn";
-            this.btnSitIn.RoundedCornersMask = ((byte)(15));
             this.btnSitIn.Size = new System.Drawing.Size(105, 25);
             this.btnSitIn.TabIndex = 47;
             this.btnSitIn.Text = "Sit In";
             this.btnSitIn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnSitIn.UseVisualStyleBackColor = true;
-            this.btnSitIn.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROGREEN;
             this.btnSitIn.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // BuyInForm
@@ -214,6 +212,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown nudBuyIn;
         private System.Windows.Forms.Label label7;
-        private VIBlend.WinForms.Controls.vButton btnSitIn;
+        private Button btnSitIn;
     }
 }
