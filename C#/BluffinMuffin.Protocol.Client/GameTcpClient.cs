@@ -74,6 +74,15 @@ namespace BluffinMuffin.Protocol.Client
             {
                 Observer.RaiseSitOutResponseReceived(e.Command.Success);
             }
+            OnSeatUpdatedCommandReceived(sender, new CommandEventArgs<SeatUpdatedCommand>(new SeatUpdatedCommand()
+            {
+                TableId = e.Command.TableId,
+                Seat = new SeatInfo()
+                {
+                    NoSeat = m_TablePosition,
+                    Player = null
+                }
+            }));
         }
 
         void OnPlayerSitInResponseReceived(object sender, CommandEventArgs<PlayerSitInResponse> e)
@@ -82,6 +91,15 @@ namespace BluffinMuffin.Protocol.Client
             {
                 Observer.RaiseSitInResponseReceived(e.Command.NoSeat);
             }
+            OnSeatUpdatedCommandReceived(sender, new CommandEventArgs<SeatUpdatedCommand>(new SeatUpdatedCommand()
+            {
+                TableId = e.Command.TableId,
+                Seat = new SeatInfo()
+                {
+                    NoSeat = e.Command.NoSeat,
+                    Player = new PlayerInfo(m_PlayerName, 0)
+                }
+            }));
         }
         void OnCommandReceived(object sender, StringEventArgs e)
         {
