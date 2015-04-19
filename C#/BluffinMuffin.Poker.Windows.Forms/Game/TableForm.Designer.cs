@@ -32,21 +32,21 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableForm));
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnFold = new Button();
-            this.btnCall = new Button();
-            this.btnRaise = new Button();
+            this.btnFold = new System.Windows.Forms.Button();
+            this.btnCall = new System.Windows.Forms.Button();
+            this.btnRaise = new System.Windows.Forms.Button();
             this.nudRaise = new System.Windows.Forms.NumericUpDown();
-            this.btnSitOut = new Button();
-            this.btnSitIn0 = new Button();
-            this.btnSitIn1 = new Button();
-            this.btnSitIn2 = new Button();
-            this.btnSitIn3 = new Button();
-            this.btnSitIn4 = new Button();
-            this.btnSitIn5 = new Button();
-            this.btnSitIn6 = new Button();
-            this.btnSitIn7 = new Button();
-            this.btnSitIn8 = new Button();
-            this.btnSitIn9 = new Button();
+            this.btnSitOut = new System.Windows.Forms.Button();
+            this.btnSitIn0 = new System.Windows.Forms.Button();
+            this.btnSitIn1 = new System.Windows.Forms.Button();
+            this.btnSitIn2 = new System.Windows.Forms.Button();
+            this.btnSitIn3 = new System.Windows.Forms.Button();
+            this.btnSitIn4 = new System.Windows.Forms.Button();
+            this.btnSitIn5 = new System.Windows.Forms.Button();
+            this.btnSitIn6 = new System.Windows.Forms.Button();
+            this.btnSitIn7 = new System.Windows.Forms.Button();
+            this.btnSitIn8 = new System.Windows.Forms.Button();
+            this.btnSitIn9 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRaise)).BeginInit();
             this.SuspendLayout();
@@ -66,6 +66,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // 
             // btnFold
             // 
+            this.btnFold.BackColor = System.Drawing.Color.Gold;
             this.btnFold.Enabled = false;
             this.btnFold.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFold.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.leave;
@@ -76,11 +77,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnFold.TabIndex = 0;
             this.btnFold.Text = "FOLD";
             this.btnFold.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnFold.UseVisualStyleBackColor = true;
+            this.btnFold.UseVisualStyleBackColor = false;
             this.btnFold.Click += new System.EventHandler(this.btnFold_Click);
             // 
             // btnCall
             // 
+            this.btnCall.BackColor = System.Drawing.Color.SpringGreen;
             this.btnCall.Enabled = false;
             this.btnCall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCall.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.cards_mini;
@@ -91,11 +93,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnCall.TabIndex = 1;
             this.btnCall.Text = "CALL";
             this.btnCall.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnCall.UseVisualStyleBackColor = true;
+            this.btnCall.UseVisualStyleBackColor = false;
             this.btnCall.Click += new System.EventHandler(this.btnCall_Click);
             // 
             // btnRaise
             // 
+            this.btnRaise.BackColor = System.Drawing.Color.DodgerBlue;
             this.btnRaise.Enabled = false;
             this.btnRaise.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRaise.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.money;
@@ -106,7 +109,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnRaise.TabIndex = 2;
             this.btnRaise.Text = "RAISE";
             this.btnRaise.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnRaise.UseVisualStyleBackColor = true;
+            this.btnRaise.UseVisualStyleBackColor = false;
             this.btnRaise.Click += new System.EventHandler(this.btnRaise_Click);
             // 
             // nudRaise
@@ -122,6 +125,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // 
             // btnSitOut
             // 
+            this.btnSitOut.BackColor = System.Drawing.Color.Salmon;
             this.btnSitOut.Enabled = false;
             this.btnSitOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitOut.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_out;
@@ -132,11 +136,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitOut.TabIndex = 5;
             this.btnSitOut.Text = "SIT OUT";
             this.btnSitOut.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitOut.UseVisualStyleBackColor = true;
+            this.btnSitOut.UseVisualStyleBackColor = false;
             this.btnSitOut.Click += new System.EventHandler(this.btnSitOut_Click);
             // 
             // btnSitIn0
             // 
+            this.btnSitIn0.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn0.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn0.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn0.Location = new System.Drawing.Point(211, 31);
@@ -146,11 +151,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn0.TabIndex = 4;
             this.btnSitIn0.Text = "SIT IN";
             this.btnSitIn0.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn0.UseVisualStyleBackColor = true;
+            this.btnSitIn0.UseVisualStyleBackColor = false;
             this.btnSitIn0.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn1
             // 
+            this.btnSitIn1.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn1.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn1.Location = new System.Drawing.Point(363, 31);
@@ -160,11 +166,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn1.TabIndex = 6;
             this.btnSitIn1.Text = "SIT IN";
             this.btnSitIn1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn1.UseVisualStyleBackColor = true;
+            this.btnSitIn1.UseVisualStyleBackColor = false;
             this.btnSitIn1.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn2
             // 
+            this.btnSitIn2.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn2.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn2.Location = new System.Drawing.Point(516, 31);
@@ -174,11 +181,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn2.TabIndex = 7;
             this.btnSitIn2.Text = "SIT IN";
             this.btnSitIn2.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn2.UseVisualStyleBackColor = true;
+            this.btnSitIn2.UseVisualStyleBackColor = false;
             this.btnSitIn2.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn3
             // 
+            this.btnSitIn3.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn3.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn3.Location = new System.Drawing.Point(705, 184);
@@ -188,11 +196,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn3.TabIndex = 8;
             this.btnSitIn3.Text = "SIT IN";
             this.btnSitIn3.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn3.UseVisualStyleBackColor = true;
+            this.btnSitIn3.UseVisualStyleBackColor = false;
             this.btnSitIn3.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn4
             // 
+            this.btnSitIn4.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn4.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn4.Location = new System.Drawing.Point(705, 335);
@@ -202,11 +211,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn4.TabIndex = 9;
             this.btnSitIn4.Text = "SIT IN";
             this.btnSitIn4.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn4.UseVisualStyleBackColor = true;
+            this.btnSitIn4.UseVisualStyleBackColor = false;
             this.btnSitIn4.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn5
             // 
+            this.btnSitIn5.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn5.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn5.Location = new System.Drawing.Point(516, 485);
@@ -216,11 +226,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn5.TabIndex = 10;
             this.btnSitIn5.Text = "SIT IN";
             this.btnSitIn5.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn5.UseVisualStyleBackColor = true;
+            this.btnSitIn5.UseVisualStyleBackColor = false;
             this.btnSitIn5.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn6
             // 
+            this.btnSitIn6.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn6.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn6.Location = new System.Drawing.Point(363, 485);
@@ -230,11 +241,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn6.TabIndex = 11;
             this.btnSitIn6.Text = "SIT IN";
             this.btnSitIn6.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn6.UseVisualStyleBackColor = true;
+            this.btnSitIn6.UseVisualStyleBackColor = false;
             this.btnSitIn6.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn7
             // 
+            this.btnSitIn7.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn7.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn7.Location = new System.Drawing.Point(211, 485);
@@ -244,11 +256,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn7.TabIndex = 12;
             this.btnSitIn7.Text = "SIT IN";
             this.btnSitIn7.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn7.UseVisualStyleBackColor = true;
+            this.btnSitIn7.UseVisualStyleBackColor = false;
             this.btnSitIn7.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn8
             // 
+            this.btnSitIn8.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn8.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn8.Location = new System.Drawing.Point(26, 335);
@@ -258,11 +271,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn8.TabIndex = 13;
             this.btnSitIn8.Text = "SIT IN";
             this.btnSitIn8.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn8.UseVisualStyleBackColor = true;
+            this.btnSitIn8.UseVisualStyleBackColor = false;
             this.btnSitIn8.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // btnSitIn9
             // 
+            this.btnSitIn9.BackColor = System.Drawing.Color.SpringGreen;
             this.btnSitIn9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitIn9.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_in;
             this.btnSitIn9.Location = new System.Drawing.Point(26, 184);
@@ -272,7 +286,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnSitIn9.TabIndex = 14;
             this.btnSitIn9.Text = "SIT IN";
             this.btnSitIn9.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSitIn9.UseVisualStyleBackColor = true;
+            this.btnSitIn9.UseVisualStyleBackColor = false;
             this.btnSitIn9.Click += new System.EventHandler(this.btnSitIn_Click);
             // 
             // TableForm

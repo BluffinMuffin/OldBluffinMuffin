@@ -32,7 +32,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableViewerForm));
             this.logConsole = new BluffinMuffin.Poker.Windows.Forms.LogConsole();
-            this.btnHelp = new Button();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.pnlTable = new System.Windows.Forms.Panel();
             this.lblPot9 = new System.Windows.Forms.Label();
             this.lblPot8 = new System.Windows.Forms.Label();
@@ -98,7 +98,9 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // 
             // btnHelp
             // 
+            this.btnHelp.BackColor = System.Drawing.Color.Black;
             this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHelp.ForeColor = System.Drawing.Color.White;
             this.btnHelp.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.help;
             this.btnHelp.Location = new System.Drawing.Point(880, 12);
             this.btnHelp.Name = "btnHelp";
@@ -106,7 +108,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             this.btnHelp.TabIndex = 1;
             this.btnHelp.Text = "HELP";
             this.btnHelp.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // pnlTable
