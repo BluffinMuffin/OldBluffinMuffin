@@ -12,7 +12,7 @@ using BluffinMuffin.Poker.Logic;
 
 namespace BluffinMuffin.Server
 {
-    public class BluffinServerLobby : IServerLobby, IBluffinServer, IBluffinLobby
+    public class BluffinServerLobby : IBluffinServer, IBluffinLobby
     {
         public BlockingCollection<CommandEntry> LobbyCommands { get; private set; }
         public BlockingCollection<GameCommandEntry> GameCommands { get; private set; }
