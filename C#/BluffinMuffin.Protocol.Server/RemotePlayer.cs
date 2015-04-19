@@ -202,13 +202,16 @@ namespace BluffinMuffin.Protocol.Server
 
         void OnSeatUpdated(object sender, SeatEventArgs e)
         {
-            if (!e.Seat.IsEmpty && Player.NoSeat != e.Seat.NoSeat)
-                e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards;
-
-            Send(new SeatUpdatedCommand()
+            if (e.Seat.IsEmpty || Player.NoSeat != e.Seat.NoSeat)
             {
-                Seat = e.Seat,
-            });
+                if (!e.Seat.IsEmpty && Player.NoSeat != e.Seat.NoSeat)
+                    e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards;
+
+                Send(new SeatUpdatedCommand()
+                {
+                    Seat = e.Seat,
+                });
+            }
         }
 
         void OnPlayerLeft(object sender, PlayerInfoEventArgs e)
