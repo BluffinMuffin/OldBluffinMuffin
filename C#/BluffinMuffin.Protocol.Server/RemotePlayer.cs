@@ -6,6 +6,7 @@ using BluffinMuffin.Poker.DataTypes.EventHandling;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Game;
+using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Games;
 
 namespace BluffinMuffin.Protocol.Server
@@ -192,10 +193,11 @@ namespace BluffinMuffin.Protocol.Server
         void OnPlayerJoined(object sender, PlayerInfoEventArgs e)
         {
             var p = e.Player;
-            Send(new PlayerJoinedCommand()
-            {
-                PlayerName = p.Name,
-            });
+            if(p != Player)
+                Send(new PlayerJoinedCommand()
+                {
+                    PlayerName = p.Name,
+                });
         }
 
         void OnSeatUpdated(object sender, SeatEventArgs e)
