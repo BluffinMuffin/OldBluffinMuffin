@@ -12,5 +12,8 @@ namespace BluffinMuffin.Protocol.Server
         string PlayerName { get; set; }
 
         void SendCommand(AbstractBluffinCommand command);
+
+        void AddPlayer(RemotePlayer p);
+        void RemovePlayer(RemotePlayer p);
     }
 }

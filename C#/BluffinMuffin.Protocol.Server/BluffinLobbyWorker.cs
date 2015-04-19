@@ -51,13 +51,13 @@ namespace BluffinMuffin.Protocol.Server
 
         public void Start()
         {
-            foreach (CommandEntry<AbstractBluffinCommand> entry in Server.LobbyCommands.GetConsumingEnumerable())
+            foreach (CommandEntry entry in Server.LobbyCommands.GetConsumingEnumerable())
                 Methods.Where(x => entry.Command.GetType().IsSubclassOf(x.Key) || x.Key == entry.Command.GetType()).ToList().ForEach(x => x.Value(entry.Command, entry.Client));
         }
 
         private void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            LogManager.Log(LogLevel.MessageVeryLow, "ServerClientLobby.m_CommandObserver_CommandReceived", "Server RECV from {0} [{1}]", client.PlayerName, command.Encode());
+            LogManager.Log(LogLevel.MessageVeryLow, "BluffinLobbyWorker.OnCommandReceived", "Server RECV from {0} [{1}]", client.PlayerName, command.Encode());
         }
 
         void OnIdentifyCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
@@ -65,7 +65,7 @@ namespace BluffinMuffin.Protocol.Server
             var c = (IdentifyCommand)command;
             client.PlayerName = c.Name;
             var ok = !Lobby.IsNameUsed(c.Name) && !DataManager.Persistance.IsDisplayNameExist(c.Name);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_IdentifyCommandReceived", "> Client indentifying training server as : {0}. Success={1}", c.Name, ok);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnIdentifyCommandReceived", "> Client indentifying training server as : {0}. Success={1}", c.Name, ok);
             client.SendCommand(c.Response(ok));
             if (ok)
                 Lobby.AddName(c.Name);
@@ -74,7 +74,7 @@ namespace BluffinMuffin.Protocol.Server
         void OnDisconnectCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (DisconnectCommand)command;
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_DisconnectCommandReceived", "> Client disconnected: {0}", client.PlayerName);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnDisconnectCommandReceived", "> Client disconnected: {0}", client.PlayerName);
             Lobby.RemoveName(client.PlayerName);
         }
 
@@ -110,7 +110,7 @@ namespace BluffinMuffin.Protocol.Server
             if (ok)
                 Lobby.AddName(client.PlayerName);
 
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_AuthenticateUserCommandReceived", "> Client authenticate to Career Server as : {0}. Success={1}", client.PlayerName, ok);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnAuthenticateUserCommandReceived", "> Client authenticate to Career Server as : {0}. Success={1}", client.PlayerName, ok);
             client.SendCommand(c.Response(ok));
         }
 
@@ -122,7 +122,7 @@ namespace BluffinMuffin.Protocol.Server
             if (ok)
                 DataManager.Persistance.Register(new UserInfo(c.Username, c.Password, c.Email, c.DisplayName, 7500));
 
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_CreateUserCommandReceived", "> Client register to Career Server as : {0}. Success={1}", c.Username, ok);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnCreateUserCommandReceived", "> Client register to Career Server as : {0}. Success={1}", c.Username, ok);
             client.SendCommand(c.Response(ok));
         }
 
@@ -148,7 +148,7 @@ namespace BluffinMuffin.Protocol.Server
         private int CreateTable(CreateTableCommand c, IBluffinClient client)
         {
             var res = Lobby.CreateTable(c);
-            LogManager.Log(LogLevel.Message, "ServerClientLobby.m_CommandObserver_{3}Received", "> Client '{0}' {3}: {2}:{1}", client.PlayerName, c.Params.TableName, res, c.Params.Lobby.OptionType);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.CreateTable_{3}", "> Client '{0}' {3}: {2}:{1}", client.PlayerName, c.Params.TableName, res, c.Params.Lobby.OptionType);
             return res;
         }
 

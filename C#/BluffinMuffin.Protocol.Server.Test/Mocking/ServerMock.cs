@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
+using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Lobby;
 
@@ -17,8 +18,8 @@ namespace BluffinMuffin.Protocol.Server.Test.Mocking
         private BluffinLobbyWorker m_Worker;
         public ServerMock()
         {
-            LobbyCommands = new BlockingCollection<CommandEntry<AbstractBluffinCommand>>();
-            ServerSendedCommands = new BlockingCollection<CommandEntry<AbstractBluffinCommand>>();
+            LobbyCommands = new BlockingCollection<CommandEntry>();
+            ServerSendedCommands = new BlockingCollection<CommandEntry>();
             m_Client = new ClientMock(this);
             m_Worker = new BluffinLobbyWorker(this, this);
             Task.Factory.StartNew(StartWorker);
@@ -38,14 +39,12 @@ namespace BluffinMuffin.Protocol.Server.Test.Mocking
 
         public void Send(AbstractBluffinCommand c)
         {
-            LobbyCommands.Add(new CommandEntry<AbstractBluffinCommand>(){Client = m_Client,Command = c});
+            LobbyCommands.Add(new CommandEntry(){Client = m_Client,Command = c});
         }
 
-        public BlockingCollection<CommandEntry<AbstractBluffinCommand>> LobbyCommands { get; private set; }
-        public BlockingCollection<CommandEntry<AbstractBluffinCommand>> ServerSendedCommands { get; private set; }
-        public void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
-        {
-        }
+        public BlockingCollection<CommandEntry> LobbyCommands { get; private set; }
+        public BlockingCollection<GameCommandEntry> GameCommands { get; private set; }
+        public BlockingCollection<CommandEntry> ServerSendedCommands { get; private set; }
 
         public bool IsNameUsed(string name)
         {
@@ -59,6 +58,11 @@ namespace BluffinMuffin.Protocol.Server.Test.Mocking
 
         public void RemoveName(string name)
         {
+        }
+
+        public PokerGame GetGame(int id)
+        {
+            return null;
         }
 
         public List<TupleTable> ListTables(params LobbyTypeEnum[] lobbyTypes)

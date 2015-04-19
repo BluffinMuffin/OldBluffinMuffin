@@ -68,6 +68,10 @@
       <Project>{fcdf88c3-ba2f-4c06-aa9a-6ace1355a37e}</Project>
       <Name>BluffinMuffin.Poker.DataTypes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Poker.Logic\BluffinMuffin.Poker.Logic.csproj">
+      <Project>{c742e561-9daf-40f2-92d4-c2631bbdd253}</Project>
+      <Name>BluffinMuffin.Poker.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BluffinMuffin.Protocol.Commands\BluffinMuffin.Protocol.Commands.csproj">
       <Project>{1b8829c6-720d-4c98-8961-b234692f8f15}</Project>
       <Name>BluffinMuffin.Protocol.Commands</Name>
