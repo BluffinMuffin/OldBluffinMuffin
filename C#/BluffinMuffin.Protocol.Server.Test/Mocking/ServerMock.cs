@@ -6,6 +6,8 @@ using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Lobby;
+using BluffinMuffin.Protocol.Server.DataTypes;
+using BluffinMuffin.Protocol.Server.Workers;
 
 namespace BluffinMuffin.Protocol.Server.Test.Mocking
 {

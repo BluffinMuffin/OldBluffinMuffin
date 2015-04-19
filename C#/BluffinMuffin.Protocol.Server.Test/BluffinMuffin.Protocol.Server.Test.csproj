@@ -53,12 +53,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BluffinServerTest.cs" />
+    <Compile Include="ClientForTesting.cs" />
     <Compile Include="Mocking\ClientMock.cs" />
     <Compile Include="Mocking\ServerMock.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LobbyCommandVsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteTcpServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BluffinMuffin.Poker.DataTypes\BluffinMuffin.Poker.DataTypes.csproj">
