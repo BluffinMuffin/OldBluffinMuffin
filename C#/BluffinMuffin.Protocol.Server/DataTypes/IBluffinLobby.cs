@@ -4,7 +4,7 @@ using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Protocol.Commands.Lobby;
 
-namespace BluffinMuffin.Protocol.Server
+namespace BluffinMuffin.Protocol.Server.DataTypes
 {
     public interface IBluffinLobby
     {

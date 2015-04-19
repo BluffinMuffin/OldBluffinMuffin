@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BluffinMuffin.Protocol.Server;
 using Com.Ericmas001.Util;
 using System.IO;
 using System.Reflection;
@@ -53,7 +54,7 @@ namespace BluffinMuffin.Server
                         }
 
                     }
-                    var server = new BluffinServerLobby(port);
+                    var server = new BluffinServer(port);
                     server.Start();
                     LogManager.Log(LogLevel.Message, "BluffinMuffin.Server", "Server started on port {0}", port);
                 }

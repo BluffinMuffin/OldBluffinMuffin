@@ -1,4 +1,4 @@
-﻿namespace BluffinMuffin.Protocol.Server
+﻿namespace BluffinMuffin.Protocol.Server.DataTypes
 {
     public class GameCommandEntry : CommandEntry
     {

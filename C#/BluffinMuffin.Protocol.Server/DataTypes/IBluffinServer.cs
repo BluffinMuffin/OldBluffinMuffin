@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace BluffinMuffin.Protocol.Server
+namespace BluffinMuffin.Protocol.Server.DataTypes
 {
     public interface IBluffinServer
     {

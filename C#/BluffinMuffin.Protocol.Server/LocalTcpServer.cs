@@ -1,12 +1,13 @@
 ﻿using System.Net.Sockets;
+using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Net.Protocol;
 
 namespace BluffinMuffin.Protocol.Server
 {
-    public class BluffinTcpServer : SimpleTcpServer
+    public class LocalTcpServer : SimpleTcpServer
     {
         private readonly IBluffinServer m_BluffinServer;
-        public BluffinTcpServer(int port, IBluffinServer bluffinServer)
+        public LocalTcpServer(int port, IBluffinServer bluffinServer)
             : base(port)
         {
             m_BluffinServer = bluffinServer;

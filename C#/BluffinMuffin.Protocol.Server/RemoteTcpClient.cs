@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using BluffinMuffin.Protocol.Commands;
+using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Net.Protocol;
 using Com.Ericmas001.Util;
 

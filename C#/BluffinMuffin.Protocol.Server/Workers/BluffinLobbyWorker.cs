@@ -8,9 +8,10 @@ using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Lobby;
 using BluffinMuffin.Protocol.Commands.Lobby.Career;
 using BluffinMuffin.Protocol.Commands.Lobby.Training;
+using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Util;
 
-namespace BluffinMuffin.Protocol.Server
+namespace BluffinMuffin.Protocol.Server.Workers
 {
     public class BluffinLobbyWorker
     {

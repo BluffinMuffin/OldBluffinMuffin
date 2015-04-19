@@ -3,21 +3,22 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BluffinMuffin.Protocol.Commands.Lobby;
-using BluffinMuffin.Protocol.Server;
+using BluffinMuffin.Protocol.Server.DataTypes;
+using BluffinMuffin.Protocol.Server.Workers;
 using Com.Ericmas001.Util;
 using BluffinMuffin.Poker.DataTypes;
 using System.Linq;
 using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.Logic;
 
-namespace BluffinMuffin.Server
+namespace BluffinMuffin.Protocol.Server
 {
-    public class BluffinServerLobby : IBluffinServer, IBluffinLobby
+    public class BluffinServer : IBluffinServer, IBluffinLobby
     {
         public BlockingCollection<CommandEntry> LobbyCommands { get; private set; }
         public BlockingCollection<GameCommandEntry> GameCommands { get; private set; }
 
-        private readonly BluffinTcpServer m_TcpServer;
+        private readonly LocalTcpServer m_TcpServer;
 
         private readonly List<string> m_UsedNames = new List<string>();
         private readonly Dictionary<int, PokerGame> m_Games = new Dictionary<int, PokerGame>();
@@ -29,14 +30,14 @@ namespace BluffinMuffin.Server
             return m_Games[id];
         }
 
-        public BluffinServerLobby(int port)
+        public BluffinServer(int port)
         {
             LogManager.Log(LogLevel.Message, "BluffinServerLobby", "Server started on port {0} !", port);
             LobbyCommands = new BlockingCollection<CommandEntry>();
             GameCommands = new BlockingCollection<GameCommandEntry>();
             Task.Factory.StartNew(new BluffinLobbyWorker(this, this).Start);
             Task.Factory.StartNew(new BluffinGameWorker(this).Start);
-            m_TcpServer = new BluffinTcpServer(port, this);
+            m_TcpServer = new LocalTcpServer(port, this);
         }
 
         public bool IsNameUsed(string name)

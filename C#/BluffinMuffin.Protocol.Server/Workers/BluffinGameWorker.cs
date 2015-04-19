@@ -7,9 +7,10 @@ using BluffinMuffin.Poker.DataTypes.Parameters;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Game;
+using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Util;
 
-namespace BluffinMuffin.Protocol.Server
+namespace BluffinMuffin.Protocol.Server.Workers
 {
     public class BluffinGameWorker
     {
