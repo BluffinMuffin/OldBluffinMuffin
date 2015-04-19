@@ -6,7 +6,7 @@ D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persi
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\bin\Debug\Com.Ericmas001.Collections.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\bin\Debug\Newtonsoft.Json.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\bin\Debug\BluffinMuffin.Poker.DataTypes.pdb
+D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\bin\Debug\Newtonsoft.Json.xml
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\obj\Debug\BluffinMuffin.Poker.Persistance.csprojResolveAssemblyReference.cache
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\obj\Debug\BluffinMuffin.Poker.Persistance.dll
 D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\obj\Debug\BluffinMuffin.Poker.Persistance.pdb
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.Persistance\bin\Debug\Newtonsoft.Json.xml

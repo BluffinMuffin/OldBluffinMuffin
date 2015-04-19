@@ -393,5 +393,14 @@ namespace BluffinMuffin.Protocol.Client
         {
             get { return m_IsGameStarted; }
         }
+
+        public override void Send(AbstractCommand command)
+        {
+            if (command is AbstractGameCommand)
+            {
+                ((AbstractGameCommand) command).TableId = m_NoPort;
+            }
+            base.Send(command);
+        }
     }
 }
