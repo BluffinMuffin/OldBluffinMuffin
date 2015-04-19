@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Lobby;
 using BluffinMuffin.Protocol.Commands.Lobby.Career;

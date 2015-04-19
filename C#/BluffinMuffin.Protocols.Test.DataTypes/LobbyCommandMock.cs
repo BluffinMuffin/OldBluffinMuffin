@@ -20,7 +20,7 @@ namespace BluffinMuffin.Protocols.Test.DataTypes
 
         public static ListTableCommand ListTableCommand()
         {
-            return new ListTableCommand() { LobbyTypes = new LobbyTypeEnum[] { LobbyTypeEnum.Career, LobbyTypeEnum.Training } };
+            return new ListTableCommand() { LobbyTypes = new[] { LobbyTypeEnum.Career, LobbyTypeEnum.Training } };
         }
 
         public static ListTableResponse ListTableResponse()

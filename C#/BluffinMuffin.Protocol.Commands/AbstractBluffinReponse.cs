@@ -10,11 +10,11 @@
             get { return Command.CommandType; }
         }
 
-        public AbstractBluffinReponse()
+        protected AbstractBluffinReponse()
         {
         }
 
-        public AbstractBluffinReponse(T command)
+        protected AbstractBluffinReponse(T command)
         {
             Command = command;
         }

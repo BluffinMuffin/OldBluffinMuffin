@@ -8,8 +8,8 @@ namespace BluffinMuffin.Client.Game
 {
     public partial class BuyInForm : Form
     {
-        public bool Ok { get; set; }
-        public int BuyIn { get; set; }
+        public bool Ok { get; private set; }
+        public int BuyIn { get; private set; }
 
         public BuyInForm(UserInfo user, TableParams parms)
         {

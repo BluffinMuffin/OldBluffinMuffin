@@ -2,7 +2,7 @@
 using BluffinMuffin.Protocol.Commands.Lobby;
 using BluffinMuffin.Protocol.Commands.Test.Comparing;
 using BluffinMuffin.Protocol.Commands.Test.Helpers;
-using BluffinMuffin.Protocol.Commands.Test.Mocking;
+using BluffinMuffin.Protocols.Test.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BluffinMuffin.Protocol.Commands.Test

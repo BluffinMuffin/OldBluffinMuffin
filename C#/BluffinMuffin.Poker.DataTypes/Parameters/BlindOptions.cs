@@ -7,15 +7,5 @@ namespace BluffinMuffin.Poker.DataTypes.Parameters
     {
         public int MoneyUnit { get; set; }
         public abstract BlindTypeEnum OptionType { get; }
-
-        public BlindOptions(int moneyUnit)
-        {
-            MoneyUnit = moneyUnit;
-        }
-        public BlindOptions()
-        {
-        }
-
-        
     }
 }

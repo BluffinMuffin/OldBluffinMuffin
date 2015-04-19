@@ -4,6 +4,7 @@ using BluffinMuffin.Client.Properties;
 using BluffinMuffin.Protocol.Client;
 using BluffinMuffin.Poker.Windows.Forms.Game;
 using BluffinMuffin.Client.Game;
+using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Client
 {
@@ -23,13 +24,12 @@ namespace BluffinMuffin.Client
 
 
 
-         public delegate void EmptyDelegate();
          void m_Server_ServerLost()
          {
              if (InvokeRequired)
              {
                  // We're not in the UI thread, so we need to call BeginInvoke
-                 BeginInvoke(new EmptyDelegate(m_Server_ServerLost), new object[] { });
+                 BeginInvoke(new EmptyHandler(m_Server_ServerLost), new object[] { });
                  return;
              }
              m_Server = null;
@@ -44,7 +44,7 @@ namespace BluffinMuffin.Client
             lblMoney.Text = String.Format("{0}", (int)u.TotalMoney);
         }
 
-        public void AllowJoinOrLeave()
+        private void AllowJoinOrLeave()
         {
             var selected = tableList.SomethingSelected;
             var client = tableList.FindClient();

@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace BluffinMuffin.Server
 {
-    class Program
+    public static class Program
     {
         static StreamWriter m_SwNormal;
         static StreamWriter m_SwDebug;

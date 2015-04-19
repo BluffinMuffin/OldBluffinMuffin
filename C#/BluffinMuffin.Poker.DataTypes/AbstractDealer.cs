@@ -6,8 +6,8 @@ namespace BluffinMuffin.Poker.DataTypes
     public abstract class AbstractDealer
     {
         protected Stack<GameCard> m_Deck;
-       
-        public AbstractDealer()
+
+        protected AbstractDealer()
         {
             FreshDeck();
         }

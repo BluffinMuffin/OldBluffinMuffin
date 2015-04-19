@@ -6,10 +6,6 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
     {
         public TableParams Params { get; set; }
 
-        public string EncodeResponse(int id)
-        {
-            return Response(id).Encode();
-        }
         public CreateTableResponse Response(int id)
         {
             return new CreateTableResponse(this) { IdTable = id };

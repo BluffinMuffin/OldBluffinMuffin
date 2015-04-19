@@ -4,10 +4,6 @@
     {
         public bool Success { get; set; }
 
-        public CreateUserResponse()
-        {
-        }
-
         public CreateUserResponse(CreateUserCommand command)
             : base(command)
         {

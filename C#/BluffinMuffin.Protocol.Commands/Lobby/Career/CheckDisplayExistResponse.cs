@@ -4,10 +4,6 @@
     {
         public bool Exist { get; set; }
 
-        public CheckDisplayExistResponse()
-        {
-        }
-
         public CheckDisplayExistResponse(CheckDisplayExistCommand command)
             : base(command)
         {

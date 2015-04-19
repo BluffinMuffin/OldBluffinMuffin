@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>BluffinMuffin.Server.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Com.Ericmas001.Net.Protocol">
       <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>

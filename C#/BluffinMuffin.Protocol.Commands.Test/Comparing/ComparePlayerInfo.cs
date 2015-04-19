@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BluffinMuffin.Poker.DataTypes;
-using Com.Ericmas001.Games;
+﻿using BluffinMuffin.Poker.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BluffinMuffin.Protocol.Commands.Test.Comparing

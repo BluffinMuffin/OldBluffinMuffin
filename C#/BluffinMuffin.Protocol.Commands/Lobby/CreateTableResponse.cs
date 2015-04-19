@@ -4,10 +4,6 @@
     {
         public int IdTable { get; set; }
 
-        public CreateTableResponse()
-        {
-        }
-
         public CreateTableResponse(CreateTableCommand command)
             : base(command)
         {

@@ -1,6 +1,6 @@
 ﻿using BluffinMuffin.Protocol.Commands.Lobby.Career;
 using BluffinMuffin.Protocol.Commands.Test.Helpers;
-using BluffinMuffin.Protocol.Commands.Test.Mocking;
+using BluffinMuffin.Protocols.Test.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BluffinMuffin.Protocol.Commands.Test

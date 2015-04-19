@@ -17,7 +17,7 @@ namespace BluffinMuffin.Poker.DataTypes.Parameters
 
 
         [JsonConverter(typeof(OptionJsonConverter<LobbyOptions, LobbyTypeEnum>))]
-        public LobbyOptions Lobby { get; set; }
+        public LobbyOptions Lobby { [UsedImplicitly] get; set; }
 
 
         [JsonConverter(typeof(OptionJsonConverter<BlindOptions, BlindTypeEnum>))]

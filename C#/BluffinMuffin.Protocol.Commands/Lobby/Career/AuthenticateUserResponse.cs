@@ -4,10 +4,6 @@
     {
         public bool Success { get; set; }
 
-        public AuthenticateUserResponse()
-        {
-        }
-
         public AuthenticateUserResponse(AuthenticateUserCommand command)
             : base(command)
         {

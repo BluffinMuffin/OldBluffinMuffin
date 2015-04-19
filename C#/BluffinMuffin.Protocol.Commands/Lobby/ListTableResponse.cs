@@ -7,10 +7,6 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
     {
         public List<TupleTable> Tables { get; set; }
 
-        public ListTableResponse()
-        {
-        }
-
         public ListTableResponse(ListTableCommand command)
             : base(command)
         {

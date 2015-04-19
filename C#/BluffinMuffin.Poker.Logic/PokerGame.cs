@@ -15,11 +15,12 @@ namespace BluffinMuffin.Poker.Logic
     public class PokerGame : IPokerGame
     {
         #region Fields
-        protected readonly AbstractDealer m_Dealer; // Dealer
+
+        private readonly AbstractDealer m_Dealer; // Dealer
 
         // STATES
-        protected GameStateEnum m_State; // L'etat global de la game
-        protected RoundStateEnum m_RoundState; // L'etat de la game pour chaque round
+        private GameStateEnum m_State; // L'etat global de la game
+        private RoundStateEnum m_RoundState; // L'etat de la game pour chaque round
         #endregion Fields
 
         #region Properties
@@ -71,34 +72,16 @@ namespace BluffinMuffin.Poker.Logic
             get { return m_State; }
         }
 
-        /// <summary>
-        /// Every position is an information:
-        /// 0 : Real money (1)
-        /// 1 : Texas Hold'em (0)
-        /// 2 : Ring game (0)
-        /// 3 : NoLimit (0)
-        /// 4 : GameRound (0,1,2,3)
-        /// </summary>
-        public string Encode { get { return string.Format("{0}{1}{2}{3}{4}", 1, 0, 0, 0, (int)Table.Round); } }
-
         #endregion
 
         #region Ctors & Init
-        public PokerGame()
-            : this(new TexasHoldemDealer())
-        {
-        }
-        public PokerGame(AbstractDealer dealer) :
-            this(dealer, new PokerTable())
-        {
-        }
 
         public PokerGame(PokerTable table)
             : this(new TexasHoldemDealer(), table)
         {
         }
 
-        public PokerGame(AbstractDealer dealer, PokerTable table)
+        private PokerGame(AbstractDealer dealer, PokerTable table)
         {
             Observer = new PokerGameObserver(this);
             m_Dealer = dealer;
@@ -180,7 +163,7 @@ namespace BluffinMuffin.Poker.Logic
         /// <summary>
         /// The player is leaving the game
         /// </summary>
-        public bool LeaveGame(PlayerInfo p)
+        public void LeaveGame(PlayerInfo p)
         {
             var sitOutOk = SitOut(p);
 
@@ -190,10 +173,7 @@ namespace BluffinMuffin.Poker.Logic
 
                 if (Table.Players.Count == 0)
                     m_State = GameStateEnum.End;
-
-                return true;
             }
-            return false;
         }
 
         /// <summary>

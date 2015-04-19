@@ -10,7 +10,8 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
     public partial class TableForm : TableViewerForm
     {
         protected virtual int GetSitInMoneyAmount() { return 1500; }
-        public TableForm()
+
+        protected TableForm()
         {
             InitializeComponent();
             DisableButtons();
@@ -67,9 +68,9 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                 btn.BackColor = (Color)btn.Tag;
             }
         }
-        public override void SetGame(IPokerGame c, string n)
+        public override void SetGame(IPokerGame c)
         {
-            base.SetGame(c, n);
+            base.SetGame(c);
             m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
             m_Game.Observer.SitInResponseReceived += OnSitInResponseReceived;
             m_Game.Observer.SitOutResponseReceived += OnSitOutResponseReceived;

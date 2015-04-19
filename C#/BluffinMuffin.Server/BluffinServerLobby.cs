@@ -39,11 +39,6 @@ namespace BluffinMuffin.Server
             m_TcpServer = new BluffinTcpServer(port, this);
         }
 
-        public bool NameUsed(string name)
-        {
-            return IsNameUsed(name);
-        }
-
         public bool IsNameUsed(string name)
         {
             return m_UsedNames.Any(s => s.Equals(name, StringComparison.InvariantCultureIgnoreCase));

@@ -6,10 +6,6 @@
         public string DisplayName { get; set; }
         public double Money { get; set; }
 
-        public GetUserResponse()
-        {
-        }
-
         public GetUserResponse(GetUserCommand command)
             : base(command)
         {

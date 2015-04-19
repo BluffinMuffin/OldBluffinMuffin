@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.DataTypes.Parameters;
-using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Game;
-using BluffinMuffin.Protocol.Commands.Lobby;
-using BluffinMuffin.Protocol.Commands.Lobby.Career;
-using BluffinMuffin.Protocol.Commands.Lobby.Training;
 using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Protocol.Server
 {
     public class BluffinGameWorker
     {
-        private KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>[] Methods;
+        private readonly KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>[] m_Methods;
 
-        public IBluffinServer Server { get; private set; }
+        private IBluffinServer Server { get; set; }
         public BluffinGameWorker(IBluffinServer server)
         {
             Server = server;
-            Methods = new[]
+            m_Methods = new[]
             {
                 //General
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>(typeof(AbstractBluffinCommand), OnCommandReceived), 
@@ -34,7 +28,7 @@ namespace BluffinMuffin.Protocol.Server
                 //Game
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>(typeof(PlayerPlayMoneyCommand), OnPlayerPlayMoneyCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>(typeof(PlayerSitOutCommand), OnPlayerSitOutCommandReceived), 
-                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>(typeof(PlayerSitInCommand), OnPlayerSitInCommandReceived), 
+                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient, RemotePlayer>>(typeof(PlayerSitInCommand), OnPlayerSitInCommandReceived)
                 
             };
         }
@@ -42,7 +36,10 @@ namespace BluffinMuffin.Protocol.Server
         public void Start()
         {
             foreach (GameCommandEntry entry in Server.GameCommands.GetConsumingEnumerable())
-                Methods.Where(x => entry.Command.GetType().IsSubclassOf(x.Key) || x.Key == entry.Command.GetType()).ToList().ForEach(x => x.Value(entry.Command, entry.Client, entry.Player));
+            {
+                GameCommandEntry e = entry;
+                m_Methods.Where(x => e.Command.GetType().IsSubclassOf(x.Key) || x.Key == e.Command.GetType()).ToList().ForEach(x => x.Value(e.Command, e.Client, e.Player));
+            }
         }
 
         private void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
@@ -53,7 +50,6 @@ namespace BluffinMuffin.Protocol.Server
 
         void OnDisconnectCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
         {
-            var c = (DisconnectCommand)command;
             if (p.Game.Params.Lobby.OptionType == LobbyTypeEnum.Career)
                 DataManager.Persistance.Get(p.Client.PlayerName).TotalMoney += p.Player.MoneySafeAmnt;
 

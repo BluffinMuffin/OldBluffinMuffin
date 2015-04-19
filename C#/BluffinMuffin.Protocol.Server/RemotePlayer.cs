@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Commands.Game;
 using Com.Ericmas001.Games;
-using Com.Ericmas001.Net.Protocol;
 
 namespace BluffinMuffin.Protocol.Server
 {
@@ -224,7 +219,7 @@ namespace BluffinMuffin.Protocol.Server
         }
         #endregion PokerObserver Event Handling
 
-        public void Send(AbstractGameCommand c)
+        private void Send(AbstractGameCommand c)
         {
             c.TableId = TableId;
             Client.SendCommand(c);

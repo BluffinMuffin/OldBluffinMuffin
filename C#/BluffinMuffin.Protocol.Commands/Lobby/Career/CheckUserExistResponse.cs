@@ -4,10 +4,6 @@
     {
         public bool Exist { get; set; }
 
-        public CheckUserExistResponse()
-        {
-        }
-
         public CheckUserExistResponse(CheckUserExistCommand command)
             : base(command)
         {

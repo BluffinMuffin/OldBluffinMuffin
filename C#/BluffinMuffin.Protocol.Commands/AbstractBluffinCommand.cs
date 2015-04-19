@@ -3,14 +3,12 @@ using System.Linq;
 using System.Reflection;
 using Com.Ericmas001.Net.Protocol.JSON;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
 namespace BluffinMuffin.Protocol.Commands
 {
     public abstract class AbstractBluffinCommand : AbstractJsonCommand
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public abstract BluffinCommandEnum CommandType { get; }
 
         /// <summary>

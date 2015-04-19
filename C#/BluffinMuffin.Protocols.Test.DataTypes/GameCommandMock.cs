@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Protocol.Commands.Game;
 

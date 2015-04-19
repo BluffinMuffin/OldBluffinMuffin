@@ -1,5 +1,4 @@
-﻿using Com.Ericmas001.Net.Protocol.JSON;
-using BluffinMuffin.Poker.DataTypes.Enums;
+﻿using BluffinMuffin.Poker.DataTypes.Enums;
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {

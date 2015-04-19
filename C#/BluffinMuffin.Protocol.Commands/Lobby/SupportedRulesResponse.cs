@@ -7,9 +7,6 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
     {
         public List<RuleInfo> Rules { get; set; }
 
-        public SupportedRulesResponse()
-        {
-        }
         public SupportedRulesResponse(SupportedRulesCommand command)
             : base(command)
         {

@@ -25,20 +25,6 @@ namespace BluffinMuffin.Protocol.Client
         #region Properties
         public PokerGameObserver Observer { get; private set; }
         public TableInfo Table { get { return m_PokerTable; } }
-        public int NoSeat { get { return m_TablePosition; } }
-        public int NoPort { get { return m_NoPort; } }
-        public string Encode
-        {
-            get
-            {
-                // 0 : Assume que les game sont en real money (1)
-                // 1 : Assume que c'est tlt du Texas Hold'em (0)
-                // 2 : Assume que c'Est tlt des Ring game (0)
-                // 3 : Assume que c'Est tlt du NoLimit (0)
-                // 4 : GameRound (0,1,2,3)
-                return string.Format("{0}{1}{2}{3}{4}", 1, 0, 0, 0, (int)m_PokerTable.Round);
-            }
-        }
         #endregion Properties
 
         #region Ctors & Init
@@ -354,12 +340,6 @@ namespace BluffinMuffin.Protocol.Client
             Send(new PlayerSitOutCommand() { TableId = m_NoPort, });
             return true;
         }
-
-        public bool LeaveGame(PlayerInfo p)
-        {
-            Send(new DisconnectCommand());
-            return true;
-        }
         #endregion Public Methods
 
         #region Private Methods
@@ -396,9 +376,10 @@ namespace BluffinMuffin.Protocol.Client
 
         public override void Send(AbstractCommand command)
         {
-            if (command is AbstractGameCommand)
+            var gameCommand = command as AbstractGameCommand;
+            if (gameCommand != null)
             {
-                ((AbstractGameCommand) command).TableId = m_NoPort;
+                gameCommand.TableId = m_NoPort;
             }
             base.Send(command);
         }

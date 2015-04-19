@@ -61,11 +61,6 @@ namespace BluffinMuffin.Poker.Windows.Forms
             RelativeSizeChanged(this, new IntEventArgs(Height - old));
         }
 
-        public void Clear()
-        {
-            txtLog.Text = "";
-        }
-
         public void WriteLine(string line)
         {
             Write(line + Environment.NewLine);
@@ -81,14 +76,7 @@ namespace BluffinMuffin.Poker.Windows.Forms
             }
             var old = txtLog.SelectionStart;
             txtLog.Text += msg;
-            if (!m_Locked)
-            {
-                txtLog.SelectionStart = txtLog.TextLength;
-            }
-            else
-            {
-                txtLog.SelectionStart = old;
-            }
+            txtLog.SelectionStart = !m_Locked ? txtLog.TextLength : old;
             txtLog.Focus();
             txtLog.ScrollToCaret();
         }

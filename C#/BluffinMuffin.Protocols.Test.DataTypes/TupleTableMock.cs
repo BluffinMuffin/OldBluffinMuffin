@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BluffinMuffin.Poker.DataTypes;
+﻿using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 
 namespace BluffinMuffin.Protocols.Test.DataTypes
 {
@@ -13,7 +7,7 @@ namespace BluffinMuffin.Protocols.Test.DataTypes
     {
         public static TupleTable[] AllTables()
         {
-            return new TupleTable[]
+            return new[]
             {
                 TableOne(),
                 TableTwo(),

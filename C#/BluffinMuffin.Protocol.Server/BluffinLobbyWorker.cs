@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
@@ -16,15 +14,15 @@ namespace BluffinMuffin.Protocol.Server
 {
     public class BluffinLobbyWorker
     {
-        private KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>[] Methods;
+        private readonly KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>[] m_Methods;
 
-        public IBluffinServer Server { get; private set; }
-        public IBluffinLobby Lobby { get; private set; }
+        private IBluffinServer Server { get; set; }
+        private IBluffinLobby Lobby { get; set; }
         public BluffinLobbyWorker(IBluffinServer server, IBluffinLobby lobby)
         {
             Server = server;
             Lobby = lobby;
-            Methods = new[]
+            m_Methods = new[]
             {
                 //General
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(AbstractBluffinCommand), OnCommandReceived), 
@@ -44,7 +42,7 @@ namespace BluffinMuffin.Protocol.Server
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CheckUserExistCommand), OnCheckUserExistCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CreateUserCommand), OnCreateUserCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(AuthenticateUserCommand), OnAuthenticateUserCommandReceived), 
-                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(GetUserCommand), OnGetUserCommandReceived), 
+                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(GetUserCommand), OnGetUserCommandReceived)
                 
             };
         }
@@ -52,7 +50,10 @@ namespace BluffinMuffin.Protocol.Server
         public void Start()
         {
             foreach (CommandEntry entry in Server.LobbyCommands.GetConsumingEnumerable())
-                Methods.Where(x => entry.Command.GetType().IsSubclassOf(x.Key) || x.Key == entry.Command.GetType()).ToList().ForEach(x => x.Value(entry.Command, entry.Client));
+            {
+                CommandEntry e = entry;
+                m_Methods.Where(x => e.Command.GetType().IsSubclassOf(x.Key) || x.Key == e.Command.GetType()).ToList().ForEach(x => x.Value(e.Command, e.Client));
+            }
         }
 
         private void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
@@ -74,7 +75,6 @@ namespace BluffinMuffin.Protocol.Server
 
         void OnDisconnectCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            var c = (DisconnectCommand)command;
             LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnDisconnectCommandReceived", "> Client disconnected: {0}", client.PlayerName);
             Lobby.RemoveName(client.PlayerName);
         }

@@ -13,9 +13,10 @@ namespace BluffinMuffin.Poker.Logic
     public class PokerTable : TableInfo
     {
         #region Fields
-        protected readonly List<int> m_AllInCaps = new List<int>(); // All the distincts ALL_IN CAPS of the ROUND
-        protected readonly Dictionary<PlayerInfo, int> m_BlindNeeded = new Dictionary<PlayerInfo, int>();
-        protected int m_CurrPotId;
+
+        private readonly List<int> m_AllInCaps = new List<int>(); // All the distincts ALL_IN CAPS of the ROUND
+        private readonly Dictionary<PlayerInfo, int> m_BlindNeeded = new Dictionary<PlayerInfo, int>();
+        private int m_CurrPotId;
         #endregion Fields
 
         #region Properties
@@ -25,7 +26,7 @@ namespace BluffinMuffin.Poker.Logic
         /// </summary>
         public int TotalBlindNeeded { get { return m_BlindNeeded.Values.Sum(); } }
 
-        public List<PlayerInfo> NewArrivals { get; set; }
+        public List<PlayerInfo> NewArrivals { get; private set; }
 
         #endregion Properties
 
@@ -166,7 +167,7 @@ namespace BluffinMuffin.Poker.Logic
         /// </summary>
         /// <param name="playerCards">Player cards</param>
         /// <returns>A unsigned int that we can use to compare with another hand</returns>
-        public uint EvaluateCards(List<GameCard> playerCards)
+        private uint EvaluateCards(IReadOnlyCollection<GameCard> playerCards)
         {
             if (Cards == null || Cards.Length != 5 || playerCards == null || playerCards.Count != 2)
                 return 0;
@@ -275,7 +276,7 @@ namespace BluffinMuffin.Poker.Logic
                     var bob = Params.Blind as BlindOptionsBlinds;
 
                     var smallSeat = NbPlaying == 2 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(DealerSeat);
-                    if (!NewArrivals.Any(x => x.NoSeat == smallSeat.NoSeat))
+                    if (NewArrivals.All(x => x.NoSeat != smallSeat.NoSeat))
                     {
                         smallSeat.Attributes.Add(SeatAttributeEnum.SmallBlind);
                         if (bob != null) m_BlindNeeded.Add(smallSeat.Player, bob.SmallBlindAmount);
