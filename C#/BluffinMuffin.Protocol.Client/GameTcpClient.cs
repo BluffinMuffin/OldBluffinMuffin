@@ -334,7 +334,7 @@ namespace BluffinMuffin.Protocol.Client
 
         public bool PlayMoney(PlayerInfo p, int amnt)
         {
-            Send(new PlayerPlayMoneyCommand() { Played = amnt });
+            Send(new PlayerPlayMoneyCommand() { TableId=m_NoPort, Played = amnt });
             return true;
         }
 
@@ -342,6 +342,7 @@ namespace BluffinMuffin.Protocol.Client
         {
             Send(new PlayerSitInCommand()
             {
+                TableId = m_NoPort, 
                 MoneyAmount = moneyAmount,
                 NoSeat = noSeat
             });
@@ -350,7 +351,7 @@ namespace BluffinMuffin.Protocol.Client
 
         public bool SitOut(PlayerInfo p)
         {
-            Send(new PlayerSitOutCommand());
+            Send(new PlayerSitOutCommand() { TableId = m_NoPort, });
             return true;
         }
 

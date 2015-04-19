@@ -21,9 +21,6 @@ namespace BluffinMuffin.Protocol.Server
         public event EventHandler<CommandEventArgs<JoinTableCommand>> JoinTableCommandReceived = delegate { };
 
         [UsedImplicitly]
-        public event EventHandler<CommandEventArgs<GameCommand>> GameCommandReceived = delegate { };
-
-        [UsedImplicitly]
         public event EventHandler<CommandEventArgs<SupportedRulesCommand>> SupportedRulesCommandReceived = delegate { };
 
         [UsedImplicitly]

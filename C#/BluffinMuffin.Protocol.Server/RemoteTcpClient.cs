@@ -47,7 +47,7 @@ namespace BluffinMuffin.Protocol.Server
                         m_BluffinServer.LobbyCommands.Add(new CommandEntry() { Client = this, Command = command });
                         break;
                     case BluffinCommandEnum.Game:
-                        var gc = (GameCommand) command;
+                        var gc = (AbstractGameCommand) command;
                         lock (m_GamePlayers)
                         {
                             if(m_GamePlayers.ContainsKey(gc.TableId))
@@ -60,7 +60,6 @@ namespace BluffinMuffin.Protocol.Server
 
         protected override void OnDataSent(string data)
         {
-            Console.WriteLine("[Sent] {0}", data);
         }
 
         public void OnConnectionLost()

@@ -45,7 +45,7 @@ namespace BluffinMuffin.Protocol.Client
         #region GameClient Event Handler
         protected void client_SendedSomething(object sender, KeyEventArgs<string> e)
         {
-            Send(new GameCommand() { TableId = ((GameTcpClient)sender).NoPort, EncodedCommand = e.Key });
+            Send(e.Key);
         }
 
         #endregion GameClient Event Handler
@@ -238,20 +238,18 @@ namespace BluffinMuffin.Protocol.Client
 
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Run", "{0} RECV [{1}]", PlayerName, line);
 
-                JObject jObj = JsonConvert.DeserializeObject<dynamic>(line);
-                var cmdName = (string)jObj["CommandName"];
-
-                if (cmdName == typeof(GameCommand).Name)
+                AbstractBluffinCommand cmd = AbstractBluffinCommand.DeserializeCommand(line);
+                if (cmd.CommandType == BluffinCommandEnum.Game)
                 {
-                    var c = JsonConvert.DeserializeObject<GameCommand>(line);
-                    var count = 0;
+                    var c = (IGameCommand) cmd;
 
                     //Be patient
+                    var count = 0;
                     while (!m_Clients.ContainsKey(c.TableId) && (count++ < 5))
                         Thread.Sleep(100);
 
                     if (m_Clients.ContainsKey(c.TableId))
-                        m_Clients[c.TableId].Incoming(c.DecodedCommand);
+                        m_Clients[c.TableId].Incoming(line);
                 }
                 else
                     m_Incoming.Enqueue(line);

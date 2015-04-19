@@ -62,7 +62,7 @@ namespace BluffinMuffin.Protocol.Server.Test.Mocking
 
         public PokerGame GetGame(int id)
         {
-            return null;
+            return new PokerGame(new PokerTable());
         }
 
         public List<TupleTable> ListTables(params LobbyTypeEnum[] lobbyTypes)

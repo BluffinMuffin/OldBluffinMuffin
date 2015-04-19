@@ -136,7 +136,6 @@ namespace BluffinMuffin.Protocol.Server
         {
             var c = (CheckDisplayExistCommand)command;
             client.SendCommand(c.Response(Lobby.IsNameUsed(c.DisplayName) || DataManager.Persistance.IsDisplayNameExist(c.DisplayName)));
-            throw new NotImplementedException();
         }
 
         private void OnCreateTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
@@ -155,7 +154,26 @@ namespace BluffinMuffin.Protocol.Server
         private void OnJoinTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (JoinTableCommand)command;
-            throw new NotImplementedException();
+            var game = Lobby.GetGame(c.TableId);
+            var table = game.GameTable;
+            if (!game.IsRunning || table.ContainsPlayer(c.PlayerName))
+            {
+                client.SendCommand(c.Response(false));
+                return;
+            }
+            var rp = new RemotePlayer(game, new PlayerInfo(c.PlayerName, 0), client, c.TableId);
+            if (!rp.JoinGame())
+            {
+                client.SendCommand(c.Response(false));
+                return;
+            }
+
+            client.AddPlayer(rp);
+
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnJoinTableCommandReceived", "> Client '{0}' joined {2}:{1}", client.PlayerName, table.Params.TableName, c.TableId, rp.Player.NoSeat);
+            client.SendCommand(c.Response(true));
+
+            rp.SendTableInfo();
         }
     }
 }

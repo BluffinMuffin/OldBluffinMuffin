@@ -2,7 +2,7 @@
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class PlayerSitInResponse : AbstractBluffinReponse<PlayerSitInCommand>
+    public class PlayerSitInResponse : AbstractBluffinReponse<PlayerSitInCommand>, IGameCommand
     {
         public int NoSeat { get; set; }
 
@@ -13,6 +13,12 @@ namespace BluffinMuffin.Protocol.Commands.Game
         public PlayerSitInResponse(PlayerSitInCommand command)
             : base(command)
         {
+        }
+
+        public int TableId 
+        {
+            get { return Command.TableId; }
+            set { }
         }
     }
 }

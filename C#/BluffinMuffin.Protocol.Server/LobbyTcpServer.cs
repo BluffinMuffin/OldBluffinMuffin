@@ -34,7 +34,6 @@ namespace BluffinMuffin.Protocol.Server
             
             m_CommandObserver.ListTableCommandReceived += m_CommandObserver_ListTableCommandReceived;
             m_CommandObserver.JoinTableCommandReceived += m_CommandObserver_JoinTableCommandReceived;
-            m_CommandObserver.GameCommandReceived += m_CommandObserver_GameCommandReceived;
             m_CommandObserver.SupportedRulesCommandReceived += m_CommandObserver_SupportedRulesCommandReceived;
             m_CommandObserver.CreateTableCommandReceived += m_CommandObserver_CreateTableCommandReceived;
 
@@ -109,11 +108,6 @@ namespace BluffinMuffin.Protocol.Server
             Send(e.Command.EncodeResponse(DataManager.Persistance.IsUsernameExist(e.Command.Username)));
         }
 
-        void m_CommandObserver_GameCommandReceived(object sender, CommandEventArgs<GameCommand> e)
-        {
-            m_Tables[e.Command.TableId].Incoming(e.Command.DecodedCommand);
-        }
-
         private void m_CommandObserver_JoinTableCommandReceived(object sender, CommandEventArgs<JoinTableCommand> e)
         {
             var game = m_Lobby.GetGame(e.Command.TableId);
@@ -128,7 +122,6 @@ namespace BluffinMuffin.Protocol.Server
             GameTcpServer client = game.Params.Lobby.OptionType == LobbyTypeEnum.Training ? new GameTcpServer(e.Command.TableId, game, m_PlayerName) : new GameTcpServerCareer(e.Command.TableId, game, DataManager.Persistance.Get(e.Command.PlayerName));
 
             client.LeftTable += client_LeftTable;
-            client.SendedSomething += client_SendedSomething;
 
             if (!client.JoinGame())
             {
@@ -148,12 +141,6 @@ namespace BluffinMuffin.Protocol.Server
         void client_LeftTable(object sender, KeyEventArgs<int> e)
         {
             m_Tables.Remove(e.Key);
-        }
-
-        void client_SendedSomething(object sender, KeyEventArgs<string> e)
-        {
-            var client = (GameTcpServer)sender;
-            Send(new GameCommand() { TableId = client.Id, EncodedCommand = e.Key });
         }
         public override void OnReceiveCrashed(Exception e)
         {

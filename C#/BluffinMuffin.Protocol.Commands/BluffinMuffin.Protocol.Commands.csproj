@@ -82,6 +82,7 @@
     <Compile Include="Game\SeatUpdatedCommand.cs" />
     <Compile Include="Game\TableClosedCommand.cs" />
     <Compile Include="Game\TableInfoCommand.cs" />
+    <Compile Include="IGameCommand.cs" />
     <Compile Include="Lobby\Career\AuthenticateUserCommand.cs" />
     <Compile Include="Lobby\Career\AuthenticateUserResponse.cs" />
     <Compile Include="Lobby\Career\CheckDisplayExistCommand.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="Lobby\Career\GetUserResponse.cs" />
     <Compile Include="Lobby\CreateTableCommand.cs" />
     <Compile Include="Lobby\CreateTableResponse.cs" />
-    <Compile Include="Lobby\GameCommand.cs" />
     <Compile Include="Lobby\JoinTableCommand.cs" />
     <Compile Include="Lobby\JoinTableResponse.cs" />
     <Compile Include="Lobby\ListTableCommand.cs" />

@@ -2,7 +2,7 @@
 
 namespace BluffinMuffin.Protocol.Commands
 {
-    public abstract class AbstractGameCommand : AbstractBluffinCommand
+    public abstract class AbstractGameCommand : AbstractBluffinCommand, IGameCommand
     {
         public override BluffinCommandEnum CommandType
         {
