@@ -57,7 +57,8 @@ namespace BluffinMuffin.Protocol.Server
 
         private void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            LogManager.Log(LogLevel.MessageVeryLow, "BluffinLobbyWorker.OnCommandReceived", "Server RECV from {0} [{1}]", client.PlayerName, command.Encode());
+            LogManager.Log(LogLevel.MessageVeryLow, "BluffinLobbyWorker.OnCommandReceived", "LobbyWorker RECV from {0} [{1}]", client.PlayerName, command.Encode());
+            LogManager.Log(LogLevel.MessageVeryLow, "BluffinLobbyWorker.OnCommandReceived", "-------------------------------------------");
         }
 
         void OnIdentifyCommandReceived(AbstractBluffinCommand command, IBluffinClient client)

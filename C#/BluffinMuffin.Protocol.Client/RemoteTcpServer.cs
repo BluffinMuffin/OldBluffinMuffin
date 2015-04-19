@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BluffinMuffin.Protocol.Commands;
 using Com.Ericmas001.Net.Protocol;
-using Com.Ericmas001.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

@@ -71,6 +71,7 @@ namespace BluffinMuffin.Protocol.Server
         {
             string line = command.Encode();
             LogManager.Log(LogLevel.MessageVeryLow, "ServerClientLobby.Send", "Server SEND to {0} [{1}]", PlayerName, line);
+            LogManager.Log(LogLevel.MessageVeryLow, "ServerClientLobby.Send", "-------------------------------------------");
             Send(line);
         }
 

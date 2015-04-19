@@ -1,7 +1,7 @@
 ﻿using BluffinMuffin.Poker.DataTypes.Annotations;
+using Com.Ericmas001.Net.Protocol;
 using Newtonsoft.Json;
 using BluffinMuffin.Poker.DataTypes.Enums;
-using Com.Ericmas001.Net.JSON;
 
 namespace BluffinMuffin.Poker.DataTypes.Parameters
 {

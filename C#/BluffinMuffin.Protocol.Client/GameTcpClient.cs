@@ -7,8 +7,8 @@ using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
-using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
+using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Protocol.Client
 {

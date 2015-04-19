@@ -47,7 +47,8 @@ namespace BluffinMuffin.Protocol.Server
 
         private void OnCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
         {
-            LogManager.Log(LogLevel.MessageVeryLow, "BluffinGameWorker.OnCommandReceived", "Server RECV from {0} [{1}]", client.PlayerName, command.Encode());
+            LogManager.Log(LogLevel.MessageVeryLow, "BluffinGameWorker.OnCommandReceived", "GameWorker RECV from {0} [{1}]", client.PlayerName, command.Encode());
+            LogManager.Log(LogLevel.MessageVeryLow, "BluffinGameWorker.OnCommandReceived", "-------------------------------------------");
         }
 
         void OnDisconnectCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
@@ -102,7 +103,8 @@ namespace BluffinMuffin.Protocol.Server
         private void OnPlayerSitOutCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
         {
             var c = (PlayerSitOutCommand)command;
-            client.SendCommand(c.Response(p.Game.SitOut(p.Player)));
+            client.SendCommand(c.Response(true));
+            p.Game.SitOut(p.Player);
         }
 
         private void OnPlayerPlayMoneyCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
