@@ -67,7 +67,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // btnFold
             // 
             this.btnFold.BackColor = System.Drawing.Color.Gold;
-            this.btnFold.Enabled = false;
             this.btnFold.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFold.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.leave;
             this.btnFold.Location = new System.Drawing.Point(5, 5);
@@ -83,7 +82,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // btnCall
             // 
             this.btnCall.BackColor = System.Drawing.Color.SpringGreen;
-            this.btnCall.Enabled = false;
             this.btnCall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCall.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.cards_mini;
             this.btnCall.Location = new System.Drawing.Point(5, 38);
@@ -99,7 +97,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // btnRaise
             // 
             this.btnRaise.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnRaise.Enabled = false;
             this.btnRaise.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRaise.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.money;
             this.btnRaise.Location = new System.Drawing.Point(5, 71);
@@ -126,7 +123,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             // btnSitOut
             // 
             this.btnSitOut.BackColor = System.Drawing.Color.Salmon;
-            this.btnSitOut.Enabled = false;
             this.btnSitOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSitOut.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.sit_out;
             this.btnSitOut.Location = new System.Drawing.Point(5, 140);

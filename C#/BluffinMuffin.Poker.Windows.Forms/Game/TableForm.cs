@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
@@ -12,6 +13,8 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
         public TableForm()
         {
             InitializeComponent();
+            DisableButtons();
+            DisableButton(btnSitOut);
         }
 
         private void btnFold_Click(object sender, EventArgs e)
@@ -40,10 +43,29 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
 
         private void DisableButtons()
         {
-            btnCall.Enabled = false;
-            btnRaise.Enabled = false;
-            btnFold.Enabled = false;
+            DisableButton(btnCall);
+            DisableButton(btnRaise);
+            DisableButton(btnFold);
             nudRaise.Enabled = false;
+        }
+
+        private void DisableButton(Button btn)
+        {
+            if (btn.Enabled)
+            {
+                btn.Enabled = false;
+                btn.Tag = btn.BackColor;
+                btn.BackColor = Color.DimGray;
+            }
+        }
+
+        private void EnableButton(Button btn)
+        {
+            if (!btn.Enabled)
+            {
+                btn.Enabled = true;
+                btn.BackColor = (Color)btn.Tag;
+            }
         }
         public override void SetGame(IPokerGame c, string n)
         {
@@ -82,13 +104,13 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             var table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
-                btnFold.Enabled = true;
+                EnableButton(btnFold);
                 SetCallButtonName(p);
-                btnCall.Enabled = true;
+                EnableButton(btnCall);
                 if (table.HigherBet < p.MoneyAmnt)
                 {
                     var min = table.MinRaiseAmnt(p) + p.MoneyBetAmnt;
-                    btnRaise.Enabled = true;
+                    EnableButton(btnRaise);
                     nudRaise.Enabled = true;
                     nudRaise.Minimum = min;
                     nudRaise.Maximum = p.MoneyAmnt;
@@ -158,7 +180,10 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                 return;
             }
             SuspendLayout();
-            btnSitOut.Enabled = enable;
+            if(enable)
+                EnableButton(btnSitOut);
+            else
+                DisableButton(btnSitOut);
             ResumeLayout();
         }
 
