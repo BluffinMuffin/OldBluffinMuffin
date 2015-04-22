@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BluffinMuffin.Poker.Logic</RootNamespace>
     <AssemblyName>BluffinMuffin.Poker.Logic</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -36,6 +36,9 @@
     </Reference>
     <Reference Include="Com.Ericmas001.Games">
       <HintPath>..\References\Com.Ericmas001.Games.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="Com.Ericmas001.Util">
       <HintPath>..\References\Com.Ericmas001.Util.dll</HintPath>

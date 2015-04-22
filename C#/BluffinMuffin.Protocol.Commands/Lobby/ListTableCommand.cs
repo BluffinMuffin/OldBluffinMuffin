@@ -8,9 +8,9 @@ namespace BluffinMuffin.Protocol.Commands.Lobby
     {
         public LobbyTypeEnum[] LobbyTypes { get; set; }
 
-        public string EncodeResponse(List<TupleTable> tables)
+        public ListTableResponse Response(List<TupleTable> tables)
         {
-            return new ListTableResponse(this) { Tables = tables }.Encode();
+            return new ListTableResponse(this) { Tables = tables };
         }
     }
 }

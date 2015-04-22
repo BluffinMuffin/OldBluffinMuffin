@@ -1,5 +1,5 @@
 ﻿using BluffinMuffin.Poker.DataTypes.Enums;
-using Com.Ericmas001.Util.Options;
+using Com.Ericmas001.Net.Protocol.Options;
 
 namespace BluffinMuffin.Poker.DataTypes.Parameters
 {
@@ -7,15 +7,5 @@ namespace BluffinMuffin.Poker.DataTypes.Parameters
     {
         public int MoneyUnit { get; set; }
         public abstract BlindTypeEnum OptionType { get; }
-
-        public BlindOptions(int moneyUnit)
-        {
-            MoneyUnit = moneyUnit;
-        }
-        public BlindOptions()
-        {
-        }
-
-        
     }
 }

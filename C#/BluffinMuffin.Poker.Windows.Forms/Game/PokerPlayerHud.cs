@@ -13,12 +13,10 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
 
         public string PlayerName
         {
-            get { return lblName.Text; }
             set { lblName.Text = value; }
         }
         public bool Main
         {
-            get { return m_Main; }
             set { m_Main = value; }
         }
         public bool Alive
@@ -58,27 +56,16 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             InitializeComponent();
         }
 
-        public void DoAction(GameActionEnum action )
-        {
-            DoAction(action, 0);
-        }
-
-        public void DoAction(GameActionEnum action, int amnt)
+        public void DoAction(GameActionEnum action, int amnt = 0)
         {
             var s = "";
             switch (action)
             {
                 case GameActionEnum.Call:
-                    if (amnt == 0)
-                        s = "CHECK";
-                    else
-                        s = "CALL";
+                    s = amnt == 0 ? "CHECK" : "CALL";
                     break;
                 case GameActionEnum.Raise:
-                    if (amnt == -1)
-                        s = "BET";
-                    else
-                        s = "RAISE";
+                    s = amnt == -1 ? "BET" : "RAISE";
                     break;
                 case GameActionEnum.Fold:
                     s = "FOLD";

@@ -1,5 +1,0 @@
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.HandEval\bin\Debug\BluffinMuffin.Poker.HandEval.dll
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.HandEval\bin\Debug\BluffinMuffin.Poker.HandEval.pdb
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.HandEval\obj\Debug\BluffinMuffin.Poker.HandEval.dll
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.HandEval\obj\Debug\BluffinMuffin.Poker.HandEval.pdb
-D:\Programmation\C#\BluffinMuffinGit\bluffin-muffin\C#\BluffinMuffin.Poker.HandEval\obj\Debug\BluffinMuffin.Poker.HandEval.csprojResolveAssemblyReference.cache

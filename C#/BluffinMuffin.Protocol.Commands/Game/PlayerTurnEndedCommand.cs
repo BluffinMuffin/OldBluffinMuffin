@@ -1,9 +1,8 @@
-﻿using Com.Ericmas001.Net.Protocol.JSON;
-using BluffinMuffin.Poker.DataTypes.Enums;
+﻿using BluffinMuffin.Poker.DataTypes.Enums;
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class PlayerTurnEndedCommand : AbstractJsonCommand
+    public class PlayerTurnEndedCommand : AbstractGameCommand
     {
         public int PlayerPos { get; set; }
         public int PlayerBet { get; set; }

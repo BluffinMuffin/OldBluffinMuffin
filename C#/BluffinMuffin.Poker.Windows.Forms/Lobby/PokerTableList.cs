@@ -13,10 +13,10 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
     {
         private LobbyTcpClient m_Server;
 
-        public bool ShowTraining { get; set; }
-        public bool ShowCareer { get; set; }
-        public LobbyTypeEnum LobbyType { get; set; }
-        public ITableFormFactory TableFormFactory { get; set; }
+        public bool ShowTraining { private get; set; }
+        public bool ShowCareer { private get; set; }
+        public LobbyTypeEnum LobbyType { private get; set; }
+        public ITableFormFactory TableFormFactory { private get; set; }
 
         public PokerTableList()
         {
@@ -164,7 +164,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
             return m_Server.FindClient(FindClientId());
         }
 
-        public int FindClientId()
+        private int FindClientId()
         {
             if (datTables.RowCount == 0 || datTables.SelectedRows.Count == 0)
             {

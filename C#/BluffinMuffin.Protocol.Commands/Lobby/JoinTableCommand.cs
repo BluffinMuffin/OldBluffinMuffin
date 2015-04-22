@@ -5,9 +5,9 @@
         public int TableId { get; set; }
         public string PlayerName { get; set; }
 
-        public string EncodeResponse(bool success)
+        public JoinTableResponse Response(bool success)
         {
-            return new JoinTableResponse(this) { Success = success }.Encode();
+            return new JoinTableResponse(this) { Success = success };
         }
     }
 }

@@ -14,7 +14,7 @@ namespace BluffinMuffin.Poker.DataTypes
         protected SeatInfo[] m_Seats;
         private readonly List<PlayerInfo> m_People = new List<PlayerInfo>();
         protected readonly List<MoneyPot> m_Pots = new List<MoneyPot>();
-        protected TableParams m_Params;
+        private TableParams m_Params;
         #endregion Fields
 
         #region Properties
@@ -45,8 +45,8 @@ namespace BluffinMuffin.Poker.DataTypes
         /// </summary>
         public GameCard[] Cards
         {
-            get { return m_Cards.Select(c => c == null ? GameCard.NoCard : c).ToArray(); }
-            set
+            get { return m_Cards.Select(c => c ?? GameCard.NoCard).ToArray(); }
+            protected set
             {
                 if (value != null && value.Length == 5)
                 {
@@ -171,15 +171,15 @@ namespace BluffinMuffin.Poker.DataTypes
         /// </summary>
         public List<PlayerInfo> PlayingPlayers
         {
-            get { return PlayingPlayersFrom(0); }
+            get { return PlayingPlayersFrom(); }
         }
 
         /// <summary>
         /// List of the playing Players in order starting from the first seat
         /// </summary>
-        public List<PlayerInfo> PlayingAndAllInPlayers
+        public IEnumerable<PlayerInfo> PlayingAndAllInPlayers
         {
-            get { return PlayingAndAllInPlayersFrom(0); }
+            get { return PlayingAndAllInPlayersFrom(); }
         }
 
         public SeatInfo SeatOfTheFirstPlayer
@@ -193,10 +193,7 @@ namespace BluffinMuffin.Poker.DataTypes
                     //Ad B : A      A
                     //Ad B C: A     A->B->C->A
                     //Ad B C D: D   A->B->C->D
-                    if (NbPlayingAndAllIn < 3)
-                        seat = DealerSeat;
-                    else
-                        seat = GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(DealerSeat)));
+                    seat = NbPlayingAndAllIn < 3 ? DealerSeat : GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(GetSeatOfPlayingPlayerNextTo(DealerSeat)));
                 }
 
                 return seat;
@@ -205,12 +202,13 @@ namespace BluffinMuffin.Poker.DataTypes
         #endregion Properties
 
         #region Ctors & Init
-        public TableInfo()
+
+        protected TableInfo()
             : this(new TableParams())
         {
         }
 
-        public TableInfo(TableParams parms)
+        protected TableInfo(TableParams parms)
         {
             Params = parms;
         }
@@ -287,7 +285,7 @@ namespace BluffinMuffin.Poker.DataTypes
             return SitOut(p);
         }
 
-        public virtual bool SitOut(PlayerInfo p)
+        public bool SitOut(PlayerInfo p)
         {
             if (!SeatsContainsPlayer(p))
                 return true;
@@ -320,7 +318,7 @@ namespace BluffinMuffin.Poker.DataTypes
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public int MaxRaiseAmnt(PlayerInfo p)
+        private int MaxRaiseAmnt(PlayerInfo p)
         {
             return p.MoneySafeAmnt;
         }
@@ -343,16 +341,18 @@ namespace BluffinMuffin.Poker.DataTypes
         #endregion Public Methods
 
         #region Protected Methods
-        protected List<PlayerInfo> PlayingPlayersFrom(int seat)
+
+        private List<PlayerInfo> PlayingPlayersFrom()
         {
             return m_Seats.Where(s => (!s.IsEmpty && s.Player.IsPlaying)).Select(s => s.Player).ToList();
         }
-        protected List<PlayerInfo> PlayingAndAllInPlayersFrom(int seat)
+
+        private IEnumerable<PlayerInfo> PlayingAndAllInPlayersFrom()
         {
-            return m_Seats.Where(s => (!s.IsEmpty && (s.Player.IsPlaying || s.Player.IsAllIn))).Select(s => s.Player).ToList();
+            return m_Seats.Where(s => (!s.IsEmpty && (s.Player.IsPlaying || s.Player.IsAllIn))).Select(s => s.Player);
         }
 
-        protected bool SeatsContainsPlayer(PlayerInfo p)
+        public bool SeatsContainsPlayer(PlayerInfo p)
         {
             return Players.Contains(p) || Players.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
         }

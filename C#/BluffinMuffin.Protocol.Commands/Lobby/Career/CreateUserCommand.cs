@@ -7,9 +7,9 @@
         public string Email { get;  set; }
         public string DisplayName { get;  set; }
 
-        public string EncodeResponse(bool success)
+        public CreateUserResponse Response(bool success)
         {
-            return new CreateUserResponse(this) { Success = success }.Encode();
+            return new CreateUserResponse(this) { Success = success };
         }
     }
 }

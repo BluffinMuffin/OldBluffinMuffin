@@ -4,9 +4,9 @@
     {
         public string Username { get; set; }
 
-        public string EncodeResponse(bool exist)
+        public CheckUserExistResponse Response(bool exist)
         {
-            return new CheckUserExistResponse(this) { Exist = exist }.Encode();
+            return new CheckUserExistResponse(this) { Exist = exist };
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Client.Menu
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Client.Menu
 {
     partial class CareerConnectParmsForm
     {
@@ -29,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CareerConnectParmsForm));
-            this.btnPlay = new VIBlend.WinForms.Controls.vButton();
+            this.btnPlay = new Button();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -38,20 +40,16 @@
             // 
             // btnTraining
             // 
-            this.btnPlay.AllowAnimations = true;
-            this.btnPlay.BackColor = System.Drawing.Color.Transparent;
             this.btnPlay.Enabled = false;
             this.btnPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPlay.Image = global::BluffinMuffin.Client.Properties.Resources.cards;
             this.btnPlay.Location = new System.Drawing.Point(14, 151);
             this.btnPlay.Name = "btnTraining";
-            this.btnPlay.RoundedCornersMask = ((byte)(15));
             this.btnPlay.Size = new System.Drawing.Size(353, 65);
             this.btnPlay.TabIndex = 20;
             this.btnPlay.Text = "Continue Career";
             this.btnPlay.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnPlay.UseVisualStyleBackColor = false;
-            this.btnPlay.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROGREEN;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
             // txtUsername
@@ -119,7 +117,7 @@
 
         #endregion
 
-        private VIBlend.WinForms.Controls.vButton btnPlay;
+        private Button btnPlay;
         private System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPassword;

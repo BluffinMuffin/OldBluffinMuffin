@@ -7,8 +7,8 @@ using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
-using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
+using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Protocol.Client
 {
@@ -25,20 +25,6 @@ namespace BluffinMuffin.Protocol.Client
         #region Properties
         public PokerGameObserver Observer { get; private set; }
         public TableInfo Table { get { return m_PokerTable; } }
-        public int NoSeat { get { return m_TablePosition; } }
-        public int NoPort { get { return m_NoPort; } }
-        public string Encode
-        {
-            get
-            {
-                // 0 : Assume que les game sont en real money (1)
-                // 1 : Assume que c'est tlt du Texas Hold'em (0)
-                // 2 : Assume que c'Est tlt des Ring game (0)
-                // 3 : Assume que c'Est tlt du NoLimit (0)
-                // 4 : GameRound (0,1,2,3)
-                return string.Format("{0}{1}{2}{3}{4}", 1, 0, 0, 0, (int)m_PokerTable.Round);
-            }
-        }
         #endregion Properties
 
         #region Ctors & Init
@@ -61,7 +47,6 @@ namespace BluffinMuffin.Protocol.Client
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += OnPlayerHoleCardsChangedCommandReceived;
             m_CommandObserver.PlayerJoinedCommandReceived += OnPlayerJoinedCommandReceived;
             m_CommandObserver.SeatUpdatedCommandReceived += OnSeatUpdatedCommandReceived;
-            m_CommandObserver.PlayerLeftCommandReceived += OnPlayerLeftCommandReceived;
             m_CommandObserver.PlayerMoneyChangedCommandReceived += OnPlayerMoneyChangedCommandReceived;
             m_CommandObserver.PlayerTurnBeganCommandReceived += OnPlayerTurnBeganCommandReceived;
             m_CommandObserver.PlayerTurnEndedCommandReceived += OnPlayerTurnEndedCommandReceived;
@@ -88,6 +73,15 @@ namespace BluffinMuffin.Protocol.Client
             {
                 Observer.RaiseSitOutResponseReceived(e.Command.Success);
             }
+            OnSeatUpdatedCommandReceived(sender, new CommandEventArgs<SeatUpdatedCommand>(new SeatUpdatedCommand()
+            {
+                TableId = e.Command.TableId,
+                Seat = new SeatInfo()
+                {
+                    NoSeat = m_TablePosition,
+                    Player = null
+                }
+            }));
         }
 
         void OnPlayerSitInResponseReceived(object sender, CommandEventArgs<PlayerSitInResponse> e)
@@ -96,6 +90,15 @@ namespace BluffinMuffin.Protocol.Client
             {
                 Observer.RaiseSitInResponseReceived(e.Command.NoSeat);
             }
+            OnSeatUpdatedCommandReceived(sender, new CommandEventArgs<SeatUpdatedCommand>(new SeatUpdatedCommand()
+            {
+                TableId = e.Command.TableId,
+                Seat = new SeatInfo()
+                {
+                    NoSeat = e.Command.NoSeat,
+                    Player = new PlayerInfo(m_PlayerName, 0)
+                }
+            }));
         }
         void OnCommandReceived(object sender, StringEventArgs e)
         {
@@ -204,22 +207,6 @@ namespace BluffinMuffin.Protocol.Client
                 Observer.RaiseSeatUpdated(s);
             }
 
-        }
-
-        void OnPlayerLeftCommandReceived(object sender, CommandEventArgs<PlayerLeftCommand> e)
-        {
-            lock (m_PokerTable)
-            {
-                var cmd = e.Command;
-                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
-
-                if (p != null)
-                {
-                    m_PokerTable.LeaveTable(p);
-
-                    Observer.RaisePlayerLeft(p);
-                }
-            }
         }
 
         void OnPlayerMoneyChangedCommandReceived(object sender, CommandEventArgs<PlayerMoneyChangedCommand> e)
@@ -334,7 +321,7 @@ namespace BluffinMuffin.Protocol.Client
 
         public bool PlayMoney(PlayerInfo p, int amnt)
         {
-            Send(new PlayerPlayMoneyCommand() { Played = amnt });
+            Send(new PlayerPlayMoneyCommand() { TableId=m_NoPort, Played = amnt });
             return true;
         }
 
@@ -342,6 +329,7 @@ namespace BluffinMuffin.Protocol.Client
         {
             Send(new PlayerSitInCommand()
             {
+                TableId = m_NoPort, 
                 MoneyAmount = moneyAmount,
                 NoSeat = noSeat
             });
@@ -350,13 +338,7 @@ namespace BluffinMuffin.Protocol.Client
 
         public bool SitOut(PlayerInfo p)
         {
-            Send(new PlayerSitOutCommand());
-            return true;
-        }
-
-        public bool LeaveGame(PlayerInfo p)
-        {
-            Send(new DisconnectCommand());
+            Send(new PlayerSitOutCommand() { TableId = m_NoPort, });
             return true;
         }
         #endregion Public Methods
@@ -391,6 +373,16 @@ namespace BluffinMuffin.Protocol.Client
         public bool IsPlaying
         {
             get { return m_IsGameStarted; }
+        }
+
+        public override void Send(AbstractCommand command)
+        {
+            var gameCommand = command as AbstractGameCommand;
+            if (gameCommand != null)
+            {
+                gameCommand.TableId = m_NoPort;
+            }
+            base.Send(command);
         }
     }
 }

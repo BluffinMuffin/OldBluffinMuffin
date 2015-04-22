@@ -41,18 +41,6 @@ namespace BluffinMuffin.Poker.Persistance
             return null;
         }
 
-        public void Update(UserInfo u)
-        {
-            m_UsersByUsername[u.Username.ToLower()] = u;
-            m_UsersByDisplayname[u.DisplayName.ToLower()] = u;
-        }
-
-        public void Delete(UserInfo u)
-        {
-            m_UsersByUsername.Remove(u.Username.ToLower());
-            m_UsersByDisplayname.Remove(u.DisplayName.ToLower());
-        }
-
         #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Com.Ericmas001.Windows.Forms.CustomTabControl;
+﻿using System.Windows.Forms;
+using Com.Ericmas001.Windows.Forms.CustomTabControl;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Lobby
 {
@@ -32,7 +33,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTableForm));
             this.tabControl1 = new CustomTabControl();
-            this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
+            this.btnAddTable = new Button();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -69,21 +70,17 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
             // 
             // btnAddTable
             // 
-            this.btnAddTable.AllowAnimations = true;
             this.btnAddTable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddTable.BackColor = System.Drawing.Color.Transparent;
             this.btnAddTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddTable.Image = global::BluffinMuffin.Poker.Windows.Forms.Properties.Resources.cards;
             this.btnAddTable.Location = new System.Drawing.Point(12, 427);
             this.btnAddTable.Name = "btnAddTable";
-            this.btnAddTable.RoundedCornersMask = ((byte)(15));
             this.btnAddTable.Size = new System.Drawing.Size(480, 53);
             this.btnAddTable.TabIndex = 16;
             this.btnAddTable.Text = "Create Table";
             this.btnAddTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnAddTable.UseVisualStyleBackColor = true;
-            this.btnAddTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
             // CreateTableForm
@@ -106,6 +103,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
         #endregion
 
         private CustomTabControl tabControl1;
-        private VIBlend.WinForms.Controls.vButton btnAddTable;
+        private Button btnAddTable;
     }
 }

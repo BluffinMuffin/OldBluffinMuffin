@@ -30,9 +30,6 @@ namespace BluffinMuffin.Protocol.Client
         public event EventHandler<CommandEventArgs<SeatUpdatedCommand>> SeatUpdatedCommandReceived = delegate { };
 
         [UsedImplicitly]
-        public event EventHandler<CommandEventArgs<PlayerLeftCommand>> PlayerLeftCommandReceived = delegate { };
-
-        [UsedImplicitly]
         public event EventHandler<CommandEventArgs<PlayerMoneyChangedCommand>> PlayerMoneyChangedCommandReceived = delegate { };
 
         [UsedImplicitly]

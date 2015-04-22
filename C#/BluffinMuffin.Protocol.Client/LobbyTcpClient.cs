@@ -4,12 +4,12 @@ using System.IO;
 using System.Threading;
 using Com.Ericmas001.Collections;
 using BluffinMuffin.Protocol.Commands.Lobby;
+using Com.Ericmas001.Util;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Enums;
-using Com.Ericmas001.Util;
 using Com.Ericmas001.Net.Protocol;
 using BluffinMuffin.Poker.DataTypes.Parameters;
 
@@ -19,8 +19,9 @@ namespace BluffinMuffin.Protocol.Client
     public class LobbyTcpClient : TcpCommunicator
     {
         #region Fields
-        protected Dictionary<int, GameTcpClient> m_Clients = new Dictionary<int, GameTcpClient>();
-        protected BlockingQueue<string> m_Incoming = new BlockingQueue<string>();
+
+        private readonly Dictionary<int, GameTcpClient> m_Clients = new Dictionary<int, GameTcpClient>();
+        private readonly BlockingQueue<string> m_Incoming = new BlockingQueue<string>();
         #endregion Fields
 
         #region Events
@@ -30,12 +31,13 @@ namespace BluffinMuffin.Protocol.Client
         #region Properties
 
         public string PlayerName { get; protected set; }
-        public string ServerAddress { get; protected set; }
-        public int ServerPort { get; protected set; }
+        public string ServerAddress { get; private set; }
+        public int ServerPort { get; private set; }
         #endregion Properties
 
         #region Ctors & Init
-        public LobbyTcpClient(string serverAddress, int serverPort)
+
+        protected LobbyTcpClient(string serverAddress, int serverPort)
         {
             ServerAddress = serverAddress;
             ServerPort = serverPort;
@@ -43,9 +45,10 @@ namespace BluffinMuffin.Protocol.Client
         #endregion Ctors & Init
 
         #region GameClient Event Handler
-        protected void client_SendedSomething(object sender, KeyEventArgs<string> e)
+
+        private void client_SendedSomething(object sender, KeyEventArgs<string> e)
         {
-            Send(new GameCommand() { TableId = ((GameTcpClient)sender).NoPort, EncodedCommand = e.Key });
+            Send(e.Key);
         }
 
         #endregion GameClient Event Handler
@@ -91,7 +94,7 @@ namespace BluffinMuffin.Protocol.Client
                 base.OnSendCrashed(e);
         }
 
-        public void Send(AbstractCommand command)
+        protected void Send(AbstractCommand command)
         {
             var encode = command.Encode();
             LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Receive", "{0} SENT [{1}]", PlayerName, encode);
@@ -120,13 +123,13 @@ namespace BluffinMuffin.Protocol.Client
             return null;
         }
 
-        public GameTcpClient JoinTable(int idTable, string tableName, IPokerViewer gui)
+        public void JoinTable(int idTable, string tableName, IPokerViewer gui)
         {
             var ok = GetJoinedSeat(idTable, PlayerName);
             if (!ok)
             {
                 LogManager.Log(LogLevel.MessageLow, "LobbyTcpClient.JoinTable", "Cannot join the table: {0}:{1}", tableName, idTable);
-                return null;
+                return;
             }
 
             var client = new GameTcpClient(PlayerName, idTable);
@@ -134,15 +137,13 @@ namespace BluffinMuffin.Protocol.Client
 
             if (gui != null)
             {
-                gui.SetGame(client, PlayerName);
+                gui.SetGame(client);
                 gui.Start();
             }
 
             client.Start();
 
             m_Clients.Add(idTable, client);
-
-            return client;
         }
 
         public int CreateTable(TableParams parms)
@@ -155,23 +156,7 @@ namespace BluffinMuffin.Protocol.Client
         #endregion Public Methods
 
         #region Protected Methods
-        protected JObject WaitAndReceive(string expected)
-        {
-            string s;
-            string commandName;
 
-            JObject jObj;
-
-            do
-            {
-                s = m_Incoming.Dequeue();
-                jObj = JsonConvert.DeserializeObject<dynamic>(s);
-                commandName = (string)jObj["CommandName"];
-            }
-            while (s != null && commandName != expected);
-
-            return jObj;
-        }
         protected T WaitAndReceive<T>() where T : AbstractCommand
         {
             var expected = typeof (T).Name;
@@ -189,21 +174,6 @@ namespace BluffinMuffin.Protocol.Client
             return JsonConvert.DeserializeObject<T>(s);
         }
 
-        protected string Receive(StreamReader reader)
-        {
-            string line;
-            try
-            {
-                line = reader.ReadLine();
-                LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Receive", "{0} RECV [{1}]", PlayerName, line);
-            }
-            catch
-            {
-                return null;
-            }
-            return line;
-        }
-
         protected virtual bool GetJoinedSeat(int idTable, string player)
         {
             Send(new JoinTableCommand()
@@ -215,7 +185,7 @@ namespace BluffinMuffin.Protocol.Client
             return WaitAndReceive<JoinTableResponse>().Success;
         }
 
-        public List<RuleInfo> GetSupportedRules()
+        public IEnumerable<RuleInfo> GetSupportedRules()
         {
             var cmd = new SupportedRulesCommand();
             Send(cmd);
@@ -238,20 +208,18 @@ namespace BluffinMuffin.Protocol.Client
 
                 LogManager.Log(LogLevel.MessageVeryLow, "LobbyTcpClient.Run", "{0} RECV [{1}]", PlayerName, line);
 
-                JObject jObj = JsonConvert.DeserializeObject<dynamic>(line);
-                var cmdName = (string)jObj["CommandName"];
-
-                if (cmdName == typeof(GameCommand).Name)
+                AbstractBluffinCommand cmd = AbstractBluffinCommand.DeserializeCommand(line);
+                if (cmd.CommandType == BluffinCommandEnum.Game)
                 {
-                    var c = JsonConvert.DeserializeObject<GameCommand>(line);
-                    var count = 0;
+                    var c = (IGameCommand) cmd;
 
                     //Be patient
+                    var count = 0;
                     while (!m_Clients.ContainsKey(c.TableId) && (count++ < 5))
                         Thread.Sleep(100);
 
                     if (m_Clients.ContainsKey(c.TableId))
-                        m_Clients[c.TableId].Incoming(c.DecodedCommand);
+                        m_Clients[c.TableId].Incoming(line);
                 }
                 else
                     m_Incoming.Enqueue(line);

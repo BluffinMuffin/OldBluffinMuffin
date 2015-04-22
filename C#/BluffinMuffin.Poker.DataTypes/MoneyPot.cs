@@ -21,7 +21,7 @@ namespace BluffinMuffin.Poker.DataTypes
         /// <summary>
         /// Amount of money in the Pot
         /// </summary>
-        public int Amount { get; set; }
+        public int Amount { get; private set; }
 
         /// <summary>
         /// Number of player playing for this Pot
@@ -33,12 +33,8 @@ namespace BluffinMuffin.Poker.DataTypes
         #endregion Properties
 
         #region Ctors & Init
-        public MoneyPot(int id)
-            : this(id, 0)
-        {
-        }
 
-        public MoneyPot(int id, int amount)
+        public MoneyPot(int id, int amount = 0)
         {
             Id = id;
             Amount = amount;
@@ -53,14 +49,6 @@ namespace BluffinMuffin.Poker.DataTypes
         public void AttachPlayer(PlayerInfo p)
         {
             m_AttachedPlayers.Add(p);
-        }
-
-        /// <summary>
-        /// Detach a player from the MoneyPot
-        /// </summary>
-        public void DetachPlayer(PlayerInfo p)
-        {
-            m_AttachedPlayers.Remove(p);
         }
 
         /// <summary>

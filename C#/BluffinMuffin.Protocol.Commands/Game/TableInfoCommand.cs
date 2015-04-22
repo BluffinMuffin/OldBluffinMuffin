@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Com.Ericmas001.Net.Protocol.JSON;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.Parameters;
 
 namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class TableInfoCommand : AbstractJsonCommand
+    public class TableInfoCommand : AbstractGameCommand
     {
         public TableParams Params { get; set; }
         public int TotalPotAmount { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Client
+﻿using System.Windows.Forms;
+
+namespace BluffinMuffin.Client
 {
     partial class LobbyCareerForm
     {
@@ -32,11 +34,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnLeaveTable = new VIBlend.WinForms.Controls.vButton();
-            this.btnJoinTable = new VIBlend.WinForms.Controls.vButton();
-            this.btnAddTable = new VIBlend.WinForms.Controls.vButton();
-            this.btnRefresh = new VIBlend.WinForms.Controls.vButton();
-            this.btnLogOut = new VIBlend.WinForms.Controls.vButton();
+            this.btnLeaveTable = new Button();
+            this.btnJoinTable = new Button();
+            this.btnAddTable = new Button();
+            this.btnRefresh = new Button();
+            this.btnLogOut = new Button();
             this.lblServer = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lblMoney = new System.Windows.Forms.Label();
@@ -110,90 +112,70 @@
             // 
             // btnLeaveTable
             // 
-            this.btnLeaveTable.AllowAnimations = true;
             this.btnLeaveTable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLeaveTable.BackColor = System.Drawing.Color.Transparent;
             this.btnLeaveTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLeaveTable.Image = global::BluffinMuffin.Client.Properties.Resources.leave;
             this.btnLeaveTable.Location = new System.Drawing.Point(357, 122);
             this.btnLeaveTable.Name = "btnLeaveTable";
-            this.btnLeaveTable.RoundedCornersMask = ((byte)(15));
             this.btnLeaveTable.Size = new System.Drawing.Size(108, 35);
             this.btnLeaveTable.TabIndex = 13;
             this.btnLeaveTable.Text = "Leave Table";
             this.btnLeaveTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLeaveTable.UseVisualStyleBackColor = false;
-            this.btnLeaveTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
             this.btnLeaveTable.Click += new System.EventHandler(this.btnLeaveTable_Click);
             // 
             // btnJoinTable
             // 
-            this.btnJoinTable.AllowAnimations = true;
             this.btnJoinTable.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnJoinTable.BackColor = System.Drawing.Color.Transparent;
             this.btnJoinTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnJoinTable.Image = global::BluffinMuffin.Client.Properties.Resources.cards_mini;
             this.btnJoinTable.Location = new System.Drawing.Point(251, 122);
             this.btnJoinTable.Name = "btnJoinTable";
-            this.btnJoinTable.RoundedCornersMask = ((byte)(15));
             this.btnJoinTable.Size = new System.Drawing.Size(100, 35);
             this.btnJoinTable.TabIndex = 12;
             this.btnJoinTable.Text = "Join Table";
             this.btnJoinTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnJoinTable.UseVisualStyleBackColor = false;
-            this.btnJoinTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROGREEN;
             this.btnJoinTable.Click += new System.EventHandler(this.btnJoinTable_Click);
             // 
             // btnAddTable
             // 
-            this.btnAddTable.AllowAnimations = true;
-            this.btnAddTable.BackColor = System.Drawing.Color.Transparent;
             this.btnAddTable.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddTable.Image = global::BluffinMuffin.Client.Properties.Resources.add;
             this.btnAddTable.Location = new System.Drawing.Point(121, 122);
             this.btnAddTable.Name = "btnAddTable";
-            this.btnAddTable.RoundedCornersMask = ((byte)(15));
             this.btnAddTable.Size = new System.Drawing.Size(100, 35);
             this.btnAddTable.TabIndex = 11;
             this.btnAddTable.Text = "Add Table";
             this.btnAddTable.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAddTable.UseVisualStyleBackColor = false;
-            this.btnAddTable.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
             // btnRefresh
             // 
-            this.btnRefresh.AllowAnimations = true;
-            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.Image = global::BluffinMuffin.Client.Properties.Resources.refresh;
             this.btnRefresh.Location = new System.Drawing.Point(15, 122);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.RoundedCornersMask = ((byte)(15));
             this.btnRefresh.Size = new System.Drawing.Size(100, 35);
             this.btnRefresh.TabIndex = 10;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROBLUE;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnLogOut
             // 
-            this.btnLogOut.AllowAnimations = true;
             this.btnLogOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLogOut.BackColor = System.Drawing.Color.Transparent;
             this.btnLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogOut.Image = global::BluffinMuffin.Client.Properties.Resources.exit;
             this.btnLogOut.Location = new System.Drawing.Point(365, 38);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.RoundedCornersMask = ((byte)(15));
             this.btnLogOut.Size = new System.Drawing.Size(100, 58);
             this.btnLogOut.TabIndex = 9;
             this.btnLogOut.Text = "Log Out";
             this.btnLogOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnLogOut.UseVisualStyleBackColor = false;
-            this.btnLogOut.VIBlendTheme = VIBlend.Utilities.VIBLEND_THEME.METROORANGE;
             this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
             // lblServer
@@ -317,11 +299,11 @@
         private System.Windows.Forms.Label lblAccount;
         private System.Windows.Forms.Label label1;
         private BluffinMuffin.Poker.Windows.Forms.Lobby.PokerTableList tableList;
-        private VIBlend.WinForms.Controls.vButton btnLogOut;
-        private VIBlend.WinForms.Controls.vButton btnRefresh;
-        private VIBlend.WinForms.Controls.vButton btnAddTable;
-        private VIBlend.WinForms.Controls.vButton btnLeaveTable;
-        private VIBlend.WinForms.Controls.vButton btnJoinTable;
+        private Button btnLogOut;
+        private Button btnRefresh;
+        private Button btnAddTable;
+        private Button btnLeaveTable;
+        private Button btnJoinTable;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
     }

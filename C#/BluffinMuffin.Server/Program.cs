@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BluffinMuffin.Protocol.Server;
 using Com.Ericmas001.Util;
 using System.IO;
 using System.Reflection;
 
 namespace BluffinMuffin.Server
 {
-    class Program
+    public static class Program
     {
         static StreamWriter m_SwNormal;
         static StreamWriter m_SwDebug;
@@ -53,7 +54,7 @@ namespace BluffinMuffin.Server
                         }
 
                     }
-                    var server = new BluffinServerLobby(port);
+                    var server = new BluffinServer(port);
                     server.Start();
                     LogManager.Log(LogLevel.Message, "BluffinMuffin.Server", "Server started on port {0}", port);
                 }
@@ -71,7 +72,7 @@ namespace BluffinMuffin.Server
             // ATTENTION: This must contain "LogLevel.Message" for RELEASE
             //                              "LogLevel.MessageLow" for DEBUGGING
             //                              "LogLevel.MessageVeryLow" for XTREM DEBUGGING
-            LogManager.LogInConsole(from, message, level, LogLevel.Message);
+            LogManager.LogInConsole(from, message, level, LogLevel.MessageVeryLow);
         }
 
         static void LogManager_MessageLoggedToFileNormal(string from, string message, int level)

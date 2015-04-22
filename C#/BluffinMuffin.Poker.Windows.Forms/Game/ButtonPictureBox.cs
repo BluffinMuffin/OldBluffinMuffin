@@ -16,10 +16,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
         private ButtonType m_Button;
         public ButtonType Button
         {
-            get
-            {
-                return m_Button;
-            }
             set
             {
                 m_Button = value;

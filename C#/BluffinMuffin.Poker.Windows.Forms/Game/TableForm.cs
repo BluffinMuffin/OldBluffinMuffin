@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;
-using VIBlend.WinForms.Controls;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Game
 {
     public partial class TableForm : TableViewerForm
     {
         protected virtual int GetSitInMoneyAmount() { return 1500; }
-        public TableForm()
+
+        protected TableForm()
         {
             InitializeComponent();
+            DisableButtons();
+            DisableButton(btnSitOut);
         }
 
         private void btnFold_Click(object sender, EventArgs e)
@@ -41,14 +44,33 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
 
         private void DisableButtons()
         {
-            btnCall.Enabled = false;
-            btnRaise.Enabled = false;
-            btnFold.Enabled = false;
+            DisableButton(btnCall);
+            DisableButton(btnRaise);
+            DisableButton(btnFold);
             nudRaise.Enabled = false;
         }
-        public override void SetGame(IPokerGame c, string n)
+
+        private void DisableButton(Button btn)
         {
-            base.SetGame(c, n);
+            if (btn.Enabled)
+            {
+                btn.Enabled = false;
+                btn.Tag = btn.BackColor;
+                btn.BackColor = Color.DimGray;
+            }
+        }
+
+        private void EnableButton(Button btn)
+        {
+            if (!btn.Enabled)
+            {
+                btn.Enabled = true;
+                btn.BackColor = (Color)btn.Tag;
+            }
+        }
+        public override void SetGame(IPokerGame c)
+        {
+            base.SetGame(c);
             m_Game.Observer.PlayerActionNeeded += OnPlayerActionNeeded;
             m_Game.Observer.SitInResponseReceived += OnSitInResponseReceived;
             m_Game.Observer.SitOutResponseReceived += OnSitOutResponseReceived;
@@ -83,13 +105,13 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             var table = m_Game.Table;
             if (p.NoSeat == m_NoSeat)
             {
-                btnFold.Enabled = true;
+                EnableButton(btnFold);
                 SetCallButtonName(p);
-                btnCall.Enabled = true;
+                EnableButton(btnCall);
                 if (table.HigherBet < p.MoneyAmnt)
                 {
                     var min = table.MinRaiseAmnt(p) + p.MoneyBetAmnt;
-                    btnRaise.Enabled = true;
+                    EnableButton(btnRaise);
                     nudRaise.Enabled = true;
                     nudRaise.Minimum = min;
                     nudRaise.Maximum = p.MoneyAmnt;
@@ -140,7 +162,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             SuspendLayout();
             for (var i = 0; i < 10; ++i )
             {
-                var btnSitIn = Controls["btnSitIn" + i] as vButton;
+                var btnSitIn = Controls["btnSitIn" + i] as Button;
                 if (i < m_Game.Table.Seats.Count && m_Game.Table.Seats[i].IsEmpty)
                 {
                     if (btnSitIn != null) btnSitIn.Visible = visible;
@@ -159,12 +181,16 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                 return;
             }
             SuspendLayout();
-            btnSitOut.Enabled = enable;
+            if(enable)
+                EnableButton(btnSitOut);
+            else
+                DisableButton(btnSitOut);
             ResumeLayout();
         }
 
         private void btnSitOut_Click(object sender, EventArgs e)
         {
+            DisableButtons();
             SitOutEnabled(false);
             m_Game.SitOut(null);
         }

@@ -1,12 +1,10 @@
-﻿using Com.Ericmas001.Net.Protocol.JSON;
-
-namespace BluffinMuffin.Protocol.Commands.Game
+﻿namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class PlayerSitOutCommand : AbstractJsonCommand
+    public class PlayerSitOutCommand : AbstractGameCommand
     {
-        public string EncodeResponse(bool success)
+        public PlayerSitOutResponse Response(bool success)
         {
-            return new PlayerSitOutResponse(this) { Success = success }.Encode();
+            return new PlayerSitOutResponse(this) { Success = success };
         }
     }
 }

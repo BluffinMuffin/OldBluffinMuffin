@@ -4,9 +4,9 @@
     {
         public string DisplayName { get; set; }
 
-        public string EncodeResponse(bool exist)
+        public CheckDisplayExistResponse Response(bool exist)
         {
-            return new CheckDisplayExistResponse(this) { Exist = exist }.Encode();
+            return new CheckDisplayExistResponse(this) { Exist = exist };
         }
     }
 }

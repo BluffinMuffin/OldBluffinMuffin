@@ -67,7 +67,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
         {
             var rule = CurrentRule;
             lstBetLimit.Items.Clear();
-            lstBetLimit.Items.AddRange(rule.AvailableLimits.Select(l => EnumFactory<LimitTypeEnum>.ToString(l)).ToArray());
+            lstBetLimit.Items.AddRange(rule.AvailableLimits.Select(EnumFactory<LimitTypeEnum>.ToString).ToArray());
             lstBetLimit.SelectedIndex = lstBetLimit.FindStringExact(EnumFactory<LimitTypeEnum>.ToString(rule.DefaultLimit));
         }
 
@@ -75,7 +75,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
         {
             var rule = CurrentRule;
             lstBlinds.Items.Clear();
-            lstBlinds.Items.AddRange(rule.AvailableBlinds.Select(b => EnumFactory<BlindTypeEnum>.ToString(b)).ToArray());
+            lstBlinds.Items.AddRange(rule.AvailableBlinds.Select(EnumFactory<BlindTypeEnum>.ToString).ToArray());
             lstBlinds.SelectedIndex = lstBlinds.FindStringExact(EnumFactory<BlindTypeEnum>.ToString(rule.DefaultBlind));
             SetBlindRules();
         }

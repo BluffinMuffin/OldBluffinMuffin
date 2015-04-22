@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BluffinMuffin.Protocol.Commands</RootNamespace>
     <AssemblyName>BluffinMuffin.Protocol.Commands</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,9 +34,9 @@
     <Reference Include="Com.Ericmas001.Net.Protocol">
       <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,6 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractBluffinCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AbstractBluffinReponse.cs" />
+    <Compile Include="AbstractLobbyCommand.cs" />
+    <Compile Include="BluffinCommandEnum.cs" />
+    <Compile Include="AbstractGameCommand.cs" />
     <Compile Include="DisconnectCommand.cs" />
     <Compile Include="Game\BetTurnEndedCommand.cs" />
     <Compile Include="Game\BetTurnStartedCommand.cs" />
@@ -55,7 +62,6 @@
     <Compile Include="Game\GameStartedCommand.cs" />
     <Compile Include="Game\PlayerHoleCardsChangedCommand.cs" />
     <Compile Include="Game\PlayerJoinedCommand.cs" />
-    <Compile Include="Game\PlayerLeftCommand.cs" />
     <Compile Include="Game\PlayerMoneyChangedCommand.cs" />
     <Compile Include="Game\PlayerPlayMoneyCommand.cs" />
     <Compile Include="Game\PlayerSitInCommand.cs" />
@@ -68,8 +74,7 @@
     <Compile Include="Game\SeatUpdatedCommand.cs" />
     <Compile Include="Game\TableClosedCommand.cs" />
     <Compile Include="Game\TableInfoCommand.cs" />
-    <Compile Include="Lobby\AbstractLobbyCommand.cs" />
-    <Compile Include="Lobby\AbstractLobbyResponse.cs" />
+    <Compile Include="IGameCommand.cs" />
     <Compile Include="Lobby\Career\AuthenticateUserCommand.cs" />
     <Compile Include="Lobby\Career\AuthenticateUserResponse.cs" />
     <Compile Include="Lobby\Career\CheckDisplayExistCommand.cs" />
@@ -82,7 +87,6 @@
     <Compile Include="Lobby\Career\GetUserResponse.cs" />
     <Compile Include="Lobby\CreateTableCommand.cs" />
     <Compile Include="Lobby\CreateTableResponse.cs" />
-    <Compile Include="Lobby\GameCommand.cs" />
     <Compile Include="Lobby\JoinTableCommand.cs" />
     <Compile Include="Lobby\JoinTableResponse.cs" />
     <Compile Include="Lobby\ListTableCommand.cs" />
@@ -98,6 +102,9 @@
       <Project>{fcdf88c3-ba2f-4c06-aa9a-6ace1355a37e}</Project>
       <Name>BluffinMuffin.Poker.DataTypes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

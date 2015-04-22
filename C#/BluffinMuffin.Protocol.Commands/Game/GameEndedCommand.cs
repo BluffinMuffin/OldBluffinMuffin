@@ -1,8 +1,6 @@
-﻿using Com.Ericmas001.Net.Protocol.JSON;
-
-namespace BluffinMuffin.Protocol.Commands.Game
+﻿namespace BluffinMuffin.Protocol.Commands.Game
 {
-    public class GameEndedCommand : AbstractJsonCommand
+    public class GameEndedCommand : AbstractGameCommand
     {
     }
 }

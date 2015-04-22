@@ -10,10 +10,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
         private GameCard m_Card;
         public GameCard Card
         {
-            get
-            {
-                return m_Card;
-            }
             set
             {
                 m_Card = value;
@@ -32,12 +28,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             if (m_Card == null || m_Card.Special == GameCardSpecial.Null)
                 Image = null;
             else
-            {
-                if (m_Card.Special != GameCardSpecial.None)
-                    Image = CardImage.GetImage(m_Card.Special, 1);
-                else
-                    Image = CardImage.GetImage(m_Card.Kind, m_Card.Value, 1);
-            }
+                Image = m_Card.Special != GameCardSpecial.None ? CardImage.GetImage(m_Card.Special, 1) : CardImage.GetImage(m_Card.Kind, m_Card.Value, 1);
         }
     }
 }

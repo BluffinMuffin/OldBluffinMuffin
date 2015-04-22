@@ -5,9 +5,9 @@
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public string EncodeResponse(bool success)
+        public AuthenticateUserResponse Response(bool success)
         {
-            return new AuthenticateUserResponse(this) { Success = success }.Encode();
+            return new AuthenticateUserResponse(this) { Success = success };
         }
     }
 }

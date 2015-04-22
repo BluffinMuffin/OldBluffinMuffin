@@ -4,9 +4,9 @@
     {
         public string Name { get; set; }
 
-        public string EncodeResponse( bool success )
+        public IdentifyResponse Response(bool success)
         {
-            return new IdentifyResponse(this) { Ok = success }.Encode();
+            return new IdentifyResponse(this) { Ok = success };
         }
     }
 }

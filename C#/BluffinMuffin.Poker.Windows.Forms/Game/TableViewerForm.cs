@@ -12,13 +12,13 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
 {
     public partial class TableViewerForm : AbstractTableForm
     {
-        protected readonly PlayerHud[] m_Huds = new PlayerHud[10];
-        protected readonly Label[] m_Bets = new Label[10];
-        protected readonly Label[] m_PotTitles = new Label[10];
-        protected readonly Label[] m_PotValues = new Label[10];
-        protected readonly CardPictureBox[] m_Board = new CardPictureBox[5];
+        private readonly PlayerHud[] m_Huds = new PlayerHud[10];
+        private readonly Label[] m_Bets = new Label[10];
+        private readonly Label[] m_PotTitles = new Label[10];
+        private readonly Label[] m_PotValues = new Label[10];
+        private readonly CardPictureBox[] m_Board = new CardPictureBox[5];
 
-        public TableViewerForm()
+        protected TableViewerForm()
         {
             InitializeComponent();
             m_Huds[0] = playerHud1;
@@ -79,20 +79,20 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             new HandStrengthForm().Show();
         }
 
-        public override void SetGame(IPokerGame c, string n)
+        public override void SetGame(IPokerGame c)
         {
-            base.SetGame(c, n);
+            base.SetGame(c);
             InitializePokerObserverForGui();
             InitializePokerObserverForConsole();
         }
 
-        public void WriteLine(string line)
+        private void WriteLine(string line)
         {
             LogManager.Log(LogLevel.Message, "Game", line);
             logConsole.WriteLine(line);
         }
 
-        public void Write(string msg)
+        private void Write(string msg)
         {
             LogManager.Log(LogLevel.Message, "Game", msg);
             logConsole.Write(msg);
@@ -147,7 +147,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             }
             for (var i = 0; i < m_Huds.Length; ++i)
             {
-                m_Huds[i].DoAction(GameActionEnum.DoNothing, 0);
+                m_Huds[i].DoAction(GameActionEnum.DoNothing);
                 m_Bets[i].Text = "";
             }
             ResumeLayout();
@@ -203,11 +203,11 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                     php.SetDealerButtonVisible(false);
                     php.SetNoBlind();
                     php.SetSleeping();
-                    if (p.MoneySafeAmnt == 0)
-                    {
+                    //if (p.MoneySafeAmnt == 0)
+                    //{
                         php.SetCards(GameCard.NoCard, GameCard.NoCard);
                         php.Alive = false;
-                    }
+                    //}
                     php.DoAction(GameActionEnum.DoNothing);
                 }
             }
@@ -260,7 +260,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                 }
                 for (var i = 0; i < m_Huds.Length; ++i)
                 {
-                    m_Huds[i].DoAction(GameActionEnum.DoNothing, 0);
+                    m_Huds[i].DoAction(GameActionEnum.DoNothing);
                     m_Bets[i].Text = table.Seats[i].IsEmpty || table.Seats[i].Player.MoneyBetAmnt == 0 ? "" : "$" + table.Seats[i].Player.MoneyBetAmnt;
                 }
 
@@ -289,7 +289,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             SuspendLayout();
             var p = e.Player;
             var php = m_Huds[p.NoSeat];
-            php.DoAction(GameActionEnum.DoNothing, 0);
+            php.DoAction(GameActionEnum.DoNothing);
             php.SetPlaying();
             ResumeLayout();
         }

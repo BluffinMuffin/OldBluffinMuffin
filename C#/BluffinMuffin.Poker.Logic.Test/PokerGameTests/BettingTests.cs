@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
+﻿using BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests
