@@ -623,7 +623,7 @@ namespace BluffinMuffin.Poker.HandEval
 
             return 0;
 #else
-            return contiguousCountTable[CardMask(mask, Clubs) | CardMask(mask, Diamonds) | CardMask(mask, Hearts) | CardMask(mask, Spades)];
+            return m_ContiguousCountTable[CardMask(mask, Clubs) | CardMask(mask, Diamonds) | CardMask(mask, Hearts) | CardMask(mask, Spades)];
 #endif
         }
 
