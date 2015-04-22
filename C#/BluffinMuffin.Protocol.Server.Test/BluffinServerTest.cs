@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using BluffinMuffin.Protocol.Commands.Lobby.Career;
 using BluffinMuffin.Protocol.Commands.Lobby.Training;
 using BluffinMuffin.Protocol.Server.Test.Mocking;
 using BluffinMuffin.Protocols.Test.DataTypes;
+using Com.Ericmas001.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BluffinMuffin.Protocol.Server.Test
@@ -18,9 +20,11 @@ namespace BluffinMuffin.Protocol.Server.Test
     [TestClass]
     public class BluffinServerTest
     {
+        private StringWriter m_Sw = new StringWriter();
         [TestMethod]
         public void BigUglyTest()
         {
+            LogManager.MessageLogged += LogManager_MessageLogged;
             var server = new BluffinServer(42084);
             var tokenServer = new CancellationTokenSource();
             Task.Factory.StartNew(server.Start, tokenServer.Token);
@@ -73,20 +77,44 @@ namespace BluffinMuffin.Protocol.Server.Test
             BeAwareOfWhoItIsToPlay(c1, idTable, s1);
             BeAwareOfWhoItIsToPlay(c2, idTable, s1);
 
-            PlayMoney(c2, idTable, 10);
+            PlayMoney(c1, idTable, 5);
+
+            BeAwareOfMoneyPlayed(c1, idTable, s1);
+            BeAwareOfMoneyPlayed(c2, idTable, s1);
+
+            BeAwareOfWhoItIsToPlay(c1, idTable, s2);
+            BeAwareOfWhoItIsToPlay(c2, idTable, s2);
+
+            //SitOut(c2, idTable, s2);
 
             Thread.Sleep(500);
 
             c1.ReceivedCommands.CompleteAdding();
             c2.ReceivedCommands.CompleteAdding();
 
-            Assert.AreNotEqual(string.Empty,string.Join(",",c1.ReceivedCommands.GetConsumingEnumerable().Select(x => x.ToString())));
+            Assert.AreEqual(string.Empty,string.Join(",",c1.ReceivedCommands.GetConsumingEnumerable().Select(x => x.ToString())),m_Sw.ToString());
 
-            Assert.AreNotEqual(string.Empty, string.Join(",", c2.ReceivedCommands.GetConsumingEnumerable().Select(x => x.ToString())));
+            Assert.AreEqual(string.Empty, string.Join(",", c2.ReceivedCommands.GetConsumingEnumerable().Select(x => x.ToString())), m_Sw.ToString());
 
             tokenClient2.Cancel();
             tokenClient1.Cancel();
             tokenServer.Cancel();
+        }
+
+        private void SitOut(RemoteTcpServer serverEntity, int tableId, int noSeat)
+        {
+            var cmd = new PlayerSitOutCommand()
+            {
+                TableId = tableId
+            };
+            serverEntity.Send(cmd);
+            var response = serverEntity.WaitForNextCommand<PlayerSitOutResponse>();
+            Assert.IsTrue(response.Success);
+        }
+
+        void LogManager_MessageLogged(string from, string message, int level)
+        {
+            m_Sw.WriteLine("[{0}] {1}", from, message);
         }
 
         private void BeAwareOfWhoItIsToPlay(RemoteTcpServer serverEntity, int tableId, int noSeat)
