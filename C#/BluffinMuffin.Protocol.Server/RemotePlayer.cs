@@ -89,7 +89,6 @@ namespace BluffinMuffin.Protocol.Server
             Game.Observer.GameGenerallyUpdated += OnGameGenerallyUpdated;
             Game.Observer.PlayerJoined += OnPlayerJoined;
             Game.Observer.SeatUpdated += OnSeatUpdated;
-            Game.Observer.PlayerLeft += OnPlayerLeft;
         }
         #region PokerObserver Event Handling
         void OnGameBettingRoundEnded(object sender, RoundEventArgs e)
@@ -212,15 +211,6 @@ namespace BluffinMuffin.Protocol.Server
                     Seat = e.Seat,
                 });
             }
-        }
-
-        void OnPlayerLeft(object sender, PlayerInfoEventArgs e)
-        {
-            var p = e.Player;
-            Send(new PlayerLeftCommand()
-            {
-                PlayerPos = p.NoSeat,
-            });
         }
         #endregion PokerObserver Event Handling
 

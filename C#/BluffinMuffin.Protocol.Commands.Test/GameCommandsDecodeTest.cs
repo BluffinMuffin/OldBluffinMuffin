@@ -75,13 +75,6 @@ namespace BluffinMuffin.Protocol.Commands.Test
             Assert.AreEqual(c.PlayerName, dc.PlayerName);
         }
         [TestMethod]
-        public void PlayerLeftCommand()
-        {
-            var c = GameCommandMock.PlayerLeftCommand();
-            var dc = GetDecodedCommand(c);
-            Assert.AreEqual(c.PlayerPos, dc.PlayerPos);
-        }
-        [TestMethod]
         public void PlayerMoneyChangedCommand()
         {
             var c = GameCommandMock.PlayerMoneyChangedCommand();

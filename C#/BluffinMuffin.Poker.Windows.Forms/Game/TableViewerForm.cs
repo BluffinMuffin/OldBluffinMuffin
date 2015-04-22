@@ -203,11 +203,11 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                     php.SetDealerButtonVisible(false);
                     php.SetNoBlind();
                     php.SetSleeping();
-                    if (p.MoneySafeAmnt == 0)
-                    {
+                    //if (p.MoneySafeAmnt == 0)
+                    //{
                         php.SetCards(GameCard.NoCard, GameCard.NoCard);
                         php.Alive = false;
-                    }
+                    //}
                     php.DoAction(GameActionEnum.DoNothing);
                 }
             }

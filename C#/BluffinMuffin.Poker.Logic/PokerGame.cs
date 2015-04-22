@@ -147,7 +147,7 @@ namespace BluffinMuffin.Poker.Logic
             else if (blindNeeded > 0)
                 PlayMoney(p, blindNeeded);
 
-            if (Table.SitOut(p))
+            if (Table.SeatsContainsPlayer(p) && Table.SitOut(p))
             {
                 var seat = new SeatInfo()
                 {
@@ -169,8 +169,6 @@ namespace BluffinMuffin.Poker.Logic
 
             if (sitOutOk && Table.LeaveTable(p))
             {
-                Observer.RaisePlayerLeft(p);
-
                 if (Table.Players.Count == 0)
                     m_State = GameStateEnum.End;
             }

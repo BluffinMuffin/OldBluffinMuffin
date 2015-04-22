@@ -47,7 +47,6 @@ namespace BluffinMuffin.Protocol.Client
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += OnPlayerHoleCardsChangedCommandReceived;
             m_CommandObserver.PlayerJoinedCommandReceived += OnPlayerJoinedCommandReceived;
             m_CommandObserver.SeatUpdatedCommandReceived += OnSeatUpdatedCommandReceived;
-            m_CommandObserver.PlayerLeftCommandReceived += OnPlayerLeftCommandReceived;
             m_CommandObserver.PlayerMoneyChangedCommandReceived += OnPlayerMoneyChangedCommandReceived;
             m_CommandObserver.PlayerTurnBeganCommandReceived += OnPlayerTurnBeganCommandReceived;
             m_CommandObserver.PlayerTurnEndedCommandReceived += OnPlayerTurnEndedCommandReceived;
@@ -208,22 +207,6 @@ namespace BluffinMuffin.Protocol.Client
                 Observer.RaiseSeatUpdated(s);
             }
 
-        }
-
-        void OnPlayerLeftCommandReceived(object sender, CommandEventArgs<PlayerLeftCommand> e)
-        {
-            lock (m_PokerTable)
-            {
-                var cmd = e.Command;
-                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
-
-                if (p != null)
-                {
-                    m_PokerTable.LeaveTable(p);
-
-                    Observer.RaisePlayerLeft(p);
-                }
-            }
         }
 
         void OnPlayerMoneyChangedCommandReceived(object sender, CommandEventArgs<PlayerMoneyChangedCommand> e)

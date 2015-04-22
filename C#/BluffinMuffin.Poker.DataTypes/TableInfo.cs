@@ -352,7 +352,7 @@ namespace BluffinMuffin.Poker.DataTypes
             return m_Seats.Where(s => (!s.IsEmpty && (s.Player.IsPlaying || s.Player.IsAllIn))).Select(s => s.Player);
         }
 
-        protected bool SeatsContainsPlayer(PlayerInfo p)
+        public bool SeatsContainsPlayer(PlayerInfo p)
         {
             return Players.Contains(p) || Players.Count(x => x.Name.ToLower() == p.Name.ToLower()) > 0;
         }

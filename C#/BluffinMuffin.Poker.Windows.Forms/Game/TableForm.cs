@@ -190,6 +190,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
 
         private void btnSitOut_Click(object sender, EventArgs e)
         {
+            DisableButtons();
             SitOutEnabled(false);
             m_Game.SitOut(null);
         }
