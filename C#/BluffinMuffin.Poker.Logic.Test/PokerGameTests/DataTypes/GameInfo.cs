@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BluffinMuffin.Poker.DataTypes;
+using BluffinMuffin.Protocol.DataTypes;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes
 {

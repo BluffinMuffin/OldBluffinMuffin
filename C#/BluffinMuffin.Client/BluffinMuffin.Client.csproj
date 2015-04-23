@@ -202,6 +202,10 @@
       <Project>{29f0952b-ef3c-465f-94d7-2db43c8116e4}</Project>
       <Name>BluffinMuffin.Protocol.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
+      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
+      <Name>BluffinMuffin.Protocol.DataTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

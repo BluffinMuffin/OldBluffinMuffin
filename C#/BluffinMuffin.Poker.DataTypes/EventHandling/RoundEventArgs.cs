@@ -1,5 +1,5 @@
-﻿using BluffinMuffin.Poker.DataTypes.Enums;
-using System;
+﻿using System;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 
 namespace BluffinMuffin.Poker.DataTypes.EventHandling
 {

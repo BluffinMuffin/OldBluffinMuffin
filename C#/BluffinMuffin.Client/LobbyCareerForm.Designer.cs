@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 
 namespace BluffinMuffin.Client
 {
@@ -251,7 +252,7 @@ namespace BluffinMuffin.Client
             // 
             this.tableList.BackColor = System.Drawing.Color.White;
             this.tableList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableList.LobbyType = BluffinMuffin.Poker.DataTypes.Enums.LobbyTypeEnum.Career;
+            this.tableList.LobbyType = LobbyTypeEnum.Career;
             this.tableList.Location = new System.Drawing.Point(0, 0);
             this.tableList.Name = "tableList";
             this.tableList.ShowCareer = true;

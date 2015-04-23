@@ -1,6 +1,6 @@
 ﻿using System;
 using BluffinMuffin.Poker.DataTypes.Annotations;
-using BluffinMuffin.Protocol.Commands.Game;
+using BluffinMuffin.Protocol.Game;
 using Com.Ericmas001.Net.Protocol.JSON;
 using Com.Ericmas001.Net.Protocol;
 

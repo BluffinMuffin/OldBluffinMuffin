@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
+using BluffinMuffin.Protocol.DataTypes;
 using Com.Ericmas001.Util;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Game

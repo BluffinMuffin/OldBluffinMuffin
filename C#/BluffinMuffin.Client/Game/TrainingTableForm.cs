@@ -1,5 +1,5 @@
-﻿using BluffinMuffin.Poker.DataTypes.Parameters;
-using BluffinMuffin.Poker.Windows.Forms.Game;
+﻿using BluffinMuffin.Poker.Windows.Forms.Game;
+using BluffinMuffin.Protocol.DataTypes;
 
 namespace BluffinMuffin.Client.Game
 {

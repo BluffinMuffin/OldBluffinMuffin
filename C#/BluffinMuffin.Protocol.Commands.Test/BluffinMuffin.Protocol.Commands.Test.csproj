@@ -58,22 +58,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Comparing\CompareConfigurableWaitingTimes.cs" />
-    <Compile Include="Comparing\CompareLobbyOptions.cs" />
-    <Compile Include="Comparing\CompareLimitOptions.cs" />
-    <Compile Include="Comparing\CompareGameCard.cs" />
-    <Compile Include="Comparing\CompareSeatInfo.cs" />
-    <Compile Include="Comparing\ComparePlayerInfo.cs" />
-    <Compile Include="Comparing\CompareTableParams.cs" />
-    <Compile Include="Comparing\CompareBlindOptions.cs" />
-    <Compile Include="Comparing\CompareTupleTable.cs" />
-    <Compile Include="Comparing\CompareRuleInfo.cs" />
-    <Compile Include="GeneralCommandsDecodeTest.cs" />
-    <Compile Include="Helpers\EncodeDecodeHelper.cs" />
-    <Compile Include="LobbyCareerCommandsDecodeTest.cs" />
-    <Compile Include="GameCommandsDecodeTest.cs" />
-    <Compile Include="LobbyTrainingCommandsDecodeTest.cs" />
-    <Compile Include="LobbyCommandsDecodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,10 +68,6 @@
     <ProjectReference Include="..\BluffinMuffin.Poker.Logic\BluffinMuffin.Poker.Logic.csproj">
       <Project>{c742e561-9daf-40f2-92d4-c2631bbdd253}</Project>
       <Name>BluffinMuffin.Poker.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.Commands\BluffinMuffin.Protocol.Commands.csproj">
-      <Project>{1b8829c6-720d-4c98-8961-b234692f8f15}</Project>
-      <Name>BluffinMuffin.Protocol.Commands</Name>
     </ProjectReference>
     <ProjectReference Include="..\BluffinMuffin.Protocols.Test.DataTypes\BluffinMuffin.Protocols.Test.DataTypes.csproj">
       <Project>{c3ed27a8-e9de-4063-8729-7adea12a631f}</Project>

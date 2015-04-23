@@ -67,6 +67,10 @@
       <Project>{db8262c0-819a-4ff1-87e2-e34ca0cda41e}</Project>
       <Name>BluffinMuffin.Poker.HandEval</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
+      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
+      <Name>BluffinMuffin.Protocol.DataTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -91,6 +91,10 @@
       <Project>{c742e561-9daf-40f2-92d4-c2631bbdd253}</Project>
       <Name>BluffinMuffin.Poker.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
+      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
+      <Name>BluffinMuffin.Protocol.DataTypes</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Choose>

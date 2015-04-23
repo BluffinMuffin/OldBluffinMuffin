@@ -69,9 +69,13 @@
       <Project>{fcdf88c3-ba2f-4c06-aa9a-6ace1355a37e}</Project>
       <Name>BluffinMuffin.Poker.DataTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.Commands\BluffinMuffin.Protocol.Commands.csproj">
-      <Project>{1b8829c6-720d-4c98-8961-b234692f8f15}</Project>
-      <Name>BluffinMuffin.Protocol.Commands</Name>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
+      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
+      <Name>BluffinMuffin.Protocol.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Protocol\BluffinMuffin.Protocol.csproj">
+      <Project>{9BE9F49C-EB4E-4AF5-95EE-3C92F09DEA05}</Project>
+      <Name>BluffinMuffin.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 using Com.Ericmas001.Games;
-using BluffinMuffin.Poker.DataTypes.Enums;
 using System.Linq;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.HandEval;
 using Com.Ericmas001.Util;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 
 namespace BluffinMuffin.Poker.Logic
 {

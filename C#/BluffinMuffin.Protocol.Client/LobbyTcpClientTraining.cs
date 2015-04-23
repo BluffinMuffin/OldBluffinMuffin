@@ -1,4 +1,4 @@
-﻿using BluffinMuffin.Protocol.Commands.Lobby.Training;
+﻿using BluffinMuffin.Protocol.Lobby.Training;
 
 namespace BluffinMuffin.Protocol.Client
 {

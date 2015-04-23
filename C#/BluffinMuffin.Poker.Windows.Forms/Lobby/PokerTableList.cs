@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using BluffinMuffin.Protocol.Client;
 using BluffinMuffin.Poker.Windows.Forms.Game;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 using Com.Ericmas001.Util;
-using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Enums;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Lobby
 {

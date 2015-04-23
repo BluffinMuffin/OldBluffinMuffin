@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FBAA5260-F30C-4D83-869A-F573B689524F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BluffinMuffin.Protocol.Tests.DataTypes</RootNamespace>
+    <AssemblyName>BluffinMuffin.Protocol.Tests.DataTypes</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Com.Ericmas001.Games">
+      <HintPath>..\References\Com.Ericmas001.Games.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GameCardMock.cs" />
+    <Compile Include="GameCommandMock.cs" />
+    <Compile Include="GeneralCommandMock.cs" />
+    <Compile Include="LobbyCommandMock.cs" />
+    <Compile Include="PlayerInfoMock.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuleInfoMock.cs" />
+    <Compile Include="SeatInfoMock.cs" />
+    <Compile Include="TableParamsMock.cs" />
+    <Compile Include="TupleTableMock.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
+      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
+      <Name>BluffinMuffin.Protocol.DataTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BluffinMuffin.Protocol\BluffinMuffin.Protocol.csproj">
+      <Project>{9BE9F49C-EB4E-4AF5-95EE-3C92F09DEA05}</Project>
+      <Name>BluffinMuffin.Protocol</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

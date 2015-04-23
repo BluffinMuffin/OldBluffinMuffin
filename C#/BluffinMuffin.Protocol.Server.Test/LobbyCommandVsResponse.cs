@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using BluffinMuffin.Protocol.Commands;
-using BluffinMuffin.Protocol.Commands.Lobby;
-using BluffinMuffin.Protocol.Commands.Lobby.Career;
-using BluffinMuffin.Protocol.Commands.Lobby.Training;
+using BluffinMuffin.Protocol.Lobby;
+using BluffinMuffin.Protocol.Lobby.Career;
+using BluffinMuffin.Protocol.Lobby.Training;
 using BluffinMuffin.Protocol.Server.Test.Mocking;
-using BluffinMuffin.Protocols.Test.DataTypes;
+using BluffinMuffin.Protocol.Tests.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BluffinMuffin.Protocol.Server.Test

@@ -1,5 +1,5 @@
-﻿using BluffinMuffin.Protocol.Commands.Lobby.Career;
-using BluffinMuffin.Poker.DataTypes;
+﻿using BluffinMuffin.Poker.DataTypes;
+using BluffinMuffin.Protocol.Lobby.Career;
 
 namespace BluffinMuffin.Protocol.Client
 {

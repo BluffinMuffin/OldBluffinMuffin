@@ -2,13 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BluffinMuffin.Protocol.Commands.Lobby;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.Lobby;
 using BluffinMuffin.Protocol.Server.DataTypes;
 using BluffinMuffin.Protocol.Server.Workers;
 using Com.Ericmas001.Util;
-using BluffinMuffin.Poker.DataTypes;
 using System.Linq;
-using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.Logic;
 
 namespace BluffinMuffin.Protocol.Server

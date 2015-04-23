@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BluffinMuffin.Protocol.DataTypes;
 
 namespace BluffinMuffin.Poker.DataTypes
 {

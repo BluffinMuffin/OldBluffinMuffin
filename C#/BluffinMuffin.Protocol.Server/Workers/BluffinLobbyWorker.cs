@@ -4,10 +4,10 @@ using System.Linq;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
-using BluffinMuffin.Protocol.Commands;
-using BluffinMuffin.Protocol.Commands.Lobby;
-using BluffinMuffin.Protocol.Commands.Lobby.Career;
-using BluffinMuffin.Protocol.Commands.Lobby.Training;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.Lobby;
+using BluffinMuffin.Protocol.Lobby.Career;
+using BluffinMuffin.Protocol.Lobby.Training;
 using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Util;
 

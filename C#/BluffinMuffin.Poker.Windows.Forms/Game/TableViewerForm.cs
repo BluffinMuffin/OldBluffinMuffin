@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Windows.Forms;
 using BluffinMuffin.Poker.Windows.Forms.Properties;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 using Com.Ericmas001.Games;
-using BluffinMuffin.Poker.DataTypes.Enums;
 using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
 using Com.Ericmas001.Util;

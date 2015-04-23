@@ -1,4 +1,6 @@
-﻿namespace BluffinMuffin.Poker.DataTypes.EventHandling
+﻿using BluffinMuffin.Protocol.DataTypes;
+
+namespace BluffinMuffin.Poker.DataTypes.EventHandling
 {
     public class HistoricPlayerInfoEventArgs : PlayerInfoEventArgs
     {

@@ -1,6 +1,6 @@
-﻿using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 
 namespace BluffinMuffin.Poker.Logic
 {

@@ -1,11 +1,10 @@
-﻿using BluffinMuffin.Poker.DataTypes.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Parameters;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Lobby
 {

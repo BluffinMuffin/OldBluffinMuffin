@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Enums;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 using BluffinMuffin.Poker.Persistance;
-using BluffinMuffin.Protocol.Commands;
-using BluffinMuffin.Protocol.Commands.Game;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.Game;
 using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Util;
 

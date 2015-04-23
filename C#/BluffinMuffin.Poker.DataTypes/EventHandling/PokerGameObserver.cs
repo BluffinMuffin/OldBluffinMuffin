@@ -1,4 +1,5 @@
-﻿using BluffinMuffin.Poker.DataTypes.Enums;
+﻿using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 using Com.Ericmas001.Util;
 using System;
 

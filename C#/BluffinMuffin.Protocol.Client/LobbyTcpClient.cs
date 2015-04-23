@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.Lobby;
 using Com.Ericmas001.Collections;
-using BluffinMuffin.Protocol.Commands.Lobby;
 using Com.Ericmas001.Util;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.DataTypes.Enums;
 using Com.Ericmas001.Net.Protocol;
-using BluffinMuffin.Poker.DataTypes.Parameters;
 
 namespace BluffinMuffin.Protocol.Client
 {

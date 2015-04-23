@@ -48,53 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractBluffinCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AbstractBluffinReponse.cs" />
-    <Compile Include="AbstractLobbyCommand.cs" />
-    <Compile Include="BluffinCommandEnum.cs" />
-    <Compile Include="AbstractGameCommand.cs" />
-    <Compile Include="DisconnectCommand.cs" />
-    <Compile Include="Game\BetTurnEndedCommand.cs" />
-    <Compile Include="Game\BetTurnStartedCommand.cs" />
-    <Compile Include="Game\GameEndedCommand.cs" />
-    <Compile Include="Game\GameStartedCommand.cs" />
-    <Compile Include="Game\PlayerHoleCardsChangedCommand.cs" />
-    <Compile Include="Game\PlayerJoinedCommand.cs" />
-    <Compile Include="Game\PlayerMoneyChangedCommand.cs" />
-    <Compile Include="Game\PlayerPlayMoneyCommand.cs" />
-    <Compile Include="Game\PlayerSitInCommand.cs" />
-    <Compile Include="Game\PlayerSitInResponse.cs" />
-    <Compile Include="Game\PlayerSitOutCommand.cs" />
-    <Compile Include="Game\PlayerSitOutResponse.cs" />
-    <Compile Include="Game\PlayerTurnBeganCommand.cs" />
-    <Compile Include="Game\PlayerTurnEndedCommand.cs" />
-    <Compile Include="Game\PlayerWonPotCommand.cs" />
-    <Compile Include="Game\SeatUpdatedCommand.cs" />
-    <Compile Include="Game\TableClosedCommand.cs" />
-    <Compile Include="Game\TableInfoCommand.cs" />
-    <Compile Include="IGameCommand.cs" />
-    <Compile Include="Lobby\Career\AuthenticateUserCommand.cs" />
-    <Compile Include="Lobby\Career\AuthenticateUserResponse.cs" />
-    <Compile Include="Lobby\Career\CheckDisplayExistCommand.cs" />
-    <Compile Include="Lobby\Career\CheckDisplayExistResponse.cs" />
-    <Compile Include="Lobby\Career\CheckUserExistCommand.cs" />
-    <Compile Include="Lobby\Career\CheckUserExistResponse.cs" />
-    <Compile Include="Lobby\Career\CreateUserCommand.cs" />
-    <Compile Include="Lobby\Career\CreateUserResponse.cs" />
-    <Compile Include="Lobby\Career\GetUserCommand.cs" />
-    <Compile Include="Lobby\Career\GetUserResponse.cs" />
-    <Compile Include="Lobby\CreateTableCommand.cs" />
-    <Compile Include="Lobby\CreateTableResponse.cs" />
-    <Compile Include="Lobby\JoinTableCommand.cs" />
-    <Compile Include="Lobby\JoinTableResponse.cs" />
-    <Compile Include="Lobby\ListTableCommand.cs" />
-    <Compile Include="Lobby\ListTableResponse.cs" />
-    <Compile Include="Lobby\SupportedRulesCommand.cs" />
-    <Compile Include="Lobby\SupportedRulesResponse.cs" />
-    <Compile Include="Lobby\Training\IdentifyCommand.cs" />
-    <Compile Include="Lobby\Training\IdentifyResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
-﻿using BluffinMuffin.Poker.DataTypes;
-using BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes;
+﻿using BluffinMuffin.Poker.Logic.Test.PokerGameTests.DataTypes;
+using BluffinMuffin.Protocol.DataTypes;
 
 namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
 {

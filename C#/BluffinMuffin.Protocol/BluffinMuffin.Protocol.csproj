@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9BE9F49C-EB4E-4AF5-95EE-3C92F09DEA05}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BluffinMuffin.Protocol</RootNamespace>
+    <AssemblyName>BluffinMuffin.Protocol</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Com.Ericmas001.Net.Protocol">
+      <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractBluffinCommand.cs" />
+    <Compile Include="AbstractBluffinReponse.cs" />
+    <Compile Include="AbstractGameCommand.cs" />
+    <Compile Include="AbstractLobbyCommand.cs" />
+    <Compile Include="BluffinCommandEnum.cs" />
+    <Compile Include="DisconnectCommand.cs" />
+    <Compile Include="Game\BetTurnEndedCommand.cs" />
+    <Compile Include="Game\BetTurnStartedCommand.cs" />
+    <Compile Include="Game\GameEndedCommand.cs" />
+    <Compile Include="Game\GameStartedCommand.cs" />
+    <Compile Include="Game\PlayerHoleCardsChangedCommand.cs" />
+    <Compile Include="Game\PlayerJoinedCommand.cs" />
+    <Compile Include="Game\PlayerMoneyChangedCommand.cs" />
+    <Compile Include="Game\PlayerPlayMoneyCommand.cs" />
+    <Compile Include="Game\PlayerSitInCommand.cs" />
+    <Compile Include="Game\PlayerSitInResponse.cs" />
+    <Compile Include="Game\PlayerSitOutCommand.cs" />
+    <Compile Include="Game\PlayerSitOutResponse.cs" />
+    <Compile Include="Game\PlayerTurnBeganCommand.cs" />
+    <Compile Include="Game\PlayerTurnEndedCommand.cs" />
+    <Compile Include="Game\PlayerWonPotCommand.cs" />
+    <Compile Include="Game\SeatUpdatedCommand.cs" />
+    <Compile Include="Game\TableClosedCommand.cs" />
+    <Compile Include="Game\TableInfoCommand.cs" />
+    <Compile Include="IGameCommand.cs" />
+    <Compile Include="Lobby\Career\AuthenticateUserCommand.cs" />
+    <Compile Include="Lobby\Career\AuthenticateUserResponse.cs" />
+    <Compile Include="Lobby\Career\CheckDisplayExistCommand.cs" />
+    <Compile Include="Lobby\Career\CheckDisplayExistResponse.cs" />
+    <Compile Include="Lobby\Career\CheckUserExistCommand.cs" />
+    <Compile Include="Lobby\Career\CheckUserExistResponse.cs" />
+    <Compile Include="Lobby\Career\CreateUserCommand.cs" />
+    <Compile Include="Lobby\Career\CreateUserResponse.cs" />
+    <Compile Include="Lobby\Career\GetUserCommand.cs" />
+    <Compile Include="Lobby\Career\GetUserResponse.cs" />
+    <Compile Include="Lobby\CreateTableCommand.cs" />
+    <Compile Include="Lobby\CreateTableResponse.cs" />
+    <Compile Include="Lobby\JoinTableCommand.cs" />
+    <Compile Include="Lobby\JoinTableResponse.cs" />
+    <Compile Include="Lobby\ListTableCommand.cs" />
+    <Compile Include="Lobby\ListTableResponse.cs" />
+    <Compile Include="Lobby\SupportedRulesCommand.cs" />
+    <Compile Include="Lobby\SupportedRulesResponse.cs" />
+    <Compile Include="Lobby\Training\IdentifyCommand.cs" />
+    <Compile Include="Lobby\Training\IdentifyResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
+      <Project>{c66657b1-e75d-49d4-854b-a71069daf9a5}</Project>
+      <Name>BluffinMuffin.Protocol.DataTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,4 +1,5 @@
 ﻿using BluffinMuffin.Poker.DataTypes.EventHandling;
+using BluffinMuffin.Protocol.DataTypes;
 
 namespace BluffinMuffin.Poker.DataTypes
 {

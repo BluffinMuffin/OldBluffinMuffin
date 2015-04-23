@@ -1,5 +1,4 @@
 ﻿using System;
-using BluffinMuffin.Protocol.Commands;
 using BluffinMuffin.Protocol.Server.DataTypes;
 
 namespace BluffinMuffin.Protocol.Server.Test.Mocking

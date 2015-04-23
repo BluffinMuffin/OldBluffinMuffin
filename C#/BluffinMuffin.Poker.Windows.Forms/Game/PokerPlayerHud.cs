@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using BluffinMuffin.Poker.Windows.Forms.Properties;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 using Com.Ericmas001.Games;
-using BluffinMuffin.Poker.DataTypes.Enums;
 
 namespace BluffinMuffin.Poker.Windows.Forms.Game
 {

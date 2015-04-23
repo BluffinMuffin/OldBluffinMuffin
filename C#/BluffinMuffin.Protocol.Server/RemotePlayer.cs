@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.DataTypes.EventHandling;
 using BluffinMuffin.Poker.Logic;
-using BluffinMuffin.Protocol.Commands;
-using BluffinMuffin.Protocol.Commands.Game;
+using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.Game;
 using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Games;
 
