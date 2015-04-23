@@ -4,12 +4,22 @@ The Java version hasn't change since 2010 (Beta3)
 
 The C# version is currently under developpement during spare time :)
 
- * Current Version: [Beta4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4) (2014-04-07)
+ * Current Version: [Beta5](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.5-beta.5) (2015-04-22)
 
 ![alt tag](https://googledrive.com/host/0B2wUdLMFaj9JX0pPakRnbWZkeTQ/Beta4.png)
 
 ----
 
+# [Beta 5](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.5-beta.5): April 2015
+
+ * Compatibility
+  * Beta5 Client works only with Beta5 Server
+  * Beta5 Server works only with Beta5 Client
+ * Downloads
+  * [C# Beta4 Client](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.5-beta.5/BluffinMuffin.Client.Beta5.zip)
+  * [C# Beta4 Server](https://github.com/Ericmas001/bluffin-muffin/releases/download/v0.5-beta.5/BluffinMuffin.Server.Beta5.zip)
+
+----
 # [Beta 4](https://github.com/Ericmas001/bluffin-muffin/releases/tag/v0.4-beta.4): April 2014
 
  * Compatibility
