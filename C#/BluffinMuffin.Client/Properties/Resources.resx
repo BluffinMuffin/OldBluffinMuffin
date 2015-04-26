@@ -148,7 +148,7 @@
   <data name="BuyInForm_BuyInForm_Dollar" xml:space="preserve">
     <value>$</value>
   </data>
-  <data name="LobbyCareerForm_LobbyCareerForm_Tild" xml:space="preserve">
+  <data name="LobbyRegisteredModeForm_LobbyRegisteredModeForm_Tild" xml:space="preserve">
     <value> ~ </value>
   </data>
 </root>

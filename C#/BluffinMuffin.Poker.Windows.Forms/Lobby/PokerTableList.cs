@@ -13,8 +13,8 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
     {
         private LobbyTcpClient m_Server;
 
-        public bool ShowTraining { private get; set; }
-        public bool ShowCareer { private get; set; }
+        public bool ShowQuickMode { private get; set; }
+        public bool ShowRegisteredMode { private get; set; }
         public LobbyTypeEnum LobbyType { private get; set; }
         public ITableFormFactory TableFormFactory { private get; set; }
 
@@ -47,21 +47,21 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
             datTables.Rows.Clear();
             var lst = new List<TupleTable>();
 
-            if (ShowTraining)
-                lst.AddRange(m_Server.ListTables(LobbyTypeEnum.Training).ToArray());
-            if (ShowCareer)
-                lst.AddRange(m_Server.ListTables(LobbyTypeEnum.Career).ToArray());
+            if (ShowQuickMode)
+                lst.AddRange(m_Server.ListTables(LobbyTypeEnum.QuickMode).ToArray());
+            if (ShowRegisteredMode)
+                lst.AddRange(m_Server.ListTables(LobbyTypeEnum.RegisteredMode).ToArray());
 
             lst.Sort();
             for (var i = 0; i < lst.Count; ++i)
             {
                 var info = lst[i];
-                var type = info.Params.Lobby.OptionType == LobbyTypeEnum.Training ? "Training" : "Real";
+                var type = info.Params.Lobby.OptionType == LobbyTypeEnum.QuickMode ? "QuickMode" : "RegisteredMode";
                 datTables.Rows.Add();
                 datTables.Rows[i].Cells[0].Value = info.IdTable;
                 datTables.Rows[i].Cells[1].Value = info.Params.TableName;
                 datTables.Rows[i].Cells[2].Value = type + " - " + EnumFactory<LimitTypeEnum>.ToString(info.Params.Limit.OptionType);
-                datTables.Rows[i].Cells[3].Value = info.BigBlind;
+                datTables.Rows[i].Cells[3].Value = info.Params.MoneyUnit;
                 datTables.Rows[i].Cells[4].Value = info.NbPlayers + "/" + info.Params.MaxPlayers;
             }
             if (datTables.RowCount > 0 && datTables.SelectedRows.Count > 0)

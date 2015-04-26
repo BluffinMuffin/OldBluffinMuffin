@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>
+    </Reference>
     <Reference Include="Com.Ericmas001.Collections">
       <HintPath>..\References\Com.Ericmas001.Collections.dll</HintPath>
     </Reference>
@@ -60,22 +68,14 @@
     <Compile Include="GameObserver.cs" />
     <Compile Include="GameTcpClient.cs" />
     <Compile Include="LobbyTcpClient.cs" />
-    <Compile Include="LobbyTcpClientCareer.cs" />
-    <Compile Include="LobbyTcpClientTraining.cs" />
+    <Compile Include="LobbyTcpClientRegisteredMode.cs" />
+    <Compile Include="LobbyTcpClientQuickMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BluffinMuffin.Poker.DataTypes\BluffinMuffin.Poker.DataTypes.csproj">
       <Project>{fcdf88c3-ba2f-4c06-aa9a-6ace1355a37e}</Project>
       <Name>BluffinMuffin.Poker.DataTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
-      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
-      <Name>BluffinMuffin.Protocol.DataTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol\BluffinMuffin.Protocol.csproj">
-      <Project>{9BE9F49C-EB4E-4AF5-95EE-3C92F09DEA05}</Project>
-      <Name>BluffinMuffin.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

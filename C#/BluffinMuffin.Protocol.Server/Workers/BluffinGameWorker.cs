@@ -50,7 +50,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
 
         void OnDisconnectCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
         {
-            if (p.Game.Params.Lobby.OptionType == LobbyTypeEnum.Career)
+            if (p.Game.Params.Lobby.OptionType == LobbyTypeEnum.RegisteredMode)
                 DataManager.Persistance.Get(p.Client.PlayerName).TotalMoney += p.Player.MoneySafeAmnt;
 
             client.RemovePlayer(p);
@@ -68,8 +68,8 @@ namespace BluffinMuffin.Protocol.Server.Workers
         {
             UserInfo userInfo = null;
             var c = (PlayerSitInCommand)command;
-            if (p.Game.Params.Lobby.OptionType == LobbyTypeEnum.Training)
-                p.Player.MoneySafeAmnt = ((LobbyOptionsTraining) p.Game.Params.Lobby).StartingAmount;
+            if (p.Game.Params.Lobby.OptionType == LobbyTypeEnum.QuickMode)
+                p.Player.MoneySafeAmnt = ((LobbyOptionsQuickMode) p.Game.Params.Lobby).StartingAmount;
             else
             {
                 int money = c.MoneyAmount;

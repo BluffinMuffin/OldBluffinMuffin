@@ -19,7 +19,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                             {
                                 MoneyUnit = 10
                             },
-                            Lobby = new LobbyOptionsCareer()
+                            Lobby = new LobbyOptionsRegisteredMode()
                             {
                                 IsMaximumBuyInLimited = false,
                                 MoneyUnit = 0 // Little trick to not get bothered.
@@ -41,7 +41,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                             {
                                 MoneyUnit = 10
                             },
-                            Lobby = new LobbyOptionsCareer()
+                            Lobby = new LobbyOptionsRegisteredMode()
                             {
                                 IsMaximumBuyInLimited = true,
                                 MoneyUnit=10

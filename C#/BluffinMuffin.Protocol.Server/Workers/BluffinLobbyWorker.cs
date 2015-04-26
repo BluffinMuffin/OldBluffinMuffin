@@ -6,8 +6,8 @@ using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.Lobby;
-using BluffinMuffin.Protocol.Lobby.Career;
-using BluffinMuffin.Protocol.Lobby.Training;
+using BluffinMuffin.Protocol.Lobby.RegisteredMode;
+using BluffinMuffin.Protocol.Lobby.QuickMode;
 using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Util;
 
@@ -35,10 +35,10 @@ namespace BluffinMuffin.Protocol.Server.Workers
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(JoinTableCommand), OnJoinTableCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CreateTableCommand), OnCreateTableCommandReceived), 
                 
-                //Lobby Training
+                //Lobby QuickMode
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(IdentifyCommand), OnIdentifyCommandReceived), 
 
-                //Lobby Career
+                //Lobby RegisteredMode
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CheckDisplayExistCommand), OnCheckDisplayExistCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CheckUserExistCommand), OnCheckUserExistCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CreateUserCommand), OnCreateUserCommandReceived), 
@@ -68,7 +68,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
             var c = (IdentifyCommand)command;
             client.PlayerName = c.Name;
             var ok = !Lobby.IsNameUsed(c.Name) && !DataManager.Persistance.IsDisplayNameExist(c.Name);
-            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnIdentifyCommandReceived", "> Client indentifying training server as : {0}. Success={1}", c.Name, ok);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnIdentifyCommandReceived", "> Client indentifying QuickMode server as : {0}. Success={1}", c.Name, ok);
             client.SendCommand(c.Response(ok));
             if (ok)
                 Lobby.AddName(c.Name);
@@ -112,7 +112,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
             if (ok)
                 Lobby.AddName(client.PlayerName);
 
-            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnAuthenticateUserCommandReceived", "> Client authenticate to Career Server as : {0}. Success={1}", client.PlayerName, ok);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnAuthenticateUserCommandReceived", "> Client authenticate to RegisteredMode Server as : {0}. Success={1}", client.PlayerName, ok);
             client.SendCommand(c.Response(ok));
         }
 
@@ -124,7 +124,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
             if (ok)
                 DataManager.Persistance.Register(new UserInfo(c.Username, c.Password, c.Email, c.DisplayName, 7500));
 
-            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnCreateUserCommandReceived", "> Client register to Career Server as : {0}. Success={1}", c.Username, ok);
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnCreateUserCommandReceived", "> Client register to RegisteredMode Server as : {0}. Success={1}", c.Username, ok);
             client.SendCommand(c.Response(ok));
         }
 

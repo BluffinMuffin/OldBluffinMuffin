@@ -7,7 +7,7 @@ using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
 using BluffinMuffin.Protocol.Game;
 using BluffinMuffin.Protocol.Lobby;
-using BluffinMuffin.Protocol.Lobby.Training;
+using BluffinMuffin.Protocol.Lobby.QuickMode;
 using Com.Ericmas001.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -226,7 +226,7 @@ namespace BluffinMuffin.Protocol.Server.Test
                     GameType = GameTypeEnum.Holdem,
                     MoneyUnit = 10,
                     Limit = new LimitOptionsNoLimit(),
-                    Lobby = new LobbyOptionsTraining()
+                    Lobby = new LobbyOptionsQuickMode()
                     {
                         StartingAmount = 1500
                     },

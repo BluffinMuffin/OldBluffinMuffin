@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using BluffinMuffin.Protocol.Lobby;
-using BluffinMuffin.Protocol.Lobby.Career;
-using BluffinMuffin.Protocol.Lobby.Training;
+using BluffinMuffin.Protocol.Lobby.RegisteredMode;
+using BluffinMuffin.Protocol.Lobby.QuickMode;
 using BluffinMuffin.Protocol.Server.Test.Mocking;
 using BluffinMuffin.Protocol.Tests.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

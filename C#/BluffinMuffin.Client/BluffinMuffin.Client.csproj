@@ -36,6 +36,10 @@
     <ApplicationIcon>cards.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>
+    </Reference>
     <Reference Include="Com.Ericmas001.Net.Protocol">
       <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
     </Reference>
@@ -63,41 +67,41 @@
     <Compile Include="Game\BuyInForm.Designer.cs">
       <DependentUpon>BuyInForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Game\CareerTableForm.cs">
+    <Compile Include="Game\RegisteredModeTableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Game\CareerTableForm.Designer.cs">
-      <DependentUpon>CareerTableForm.cs</DependentUpon>
+    <Compile Include="Game\RegisteredModeTableForm.Designer.cs">
+      <DependentUpon>RegisteredModeTableForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Game\TrainingTableForm.cs">
+    <Compile Include="Game\QuickModeTableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Game\TrainingTableForm.Designer.cs">
-      <DependentUpon>TrainingTableForm.cs</DependentUpon>
+    <Compile Include="Game\QuickModeTableForm.Designer.cs">
+      <DependentUpon>QuickModeTableForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LobbyCareerForm.cs">
+    <Compile Include="LobbyRegisteredModeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LobbyCareerForm.Designer.cs">
-      <DependentUpon>LobbyCareerForm.cs</DependentUpon>
+    <Compile Include="LobbyRegisteredModeForm.Designer.cs">
+      <DependentUpon>LobbyRegisteredModeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LobbyTrainingForm.cs">
+    <Compile Include="LobbyQuickModeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LobbyTrainingForm.Designer.cs">
-      <DependentUpon>LobbyTrainingForm.cs</DependentUpon>
+    <Compile Include="LobbyQuickModeForm.Designer.cs">
+      <DependentUpon>LobbyQuickModeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menu\CareerConnectParmsForm.cs">
+    <Compile Include="Menu\RegisteredModeConnectParmsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Menu\CareerConnectParmsForm.Designer.cs">
-      <DependentUpon>CareerConnectParmsForm.cs</DependentUpon>
+    <Compile Include="Menu\RegisteredModeConnectParmsForm.Designer.cs">
+      <DependentUpon>RegisteredModeConnectParmsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menu\CareerRegisterParmsForm.cs">
+    <Compile Include="Menu\RegisteredModeRegisterParmsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Menu\CareerRegisterParmsForm.Designer.cs">
-      <DependentUpon>CareerRegisterParmsForm.cs</DependentUpon>
+    <Compile Include="Menu\RegisteredModeRegisterParmsForm.Designer.cs">
+      <DependentUpon>RegisteredModeRegisterParmsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Menu\MenuForm.cs">
       <SubType>Form</SubType>
@@ -105,37 +109,37 @@
     <Compile Include="Menu\MenuForm.Designer.cs">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Menu\TrainingParmsForm.cs">
+    <Compile Include="Menu\QuickModeParmsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Menu\TrainingParmsForm.Designer.cs">
-      <DependentUpon>TrainingParmsForm.cs</DependentUpon>
+    <Compile Include="Menu\QuickModeParmsForm.Designer.cs">
+      <DependentUpon>QuickModeParmsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Splash\CareerConnectSplashInfo.cs" />
-    <Compile Include="Splash\CareerRegisterSplashInfo.cs" />
-    <Compile Include="Splash\TrainingSplashInfo.cs" />
+    <Compile Include="Splash\RegisteredModeConnectSplashInfo.cs" />
+    <Compile Include="Splash\RegisteredModeRegisterSplashInfo.cs" />
+    <Compile Include="Splash\QuickModeSplashInfo.cs" />
     <EmbeddedResource Include="Game\BuyInForm.resx">
       <DependentUpon>BuyInForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LobbyCareerForm.resx">
-      <DependentUpon>LobbyCareerForm.cs</DependentUpon>
+    <EmbeddedResource Include="LobbyRegisteredModeForm.resx">
+      <DependentUpon>LobbyRegisteredModeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LobbyTrainingForm.resx">
-      <DependentUpon>LobbyTrainingForm.cs</DependentUpon>
+    <EmbeddedResource Include="LobbyQuickModeForm.resx">
+      <DependentUpon>LobbyQuickModeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menu\CareerConnectParmsForm.resx">
-      <DependentUpon>CareerConnectParmsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Menu\RegisteredModeConnectParmsForm.resx">
+      <DependentUpon>RegisteredModeConnectParmsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menu\CareerRegisterParmsForm.resx">
-      <DependentUpon>CareerRegisterParmsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Menu\RegisteredModeRegisterParmsForm.resx">
+      <DependentUpon>RegisteredModeRegisterParmsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu\MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Menu\TrainingParmsForm.resx">
-      <DependentUpon>TrainingParmsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Menu\QuickModeParmsForm.resx">
+      <DependentUpon>QuickModeParmsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -201,10 +205,6 @@
     <ProjectReference Include="..\BluffinMuffin.Protocol.Client\BluffinMuffin.Protocol.Client.csproj">
       <Project>{29f0952b-ef3c-465f-94d7-2db43c8116e4}</Project>
       <Name>BluffinMuffin.Protocol.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
-      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
-      <Name>BluffinMuffin.Protocol.DataTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -15,7 +15,7 @@ namespace BluffinMuffin.Poker.Logic.Test.PokerGameTests.Mocks
                         {
                             MaxPlayers = 2,
                             Blind = new BlindOptionsNone(),
-                            Lobby = new LobbyOptionsCareer()
+                            Lobby = new LobbyOptionsRegisteredMode()
                             {
                                 IsMaximumBuyInLimited = false,
                                 MoneyUnit = 0 // Little trick to not get bothered.

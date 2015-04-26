@@ -36,6 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>
+    </Reference>
     <Reference Include="Com.Ericmas001.Net.Protocol">
       <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
     </Reference>
@@ -90,10 +94,6 @@
     <ProjectReference Include="..\BluffinMuffin.Poker.Logic\BluffinMuffin.Poker.Logic.csproj">
       <Project>{c742e561-9daf-40f2-92d4-c2631bbdd253}</Project>
       <Name>BluffinMuffin.Poker.Logic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
-      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
-      <Name>BluffinMuffin.Protocol.DataTypes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

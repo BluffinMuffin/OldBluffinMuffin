@@ -25,7 +25,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
             txtTableName.Text = playerName + Resources.CreateTableTabControl_CreateTableTabControl__Table;
             InitVariants();
             RefreshNumbers();
-            grpTraining.Visible = lobby == LobbyTypeEnum.Training;
+            grpQuickMode.Visible = lobby == LobbyTypeEnum.QuickMode;
         }
 
         private void InitVariants()
@@ -117,15 +117,15 @@ namespace BluffinMuffin.Poker.Windows.Forms.Lobby
                 LobbyOptions lobby = null;
                 switch (m_LobbyType)
                 {
-                    case LobbyTypeEnum.Training:
-                        lobby = new LobbyOptionsTraining()
+                    case LobbyTypeEnum.QuickMode:
+                        lobby = new LobbyOptionsQuickMode()
                         {
                             StartingAmount = (int)nudStartingAmount.Value,
                         };
                         break;
 
-                    case LobbyTypeEnum.Career:
-                        lobby = new LobbyOptionsCareer()
+                    case LobbyTypeEnum.RegisteredMode:
+                        lobby = new LobbyOptionsRegisteredMode()
                         {
                             MoneyUnit = moneyUnit,
                             IsMaximumBuyInLimited = rdBuyInLimited.Checked,

@@ -47,7 +47,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.nudWTAPlayerAction = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.grpTraining = new System.Windows.Forms.GroupBox();
+            this.grpQuickMode = new System.Windows.Forms.GroupBox();
             this.nudStartingAmount = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.nudMoneyUnit = new System.Windows.Forms.NumericUpDown();
@@ -69,7 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPotWon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTABoardDealed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPlayerAction)).BeginInit();
-            this.grpTraining.SuspendLayout();
+            this.grpQuickMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMoneyUnit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -341,17 +341,17 @@
             this.label7.TabIndex = 20;
             this.label7.Text = "Player Action:";
             // 
-            // grpTraining
+            // grpQuickMode
             // 
-            this.grpTraining.Controls.Add(this.nudStartingAmount);
-            this.grpTraining.Controls.Add(this.label12);
-            this.grpTraining.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-            this.grpTraining.Location = new System.Drawing.Point(6, 320);
-            this.grpTraining.Name = "grpTraining";
-            this.grpTraining.Size = new System.Drawing.Size(459, 53);
-            this.grpTraining.TabIndex = 27;
-            this.grpTraining.TabStop = false;
-            this.grpTraining.Text = "Training Options";
+            this.grpQuickMode.Controls.Add(this.nudStartingAmount);
+            this.grpQuickMode.Controls.Add(this.label12);
+            this.grpQuickMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.grpQuickMode.Location = new System.Drawing.Point(6, 320);
+            this.grpQuickMode.Name = "grpQuickMode";
+            this.grpQuickMode.Size = new System.Drawing.Size(459, 53);
+            this.grpQuickMode.TabIndex = 27;
+            this.grpQuickMode.TabStop = false;
+            this.grpQuickMode.Text = "QuickMode Options";
             // 
             // nudStartingAmount
             // 
@@ -552,7 +552,7 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.nudMoneyUnit);
-            this.Controls.Add(this.grpTraining);
+            this.Controls.Add(this.grpQuickMode);
             this.Controls.Add(this.grpTimes);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lstBlinds);
@@ -575,8 +575,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPotWon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTABoardDealed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudWTAPlayerAction)).EndInit();
-            this.grpTraining.ResumeLayout(false);
-            this.grpTraining.PerformLayout();
+            this.grpQuickMode.ResumeLayout(false);
+            this.grpQuickMode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStartingAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMoneyUnit)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -607,7 +607,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown nudWTAPotWon;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.GroupBox grpTraining;
+        private System.Windows.Forms.GroupBox grpQuickMode;
         private System.Windows.Forms.NumericUpDown nudStartingAmount;
         private System.Windows.Forms.Label label12;
         internal System.Windows.Forms.NumericUpDown nudMoneyUnit;

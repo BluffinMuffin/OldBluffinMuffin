@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>
+    </Reference>
     <Reference Include="Com.Ericmas001.Collections">
       <HintPath>..\References\Com.Ericmas001.Collections.dll</HintPath>
     </Reference>
@@ -82,14 +90,6 @@
     <ProjectReference Include="..\BluffinMuffin.Poker.Persistance\BluffinMuffin.Poker.Persistance.csproj">
       <Project>{8372fa85-e300-4353-8b10-78f93655d479}</Project>
       <Name>BluffinMuffin.Poker.Persistance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
-      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
-      <Name>BluffinMuffin.Protocol.DataTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol\BluffinMuffin.Protocol.csproj">
-      <Project>{9BE9F49C-EB4E-4AF5-95EE-3C92F09DEA05}</Project>
-      <Name>BluffinMuffin.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

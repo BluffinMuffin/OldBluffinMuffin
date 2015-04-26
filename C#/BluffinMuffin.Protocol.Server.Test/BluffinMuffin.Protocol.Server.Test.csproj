@@ -35,6 +35,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BluffinMuffin.Protocol, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.dll</HintPath>
+    </Reference>
+    <Reference Include="BluffinMuffin.Protocol.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.DataTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="BluffinMuffin.Protocol.Tests.DataTypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BluffinMuffin.Protocol.Tests.DataTypes.dll</HintPath>
+    </Reference>
     <Reference Include="Com.Ericmas001.Net.Protocol">
       <HintPath>..\References\Com.Ericmas001.Net.Protocol.dll</HintPath>
     </Reference>
@@ -76,21 +88,9 @@
       <Project>{c742e561-9daf-40f2-92d4-c2631bbdd253}</Project>
       <Name>BluffinMuffin.Poker.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.DataTypes\BluffinMuffin.Protocol.DataTypes.csproj">
-      <Project>{C66657B1-E75D-49D4-854B-A71069DAF9A5}</Project>
-      <Name>BluffinMuffin.Protocol.DataTypes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BluffinMuffin.Protocol.Server\BluffinMuffin.Protocol.Server.csproj">
       <Project>{e079c15d-dbc4-4f3b-b9b2-1e1df9de0460}</Project>
       <Name>BluffinMuffin.Protocol.Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol.Tests.DataTypes\BluffinMuffin.Protocol.Tests.DataTypes.csproj">
-      <Project>{FBAA5260-F30C-4D83-869A-F573B689524F}</Project>
-      <Name>BluffinMuffin.Protocol.Tests.DataTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BluffinMuffin.Protocol\BluffinMuffin.Protocol.csproj">
-      <Project>{9BE9F49C-EB4E-4AF5-95EE-3C92F09DEA05}</Project>
-      <Name>BluffinMuffin.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

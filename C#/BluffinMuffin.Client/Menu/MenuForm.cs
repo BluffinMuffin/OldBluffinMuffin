@@ -11,24 +11,24 @@ namespace BluffinMuffin.Client.Menu
             InitializeComponent();
         }
 
-        private void btnTraining_Click(object sender, EventArgs e)
+        private void btnQuickMode_Click(object sender, EventArgs e)
         {
             Hide();
-            new TrainingParmsForm(clstServerName.Text, (int)nudServerPort.Value).ShowDialog();
+            new QuickModeParmsForm(clstServerName.Text, (int)nudServerPort.Value).ShowDialog();
             Show();
         }
 
-        private void btnCareerConnect_Click(object sender, EventArgs e)
+        private void btnRegisteredModeConnect_Click(object sender, EventArgs e)
         {
             Hide();
-            new CareerConnectParmsForm(clstServerName.Text, (int)nudServerPort.Value).ShowDialog();
+            new RegisteredModeConnectParmsForm(clstServerName.Text, (int)nudServerPort.Value).ShowDialog();
             Show();
         }
 
-        private void btnCareerRegister_Click(object sender, EventArgs e)
+        private void btnRegisteredModeRegister_Click(object sender, EventArgs e)
         {
             Hide();
-            new CareerRegisterParmsForm(clstServerName.Text, (int)nudServerPort.Value).ShowDialog();
+            new RegisteredModeRegisterParmsForm(clstServerName.Text, (int)nudServerPort.Value).ShowDialog();
             Show();
         }
 

@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace BluffinMuffin.Client.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -139,9 +142,9 @@ namespace BluffinMuffin.Client.Properties {
         /// <summary>
         ///   Looks up a localized string similar to  ~ .
         /// </summary>
-        internal static string LobbyCareerForm_LobbyCareerForm_Tild {
+        internal static string LobbyRegisteredModeForm_LobbyRegisteredModeForm_Tild {
             get {
-                return ResourceManager.GetString("LobbyCareerForm_LobbyCareerForm_Tild", resourceCulture);
+                return ResourceManager.GetString("LobbyRegisteredModeForm_LobbyRegisteredModeForm_Tild", resourceCulture);
             }
         }
         
