@@ -101,6 +101,7 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
 
         private void InitializePokerObserverForGui()
         {
+            m_Game.Observer.EverythingEnded += OnEverythingEnded;
             m_Game.Observer.GameBettingRoundEnded += OnGameBettingRoundEnded;
             m_Game.Observer.GameBettingRoundStarted += OnGameBettingRoundStarted;
             m_Game.Observer.GameEnded += OnGameEnded;
@@ -112,6 +113,11 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             m_Game.Observer.PlayerLeft += OnPlayerLeft;
             m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot;
+        }
+
+        private void OnEverythingEnded(object sender, EventArgs e)
+        {
+            ForceKill();
         }
 
         private void InitializePokerObserverForConsole()

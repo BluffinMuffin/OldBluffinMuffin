@@ -73,6 +73,8 @@ namespace BluffinMuffin.Poker.Logic
             get { return m_State; }
         }
 
+        private int m_NbGamePlayed = 0;
+
         #endregion
 
         #region Ctors & Init
@@ -156,6 +158,7 @@ namespace BluffinMuffin.Poker.Logic
                     NoSeat = oldSeat,
                 };
                 Observer.RaiseSeatUpdated(seat);
+                TryToBegin();
                 return true;
             }
             return false;
@@ -241,6 +244,7 @@ namespace BluffinMuffin.Poker.Logic
         private void StartANewGame()
         {
             Observer.RaiseGameEnded();
+            m_NbGamePlayed++;
             m_State = GameStateEnum.WaitForPlayers;
             TryToBegin();
         }
@@ -614,8 +618,9 @@ namespace BluffinMuffin.Poker.Logic
                 else
                     p.State = PlayerStateEnum.SitIn;
             }
-
-            if (Table.NbPlaying >= Table.Params.MinPlayersToStart)
+            if (Table.NbPlaying == 0)
+                Observer.RaiseEverythingEnded();
+            else if (Table.NbPlaying >= Table.Params.MinPlayersToStart)
             {
                 Table.Params.MinPlayersToStart = 2;
                 Table.InitTable();
