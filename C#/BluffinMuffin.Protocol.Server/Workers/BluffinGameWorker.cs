@@ -86,13 +86,13 @@ namespace BluffinMuffin.Protocol.Server.Workers
             var seat = p.Game.GameTable.SitIn(p.Player, c.NoSeat);
             if (seat == null)
             {
-                client.SendCommand(c.ResponseFailure(BluffinMessageId.SpecificServerMessage, "No seats available"));
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.NoMoreSeats, "No seats available"));
                 if (userInfo != null)
                     userInfo.TotalMoney += p.Player.MoneySafeAmnt; 
             }
             else
             {
-                var r = (seat.NoSeat != c.NoSeat) ? c.ResponseSuccess(BluffinMessageId.SpecificServerMessage, "The asked seat wasn't available, the server gave you another one.") : c.ResponseSuccess();
+                var r = (seat.NoSeat != c.NoSeat) ? c.ResponseSuccess(BluffinMessageId.SeatChanged, "The asked seat wasn't available, the server gave you another one.") : c.ResponseSuccess();
                 r.NoSeat = seat.NoSeat;
                 client.SendCommand(r);
                 p.Game.AfterPlayerSat(p.Player);

@@ -110,7 +110,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             m_Game.Observer.PlayerActionTaken += OnPlayerActionTaken;
             m_Game.Observer.PlayerHoleCardsChanged += OnPlayerHoleCardsChanged;
             m_Game.Observer.SeatUpdated += OnSeatUpdated;
-            m_Game.Observer.PlayerLeft += OnPlayerLeft;
             m_Game.Observer.PlayerMoneyChanged += OnPlayerMoneyChanged;
             m_Game.Observer.PlayerWonPot += OnPlayerWonPot;
         }
@@ -356,21 +355,6 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
                 m_Huds[e.Seat.NoSeat].Visible = false;
             else
                 InstallPlayer(m_Huds[e.Seat.NoSeat], e.Seat);
-            ResumeLayout();
-        }
-
-        void OnPlayerLeft(object sender, PlayerInfoEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerLeft), new[] { sender, e });
-                return;
-            }
-            SuspendLayout();
-            var p = e.Player;
-            var php = m_Huds[p.NoSeat];
-            php.Visible = false;
             ResumeLayout();
         }
 

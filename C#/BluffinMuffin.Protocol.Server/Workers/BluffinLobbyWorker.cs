@@ -34,6 +34,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(ListTableCommand), OnListTableCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(SupportedRulesCommand), OnSupportedRulesCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(JoinTableCommand), OnJoinTableCommandReceived), 
+                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(LeaveTableCommand), OnLeaveTableCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CreateTableCommand), OnCreateTableCommandReceived), 
                 
                 //Lobby QuickMode
@@ -223,6 +224,13 @@ namespace BluffinMuffin.Protocol.Server.Workers
             client.SendCommand(c.ResponseSuccess());
 
             rp.SendTableInfo();
+        }
+
+        private void OnLeaveTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
+        {
+            var c = (LeaveTableCommand)command;
+            var game = Lobby.GetGame(c.TableId);
+            game.LeaveGame(game.GameTable.Players.Single(x => x.Name == client.PlayerName));
         }
     }
 }

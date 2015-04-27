@@ -173,6 +173,7 @@ namespace BluffinMuffin.Poker.Logic
 
             if (sitOutOk && Table.LeaveTable(p))
             {
+                Observer.RaisePlayerLeft(p);
                 if (Table.Players.Count == 0)
                     m_State = GameStateEnum.End;
             }
