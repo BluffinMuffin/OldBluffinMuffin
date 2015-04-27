@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.Enums;
 using BluffinMuffin.Protocol.Lobby;
 using Com.Ericmas001.Collections;
 using Com.Ericmas001.Util;

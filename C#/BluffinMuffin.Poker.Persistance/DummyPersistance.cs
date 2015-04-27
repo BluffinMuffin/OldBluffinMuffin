@@ -26,11 +26,15 @@ namespace BluffinMuffin.Poker.Persistance
             m_UsersByDisplayname.Add(u.DisplayName.ToLower(), u);
         }
 
-        public UserInfo Get(string username)
+        public UserInfo Get(string name)
         {
-            if (!IsUsernameExist(username))
-                return null;
-            return m_UsersByUsername[username.ToLower()];
+            if (!IsUsernameExist(name))
+            {
+                if (!IsDisplayNameExist(name))
+                    return null;
+                return m_UsersByDisplayname[name.ToLower()];
+            }
+            return m_UsersByUsername[name.ToLower()];
         }
 
         public UserInfo Authenticate(string username, string password)

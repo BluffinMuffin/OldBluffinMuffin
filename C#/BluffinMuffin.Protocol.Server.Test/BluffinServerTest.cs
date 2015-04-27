@@ -255,7 +255,7 @@ namespace BluffinMuffin.Protocol.Server.Test
             };
             serverEntity.Send(cmd);
             var response = serverEntity.WaitForNextCommand<IdentifyResponse>();
-            Assert.IsTrue(response.Ok);
+            Assert.IsTrue(response.Success);
             serverEntity.Name = name;
         }
     }

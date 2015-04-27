@@ -15,7 +15,7 @@ namespace BluffinMuffin.Protocol.Client
 
             Send(new IdentifyCommand() { Name = PlayerName });
 
-            return WaitAndReceive<IdentifyResponse>().Ok;
+            return WaitAndReceive<IdentifyResponse>().Success;
         }
     }
 }

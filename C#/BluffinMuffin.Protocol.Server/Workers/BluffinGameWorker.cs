@@ -5,6 +5,7 @@ using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.DataTypes;
 using BluffinMuffin.Protocol.DataTypes.Enums;
+using BluffinMuffin.Protocol.Enums;
 using BluffinMuffin.Protocol.Game;
 using BluffinMuffin.Protocol.Server.DataTypes;
 using Com.Ericmas001.Util;
@@ -85,13 +86,15 @@ namespace BluffinMuffin.Protocol.Server.Workers
             var seat = p.Game.GameTable.SitIn(p.Player, c.NoSeat);
             if (seat == null)
             {
-                client.SendCommand(c.Response(-1));
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.SpecificServerMessage, "No seats available"));
                 if (userInfo != null)
                     userInfo.TotalMoney += p.Player.MoneySafeAmnt; 
             }
             else
             {
-                client.SendCommand(c.Response(seat.NoSeat));
+                var r = (seat.NoSeat != c.NoSeat) ? c.ResponseSuccess(BluffinMessageId.SpecificServerMessage, "The asked seat wasn't available, the server gave you another one.") : c.ResponseSuccess();
+                r.NoSeat = seat.NoSeat;
+                client.SendCommand(r);
                 p.Game.AfterPlayerSat(p.Player);
             }
         }
@@ -99,7 +102,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
         private void OnPlayerSitOutCommandReceived(AbstractBluffinCommand command, IBluffinClient client, RemotePlayer p)
         {
             var c = (PlayerSitOutCommand)command;
-            client.SendCommand(c.Response(true));
+            client.SendCommand(c.ResponseSuccess());
             p.Game.SitOut(p.Player);
         }
 

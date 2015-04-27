@@ -5,6 +5,7 @@ using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.Enums;
 using BluffinMuffin.Protocol.Lobby;
 using BluffinMuffin.Protocol.Lobby.RegisteredMode;
 using BluffinMuffin.Protocol.Lobby.QuickMode;
@@ -69,9 +70,15 @@ namespace BluffinMuffin.Protocol.Server.Workers
             client.PlayerName = c.Name;
             var ok = !Lobby.IsNameUsed(c.Name) && !DataManager.Persistance.IsDisplayNameExist(c.Name);
             LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnIdentifyCommandReceived", "> Client indentifying QuickMode server as : {0}. Success={1}", c.Name, ok);
-            client.SendCommand(c.Response(ok));
             if (ok)
+            {
+                client.SendCommand(c.ResponseSuccess());
                 Lobby.AddName(c.Name);
+            }
+            else
+            {
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.NameAlreadyUsed,"The name is already used on the server!"));
+            }
         }
 
         void OnDisconnectCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
@@ -83,13 +90,17 @@ namespace BluffinMuffin.Protocol.Server.Workers
         void OnListTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (ListTableCommand)command;
-            client.SendCommand(c.Response(Lobby.ListTables(c.LobbyTypes)));
+            var r = c.ResponseSuccess();
+            r.Tables = Lobby.ListTables(c.LobbyTypes);
+            client.SendCommand(r);
         }
 
         private void OnSupportedRulesCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (SupportedRulesCommand)command;
-            client.SendCommand(c.Response(RuleFactory.SupportedRules));
+            var r = c.ResponseSuccess();
+            r.Rules = RuleFactory.SupportedRules.ToList();
+            client.SendCommand(r);
         }
 
 
@@ -97,60 +108,91 @@ namespace BluffinMuffin.Protocol.Server.Workers
         {
             var c = (GetUserCommand)command;
             var u = DataManager.Persistance.Get(client.PlayerName);
-            client.SendCommand(c.Response(u == null ? String.Empty : u.Email, u == null ? String.Empty : u.DisplayName, u == null ? -1 : u.TotalMoney));
+            if(u == null)
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.UsernameNotFound, "Your username was not in the database. That's weird !"));
+            else
+            {
+                var r = c.ResponseSuccess();
+                r.Email = u.Email;
+                r.DisplayName = u.DisplayName;
+                r.Money = u.TotalMoney;
+                client.SendCommand(r);
+            }
         }
 
         private void OnAuthenticateUserCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (AuthenticateUserCommand)command;
-            var u = DataManager.Persistance.Authenticate(c.Username, c.Password);
+            var u = DataManager.Persistance.Get(c.Username);
 
+            var ok = false;
             if (u != null)
+            {
                 client.PlayerName = u.DisplayName;
-
-            var ok = (u != null && !Lobby.IsNameUsed(client.PlayerName));
-            if (ok)
-                Lobby.AddName(client.PlayerName);
-
-            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnAuthenticateUserCommandReceived", "> Client authenticate to RegisteredMode Server as : {0}. Success={1}", client.PlayerName, ok);
-            client.SendCommand(c.Response(ok));
+                if (DataManager.Persistance.Authenticate(c.Username, c.Password) != null)
+                {
+                    if (!Lobby.IsNameUsed(client.PlayerName))
+                    {
+                        Lobby.AddName(client.PlayerName);
+                        ok = true;
+                        client.SendCommand(c.ResponseSuccess());
+                    }
+                    else
+                        client.SendCommand(c.ResponseFailure(BluffinMessageId.NameAlreadyUsed, "The name is already used on the server!"));
+                }
+                else
+                    client.SendCommand(c.ResponseFailure(BluffinMessageId.InvalidPassword, "Wrong Password!"));
+            }
+            else
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.UsernameNotFound, "Your username was not in the database!"));
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnAuthenticateUserCommandReceived", "> Client authenticate to RegisteredMode Server as : {0}. Success={1}", c.Username, ok);
         }
 
         private void OnCreateUserCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (CreateUserCommand)command;
-            var ok = !DataManager.Persistance.IsUsernameExist(c.Username) && !DataManager.Persistance.IsDisplayNameExist(c.DisplayName);
-
-            if (ok)
-                DataManager.Persistance.Register(new UserInfo(c.Username, c.Password, c.Email, c.DisplayName, 7500));
+            var ok = false;
+            if (!DataManager.Persistance.IsUsernameExist(c.Username))
+            {
+                if (!DataManager.Persistance.IsDisplayNameExist(c.DisplayName))
+                {
+                    DataManager.Persistance.Register(new UserInfo(c.Username, c.Password, c.Email, c.DisplayName, 7500));
+                    ok = true;
+                    client.SendCommand(c.ResponseSuccess());
+                }
+                else
+                    client.SendCommand(c.ResponseFailure(BluffinMessageId.NameAlreadyUsed, "The display name is already used on the server!"));
+            }
+            else
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.UsernameAlreadyUsed, "The username is already used on the server!"));
 
             LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnCreateUserCommandReceived", "> Client register to RegisteredMode Server as : {0}. Success={1}", c.Username, ok);
-            client.SendCommand(c.Response(ok));
         }
 
         private void OnCheckUserExistCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (CheckUserExistCommand)command;
-            client.SendCommand(c.Response(DataManager.Persistance.IsUsernameExist(c.Username)));
+            var r = c.ResponseSuccess();
+            r.Exist = DataManager.Persistance.IsUsernameExist(c.Username);
+            client.SendCommand(r);
         }
 
         private void OnCheckDisplayExistCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (CheckDisplayExistCommand)command;
-            client.SendCommand(c.Response(Lobby.IsNameUsed(c.DisplayName) || DataManager.Persistance.IsDisplayNameExist(c.DisplayName)));
+            var r = c.ResponseSuccess();
+            r.Exist = Lobby.IsNameUsed(c.DisplayName) || DataManager.Persistance.IsDisplayNameExist(c.DisplayName);
+            client.SendCommand(r);
         }
 
         private void OnCreateTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            var c = (CreateTableCommand) command;
-            client.SendCommand(c.Response(CreateTable(c,client)));
-        }
-
-        private int CreateTable(CreateTableCommand c, IBluffinClient client)
-        {
+            var c = (CreateTableCommand)command;
             var res = Lobby.CreateTable(c);
-            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.CreateTable_{3}", "> Client '{0}' {3}: {2}:{1}", client.PlayerName, c.Params.TableName, res, c.Params.Lobby.OptionType);
-            return res;
+            var r = c.ResponseSuccess();
+            LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnCreateTableCommandReceived_{3}", "> Client '{0}' {3}: {2}:{1}", client.PlayerName, c.Params.TableName, res, c.Params.Lobby.OptionType);
+            r.IdTable = res;
+            client.SendCommand(r);
         }
 
         private void OnJoinTableCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
@@ -158,22 +200,27 @@ namespace BluffinMuffin.Protocol.Server.Workers
             var c = (JoinTableCommand)command;
             var game = Lobby.GetGame(c.TableId);
             var table = game.GameTable;
-            if (!game.IsRunning || table.ContainsPlayer(client.PlayerName))
+            if (!game.IsRunning)
             {
-                client.SendCommand(c.Response(false));
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.WrongTableState, "You can't join a game that isn't running !"));
+                return;
+            }
+            if (table.ContainsPlayer(client.PlayerName))
+            {
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.NameAlreadyUsed, "Someone with your name is already in this game !"));
                 return;
             }
             var rp = new RemotePlayer(game, new PlayerInfo(client.PlayerName, 0), client, c.TableId);
             if (!rp.JoinGame())
             {
-                client.SendCommand(c.Response(false));
+                client.SendCommand(c.ResponseFailure(BluffinMessageId.SpecificServerMessage, "Unknown failure"));
                 return;
             }
 
             client.AddPlayer(rp);
 
             LogManager.Log(LogLevel.Message, "BluffinLobbyWorker.OnJoinTableCommandReceived", "> Client '{0}' joined {2}:{1}", client.PlayerName, table.Params.TableName, c.TableId, rp.Player.NoSeat);
-            client.SendCommand(c.Response(true));
+            client.SendCommand(c.ResponseSuccess());
 
             rp.SendTableInfo();
         }
