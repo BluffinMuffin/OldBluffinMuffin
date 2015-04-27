@@ -126,7 +126,7 @@ namespace BluffinMuffin.Protocol.Client
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
-                SetCards(cmd.CardsId);
+                SetCards(cmd.Cards);
                 m_PokerTable.Round = cmd.Round;
 
                 Observer.RaiseGameBettingRoundStarted(cmd.Round);
@@ -168,7 +168,7 @@ namespace BluffinMuffin.Protocol.Client
 
                 if (p != null)
                 {
-                    SetPlayerVisibility(p, cmd.State, cmd.CardsId.Select(id => new GameCard(id)).ToList());
+                    SetPlayerVisibility(p, cmd.State, cmd.Cards.Select(id => new GameCard(id)).ToList());
 
                     Observer.RaisePlayerHoleCardsChanged(p);
                 }
@@ -277,7 +277,7 @@ namespace BluffinMuffin.Protocol.Client
                 var cmd = e.Command;
                 m_IsGameStarted = cmd.GameHasStarted;
                 InitPotAmounts(cmd.PotsAmount, cmd.TotalPotAmount);
-                SetCards(cmd.BoardCardIDs);
+                SetCards(cmd.BoardCards);
                 m_PokerTable.Params = cmd.Params;
                 m_PokerTable.People.Clear();
 
@@ -338,7 +338,7 @@ namespace BluffinMuffin.Protocol.Client
             }
         }
 
-        private void SetCards(IEnumerable<int> cardsId)
+        private void SetCards(IEnumerable<string> cardsId)
         {
             var cards = cardsId.Select(c => new GameCard(c)).ToArray();
             m_PokerTable.SetCards(cards[0], cards[1], cards[2], cards[3], cards[4]);

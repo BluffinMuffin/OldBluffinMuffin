@@ -41,7 +41,7 @@ namespace BluffinMuffin.Protocol.Server
             {
                 var playerSendingTo = Player;
 
-                cmd.BoardCardIDs = table.Cards.Select(c => c.Id).ToList();
+                cmd.BoardCards = table.Cards.Select(c => c.ToString()).ToArray();
                 cmd.Seats = new List<SeatInfo>();
 
                 cmd.Params = table.Params;
@@ -61,10 +61,10 @@ namespace BluffinMuffin.Protocol.Server
 
                     //If we are not sending the info about the player who is receiving, don't show the cards unless you can
                     if (i != playerSendingTo.NoSeat && si.Player.IsPlaying)
-                        si.Player.HoleCards = gameSeat.Player.RelativeCards;
+                        si.Player.HoleCards = gameSeat.Player.RelativeCards.Select(x => x.ToString()).ToArray();
 
                     if (si.Player.HoleCards.Length != 2)
-                        si.Player.HoleCards = new[] { GameCard.NoCard, GameCard.NoCard };
+                        si.Player.HoleCards = new[] { GameCard.NoCard.ToString(), GameCard.NoCard.ToString() };
 
                     si.Attributes = gameSeat.Attributes;
                 }
@@ -107,7 +107,7 @@ namespace BluffinMuffin.Protocol.Server
             {
                 PlayerPos = p.NoSeat,
                 State = p.State,
-                CardsId = holeCards.Select(c => c.Id).ToList(),
+                Cards = holeCards.Select(c => c.ToString()).ToArray(),
             });
         }
 
@@ -177,7 +177,7 @@ namespace BluffinMuffin.Protocol.Server
             Send(new BetTurnStartedCommand()
             {
                 Round = e.Round,
-                CardsId = Game.Table.Cards.Select(x => x.Id).ToList()
+                Cards = Game.Table.Cards.Select(x => x.ToString()).ToArray()
             });
         }
 
@@ -201,7 +201,7 @@ namespace BluffinMuffin.Protocol.Server
             if (e.Seat.IsEmpty || Player.NoSeat != e.Seat.NoSeat)
             {
                 if (!e.Seat.IsEmpty && Player.NoSeat != e.Seat.NoSeat)
-                    e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards;
+                    e.Seat.Player.HoleCards = e.Seat.Player.RelativeCards.Select(x => x.ToString()).ToArray();
 
                 Send(new SeatUpdatedCommand()
                 {

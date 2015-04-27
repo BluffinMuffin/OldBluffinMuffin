@@ -9,6 +9,7 @@ namespace BluffinMuffin.Protocol.Server.Test.Mocking
         public ClientMock(ServerMock server)
         {
             m_Server = server;
+            PlayerName = "SpongeBob";
         }
 
         public string PlayerName { get; set; }

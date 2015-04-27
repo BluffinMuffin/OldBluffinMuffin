@@ -225,7 +225,7 @@ namespace BluffinMuffin.Poker.Logic
                 {
                     foreach (var p in infos)
                     {
-                        var handValue = EvaluateCards(p.HoleCards.ToList());
+                        var handValue = EvaluateCards(p.HoleCards.Select(x => new GameCard(x)).ToList());
                         if (handValue > bestHand)
                         {
                             pot.DetachAllPlayers();

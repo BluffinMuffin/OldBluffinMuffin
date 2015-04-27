@@ -336,7 +336,8 @@ namespace BluffinMuffin.Poker.DataTypes
             var oldPlayerSeat = CurrentPlayerSeat;
             if (oldPlayerSeat != null)
                 oldPlayerSeat.Attributes.Remove(SeatAttributeEnum.CurrentPlayer);
-            seat.Attributes.Add(SeatAttributeEnum.CurrentPlayer);
+            if (seat != null)
+                seat.Attributes.Add(SeatAttributeEnum.CurrentPlayer);
         }
         #endregion Public Methods
 
