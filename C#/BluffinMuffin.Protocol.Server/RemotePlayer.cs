@@ -146,12 +146,12 @@ namespace BluffinMuffin.Protocol.Server
 
         void OnPlayerMoneyChanged(object sender, PlayerInfoEventArgs e)
         {
-            var p = e.Player;
-            Send(new PlayerMoneyChangedCommand()
-            {
-                PlayerPos = p.NoSeat,
-                PlayerMoney = p.MoneySafeAmnt,
-            });
+            //var p = e.Player;
+            //Send(new PlayerMoneyChangedCommand()
+            //{
+            //    PlayerPos = p.NoSeat,
+            //    PlayerMoney = p.MoneySafeAmnt,
+            //});
         }
 
         void OnEverythingEnded(object sender, EventArgs e)

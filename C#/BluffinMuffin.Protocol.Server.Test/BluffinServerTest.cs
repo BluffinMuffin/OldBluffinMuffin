@@ -141,9 +141,9 @@ namespace BluffinMuffin.Protocol.Server.Test
 
         private void BeAwareOfMoneyPlayed(RemoteTcpServer serverEntity, int tableId, int seat)
         {
-            var responseMoneyChanged = serverEntity.WaitForNextCommand<PlayerMoneyChangedCommand>();
-            Assert.AreEqual(tableId, responseMoneyChanged.TableId);
-            Assert.AreEqual(seat, responseMoneyChanged.PlayerPos);
+            //var responseMoneyChanged = serverEntity.WaitForNextCommand<PlayerMoneyChangedCommand>();
+            //Assert.AreEqual(tableId, responseMoneyChanged.TableId);
+            //Assert.AreEqual(seat, responseMoneyChanged.PlayerPos);
 
             var responseTurnEnded = serverEntity.WaitForNextCommand<PlayerTurnEndedCommand>();
             Assert.AreEqual(tableId, responseTurnEnded.TableId);
