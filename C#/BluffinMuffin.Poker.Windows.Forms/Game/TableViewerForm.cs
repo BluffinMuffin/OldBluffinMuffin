@@ -285,12 +285,12 @@ namespace BluffinMuffin.Poker.Windows.Forms.Game
             }
         }
 
-        void OnPlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
+        void OnPlayerActionNeeded(object sender, PlayerInfoEventArgs e)
         {
             if (InvokeRequired)
             {
                 // We're not in the UI thread, so we need to call BeginInvoke
-                BeginInvoke(new EventHandler<HistoricPlayerInfoEventArgs>(OnPlayerActionNeeded), new[] { sender, e });
+                BeginInvoke(new EventHandler<PlayerInfoEventArgs>(OnPlayerActionNeeded), new[] { sender, e });
                 return;
             }
             SuspendLayout();

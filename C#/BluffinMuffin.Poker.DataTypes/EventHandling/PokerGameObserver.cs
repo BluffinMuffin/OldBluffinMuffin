@@ -20,7 +20,7 @@ namespace BluffinMuffin.Poker.DataTypes.EventHandling
         public event EventHandler<PlayerInfoEventArgs> PlayerHoleCardsChanged = delegate { };
         public event EventHandler<PlayerInfoEventArgs> PlayerLeft = delegate { };
         public event EventHandler<SeatEventArgs> SeatUpdated = delegate { };
-        public event EventHandler<HistoricPlayerInfoEventArgs> PlayerActionNeeded = delegate { };
+        public event EventHandler<PlayerInfoEventArgs> PlayerActionNeeded = delegate { };
         public event EventHandler<PotWonEventArgs> PlayerWonPot = delegate { };
         public event EventHandler<PlayerActionEventArgs> PlayerActionTaken = delegate { };
         public event IntHandler SitInResponseReceived = delegate { };
@@ -75,9 +75,9 @@ namespace BluffinMuffin.Poker.DataTypes.EventHandling
         {
             SeatUpdated(m_Game, new SeatEventArgs(s));
         }
-        public void RaisePlayerActionNeeded(PlayerInfo p, PlayerInfo l)
+        public void RaisePlayerActionNeeded(PlayerInfo p)
         {
-            PlayerActionNeeded(m_Game, new HistoricPlayerInfoEventArgs(p, l));
+            PlayerActionNeeded(m_Game, new PlayerInfoEventArgs(p));
         }
         public void RaisePlayerWonPot(PlayerInfo p, int id, int amntWon)
         {

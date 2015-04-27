@@ -564,7 +564,7 @@ namespace BluffinMuffin.Poker.Logic
 
             Table.ChangeCurrentPlayerTo(next);
 
-            Observer.RaisePlayerActionNeeded(next.Player, Table.CurrentPlayer);
+            Observer.RaisePlayerActionNeeded(next.Player);
 
             if (next.Player.IsZombie)
             {

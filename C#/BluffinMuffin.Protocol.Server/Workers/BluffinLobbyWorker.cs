@@ -96,7 +96,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
         private void OnGetUserCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
             var c = (GetUserCommand)command;
-            var u = DataManager.Persistance.Get(c.Username);
+            var u = DataManager.Persistance.Get(client.PlayerName);
             client.SendCommand(c.Response(u == null ? String.Empty : u.Email, u == null ? String.Empty : u.DisplayName, u == null ? -1 : u.TotalMoney));
         }
 
@@ -158,12 +158,12 @@ namespace BluffinMuffin.Protocol.Server.Workers
             var c = (JoinTableCommand)command;
             var game = Lobby.GetGame(c.TableId);
             var table = game.GameTable;
-            if (!game.IsRunning || table.ContainsPlayer(c.PlayerName))
+            if (!game.IsRunning || table.ContainsPlayer(client.PlayerName))
             {
                 client.SendCommand(c.Response(false));
                 return;
             }
-            var rp = new RemotePlayer(game, new PlayerInfo(c.PlayerName, 0), client, c.TableId);
+            var rp = new RemotePlayer(game, new PlayerInfo(client.PlayerName, 0), client, c.TableId);
             if (!rp.JoinGame())
             {
                 client.SendCommand(c.Response(false));

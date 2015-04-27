@@ -47,7 +47,6 @@ namespace BluffinMuffin.Protocol.Client
             m_CommandObserver.PlayerHoleCardsChangedCommandReceived += OnPlayerHoleCardsChangedCommandReceived;
             m_CommandObserver.PlayerJoinedCommandReceived += OnPlayerJoinedCommandReceived;
             m_CommandObserver.SeatUpdatedCommandReceived += OnSeatUpdatedCommandReceived;
-            m_CommandObserver.PlayerMoneyChangedCommandReceived += OnPlayerMoneyChangedCommandReceived;
             m_CommandObserver.PlayerTurnBeganCommandReceived += OnPlayerTurnBeganCommandReceived;
             m_CommandObserver.PlayerTurnEndedCommandReceived += OnPlayerTurnEndedCommandReceived;
             m_CommandObserver.PlayerWonPotCommandReceived += OnPlayerWonPotCommandReceived;
@@ -209,36 +208,19 @@ namespace BluffinMuffin.Protocol.Client
 
         }
 
-        void OnPlayerMoneyChangedCommandReceived(object sender, CommandEventArgs<PlayerMoneyChangedCommand> e)
-        {
-            lock (m_PokerTable)
-            {
-                var cmd = e.Command;
-                var p = m_PokerTable.Seats[cmd.PlayerPos].Player;
-
-                if (p != null)
-                {
-                    p.MoneySafeAmnt = cmd.PlayerMoney;
-
-                    Observer.RaisePlayerMoneyChanged(p);
-                }
-            }
-        }
-
         void OnPlayerTurnBeganCommandReceived(object sender, CommandEventArgs<PlayerTurnBeganCommand> e)
         {
             lock (m_PokerTable)
             {
                 var cmd = e.Command;
                 var ps = m_PokerTable.Seats[cmd.PlayerPos];
-                var l = m_PokerTable.Seats[cmd.LastPlayerNoSeat].Player;
 
                 if (!ps.IsEmpty)
                 {
                     m_PokerTable.ChangeCurrentPlayerTo(ps);
                     m_PokerTable.MinimumRaiseAmount = cmd.MinimumRaise;
 
-                    Observer.RaisePlayerActionNeeded(ps.Player, l);
+                    Observer.RaisePlayerActionNeeded(ps.Player);
                 }
             }
         }
@@ -299,7 +281,7 @@ namespace BluffinMuffin.Protocol.Client
                 m_PokerTable.Params = cmd.Params;
                 m_PokerTable.People.Clear();
 
-                for (var i = 0; i < cmd.NbPlayers; ++i)
+                for (var i = 0; i < cmd.Params.MaxPlayers; ++i)
                 {
                     m_PokerTable.SetSeat(cmd.Seats[i]);
                     m_PokerTable.People.Add(m_PokerTable.Seats[i].Player);

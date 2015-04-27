@@ -178,7 +178,6 @@ namespace BluffinMuffin.Protocol.Client
             Send(new JoinTableCommand()
             {
                 TableId = idTable,
-                PlayerName = player,
             });
 
             return WaitAndReceive<JoinTableResponse>().Success;

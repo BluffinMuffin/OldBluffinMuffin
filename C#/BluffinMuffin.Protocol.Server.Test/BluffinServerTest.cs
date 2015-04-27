@@ -205,7 +205,6 @@ namespace BluffinMuffin.Protocol.Server.Test
         {
             var cmd = new JoinTableCommand()
             {
-                PlayerName = serverEntity.Name,
                 TableId=table
             };
             serverEntity.Send(cmd);

@@ -47,7 +47,6 @@ namespace BluffinMuffin.Protocol.Server
                 cmd.Params = table.Params;
 
                 cmd.TotalPotAmount = table.TotalPotAmnt;
-                cmd.NbPlayers = cmd.Params.MaxPlayers;
 
                 cmd.PotsAmount = table.PotAmountsPadded.ToList();
 
@@ -159,12 +158,11 @@ namespace BluffinMuffin.Protocol.Server
             Send(new TableClosedCommand());
         }
 
-        void OnPlayerActionNeeded(object sender, HistoricPlayerInfoEventArgs e)
+        void OnPlayerActionNeeded(object sender, PlayerInfoEventArgs e)
         {
             Send(new PlayerTurnBeganCommand()
             {
                 PlayerPos = e.Player.NoSeat,
-                LastPlayerNoSeat = e.Last.NoSeat,
                 MinimumRaise = Game.Table.MinimumRaiseAmount,
             });
         }

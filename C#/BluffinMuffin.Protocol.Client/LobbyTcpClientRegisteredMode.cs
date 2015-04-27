@@ -66,10 +66,7 @@ namespace BluffinMuffin.Protocol.Client
 
         public void RefreshUserInfo(string username)
         {
-            Send(new GetUserCommand()
-            {
-                Username = username,
-            });
+            Send(new GetUserCommand());
 
             var response = WaitAndReceive<GetUserResponse>();
             PlayerName = response.DisplayName;
