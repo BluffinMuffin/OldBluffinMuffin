@@ -14,7 +14,7 @@ The C# version is currently under developpement during spare time :)
 
  * Compatibility
   * Beta6 Client supports servers that implements at least Protocol v1.0
-  * Beta5 Server supports clients that implements at least Protocol v1.0
+  * Beta6 Server supports clients that implements at least Protocol v1.0
  * Downloads
   * [C# Beta6 Client](https://github.com/Ericmas001/BluffinMuffin.Beta/releases/download/v0.6-beta-6/BluffinMuffin.Client.v0.6.zip)
   * [C# Beta6 Server](https://github.com/Ericmas001/BluffinMuffin.Beta/releases/download/v0.6-beta-6/BluffinMuffin.Server.v0.6.zip)
