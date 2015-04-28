@@ -186,10 +186,10 @@ namespace BluffinMuffin.Protocol.Client
 
         public IEnumerable<RuleInfo> GetSupportedRules()
         {
-            var cmd = new SupportedRulesCommand();
+            var cmd = new CheckCompatibilityCommand() {ImplementedProtocolVersion="1.0"};
             Send(cmd);
 
-            return WaitAndReceive<SupportedRulesResponse>().Rules;
+            return WaitAndReceive<CheckCompatibilityResponse>().Rules;
         }
 
         protected override void Run()

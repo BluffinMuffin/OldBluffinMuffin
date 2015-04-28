@@ -65,9 +65,9 @@ namespace BluffinMuffin.Protocol.Server.Test
             CheckIfResponseIs<ListTableResponse>(LobbyCommandMock.ListTableCommand());
         }
         [TestMethod]
-        public void SupportedRulesCommand()
+        public void CheckCompatibilityCommand()
         {
-            CheckIfResponseIs<SupportedRulesResponse>(LobbyCommandMock.SupportedRulesCommand());
+            CheckIfResponseIs<CheckCompatibilityResponse>(LobbyCommandMock.CheckCompatibilityCommand());
         }
     }
 }

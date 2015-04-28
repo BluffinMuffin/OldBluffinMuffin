@@ -5,6 +5,7 @@ using BluffinMuffin.Poker.DataTypes;
 using BluffinMuffin.Poker.Logic;
 using BluffinMuffin.Poker.Persistance;
 using BluffinMuffin.Protocol.DataTypes;
+using BluffinMuffin.Protocol.DataTypes.Enums;
 using BluffinMuffin.Protocol.Enums;
 using BluffinMuffin.Protocol.Lobby;
 using BluffinMuffin.Protocol.Lobby.RegisteredMode;
@@ -32,7 +33,7 @@ namespace BluffinMuffin.Protocol.Server.Workers
                 
                 //Lobby
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(ListTableCommand), OnListTableCommandReceived), 
-                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(SupportedRulesCommand), OnSupportedRulesCommandReceived), 
+                new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CheckCompatibilityCommand), OnCheckCompatibilityCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(JoinTableCommand), OnJoinTableCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(LeaveTableCommand), OnLeaveTableCommandReceived), 
                 new KeyValuePair<Type, Action<AbstractBluffinCommand, IBluffinClient>>(typeof(CreateTableCommand), OnCreateTableCommandReceived), 
@@ -96,12 +97,25 @@ namespace BluffinMuffin.Protocol.Server.Workers
             client.SendCommand(r);
         }
 
-        private void OnSupportedRulesCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
+        private void OnCheckCompatibilityCommandReceived(AbstractBluffinCommand command, IBluffinClient client)
         {
-            var c = (SupportedRulesCommand)command;
-            var r = c.ResponseSuccess();
-            r.Rules = RuleFactory.SupportedRules.ToList();
-            client.SendCommand(r);
+            var c = (CheckCompatibilityCommand)command;
+            Version vClient; 
+            bool ok = Version.TryParse(c.ImplementedProtocolVersion,out vClient);
+            if (!ok || vClient < new Version("1.0"))
+            {
+                var r = c.ResponseFailure(BluffinMessageId.NotSupported, "The client version must be at least 1.0");
+                r.ImplementedProtocolVersion = "1.0";
+                client.SendCommand(r);
+            }
+            else
+            {
+                var r = c.ResponseSuccess();
+                r.ImplementedProtocolVersion = "1.0";
+                r.SupportedLobbyTypes = new[] {LobbyTypeEnum.QuickMode, LobbyTypeEnum.RegisteredMode};
+                r.Rules = RuleFactory.SupportedRules;
+                client.SendCommand(r);
+            }
         }
 
 
