@@ -1,8 +1,11 @@
-This is a Texas Hold'em client and server implemented in java and C#.
+#BluffinMuffin.Beta
+###Important notes
+ * **Protocol is now an independant project ([BluffinMuffin.Protocol](https://github.com/Ericmas001/BluffinMuffin.Protocol)).**
+ * **Server is now an independant project ([BluffinMuffin.Server](https://github.com/Ericmas001/BluffinMuffin.Server)).**
 
-The Java version hasn't change since 2010 (Beta3)
-
-The C# version is currently under developpement during spare time :)
+----
+ 
+This is a Texas Hold'em client and server implemented in java and C#. The Java version hasn't change since 2010 (Beta3) The C# version is currently under developpement during spare time :)
 
  * Current Version: [Beta6](https://github.com/Ericmas001/BluffinMuffin.Beta/releases/tag/v0.6-beta-6) (2015-04-27)
 
