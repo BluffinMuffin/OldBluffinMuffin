@@ -6,5 +6,3 @@
    * **The Client is now developped as ([BluffinMuffin.Client](https://github.com/Ericmas001/BluffinMuffin.Server)).**
  * A brand new Poker HandEvaluator is also available in a different project:
    *  **The HandEvaluator is now developped as  ([BluffinMuffin.HandEvaluator](https://github.com/Ericmas001/BluffinMuffin.HandEvaluator)).**
-----
- 
